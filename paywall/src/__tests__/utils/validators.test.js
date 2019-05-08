@@ -63,6 +63,9 @@ describe('Form field validators', () => {
     const validConfig = {
       callToAction: {
         default: 'hi',
+        expired: 'there',
+        pending: 'pending',
+        confirmed: 'confirmed',
       },
       locks: {
         [lock]: {
@@ -135,52 +138,130 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
-      it('callToAction.default is malformed', () => {
-        expect.assertions(5)
+      it('icon', () => {
+        expect.assertions(3)
 
         expect(
           validators.isValidPaywallConfig({
-            callToAction: false,
-            locks: {
-              '0x1234567890123456789012345678901234567890': {
-                name: 'hi',
+            ...validConfig,
+            icon: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: {},
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: 1,
+          })
+        ).toBe(false)
+      })
+
+      describe('callToAction', () => {
+        const noConfirmed = {
+          default: 'default',
+          expired: 'expired',
+          pending: 'pending',
+        }
+        const noPending = {
+          default: 'default',
+          expired: 'expired',
+          confirmed: 'confirmed',
+        }
+        const noExpired = {
+          default: 'default',
+          pending: 'pending',
+          confirmed: 'confirmed',
+        }
+        const noDefault = {
+          expired: 'expired',
+          pending: 'pending',
+          confirmed: 'confirmed',
+        }
+
+        it('callToAction has too many keys', () => {
+          expect.assertions(1)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              callToAction: {
+                oops: 1,
+                I: 2,
+                did: 3,
+                it: 4,
+                again: 5,
               },
-            },
-            icon: 'hi',
-          })
-        ).toBe(false)
-        expect(
-          validators.isValidPaywallConfig({
-            ...validConfig,
-            callToAction: {
-              default: false,
-            },
-          })
-        ).toBe(false)
-        expect(
-          validators.isValidPaywallConfig({
-            ...validConfig,
-            callToAction: {
-              default: 1,
-            },
-          })
-        ).toBe(false)
-        expect(
-          validators.isValidPaywallConfig({
-            ...validConfig,
-            callToAction: {
-              default: {},
-            },
-          })
-        ).toBe(false)
-        expect(
-          validators.isValidPaywallConfig({
-            ...validConfig,
-            callToAction: {
-              default: [],
-            },
-          })
-        ).toBe(false)
+            })
+          ).toBe(false)
+        })
+
+        it.each([noConfirmed, noPending, noExpired, noDefault])(
+          'callToAction has unrecognized keys',
+          defaults => {
+            expect.assertions(1)
+
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: {
+                  ...defaults,
+                  nubbin: 'oops',
+                },
+              })
+            ).toBe(false)
+          }
+        )
+
+        it.each(['default', 'expired', 'pending', 'confirmed'])(
+          'callToAction.%s is malformed',
+          key => {
+            expect.assertions(5)
+
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: false,
+              })
+            ).toBe(false)
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: {
+                  [key]: false,
+                },
+              })
+            ).toBe(false)
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: {
+                  [key]: 1,
+                },
+              })
+            ).toBe(false)
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: {
+                  [key]: {},
+                },
+              })
+            ).toBe(false)
+            expect(
+              validators.isValidPaywallConfig({
+                ...validConfig,
+                callToAction: {
+                  [key]: [],
+                },
+              })
+            ).toBe(false)
+          }
+        )
       })
 
       it('locks is falsy', () => {
@@ -403,9 +484,42 @@ describe('Form field validators', () => {
 
     describe('valid cases', () => {
       it('is valid config', () => {
-        expect.assertions(1)
+        expect.assertions(5)
 
         expect(validators.isValidPaywallConfig(validConfig)).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: false,
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            callToAction: {
+              default: 'hi',
+            },
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            callToAction: {
+              default: 'hi',
+              expired: 'hi',
+            },
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            callToAction: {
+              default: 'hi',
+              expired: 'hi',
+              pending: 'hi',
+            },
+          })
+        ).toBe(true)
       })
     })
   })

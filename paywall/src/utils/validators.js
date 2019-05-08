@@ -25,24 +25,29 @@ export const isAccount = val => {
  * For now, this assumes this structure:
  *
  * var unlockProtocolConfig = {
- * locks: {
- *   '0xabc...': {
- *  	  name: 'One Week',
+ *   locks: {
+ *     '0xabc...': {
+ *   	   name: 'One Week',
+ *      },
+ *      '0xdef...': {
+ *        name: 'One Month',
+ *      },
+ *      '0xghi...': {
+ *        name: 'One Year',
+ *      },
  *    },
- *    '0xdef...': {
- *      name: 'One Month',
- *    },
- *    '0xghi...': {
- *      name: 'One Year',
- *    },
- *  },
- *  icon: 'https://...',
- *  callToAction: {
- *	default:
- *  	'Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.',
- *  },
- *}
+ *    icon: 'https://...',
+ *    callToAction: {
+ *	    default:
+ *        'Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.',
+ *      expired:
+ *        'your key has expired, please purchase a new one',
+ *      pending: 'Purchase pending...',
+ *      confirmed: 'Your content is unlocked!',
+ *   },
+ * }
  *
+ * The fields in callToAction are all optional, and icon can be false for none
  */
 export const isValidPaywallConfig = config => {
   if (!config) return false
@@ -52,9 +57,19 @@ export const isValidPaywallConfig = config => {
   keys.sort()
   const testKeys = ['callToAction', 'icon', 'locks']
   if (keys.filter((key, index) => testKeys[index] !== key).length) return false
-  if (typeof config.icon !== 'string') return false
-  if (!config.callToAction || !config.callToAction.default) return false
-  if (typeof config.callToAction.default !== 'string') return false
+  // allow false for icon
+  if (config.icon && typeof config.icon !== 'string') return false
+  if (!config.callToAction || typeof config.callToAction !== 'object')
+    return false
+  const callsToAction = ['default', 'expired', 'pending', 'confirmed']
+  const ctaKeys = Object.keys(config.callToAction)
+  if (ctaKeys.length > callsToAction.length) return false
+  if (ctaKeys.filter(key => !callsToAction.includes(key)).length) return false
+  if (
+    ctaKeys.filter(key => typeof config.callToAction[key] !== 'string').length
+  ) {
+    return false
+  }
   if (!config.locks) return false
   if (typeof config.locks !== 'object') return false
   const locks = Object.keys(config.locks)
