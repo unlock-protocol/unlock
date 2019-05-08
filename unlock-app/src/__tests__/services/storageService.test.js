@@ -130,7 +130,7 @@ describe('StorageService', () => {
     })
 
     describe('when a lock can not be updated', () => {
-      it('returns an rejected Promise', async () => {
+      it('returns an rejected Promise', done => {
         expect.assertions(3)
         axios.put.mockRejectedValue('An Error')
 
@@ -139,6 +139,7 @@ describe('StorageService', () => {
         storageService.on(failure.updateLockDetails, ({ address, error }) => {
           expect(address).toBe('lock_address')
           expect(error).toBe('An Error')
+          done()
         })
 
         expect(axios.put).toHaveBeenCalledWith(
