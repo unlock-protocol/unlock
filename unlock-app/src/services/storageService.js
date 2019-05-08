@@ -184,7 +184,7 @@ export default class StorageService extends EventEmitter {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async updateUser(email, user, token) {
+  async updateUser(emailAddress, user, token) {
     const opts = {}
     if (token) {
       // TODO: tokens aren't optional
@@ -192,13 +192,13 @@ export default class StorageService extends EventEmitter {
     }
     try {
       await axios.put(
-        `${this.host}/users/${encodeURIComponent(email)}`,
+        `${this.host}/users/${encodeURIComponent(emailAddress)}`,
         user,
         opts
       )
-      this.emit(success.updateUser, email)
+      this.emit(success.updateUser, emailAddress)
     } catch (error) {
-      this.emit(failure.updateUser, { email, error })
+      this.emit(failure.updateUser, { emailAddress, error })
     }
   }
 

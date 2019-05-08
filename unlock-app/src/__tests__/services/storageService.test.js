@@ -353,8 +353,8 @@ describe('StorageService', () => {
 
         storageService.updateUser('hello@unlock-protocol.com', user, null)
 
-        storageService.on(failure.updateUser, ({ email, error }) => {
-          expect(email).toBe('hello@unlock-protocol.com')
+        storageService.on(failure.updateUser, ({ emailAddress, error }) => {
+          expect(emailAddress).toBe('hello@unlock-protocol.com')
           expect(error).toEqual('Egads! An Error')
           done()
         })
