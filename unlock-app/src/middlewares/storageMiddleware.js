@@ -23,6 +23,7 @@ import {
 } from '../actions/login'
 import UnlockUser from '../structured_data/unlockUser'
 import { setError } from '../actions/error'
+import { FAILED_TO_CREATE_USER } from '../errors'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -133,8 +134,9 @@ const storageMiddleware = config => {
           storageService
             .createUser(user) // TODO: Now what?
             .then(() => dispatch(setAccount({ address })))
-            // TODO: This isn't the right way to handle the error
-            .catch(err => dispatch(setError(err)))
+            .catch(() => {
+              dispatch(setError(FAILED_TO_CREATE_USER))
+            })
         }
 
         if (action.type === LOGIN_CREDENTIALS) {
