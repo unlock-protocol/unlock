@@ -1,7 +1,18 @@
 import axios from 'axios'
+import { EventEmitter } from 'events'
 
-export default class StorageService {
+export const success = {
+  storeTransaction: 'storeTransaction.success',
+  getTransactionHashesSentBy: '',
+}
+
+export const failure = {
+  storeTransaction: 'storeTransaction.failure',
+}
+
+export default class StorageService extends EventEmitter {
   constructor(host) {
+    super()
     this.host = host
   }
 
@@ -12,14 +23,24 @@ export default class StorageService {
    * @param {*} recipientAddress
    * @param {*} chain
    */
-  storeTransaction(transactionHash, senderAddress, recipientAddress, chain) {
+  async storeTransaction(
+    transactionHash,
+    senderAddress,
+    recipientAddress,
+    chain
+  ) {
     const payload = {
       transactionHash,
       sender: senderAddress,
       recipient: recipientAddress,
       chain,
     }
-    return axios.post(`${this.host}/transaction`, payload)
+    try {
+      await axios.post(`${this.host}/transaction`, payload)
+      this.emit(success.storeTransaction, transactionHash)
+    } catch (error) {
+      this.emit(failure.storeTransaction, error)
+    }
   }
 
   /**

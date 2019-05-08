@@ -1,5 +1,5 @@
 import axios from 'axios'
-import StorageService from '../../services/storageService'
+import StorageService, { success, failure } from '../../services/storageService'
 
 jest.mock('axios')
 
@@ -171,14 +171,14 @@ describe('StorageService', () => {
   })
 
   describe('storeTransaction', () => {
-    it('returns a successful promise', async () => {
-      expect.assertions(1)
+    it('emits a success value', done => {
+      expect.assertions(2)
       const transactionHash = ' 0xhash'
       const senderAddress = ' 0xsender'
       const recipientAddress = ' 0xrecipient'
       axios.post.mockReturnValue({})
 
-      await storageService.storeTransaction(
+      storageService.storeTransaction(
         transactionHash,
         senderAddress,
         recipientAddress
@@ -187,6 +187,33 @@ describe('StorageService', () => {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
+      })
+      storageService.on(success.storeTransaction, hash => {
+        expect(hash).toBe(transactionHash)
+        done()
+      })
+    })
+
+    it('emits a failure value', done => {
+      expect.assertions(2)
+      const transactionHash = ' 0xhash'
+      const senderAddress = ' 0xsender'
+      const recipientAddress = ' 0xrecipient'
+      axios.post.mockRejectedValue('I am error.')
+
+      storageService.storeTransaction(
+        transactionHash,
+        senderAddress,
+        recipientAddress
+      )
+      expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
+        transactionHash,
+        sender: senderAddress,
+        recipient: recipientAddress,
+      })
+      storageService.on(failure.storeTransaction, err => {
+        expect(err).toBe('I am error.')
+        done()
       })
     })
   })
