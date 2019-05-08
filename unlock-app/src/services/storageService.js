@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { EventEmitter } from 'events'
 
+// The goal of the success and failure objects is to act as a registry of events
+// that StorageService will emit. Nothing should be emitted that isn't in one of
+// these objects, and nothing that isn't emitted should be in one of these
+// objects.
 export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
@@ -9,6 +13,7 @@ export const success = {
   updateLockDetails: 'updateLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
+  getUserPrivateKey: 'getUserPrivateKey.success',
 }
 
 export const failure = {
@@ -19,6 +24,7 @@ export const failure = {
   updateLockDetails: 'updateLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
+  getUserPrivateKey: 'getUserPrivateKey.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -210,10 +216,14 @@ export default class StorageService extends EventEmitter {
         opts
       )
       if (response.data && response.data.passwordEncryptedPrivateKey) {
-        return response.data.passwordEncryptedPrivateKey
+        this.emit(success.getUserPrivateKey, {
+          emailAddress,
+          passwordEncryptedPrivateKey:
+            response.data.passwordEncryptedPrivateKey,
+        })
       }
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.getUserPrivateKey, { emailAddress, error })
     }
   }
 

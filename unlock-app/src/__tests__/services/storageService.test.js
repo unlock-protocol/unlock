@@ -372,20 +372,26 @@ describe('StorageService', () => {
 
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
-      it('returns a successful promise', async () => {
-        expect.assertions(2)
+      it('emits a success', done => {
+        expect.assertions(3)
         axios.get.mockReturnValue({
           data: {
             passwordEncryptedPrivateKey: 'Private Key  reporting for duty',
           },
         })
 
-        const key = await storageService.getUserPrivateKey(
-          'hello@unlock-protocol.com',
-          null
-        )
+        storageService.getUserPrivateKey('hello@unlock-protocol.com', null)
 
-        expect(key).toBe('Private Key  reporting for duty')
+        storageService.on(
+          success.getUserPrivateKey,
+          ({ emailAddress, passwordEncryptedPrivateKey }) => {
+            expect(emailAddress).toBe('hello@unlock-protocol.com')
+            expect(passwordEncryptedPrivateKey).toBe(
+              'Private Key  reporting for duty'
+            )
+            done()
+          }
+        )
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
@@ -398,18 +404,20 @@ describe('StorageService', () => {
     })
 
     describe('When a private key cannot be retrieved', () => {
-      it('returns a rejected promise', async () => {
-        expect.assertions(2)
+      it('emits a failure', done => {
+        expect.assertions(3)
         axios.get.mockRejectedValue('Great Snakes! An Error')
 
-        try {
-          await storageService.getUserPrivateKey(
-            'hello@unlock-protocol.com',
-            null
-          )
-        } catch (error) {
-          expect(error).toEqual('Great Snakes! An Error')
-        }
+        storageService.getUserPrivateKey('hello@unlock-protocol.com', null)
+
+        storageService.on(
+          failure.getUserPrivateKey,
+          ({ emailAddress, error }) => {
+            expect(emailAddress).toBe('hello@unlock-protocol.com')
+            expect(error).toEqual('Great Snakes! An Error')
+            done()
+          }
+        )
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
