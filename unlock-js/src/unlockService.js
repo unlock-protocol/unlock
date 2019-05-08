@@ -109,7 +109,6 @@ export default class UnlockService extends EventEmitter {
     return version
   }
 
-  // rebasing sucks
   /**
    * Private method, which given an address will query the unlock contract to get its version
    * @param {*} address
