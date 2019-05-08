@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const SvgKeyText = ({ title, ...props }) => (
-  <svg fill="none" {...props}>
+  <svg viewBox="0 0 201 245" fill="none" {...props}>
     <title>{title}</title>
     <path
       fillRule="evenodd"
