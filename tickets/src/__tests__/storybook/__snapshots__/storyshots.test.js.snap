@@ -9649,6 +9649,442 @@ Object {
 }
 `;
 
+exports[`Storyshots Event validation icon Ticket invalid 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
+}
+
+.c1 {
+  max-width: 200px;
+  margin: auto;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    padding-left: 20px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <h1
+        class="c0"
+      >
+        Ticket Not Valid
+      </h1>
+      <div
+        class="c1"
+      >
+        <svg
+          fill="none"
+          viewBox="0 0 92 92"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+            fill="#EEE"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <h1
+      class="sc-1fq9sck-5 kxGJl"
+    >
+      Ticket Not Valid
+    </h1>
+    <div
+      class="r7g3m7-0 fSVEBA"
+    >
+      <svg
+        fill="none"
+        viewBox="0 0 92 92"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+          fill="#EEE"
+          fill-rule="evenodd"
+        />
+      </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Event validation icon Ticket valid 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  max-width: 200px;
+  margin: auto;
+}
+
+.c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
+  color: var(--link);
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    padding-left: 20px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <h1
+        class="c0"
+      >
+        Ticket Valid
+      </h1>
+      <div
+        class="c1"
+      >
+        <svg
+          fill="none"
+          viewBox="0 0 92 92"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+            fill="#EEE"
+            fill-rule="evenodd"
+          />
+          <path
+            d="M30.667 48.25l12.404 9.515 20.395-27.098"
+            stroke="#A6A6A6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <h1
+      class="sc-1fq9sck-5 r7g3m7-1 gbtMdn"
+    >
+      Ticket Valid
+    </h1>
+    <div
+      class="r7g3m7-0 fSVEBA"
+    >
+      <svg
+        fill="none"
+        viewBox="0 0 92 92"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+          fill="#EEE"
+          fill-rule="evenodd"
+        />
+        <path
+          d="M30.667 48.25l12.404 9.515 20.395-27.098"
+          stroke="#A6A6A6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Event validation icon Ticket validating 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
+}
+
+.c1 {
+  max-width: 200px;
+  margin: auto;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    padding-left: 20px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <h1
+        class="c0"
+      >
+        Ticket Validating
+      </h1>
+      <div
+        class="c1"
+      >
+        <svg
+          fill="none"
+          viewBox="0 0 92 92"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+            fill="#EEE"
+            fill-rule="evenodd"
+          />
+        </svg>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <h1
+      class="sc-1fq9sck-5 kxGJl"
+    >
+      Ticket Validating
+    </h1>
+    <div
+      class="r7g3m7-0 fSVEBA"
+    >
+      <svg
+        fill="none"
+        viewBox="0 0 92 92"
+      >
+        <title />
+        <path
+          clip-rule="evenodd"
+          d="M46 92c25.405 0 46-20.595 46-46S71.405 0 46 0 0 20.595 0 46s20.595 46 46 46z"
+          fill="#EEE"
+          fill-rule="evenodd"
+        />
+      </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Home landing page Home page 1`] = `
 Object {
   "asFragment": [Function],

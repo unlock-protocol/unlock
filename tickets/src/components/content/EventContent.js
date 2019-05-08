@@ -295,7 +295,7 @@ const Links = styled.ul`
   }
 `
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
   font-weight: bold;
