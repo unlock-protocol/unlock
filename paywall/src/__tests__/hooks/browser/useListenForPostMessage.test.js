@@ -235,6 +235,13 @@ describe('useListenForPostMessage hook', () => {
         }
 
         let wrapper
+
+        // the rtl.act calls are wrappers so that the async nature of re-rendering is
+        // made synchronous so we can test the effects of the hooks
+        // we wrap each call in a separate act so that we can test
+        // in between the calls, as if the browser had sent several
+        // postMessage events with the same object, but it looks
+        // different once it arrives
         rtl.act(() => {
           wrapper = rtl.render(<Wrapper defaultValue="hi" />)
         })

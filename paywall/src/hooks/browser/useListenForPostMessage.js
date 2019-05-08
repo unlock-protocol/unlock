@@ -68,6 +68,9 @@ export default function useListenForPostMessage({
       // optional validator
       if (!validator || (validator && validator(event.data.payload))) {
         const newValue = getValue(event.data.payload, defaultValue)
+        // this comparison is designed to avoid the need for deep equality check
+        // If the configuration grows considerably, using some kind of traversing equality check
+        // will make more sense
         if (JSON.stringify(newValue) === JSON.stringify(data)) return
         // this triggers a re-render if and only if the value is different
         setData(newValue)
