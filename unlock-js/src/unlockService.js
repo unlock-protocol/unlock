@@ -95,7 +95,7 @@ export default class UnlockService extends EventEmitter {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
       if (version === 1) {
-        // v01 returns 0 as publicLockVersion
+        // v02 returns 1 as publicLockVersion
         const code = await this.provider.getCode(address)
 
         // if the deployed bytecode is v02, we have a match
