@@ -8,8 +8,8 @@ import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
-import StorageService from '../services/storageService'
-import { STORE_LOCK_NAME, storageError } from '../actions/storage'
+import { StorageService, success, failure } from '../services/storageService'
+import { storageError } from '../actions/storage'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
@@ -30,41 +30,63 @@ const storageMiddleware = config => {
   return ({ getState, dispatch }) => {
     const storageService = new StorageService(services.storage.host)
 
+    // NEW_TRANSACTION
+    storageService.on(failure.storeTransaction, error => {
+      dispatch(storageError(error))
+    })
+
+    // SET_ACCOUNT
+    storageService.on(success.getTransactionHashesSentBy, ({ hashes }) => {
+      // Dispatch each lock. Greg probably wants to do a batch action?
+      hashes.forEach(hash => {
+        if (hash.network === getState().network.name) {
+          dispatch(addTransaction(hash))
+        }
+      })
+      dispatch(doneLoading())
+    })
+    storageService.on(failure.getTransactionHashesSentBy, error => {
+      dispatch(storageError(error))
+      dispatch(doneLoading())
+    })
+
+    // UPDATE_LOCK
+    storageService.on(success.lockLookUp, ({ address, name }) => {
+      dispatch(updateLock(address, { name }))
+    })
+    storageService.on(failure.lockLookUp, error => {
+      dispatch(storageError(error))
+    })
+
+    // SIGNED_DATA
+    storageService.on(failure.storeLockDetails, ({ error }) => {
+      dispatch(storageError(error))
+    })
+
     return next => {
       return action => {
-        // TODO: never async/await middlewares
+        if (action.type === NEW_TRANSACTION) {
+          // Storing a new transaction so that we can easily point to it later on
+          storageService.storeTransaction(
+            action.transaction.hash,
+            action.transaction.from,
+            action.transaction.to,
+            getState().network.name
+          )
+        }
+
         if (action.type === SET_ACCOUNT) {
           dispatch(startLoading())
           // When we set the account, we want to retrieve the list of transactions
-          storageService
-            .getTransactionsHashesSentBy(action.account.address)
-            .then(transactions => {
-              dispatch(doneLoading())
-              // Dispatch each lock. Greg probably wants to a batch action?
-              transactions.forEach(transaction => {
-                if (transaction.network === getState().network.name) {
-                  dispatch(addTransaction(transaction))
-                }
-              })
-            })
-            .catch(error => {
-              dispatch(doneLoading())
-              dispatch(storageError(error))
-            })
+          storageService.getTransactionsHashesSentBy(action.account.address)
         }
 
-        if (action.type === NEW_TRANSACTION) {
-          // Storing a new transaction so that we can easoly point to it later on
-          storageService
-            .storeTransaction(
-              action.transaction.hash,
-              action.transaction.from,
-              action.transaction.to,
-              getState().network.name
-            )
-            .catch(error => {
-              dispatch(storageError(error))
-            })
+        if (action.type === UPDATE_LOCK) {
+          // Only look up the name for a lock for which the name is empty/not-set
+          const lock = getState().locks[action.address]
+          if (lock && !lock.name) {
+            storageService.lockLookUp(action.address)
+          }
         }
 
         if (
@@ -73,11 +95,7 @@ const storageMiddleware = config => {
           action.data.message.lock
         ) {
           // Once signed, let's save it!
-          storageService
-            .storeLockDetails(action.data, action.signature)
-            .catch(error => {
-              dispatch(storageError(error))
-            })
+          storageService.storeLockDetails(action.data, action.signature)
         }
 
         if (action.type === UPDATE_LOCK_NAME) {
@@ -90,31 +108,6 @@ const storageMiddleware = config => {
           })
           // Ask someone to sign it!
           dispatch(signData(data))
-        }
-
-        // TODO : remove me because it is not needed anymore
-        if (action.type === STORE_LOCK_NAME) {
-          // A new lock has been created
-          storageService
-            .storeLockDetails(action.lock, action.token)
-            .catch(error => {
-              dispatch(storageError(error))
-            })
-        }
-
-        if (action.type === UPDATE_LOCK) {
-          // Only look up the name for a lock for which the name is empty/not-set
-          const lock = getState().locks[action.address]
-          if (lock && !lock.name) {
-            storageService
-              .lockLookUp(action.address)
-              .then(name => {
-                dispatch(updateLock(action.address, { name }))
-              })
-              .catch(error => {
-                dispatch(storageError(error))
-              })
-          }
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
