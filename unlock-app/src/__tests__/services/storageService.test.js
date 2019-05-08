@@ -126,9 +126,9 @@ describe('StorageService', () => {
   })
 
   describe('getTransactionsHashesSentBy', () => {
-    it('should expect a list of transactions', async () => {
-      expect.assertions(2)
-      const sender = '0x123'
+    it('should succeed with a list of hashes', done => {
+      expect.assertions(3)
+      const sender = '0xabc'
       axios.get.mockReturnValue({
         data: {
           transactions: [
@@ -147,26 +147,47 @@ describe('StorageService', () => {
           ],
         },
       })
-      const transactions = await storageService.getTransactionsHashesSentBy(
-        sender
+
+      storageService.getTransactionsHashesSentBy(sender)
+
+      storageService.on(
+        success.getTransactionHashesSentBy,
+        ({ senderAddress, hashes }) => {
+          expect(senderAddress).toBe(sender)
+          expect(hashes).toEqual([
+            {
+              hash: '0x123',
+              from: '0xabc',
+              to: '0xcde',
+              network: 1984,
+            },
+            {
+              hash: '0x456',
+              from: '0xabc',
+              to: '0xfgh',
+              network: 1984,
+            },
+          ])
+          done()
+        }
       )
-      expect(transactions).toEqual([
-        {
-          hash: '0x123',
-          from: '0xabc',
-          to: '0xcde',
-          network: 1984,
-        },
-        {
-          hash: '0x456',
-          from: '0xabc',
-          to: '0xfgh',
-          network: 1984,
-        },
-      ])
+
       expect(axios.get).toHaveBeenCalledWith(
         `${serviceHost}/transactions?sender=${sender}`
       )
+    })
+
+    it('should fail with an error', done => {
+      expect.assertions(1)
+
+      axios.get.mockRejectedValue('I am error.')
+
+      storageService.getTransactionsHashesSentBy('0xabc')
+
+      storageService.on(failure.getTransactionHashesSentBy, err => {
+        expect(err).toBe('I am error.')
+        done()
+      })
     })
   })
 

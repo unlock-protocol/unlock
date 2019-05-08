@@ -3,11 +3,12 @@ import { EventEmitter } from 'events'
 
 export const success = {
   storeTransaction: 'storeTransaction.success',
-  getTransactionHashesSentBy: '',
+  getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
 }
 
 export const failure = {
   storeTransaction: 'storeTransaction.failure',
+  getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -50,18 +51,23 @@ export default class StorageService extends EventEmitter {
    * @param {*} senderAddress
    */
   async getTransactionsHashesSentBy(senderAddress) {
-    const response = await axios.get(
-      `${this.host}/transactions?sender=${senderAddress}`
-    )
-    if (response.data && response.data.transactions) {
-      return response.data.transactions.map(t => ({
-        hash: t.transactionHash,
-        network: t.chain,
-        to: t.recipient,
-        from: t.sender,
-      }))
+    try {
+      const response = await axios.get(
+        `${this.host}/transactions?sender=${senderAddress}`
+      )
+      let hashes = []
+      if (response.data && response.data.transactions) {
+        hashes = response.data.transactions.map(t => ({
+          hash: t.transactionHash,
+          network: t.chain,
+          to: t.recipient,
+          from: t.sender,
+        }))
+      }
+      this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
+    } catch (error) {
+      this.emit(failure.getTransactionHashesSentBy, error)
     }
-    return []
   }
 
   genAuthorizationHeader = token => {
