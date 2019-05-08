@@ -432,13 +432,23 @@ describe('StorageService', () => {
 
   describe('Retrieve a user recovery phrase', () => {
     describe('When a recovery phrase can be retrieved', () => {
-      it('returns a successful promise', async () => {
-        expect.assertions(1)
-        axios.get.mockReturnValue({})
+      it('emits a success', done => {
+        expect.assertions(3)
+        axios.get.mockReturnValue({
+          data: {
+            recoveryPhrase: 'quick wafting zephyrs vex bold jim',
+          },
+        })
 
-        await storageService.getUserRecoveryPhrase(
-          'hello@unlock-protocol.com',
-          null
+        storageService.getUserRecoveryPhrase('hello@unlock-protocol.com', null)
+
+        storageService.on(
+          success.getUserRecoveryPhrase,
+          ({ emailAddress, recoveryPhrase }) => {
+            expect(emailAddress).toBe('hello@unlock-protocol.com')
+            expect(recoveryPhrase).toBe('quick wafting zephyrs vex bold jim')
+            done()
+          }
         )
 
         expect(axios.get).toHaveBeenCalledWith(
@@ -452,18 +462,20 @@ describe('StorageService', () => {
     })
 
     describe('When a recovery phrase cannot be retrieved', () => {
-      it('returns a rejected promise', async () => {
-        expect.assertions(2)
+      it('emits a failure', done => {
+        expect.assertions(3)
         axios.get.mockRejectedValue('Zounds! An Error')
 
-        try {
-          await storageService.getUserRecoveryPhrase(
-            'hello@unlock-protocol.com',
-            null
-          )
-        } catch (error) {
-          expect(error).toEqual('Zounds! An Error')
-        }
+        storageService.getUserRecoveryPhrase('hello@unlock-protocol.com', null)
+
+        storageService.on(
+          failure.getUserRecoveryPhrase,
+          ({ emailAddress, error }) => {
+            expect(emailAddress).toBe('hello@unlock-protocol.com')
+            expect(error).toEqual('Zounds! An Error')
+            done()
+          }
+        )
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(

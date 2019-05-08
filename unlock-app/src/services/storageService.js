@@ -14,6 +14,7 @@ export const success = {
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
+  getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
 }
 
 export const failure = {
@@ -25,6 +26,7 @@ export const failure = {
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
+  getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -237,13 +239,20 @@ export default class StorageService extends EventEmitter {
   async getUserRecoveryPhrase(emailAddress) {
     const opts = {}
     try {
-      return await axios.get(
+      const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
         null,
         opts
       )
+      if (response.data && response.data.recoveryPhrase) {
+        const recoveryPhrase = response.data.recoveryPhrase
+        this.emit(success.getUserRecoveryPhrase, {
+          emailAddress,
+          recoveryPhrase,
+        })
+      }
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
     }
   }
 }
