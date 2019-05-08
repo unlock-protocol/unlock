@@ -134,8 +134,9 @@ const storageMiddleware = config => {
           storageService
             .createUser(user) // TODO: Now what?
             .then(() => dispatch(setAccount({ address })))
-            // TODO: This isn't the right way to handle the error
-            .catch(() => dispatch(setError(FAILED_TO_CREATE_USER)))
+            .catch(() => {
+              dispatch(setError(FAILED_TO_CREATE_USER))
+            })
         }
 
         if (action.type === LOGIN_CREDENTIALS) {

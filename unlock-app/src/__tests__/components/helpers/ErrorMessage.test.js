@@ -4,7 +4,7 @@ import ErrorMessage from '../../../components/helpers/ErrorMessage'
 
 describe('Errors', () => {
   it('all known errors should have a default message', () => {
-    expect.assertions(13) // Errors.length
+    expect.assertions(14) // Errors.length
     Object.keys(Errors).forEach(error => {
       try {
         expect(ErrorMessage(error)).not.toBe(null)
