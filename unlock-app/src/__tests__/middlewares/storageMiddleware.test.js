@@ -3,15 +3,13 @@ import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
 import { storageError } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
 import { LOGIN_CREDENTIALS } from '../../actions/login'
-import { setError } from '../../actions/error'
-import { FAILED_TO_CREATE_USER } from '../../errors'
 import { success, failure } from '../../services/storageService'
 
 /**
@@ -304,11 +302,11 @@ describe('Storage middleware', () => {
   })
 
   describe('SIGNUP_CREDENTIALS', () => {
-    it('should create a user and then set the account', async () => {
-      expect.assertions(3)
+    it('should call storageService', () => {
+      expect.assertions(2)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
-      const { next, invoke, store } = create()
+      const { next, invoke } = create()
 
       const action = {
         type: SIGNUP_CREDENTIALS,
@@ -316,41 +314,36 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.createUser = jest.fn(() => Promise.resolve(true))
-
-      await invoke(action)
-      expect(mockStorageService.createUser).toHaveBeenCalled()
-      expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({ type: SET_ACCOUNT })
-      )
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-
-    it('should dispatch an error when user creation fails', done => {
-      expect.assertions(3)
-      const emailAddress = 'tim@cern.ch'
-      const password = 'guest'
-      const { next, invoke } = create(
-        jest.fn(action => {
-          expect(action).toEqual(setError(FAILED_TO_CREATE_USER))
-          done()
-        })
-      )
-
-      const action = {
-        type: SIGNUP_CREDENTIALS,
-        emailAddress,
-        password,
-      }
-
-      mockStorageService.createUser = jest.fn(() => {
-        return Promise.reject()
-      })
+      mockStorageService.createUser = jest.fn()
 
       invoke(action)
       expect(mockStorageService.createUser).toHaveBeenCalled()
-
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should dispatch setAccount when an account is created', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(success.createUser, '0x123abc')
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        setAccount({ address: '0x123abc' })
+      )
+    })
+
+    it('should dispatch an error when user creation fails', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(
+        failure.createUser,
+        "I don't really feel like it."
+      )
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        storageError("I don't really feel like it.")
+      )
     })
   })
 

@@ -275,12 +275,12 @@ describe('StorageService', () => {
           privateKey: 'bar',
         }
         axios.post.mockReturnValue({})
-        storageService.createUser(user)
 
-        storageService.on(success.createUser, emailAddress => {
-          expect(emailAddress).toBe(user.emailAddress)
+        storageService.on(success.createUser, publicKey => {
+          expect(publicKey).toBe(user.publicKey)
           done()
         })
+        storageService.createUser(user)
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/users/`,

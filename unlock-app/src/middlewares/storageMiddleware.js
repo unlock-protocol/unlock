@@ -22,8 +22,6 @@ import {
   loginSucceeded,
 } from '../actions/login'
 import UnlockUser from '../structured_data/unlockUser'
-import { setError } from '../actions/error'
-import { FAILED_TO_CREATE_USER } from '../errors'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -60,6 +58,19 @@ const storageMiddleware = config => {
 
     // SIGNED_DATA
     storageService.on(failure.storeLockDetails, ({ error }) => {
+      dispatch(storageError(error))
+    })
+
+    // SIGNUP_CREDENTIALS
+    storageService.on(success.createUser, publicKey => {
+      dispatch(setAccount({ address: publicKey }))
+    })
+    storageService.on(failure.createUser, error => {
+      dispatch(storageError(error))
+    })
+
+    // LOGIN_CREDENTIALS
+    storageService.on(failure.getUserPrivateKey, ({ error }) => {
       dispatch(storageError(error))
     })
 
@@ -124,31 +135,23 @@ const storageMiddleware = config => {
             passwordEncryptedPrivateKey,
           })
 
-          storageService
-            .createUser(user) // TODO: Now what?
-            .then(() => dispatch(setAccount({ address })))
-            .catch(() => {
-              dispatch(setError(FAILED_TO_CREATE_USER))
-            })
+          storageService.createUser(user)
         }
 
         if (action.type === LOGIN_CREDENTIALS) {
           const { emailAddress, password } = action
-          storageService
-            .getUserPrivateKey(emailAddress)
-            .then(key => {
-              try {
-                // TODO: store more than just the account address (encrypted key, etc.)
-                const account = getAccountFromPrivateKey(key, password)
-                if (account && account.address) {
-                  dispatch(loginSucceeded())
-                  dispatch(setAccount(account))
-                }
-              } catch (err) {
-                dispatch(loginFailed(err))
+          storageService.getUserPrivateKey(emailAddress).then(key => {
+            try {
+              // TODO: store more than just the account address (encrypted key, etc.)
+              const account = getAccountFromPrivateKey(key, password)
+              if (account && account.address) {
+                dispatch(loginSucceeded())
+                dispatch(setAccount(account))
               }
-            })
-            .catch(err => dispatch(loginFailed(err)))
+            } catch (err) {
+              dispatch(loginFailed(err))
+            }
+          })
         }
 
         next(action)

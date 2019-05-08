@@ -169,7 +169,7 @@ export class StorageService extends EventEmitter {
     const opts = {}
     try {
       await axios.post(`${this.host}/users/`, user, opts)
-      this.emit(success.createUser, user.emailAddress)
+      this.emit(success.createUser, user.publicKey)
     } catch (error) {
       this.emit(failure.createUser, error)
     }
@@ -223,6 +223,9 @@ export class StorageService extends EventEmitter {
           passwordEncryptedPrivateKey:
             response.data.passwordEncryptedPrivateKey,
         })
+        // We also return from this one so that we can use the value directly to
+        // avoid passing the password around too much.
+        return response.data.passwordEncryptedPrivateKey
       }
     } catch (error) {
       this.emit(failure.getUserPrivateKey, { emailAddress, error })
