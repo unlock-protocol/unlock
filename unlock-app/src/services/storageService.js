@@ -8,6 +8,7 @@ export const success = {
   storeLockDetails: 'storeLockDetails.success',
   updateLockDetails: 'updateLockDetails.success',
   createUser: 'createUser.success',
+  updateUser: 'updateUser.success',
 }
 
 export const failure = {
@@ -17,6 +18,7 @@ export const failure = {
   storeLockDetails: 'storeLockDetails.failure',
   updateLockDetails: 'updateLockDetails.failure',
   createUser: 'createUser.failure',
+  updateUser: 'updateUser.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -181,13 +183,14 @@ export default class StorageService extends EventEmitter {
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      return await axios.put(
+      await axios.put(
         `${this.host}/users/${encodeURIComponent(email)}`,
         user,
         opts
       )
+      this.emit(success.updateUser, email)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.updateUser, { email, error })
     }
   }
 

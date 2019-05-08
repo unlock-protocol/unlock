@@ -315,8 +315,8 @@ describe('StorageService', () => {
 
   describe('Update user', () => {
     describe('When a user can be updated', () => {
-      it('returns a successful promise', async () => {
-        expect.assertions(1)
+      it('emits a success', done => {
+        expect.assertions(2)
         axios.put.mockReturnValue()
         const user = {
           emailAddress: 'goodbye@unlock-protocol.com',
@@ -324,7 +324,12 @@ describe('StorageService', () => {
           privateKey: 'bar',
         }
 
-        await storageService.updateUser('hello@unlock-protocol.com', user, null)
+        storageService.updateUser('hello@unlock-protocol.com', user, null)
+
+        storageService.on(success.updateUser, lastEmail => {
+          expect(lastEmail).toBe('hello@unlock-protocol.com')
+          done()
+        })
 
         expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
@@ -337,8 +342,8 @@ describe('StorageService', () => {
     })
 
     describe('When a user cannot be updated', () => {
-      it('returns a rejected promise', async () => {
-        expect.assertions(2)
+      it('emits a failure', done => {
+        expect.assertions(3)
         axios.put.mockRejectedValue('Egads! An Error')
         const user = {
           emailAddress: 'goodbye@unlock-protocol.com',
@@ -346,15 +351,13 @@ describe('StorageService', () => {
           privateKey: 'bar',
         }
 
-        try {
-          await storageService.updateUser(
-            'hello@unlock-protocol.com',
-            user,
-            null
-          )
-        } catch (error) {
+        storageService.updateUser('hello@unlock-protocol.com', user, null)
+
+        storageService.on(failure.updateUser, ({ email, error }) => {
+          expect(email).toBe('hello@unlock-protocol.com')
           expect(error).toEqual('Egads! An Error')
-        }
+          done()
+        })
 
         expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
