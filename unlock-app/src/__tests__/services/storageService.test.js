@@ -1,5 +1,5 @@
 import axios from 'axios'
-import StorageService, { success, failure } from '../../services/storageService'
+import { StorageService, success, failure } from '../../services/storageService'
 
 jest.mock('axios')
 

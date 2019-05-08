@@ -29,7 +29,7 @@ export const failure = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
 }
 
-export default class StorageService extends EventEmitter {
+export class StorageService extends EventEmitter {
   constructor(host) {
     super()
     this.host = host
