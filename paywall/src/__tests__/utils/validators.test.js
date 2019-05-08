@@ -72,7 +72,7 @@ describe('Form field validators', () => {
           name: 'hi',
         },
       },
-      icon: 'hi',
+      icon: 'http://hi.com',
     }
 
     describe('failures', () => {
@@ -293,6 +293,53 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
+      it('icon is not an string', () => {
+        expect.assertions(2)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: [],
+          })
+        ).toBe(false)
+      })
+
+      it('icon is not a valid url', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon:
+              '"><script type="text/javascript>alert("XSS");</script><img src="http://example.com/img.jpg',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: 'notaURL',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: '/test.jpg',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: 'gerbils://eat.poo/fancy.jpg',
+          })
+        ).toBe(false)
+      })
+
       it('locks is not an object', () => {
         expect.assertions(3)
 
@@ -484,7 +531,7 @@ describe('Form field validators', () => {
 
     describe('valid cases', () => {
       it('is valid config', () => {
-        expect.assertions(5)
+        expect.assertions(8)
 
         expect(validators.isValidPaywallConfig(validConfig)).toBe(true)
         expect(
@@ -496,9 +543,21 @@ describe('Form field validators', () => {
         expect(
           validators.isValidPaywallConfig({
             ...validConfig,
+            icon: 'https://example.com/img.png',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
             callToAction: {
               default: 'hi',
             },
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: '//example.com/img.png',
           })
         ).toBe(true)
         expect(
@@ -518,6 +577,12 @@ describe('Form field validators', () => {
               expired: 'hi',
               pending: 'hi',
             },
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            icon: 'ftp://example.com/img.png',
           })
         ).toBe(true)
       })
