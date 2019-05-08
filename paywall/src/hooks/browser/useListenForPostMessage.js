@@ -42,39 +42,53 @@ export default function useListenForPostMessage({
   type,
   validator = false,
   defaultValue,
+  getValue = (value, defaults) => value || defaults,
 }) {
   const window = useWindow()
   const { isInIframe, isServer } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState(defaultValue)
 
-  const saveData = event => {
-    // origin is passed in by the paywall, see paywall-builder/build.js
-    const { origin } = getRouteFromWindow(window)
-    // **SECURITY CHECKS**
-    // ignore messages that do not come from our parent window
-    if (event.source !== parent || event.origin !== origin) return
-    // data must be of shape { type: 'type', payload: <value> }
-    if (!event.data || !event.data.type) return
-    if (!event.data.hasOwnProperty('payload')) return
-    if (typeof event.data.type !== 'string') return
-    if (event.data.type !== type) return
-    // optional validator
-    if (!validator || (validator && validator(event.data.payload))) {
-      // this triggers a re-render if and only if the value is different
-      setData(event.data.payload)
-    }
-  }
-
   // this hook subscribes to messages on mount, and unsubscribes on unmount
   // it does not do it on update (component re-render)
   useEffect(() => {
     if (isServer || !isInIframe) return
+
+    const saveData = event => {
+      // origin is passed in by the paywall, see paywall-builder/build.js
+      const { origin } = getRouteFromWindow(window)
+      // **SECURITY CHECKS**
+      // ignore messages that do not come from our parent window
+      if (event.source !== parent || event.origin !== origin) return
+      // data must be of shape { type: 'type', payload: <value> }
+      if (!event.data || !event.data.type) return
+      if (!event.data.hasOwnProperty('payload')) return
+      if (typeof event.data.type !== 'string') return
+      if (event.data.type !== type) return
+      // optional validator
+      if (!validator || (validator && validator(event.data.payload))) {
+        const newValue = getValue(event.data.payload, defaultValue)
+        if (JSON.stringify(newValue) === JSON.stringify(data)) return
+        // this triggers a re-render if and only if the value is different
+        setData(newValue)
+      }
+    }
+
     window.addEventListener('message', saveData)
     return () => {
       window.removeEventListener('message', saveData)
     }
-  }, [])
+  }, [
+    data,
+    defaultValue,
+    getValue,
+    isInIframe,
+    isServer,
+    parent,
+    type,
+    validator,
+    window,
+  ])
 
   return data
 }
