@@ -266,15 +266,20 @@ describe('StorageService', () => {
 
   describe('Create user', () => {
     describe('When a user can be created', () => {
-      it('returns a successful promise', async () => {
-        expect.assertions(1)
+      it('emits a success', done => {
+        expect.assertions(2)
         const user = {
           emailAddress: 'hello@unlock-protocol.com',
           publicKey: 'foo',
           privateKey: 'bar',
         }
         axios.post.mockReturnValue({})
-        await storageService.createUser(user)
+        storageService.createUser(user)
+
+        storageService.on(success.createUser, emailAddress => {
+          expect(emailAddress).toBe(user.emailAddress)
+          done()
+        })
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/users/`,
@@ -285,7 +290,7 @@ describe('StorageService', () => {
     })
 
     describe('When a user cannot be created', () => {
-      it('returns a rejected promise', async () => {
+      it('emits a failure', done => {
         expect.assertions(2)
         const user = {
           emailAddress: 'hello@unlock-protocol.com',
@@ -293,11 +298,11 @@ describe('StorageService', () => {
           privateKey: 'bar',
         }
         axios.post.mockRejectedValue('Hark! An Error')
-        try {
-          await storageService.createUser(user)
-        } catch (error) {
+        storageService.createUser(user)
+        storageService.on(failure.createUser, error => {
           expect(error).toEqual('Hark! An Error')
-        }
+          done()
+        })
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/users/`,

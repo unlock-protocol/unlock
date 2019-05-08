@@ -7,6 +7,7 @@ export const success = {
   lockLookUp: 'lockLookUp.success',
   storeLockDetails: 'storeLockDetails.success',
   updateLockDetails: 'updateLockDetails.success',
+  createUser: 'createUser.success',
 }
 
 export const failure = {
@@ -15,6 +16,7 @@ export const failure = {
   lockLookUp: 'lockLookUp.failure',
   storeLockDetails: 'storeLockDetails.failure',
   updateLockDetails: 'updateLockDetails.failure',
+  createUser: 'createUser.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -156,9 +158,10 @@ export default class StorageService extends EventEmitter {
   async createUser(user) {
     const opts = {}
     try {
-      return await axios.post(`${this.host}/users/`, user, opts)
+      await axios.post(`${this.host}/users/`, user, opts)
+      this.emit(success.createUser, user.emailAddress)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.createUser, error)
     }
   }
 
