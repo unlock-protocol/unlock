@@ -13,28 +13,37 @@ describe('StorageService', () => {
 
   describe('lockLookUp', () => {
     describe('when the requested lock exists', () => {
-      it('returns the details', async () => {
-        expect.assertions(2)
+      it('returns the details', done => {
+        expect.assertions(3)
         axios.get.mockReturnValue({
           data: {
             name: 'hello',
           },
         })
-        const result = await storageService.lockLookUp('0x42')
-        expect(result).toEqual('hello')
+
+        storageService.lockLookUp('0x42')
+
+        storageService.on(success.lockLookUp, ({ address, name }) => {
+          expect(address).toBe('0x42')
+          expect(name).toBe('hello')
+          done()
+        })
+
         expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
       })
     })
 
     describe('when the requested lock doesnt exist', () => {
-      it('raises an appropriate error', async () => {
+      it('raises an appropriate error', done => {
         expect.assertions(2)
         axios.get.mockRejectedValue('An Error')
-        try {
-          await storageService.lockLookUp('0x1234243')
-        } catch (error) {
+        storageService.lockLookUp('0x1234243')
+
+        storageService.on(failure.lockLookUp, error => {
           expect(error).toEqual('An Error')
-        }
+          done()
+        })
+
         expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x1234243`)
       })
     })

@@ -4,11 +4,13 @@ import { EventEmitter } from 'events'
 export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
+  lockLookUp: 'lockLookUp.success',
 }
 
 export const failure = {
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
+  lockLookUp: 'lockLookUp.failure',
 }
 
 export default class StorageService extends EventEmitter {
@@ -85,11 +87,13 @@ export default class StorageService extends EventEmitter {
     try {
       const result = await axios.get(`${this.host}/lock/${address}`)
       if (result.data && result.data.name) {
-        return result.data.name
+        const name = result.data.name
+        this.emit(success.lockLookUp, { address, name })
+      } else {
+        this.emit(failure.lockLookUp, 'No name for this lock.')
       }
-      return Promise.reject(null)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.lockLookUp, error)
     }
   }
 
