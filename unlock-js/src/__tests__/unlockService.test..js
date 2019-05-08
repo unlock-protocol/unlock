@@ -1,9 +1,10 @@
 /* eslint no-console: 0 */
 
-import { providers as ethersProviders, ethers } from 'ethers'
+import { providers as ethersProviders, ethers, utils } from 'ethers'
 
 import UnlockService, { Errors } from '../unlockService'
 import NockHelper from './helpers/nockHelper'
+import bytecode from './helpers/bytecode'
 import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
@@ -16,6 +17,10 @@ let unlockAddress = '0x885ef47c3439ade0cb9b33a4d3c534c99964db93'
 let unlockService
 
 describe('UnlockService', () => {
+  function parseAbi(abi) {
+    return abi.map(sig => utils.parseSignature(sig))
+  }
+
   async function nockBeforeEach() {
     nock.cleanAll()
     nock.netVersionAndYield(0)
@@ -59,7 +64,7 @@ describe('UnlockService', () => {
       await nockBeforeEach()
       const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
 
-      nock.ethGetCodeAndYield(unlockAddress, v02.PublicLock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
       nock.ethCallAndFail(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
@@ -81,13 +86,13 @@ describe('UnlockService', () => {
       const metadata = new ethers.utils.Interface(v01.PublicLock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
-      nock.ethGetCodeAndYield(unlockAddress, v01.PublicLock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v01.PublicLock)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
@@ -104,7 +109,7 @@ describe('UnlockService', () => {
       const metadata = new ethers.utils.Interface(v02.PublicLock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, v02.PublicLock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
       nock.ethCallAndYield(
         metadata.functions['publicLockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
@@ -129,7 +134,7 @@ describe('UnlockService', () => {
       const metadata = new ethers.utils.Interface(v02.Unlock.abi)
       const coder = ethers.utils.defaultAbiCoder
 
-      nock.ethGetCodeAndYield(unlockAddress, v02.Unlock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.Unlock)
       nock.ethCallAndYield(
         metadata.functions['unlockVersion()'].encode([]),
         ethers.utils.getAddress(unlockAddress),
@@ -335,7 +340,7 @@ describe('UnlockService', () => {
         ethers.Contract
       )
       expect(contract).toBeInstanceOf(ethers.Contract)
-      expect(contract.interface.abi).toEqual(v02.PublicLock.abi)
+      expect(contract.interface.abi).toEqual(parseAbi(v02.PublicLock.abi))
     })
 
     it('retrieves memoized lock contract', async () => {
@@ -366,7 +371,7 @@ describe('UnlockService', () => {
 
       expect(unlockService.unlockContract).toBeInstanceOf(ethers.Contract)
       expect(contract).toBeInstanceOf(ethers.Contract)
-      expect(contract.interface.abi).toEqual(v02.Unlock.abi)
+      expect(contract.interface.abi).toEqual(parseAbi(v02.Unlock.abi))
     })
 
     it('retrieves memoized unlock contract', async () => {
