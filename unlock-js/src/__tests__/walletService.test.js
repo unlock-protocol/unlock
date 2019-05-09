@@ -388,7 +388,7 @@ describe('WalletService (ethers)', () => {
   })
 
   describe('recoverAccountFromSignedData', () => {
-    it('returns the signing address', () => {
+    it('returns the signing address', async () => {
       expect.hasAssertions()
 
       const data = 'data to be signed'
@@ -402,7 +402,7 @@ describe('WalletService (ethers)', () => {
       nock.accountsAndYield([account])
       nock.ethSignAndYield(hash, account, 'stuff')
 
-      const returnedAddress = walletService.recoverAccountFromSignedData(
+      const returnedAddress = await walletService.recoverAccountFromSignedData(
         data,
         signed
       )
