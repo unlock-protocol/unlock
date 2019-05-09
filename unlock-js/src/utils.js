@@ -25,4 +25,5 @@ module.exports = {
   },
   utf8ToHex: str => utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0),
   sha3: utils.keccak256,
+  verifyMessage: utils.verifyMessage,
 }
