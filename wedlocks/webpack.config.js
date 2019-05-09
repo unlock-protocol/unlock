@@ -1,22 +1,13 @@
-/* eslint no-console: 0 */
-
 const path = require('path')
 const webpack = require('webpack')
 
 const SRC_DIR = path.resolve(__dirname, 'src')
 const OUT_DIR = path.resolve(__dirname, 'build')
 
-const requiredVariables = ['SMTP_HOST', 'SMTP_USERNAME', 'SMTP_PASSWORD']
-requiredVariables.forEach(envVar => {
-  if (!process.env[envVar]) {
-    console.error(`Environment variable ${envVar} is required.`)
-    if (['dev', 'test'].indexOf(process.env.UNLOCK_ENV) > -1) {
-      process.exit(1)
-    }
-  }
-})
+// This is important because this will actually make deploys fail if we are missing env vars
+require('./config')
 
-const config = {
+module.exports = {
   mode: 'production',
   entry: {
     handler: path.resolve(SRC_DIR, 'handler.js'),
@@ -56,5 +47,3 @@ const config = {
     }),
   ],
 }
-
-module.exports = config

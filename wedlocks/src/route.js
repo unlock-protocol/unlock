@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import templates from './templates'
-import config from './config'
+import config from '../config'
 
 // This function loads the template and performs the actual email sending
 // args: {
