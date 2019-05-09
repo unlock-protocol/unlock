@@ -6,6 +6,7 @@ import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
 
+import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
@@ -333,8 +334,7 @@ describe('WalletService (ethers)', () => {
         await resetTestsAndConnect()
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const returned = Buffer.from('stuff').toString('base64')
         walletService.web3Provider = true // trigger the call to personalSign
 
@@ -353,8 +353,7 @@ describe('WalletService (ethers)', () => {
         await resetTestsAndConnect()
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const returned = Buffer.from('stuff').toString('base64')
 
         nock.accountsAndYield([account])
@@ -373,8 +372,7 @@ describe('WalletService (ethers)', () => {
 
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const error = { code: 404, message: 'oops' }
 
         nock.accountsAndYield([account])
