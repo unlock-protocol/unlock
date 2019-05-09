@@ -109,9 +109,7 @@ contract Unlock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string memory _lockName
-  )
-    public
-    returns (PublicLock lock)
+  ) public
   {
     // create lock
     PublicLock newLock = new PublicLock(
