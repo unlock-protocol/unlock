@@ -5,7 +5,7 @@ import {
   loginCredentials,
   loginSucceeded,
   loginFailed,
-} from '../../actions/login'
+} from '../../actions/user'
 
 describe('login actions', () => {
   it('should create an action with credentials in tow', () => {
