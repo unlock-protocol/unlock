@@ -7,7 +7,7 @@ jobs:
       - checkout
       - run:
           name: 'Open automated production pull request'
-          command: scripts/open-production-pull-request.sh
+          command: scripts/automated-production-pr.sh
 
   unlock-protocol-com-tests:
     machine: true
