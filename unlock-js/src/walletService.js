@@ -200,7 +200,7 @@ export default class WalletService extends UnlockService {
   }
 
   async signMessage(data, method) {
-    const dataHash = utils.hexlify(utils.sha3(utils.utf8ToHex(data)))
+    const dataHash = utils.utf8ToHex(data)
     const signer = this.provider.getSigner()
     const addr = await signer.getAddress()
     let firstParam = dataHash
