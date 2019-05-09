@@ -387,6 +387,30 @@ describe('WalletService (ethers)', () => {
     })
   })
 
+  describe('recoverAccountFromSignedData', () => {
+    it('returns the signing address', () => {
+      expect.hasAssertions()
+
+      const data = 'data to be signed'
+      const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+      const hash = utils.utf8ToHex('data to be signed')
+
+      walletService.web3Provider = true
+
+      const signed = Buffer.from('stuff').toString('base64')
+
+      nock.accountsAndYield([account])
+      nock.ethSignAndYield(hash, account, 'stuff')
+
+      const returnedAddress = walletService.recoverAccountFromSignedData(
+        data,
+        signed
+      )
+
+      expect(returnedAddress).toBe(account)
+    })
+  })
+
   describe('versions', () => {
     const versionSpecificUnlockMethods = ['createLock']
 
