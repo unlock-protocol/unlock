@@ -1,5 +1,6 @@
 import { providers as ethersProviders } from 'ethers'
 import UnlockService from './unlockService'
+import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
 import * as utils from './utils'
 
@@ -36,7 +37,7 @@ export default class WalletService extends UnlockService {
     this.ready = false
 
     if (typeof provider === 'string') {
-      this.provider = new ethersProviders.JsonRpcProvider(provider)
+      this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
     } else {
       this.provider = new ethersProviders.Web3Provider(provider)
