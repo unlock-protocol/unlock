@@ -8,7 +8,7 @@ image: /static/images/blog/nftdevmeetup/hero.jpg
 ---
 ![Optimistic Unlocking in action.](/static/images/blog/nftdevmeetup/hero.jpg)
 
-We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensys - did you see how packed the hallways were?
+We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensus - did you see how packed the hallways were?
 
 Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
 
