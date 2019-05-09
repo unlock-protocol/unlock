@@ -55,8 +55,7 @@ contract MixinLockCore is
   constructor(
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys,
-    uint8 _version
+    uint _maxNumberOfKeys
   ) internal
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
@@ -64,7 +63,6 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
-    publicLockVersion = _version;
   }
 
   /**
@@ -109,14 +107,6 @@ contract MixinLockCore is
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
     emit PriceChanged(oldKeyPrice, keyPrice);
-  }
-
-  // The version number of the current implementation on this network
-  function publicLockVersion(
-  ) external pure
-    returns (uint16)
-  {
-    return 3;
   }
 
   /**
