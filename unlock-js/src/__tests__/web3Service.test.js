@@ -1,11 +1,10 @@
 import { ethers, utils as ethersUtils } from 'ethers'
 import http from 'http'
 
-import * as UnlockV0 from 'unlock-abi-0'
-import * as UnlockV01 from 'unlock-abi-0-1'
-import * as UnlockV02 from 'unlock-abi-0-2'
+import abis from '../abis'
 
 import NockHelper from './helpers/nockHelper'
+import bytecode from './helpers/bytecode'
 import Web3Service from '../web3Service'
 import TransactionTypes from '../transactionTypes'
 import utils from '../utils'
@@ -285,7 +284,7 @@ describe('Web3Service', () => {
         expect.assertions(4)
         await nockBeforeEach()
 
-        const contract = new ethers.utils.Interface(UnlockV02.Unlock.abi)
+        const contract = new ethers.utils.Interface(abis.v02.Unlock.abi)
 
         const inputs = contract.functions[
           'createLock(uint256,address,uint256,uint256)'
@@ -319,7 +318,7 @@ describe('Web3Service', () => {
         web3Service._parseTransactionFromInput(
           'unused',
           'hash',
-          UnlockV02.Unlock,
+          abis.v02.Unlock,
           inputs
         )
       })
@@ -328,7 +327,7 @@ describe('Web3Service', () => {
         expect.assertions(4)
         await nockBeforeEach()
 
-        const contract = new ethers.utils.Interface(UnlockV02.Unlock.abi)
+        const contract = new ethers.utils.Interface(abis.v02.Unlock.abi)
 
         const inputs = contract.functions[
           'createLock(uint256,address,uint256,uint256)'
@@ -362,7 +361,7 @@ describe('Web3Service', () => {
         web3Service._parseTransactionFromInput(
           'unused',
           'hash',
-          UnlockV02.Unlock,
+          abis.v02.Unlock,
           inputs
         )
       })
@@ -471,7 +470,7 @@ describe('Web3Service', () => {
       expect(web3Service._getTransactionType(Contract, hi([]))).toBe(null)
     })
 
-    describe.each([['v0', UnlockV0], ['v01', UnlockV01], ['v02', UnlockV02]])(
+    describe.each([['v0', abis.v0], ['v01', abis.v01], ['v02', abis.v02]])(
       '%s',
       (version, UnlockVersion) => {
         it('should return the right transaction type on lock creation', async () => {
@@ -620,9 +619,9 @@ describe('Web3Service', () => {
   })
 
   describe.each([
-    ['v0', UnlockV0, v0, 0],
-    ['v01', UnlockV01, v01, 1],
-    ['v02', UnlockV02, v02, 2],
+    ['v0', abis.v0, v0, 0],
+    ['v01', abis.v01, v01, 1],
+    ['v02', abis.v02, v02, 2],
   ])('%s', (version, UnlockVersion, LockVersion, actualVersion) => {
     async function versionedNockBeforeEach(endpoint = readOnlyProvider) {
       nock.cleanAll()
@@ -1075,10 +1074,7 @@ describe('Web3Service', () => {
           // nock calls cannot be in beforeEach
           nock.ethBlockNumber(`0x${(29).toString('16')}`)
           nock.ethGetTransactionByHash(transaction.hash, null)
-          nock.ethGetCodeAndYield(
-            unlockAddress,
-            UnlockVersion.Unlock.deployedBytecode
-          )
+          nock.ethGetCodeAndYield(unlockAddress, bytecode[version].Unlock)
           // this is the call to unlockVersion() with params []
           nock.ethCallAndYield('0x4220bd46', unlockAddress, actualVersion)
         }
@@ -1136,10 +1132,7 @@ describe('Web3Service', () => {
           // nock calls cannot be in beforeEach
           nock.ethBlockNumber(`0x${(29).toString('16')}`)
           nock.ethGetTransactionByHash(transaction.hash, blockTransaction)
-          nock.ethGetCodeAndYield(
-            unlockAddress,
-            UnlockVersion.Unlock.deployedBytecode
-          )
+          nock.ethGetCodeAndYield(unlockAddress, bytecode[version].Unlock)
           // this is the call to unlockVersion() with params []
           nock.ethCallAndYield('0x4220bd46', unlockAddress, actualVersion)
         }
@@ -1448,10 +1441,7 @@ describe('Web3Service', () => {
         const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
         const encoder = ethers.utils.defaultAbiCoder
 
-        nock.ethGetCodeAndYield(
-          lockAddress,
-          LockVersion.PublicLock.deployedBytecode
-        )
+        nock.ethGetCodeAndYield(lockAddress, bytecode[version].PublicLock)
 
         nock.ethCallAndYield(
           metadata.functions['owners(uint256)'].encode([2 * 2]),
@@ -1514,10 +1504,7 @@ describe('Web3Service', () => {
         await versionedNockBeforeEach()
         const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
 
-        nock.ethGetCodeAndYield(
-          lockAddress,
-          LockVersion.PublicLock.deployedBytecode
-        )
+        nock.ethGetCodeAndYield(lockAddress, bytecode[version].PublicLock)
 
         const lockContract = await web3Service.getLockContract(lockAddress)
 
@@ -1582,10 +1569,7 @@ describe('Web3Service', () => {
         await versionedNockBeforeEach()
         const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
 
-        nock.ethGetCodeAndYield(
-          lockAddress,
-          LockVersion.PublicLock.deployedBytecode
-        )
+        nock.ethGetCodeAndYield(lockAddress, bytecode[version].PublicLock)
 
         const lockContract = await web3Service.getLockContract(lockAddress)
 
@@ -1612,10 +1596,7 @@ describe('Web3Service', () => {
         await versionedNockBeforeEach()
         const metadata = new ethers.utils.Interface(LockVersion.PublicLock.abi)
 
-        nock.ethGetCodeAndYield(
-          lockAddress,
-          LockVersion.PublicLock.deployedBytecode
-        )
+        nock.ethGetCodeAndYield(lockAddress, bytecode[version].PublicLock)
 
         const lockContract = await web3Service.getLockContract(lockAddress)
 

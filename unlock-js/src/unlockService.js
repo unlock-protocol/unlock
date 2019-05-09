@@ -1,5 +1,5 @@
 import EventEmitter from 'events'
-import { Contract, errors } from 'ethers'
+import { Contract, errors, utils } from 'ethers'
 
 import v0 from './v0'
 import v01 from './v01'
@@ -99,7 +99,7 @@ export default class UnlockService extends EventEmitter {
         const code = await this.provider.getCode(address)
 
         // if the deployed bytecode is v02, we have a match
-        if (v02.PublicLock.deployedBytecode === code) {
+        if (v02.PublicLock.bytecodeHash === utils.sha256(code)) {
           return 2
         }
       }
