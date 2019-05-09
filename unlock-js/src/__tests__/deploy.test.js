@@ -169,6 +169,34 @@ describe('contract deployer', () => {
         }
       })
 
+      it('throws if contract is unknown', async () => {
+        expect.assertions(2)
+        nock.accountsAndYield(unlockAccountsOnNode)
+        nock.ethGasPriceAndYield(gasPrice)
+
+        // contract deploy call
+        nock.ethSendTransactionAndYield(
+          {
+            from: unlockAccountsOnNode[0],
+            data: UnlockContract.bytecode,
+            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+          },
+          gasPrice,
+          transaction.hash,
+          new Error('ran out of gas, you miser')
+        )
+
+        try {
+          await deploy(host, port, 'oops')
+        } catch (e) {
+          // this is intentionally vague, since the actual error content will change with other frameworks
+          expect(e).toBeInstanceOf(Error)
+          expect(e.message).toBe(
+            'Contract version "oops" does not seem to exist'
+          )
+        }
+      })
+
       it('throws on yield of 0x in transactionReceipt', async () => {
         expect.assertions(1)
         nock.accountsAndYield(unlockAccountsOnNode)
