@@ -1,5 +1,5 @@
 import WedlockService from '../services/wedlockService'
-import { SIGNUP_EMAIL } from '../actions/signUp'
+import { SIGNUP_EMAIL } from '../actions/user'
 import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
 
 const wedlocksMiddleware = (config: any) => {

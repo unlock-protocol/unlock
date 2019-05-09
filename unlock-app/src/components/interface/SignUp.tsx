@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { connect } from 'react-redux'
-import { signupEmail } from '../../actions/signUp'
+import { signupEmail } from '../../actions/user'
 
 interface Props {
   signupEmail: (email: string) => any

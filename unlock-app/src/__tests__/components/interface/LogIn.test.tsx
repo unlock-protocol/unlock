@@ -2,7 +2,7 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { LogIn } from '../../../components/interface/LogIn'
 // eslint-disable-next-line no-unused-vars
-import { Credentials } from '../../../actions/login'
+import { Credentials } from '../../../actions/user'
 
 let loginCredentials: (c: Credentials) => any
 

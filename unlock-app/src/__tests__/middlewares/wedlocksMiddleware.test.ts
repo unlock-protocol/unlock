@@ -1,6 +1,6 @@
 import axios from 'axios'
 import wedlocksMiddleware from '../../middlewares/wedlocksMiddleware'
-import { SIGNUP_EMAIL } from '../../actions/signUp'
+import { SIGNUP_EMAIL } from '../../actions/user'
 
 jest.mock('axios')
 

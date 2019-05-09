@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
-import { loginCredentials, Credentials } from '../../actions/login'
+import { loginCredentials, Credentials } from '../../actions/user'
 
 interface Props {
   toggleSignup: () => void
