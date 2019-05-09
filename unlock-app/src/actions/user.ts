@@ -23,6 +23,7 @@ export const loginSucceeded = () => ({
 
 // TODO: determine possible reasons for login failure, maybe replace string with
 // union type
+// TODO: Just use a generic error condition?
 export const loginFailed = (reason: string) => ({
   type: LOGIN_FAILED,
   reason,
