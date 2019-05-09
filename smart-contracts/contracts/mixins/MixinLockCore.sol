@@ -46,9 +46,6 @@ contract MixinLockCore is
   // A count of how many new key purchases there have been
   uint public numberOfKeysSold;
 
-  // The version number for this lock contract,
-  uint8 public publicLockVersion;
-
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
@@ -112,6 +109,14 @@ contract MixinLockCore is
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
     emit PriceChanged(oldKeyPrice, keyPrice);
+  }
+
+  // The version number of the current implementation on this network
+  function publicLockVersion(
+  ) external pure
+    returns (uint16)
+  {
+    return 3;
   }
 
   /**
