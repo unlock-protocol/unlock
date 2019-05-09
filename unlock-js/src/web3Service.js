@@ -5,6 +5,7 @@ import {
 import utils from './utils'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
+import FetchJsonProvider from './FetchJsonProvider'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 
 /**
@@ -118,7 +119,7 @@ export default class Web3Service extends UnlockService {
    */
   setup(readOnlyProvider) {
     if (typeof readOnlyProvider === 'string') {
-      this.provider = new ethersProviders.JsonRpcProvider(readOnlyProvider)
+      this.provider = new FetchJsonProvider(readOnlyProvider)
     } else if (readOnlyProvider.send) {
       this.provider = new ethersProviders.Web3Provider(readOnlyProvider)
     }
