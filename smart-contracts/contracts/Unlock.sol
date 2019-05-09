@@ -112,27 +112,24 @@ contract Unlock is
   ) public
   {
     // create lock
-    PublicLock newLock = new PublicLock(
+    address newLock = address(new PublicLock(
       msg.sender,
       _expirationDuration,
       _tokenAddress,
       _keyPrice,
       _maxNumberOfKeys,
       _lockName
-    );
+    ));
 
     // Assign the new Lock
-    locks[address(newLock)] = LockBalances({
+    locks[newLock] = LockBalances({
       deployed: true,
       totalSales: 0,
       yieldedDiscountTokens: 0
     });
 
     // trigger event
-    emit NewLock(msg.sender, address(newLock));
-
-    // return the created lock
-    return newLock;
+    emit NewLock(msg.sender, newLock);
   }
 
   /**
