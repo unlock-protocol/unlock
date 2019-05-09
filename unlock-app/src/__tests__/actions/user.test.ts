@@ -2,9 +2,19 @@ import {
   LOGIN_CREDENTIALS,
   LOGIN_SUCCEEDED,
   LOGIN_FAILED,
+  SIGNUP_CREDENTIALS,
+  SIGNUP_EMAIL,
+  SIGNUP_FAILED,
+  SIGNUP_PASSWORD,
+  SIGNUP_SUCCEEDED,
   loginCredentials,
   loginSucceeded,
   loginFailed,
+  signupCredentials,
+  signupEmail,
+  signupFailed,
+  signupPassword,
+  signupSucceeded,
 } from '../../actions/user'
 
 describe('login actions', () => {
@@ -39,5 +49,64 @@ describe('login actions', () => {
     }
 
     expect(loginFailed(reason)).toEqual(expectedAction)
+  })
+})
+
+describe('signup actions', () => {
+  it('should create an action indicating an email has been submitted', () => {
+    expect.assertions(1)
+    const emailAddress = 'ray@smuckles.escalade'
+    const expectedAction = {
+      type: SIGNUP_EMAIL,
+      emailAddress,
+    }
+
+    expect(signupEmail(emailAddress)).toEqual(expectedAction)
+  })
+
+  it('should create an action indicating a password has been submitted', () => {
+    expect.assertions(1)
+    const password = 'entropy9'
+    const expectedAction = {
+      type: SIGNUP_PASSWORD,
+      password,
+    }
+
+    expect(signupPassword(password)).toEqual(expectedAction)
+  })
+
+  it('should create an action indicating a bundle of credentials has been submitted', () => {
+    expect.assertions(1)
+    const password = 'entropy9'
+    const emailAddress = 'ray@smuckles.escalade'
+    const expectedAction = {
+      type: SIGNUP_CREDENTIALS,
+      password,
+      emailAddress,
+    }
+
+    expect(signupCredentials({ password, emailAddress })).toEqual(
+      expectedAction
+    )
+  })
+
+  it('should create an action indicating a signup has failed', () => {
+    expect.assertions(1)
+    const reason = 'The email is already in use.'
+    const expectedAction = {
+      type: SIGNUP_FAILED,
+      reason,
+    }
+
+    expect(signupFailed(reason)).toEqual(expectedAction)
+  })
+
+  it('should create an action indicating a signup has succeeded', () => {
+    expect.assertions(1)
+    const expectedAction = {
+      type: SIGNUP_SUCCEEDED,
+    }
+
+    expect(signupSucceeded()).toEqual(expectedAction)
   })
 })

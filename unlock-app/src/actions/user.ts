@@ -1,6 +1,11 @@
 export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'
 export const LOGIN_FAILED = 'login/FAILED'
+export const SIGNUP_EMAIL = 'signup/GOT_EMAIL'
+export const SIGNUP_PASSWORD = 'signup/GOT_PASSWORD'
+export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
+export const SIGNUP_FAILED = 'signup/FAILED'
+export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
 
 export interface Credentials {
   emailAddress: string
@@ -22,4 +27,31 @@ export const loginSucceeded = () => ({
 export const loginFailed = (reason: string) => ({
   type: LOGIN_FAILED,
   reason,
+})
+
+export const signupEmail = (emailAddress: string) => ({
+  type: SIGNUP_EMAIL,
+  emailAddress,
+})
+
+export const signupPassword = (password: string) => ({
+  type: SIGNUP_PASSWORD,
+  password,
+})
+
+export const signupCredentials = ({ emailAddress, password }: Credentials) => ({
+  type: SIGNUP_CREDENTIALS,
+  emailAddress,
+  password,
+})
+
+// Should be triggered when signup fails for any reason (email already in use...)
+export const signupFailed = (reason: string) => ({
+  type: SIGNUP_FAILED,
+  reason,
+})
+
+// TODO: Determine if this action requires a payload. Depends on exact way signup works.
+export const signupSucceeded = () => ({
+  type: SIGNUP_SUCCEEDED,
 })
