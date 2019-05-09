@@ -5,6 +5,7 @@ export const SIGNUP_EMAIL = 'signup/GOT_EMAIL'
 export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
 export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
+export const CHANGE_PASSWORD = 'password/CHANGE'
 
 export interface Credentials {
   emailAddress: string
@@ -49,4 +50,9 @@ export const signupFailed = (reason: string) => ({
 // TODO: Determine if this action requires a payload. Depends on exact way signup works.
 export const signupSucceeded = () => ({
   type: SIGNUP_SUCCEEDED,
+})
+
+export const changePassword = (newPassword: string) => ({
+  type: CHANGE_PASSWORD,
+  newPassword,
 })

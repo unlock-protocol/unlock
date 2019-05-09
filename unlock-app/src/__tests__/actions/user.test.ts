@@ -13,6 +13,8 @@ import {
   signupEmail,
   signupFailed,
   signupSucceeded,
+  CHANGE_PASSWORD,
+  changePassword,
 } from '../../actions/user'
 
 describe('user account actions', () => {
@@ -98,6 +100,20 @@ describe('user account actions', () => {
       }
 
       expect(signupSucceeded()).toEqual(expectedAction)
+    })
+  })
+
+  describe('user account maintenance actions', () => {
+    it('should create an action indicating a password change', () => {
+      expect.assertions(1)
+      // Much more secure now
+      const newPassword = 'gUeSt1337'
+      const expectedAction = {
+        type: CHANGE_PASSWORD,
+        newPassword,
+      }
+
+      expect(changePassword(newPassword)).toEqual(expectedAction)
     })
   })
 })
