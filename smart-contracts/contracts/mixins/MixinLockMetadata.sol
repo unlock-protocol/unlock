@@ -86,13 +86,11 @@ contract MixinLockMetadata is
     external view
     returns(string memory)
   {
-    string memory symbol;
     if(bytes(lockSymbol).length == 0) {
-      symbol = unlockProtocol.getGlobalTokenSymbol();
+      return unlockProtocol.getGlobalTokenSymbol();
     } else {
-      symbol = lockSymbol;
+      return lockSymbol;
     }
-    return symbol;
   }
 
   /**
