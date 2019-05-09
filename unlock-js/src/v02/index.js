@@ -1,4 +1,4 @@
-import { Unlock, PublicLock } from 'unlock-abi-0-2'
+import abis from '../abis'
 import createLock from './createLock'
 import getLock from './getLock'
 import partialWithdrawFromLock from './partialWithdrawFromLock'
@@ -14,6 +14,6 @@ export default {
   updateKeyPrice,
   withdrawFromLock,
   version: 'v02',
-  Unlock,
-  PublicLock,
+  Unlock: abis.v02.Unlock,
+  PublicLock: abis.v02.PublicLock,
 }
