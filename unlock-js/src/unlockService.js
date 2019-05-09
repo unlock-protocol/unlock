@@ -1,12 +1,12 @@
 import EventEmitter from 'events'
-import { Contract, errors, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import v0 from './v0'
 import v01 from './v01'
 import v02 from './v02'
 
 // mute warnings from overloaded smart contract methods (https://github.com/ethers-io/ethers.js/issues/499)
-errors.setLogLevel('error')
+ethers.errors.setLogLevel('error')
 
 export const Errors = {
   MISSING_WEB3: 'MISSING_WEB3',
@@ -85,7 +85,7 @@ export default class UnlockService extends EventEmitter {
    * @param {*} address
    */
   async _getPublicLockVersionFromContract(address) {
-    const contract = new Contract(
+    const contract = new ethers.Contract(
       address,
       ['function publicLockVersion() view returns (uint8)'],
       this.provider
@@ -99,7 +99,7 @@ export default class UnlockService extends EventEmitter {
         const code = await this.provider.getCode(address)
 
         // if the deployed bytecode is v02, we have a match
-        if (v02.PublicLock.bytecodeHash === utils.sha256(code)) {
+        if (v02.PublicLock.bytecodeHash === ethers.utils.sha256(code)) {
           return 2
         }
       }
@@ -114,7 +114,7 @@ export default class UnlockService extends EventEmitter {
    * @param {*} address
    */
   async _getVersionFromContract(address) {
-    const contract = new Contract(
+    const contract = new ethers.Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
       this.provider
@@ -131,12 +131,12 @@ export default class UnlockService extends EventEmitter {
 
   getContract(address, contract) {
     if (this.writable) return this.getWritableContract(address, contract)
-    return new Contract(address, contract.abi, this.provider)
+    return new ethers.Contract(address, contract.abi, this.provider)
   }
 
   async getWritableContract(address, contract) {
     const signer = this.provider.getSigner()
-    return new Contract(address, contract.abi, signer)
+    return new ethers.Contract(address, contract.abi, signer)
   }
 
   async getLockContract(lockAddress) {
