@@ -39,9 +39,6 @@ import errorsReducer, {
 import accountReducer, {
   initialState as defaultAccount,
 } from './reducers/accountReducer'
-import modalReducer, {
-  initialState as defaultModals,
-} from './reducers/modalsReducer'
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
@@ -63,7 +60,6 @@ export const createUnlockStore = (
     keysForLockByPage: keysPagesReducer,
     loading: loadingReducer,
     locks: locksReducer,
-    modals: modalReducer,
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
@@ -89,7 +85,6 @@ export const createUnlockStore = (
       keysForLockByPage: defaultKeysPages,
       loading: defaultLoading,
       locks: defaultLocks,
-      modals: defaultModals,
       network: defaultNetwork,
       provider: defaultProvider,
       transactions: defaultTransactions,
