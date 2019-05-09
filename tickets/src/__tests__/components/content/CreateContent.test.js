@@ -13,9 +13,15 @@ import createUnlockStore from '../../../createUnlockStore'
 const config = {
   unlockAppUrl: 'https://unlock-protocol.com',
 }
+
+const account = {
+  address: '0x123',
+}
+
 const inputLocks = {
-  abc123: { address: 'abc123' },
-  def459: { address: 'def456' },
+  abc123: { address: 'abc123', owner: '0x123' },
+  def459: { address: 'def456', owner: '0x123' },
+  ghi789: { address: 'ghi789', owner: '0x567' },
 }
 
 // Fake select to mock react-select
@@ -206,9 +212,9 @@ describe('CreateContent', () => {
 })
 
 describe('mapStateToProps', () => {
-  it('should return an array of locks when given a redux lock object', () => {
+  it('should return an array of locks owned by the current user when given a redux locks object', () => {
     expect.assertions(4)
-    const props = mapStateToProps({ locks: inputLocks }, { now: null })
+    const props = mapStateToProps({ locks: inputLocks, account }, { now: null })
 
     expect(props.locks.length).toEqual(2)
     expect(props.locks[0]).toEqual('abc123')
@@ -219,7 +225,7 @@ describe('mapStateToProps', () => {
   it('should pass through an event to props when given one in state', () => {
     expect.assertions(1)
     const props = mapStateToProps(
-      { locks: inputLocks, event: 'foo' },
+      { locks: inputLocks, event: 'foo', account },
       { now: null }
     )
 
