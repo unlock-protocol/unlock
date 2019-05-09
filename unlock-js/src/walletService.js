@@ -228,8 +228,6 @@ export default class WalletService extends UnlockService {
    * @returns {Promise<*>}
    */
   async recoverAccountFromSignedData(data, signedData) {
-    const dataHash = utils.utf8ToHex(data)
-    console.log(dataHash) // Test
-    return utils.verifyMessage(dataHash, signedData)
+    return utils.verifyMessage(data, signedData)
   }
 }

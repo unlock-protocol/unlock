@@ -391,20 +391,16 @@ describe('WalletService (ethers)', () => {
     it('returns the signing address', async () => {
       expect.hasAssertions()
 
-      const data = 'data to be signed'
-      const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-      const hash = utils.utf8ToHex('data to be signed')
-
-      walletService.web3Provider = true
-
-      const signed = Buffer.from('stuff').toString('base64')
-
-      nock.accountsAndYield([account])
-      nock.ethSignAndYield(hash, account, 'stuff')
+      const data = 'hello world'
+      const account = '0x14791697260E4c9A71f18484C9f997B308e59325'
+      const signature =
+        '0xddd0a7290af9526056b4e35a077b9a11b513aa0028ec6c9880948544508f3c63' +
+        '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
+        '1c'
 
       const returnedAddress = await walletService.recoverAccountFromSignedData(
         data,
-        signed
+        signature
       )
 
       expect(returnedAddress).toBe(account)
