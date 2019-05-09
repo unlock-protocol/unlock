@@ -229,6 +229,7 @@ export default class WalletService extends UnlockService {
    */
   async recoverAccountFromSignedData(data, signedData) {
     const dataHash = utils.utf8ToHex(data)
+    console.log(dataHash) // Test
     return utils.verifyMessage(dataHash, signedData)
   }
 }
