@@ -117,7 +117,7 @@ describe('UnlockService', () => {
         ethers.utils.getAddress(unlockAddress),
         coder.encode(['uint256'], [ethers.utils.bigNumberify(1)])
       )
-      nock.ethGetCodeAndYield(unlockAddress, v02.PublicLock.deployedBytecode)
+      nock.ethGetCodeAndYield(unlockAddress, bytecode.v02.PublicLock)
 
       const result = await unlockService._getPublicLockVersionFromContract(
         unlockAddress
