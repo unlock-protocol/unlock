@@ -39,15 +39,15 @@ import errorsReducer, {
 import accountReducer, {
   initialState as defaultAccount,
 } from './reducers/accountReducer'
-import modalReducer, {
-  initialState as defaultModals,
-} from './reducers/modalsReducer'
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
 import lockFormVisibilityReducer, {
   initialState as defaultLockFormVisibility,
 } from './reducers/lockFormVisibilityReducer'
+import fullScreenModalsReducer, {
+  initialState as defaultFullScreenModalsStatus,
+} from './reducers/fullScreenModalsReducer'
 
 const config = configure()
 
@@ -63,7 +63,6 @@ export const createUnlockStore = (
     keysForLockByPage: keysPagesReducer,
     loading: loadingReducer,
     locks: locksReducer,
-    modals: modalReducer,
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
@@ -71,6 +70,7 @@ export const createUnlockStore = (
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
     lockFormStatus: lockFormVisibilityReducer,
+    fullScreenModalStatus: fullScreenModalsReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -89,7 +89,6 @@ export const createUnlockStore = (
       keysForLockByPage: defaultKeysPages,
       loading: defaultLoading,
       locks: defaultLocks,
-      modals: defaultModals,
       network: defaultNetwork,
       provider: defaultProvider,
       transactions: defaultTransactions,
@@ -97,6 +96,7 @@ export const createUnlockStore = (
       errors: defaultError,
       walletStatus: defaultWalletStatus,
       lockFormStatus: defaultLockFormVisibility,
+      fullScreenModalStatus: defaultFullScreenModalsStatus,
     },
     {
       provider: Object.keys(config.providers)[0],
