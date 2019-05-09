@@ -17,6 +17,8 @@ let unlockAddress = '0x885ef47c3439ade0cb9b33a4d3c534c99964db93'
 let unlockService
 
 describe('UnlockService', () => {
+  // this helper is used to generate the kind of structure that is used internally by ethers.
+  // by using this, we can assert against a contract being the same in tests below
   function parseAbi(abi) {
     return abi.map(sig => utils.parseSignature(sig))
   }
