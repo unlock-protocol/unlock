@@ -194,9 +194,9 @@ contract Unlock is
   // The version number of the current Unlock implementation on this network
   function unlockVersion(
   ) external pure
-    returns (uint8)
+    returns (uint16)
   {
-    return 2;
+    return 3;
   }
 
   // function to read the globalTokenURI field.

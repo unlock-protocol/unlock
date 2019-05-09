@@ -52,7 +52,7 @@ contract PublicLock is
   )
     public
     MixinFunds(_tokenAddress)
-    MixinLockCore(_expirationDuration, _keyPrice, _maxNumberOfKeys, 1)
+    MixinLockCore(_expirationDuration, _keyPrice, _maxNumberOfKeys)
     MixinLockMetadata(_lockName)
   {
     // registering the interface for erc721 with ERC165.sol using
@@ -60,5 +60,13 @@ contract PublicLock is
     _registerInterface(0x80ac58cd);
     // We must manually initialize Ownable.sol
     Ownable.initialize(_owner);
+  }
+
+  // The version number of the current implementation on this network
+  function publicLockVersion(
+  ) external pure
+    returns (uint16)
+  {
+    return 3;
   }
 }

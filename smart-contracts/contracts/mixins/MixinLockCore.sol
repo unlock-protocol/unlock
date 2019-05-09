@@ -46,9 +46,6 @@ contract MixinLockCore is
   // A count of how many new key purchases there have been
   uint public numberOfKeysSold;
 
-  // The version number for this lock contract,
-  uint8 public publicLockVersion;
-
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
@@ -58,8 +55,7 @@ contract MixinLockCore is
   constructor(
     uint _expirationDuration,
     uint _keyPrice,
-    uint _maxNumberOfKeys,
-    uint8 _version
+    uint _maxNumberOfKeys
   ) internal
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
@@ -67,7 +63,6 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
-    publicLockVersion = _version;
   }
 
   /**
