@@ -12,6 +12,7 @@
     "babel-loader": "^8.0.5",
     "dotenv": "^8.0.0",
     "netlify-cli": "^2.8.3",
+    "node-forge": "^0.8.2",
     "nodemailer": "^6.1.0",
     "nodemon": "^1.19.0",
     "webpack": "^4.29.6",
