@@ -11,6 +11,7 @@ describe('useListenForPostMessage hook', () => {
 
   let fakeWindow
   let config
+  let called = jest.fn()
 
   function Wrapper(props) {
     return (
@@ -36,25 +37,29 @@ describe('useListenForPostMessage hook', () => {
     config = { isServer: false, isInIframe: true }
   })
 
-  function MockListener({ type, defaultValue, validator }) {
+  function MockListener({ type, defaultValue, validator, getValue }) {
     const value = useListenForPostMessage({
       type,
       defaultValue,
       validator,
+      getValue,
     })
-    return <div title="value">{value}</div>
+    called()
+    return <div title="value">{JSON.stringify(value)}</div>
   }
 
   MockListener.propTypes = {
     type: PropTypes.string,
     defaultValue: PropTypes.string,
     validator: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
+    getValue: PropTypes.func,
   }
 
   MockListener.defaultProps = {
     type: 'listenFor',
     defaultValue: 'hi',
     validator: false,
+    getValue: (value, defaults) => value || defaults,
   }
 
   function getListener() {
@@ -78,6 +83,7 @@ describe('useListenForPostMessage hook', () => {
       expect(fakeWindow.addEventListener).not.toHaveBeenCalled()
     })
   })
+
   describe('subscription', () => {
     it('subscribes on mount only', () => {
       expect.assertions(2)
@@ -96,6 +102,7 @@ describe('useListenForPostMessage hook', () => {
       expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
     })
   })
+
   it('unsubscribes on unmount', () => {
     expect.assertions(2)
 
@@ -112,6 +119,7 @@ describe('useListenForPostMessage hook', () => {
 
     expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(1)
   })
+
   describe('postmessage event handling', () => {
     let event
     beforeEach(() => {
@@ -120,10 +128,11 @@ describe('useListenForPostMessage hook', () => {
         origin: 'origin',
         data: {
           type: 'listenFor',
-          payload: 'got it!',
+          payload: { thing: 'got it!' },
         },
       }
     })
+
     describe('invalid postmessage events', () => {
       it.each([
         [
@@ -163,6 +172,7 @@ describe('useListenForPostMessage hook', () => {
         expect(wrapper.getByTitle('value')).toHaveTextContent('hi')
       })
     })
+
     describe('valid postmessage events', () => {
       it('updates the value', () => {
         expect.assertions(1)
@@ -180,6 +190,85 @@ describe('useListenForPostMessage hook', () => {
         })
 
         expect(wrapper.getByTitle('value')).toHaveTextContent('got it!')
+      })
+
+      it('calls the getValue helper to merge the value with its defaults', () => {
+        expect.assertions(1)
+
+        let wrapper
+        rtl.act(() => {
+          wrapper = rtl.render(
+            <Wrapper
+              defaultValue="boo"
+              getValue={(v, d) => JSON.stringify(v) + d}
+            />
+          )
+        })
+
+        // this is the callback saveData, which was passed to addEventListener
+        const listener = getListener()
+
+        rtl.act(() => {
+          listener(event)
+        })
+
+        expect(wrapper.getByTitle('value')).toHaveTextContent(
+          '"{\\"thing\\":\\"got it!\\"}boo"'
+        )
+      })
+
+      it('updates the value only once if it does not change', () => {
+        expect.assertions(4)
+        called = jest.fn()
+        let listener
+
+        const listeners = {
+          message: new Map(),
+        }
+
+        fakeWindow.addEventListener = (event, cb) => {
+          listener = cb
+          listeners.message.set(cb, cb)
+        }
+        fakeWindow.removeEventListener = (event, cb) => {
+          listeners.message.delete(cb)
+        }
+
+        let wrapper
+
+        // the rtl.act calls are wrappers so that the async nature of re-rendering is
+        // made synchronous so we can test the effects of the hooks
+        // we wrap each call in a separate act so that we can test
+        // in between the calls, as if the browser had sent several
+        // postMessage events with the same object, but it looks
+        // different once it arrives
+        rtl.act(() => {
+          wrapper = rtl.render(<Wrapper defaultValue="hi" />)
+        })
+        expect(wrapper.getByTitle('value')).toHaveTextContent('hi')
+
+        rtl.act(() => {
+          listener(event)
+        })
+        expect(wrapper.getByTitle('value')).toHaveTextContent('got it!')
+        event.data.payload = { ...event.data.payload }
+
+        rtl.act(() => {
+          listener(event)
+        })
+        event.data.payload = { ...event.data.payload }
+
+        rtl.act(() => {
+          listener(event)
+        })
+        event.data.payload = { ...event.data.payload }
+
+        rtl.act(() => {
+          listener(event)
+        })
+
+        expect(wrapper.getByTitle('value')).toHaveTextContent('got it!')
+        expect(called).toHaveBeenCalledTimes(2)
       })
     })
   })
