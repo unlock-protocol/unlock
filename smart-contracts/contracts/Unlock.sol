@@ -112,14 +112,16 @@ contract Unlock is
   ) public
   {
     // create lock
-    address newLock = address(new PublicLock(
-      msg.sender,
-      _expirationDuration,
-      _tokenAddress,
-      _keyPrice,
-      _maxNumberOfKeys,
-      _lockName
-    ));
+    address newLock = address(
+      new PublicLock(
+        msg.sender,
+        _expirationDuration,
+        _tokenAddress,
+        _keyPrice,
+        _maxNumberOfKeys,
+        _lockName
+      )
+    );
 
     // Assign the new Lock
     locks[newLock] = LockBalances({
