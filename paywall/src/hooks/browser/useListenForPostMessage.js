@@ -48,7 +48,6 @@ export default function useListenForPostMessage({
   const { isInIframe, isServer } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState(defaultValue)
-  // rebase comment
 
   // this hook subscribes to messages on mount, and unsubscribes on unmount
   // it does not do it on update (component re-render)
