@@ -1,4 +1,3 @@
-import { getWeb3Provider } from '@unlock-protocol/unlock-js'
 import configure, { inIframe } from '../config'
 
 describe('config', () => {
@@ -97,7 +96,12 @@ describe('config', () => {
       expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Dev')
       expect(config.providers).toMatchObject({
-        HTTP: getWeb3Provider('http://127.0.0.1:8545'),
+        HTTP: {
+          connected: false,
+          headers: undefined,
+          host: 'http://127.0.0.1:8545',
+          timeout: 0,
+        },
       })
     })
 
@@ -117,7 +121,12 @@ describe('config', () => {
         }
       )
       expect(config.providers).toMatchObject({
-        HTTP: getWeb3Provider('http://127.0.0.1:8545'),
+        HTTP: {
+          connected: false,
+          headers: undefined,
+          host: 'http://127.0.0.1:8545',
+          timeout: 0,
+        },
         Metamask: {
           isMetaMask: true,
         },
