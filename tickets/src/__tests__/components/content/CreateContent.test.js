@@ -169,6 +169,52 @@ describe('CreateContent', () => {
     expect(loadEvent).toHaveBeenCalledWith('abc123')
   })
 
+  it('should reset the fields when a different lock is selected', () => {
+    expect.assertions(2)
+
+    let date = new Date('2020-11-23T00:00:00.000')
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+
+    const event = {
+      lockAddress: 'abc123',
+      name: 'Test Event',
+      description: 'This is my test event',
+      location: 'Testville',
+      owner: 'ben',
+      logo: '',
+      date,
+    }
+    const addEvent = jest.fn()
+    const loadEvent = jest.fn()
+    const now = new Date('2022-03-02T00:00:00.000') // March 2nd, 2022
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          config={config}
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+          loadEvent={loadEvent}
+          now={now}
+          event={event}
+        />
+      </Provider>
+    )
+
+    expect(form.getByDisplayValue('Test Event')).not.toBeNull()
+
+    // Now select a different lock!
+    rtl.fireEvent.change(form.getByTestId('Choose a lock'), {
+      target: { value: 'def456' }, // Selected abc123 lock
+    })
+
+    expect(form.queryByDisplayValue('Test Event')).toBeNull()
+  })
+
   it('should load an event from props', () => {
     expect.assertions(3)
 
