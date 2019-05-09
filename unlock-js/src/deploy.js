@@ -1,7 +1,6 @@
 const ethers = require('ethers')
-const v0 = require('unlock-abi-0')
-const v01 = require('unlock-abi-0-1')
-const v02 = require('unlock-abi-0-2')
+const bytecode = require('./bytecode').default
+const abis = require('./abis').default
 
 const gas = require('./constants').GAS_AMOUNTS
 
@@ -12,19 +11,19 @@ export default async function deploy(
   onNewContractInstance = () => {}
 ) {
   let Contract
-  switch (Unlock) {
-    case 'v0':
-      Contract = v0.Unlock
-      break
-    case 'v01':
-      Contract = v01.Unlock
-      break
-    case 'v02':
-      Contract = v02.Unlock
-      break
-    default:
-      Contract = Unlock
+  if (typeof Unlock === 'string') {
+    const version = Unlock
+    if (!abis[version]) {
+      throw new Error(`Contract version "${Unlock}" does not seem to exist`)
+    }
+    Contract = {
+      abi: abis[version].Unlock.abi,
+      bytecode: bytecode[version].Unlock,
+    }
+  } else {
+    Contract = Unlock
   }
+
   const provider = new ethers.providers.JsonRpcProvider(
     `http://${host}:${port}`
   )
