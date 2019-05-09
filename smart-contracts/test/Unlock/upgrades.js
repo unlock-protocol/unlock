@@ -44,7 +44,7 @@ contract('Unlock / upgrades', accounts => {
         keyPrice,
         5 // maxNumberOfKeys
       )
-      .send({ from: lockOwner, gas: 4000000 })
+      .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
     const evt = lockTx.events.NewLock
     lockV0 = new web3.eth.Contract(
@@ -151,7 +151,7 @@ contract('Unlock / upgrades', accounts => {
           )
           .send({
             from: lockOwner,
-            gas: 4000000,
+            gas: 6000000,
           })
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
         const evt = lockTx.events.NewLock
