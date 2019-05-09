@@ -45,6 +45,9 @@ import walletStatusReducer, {
 import lockFormVisibilityReducer, {
   initialState as defaultLockFormVisibility,
 } from './reducers/lockFormVisibilityReducer'
+import fullScreenModalsReducer, {
+  initialState as defaultFullScreenModalsStatus,
+} from './reducers/fullScreenModalsReducer'
 
 const config = configure()
 
@@ -67,6 +70,7 @@ export const createUnlockStore = (
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
     lockFormStatus: lockFormVisibilityReducer,
+    fullScreenModalStatus: fullScreenModalsReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -92,6 +96,7 @@ export const createUnlockStore = (
       errors: defaultError,
       walletStatus: defaultWalletStatus,
       lockFormStatus: defaultLockFormVisibility,
+      fullScreenModalStatus: defaultFullScreenModalsStatus,
     },
     {
       provider: Object.keys(config.providers)[0],
