@@ -8,8 +8,7 @@ import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
-import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
-import { LOGIN_CREDENTIALS } from '../../actions/user'
+import { LOGIN_CREDENTIALS, SIGNUP_CREDENTIALS } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 
 /**

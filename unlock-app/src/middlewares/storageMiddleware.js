@@ -15,8 +15,12 @@ import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
 import UnlockLock from '../structured_data/unlockLock'
 import { SIGNED_DATA, signData } from '../actions/signature'
-import { SIGNUP_CREDENTIALS } from '../actions/signUp'
-import { LOGIN_CREDENTIALS, loginFailed, loginSucceeded } from '../actions/user'
+import {
+  LOGIN_CREDENTIALS,
+  SIGNUP_CREDENTIALS,
+  loginFailed,
+  loginSucceeded,
+} from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 
 const storageMiddleware = config => {
