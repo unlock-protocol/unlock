@@ -15,9 +15,14 @@ export const gotSignedAddress = (address, signedAddress) => ({
   signedAddress,
 })
 
-export const verifySignedAddress = (address, signedAddress) => ({
+export const verifySignedAddress = (
+  eventAddress,
+  publicKey,
+  signedAddress
+) => ({
   type: VERIFY_SIGNED_ADDRESS,
-  address,
+  eventAddress,
+  publicKey,
   signedAddress,
 })
 

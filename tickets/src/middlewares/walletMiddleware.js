@@ -11,7 +11,11 @@ import {
   FAILED_TO_SIGN_ADDRESS,
   FATAL_NO_USER_ACCOUNT,
 } from '../errors'
-import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
+import {
+  SIGN_ADDRESS,
+  VERIFY_SIGNED_ADDRESS,
+  gotSignedAddress,
+} from '../actions/ticket'
 import { PURCHASE_KEY } from '../actions/key'
 import {
   dismissWalletCheck,
@@ -172,6 +176,22 @@ const walletMiddleware = config => {
               }
             }
           )
+        }
+
+        if (
+          action.type === VERIFY_SIGNED_ADDRESS &&
+          action.data.message &&
+          action.data.message.eventAddress &&
+          action.data.message.publicKey
+        ) {
+          const data = UnlockEventRSVP.build({
+            publicKey: action.data.message.publicKey,
+            eventAddress: action.data.message.eventAddress,
+          })
+
+          return data // remove this
+
+          // TODO call walletService method to verify sig
         }
 
         if (action.type === SIGN_DATA) {

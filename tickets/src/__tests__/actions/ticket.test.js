@@ -38,15 +38,19 @@ describe('ticket actions', () => {
 
   it('should create an action emitting a request to verify that the address and the signed address match', () => {
     expect.assertions(1)
-    const address = '0x12345678'
+    const eventAddress = '0x12345678'
+    const publicKey = '0x876544321'
     const signedAddress = 'ENCRYPTED'
     const expectedAction = {
       type: VERIFY_SIGNED_ADDRESS,
-      address,
+      eventAddress,
+      publicKey,
       signedAddress,
     }
 
-    expect(verifySignedAddress(address, signedAddress)).toEqual(expectedAction)
+    expect(verifySignedAddress(eventAddress, publicKey, signedAddress)).toEqual(
+      expectedAction
+    )
   })
 
   it('should create an action emitting a notification that the address and the signed address match', () => {
