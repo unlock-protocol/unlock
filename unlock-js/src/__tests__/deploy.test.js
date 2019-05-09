@@ -1,6 +1,8 @@
 import { ethers } from 'ethers'
 import { getContractAddress } from 'ethers/utils'
-import { Unlock } from 'unlock-abi-0'
+import v0 from 'unlock-abi-0'
+import v01 from 'unlock-abi-0-1'
+import v02 from 'unlock-abi-0-2'
 
 import deploy from '../deploy'
 import { GAS_AMOUNTS } from '../constants'
@@ -88,7 +90,7 @@ describe('contract deployer', () => {
     nock.ethSendTransactionAndYield(
       {
         from: unlockAccountsOnNode[0],
-        data: Unlock.bytecode,
+        data: Contract.bytecode,
         gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
       },
       false, // ethers.js does not use gasPrice
@@ -123,120 +125,128 @@ describe('contract deployer', () => {
     // nock.ethGetTransactionReceipt(transaction2.hash, transaction2Receipt) // web3-only
   }
 
-  describe('all JSON-RPC calls happen in expected order', () => {
-    it('does not throw exception (json-rpc calls are accurate)', async () => {
-      expect.assertions(0)
+  describe.each([
+    ['v0', 'v0', v0.Unlock],
+    ['v01', 'v01', v01.Unlock],
+    ['v02', 'v02', v02.Unlock],
+    ['Full contract', v0.Unlock, v0.Unlock],
+  ])('%s', (name, ContractParameter, UnlockContract) => {
+    describe('all JSON-RPC calls happen in expected order', () => {
+      it('does not throw exception (json-rpc calls are accurate)', async () => {
+        expect.assertions(0)
 
-      await deployContract(Unlock)
+        await deployContract(UnlockContract)
 
-      await deploy(host, port, Unlock)
-      nock.ensureAllNocksUsed()
-    })
-  })
-
-  describe('failure is reported properly', () => {
-    it('throws on failure', async () => {
-      expect.assertions(1)
-      nock.accountsAndYield(unlockAccountsOnNode)
-      nock.ethGasPriceAndYield(gasPrice)
-
-      // contract deploy call
-      nock.ethSendTransactionAndYield(
-        {
-          from: unlockAccountsOnNode[0],
-          data: Unlock.bytecode,
-          gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
-        },
-        gasPrice,
-        transaction.hash,
-        new Error('ran out of gas, you miser')
-      )
-
-      try {
-        await deploy(host, port, Unlock)
-      } catch (e) {
-        // this is intentionally vague, since the actual error content will change with other frameworks
-        expect(e).toBeInstanceOf(Error)
-      }
+        await deploy(host, port, ContractParameter)
+        nock.ensureAllNocksUsed()
+      })
     })
 
-    it('throws on yield of 0x in transactionReceipt', async () => {
-      expect.assertions(1)
-      nock.accountsAndYield(unlockAccountsOnNode)
-      nock.ethGasPriceAndYield(gasPrice)
+    describe('failure is reported properly', () => {
+      it('throws on failure', async () => {
+        expect.assertions(2)
+        nock.accountsAndYield(unlockAccountsOnNode)
+        nock.ethGasPriceAndYield(gasPrice)
 
-      // contract deploy call
-      nock.ethSendTransactionAndYield(
-        {
-          from: unlockAccountsOnNode[0],
-          data: Unlock.bytecode,
-          gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
-        },
-        gasPrice,
-        transaction.hash
-      )
-      nock.ethGetTransactionReceipt(
-        transaction.hash,
-        {
-          ...transactionReceipt,
-          status: '0x',
-        },
-        new Error('failed, ran out of gas?')
-      )
-      nock.ethGetTransactionReceipt(
-        transaction.hash,
-        {
-          ...transactionReceipt,
-          status: '0x',
-        },
-        new Error('failed, ran out of gas?')
-      )
+        // contract deploy call
+        nock.ethSendTransactionAndYield(
+          {
+            from: unlockAccountsOnNode[0],
+            data: UnlockContract.bytecode,
+            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+          },
+          gasPrice,
+          transaction.hash,
+          new Error('ran out of gas, you miser')
+        )
 
-      try {
-        await deploy(host, port, Unlock)
-      } catch (e) {
-        // this is intentionally vague, since the actual error content will change with other frameworks
-        expect(e).toBeInstanceOf(Error)
-      }
+        try {
+          await deploy(host, port, ContractParameter)
+        } catch (e) {
+          // this is intentionally vague, since the actual error content will change with other frameworks
+          expect(e).toBeInstanceOf(Error)
+          expect(e.message).toBe('invalid response - 0')
+        }
+      })
+
+      it('throws on yield of 0x in transactionReceipt', async () => {
+        expect.assertions(1)
+        nock.accountsAndYield(unlockAccountsOnNode)
+        nock.ethGasPriceAndYield(gasPrice)
+
+        // contract deploy call
+        nock.ethSendTransactionAndYield(
+          {
+            from: unlockAccountsOnNode[0],
+            data: UnlockContract.bytecode,
+            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+          },
+          gasPrice,
+          transaction.hash
+        )
+        nock.ethGetTransactionReceipt(
+          transaction.hash,
+          {
+            ...transactionReceipt,
+            status: '0x',
+          },
+          new Error('failed, ran out of gas?')
+        )
+        nock.ethGetTransactionReceipt(
+          transaction.hash,
+          {
+            ...transactionReceipt,
+            status: '0x',
+          },
+          new Error('failed, ran out of gas?')
+        )
+
+        try {
+          await deploy(host, port, ContractParameter)
+        } catch (e) {
+          // this is intentionally vague, since the actual error content will change with other frameworks
+          expect(e).toBeInstanceOf(Error)
+        }
+      })
     })
-  })
 
-  describe('callback', () => {
-    let deployed
-    beforeEach(async () => {
-      deployed = jest.fn()
-      deployContract(Unlock)
-      await deploy(host, port, Unlock, deployed)
+    describe('callback', () => {
+      let deployed
+      beforeEach(async () => {
+        deployed = jest.fn()
+        deployContract(UnlockContract)
+        await deploy(host, port, ContractParameter, deployed)
+      })
+
+      it('passes the new contract instance to onNewContractInstance', async () => {
+        expect.assertions(2)
+
+        // const contractAddress = deployed.mock.calls[0][0].options.address // web3
+        const sentAddress = deployed.mock.calls[0][0].address // ethers.js
+        const compatibilityAddress = deployed.mock.calls[0][0].options.address // ethers.js
+
+        expect(sentAddress).toBe(contractAddress)
+        expect(compatibilityAddress).toBe(contractAddress)
+      })
     })
 
-    it('passes the new contract instance to onNewContractInstance', async () => {
-      expect.assertions(2)
+    describe('return value', () => {
+      let returnValue
+      beforeEach(async () => {
+        deployContract(UnlockContract)
+        returnValue = await deploy(host, port, ContractParameter)
+      })
 
-      // const contractAddress = deployed.mock.calls[0][0].options.address // web3
-      const sentAddress = deployed.mock.calls[0][0].address // ethers.js
-      const compatibilityAddress = deployed.mock.calls[0][0].options.address // ethers.js
+      it('returns the result of the contract initialization transaction', async () => {
+        expect.assertions(1)
 
-      expect(sentAddress).toBe(contractAddress)
-      expect(compatibilityAddress).toBe(contractAddress)
-    })
-  })
-
-  describe('return value', () => {
-    let returnValue
-    beforeEach(async () => {
-      deployContract(Unlock)
-      returnValue = await deploy(host, port, Unlock)
-    })
-
-    it('returns the result of the contract initialization transaction', async () => {
-      expect.assertions(1)
-
-      expect(returnValue).toEqual(
-        expect.objectContaining({
-          blockHash: transaction2Receipt.blockHash,
-          blockNumber: parseInt(transaction2Receipt.blockNumber, 16),
-        })
-      )
+        expect(returnValue).toEqual(
+          expect.objectContaining({
+            blockHash: transaction2Receipt.blockHash,
+            blockNumber: parseInt(transaction2Receipt.blockNumber, 16),
+          })
+        )
+      })
     })
   })
 })
