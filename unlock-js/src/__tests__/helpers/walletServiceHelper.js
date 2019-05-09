@@ -62,10 +62,10 @@ export const prepWalletService = async (
     // this is "Contract.publicLockVersion()" with params [] (0xd1bbd49c)
 
     nock.ethCallAndYield('0xd1bbd49c', checksumContractAddress, unlockVersion)
-    if (unlockVersion === 1) {
-      nock.ethGetCodeAndYield(contractAddress, contract.deployedBytecode)
-    }
-    if (unlockVersion === 1) {
+    if (
+      unlockVersion ===
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+    ) {
       nock.ethGetCodeAndYield(contractAddress, contract.deployedBytecode)
     }
     await walletService.getLockContract(contractAddress)
