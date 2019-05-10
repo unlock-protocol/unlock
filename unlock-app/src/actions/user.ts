@@ -6,6 +6,7 @@ export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
 export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
 export const CHANGE_PASSWORD = 'password/CHANGE'
+export const GOT_PASSWORD = 'userCredentials/PASSWORD'
 
 export interface Credentials {
   emailAddress: string
@@ -55,4 +56,9 @@ export const signupSucceeded = () => ({
 export const changePassword = (newPassword: string) => ({
   type: CHANGE_PASSWORD,
   newPassword,
+})
+
+export const gotPassword = (password: string) => ({
+  type: GOT_PASSWORD,
+  password,
 })

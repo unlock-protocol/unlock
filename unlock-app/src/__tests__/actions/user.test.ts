@@ -15,6 +15,8 @@ import {
   signupSucceeded,
   CHANGE_PASSWORD,
   changePassword,
+  GOT_PASSWORD,
+  gotPassword,
 } from '../../actions/user'
 
 describe('user account actions', () => {
@@ -114,6 +116,19 @@ describe('user account actions', () => {
       }
 
       expect(changePassword(newPassword)).toEqual(expectedAction)
+    })
+  })
+
+  describe('user authentication actions', () => {
+    it('should create an action to deliver a requested password', () => {
+      expect.assertions(1)
+      const password = 'guest'
+      const expectedAction = {
+        type: GOT_PASSWORD,
+        password,
+      }
+
+      expect(gotPassword(password)).toEqual(expectedAction)
     })
   })
 })
