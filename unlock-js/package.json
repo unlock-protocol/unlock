@@ -3,10 +3,14 @@
   "version": "0.0.24",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "index.js",
+  "module": "esm/index.js",
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
-    "build": "node ./scripts/compressAbi.js && ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
+    "build-cjs": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build": "node ./scripts/compressAbi.js && npm run build-cjs && npm run build-esm",
     "ci": "npm run lint && npm run test"
   },
   "author": "",
