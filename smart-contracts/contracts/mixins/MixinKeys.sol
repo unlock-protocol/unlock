@@ -45,7 +45,7 @@ contract MixinKeys is
   ) {
     Key storage key = keyByOwner[_owner];
     require(
-      key.expirationTimestamp > 0, 'NO_SUCH_KEY'
+      key.tokenId != 0, 'NO_SUCH_KEY'
     );
     _;
   }
@@ -102,12 +102,13 @@ contract MixinKeys is
   function balanceOf(
     address _owner
   )
-    external
+    public
     view
     returns (uint)
   {
     require(_owner != address(0), 'INVALID_ADDRESS');
-    return keyByOwner[_owner].expirationTimestamp > 0 ? 1 : 0;
+    Key storage key = keyByOwner[_owner];
+    return ((key.expirationTimestamp > 0) && (key.tokenId != 0)) ? 1 : 0;
   }
 
   /**
@@ -132,7 +133,7 @@ contract MixinKeys is
   )
     external
     view
-    hasKey(_account)
+    // hasKey(_account)
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
@@ -193,7 +194,7 @@ contract MixinKeys is
     address _owner
   )
     public view
-    hasKey(_owner)
+    // hasKey(_owner)
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
