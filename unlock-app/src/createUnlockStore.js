@@ -45,6 +45,9 @@ import lockFormVisibilityReducer, {
 import fullScreenModalsReducer, {
   initialState as defaultFullScreenModalsStatus,
 } from './reducers/fullScreenModalsReducer'
+import privateKeyReducer, {
+  initialState as defaultPrivateKeyState,
+} from './reducers/privateKeyReducer'
 
 const config = configure()
 
@@ -67,6 +70,7 @@ export const createUnlockStore = (
     errors: errorsReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
+    encryptedPrivateKey: privateKeyReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -92,6 +96,7 @@ export const createUnlockStore = (
       errors: defaultError,
       lockFormStatus: defaultLockFormVisibility,
       fullScreenModalStatus: defaultFullScreenModalsStatus,
+      encryptedPrivateKey: defaultPrivateKeyState,
     },
     {
       provider: Object.keys(config.providers)[0],
