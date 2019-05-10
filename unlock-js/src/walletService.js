@@ -105,7 +105,8 @@ export default class WalletService extends UnlockService {
       transactionType,
       'submitted'
     )
-    return transaction.hash
+    const finalTransaction = await transaction.wait()
+    return finalTransaction.hash
     // errors fall through
   }
 
