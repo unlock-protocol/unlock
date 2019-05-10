@@ -39,16 +39,6 @@ contract MixinKeys is
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
 
-  // Ensures that an owner has a key
-  modifier hasKey(
-    address _owner
-  ) {
-    require(
-      keyByOwner[_owner].expirationTimestamp > block.timestamp, 'NO_SUCH_KEY'
-    );
-    _;
-  }
-
   // Ensures that an owner has a valid key
   modifier hasValidKey(
     address _owner
@@ -106,7 +96,7 @@ contract MixinKeys is
     returns (uint)
   {
     require(_owner != address(0), 'INVALID_ADDRESS');
-    return ((keyByOwner[_owner].expirationTimestamp > 0) && (keyByOwner[_owner].tokenId != 0)) ? 1 : 0;
+    return getHasValidKey(_owner) ? 1 : 0;
   }
 
   /**
@@ -131,7 +121,7 @@ contract MixinKeys is
   )
     external
     view
-    hasKey(_account)
+    hasValidKey(_account)
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
@@ -192,7 +182,7 @@ contract MixinKeys is
     address _owner
   )
     public view
-    hasKey(_owner)
+    hasValidKey(_owner)
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
