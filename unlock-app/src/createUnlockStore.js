@@ -39,9 +39,6 @@ import errorsReducer, {
 import accountReducer, {
   initialState as defaultAccount,
 } from './reducers/accountReducer'
-import walletStatusReducer, {
-  initialState as defaultWalletStatus,
-} from './reducers/walletStatusReducer'
 import lockFormVisibilityReducer, {
   initialState as defaultLockFormVisibility,
 } from './reducers/lockFormVisibilityReducer'
@@ -68,7 +65,6 @@ export const createUnlockStore = (
     transactions: transactionsReducer,
     currency: currencyReducer,
     errors: errorsReducer,
-    walletStatus: walletStatusReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
   }
@@ -94,7 +90,6 @@ export const createUnlockStore = (
       transactions: defaultTransactions,
       currency: defaultCurrency,
       errors: defaultError,
-      walletStatus: defaultWalletStatus,
       lockFormStatus: defaultLockFormVisibility,
       fullScreenModalStatus: defaultFullScreenModalsStatus,
     },

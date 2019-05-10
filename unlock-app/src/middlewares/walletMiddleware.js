@@ -15,11 +15,7 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
-import {
-  waitForWallet,
-  gotWallet,
-  dismissWalletCheck,
-} from '../actions/walletStatus'
+import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 import {
@@ -77,7 +73,7 @@ const walletMiddleware = config => {
       (transactionHash, from, to, input, type, status) => {
         // At this point we know that a wallet was found, because a new transaction
         // cannot be created without it
-        dispatch(gotWallet())
+        dispatch(dismissWalletCheck())
         dispatch(
           newTransaction({
             hash: transactionHash,

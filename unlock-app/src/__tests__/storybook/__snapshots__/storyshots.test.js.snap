@@ -30830,16 +30830,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-96td8c-2 jxVqGZ"
+      class="sc-cSHVUG fEzzCB"
     >
       <div
-        class="sc-96td8c-1 kyWNVf"
+        class="sc-jzJRlG bqrlWl"
       >
         <p>
           Please check your browser wallet to complete the transaction.
         </p>
         <button
-          class="sc-96td8c-0 jfMzPz"
+          class="sc-fjdhpX gdgvmb"
         >
           Dismiss
         </button>
@@ -34296,24 +34296,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-kGXeez iUWkPx"
+        class="sc-ckVGcZ gfHOOi"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-kpOJdX wegZY"
+        class="sc-jKJlTe btJXKm"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-dxgOiQ kuSlwR"
+          class="sc-eNQAEJ ctFpdZ"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-ckVGcZ kVQLNc"
+          class="sc-hMqMXs iqNHZV"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -34322,13 +34322,13 @@ Object {
         />
         <br />
         <label
-          class="sc-dxgOiQ kuSlwR"
+          class="sc-eNQAEJ ctFpdZ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-ckVGcZ kVQLNc"
+          class="sc-hMqMXs iqNHZV"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -34336,13 +34336,13 @@ Object {
         />
         <br />
         <label
-          class="sc-dxgOiQ kuSlwR"
+          class="sc-eNQAEJ ctFpdZ"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-ckVGcZ kVQLNc"
+          class="sc-hMqMXs iqNHZV"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -34350,11 +34350,11 @@ Object {
         />
         <br />
         <span
-          class="sc-eNQAEJ gbiKRA"
+          class="sc-kkGfuU wOWpp"
         />
         <br />
         <input
-          class="sc-jKJlTe frVzdg"
+          class="sc-kEYyzF jjPwwp"
           disabled=""
           type="submit"
           value="Submit"
@@ -34743,6 +34743,400 @@ Object {
         Made with passion in Brooklyn, NY
       </span>
     </footer>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals The Wallet Check Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+}
+
+.c2:hover {
+  color: var(--link);
+}
+
+.c1 {
+  background: var(--white);
+  min-width: 50%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c0 {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: var(--alwaysontop);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            Please check your browser wallet to complete the transaction.
+          </p>
+          <button
+            class="c2"
+          >
+            Dismiss
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-cSHVUG fEzzCB"
+    >
+      <div
+        class="sc-jzJRlG bqrlWl"
+      >
+        <p>
+          Please check your browser wallet to complete the transaction.
+        </p>
+        <button
+          class="sc-fjdhpX gdgvmb"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals The Wallet Check Overlay, inactive 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals/templates The Wallet Check Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+}
+
+.c1:hover {
+  color: var(--link);
+}
+
+.c0 {
+  background: var(--white);
+  min-width: 50%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <p>
+          Please check your browser wallet to complete the transaction.
+        </p>
+        <button
+          class="c1"
+        >
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-jzJRlG bqrlWl"
+    >
+      <p>
+        Please check your browser wallet to complete the transaction.
+      </p>
+      <button
+        class="sc-fjdhpX gdgvmb"
+      >
+        Dismiss
+      </button>
+    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -39727,22 +40121,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-cvbbAY hqEYNQ"
+            class="sc-cMljjf cktufh"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-jWBwVP jKTDHG"
+            class="sc-jAaTju gKKIhP"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-brqgnP kLeLPN"
+            class="sc-jDwBTQ ibxTuB"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-brqgnP kLeLPN"
+            class="sc-jDwBTQ ibxTuB"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -39752,26 +40146,26 @@ Object {
             .
           </p>
           <form
-            class="sc-cMljjf jvExFn"
+            class="sc-gPEVay gboSWg"
           >
             <input
-              class="sc-jAaTju eNdXfl"
+              class="sc-iRbamj kJNHIe"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-jDwBTQ jPhpnd"
+              class="sc-jlyJG gwsoTD"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-brqgnP kLeLPN"
+              class="sc-jDwBTQ ibxTuB"
             >
               Already have an account?
                
               <a
-                class="sc-iRbamj bpwFyB"
+                class="sc-csuQGl iGtWVw"
               >
                 Log in here.
               </a>
@@ -48860,19 +49254,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-hMqMXs gKGisj"
+        class="sc-iAyFgw VebZM"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-hSdWYo hUejMB"
+          class="sc-jWBwVP NbENL"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kkGfuU ghCGYh"
+          class="sc-eHgmQL dIwpAr"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48880,13 +49274,13 @@ Object {
         />
         <br />
         <label
-          class="sc-hSdWYo hUejMB"
+          class="sc-jWBwVP NbENL"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kkGfuU ghCGYh"
+          class="sc-eHgmQL dIwpAr"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48894,18 +49288,18 @@ Object {
         />
         <br />
         <input
-          class="sc-iAyFgw cnGVmw"
+          class="sc-cvbbAY jQilCr"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-kEYyzF cdKEmV"
+        class="sc-hSdWYo gmEejV"
       >
         Don't have an account?
          
         <a
-          class="sc-eHgmQL eGUkTu"
+          class="sc-brqgnP jKDGvg"
         >
           Sign up here.
         </a>
@@ -53268,22 +53662,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-cvbbAY hqEYNQ"
+        class="sc-cMljjf cktufh"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-jWBwVP jKTDHG"
+        class="sc-jAaTju gKKIhP"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-brqgnP kLeLPN"
+        class="sc-jDwBTQ ibxTuB"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-brqgnP kLeLPN"
+        class="sc-jDwBTQ ibxTuB"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -53293,26 +53687,26 @@ Object {
         .
       </p>
       <form
-        class="sc-cMljjf jvExFn"
+        class="sc-gPEVay gboSWg"
       >
         <input
-          class="sc-jAaTju eNdXfl"
+          class="sc-iRbamj kJNHIe"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-jDwBTQ jPhpnd"
+          class="sc-jlyJG gwsoTD"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-brqgnP kLeLPN"
+          class="sc-jDwBTQ ibxTuB"
         >
           Already have an account?
            
           <a
-            class="sc-iRbamj bpwFyB"
+            class="sc-csuQGl iGtWVw"
           >
             Log in here.
           </a>
@@ -54787,73 +55181,73 @@ Object {
           </button>
         </div>
         <div
-          class="sc-fjdhpX izGPRV"
+          class="sc-kAzzGY hTRNNC"
         >
           <div
-            class="sc-jzJRlG bUJFPY"
+            class="sc-chPdSV hvhJcN"
           >
             Block Number
           </div>
           <div
-            class="sc-jzJRlG bUJFPY"
+            class="sc-chPdSV hvhJcN"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-jzJRlG bUJFPY"
+            class="sc-chPdSV hvhJcN"
           >
             Type
           </div>
           <div
-            class="sc-cSHVUG sc-kAzzGY hUIjkl"
+            class="sc-kgoBCf sc-kGXeez gsbcln"
           >
             3
           </div>
           <a
-            class="sc-chPdSV gTRVsx"
+            class="sc-kpOJdX hEyvqh"
             href=""
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-cSHVUG sc-kgoBCf ccosxY"
+            class="sc-kgoBCf sc-dxgOiQ emFsgm"
             type="Lock Creation"
           >
             Lock Creation
           </div>
           <div
-            class="sc-cSHVUG sc-kAzzGY hUIjkl"
+            class="sc-kgoBCf sc-kGXeez gsbcln"
           >
             2
           </div>
           <a
-            class="sc-chPdSV gTRVsx"
+            class="sc-kpOJdX hEyvqh"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-cSHVUG sc-kgoBCf gZXnXy"
+            class="sc-kgoBCf sc-dxgOiQ ckTNia"
             type="Update Key Price"
           >
             Update Key Price
           </div>
           <div
-            class="sc-cSHVUG sc-kAzzGY hUIjkl"
+            class="sc-kgoBCf sc-kGXeez gsbcln"
           >
             1
           </div>
           <a
-            class="sc-chPdSV gTRVsx"
+            class="sc-kpOJdX hEyvqh"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-cSHVUG sc-kgoBCf ccosxY"
+            class="sc-kgoBCf sc-dxgOiQ emFsgm"
             type="Lock Creation"
           >
             Lock Creation
@@ -54863,259 +55257,6 @@ Object {
       <div
         class="hm3mhg-2 dBxAQT"
       />
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Wallet Check Overlay Not waiting for wallet 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    <div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Wallet Check Overlay Waiting for wallet 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c2 {
-  height: 24px;
-  font-size: 20px;
-  font-family: Roboto,sans-serif;
-  text-align: center;
-  border: none;
-  background: none;
-  color: var(--grey);
-}
-
-.c2:hover {
-  color: var(--link);
-}
-
-.c1 {
-  background: var(--white);
-  min-width: 50%;
-  border-radius: 4px;
-  padding: 24px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: var(--darkgrey);
-  font-size: 20px;
-}
-
-.c0 {
-  background: rgba(0,0,0,0.5);
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  z-index: var(--alwaysontop);
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          <p>
-            Please check your browser wallet to complete the transaction.
-          </p>
-          <button
-            class="c2"
-          >
-            Dismiss
-          </button>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-96td8c-2 jxVqGZ"
-    >
-      <div
-        class="sc-96td8c-1 kyWNVf"
-      >
-        <p>
-          Please check your browser wallet to complete the transaction.
-        </p>
-        <button
-          class="sc-96td8c-0 jfMzPz"
-        >
-          Dismiss
-        </button>
-      </div>
     </div>
   </div>,
   "debug": [Function],

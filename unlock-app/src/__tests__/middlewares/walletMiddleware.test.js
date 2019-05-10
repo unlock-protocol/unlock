@@ -8,11 +8,7 @@ import {
   UPDATE_LOCK,
   UPDATE_LOCK_NAME,
 } from '../../actions/lock'
-import {
-  WAIT_FOR_WALLET,
-  GOT_WALLET,
-  DISMISS_CHECK,
-} from '../../actions/walletStatus'
+import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
@@ -188,7 +184,7 @@ describe('Wallet middleware', () => {
     const { store } = create()
     mockWalletService.emit('transaction.pending')
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: WAIT_FOR_WALLET })
+      expect.objectContaining({ type: LAUNCH_MODAL })
     )
   })
 
@@ -210,7 +206,7 @@ describe('Wallet middleware', () => {
       status
     )
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: GOT_WALLET })
+      expect.objectContaining({ type: DISMISS_MODAL })
     )
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -232,7 +228,7 @@ describe('Wallet middleware', () => {
     const { store } = create()
     mockWalletService.emit('overlay.dismissed')
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: DISMISS_CHECK })
+      expect.objectContaining({ type: DISMISS_MODAL })
     )
   })
 
@@ -395,7 +391,7 @@ describe('Wallet middleware', () => {
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(
         1,
-        expect.objectContaining({ type: DISMISS_CHECK })
+        expect.objectContaining({ type: DISMISS_MODAL })
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, {
         type: DELETE_LOCK,
