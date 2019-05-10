@@ -1,5 +1,6 @@
 import utils from '../utils'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
+
 /**
  * Refresh the lock's data.
  * We use the block version
