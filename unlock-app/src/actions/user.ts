@@ -68,7 +68,9 @@ export const gotPassword = (password: string) => ({
 })
 
 // This should be dispatched along with setAccount in the storage middleware
-// when a user logs in.
+// when a user logs in. This provides a bit of a timing concern, since
+// SET_ACCOUNT usually wipes out all the state. So SET_ACCOUNT must be sent
+// first.
 export const setEncryptedPrivateKey = (key: EncryptedPrivateKey) => ({
   type: SET_ENCRYPTED_PRIVATE_KEY,
   key,
