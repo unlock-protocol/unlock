@@ -84,6 +84,9 @@ contract MixinTransfer is
     // Effectively expiring the key for the previous owner
     fromKey.expirationTimestamp = block.timestamp;
 
+    // Set the tokenID to 0 for the previous owner to avoid duplicates
+    fromKey.tokenId = 0;
+
     // Clear any previous approvals
     _clearApproval(_tokenId);
 
