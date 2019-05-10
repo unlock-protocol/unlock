@@ -378,7 +378,7 @@ describe('WalletService', () => {
 
     describe('recoverAccountFromSignedData', () => {
       it('returns the signing address', async () => {
-        expect.assertions(2)
+        expect.assertions(1)
 
         const data = 'hello world'
         const signature =
@@ -386,11 +386,14 @@ describe('WalletService', () => {
           '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
           '1c'
 
-        walletService.web3.eth.ecRecover = jest.fn()
+        walletService.web3.eth.personal.ecRecover = jest.fn()
 
-        await walletService.recoverAccountFwromSignedData(data, signature)
+        await walletService.recoverAccountFromSignedData(data, signature)
 
-        expect(walletService.web3.eth.ecRecover).toBeCalledWith(data, signature)
+        expect(walletService.web3.eth.personal.ecRecover).toBeCalledWith(
+          data,
+          signature
+        )
       })
     })
   })
