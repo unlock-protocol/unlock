@@ -1,31 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
-import { dismissWalletCheck } from '../../actions/fullScreenModals'
-import { KindOfModal } from '../../unlockTypes'
+import { KindOfModal, Dispatch } from '../../unlockTypes' // eslint-disable-line
+import { WalletCheck, styles, PasswordPrompt } from './modal-templates'
 
 interface Props {
   active: boolean
   kindOfModal: KindOfModal
-  dispatch: (action: any) => any
+  dispatch: Dispatch
 }
 
-export const WalletCheck = ({
-  dispatch,
-}: {
-  dispatch: (action: any) => any
-}) => (
-  <MessageBox>
-    <p>Please check your browser wallet to complete the transaction.</p>
-    <Dismiss onClick={() => dispatch(dismissWalletCheck())}>Dismiss</Dismiss>
-  </MessageBox>
-)
-
 export const FullScreenModal = ({ active, kindOfModal, dispatch }: Props) => {
-  let Template: React.SFC<any>
+  let Template: React.ComponentType<any>
   switch (kindOfModal) {
     case KindOfModal.WalletCheckOverlay:
       Template = WalletCheck
+      break
+    case KindOfModal.PasswordPrompt:
+      Template = PasswordPrompt
       break
     default:
       // We were given a KindOfModal that we don't have a template for. Do nothing.
@@ -35,9 +26,9 @@ export const FullScreenModal = ({ active, kindOfModal, dispatch }: Props) => {
   if (active) {
     // render a modal
     return (
-      <Greyout>
+      <styles.Greyout>
         <Template dispatch={dispatch} />
-      </Greyout>
+      </styles.Greyout>
     )
   }
   // Otherwise do nothing
@@ -60,46 +51,5 @@ const mapStateToProps = (state: State) => {
     kindOfModal,
   }
 }
-
-const Dismiss = styled.button`
-  height: 24px;
-  font-size: 20px;
-  font-family: Roboto, sans-serif;
-  text-align: center;
-  border: none;
-  background: none;
-  color: var(--grey);
-
-  &:hover {
-    color: var(--link);
-  }
-`
-
-const MessageBox = styled.div`
-  background: var(--white);
-  min-width: 50%;
-  border-radius: 4px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--darkgrey);
-  font-size: 20px;
-`
-
-const Greyout = styled.div`
-  background: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: var(--alwaysontop);
-`
 
 export default connect(mapStateToProps)(FullScreenModal)
