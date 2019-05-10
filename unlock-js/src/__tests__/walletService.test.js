@@ -183,6 +183,13 @@ describe('WalletService (ethers)', () => {
         to: 'to',
         data: 'data',
       }
+      const inBetweenTransaction = {
+        hash: 'hash',
+        from: 'from',
+        to: 'to',
+        data: 'data',
+        wait: () => Promise.resolve(transaction),
+      }
 
       it('emits transaction.pending with transaction type', async () => {
         expect.assertions(1)
@@ -193,7 +200,7 @@ describe('WalletService (ethers)', () => {
         })
 
         await walletService._handleMethodCall(
-          Promise.resolve(transaction),
+          Promise.resolve(inBetweenTransaction),
           'transactionType'
         )
       })
@@ -205,7 +212,7 @@ describe('WalletService (ethers)', () => {
         let myResolve
         const myPromise = new Promise(resolve => {
           myResolve = jest.fn(resolve)
-          myResolve(transaction)
+          myResolve(inBetweenTransaction)
         })
 
         await walletService._handleMethodCall(myPromise, 'transactionType')
@@ -230,7 +237,7 @@ describe('WalletService (ethers)', () => {
         )
 
         await walletService._handleMethodCall(
-          Promise.resolve(transaction),
+          Promise.resolve(inBetweenTransaction),
           'transactionType'
         )
       })

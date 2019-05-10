@@ -5,6 +5,8 @@ import v0 from './v0'
 import v01 from './v01'
 import v02 from './v02'
 
+import FastJsonRpcSigner from './FastJsonRpcSigner'
+
 // mute warnings from overloaded smart contract methods (https://github.com/ethers-io/ethers.js/issues/499)
 ethers.errors.setLogLevel('error')
 
@@ -135,7 +137,9 @@ export default class UnlockService extends EventEmitter {
   }
 
   async getWritableContract(address, contract) {
-    const signer = this.provider.getSigner()
+    // TODO: replace this when v5 of ethers is out
+    // see https://github.com/ethers-io/ethers.js/issues/511
+    const signer = new FastJsonRpcSigner(this.provider.getSigner())
     return new ethers.Contract(address, contract.abi, signer)
   }
 

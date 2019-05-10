@@ -70,6 +70,7 @@ describe('v01', () => {
       // verify that the promise passed to _handleMethodCall actually resolves
       // to the result the chain returns from a sendTransaction call to createLock
       const result = await mock.mock.calls[0][0]
+      await result.wait()
       expect(result).toEqual(transactionResult)
       await nock.resolveWhenAllNocksUsed()
     })
