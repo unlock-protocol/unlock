@@ -7,9 +7,10 @@ import {
 } from '../../components/content/DashboardContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
-import WalletCheckOverlay from '../../components/interface/FullScreenModals'
+import FullScreenModal from '../../components/interface/FullScreenModals'
 import configure from '../../config'
 import doNothing from '../../utils/doNothing'
+import { KindOfModal } from '../../unlockTypes'
 
 const account = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e16',
@@ -96,8 +97,9 @@ const state = {
   locks,
   transactions,
   currency,
-  walletStatus: {
-    waiting: false,
+  fullScreenModalStatus: {
+    active: false,
+    kindOfModal: KindOfModal.WalletCheckOverlay,
   },
   lockFormStatus,
 }
@@ -111,8 +113,9 @@ const waitingStore = createUnlockStore({
   locks,
   transactions,
   currency,
-  walletStatus: {
-    waiting: true,
+  fullScreenModalStatus: {
+    active: true,
+    kindOfModal: KindOfModal.WalletCheckOverlay,
   },
   lockFormStatus,
 })
@@ -142,7 +145,7 @@ storiesOf('DashboardContent', module)
     const props = mapStateToProps(state)
     return (
       <Provider store={store}>
-        <WalletCheckOverlay />
+        <FullScreenModal />
         <DashboardContent
           network={network}
           account={account}
@@ -157,7 +160,7 @@ storiesOf('DashboardContent', module)
     const props = mapStateToProps(state)
     return (
       <Provider store={waitingStore}>
-        <WalletCheckOverlay />
+        <FullScreenModal />
         <DashboardContent
           network={network}
           account={account}
