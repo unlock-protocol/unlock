@@ -66,3 +66,6 @@ export interface Action {
   type: string
   [key: string]: any
 }
+
+// TODO: Use this where we have TS files
+export type Dispatch = (action: Action) => any
