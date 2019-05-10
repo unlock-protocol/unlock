@@ -6,16 +6,13 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
-    "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build": "node ./scripts/compressAbi.js && ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "ci": "npm run lint && npm run test"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ethers": "4.0.27",
-    "unlock-abi-0": "^1.0.4",
-    "unlock-abi-0-1": "^1.0.0",
-    "unlock-abi-0-2": "^1.0.0"
+    "ethers": "4.0.27"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -32,6 +29,9 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.4.2",
-    "babel-jest": "^24.7.1"
+    "babel-jest": "^24.7.1",
+    "unlock-abi-0": "^1.0.4",
+    "unlock-abi-0-1": "^1.0.0",
+    "unlock-abi-0-2": "^1.0.0"
   }
 }
