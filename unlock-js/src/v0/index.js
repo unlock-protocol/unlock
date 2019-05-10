@@ -6,6 +6,9 @@ import purchaseKey from './purchaseKey'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 
+const version = 'v0'
+const Unlock = abis.v0.Unlock
+const PublicLock = abis.v0.PublicLock
 export default {
   createLock,
   getLock,
@@ -13,7 +16,7 @@ export default {
   purchaseKey,
   updateKeyPrice,
   withdrawFromLock,
-  version: 'v0',
-  Unlock: abis.v0.Unlock,
-  PublicLock: abis.v0.PublicLock,
+  version,
+  Unlock,
+  PublicLock,
 }

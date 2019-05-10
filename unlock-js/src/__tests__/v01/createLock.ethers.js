@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import * as UnlockV01 from 'unlock-abi-0-1'
-import * as utils from '../../utils'
+import utils from '../../utils'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
