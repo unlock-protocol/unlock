@@ -33,6 +33,7 @@ export const Submit = styled(Dismiss)`
 export const MessageBox = styled.div`
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: flex;
@@ -59,7 +60,7 @@ export const Greyout = styled.div`
 
 export const Input = styled.input`
   height: 50px;
-  width: 385px;
+  width: 75%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;

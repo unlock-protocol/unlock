@@ -29355,6 +29355,7 @@ Object {
 .c1 {
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: -webkit-box;
@@ -30833,7 +30834,7 @@ Object {
       class="sc-chPdSV jcGbFL"
     >
       <div
-        class="sc-kAzzGY gcVRhH"
+        class="sc-kAzzGY gfmPHv"
       >
         <p>
           Please check your browser wallet to complete the transaction.
@@ -34851,6 +34852,7 @@ Object {
 .c1 {
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: -webkit-box;
@@ -34899,7 +34901,7 @@ Object {
 
 .c2 {
   height: 50px;
-  width: 385px;
+  width: 75%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -34953,13 +34955,13 @@ Object {
       class="sc-chPdSV jcGbFL"
     >
       <div
-        class="sc-kAzzGY gcVRhH"
+        class="sc-kAzzGY gfmPHv"
       >
         <p>
           Please enter your password to complete the transaction.
         </p>
         <input
-          class="sc-kgoBCf fAZanA"
+          class="sc-kgoBCf jHyeuu"
           placeholder="Password"
           type="password"
           value=""
@@ -35141,6 +35143,7 @@ Object {
 .c1 {
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: -webkit-box;
@@ -35219,7 +35222,7 @@ Object {
       class="sc-chPdSV jcGbFL"
     >
       <div
-        class="sc-kAzzGY gcVRhH"
+        class="sc-kAzzGY gfmPHv"
       >
         <p>
           Please check your browser wallet to complete the transaction.
@@ -35418,6 +35421,7 @@ Object {
 .c0 {
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: -webkit-box;
@@ -35441,7 +35445,7 @@ Object {
 
 .c1 {
   height: 50px;
-  width: 385px;
+  width: 75%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -35488,13 +35492,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kAzzGY gcVRhH"
+      class="sc-kAzzGY gfmPHv"
     >
       <p>
         Please enter your password to complete the transaction.
       </p>
       <input
-        class="sc-kgoBCf fAZanA"
+        class="sc-kgoBCf jHyeuu"
         placeholder="Password"
         type="password"
         value=""
@@ -35596,6 +35600,7 @@ Object {
 .c0 {
   background: var(--white);
   min-width: 50%;
+  max-width: 98%;
   border-radius: 4px;
   padding: 24px;
   display: -webkit-box;
@@ -35642,7 +35647,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kAzzGY gcVRhH"
+      class="sc-kAzzGY gfmPHv"
     >
       <p>
         Please check your browser wallet to complete the transaction.
