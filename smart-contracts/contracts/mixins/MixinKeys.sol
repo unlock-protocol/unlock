@@ -102,7 +102,7 @@ contract MixinKeys is
   function balanceOf(
     address _owner
   )
-    public
+    external
     view
     returns (uint)
   {
@@ -133,7 +133,7 @@ contract MixinKeys is
   )
     external
     view
-    // hasKey(_account)
+    hasKey(_account)
     returns (uint)
   {
     return keyByOwner[_account].tokenId;
@@ -194,7 +194,7 @@ contract MixinKeys is
     address _owner
   )
     public view
-    // hasKey(_owner)
+    hasKey(_owner)
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
