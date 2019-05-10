@@ -513,11 +513,14 @@ export default class Web3Service extends UnlockService {
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
     return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
-      this.emit('key.updated', KEY_ID(lock, owner), {
+      let keyPayload = {
         lock,
         owner,
         expiration,
-      })
+      }
+
+      this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
+      return keyPayload
     })
   }
 
