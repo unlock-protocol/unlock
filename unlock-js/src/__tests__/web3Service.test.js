@@ -616,6 +616,24 @@ describe('Web3Service', () => {
       })
       await web3Service.getKeyByLockForOwner(lockAddress, account)
     })
+
+    it("should return the lock's details", async () => {
+      expect.assertions(1)
+      await nockBeforeEach()
+      web3Service.lockContractAbiVersion = jest.fn(() => Promise.resolve(v0))
+      web3Service._getKeyByLockForOwner = jest.fn(() => {
+        return new Promise(resolve => {
+          return resolve(100)
+        })
+      })
+
+      let lock = await web3Service.getKeyByLockForOwner(lockAddress, account)
+      expect(lock).toEqual({
+        expiration: 100,
+        lock: '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e',
+        owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+      })
+    })
   })
 
   describe.each([
