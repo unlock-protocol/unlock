@@ -2,11 +2,12 @@ import { SET_ENCRYPTED_PRIVATE_KEY } from '../actions/user'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { SET_ACCOUNT } from '../actions/accounts'
-import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { Action, EncryptedPrivateKey } from '../unlockTypes' // eslint-disable-line no-unused-vars
 
-export const initialState = null
+type State = EncryptedPrivateKey | null
+export const initialState: State = null
 
-const privateKeyReducer = (state = initialState, action: Action) => {
+const privateKeyReducer = (state: State = initialState, action: Action) => {
   if ([SET_PROVIDER, SET_NETWORK, SET_ACCOUNT].indexOf(action.type) > -1) {
     return initialState
   }
