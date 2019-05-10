@@ -29,7 +29,7 @@ You can run test using `npm run test` and you need to run `npm run build` in ord
 When a new smart contract version is released, there are a few steps needed to enable the unlock-js library to use it.
 
 1. update the `scripts/compressAbi.js` script to import and auto-generate
-   the new version in `src/abi.js` and in `src/__tests__/helpers/bytecode.js`
+   the new version in `src/abi.js`, `src/bytecode.js` and in `src/__tests__/helpers/bytecode.js`
 2. re-run `npm run build` to generate the new contract abi and bytecode
 3. copy the newest directory of smart contract functions and rename it.
    For example, `src/v02` to `src/v03`
