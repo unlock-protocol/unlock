@@ -17,6 +17,11 @@ describe('Wedlocks Service', () => {
       recipient,
       params: {
         confirmLink: 'https://mcdonalds.gov',
+        email: recipient,
+        signedEmail: {
+          encrypt: true,
+          value: recipient,
+        },
       },
     }
     axios.post.mockReturnValue()

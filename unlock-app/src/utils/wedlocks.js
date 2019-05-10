@@ -2,16 +2,18 @@ import forge from 'node-forge'
 import { Base64 } from 'js-base64'
 import configure from '../config'
 
-const config = configure()
-
 /**
  * Verifies that an email was indeed signed by wedlocks
  */
 export const verifyEmailSignature = (
   email,
   signed,
-  base64WedlocksPublicKey = config.base64WedlocksPublicKey
+  base64WedlocksPublicKey
 ) => {
+  if (!base64WedlocksPublicKey) {
+    const config = configure()
+    base64WedlocksPublicKey = config.base64WedlocksPublicKey
+  }
   try {
     const signature = Base64.decode(signed)
     const md = forge.md.sha1.create()
