@@ -1,8 +1,8 @@
-import { providers as ethersProviders } from 'ethers'
+import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
-import * as utils from './utils'
+import utils from './utils'
 
 /**
  * This service interacts with the user's wallet.
@@ -40,7 +40,7 @@ export default class WalletService extends UnlockService {
       this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
     } else {
-      this.provider = new ethersProviders.Web3Provider(provider)
+      this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
     }
     const { chainId: networkId } = await this.provider.getNetwork()
