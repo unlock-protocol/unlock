@@ -375,6 +375,24 @@ describe('WalletService', () => {
         })
       })
     })
+
+    describe('recoverAccountFromSignedData', () => {
+      it('returns the signing address', async () => {
+        expect.assertions(2)
+
+        const data = 'hello world'
+        const signature =
+          '0xddd0a7290af9526056b4e35a077b9a11b513aa0028ec6c9880948544508f3c63' +
+          '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
+          '1c'
+
+        walletService.web3.eth.ecRecover = jest.fn()
+
+        await walletService.recoverAccountFwromSignedData(data, signature)
+
+        expect(walletService.web3.eth.ecRecover).toBeCalledWith(data, signature)
+      })
+    })
   })
 
   describe('versions', () => {

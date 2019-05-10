@@ -441,4 +441,8 @@ export default class WalletService extends UnlockService {
       return callback(error, null)
     }
   }
+
+  async recoverAccountFromSignedData(data, signedData) {
+    return await this.web3.eth.personal.ecRecover(data, signedData)
+  }
 }
