@@ -1,3 +1,4 @@
 src # we only publish lib to npm
+scripts # ignore the abi generation script
 coverage
 *.tgz
