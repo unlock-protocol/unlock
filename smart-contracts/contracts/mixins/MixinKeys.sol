@@ -43,9 +43,8 @@ contract MixinKeys is
   modifier hasKey(
     address _owner
   ) {
-    Key storage key = keyByOwner[_owner];
     require(
-      key.tokenId != 0, 'NO_SUCH_KEY'
+      keyByOwner[_owner].expirationTimestamp > block.timestamp, 'NO_SUCH_KEY'
     );
     _;
   }
