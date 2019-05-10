@@ -107,8 +107,7 @@ contract MixinKeys is
     returns (uint)
   {
     require(_owner != address(0), 'INVALID_ADDRESS');
-    Key storage key = keyByOwner[_owner];
-    return ((key.expirationTimestamp > 0) && (key.tokenId != 0)) ? 1 : 0;
+    return ((keyByOwner[_owner].expirationTimestamp > 0) && (keyByOwner[_owner].tokenId != 0)) ? 1 : 0;
   }
 
   /**
