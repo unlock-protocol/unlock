@@ -1,5 +1,15 @@
 # Changes
 
+## 0.0.27
+
+- fix "submitted" state for transaction-based methods like `purchaseKey` in `walletService`
+- implement signature verification with `recoverAccountFromSignedData` in `walletService` (etherrs)
+
+## 0.0.26
+
+(legacy web3 release, for tickets app only)
+- implement signature verification with `recoverAccountFromSignedData` in `walletService`
+
 ## 0.0.25
 
 - Add an esm build
