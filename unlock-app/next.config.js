@@ -19,6 +19,7 @@ let requiredConfigVariables = {
   locksmithHost: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
   unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
+  base64WedlocksPublicKey: process.env.BASE64_WEDLOCKS_PUBLIC_KEY,
 }
 
 let optionalConfigVariables = {

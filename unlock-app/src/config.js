@@ -41,6 +41,7 @@ export default function configure(
   let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
   let services = {}
   let supportedProviders = []
+  let base64WedlocksPublicKey = runtimeConfig.base64WedlocksPublicKey
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
     runtimeConfig.paywallScriptUrl ||
@@ -160,6 +161,7 @@ export default function configure(
   }
 
   return {
+    base64WedlocksPublicKey,
     blockTime,
     isServer,
     isInIframe,
