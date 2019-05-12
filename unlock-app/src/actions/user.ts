@@ -1,3 +1,5 @@
+import { EncryptedPrivateKey } from '../unlockTypes' // eslint-disable-line no-unused-vars
+
 export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'
 export const LOGIN_FAILED = 'login/FAILED'
@@ -7,6 +9,8 @@ export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
 export const CHANGE_PASSWORD = 'password/CHANGE'
 export const GOT_PASSWORD = 'userCredentials/PASSWORD'
+export const SET_ENCRYPTED_PRIVATE_KEY =
+  'userCredentials/SET_ENCRYPTED_PRIVATE_KEY'
 
 export interface Credentials {
   emailAddress: string
@@ -61,4 +65,13 @@ export const changePassword = (newPassword: string) => ({
 export const gotPassword = (password: string) => ({
   type: GOT_PASSWORD,
   password,
+})
+
+// This should be dispatched along with setAccount in the storage middleware
+// when a user logs in. This provides a bit of a timing concern, since
+// SET_ACCOUNT usually wipes out all the state. So SET_ACCOUNT must be sent
+// first.
+export const setEncryptedPrivateKey = (key: EncryptedPrivateKey) => ({
+  type: SET_ENCRYPTED_PRIVATE_KEY,
+  key,
 })
