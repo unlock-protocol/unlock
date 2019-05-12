@@ -1,5 +1,5 @@
 /**
- * All storrage drivers are async
+ * All storage drivers are async
  */
 export {
   get,
