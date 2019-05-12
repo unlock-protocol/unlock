@@ -1,5 +1,9 @@
 import { getRouteFromWindow } from '../utils/routes'
-import { POST_MESSAGE_WEB3 } from '../paywall-builder/constants'
+import {
+  POST_MESSAGE_WEB3,
+  POST_MESSAGE_READY,
+  POST_MESSAGE_WALLET_INFO,
+} from '../paywall-builder/constants'
 
 export default class Web3ProxyProvider {
   constructor(window) {
@@ -17,6 +21,12 @@ export default class Web3ProxyProvider {
       if (!event.data || !event.data.type) return
       if (!event.data.payload || typeof event.data.payload !== 'object') return
       if (typeof event.data.type !== 'string') return
+      if (event.data === POST_MESSAGE_WALLET_INFO) {
+        if (!event.data.payload || typeof event.data.payload !== 'object')
+          return
+        this.isMetamask = !!event.data.payload.isMetamask
+      }
+
       if (event.data.type !== POST_MESSAGE_WEB3) return
       if (
         !event.data.payload.hasOwnProperty('error') ||
@@ -35,6 +45,7 @@ export default class Web3ProxyProvider {
       result.id = 42 // ethers needs to not do this...
       callback(error, result)
     })
+    this.parent.postMessage(POST_MESSAGE_READY)
   }
 
   async sendAsync({ method, params }, callback) {

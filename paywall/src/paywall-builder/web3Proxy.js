@@ -1,5 +1,9 @@
 import { enable } from './config'
-import { POST_MESSAGE_READY, POST_MESSAGE_WEB3 } from './constants'
+import {
+  POST_MESSAGE_READY,
+  POST_MESSAGE_WEB3,
+  POST_MESSAGE_WALLET_INFO,
+} from './constants'
 
 let hasWeb3 = true
 
@@ -13,6 +17,12 @@ export default function web3Proxy(window, iframe, origin) {
       try {
         await enable(window)
         hasWeb3 = true
+        iframe.contentWindow.postMessage({
+          type: POST_MESSAGE_WALLET_INFO,
+          payload: {
+            isMetamask: window.web3.currentProvider.isMetamask, // this is used for some decisions in signing
+          },
+        })
       } catch (e) {
         // we don't have web3
         hasWeb3 = false
