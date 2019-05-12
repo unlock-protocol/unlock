@@ -16,11 +16,12 @@ export function sendConfig(config, iframe, origin) {
   )
 }
 
-function enable(window) {
-  return new window.Promise((resolve, reject) => {
+export function enable(window) {
+  return new window.Promise(async (resolve, reject) => {
     if (!window.web3 || !window.web3.currentProvider) return reject()
     if (!window.web3.currentProvider.enable) return resolve()
-    window.web3.currentProvider.enable().then(resolve)
+    const enabled = await window.web3.currentProvider.enable()
+    return resolve(enabled)
   })
 }
 
