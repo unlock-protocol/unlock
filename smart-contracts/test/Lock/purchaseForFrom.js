@@ -24,7 +24,7 @@ contract('Lock / purchaseForFrom', accounts => {
       // Making sure we do not have a key set!
       await shouldFail(
         lock.keyExpirationTimestampFor.call(accounts[0]),
-        'NO_SUCH_KEY'
+        'KEY_NOT_VALID'
       )
     })
   })
