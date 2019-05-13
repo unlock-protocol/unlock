@@ -6,6 +6,9 @@ import { verifyEmailSignature } from '../../utils/wedlocks'
 const emailAddressToSign = 'julien@unlock-protocol.com'
 let signature, base64PublicKey
 
+// These tests are slow because we generate private keys
+jest.setTimeout(15000)
+
 describe('verifyEmailSignature', () => {
   beforeAll(done => {
     forge.rsa.generateKeyPair({ bits: 2048, workers: 2 }, function(
