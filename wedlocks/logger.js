@@ -11,4 +11,5 @@ const consoleTransport = new winston.transports.Console({
 
 export default winston.createLogger({
   transports: [consoleTransport],
+  level: config.unlockEnv === 'dev' ? 'debug' : 'info',
 })
