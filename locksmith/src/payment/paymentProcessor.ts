@@ -91,23 +91,23 @@ export class PaymentProcessor {
   }
 
   async initiatePurchase(
-    purchaser: ethereumAddress /** this is the managed user/buyer */,
+    recipient: ethereumAddress /** this is the managed user/buyer */,
     lock: ethereumAddress,
     credentials: string,
     providerHost: string,
     buyer: ethereumAddress
   ) {
-    let successfulCharge = this.chargeUser(purchaser, lock)
+    let successfulCharge = this.chargeUser(recipient, lock)
     if (successfulCharge) {
       let fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',
-        purchaser,
+        recipient,
         credentials,
         providerHost,
         buyer
       )
 
-      await fulfillmentDispatcher.purchase(lock, purchaser)
+      await fulfillmentDispatcher.purchase(lock, recipient)
     }
   }
 }

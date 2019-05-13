@@ -6,7 +6,6 @@ let mockWeb3Service: { getLock: any },
 let lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
-let purchasingAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 let credential =
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 let host = 'http://localhost:8545'
@@ -47,7 +46,7 @@ describe('Dispatcher', () => {
   beforeAll(() => {
     dispatcher = new Dispatcher(
       unlockAddress,
-      purchasingAddress,
+      recipient,
       credential,
       host,
       buyer
