@@ -5,7 +5,8 @@ import SignUp from './SignUp'
 import FinishSignUp from './FinishSignup'
 
 interface Props {
-  signup: boolean
+  login?: boolean
+  signup?: boolean
   emailAddress?: string
 }
 
@@ -13,12 +14,12 @@ interface State {
   signup: boolean
 }
 
-class LogInSignUp extends React.Component<Props, State> {
+export default class LogInSignUp extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    const { signup } = props
+    const { signup, login } = props
     this.state = {
-      signup,
+      signup: signup || !login,
     }
   }
 
@@ -41,9 +42,3 @@ class LogInSignUp extends React.Component<Props, State> {
     )
   }
 }
-
-export const LogInPage = () => <LogInSignUp signup={false} />
-
-export const SignUpPage = (emailAddress?: string) => (
-  <LogInSignUp signup emailAddress={emailAddress} />
-)
