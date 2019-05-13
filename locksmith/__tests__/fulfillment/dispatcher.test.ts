@@ -10,6 +10,7 @@ let purchasingAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 let credential =
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 let host = 'http://localhost:8545'
+let buyer = '0xpurchasingEthereumAddress'
 
 let standardLock = {
   asOf: 227,
@@ -48,7 +49,8 @@ describe('Dispatcher', () => {
       unlockAddress,
       purchasingAddress,
       credential,
-      host
+      host,
+      buyer
     )
   })
 
@@ -65,12 +67,15 @@ describe('Dispatcher', () => {
     describe('when the lock is not retrievable', () => {
       it('raises and error', async () => {
         expect.assertions(1)
-        mockWeb3Service.getLock = jest.fn(() => {
-          throw new Error()
-        })
-        expect(() => {
-          dispatcher.retrieveLock('0x222')
-        }).toThrow('Unable to retrieve Lock information')
+        mockWeb3Service.getLock = jest.fn().mockRejectedValue('foo')
+
+        try {
+          await dispatcher.retrieveLock('0x222')
+        } catch (error) {
+          expect(error).toEqual(
+            new Error('Unable to retrieve Lock information')
+          )
+        }
       })
     })
   })
@@ -86,7 +91,7 @@ describe('Dispatcher', () => {
           lockAddress,
           recipient,
           '0.01',
-          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+          buyer
         )
       })
     })

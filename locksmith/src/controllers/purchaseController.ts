@@ -14,6 +14,7 @@ namespace PurchaseController {
   ): Promise<any> => {
     const expiry = req.body.message.purchaseRequest.expiry
     const lock = req.body.message.purchaseRequest.lock
+    const purchaser = req.body.message.purchaseRequest.recipient
 
     if (expired(expiry)) {
       return res.sendStatus(412)
@@ -21,12 +22,15 @@ namespace PurchaseController {
       return res.sendStatus(451)
     } else {
       let paymentProcessor = new PaymentProcessor(config.stripeSecret)
-      paymentProcessor.initiatePurchase(
-        req.owner,
+
+      await paymentProcessor.initiatePurchase(
+        purchaser,
         lock,
         config.purchaserCredentails,
-        config.web3ProviderHost
+        config.web3ProviderHost,
+        config.purchaserAddress
       )
+
       return res.sendStatus(202)
     }
   }

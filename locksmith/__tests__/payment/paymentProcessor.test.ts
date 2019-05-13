@@ -170,7 +170,8 @@ describe('PaymentProcessor', () => {
           'purchaser',
           'lock',
           'credentials',
-          'providerHost'
+          'providerHost',
+          'buyer'
         )
 
         expect(mockDispatcher.purchase).toHaveBeenCalledWith(
@@ -187,7 +188,8 @@ describe('PaymentProcessor', () => {
           'purchaser',
           'lock',
           'credentials',
-          'providerHost'
+          'providerHost',
+          'buyer'
         )
 
         expect(mockDispatcher.purchase).not.toHaveBeenCalled()
