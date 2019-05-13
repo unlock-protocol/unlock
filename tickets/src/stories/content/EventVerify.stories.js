@@ -24,12 +24,13 @@ const store = createUnlockStore({})
 
 storiesOf('Event verification page', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .add('Event verification page with validated ticket', () => {
-    return <EventVerify lock={lock} event={event} valid />
-  })
-  .add('Event verification page with invalid ticket', () => {
-    return <EventVerify lock={lock} event={event} valid={false} />
-  })
   .add('Event verification page with verification in progress', () => {
-    return <EventVerify lock={lock} event={event} valid={null} />
+    return (
+      <EventVerify
+        lock={lock}
+        event={event}
+        valid={null}
+        loadEvent={() => {}}
+      />
+    )
   })

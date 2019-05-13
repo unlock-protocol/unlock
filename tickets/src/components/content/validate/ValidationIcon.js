@@ -8,10 +8,18 @@ import SvgIconCheckmark from '../../interface/svg/IconCheckmark'
 import SvgIconBg from '../../interface/svg/IconBg'
 import { verifySignedAddress } from '../../../actions/ticket'
 
-export const ValidationIcon = () => {
-  const valid = false // remove this
+export const ValidationIcon = ({
+  valid,
+  publicKey,
+  eventAddress,
+  signature,
+  verifySignedAddress,
+}) => {
+  if (valid === null) {
+    verifySignedAddress(eventAddress, publicKey, signature)
+  }
 
-  if (valid === true) {
+  if (valid) {
     return (
       <Fragment>
         <ValidTitle>Ticket Valid</ValidTitle>
@@ -45,15 +53,29 @@ ValidationIcon.propTypes = {
   publicKey: UnlockPropTypes.address,
   eventAddress: UnlockPropTypes.address,
   signature: PropTypes.string,
+  valid: PropTypes.bool,
+  verifySignedAddress: PropTypes.func.isRequired,
 }
 
 ValidationIcon.defaultProps = {
   publicKey: null,
   eventAddress: null,
   signature: null,
+  valid: null,
 }
 
-const mapStateToProps = ({ keys, event }) => {}
+const mapStateToProps = ({ tickets }, { signature, publicKey }) => {
+  let valid
+  if (tickets.valid && tickets.valid[signature] === publicKey) {
+    valid = true
+  } else if (tickets.invalid && tickets.invalid[signature]) {
+    valid = false
+  }
+
+  return {
+    valid,
+  }
+}
 
 const mapDispatchToProps = dispatch => ({
   verifySignedAddress: (eventAddress, publicKey, signature) =>

@@ -12,7 +12,15 @@ import { loadEvent } from '../../actions/event'
 import Media from '../../theme/media'
 import ValidationIcon from './validate/ValidationIcon'
 
-export const EventVerify = ({ lock, event, publicKey, signature }) => {
+export const EventVerify = ({
+  lock,
+  event,
+  publicKey,
+  signature,
+  loadEvent,
+}) => {
+  if (lock.address && !event) loadEvent(lock.address)
+
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
   const { name } = event
 
@@ -40,6 +48,7 @@ EventVerify.propTypes = {
   event: UnlockPropTypes.ticketedEvent,
   publicKey: UnlockPropTypes.address,
   signature: PropTypes.string,
+  loadEvent: PropTypes.func.isRequired,
 }
 
 EventVerify.defaultProps = {
@@ -56,11 +65,13 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = ({ router, locks, account, event }) => {
-  console.log('Path name')
-  console.log(router.location.pathname)
-  const [, lockAddress, publicKey, signature] = router.location.pathname.split(
-    '/'
-  )
+  const [
+    ,
+    ,
+    lockAddress,
+    publicKey,
+    signature,
+  ] = router.location.pathname.split('/')
 
   const lock = Object.values(locks).find(
     thisLock => thisLock.address === lockAddress

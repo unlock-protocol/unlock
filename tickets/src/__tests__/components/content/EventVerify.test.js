@@ -41,30 +41,6 @@ describe('EventVerify', () => {
     expect(wrapper.getByText(event.name)).not.toBeNull()
   })
 
-  it('should display a valid notice when the valid property is set to true', () => {
-    expect.assertions(1)
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid />
-      </Provider>
-    )
-
-    expect(wrapper.getByText('Ticket Valid')).not.toBeNull()
-  })
-
-  it('should display an invalid notice when the valid property is set to false', () => {
-    expect.assertions(1)
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={false} />
-      </Provider>
-    )
-
-    expect(wrapper.getByText('Ticket Not Valid')).not.toBeNull()
-  })
-
   it('should display a validating notice when the valid property is not set yet', () => {
     expect.assertions(1)
 
