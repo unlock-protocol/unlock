@@ -8,9 +8,17 @@ import {
 
 let hasWeb3 = true
 
+/**
+ * Proxy calls to web3 from postMessage
+ *
+ * @param {window} window the main window object
+ * @param {element} iframe the iframe element, created by document.createElement('iframe')
+ * @param {string} origin the iframe element's URL origin
+ */
 export default function web3Proxy(window, iframe, origin) {
   mainWindowPostOffice(window, iframe, origin)
 
+  // handler for the actual web3 calls
   setHandler(POST_MESSAGE_WEB3, (payload, respond) => {
     if (!hasWeb3) {
       return respond(POST_MESSAGE_WEB3, {
@@ -48,6 +56,9 @@ export default function web3Proxy(window, iframe, origin) {
     )
   })
 
+  // initialize, we do this once the iframe is ready to receive information on the wallet
+  // we need to tell the iframe if the wallet is metamask
+  // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
   setHandler(POST_MESSAGE_READY, async (_, respond) => {
     const isMetamask = !!(
       window.web3 &&
