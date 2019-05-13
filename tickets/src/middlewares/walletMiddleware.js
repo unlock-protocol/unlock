@@ -15,6 +15,8 @@ import {
   SIGN_ADDRESS,
   VERIFY_SIGNED_ADDRESS,
   gotSignedAddress,
+  signedAddressVerified,
+  signedAddressMismatch,
 } from '../actions/ticket'
 import { PURCHASE_KEY } from '../actions/key'
 import {
@@ -180,18 +182,27 @@ const walletMiddleware = config => {
 
         if (
           action.type === VERIFY_SIGNED_ADDRESS &&
-          action.data.message &&
-          action.data.message.eventAddress &&
-          action.data.message.publicKey
+          action.eventAddress &&
+          action.publicKey &&
+          action.signedAddress
         ) {
+          const { publicKey, eventAddress, signedAddress } = action
+
           const data = UnlockEventRSVP.build({
-            publicKey: action.data.message.publicKey,
-            eventAddress: action.data.message.eventAddress,
+            publicKey: publicKey,
+            eventAddress: eventAddress,
           })
 
-          return data // remove this
+          const account = walletService.recoverAccountFromSignedData(
+            data,
+            signedAddress
+          )
 
-          // TODO call walletService method to verify sig
+          if (account === publicKey) {
+            dispatch(signedAddressVerified(publicKey, signedAddress))
+          } else {
+            dispatch(signedAddressMismatch(publicKey, signedAddress))
+          }
         }
 
         if (action.type === SIGN_DATA) {
