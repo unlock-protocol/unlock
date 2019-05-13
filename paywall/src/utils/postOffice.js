@@ -9,7 +9,7 @@ let handlers = {}
  *
  * A message is of format: { type: 'type', payload: <any> }
  *
- * Handlers are passed teh payload and a callback that can be used to send
+ * Handlers are passed the payload and a callback that can be used to send
  * a response to the iframe that sent the query. It accepts the type and
  * the response payload
  *
