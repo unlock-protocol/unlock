@@ -1,4 +1,8 @@
-import { sendConfig, setupReadyListener } from '../../paywall-builder/config'
+import {
+  sendConfig,
+  setupReadyListener,
+  enable,
+} from '../../paywall-builder/config'
 import {
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_READY,
@@ -260,6 +264,40 @@ describe('paywall configuration inter-window communication', () => {
 
         expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
       })
+    })
+  })
+
+  describe('enable', () => {
+    it('throws ReferenceError if web3 is not available', async () => {
+      expect.assertions(2)
+
+      try {
+        await enable({
+          Promise: Promise,
+        })
+      } catch (e) {
+        expect(e).toBeInstanceOf(ReferenceError)
+        expect(e.message).toBe('no web3 wallet exists')
+      }
+    })
+
+    it('throws if the provider enable throws', async () => {
+      expect.assertions(1)
+
+      try {
+        await enable({
+          Promise: Promise,
+          web3: {
+            currentProvider: {
+              enable: async () => {
+                throw new Error('oops')
+              },
+            },
+          },
+        })
+      } catch (e) {
+        expect(e).toBeInstanceOf(Error)
+      }
     })
   })
 })
