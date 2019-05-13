@@ -17,12 +17,11 @@ export class KeyList extends React.Component {
   render() {
     const { keys, lock, loadPage, page } = this.props
     const renderItems = lockKeys => {
-      return lockKeys.map(({ id, owner, expiration, data }) => {
+      return lockKeys.map(({ id, owner, expiration }) => {
         return (
           <Row key={id}>
             <Data>{owner}</Data>
             <Cell>{expirationAsDate(expiration)}</Cell>
-            <Data>{data || '-'}</Data>
           </Row>
         )
       })
@@ -33,7 +32,6 @@ export class KeyList extends React.Component {
           <Header>
             <Cell>Owner</Cell>
             <Cell>Expiration</Cell>
-            <Cell>Data</Cell>
           </Header>
         </Table>
         {/*
@@ -101,19 +99,20 @@ export default connect(
 
 const KeyListWrapper = styled.div`
   cursor: default;
+  margin-bottom: 10px;
 `
 
-const Table = styled.div``
+const Table = styled.div`
+  margin-bottom: 10px;
+`
 
 const Row = styled.div`
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
 `
 
 const Header = styled(Row)`
