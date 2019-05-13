@@ -20,6 +20,7 @@ import {
   SIGNUP_CREDENTIALS,
   loginFailed,
   loginSucceeded,
+  setEncryptedPrivateKey,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 
@@ -146,7 +147,9 @@ const storageMiddleware = config => {
               const account = getAccountFromPrivateKey(key, password)
               if (account && account.address) {
                 dispatch(loginSucceeded())
-                dispatch(setAccount(account))
+                // setAccount call must come before setEncryptedPrivateKey
+                dispatch(setAccount({ address: account.address }))
+                dispatch(setEncryptedPrivateKey(key, emailAddress))
               }
             } catch (err) {
               dispatch(loginFailed(err))
