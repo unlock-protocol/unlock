@@ -71,7 +71,11 @@ export const gotPassword = (password: string) => ({
 // when a user logs in. This provides a bit of a timing concern, since
 // SET_ACCOUNT usually wipes out all the state. So SET_ACCOUNT must be sent
 // first.
-export const setEncryptedPrivateKey = (key: EncryptedPrivateKey) => ({
+export const setEncryptedPrivateKey = (
+  key: EncryptedPrivateKey,
+  email: string
+) => ({
   type: SET_ENCRYPTED_PRIVATE_KEY,
   key,
+  email,
 })

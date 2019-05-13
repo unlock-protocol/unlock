@@ -70,7 +70,7 @@ export const createUnlockStore = (
     errors: errorsReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
-    encryptedPrivateKey: privateKeyReducer,
+    userDetails: privateKeyReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -96,7 +96,7 @@ export const createUnlockStore = (
       errors: defaultError,
       lockFormStatus: defaultLockFormVisibility,
       fullScreenModalStatus: defaultFullScreenModalsStatus,
-      encryptedPrivateKey: defaultPrivateKeyState,
+      userDetails: defaultPrivateKeyState,
     },
     {
       provider: Object.keys(config.providers)[0],
