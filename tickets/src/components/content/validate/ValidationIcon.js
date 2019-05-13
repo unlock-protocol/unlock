@@ -53,9 +53,7 @@ ValidationIcon.defaultProps = {
   signature: null,
 }
 
-const mapStateToProps = ({ keys, event }) => {
-
-}
+const mapStateToProps = ({ keys, event }) => {}
 
 const mapDispatchToProps = dispatch => ({
   verifySignedAddress: (eventAddress, publicKey, signature) =>
