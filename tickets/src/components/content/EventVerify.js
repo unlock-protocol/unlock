@@ -11,6 +11,7 @@ import UnlockPropTypes from '../../propTypes'
 import { loadEvent } from '../../actions/event'
 import Media from '../../theme/media'
 import ValidationIcon from './validate/ValidationIcon'
+import DeveloperOverlay from '../developer/DeveloperOverlay'
 
 export const EventVerify = ({
   lock,
@@ -38,6 +39,7 @@ export const EventVerify = ({
           />
           <EventTitle>{name}</EventTitle>
         </Layout>
+        <DeveloperOverlay />
       </BrowserOnly>
     </GlobalErrorConsumer>
   )
