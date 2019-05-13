@@ -1,6 +1,6 @@
 # Changes
 
-## 0.0.29
+## 0.0.28
 
 - Modified recoverAccountFromSignedData to include callback API
 - web3 branch for use with tickets app - do not use for other projects
