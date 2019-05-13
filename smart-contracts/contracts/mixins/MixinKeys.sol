@@ -39,6 +39,16 @@ contract MixinKeys is
   // Addresses are never removed by design to avoid abuses around referals
   address[] public owners;
 
+  // Ensures that an owner owns or has owned a key in the past
+  modifier ownsOrHasOwnedKey(
+    address _owner
+  ) {
+    require(
+      keyByOwner[_owner].expirationTimestamp > 0, 'HAS_NEVER_OWNED_KEY'
+    );
+    _;
+  }
+
   // Ensures that an owner has a valid key
   modifier hasValidKey(
     address _owner
@@ -182,7 +192,7 @@ contract MixinKeys is
     address _owner
   )
     public view
-    hasValidKey(_owner)
+    ownsOrHasOwnedKey(_owner)
     returns (uint timestamp)
   {
     return keyByOwner[_owner].expirationTimestamp;
