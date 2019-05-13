@@ -4,7 +4,7 @@ import {
   SignUp,
   mapDispatchToProps,
 } from '../../../components/interface/SignUp'
-import { SIGNUP_EMAIL } from '../../../actions/signUp'
+import { SIGNUP_EMAIL } from '../../../actions/user'
 import doNothing from '../../../utils/doNothing'
 
 let wrapper: rtl.RenderResult<typeof rtl.queries>

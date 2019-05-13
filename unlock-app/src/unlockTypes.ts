@@ -20,6 +20,13 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+export enum KindOfModal {
+  WalletCheckOverlay,
+  PasswordPrompt,
+}
+/* eslint-enable no-unused-vars */
+
 export interface Transaction {
   status: TransactionStatus
   confirmations: number

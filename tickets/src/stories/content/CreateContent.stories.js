@@ -14,8 +14,11 @@ const config = configure({
 
 const store = createUnlockStore({
   locks: {
-    abc123: { address: 'abc123' },
-    def459: { address: 'def456' },
+    abc123: { address: 'abc123', owner: '0xuser' },
+    def459: { address: 'def456', owner: '0xuser' },
+  },
+  account: {
+    address: '0xuser',
   },
 })
 
