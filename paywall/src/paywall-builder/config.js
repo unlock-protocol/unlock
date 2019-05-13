@@ -16,11 +16,20 @@ export function sendConfig(config, iframe, origin) {
   )
 }
 
-function enable(window) {
+export function enable(window) {
   return new window.Promise((resolve, reject) => {
-    if (!window.web3 || !window.web3.currentProvider) return reject()
+    if (!window.web3 || !window.web3.currentProvider) {
+      return reject(new ReferenceError('no web3 wallet exists'))
+    }
     if (!window.web3.currentProvider.enable) return resolve()
-    window.web3.currentProvider.enable().then(resolve)
+    window.web3.currentProvider
+      .enable()
+      .then(() => {
+        return resolve()
+      })
+      .catch(e => {
+        reject(e)
+      })
   })
 }
 
