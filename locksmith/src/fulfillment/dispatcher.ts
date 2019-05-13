@@ -1,33 +1,34 @@
-import UnlockJs from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
 const HDWalletProvider = require('truffle-hdwallet-provider')
-
-const { WalletService, Web3Service } = UnlockJs
 
 export default class Dispatcher {
   purchasingAddress: string
   unlockAddress: string
   provider: any
+  buyer: string
 
   constructor(
     unlockAddress: string,
     purchasingAddress: string,
     credentials: any,
-    host: string
+    host: string,
+    buyer: string
   ) {
     this.unlockAddress = unlockAddress
     this.purchasingAddress = purchasingAddress
     this.provider = new HDWalletProvider(credentials, host)
+    this.buyer = buyer
   }
 
-  retrieveLock(lockAddress: string) {
+  async retrieveLock(lockAddress: string) {
     try {
       let w3s = new Web3Service({
         readOnlyProvider: this.provider,
         unlockAddress: this.unlockAddress,
       })
 
-      return w3s.getLock(lockAddress)
+      return await w3s.getLock(lockAddress)
     } catch (error) {
       throw new Error('Unable to retrieve Lock information')
     }
@@ -44,12 +45,12 @@ export default class Dispatcher {
       throw new Error('No Available Keys.')
     }
 
-    walletService.connect(this.provider)
-    walletService.purchaseKey(
+    await walletService.connect(this.provider)
+    await walletService.purchaseKey(
       lockAddress,
       recipient,
       lock.keyPrice,
-      this.purchasingAddress
+      this.buyer
     )
   }
 }
