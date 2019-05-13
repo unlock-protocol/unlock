@@ -82,13 +82,15 @@ describe('user account actions', () => {
             'b8b010fff37f9ae5559a352a185e86f9b9c1d7f7a9f1bd4e82a5dd35468fc7f6',
         },
       }
+      const email = 'ray@smuckles.escalade'
 
       const expectedAction = {
         type: SET_ENCRYPTED_PRIVATE_KEY,
         key,
+        email,
       }
 
-      expect(setEncryptedPrivateKey(key)).toEqual(expectedAction)
+      expect(setEncryptedPrivateKey(key, email)).toEqual(expectedAction)
     })
   })
 
