@@ -12,6 +12,7 @@ import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 import { ADD_KEY, addKey, updateKey } from '../../actions/key'
+import { signedAddressVerified } from '../../actions/ticket'
 
 /**
  * Fake state
@@ -444,5 +445,20 @@ describe('Web3 middleware', () => {
       mockTx.transactionHash
     )
     expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+  })
+
+  it('should load keys for the user on address verification', async () => {
+    expect.assertions(1)
+
+    mockWeb3Service.getKeyByLockForOwner = jest.fn()
+
+    const { invoke } = create()
+
+    invoke(signedAddressVerified('0x123', 'encrypted string', '0x456'))
+
+    expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+      '0x456',
+      '0x123'
+    )
   })
 })

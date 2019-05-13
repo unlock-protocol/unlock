@@ -6,7 +6,13 @@ import { PROVIDER_READY } from '../../actions/provider'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
-import { SIGN_ADDRESS, gotSignedAddress } from '../../actions/ticket'
+import {
+  SIGN_ADDRESS,
+  gotSignedAddress,
+  VERIFY_SIGNED_ADDRESS,
+  signedAddressVerified,
+  signedAddressMismatch,
+} from '../../actions/ticket'
 import {
   DISMISS_CHECK,
   GOT_WALLET,
@@ -348,6 +354,88 @@ describe('Wallet middleware', () => {
         `ENCRYPTED: ${JSON.stringify(JSON.stringify(data))}`
       )
     )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a verified event when the addresses match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWalletService.recoverAccountFromSignedData = jest.fn(
+      data => data.message.address.publicKey
+    )
+
+    invoke(action)
+
+    expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      data,
+      signedAddress
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressVerified(account.address, signedAddress, address)
+    )
+
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a mismatched event when the addresses do not match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWalletService.recoverAccountFromSignedData = jest.fn(
+      () => 'hello, I am an arbitrary string'
+    )
+
+    invoke(action)
+
+    expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      data,
+      signedAddress
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressMismatch(account.address, signedAddress)
+    )
+
     expect(next).toHaveBeenCalledWith(action)
   })
 })
