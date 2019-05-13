@@ -392,7 +392,7 @@ describe('Wallet middleware', () => {
     )
 
     expect(dispatch).toHaveBeenCalledWith(
-      signedAddressVerified(account.address, signedAddress)
+      signedAddressVerified(account.address, signedAddress, address)
     )
 
     expect(next).toHaveBeenCalledWith(action)

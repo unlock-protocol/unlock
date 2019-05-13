@@ -26,10 +26,15 @@ export const verifySignedAddress = (
   signedAddress,
 })
 
-export const signedAddressVerified = (address, signedAddress) => ({
+export const signedAddressVerified = (
+  address,
+  signedAddress,
+  eventAddress
+) => ({
   type: SIGNED_ADDRESS_VERIFIED,
   address,
   signedAddress,
+  eventAddress,
 })
 
 export const signedAddressMismatch = (address, signedAddress) => ({

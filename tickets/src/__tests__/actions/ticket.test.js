@@ -57,13 +57,15 @@ describe('ticket actions', () => {
     expect.assertions(1)
     const address = '0x12345678'
     const signedAddress = 'ENCRYPTED'
+    const eventAddress = '0x87654321'
     const expectedAction = {
       type: SIGNED_ADDRESS_VERIFIED,
       address,
       signedAddress,
+      eventAddress,
     }
 
-    expect(signedAddressVerified(address, signedAddress)).toEqual(
+    expect(signedAddressVerified(address, signedAddress, eventAddress)).toEqual(
       expectedAction
     )
   })

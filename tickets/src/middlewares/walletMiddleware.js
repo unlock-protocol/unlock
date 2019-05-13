@@ -199,7 +199,9 @@ const walletMiddleware = config => {
           )
 
           if (account === publicKey) {
-            dispatch(signedAddressVerified(publicKey, signedAddress))
+            dispatch(
+              signedAddressVerified(publicKey, signedAddress, eventAddress)
+            )
           } else {
             dispatch(signedAddressMismatch(publicKey, signedAddress))
           }
