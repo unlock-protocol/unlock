@@ -221,7 +221,6 @@ contract('Lock / erc721 / transferFrom', accounts => {
           from,
         })
         ID = await locks['FIRST'].getTokenIdFor.call(from)
-        console.log(ID)
         keyExpiration = new BigNumber(
           await locks['FIRST'].keyExpirationTimestampFor.call(from)
         )
