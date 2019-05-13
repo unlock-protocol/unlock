@@ -26,9 +26,11 @@ function _server(port, dev) {
         } else if (path === 'keychain') {
           app.render(req, res, '/keyChain', {})
         } else if (path === 'paywall') {
+          // TODO: cleanup pages which is for paywall
           const params = route('/paywall/:lockAddress/:redirect?')(pathname)
           app.render(req, res, '/paywall', Object.assign(params, query))
         } else if (path === 'demo') {
+          // TODO: cleanup pages below which is for paywall
           const params = route('/demo/:lockaddress')(pathname)
           app.render(req, res, '/demo', Object.assign(params, query))
         } else {
