@@ -167,15 +167,16 @@ describe('PaymentProcessor', () => {
       it('dispatches the purchase', () => {
         expect.assertions(1)
         paymentProcessor.initiatePurchase(
-          'purchaser',
+          'recipient',
           'lock',
           'credentials',
-          'providerHost'
+          'providerHost',
+          'buyer'
         )
 
         expect(mockDispatcher.purchase).toHaveBeenCalledWith(
           'lock',
-          'purchaser'
+          'recipient'
         )
       })
     })
@@ -184,10 +185,11 @@ describe('PaymentProcessor', () => {
       it('does not dispatch the purchase', () => {
         expect.assertions(1)
         paymentProcessor.initiatePurchase(
-          'purchaser',
+          'recipient',
           'lock',
           'credentials',
-          'providerHost'
+          'providerHost',
+          'buyer'
         )
 
         expect(mockDispatcher.purchase).not.toHaveBeenCalled()
