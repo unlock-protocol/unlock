@@ -9,11 +9,10 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { loadEvent } from '../../actions/event'
-import { lockRoute } from '../../utils/routes'
 import Media from '../../theme/media'
 import ValidationIcon from './validate/ValidationIcon'
 
-export const EventVerify = ({ lock, event, valid }) => {
+export const EventVerify = ({ lock, event, publicKey, signature }) => {
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
   const { name } = event
 
@@ -24,7 +23,11 @@ export const EventVerify = ({ lock, event, valid }) => {
           <Head>
             <title>{pageTitle(name)}</title>
           </Head>
-          <ValidationIcon valid={valid} />
+          <ValidationIcon
+            publicKey={publicKey}
+            eventAddress={lock.address}
+            signature={signature}
+          />
           <EventTitle>{name}</EventTitle>
         </Layout>
       </BrowserOnly>
@@ -35,13 +38,15 @@ export const EventVerify = ({ lock, event, valid }) => {
 EventVerify.propTypes = {
   lock: UnlockPropTypes.lock,
   event: UnlockPropTypes.ticketedEvent,
-  valid: PropTypes.bool,
+  publicKey: UnlockPropTypes.address,
+  signature: PropTypes.string,
 }
 
 EventVerify.defaultProps = {
   lock: {},
   event: {},
-  valid: null,
+  publicKey: null,
+  signature: null,
 }
 
 export const mapDispatchToProps = dispatch => ({
@@ -51,7 +56,11 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = ({ router, locks, account, event }) => {
-  const { lockAddress } = lockRoute(router.location.pathname)
+  console.log('Path name')
+  console.log(router.location.pathname)
+  const [, lockAddress, publicKey, signature] = router.location.pathname.split(
+    '/'
+  )
 
   const lock = Object.values(locks).find(
     thisLock => thisLock.address === lockAddress
@@ -60,6 +69,8 @@ export const mapStateToProps = ({ router, locks, account, event }) => {
   return {
     lock,
     event,
+    publicKey,
+    signature,
     account,
   }
 }

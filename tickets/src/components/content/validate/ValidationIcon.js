@@ -1,11 +1,16 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import UnlockPropTypes from '../../../propTypes'
 import { Title } from '../EventContent'
 import SvgIconCheckmark from '../../interface/svg/IconCheckmark'
 import SvgIconBg from '../../interface/svg/IconBg'
+import { verifySignedAddress } from '../../../actions/ticket'
 
-export const ValidationIcon = ({ valid }) => {
+export const ValidationIcon = () => {
+  const valid = false // remove this
+
   if (valid === true) {
     return (
       <Fragment>
@@ -37,14 +42,30 @@ export const ValidationIcon = ({ valid }) => {
 }
 
 ValidationIcon.propTypes = {
-  valid: PropTypes.bool,
+  publicKey: UnlockPropTypes.address,
+  eventAddress: UnlockPropTypes.address,
+  signature: PropTypes.string,
 }
 
 ValidationIcon.defaultProps = {
-  valid: null,
+  publicKey: null,
+  eventAddress: null,
+  signature: null,
 }
 
-export default ValidationIcon
+const mapStateToProps = ({ keys, event }) => {
+
+}
+
+const mapDispatchToProps = dispatch => ({
+  verifySignedAddress: (eventAddress, publicKey, signature) =>
+    dispatch(verifySignedAddress(eventAddress, publicKey, signature)),
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ValidationIcon)
 
 const IconHolder = styled.div`
   max-width: 200px;
