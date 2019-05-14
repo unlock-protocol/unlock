@@ -1,6 +1,7 @@
 import {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
+  reEncryptPrivateKey,
 } from '../accounts'
 
 jest.setTimeout(15000)
@@ -60,6 +61,34 @@ describe('account helpers', () => {
         expect(e).toBeInstanceOf(Error)
         expect(e.message).toBe('invalid password')
       }
+    })
+  })
+
+  describe('re-encrypting a private key with a new password', () => {
+    it('should return a new wallet that can be decrypted with the new password', async () => {
+      expect.assertions(1)
+      const oldPassword = 'p@55ω0rd'
+      const newPassword = 'γΘτΕ'
+      const {
+        address,
+        passwordEncryptedPrivateKey,
+      } = await createAccountAndPasswordEncryptKey(oldPassword)
+
+      const newEncryptedKey = await reEncryptPrivateKey(
+        passwordEncryptedPrivateKey,
+        oldPassword,
+        newPassword
+      )
+
+      const wallet = await getAccountFromPrivateKey(
+        newEncryptedKey,
+        newPassword
+      )
+
+      const newKeyAddress = wallet.signingKey.address
+      // This means we successfully decrypted the new payload with the new
+      // password, and we got the same account back out of it.
+      expect(newKeyAddress).toEqual(address)
     })
   })
 })

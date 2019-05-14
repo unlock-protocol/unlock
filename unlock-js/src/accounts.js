@@ -27,3 +27,21 @@ export async function getAccountFromPrivateKey(encryptedPrivateKey, password) {
   )
   return wallet
 }
+
+/**
+ * Given an encrypted private key, the password, and a new password,
+ * decrypts the private key and re-encrypts it with the new password.
+ * @param {*} encryptedPrivateKey
+ * @param {string} password
+ * @param {string} newPassword
+ * @throws Throws an error if the password does not decrypt private key.
+ */
+export async function reEncryptPrivateKey(
+  encryptedPrivateKey,
+  password,
+  newPassword
+) {
+  const wallet = await getAccountFromPrivateKey(encryptedPrivateKey, password)
+  const newWallet = await wallet.encrypt(newPassword)
+  return JSON.parse(newWallet)
+}
