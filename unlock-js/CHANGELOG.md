@@ -5,6 +5,11 @@
 - Modified recoverAccountFromSignedData to include callback API
 - web3 branch for use with tickets app - do not use for other projects
 
+## 0.0.27
+
+- fix "submitted" state for transaction-based methods like `purchaseKey` in `walletService`
+- implement signature verification with `recoverAccountFromSignedData` in `walletService` (etherrs)
+
 ## 0.0.26
 
 - Added recoverAccountFromSignedData
