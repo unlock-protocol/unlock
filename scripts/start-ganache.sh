@@ -9,7 +9,7 @@ set -e
 # node to it.
 
 NETWORK_ID=1984
-MNEMONIC="'hello unlock save the web'"
+MNEMONIC="hello unlock save the web"
 EXTRA_PARAMS=$@
 PORT=8545
 HOST=localhost
@@ -19,7 +19,7 @@ AMOUNT=10000000000000000000 # 10 Eth (by default  unlocked account on the node h
 DOT_ENV_FILE=".env.$UNLOCK_ENV.local"
 
 echo "> ganache-cli -i $NETWORK_ID -p $PORT -h $HOST --mnemonic $MNEMONIC $EXTRA_PARAMS"
-ganache-cli -i $NETWORK_ID -p $PORT -h $HOST --mnemonic $MNEMONIC $EXTRA_PARAMS &
+ganache-cli -i $NETWORK_ID -p $PORT -h $HOST --mnemonic "$MNEMONIC" $EXTRA_PARAMS &
 
 
 if [ -f $DOT_ENV_FILE ]
