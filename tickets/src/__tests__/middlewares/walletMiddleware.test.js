@@ -1,5 +1,4 @@
 import EventEmitter from 'events'
-import UnlockJs from '@unlock-protocol/unlock-js'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
@@ -21,7 +20,6 @@ import {
 } from '../../actions/walletStatus'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
-import configure from '../../config'
 
 let mockConfig
 
@@ -445,30 +443,5 @@ describe('Wallet middleware', () => {
     )
 
     expect(next).toHaveBeenCalledWith(action)
-  })
-})
-
-describe('Wallet middleware using live walletService', () => {
-  it('returns the signing address', async () => {
-    expect.assertions(1)
-
-    const config = configure()
-    const { WalletService } = UnlockJs
-    const walletService = new WalletService(config)
-
-    const data = 'hello world'
-    const account = '0x14791697260E4c9A71f18484C9f997B308e59325'
-    const signature =
-      '0xddd0a7290af9526056b4e35a077b9a11b513aa0028ec6c9880948544508f3c63' +
-      '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
-      '1c'
-
-    await walletService.recoverAccountFromSignedData(
-      data,
-      signature,
-      returnedAddress => {
-        expect(returnedAddress).toBe(account)
-      }
-    )
   })
 })
