@@ -3,10 +3,14 @@ import styled from 'styled-components'
 import Link from 'next/link'
 import { connect } from 'react-redux'
 import { signupEmail } from '../../actions/user'
+import InvalidLink from './InvalidLink'
+import FinishSignUp from './FinishSignup'
 
 interface Props {
   signupEmail: (email: string) => any
   toggleSignup: () => void
+  emailAddress?: string
+  isLinkValid?: boolean
 }
 
 interface State {
@@ -47,49 +51,59 @@ export class SignUp extends React.Component<Props, State> {
 
   render() {
     const { submitted } = this.state
-    return (
-      <div>
-        <Heading>Pay For Content Seamlessly</Heading>
-        <SubHeading>
-          Unlock enables anyone to seamlessly buy and manage access to content
-          using blockchain technology.
-        </SubHeading>
-        <Description>
-          At Unlock, we believe that the more accessible paid content is, the
-          better it will be. To do that we&#39;re making it easy for readers
-          like you to seamlessly pay for and manage your content.
-        </Description>
-        <Description>
-          If you want to know more about Unlock&#39;s decentralized payment
-          protocol, check out our{' '}
-          <Link href="/blog">
-            <span>blog</span>
-          </Link>
-          .
-        </Description>
-        {!submitted && (
-          <Form onSubmit={this.handleSubmit}>
-            <Input
-              name="emailAddress"
-              type="email"
-              placeholder="Enter your email to get started"
-              onChange={this.handleInputChange}
-            />
-            <SubmitButton type="submit" value="Sign Up" />
-            <Description>
-              Already have an account?{' '}
-              <LinkButton onClick={this.handleClick}>Log in here.</LinkButton>
-            </Description>
-          </Form>
-        )}
-        {submitted && (
-          <Confirmation>
-            <div>Please check your email</div>
-            <div>We need to confirm your email before proceeding.</div>
-          </Confirmation>
-        )}
-      </div>
-    )
+    const { emailAddress, isLinkValid } = this.props
+
+    if (!emailAddress) {
+      return (
+        <div>
+          <Heading>Pay For Content Seamlessly</Heading>
+          <SubHeading>
+            Unlock enables anyone to seamlessly buy and manage access to content
+            using blockchain technology.
+          </SubHeading>
+          <Description>
+            At Unlock, we believe that the more accessible paid content is, the
+            better it will be. To do that we&#39;re making it easy for readers
+            like you to seamlessly pay for and manage your content.
+          </Description>
+          <Description>
+            If you want to know more about Unlock&#39;s decentralized payment
+            protocol, check out our{' '}
+            <Link href="/blog">
+              <span>blog</span>
+            </Link>
+            .
+          </Description>
+          {!submitted && (
+            <Form onSubmit={this.handleSubmit}>
+              <Input
+                name="emailAddress"
+                type="email"
+                placeholder="Enter your email to get started"
+                onChange={this.handleInputChange}
+              />
+              <SubmitButton type="submit" value="Sign Up" />
+              <Description>
+                Already have an account?{' '}
+                <LinkButton onClick={this.handleClick}>Log in here.</LinkButton>
+              </Description>
+            </Form>
+          )}
+          {submitted && (
+            <Confirmation>
+              <div>Please check your email</div>
+              <div>We need to confirm your email before proceeding.</div>
+            </Confirmation>
+          )}
+        </div>
+      )
+    }
+
+    if (emailAddress && !!isLinkValid) {
+      return <FinishSignUp emailAddress={emailAddress} />
+    }
+
+    return <InvalidLink />
   }
 }
 
