@@ -39,9 +39,7 @@ interface IUnlock {
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string calldata _lockName
-  )
-    external
-    returns (PublicLock lock);
+  ) external;
 
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens

@@ -1,4 +1,7 @@
 const ethers = require('ethers')
+const bytecode = require('./bytecode').default
+const abis = require('./abis').default
+
 const gas = require('./constants').GAS_AMOUNTS
 
 export default async function deploy(
@@ -7,14 +10,28 @@ export default async function deploy(
   Unlock,
   onNewContractInstance = () => {}
 ) {
+  let Contract
+  if (typeof Unlock === 'string') {
+    const version = Unlock
+    if (!abis[version]) {
+      throw new Error(`Contract version "${Unlock}" does not seem to exist`)
+    }
+    Contract = {
+      abi: abis[version].Unlock.abi,
+      bytecode: bytecode[version].Unlock,
+    }
+  } else {
+    Contract = Unlock
+  }
+
   const provider = new ethers.providers.JsonRpcProvider(
     `http://${host}:${port}`
   )
   // Load the wallet to deploy the contract with
   const wallet = provider.getSigner(0)
   const factory = new ethers.ContractFactory(
-    Unlock.abi,
-    Unlock.bytecode,
+    Contract.abi,
+    Contract.bytecode,
     wallet
   )
   const accounts = await provider.listAccounts()

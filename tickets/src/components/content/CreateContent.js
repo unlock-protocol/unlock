@@ -32,18 +32,28 @@ export class CreateContent extends Component {
     super(props)
     const { now, locks, submitted, event } = props
 
+    this.defaultState = {
+      lockAddress: '',
+      name: '',
+      description: '',
+      location: '',
+      date: now,
+      submitted: false,
+    }
+
     this.state = {
-      lockAddress: locks[0] || event.lockAddress || '',
-      name: event.name || '',
-      description: event.description || '',
-      location: event.location || '',
-      date: event.date || now,
-      submitted,
+      lockAddress:
+        locks[0] || event.lockAddress || this.defaultState.lockAddress,
+      name: event.name || this.defaultState.name,
+      description: event.description || this.defaultState.description,
+      location: event.location || this.defaultState.location,
+      date: event.date || this.defaultState.date,
+      submitted: submitted || this.defaultState.submitted,
     }
 
     this.onChange = this.onChange.bind(this)
     this.dateChanged = this.dateChanged.bind(this)
-    this.addressChanged = this.addressChanged.bind(this)
+    this.lockChanged = this.lockChanged.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.updateStateFromEvent = this.updateStateFromEvent.bind(this)
   }
@@ -86,9 +96,15 @@ export class CreateContent extends Component {
     })
   }
 
-  addressChanged(address) {
+  lockChanged(address) {
     const { loadEvent } = this.props
-    this.changeField('lockAddress', address)
+    this.setState(state => {
+      return {
+        ...state,
+        ...this.defaultState,
+        lockAddress: address,
+      }
+    })
     loadEvent(address)
   }
 
@@ -147,7 +163,7 @@ export class CreateContent extends Component {
                       }))}
                       onChange={selectedOption => {
                         if (selectedOption.value)
-                          this.addressChanged(selectedOption.value)
+                          this.lockChanged(selectedOption.value)
                       }}
                     />
                     <Text>
@@ -229,8 +245,10 @@ CreateContent.defaultProps = {
 }
 
 export const mapStateToProps = ({ locks, account, event }, { now }) => {
-  let selectLocks = []
-  Object.values(locks).map(lock => selectLocks.push(lock.address))
+  let selectLocks = Object.values(locks)
+    .filter(lock => lock.owner === account.address)
+    .map(lock => lock.address)
+
   return {
     locks: selectLocks,
     account,

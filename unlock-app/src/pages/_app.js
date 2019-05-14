@@ -8,7 +8,7 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
-import WalletCheckOverlay from '../components/interface/FullScreenModals'
+import FullScreenModal from '../components/interface/FullScreenModals'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
@@ -107,7 +107,7 @@ The Unlock team
       <Container>
         <GlobalStyle />
         <Provider store={store}>
-          <WalletCheckOverlay />
+          <FullScreenModal />
           <ConnectedRouter>
             <ConfigProvider value={config}>
               <Component {...pageProps} />

@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import usePaywallConfig from '../../hooks/usePaywallConfig'
+import usePaywallConfig, { defaultValue } from '../../hooks/usePaywallConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { ConfigContext } from '../../utils/withConfig'
 import {
@@ -65,6 +65,19 @@ describe('usePaywallConfig hook', () => {
     )
   })
 
+  it('has the expected default value', () => {
+    expect.assertions(1)
+
+    let component
+    rtl.act(() => {
+      component = rtl.render(<Wrapper />)
+    })
+
+    expect(component.getByTestId('config')).toHaveTextContent(
+      JSON.stringify(defaultValue)
+    )
+  })
+
   it('does not send POST_MESSAGE_STARTUP more than once', () => {
     expect.assertions(1)
 
@@ -77,6 +90,15 @@ describe('usePaywallConfig hook', () => {
 
   it('listens for POST_MESSAGE_CONFIG', () => {
     expect.assertions(1)
+
+    const myConfig = {
+      ...defaultValue,
+      locks: {
+        '0x1234567890123456789012345678901234567890': {
+          name: 'my lock',
+        },
+      },
+    }
 
     let wrapper
     rtl.act(() => {
@@ -91,13 +113,57 @@ describe('usePaywallConfig hook', () => {
         origin: 'origin',
         data: {
           type: POST_MESSAGE_CONFIG,
-          payload: { wow: 'it worked!' },
+          payload: myConfig,
         },
       })
     })
 
     expect(wrapper.getByTestId('config')).toHaveTextContent(
-      JSON.stringify({ wow: 'it worked!' })
+      JSON.stringify(myConfig)
+    )
+  })
+
+  it('includes default values for callToAction', () => {
+    expect.assertions(1)
+
+    const myConfig = {
+      ...defaultValue,
+      locks: {
+        '0x1234567890123456789012345678901234567890': {
+          name: 'my lock',
+        },
+      },
+      callToAction: {
+        expired: 'hi',
+      },
+    }
+
+    let wrapper
+    rtl.act(() => {
+      wrapper = rtl.render(<Wrapper />)
+    })
+
+    const listener = getListener()
+
+    rtl.act(() => {
+      listener({
+        source: fakeWindow.parent,
+        origin: 'origin',
+        data: {
+          type: POST_MESSAGE_CONFIG,
+          payload: myConfig,
+        },
+      })
+    })
+
+    expect(wrapper.getByTestId('config')).toHaveTextContent(
+      JSON.stringify({
+        ...myConfig,
+        callToAction: {
+          ...defaultValue.callToAction,
+          expired: 'hi',
+        },
+      })
     )
   })
 })

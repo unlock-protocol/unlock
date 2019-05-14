@@ -6,6 +6,7 @@ import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
 
+import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
@@ -182,6 +183,13 @@ describe('WalletService (ethers)', () => {
         to: 'to',
         data: 'data',
       }
+      const inBetweenTransaction = {
+        hash: 'hash',
+        from: 'from',
+        to: 'to',
+        data: 'data',
+        wait: () => Promise.resolve(transaction),
+      }
 
       it('emits transaction.pending with transaction type', async () => {
         expect.assertions(1)
@@ -192,7 +200,7 @@ describe('WalletService (ethers)', () => {
         })
 
         await walletService._handleMethodCall(
-          Promise.resolve(transaction),
+          Promise.resolve(inBetweenTransaction),
           'transactionType'
         )
       })
@@ -204,7 +212,7 @@ describe('WalletService (ethers)', () => {
         let myResolve
         const myPromise = new Promise(resolve => {
           myResolve = jest.fn(resolve)
-          myResolve(transaction)
+          myResolve(inBetweenTransaction)
         })
 
         await walletService._handleMethodCall(myPromise, 'transactionType')
@@ -229,7 +237,7 @@ describe('WalletService (ethers)', () => {
         )
 
         await walletService._handleMethodCall(
-          Promise.resolve(transaction),
+          Promise.resolve(inBetweenTransaction),
           'transactionType'
         )
       })
@@ -333,8 +341,7 @@ describe('WalletService (ethers)', () => {
         await resetTestsAndConnect()
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const returned = Buffer.from('stuff').toString('base64')
         walletService.web3Provider = true // trigger the call to personalSign
 
@@ -353,8 +360,7 @@ describe('WalletService (ethers)', () => {
         await resetTestsAndConnect()
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const returned = Buffer.from('stuff').toString('base64')
 
         nock.accountsAndYield([account])
@@ -373,8 +379,7 @@ describe('WalletService (ethers)', () => {
 
         const data = 'data to be signed'
         const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
-        const hash =
-          '0xdc8727bb847aebb19e4b2efa955b9b2c59192fd4656b6fe64bd61c09d8edb6d1'
+        const hash = utils.utf8ToHex('data to be signed')
         const error = { code: 404, message: 'oops' }
 
         nock.accountsAndYield([account])
@@ -386,6 +391,26 @@ describe('WalletService (ethers)', () => {
           done()
         })
       })
+    })
+  })
+
+  describe('recoverAccountFromSignedData', () => {
+    it('returns the signing address', async () => {
+      expect.hasAssertions()
+
+      const data = 'hello world'
+      const account = '0x14791697260E4c9A71f18484C9f997B308e59325'
+      const signature =
+        '0xddd0a7290af9526056b4e35a077b9a11b513aa0028ec6c9880948544508f3c63' +
+        '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
+        '1c'
+
+      const returnedAddress = await walletService.recoverAccountFromSignedData(
+        data,
+        signature
+      )
+
+      expect(returnedAddress).toBe(account)
     })
   })
 

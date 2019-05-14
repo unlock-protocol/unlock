@@ -1,11 +1,12 @@
 import winston from 'winston'
+import config from './config'
 
 /**
  * The logger. Logging to stdout
  */
 
 const consoleTransport = new winston.transports.Console({
-  silent: process.env.NODE_ENV === 'test',
+  silent: config.unlockEnv === 'test',
 })
 
 export default winston.createLogger({

@@ -1,4 +1,4 @@
-import { constants } from 'ethers'
+import { ethers } from 'ethers'
 
 export const GAS_AMOUNTS = {
   createLock: 3500000,
@@ -11,7 +11,7 @@ export const GAS_AMOUNTS = {
 
 export const MAX_UINT =
   '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-export const ETHERS_MAX_UINT = constants.MaxUint256
+export const ETHERS_MAX_UINT = ethers.constants.MaxUint256
 
 export const UNLIMITED_KEYS_COUNT = -1
 
@@ -24,4 +24,4 @@ export default {
   KEY_ID,
 }
 
-export const ZERO = constants.AddressZero
+export const ZERO = ethers.constants.AddressZero

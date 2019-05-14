@@ -20,6 +20,13 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+export enum KindOfModal {
+  WalletCheckOverlay,
+  PasswordPrompt,
+}
+/* eslint-enable no-unused-vars */
+
 export interface Transaction {
   status: TransactionStatus
   confirmations: number
@@ -59,3 +66,6 @@ export interface Action {
   type: string
   [key: string]: any
 }
+
+// TODO: Use this where we have TS files
+export type Dispatch = (action: Action) => any

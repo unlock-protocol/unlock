@@ -1,14 +1,15 @@
+import { EventEmitter } from 'events'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
-import { STORE_LOCK_NAME } from '../../actions/storage'
+import { storageError } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
-import { SIGNUP_CREDENTIALS } from '../../actions/signUp'
-import { LOGIN_CREDENTIALS } from '../../actions/login'
+import { LOGIN_CREDENTIALS, SIGNUP_CREDENTIALS } from '../../actions/user'
+import { success, failure } from '../../services/storageService'
 
 /**
  * This is a "fake" middleware caller
@@ -32,11 +33,21 @@ const create = () => {
   return { next, invoke, store }
 }
 
-let mockStorageService = {}
+class MockStorageService extends EventEmitter {
+  constructor() {
+    super()
+  }
+}
+
+let mockStorageService = new MockStorageService()
 
 jest.mock('../../services/storageService', () => {
-  return function() {
-    return mockStorageService
+  const actual = require.requireActual('../../services/storageService')
+  return {
+    ...actual,
+    StorageService: function() {
+      return mockStorageService
+    },
   }
 })
 
@@ -64,12 +75,11 @@ describe('Storage middleware', () => {
       },
       keys: {},
     }
-    // reset the mock
-    mockStorageService = {}
+    mockStorageService = new MockStorageService()
   })
 
   describe('handling NEW_TRANSACTION', () => {
-    it('should store the transaction', async () => {
+    it('should call storageService', () => {
       expect.assertions(2)
       const { next, invoke } = create()
       const transaction = {
@@ -80,10 +90,9 @@ describe('Storage middleware', () => {
       }
       const action = { type: NEW_TRANSACTION, transaction }
 
-      mockStorageService.storeTransaction = jest.fn(() => {
-        return Promise.resolve()
-      })
-      await invoke(action)
+      mockStorageService.storeTransaction = jest.fn()
+
+      invoke(action)
       expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
         transaction.hash,
         transaction.from,
@@ -92,98 +101,115 @@ describe('Storage middleware', () => {
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
+
+    it('should handle failure.storeTransaction events', () => {
+      expect.assertions(1)
+      const { store } = create()
+      mockStorageService.emit(failure.storeTransaction, 'You done goofed.')
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        storageError('You done goofed.')
+      )
+    })
   })
 
   describe('handling SET_ACCOUNT', () => {
-    it('should retrieve the transactions for that user and only dispatch the ones which match the network', async () => {
-      expect.assertions(6)
+    it('should call storageService', () => {
+      expect.assertions(3)
       const { next, invoke, store } = create()
       const account = {
         address: '0x123',
       }
       const action = { type: SET_ACCOUNT, account }
 
-      mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
-        return Promise.resolve([
-          {
-            hash: '0xabc',
-            network: 1,
-          },
-          {
-            hash: '0xdef',
-            network: 1984,
-          },
-        ])
-      })
-      await invoke(action)
+      mockStorageService.getTransactionsHashesSentBy = jest.fn()
 
-      expect(store.dispatch).toHaveBeenNthCalledWith(1, startLoading())
-      expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
-
+      invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith(startLoading())
       expect(
         mockStorageService.getTransactionsHashesSentBy
       ).toHaveBeenCalledWith(account.address)
-      expect(
-        mockStorageService.getTransactionsHashesSentBy
-      ).toHaveBeenCalledWith(account.address)
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        3,
-        addTransaction({
-          hash: '0xdef',
-          network: 1984,
-        })
-      )
-
       expect(next).toHaveBeenCalledTimes(1)
     })
-  })
 
-  describe('handling STORE_LOCK_NAME', () => {
-    it("dispatches to the appropriate storage middleware handler to store the lock's name", async () => {
+    it('should retrieve the transactions for that user and only dispatch the ones which match the network', () => {
       expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: STORE_LOCK_NAME }
-      mockStorageService.storeLockDetails = jest.fn(() => {
-        return Promise.resolve()
+      const { store } = create()
+      const senderAddress = '0x123'
+      const hashes = [
+        {
+          hash: '0xabc',
+          network: 1,
+        },
+        {
+          hash: '0xdef',
+          network: 1984,
+        },
+      ]
+
+      mockStorageService.emit(success.getTransactionHashesSentBy, {
+        senderAddress,
+        hashes,
       })
-      await invoke(action)
-      expect(mockStorageService.storeLockDetails).toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1)
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        addTransaction(hashes[1])
+      )
+      expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
+    })
+
+    it('should handle failure events', () => {
+      expect.assertions(2)
+      const { store } = create()
+
+      mockStorageService.emit(
+        failure.getTransactionHashesSentBy,
+        'API On Vacation'
+      )
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        storageError('API On Vacation')
+      )
+      expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
     })
   })
 
   describe('handling UPDATE_LOCK', () => {
-    describe('when the update is for a lock which already has a name', () => {
-      it('calls the next middleware', async () => {
-        expect.assertions(2)
-        const { next, invoke } = create()
-        const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
-        state.locks[lock.address].name = 'My lock'
-        mockStorageService.lockLookUp = jest.fn(() => {})
+    it('should call storageService', () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
+      delete state.locks[lock.address].name
 
-        await invoke(action)
-        expect(mockStorageService.lockLookUp).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledTimes(1)
-      })
+      mockStorageService.lockLookUp = jest.fn()
+      invoke(action)
+      expect(mockStorageService.lockLookUp).toHaveBeenCalledWith(lock.address)
+      expect(next).toHaveBeenCalledTimes(1)
     })
 
-    describe('when the update is not a transaction', () => {
-      it('dispatches to the appropriate storage middleware handler', async () => {
-        expect.assertions(3)
-        const { next, invoke, store } = create()
-        const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
-        delete state.locks[lock.address].name
-        mockStorageService.lockLookUp = jest.fn(() => {
-          return Promise.resolve('A lock has no name')
-        })
-        await invoke(action)
-        expect(mockStorageService.lockLookUp).toHaveBeenCalledWith(lock.address)
-        expect(next).toHaveBeenCalledTimes(1)
-        expect(store.dispatch).toHaveBeenCalledWith(
-          updateLock(lock.address, { name: 'A lock has no name' })
-        )
-      })
+    it('should get the name and pass it on', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const address = '0x123'
+      const name =
+        'Shirley, Shirley Bo-ber-ley, bo-na-na fanna Fo-fer-ley. fee fi mo-mer-ley, Shirley!'
+
+      mockStorageService.emit(success.lockLookUp, { address, name })
+
+      expect(store.dispatch).toHaveBeenCalledWith(updateLock(address, { name }))
+    })
+
+    it('should handle failure events', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.lockLookUp, 'Not enough vespene gas.')
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        storageError('Not enough vespene gas.')
+      )
     })
   })
 
@@ -201,7 +227,7 @@ describe('Storage middleware', () => {
       expect(next).toHaveBeenCalledTimes(1)
     })
 
-    it('should store the lock details if the signed message is for a lock', () => {
+    it('should call storageService', () => {
       expect.assertions(2)
       const data = {
         message: {
@@ -211,7 +237,7 @@ describe('Storage middleware', () => {
       const signature = 'signature'
       const { next, invoke } = create()
       const action = { type: SIGNED_DATA, data, signature }
-      mockStorageService.storeLockDetails = jest.fn(() => Promise.resolve())
+      mockStorageService.storeLockDetails = jest.fn()
 
       invoke(action)
       expect(mockStorageService.storeLockDetails).toHaveBeenCalledWith(
@@ -219,6 +245,20 @@ describe('Storage middleware', () => {
         signature
       )
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should handle failure events', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.storeLockDetails, {
+        address: '0x123',
+        error: 'Not enough vespene gas.',
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        storageError('Not enough vespene gas.')
+      )
     })
   })
 
@@ -261,7 +301,7 @@ describe('Storage middleware', () => {
   })
 
   describe('SIGNUP_CREDENTIALS', () => {
-    it('should create a user and then set the account', () => {
+    it('should call storageService', () => {
       expect.assertions(2)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
@@ -273,11 +313,36 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.createUser = jest.fn(() => Promise.resolve(true))
+      mockStorageService.createUser = jest.fn()
 
       invoke(action)
       expect(mockStorageService.createUser).toHaveBeenCalled()
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should dispatch setAccount when an account is created', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(success.createUser, '0x123abc')
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        setAccount({ address: '0x123abc' })
+      )
+    })
+
+    it('should dispatch an error when user creation fails', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(
+        failure.createUser,
+        "I don't really feel like it."
+      )
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        storageError("I don't really feel like it.")
+      )
     })
   })
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { signupCredentials } from '../../actions/signUp'
+import { signupCredentials } from '../../actions/user'
 
 export interface Credentials {
   emailAddress: string
