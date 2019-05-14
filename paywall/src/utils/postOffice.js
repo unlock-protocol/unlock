@@ -42,6 +42,9 @@ export function setupPostOffice(window, target, targetOrigin) {
       })
     }
   })
+  return (type, payload) => {
+    target.postMessage({ type, payload }, targetOrigin)
+  }
 }
 
 /**
@@ -56,7 +59,7 @@ export function setupPostOffice(window, target, targetOrigin) {
 export function iframePostOffice(window) {
   const url = new URL(window.location.href)
   const origin = url.searchParams.get('origin')
-  setupPostOffice(window, window.parent, origin)
+  return setupPostOffice(window, window.parent, origin)
 }
 
 /**
@@ -67,7 +70,7 @@ export function iframePostOffice(window) {
  * @param {string} iframeOrigin the origin of the created iframe
  */
 export function mainWindowPostOffice(window, iframe, iframeOrigin) {
-  setupPostOffice(window, iframe.contentWindow, iframeOrigin)
+  return setupPostOffice(window, iframe.contentWindow, iframeOrigin)
 }
 
 /**
