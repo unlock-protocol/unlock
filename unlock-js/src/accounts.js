@@ -25,5 +25,5 @@ export async function getAccountFromPrivateKey(encryptedPrivateKey, password) {
     JSON.stringify(encryptedPrivateKey),
     password
   )
-  return wallet.signingKey
+  return wallet
 }

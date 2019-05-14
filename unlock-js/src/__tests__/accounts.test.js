@@ -37,11 +37,13 @@ describe('account helpers', () => {
 
       expect(decryptedAddress).toEqual(
         expect.objectContaining({
-          address: address,
-          privateKey: expect.any(String),
-          publicKey: expect.any(String),
-          signDigest: expect.any(Function),
-          computeSharedSecret: expect.any(Function),
+          signingKey: expect.objectContaining({
+            address: address,
+            privateKey: expect.any(String),
+            publicKey: expect.any(String),
+            signDigest: expect.any(Function),
+            computeSharedSecret: expect.any(Function),
+          }),
         })
       )
     })
