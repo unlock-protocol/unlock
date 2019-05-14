@@ -46,6 +46,23 @@ describe('postOffice', () => {
       expect(fakeWindow.handlers.message).toEqual(expect.any(Function))
     })
 
+    it('returns a function that posts a message', () => {
+      expect.assertions(2)
+
+      const postMessage = setupPostOffice(fakeWindow, fakeTarget, 'hi')
+
+      expect(postMessage).toBeInstanceOf(Function)
+      postMessage('hi', 'there')
+
+      expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'hi',
+          payload: 'there',
+        }),
+        'hi'
+      )
+    })
+
     describe('message listener', () => {
       beforeEach(() => {
         fakeWindow = {
@@ -256,6 +273,22 @@ describe('postOffice', () => {
         'http://fun.times'
       )
     })
+
+    it('returns a function that is used to post a message', () => {
+      expect.assertions(1)
+
+      const listener = jest.fn()
+      setHandler('hi', listener)
+
+      const postMessage = iframePostOffice(fakeWindow)
+
+      postMessage('type', 'response')
+
+      expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+        { type: 'type', payload: 'response' },
+        'http://fun.times'
+      )
+    })
   })
 
   describe('mainWindowPostOffice', () => {
@@ -301,6 +334,26 @@ describe('postOffice', () => {
       const response = listener.mock.calls[0][1]
 
       response('type', 'response')
+
+      expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+        { type: 'type', payload: 'response' },
+        'http://fun.times'
+      )
+    })
+
+    it('returns a function that is used to post a message', () => {
+      expect.assertions(1)
+
+      const listener = jest.fn()
+      setHandler('hi', listener)
+
+      const postMessage = mainWindowPostOffice(
+        fakeWindow,
+        iframe,
+        'http://fun.times'
+      )
+
+      postMessage('type', 'response')
 
       expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
         { type: 'type', payload: 'response' },
