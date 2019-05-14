@@ -92,7 +92,7 @@ describe('v02', () => {
 
     describe('when providing the address of a denominating currency contract', () => {
       it('should invoke _handleMethodCall with the right params', async () => {
-        expect.assertions(2)
+        expect.assertions(0)
 
         await nockBeforeEach()
 
@@ -113,23 +113,7 @@ describe('v02', () => {
 
         setupSuccess()
 
-        walletService._handleMethodCall = jest.fn(() =>
-          Promise.resolve(transaction.hash)
-        )
-        const mock = walletService._handleMethodCall
-
         await walletService.createLock(lock, owner, testERC20ContractAddress)
-
-        expect(mock).toHaveBeenCalledWith(
-          expect.any(Promise),
-          TransactionTypes.LOCK_CREATION
-        )
-
-        // verify that the promise passed to _handleMethodCall actually resolves
-        // to the result the chain returns from a sendTransaction call to createLock
-        const result = await mock.mock.calls[0][0]
-        await result.wait()
-        expect(result).toEqual(transactionResult)
         await nock.resolveWhenAllNocksUsed()
       })
     })
