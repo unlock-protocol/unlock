@@ -7,6 +7,7 @@ import { signupEmail } from '../../actions/user'
 import { LogIn } from '../../components/interface/LogIn'
 import { SignUp } from '../../components/interface/SignUp'
 import { FinishSignup } from '../../components/interface/FinishSignup'
+import { InvalidLink } from '../../components/interface/InvalidLink'
 import LogInSignUp from '../../components/interface/LogInSignUp'
 
 storiesOf('LogInSignUp/Components', module)
@@ -27,7 +28,9 @@ storiesOf('LogInSignUp/Components', module)
       />
     )
   })
-
+  .add('InvalidLink', () => {
+    return <InvalidLink />
+  })
 const store = createUnlockStore()
 
 storiesOf('LogInSignUp', module)
