@@ -91,4 +91,19 @@ describe('account helpers', () => {
       expect(newKeyAddress).toEqual(address)
     })
   })
+
+  it('should throw when an incorrect password is given for an account', async () => {
+    expect.assertions(2)
+    const {
+      passwordEncryptedPrivateKey,
+    } = await createAccountAndPasswordEncryptKey('ghost')
+
+    try {
+      // Note that password order has been swapped
+      await reEncryptPrivateKey(passwordEncryptedPrivateKey, 'geist', 'ghost')
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error)
+      expect(e.message).toBe('invalid password')
+    }
+  })
 })
