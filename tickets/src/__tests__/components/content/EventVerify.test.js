@@ -6,6 +6,8 @@ import {
   mapStateToProps,
 } from '../../../components/content/EventVerify'
 import createUnlockStore from '../../../createUnlockStore'
+import configure from '../../../config'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const store = createUnlockStore({})
 
@@ -18,6 +20,10 @@ Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
   lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
 }
+
+const config = configure({})
+
+const ConfigProvider = ConfigContext.Provider
 
 const lock = {
   keyPrice: '0.01',
@@ -34,7 +40,9 @@ describe('EventVerify', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={null} />
+        <ConfigProvider value={config}>
+          <EventVerify lock={lock} event={event} valid={null} />
+        </ConfigProvider>
       </Provider>
     )
 
@@ -46,7 +54,9 @@ describe('EventVerify', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={null} />
+        <ConfigProvider value={config}>
+          <EventVerify lock={lock} event={event} valid={null} />
+        </ConfigProvider>
       </Provider>
     )
 

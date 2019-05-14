@@ -3,6 +3,8 @@ import { storiesOf } from '@storybook/react'
 import { Provider } from 'react-redux'
 import { EventVerify } from '../../components/content/EventVerify'
 import createUnlockStore from '../../createUnlockStore'
+import configure from '../../config'
+import { ConfigContext } from '../../utils/withConfig'
 
 const lock = {
   keyPrice: '0.01',
@@ -21,9 +23,15 @@ Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
 }
 const store = createUnlockStore({})
+const config = configure({})
+const ConfigProvider = ConfigContext.Provider
 
 storiesOf('Event verification page', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <Provider store={store}>
+      <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+    </Provider>
+  ))
   .add('Event verification page with verification in progress', () => {
     return (
       <EventVerify
@@ -31,6 +39,7 @@ storiesOf('Event verification page', module)
         event={event}
         valid={null}
         loadEvent={() => {}}
+        config={config}
       />
     )
   })
