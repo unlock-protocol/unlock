@@ -1,5 +1,5 @@
 import * as UnlockV02 from 'unlock-abi-0-2'
-import * as utils from '../../utils'
+import utils from '../../utils'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -76,6 +76,7 @@ describe('v02', () => {
       // verify that the promise passed to _handleMethodCall actually resolves
       // to the result the chain returns from a sendTransaction call to createLock
       const result = await mock.mock.calls[0][0]
+      await result.wait()
       expect(result).toEqual(transactionResult)
       await nock.resolveWhenAllNocksUsed()
     })
@@ -112,12 +113,16 @@ describe('v02', () => {
         Promise.resolve(transaction.hash)
       )
 
+      const mock = walletService._handleMethodCall
+
       await walletService.partialWithdrawFromLock(
         lock,
         account,
         amount,
         callback
       )
+      const result = await mock.mock.calls[0][0]
+      await result.wait()
 
       await nock.resolveWhenAllNocksUsed()
       expect(callback).toHaveBeenCalled()

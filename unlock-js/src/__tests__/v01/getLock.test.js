@@ -2,7 +2,7 @@ import * as UnlockV01 from 'unlock-abi-0-1'
 import { ethers } from 'ethers'
 import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
-import * as utils from '../../utils'
+import utils from '../../utils'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
@@ -48,7 +48,7 @@ describe('v01', () => {
       nock.ethCallAndYield(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,
-        resultEncoder.encode(['uint256'], [0])
+        resultEncoder.encode(['uint256'], [1])
       )
 
       // retrieve the bytecode and compare to v01

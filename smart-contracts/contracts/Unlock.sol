@@ -109,32 +109,29 @@ contract Unlock is
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string memory _lockName
-  )
-    public
-    returns (PublicLock lock)
+  ) public
   {
     // create lock
-    PublicLock newLock = new PublicLock(
-      msg.sender,
-      _expirationDuration,
-      _tokenAddress,
-      _keyPrice,
-      _maxNumberOfKeys,
-      _lockName
+    address newLock = address(
+      new PublicLock(
+        msg.sender,
+        _expirationDuration,
+        _tokenAddress,
+        _keyPrice,
+        _maxNumberOfKeys,
+        _lockName
+      )
     );
 
     // Assign the new Lock
-    locks[address(newLock)] = LockBalances({
+    locks[newLock] = LockBalances({
       deployed: true,
       totalSales: 0,
       yieldedDiscountTokens: 0
     });
 
     // trigger event
-    emit NewLock(msg.sender, address(newLock));
-
-    // return the created lock
-    return newLock;
+    emit NewLock(msg.sender, newLock);
   }
 
   /**
@@ -197,9 +194,9 @@ contract Unlock is
   // The version number of the current Unlock implementation on this network
   function unlockVersion(
   ) external pure
-    returns (uint8)
+    returns (uint16)
   {
-    return 2;
+    return 3;
   }
 
   // function to read the globalTokenURI field.

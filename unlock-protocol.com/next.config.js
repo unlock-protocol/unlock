@@ -16,7 +16,7 @@ dotenv.config({
 })
 
 let requiredConfigVariables = {
-  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  unlockEnv,
   dashboardUrl: process.env.DASHBOARD_URL,
 }
 

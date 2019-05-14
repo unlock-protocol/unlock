@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer'
 import { route } from '../route'
 import templates from '../templates'
-import config from '../config'
+import config from '../../config'
 
 jest.mock('nodemailer')
 jest.mock('../templates')

@@ -1,7 +1,8 @@
-import { providers as ethersProviders } from 'ethers'
+import { ethers } from 'ethers'
 import UnlockService from './unlockService'
+import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
-import * as utils from './utils'
+import utils from './utils'
 
 /**
  * This service interacts with the user's wallet.
@@ -36,10 +37,10 @@ export default class WalletService extends UnlockService {
     this.ready = false
 
     if (typeof provider === 'string') {
-      this.provider = new ethersProviders.JsonRpcProvider(provider)
+      this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
     } else {
-      this.provider = new ethersProviders.Web3Provider(provider)
+      this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
     }
     const { chainId: networkId } = await this.provider.getNetwork()
@@ -104,7 +105,8 @@ export default class WalletService extends UnlockService {
       transactionType,
       'submitted'
     )
-    return transaction.hash
+    const finalTransaction = await transaction.wait()
+    return finalTransaction.hash
     // errors fall through
   }
 
@@ -200,7 +202,7 @@ export default class WalletService extends UnlockService {
   }
 
   async signMessage(data, method) {
-    const dataHash = utils.hexlify(utils.sha3(utils.utf8ToHex(data)))
+    const dataHash = utils.utf8ToHex(data)
     const signer = this.provider.getSigner()
     const addr = await signer.getAddress()
     let firstParam = dataHash
@@ -219,5 +221,15 @@ export default class WalletService extends UnlockService {
     } catch (error) {
       return callback(error, null)
     }
+  }
+
+  /**
+   * Given some data and a signed version of the same, returns the address of the account that signed it
+   * @param data
+   * @param signedData
+   * @returns {Promise<*>}
+   */
+  async recoverAccountFromSignedData(data, signedData) {
+    return utils.verifyMessage(data, signedData)
   }
 }

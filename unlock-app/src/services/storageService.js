@@ -1,7 +1,37 @@
 import axios from 'axios'
+import { EventEmitter } from 'events'
 
-export default class StorageService {
+// The goal of the success and failure objects is to act as a registry of events
+// that StorageService will emit. Nothing should be emitted that isn't in one of
+// these objects, and nothing that isn't emitted should be in one of these
+// objects.
+export const success = {
+  storeTransaction: 'storeTransaction.success',
+  getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
+  lockLookUp: 'lockLookUp.success',
+  storeLockDetails: 'storeLockDetails.success',
+  updateLockDetails: 'updateLockDetails.success',
+  createUser: 'createUser.success',
+  updateUser: 'updateUser.success',
+  getUserPrivateKey: 'getUserPrivateKey.success',
+  getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
+}
+
+export const failure = {
+  storeTransaction: 'storeTransaction.failure',
+  getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
+  lockLookUp: 'lockLookUp.failure',
+  storeLockDetails: 'storeLockDetails.failure',
+  updateLockDetails: 'updateLockDetails.failure',
+  createUser: 'createUser.failure',
+  updateUser: 'updateUser.failure',
+  getUserPrivateKey: 'getUserPrivateKey.failure',
+  getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
+}
+
+export class StorageService extends EventEmitter {
   constructor(host) {
+    super()
     this.host = host
   }
 
@@ -12,14 +42,24 @@ export default class StorageService {
    * @param {*} recipientAddress
    * @param {*} chain
    */
-  storeTransaction(transactionHash, senderAddress, recipientAddress, chain) {
+  async storeTransaction(
+    transactionHash,
+    senderAddress,
+    recipientAddress,
+    chain
+  ) {
     const payload = {
       transactionHash,
       sender: senderAddress,
       recipient: recipientAddress,
       chain,
     }
-    return axios.post(`${this.host}/transaction`, payload)
+    try {
+      await axios.post(`${this.host}/transaction`, payload)
+      this.emit(success.storeTransaction, transactionHash)
+    } catch (error) {
+      this.emit(failure.storeTransaction, error)
+    }
   }
 
   /**
@@ -29,18 +69,23 @@ export default class StorageService {
    * @param {*} senderAddress
    */
   async getTransactionsHashesSentBy(senderAddress) {
-    const response = await axios.get(
-      `${this.host}/transactions?sender=${senderAddress}`
-    )
-    if (response.data && response.data.transactions) {
-      return response.data.transactions.map(t => ({
-        hash: t.transactionHash,
-        network: t.chain,
-        to: t.recipient,
-        from: t.sender,
-      }))
+    try {
+      const response = await axios.get(
+        `${this.host}/transactions?sender=${senderAddress}`
+      )
+      let hashes = []
+      if (response.data && response.data.transactions) {
+        hashes = response.data.transactions.map(t => ({
+          hash: t.transactionHash,
+          network: t.chain,
+          to: t.recipient,
+          from: t.sender,
+        }))
+      }
+      this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
+    } catch (error) {
+      this.emit(failure.getTransactionHashesSentBy, error)
     }
-    return []
   }
 
   genAuthorizationHeader = token => {
@@ -58,11 +103,13 @@ export default class StorageService {
     try {
       const result = await axios.get(`${this.host}/lock/${address}`)
       if (result.data && result.data.name) {
-        return result.data.name
+        const name = result.data.name
+        this.emit(success.lockLookUp, { address, name })
+      } else {
+        this.emit(failure.lockLookUp, 'No name for this lock.')
       }
-      return Promise.reject(null)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.lockLookUp, error)
     }
   }
 
@@ -80,9 +127,13 @@ export default class StorageService {
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      return await axios.post(`${this.host}/lock`, lockDetails, opts)
+      await axios.post(`${this.host}/lock`, lockDetails, opts)
+      this.emit(success.storeLockDetails, lockDetails.address)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.storeLockDetails, {
+        address: lockDetails.address,
+        error,
+      })
     }
   }
 
@@ -101,9 +152,10 @@ export default class StorageService {
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      return await axios.put(`${this.host}/lock/${address}`, update, opts)
+      await axios.put(`${this.host}/lock/${address}`, update, opts)
+      this.emit(success.updateLockDetails, address)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.updateLockDetails, { address, error })
     }
   }
 
@@ -116,9 +168,10 @@ export default class StorageService {
   async createUser(user) {
     const opts = {}
     try {
-      return await axios.post(`${this.host}/users/`, user, opts)
+      await axios.post(`${this.host}/users/`, user, opts)
+      this.emit(success.createUser, user.publicKey)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.createUser, error)
     }
   }
 
@@ -131,20 +184,21 @@ export default class StorageService {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async updateUser(email, user, token) {
+  async updateUser(emailAddress, user, token) {
     const opts = {}
     if (token) {
       // TODO: tokens aren't optional
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      return await axios.put(
-        `${this.host}/users/${encodeURIComponent(email)}`,
+      await axios.put(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}`,
         user,
         opts
       )
+      this.emit(success.updateUser, emailAddress)
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.updateUser, { emailAddress, error })
     }
   }
 
@@ -164,10 +218,17 @@ export default class StorageService {
         opts
       )
       if (response.data && response.data.passwordEncryptedPrivateKey) {
+        this.emit(success.getUserPrivateKey, {
+          emailAddress,
+          passwordEncryptedPrivateKey:
+            response.data.passwordEncryptedPrivateKey,
+        })
+        // We also return from this one so that we can use the value directly to
+        // avoid passing the password around too much.
         return response.data.passwordEncryptedPrivateKey
       }
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.getUserPrivateKey, { emailAddress, error })
     }
   }
 
@@ -181,13 +242,20 @@ export default class StorageService {
   async getUserRecoveryPhrase(emailAddress) {
     const opts = {}
     try {
-      return await axios.get(
+      const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
         null,
         opts
       )
+      if (response.data && response.data.recoveryPhrase) {
+        const recoveryPhrase = response.data.recoveryPhrase
+        this.emit(success.getUserRecoveryPhrase, {
+          emailAddress,
+          recoveryPhrase,
+        })
+      }
     } catch (error) {
-      return Promise.reject(error)
+      this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
     }
   }
 }

@@ -1,4 +1,6 @@
 # Builds are in:
 /lib
+/esm
+
 coverage/
 *.tgz
