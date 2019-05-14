@@ -8,7 +8,7 @@ describe('Metadata Controller', () => {
       expect.assertions(2)
 
       let response = await request(app)
-        .get('/api/key/anykey_for_now')
+        .get('/api/key/0x5543625f4581af4754204e452e72a65708708bc2/1')
         .set('Accept', 'json')
 
       expect(response.status).toBe(200)
