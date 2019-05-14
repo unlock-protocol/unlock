@@ -1,5 +1,5 @@
 import ethersUtils from '../utils'
-import { GAS_AMOUNTS, ZERO, ETHERS_MAX_UINT } from '../constants'
+import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
 
@@ -8,7 +8,7 @@ import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
  * @param {PropTypes.lock} lock
  * @param {PropTypes.address} owner
  */
-export default async function(lock, owner) {
+export default async function(lock, owner, currencyContractAddress) {
   const unlockContract = await this.getUnlockContract()
   let maxNumberOfKeys = lock.maxNumberOfKeys
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -20,7 +20,7 @@ export default async function(lock, owner) {
       'createLock(uint256,address,uint256,uint256)'
     ](
       lock.expirationDuration,
-      ZERO, // ERC20 address, 0 is for eth
+      currencyContractAddress, // ERC20 address, 0 is for eth
       ethersUtils.toWei(lock.keyPrice, 'ether'),
       maxNumberOfKeys,
       {
