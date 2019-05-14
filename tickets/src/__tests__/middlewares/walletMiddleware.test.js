@@ -79,7 +79,7 @@ class MockWalletService extends EventEmitter {
   signData() {}
 }
 
-let mockWalletService = new MockWalletService()
+jest.useFakeTimers()
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
@@ -91,38 +91,42 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-jest.useFakeTimers()
-
-beforeEach(() => {
-  mockConfig = jest.requireActual('../../config').default()
-  // Reset the mock
-  mockWalletService = new MockWalletService()
-
-  // Reset state!
-  account = {
-    address: '0xabc',
-  }
-  lock = {
-    address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-    keyPrice: '100',
-    owner: account.address,
-  }
-  state = {
-    account,
-    network,
-    provider: 'HTTP',
-    locks: {
-      [lock.address]: lock,
-    },
-    transactions: {},
-    keys: {},
-    walletStatus: {
-      waiting: true,
-    },
-  }
-})
+let mockWalletService
 
 describe('Wallet middleware', () => {
+  beforeEach(() => {
+    mockConfig = jest.requireActual('../../config').default()
+    // Reset the mock
+    mockWalletService = new MockWalletService()
+
+    // Reset state!
+    account = {
+      address: '0xabc',
+    }
+    lock = {
+      address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+      keyPrice: '100',
+      owner: account.address,
+    }
+    state = {
+      account,
+      network,
+      provider: 'HTTP',
+      locks: {
+        [lock.address]: lock,
+      },
+      transactions: {},
+      keys: {},
+      walletStatus: {
+        waiting: true,
+      },
+    }
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
@@ -442,7 +446,9 @@ describe('Wallet middleware', () => {
 
     expect(next).toHaveBeenCalledWith(action)
   })
+})
 
+describe('Wallet middleware using live walletService', () => {
   it('returns the signing address', async () => {
     expect.assertions(1)
 

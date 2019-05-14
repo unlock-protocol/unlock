@@ -12,6 +12,7 @@ import { loadEvent } from '../../actions/event'
 import Media from '../../theme/media'
 import ValidationIcon from './validate/ValidationIcon'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
+import { rsvpRoute } from '../../utils/routes'
 
 export const EventVerify = ({
   lock,
@@ -67,13 +68,9 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = ({ router, locks, account, event }) => {
-  const [
-    ,
-    ,
-    lockAddress,
-    publicKey,
-    signature,
-  ] = router.location.pathname.split('/')
+  const { lockAddress, publicKey, signature } = rsvpRoute(
+    router.location.pathname
+  )
 
   const lock = Object.values(locks).find(
     thisLock => thisLock.address === lockAddress
