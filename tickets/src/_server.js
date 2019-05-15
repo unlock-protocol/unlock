@@ -21,6 +21,11 @@ function _server(port, dev) {
           } else if (path === 'event') {
             const params = route('/event/:lockAddress')(pathname)
             app.render(req, res, '/event', Object.assign(params, query))
+          } else if (path === 'checkin') {
+            const params = route('/checkin/:lockAddress/:address/:signature')(
+              pathname
+            )
+            app.render(req, res, '/checkin', Object.assign(params, query))
           } else {
             app.render(req, res, '/home', Object.assign({}))
           }
