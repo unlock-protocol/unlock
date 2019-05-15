@@ -1,4 +1,4 @@
-import waitForReady from '../../../data-iframe/blockchainHandler/waitForReady'
+import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
 import pollForChanges from '../../../data-iframe/blockchainHandler/pollForChanges'
 import {
   pollForAccountChange,
@@ -38,7 +38,7 @@ describe('blockchainHandler account handling', () => {
         onAccountChange
       )
 
-      expect(waitForReady).toBeCalled()
+      expect(ensureWalletReady).toBeCalled()
     })
 
     it('polls for account changes', async () => {

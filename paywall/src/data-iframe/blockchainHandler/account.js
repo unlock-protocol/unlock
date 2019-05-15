@@ -1,4 +1,4 @@
-import waitForReady from './waitForReady'
+import ensureWalletReady from './ensureWalletReady'
 import pollForChanges from './pollForChanges'
 
 let account
@@ -25,7 +25,7 @@ export async function pollForAccountChange(
   web3Service,
   onAccountChange = () => {}
 ) {
-  await waitForReady()
+  await ensureWalletReady()
 
   pollForChanges(
     async () => await walletService.getAccount() /* getFunc */,
