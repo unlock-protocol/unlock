@@ -5,7 +5,7 @@ export default {
 
 To get started, please confirm your email address by clicking on the following link:
 
-  ${params.confirmLink}
+  ${params.confirmLink}?email=${params.email}&signedEmail=${params.signedEmail}
 
 Once your email address is confirmed, you'll be able to use your Unlock account to pay for content and services.
 
