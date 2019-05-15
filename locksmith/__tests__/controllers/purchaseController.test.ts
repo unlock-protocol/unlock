@@ -1,6 +1,5 @@
 import request from 'supertest'
 import sigUtil from 'eth-sig-util'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 
 const ethJsUtil = require('ethereumjs-util')
 const app = require('../../src/app')
@@ -10,13 +9,14 @@ const models = require('../../src/models')
 let AuthorizedLock = models.AuthorizedLock
 let participatingLock = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 let nonParticipatingLock = '0xF4906CE8a8E861339F75611c129b9679EDAe7bBD'
+let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
 let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 let mockPaymentProcessor = {
-  chargeUser: jest.fn(),
-  initiatePurchase: jest.fn(),
+  chargeUser: jest.fn().mockResolvedValue('true'),
+  initiatePurchase: jest.fn().mockResolvedValue('true'),
 }
 
 function generateTypedData(message: any) {
@@ -44,23 +44,17 @@ function generateTypedData(message: any) {
   }
 }
 
+jest.mock('../../src/payment/paymentProcessor', () => {
+  return jest.fn().mockImplementation(() => {
+    return mockPaymentProcessor
+  })
+})
+
 describe('Purchase Controller', () => {
   beforeAll(async () => {
     await AuthorizedLock.create({
       address: participatingLock,
     })
-  })
-
-  beforeEach(() => {
-    jest.mock('../../src/payment/paymentProcessor', () => {
-      return jest.fn().mockImplementation(() => {
-        return mockPaymentProcessor
-      })
-    })
-  })
-
-  afterEach(() => {
-    jest.resetAllMocks()
   })
 
   afterAll(async () => {
@@ -76,10 +70,10 @@ describe('Purchase Controller', () => {
       })
     })
 
-    describe('when the purchase request is appropriately signed', () => {
+    describe('when the purchase request is appropriately signed and user has payment details', () => {
       let message = {
         purchaseRequest: {
-          recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          recipient: recipient,
           lock: participatingLock,
           expiry: 16733658026,
         },
@@ -91,15 +85,8 @@ describe('Purchase Controller', () => {
         data: typedData,
       })
 
-      it.skip('responds with a 202', async () => {
+      it('responds with a 202', async () => {
         expect.assertions(2)
-
-        let w3s = new Web3Service({
-          readOnlyProvider: 'http://127.0.0.1:8545',
-          unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
-          blockTime: 40,
-          requiredConfirmations: 0,
-        })
 
         let response = await request(app)
           .post('/purchase')
@@ -108,22 +95,14 @@ describe('Purchase Controller', () => {
           .send(typedData)
 
         expect(response.status).toBe(202)
-
-        /** the transaction is dispatched but may not be mined when this is called*/
-
-        let ownedKey = await w3s.getKeyByLockForOwner(
-          participatingLock,
-          '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-        )
-
-        expect(ownedKey.expiration).not.toBe(0)
+        expect(mockPaymentProcessor.initiatePurchase).toHaveBeenCalled()
       })
     })
 
     describe('when the purchase request is past its expiry window', () => {
       let message = {
         purchaseRequest: {
-          recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          recipient: recipient,
           lock: participatingLock,
           expiry: 702764221,
         },
@@ -148,7 +127,7 @@ describe('Purchase Controller', () => {
     describe('when the Lock has not been authorized for participation in the purchasing program', () => {
       let message = {
         purchaseRequest: {
-          recipient: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          recipient: recipient,
           lock: nonParticipatingLock,
           expiry: 16733658026,
         },
