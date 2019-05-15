@@ -8,14 +8,15 @@ RUN npm install -g npm@6.4.1
 RUN mkdir /standup
 WORKDIR /standup
 
-COPY ./docker/deploy-unlock.js .
-COPY ./docker/package.json .
-COPY ./docker/package-lock.json .
-COPY ./docker/TestErc20Token.json .
+COPY ./deploy-unlock.js .
+COPY ./deploy-locks.js .
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./TestErc20Token.json .
 
 RUN npm install
 WORKDIR /app
-COPY ./docker/standup.sh .
+COPY ./standup.sh .
 
 ENV DOCKER true
 EXPOSE 8545
