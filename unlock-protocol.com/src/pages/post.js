@@ -8,6 +8,7 @@ import { pageTitle } from '../constants'
 import { TwitterTags } from '../components/page/TwitterTags'
 import OpenGraphTags from '../components/page/OpenGraphTags'
 import { preparePostProps } from '../utils/blogLoader'
+import PaywallTags from '../components/page/PaywallTags'
 
 // TODO: move to PostContent
 const Post = ({ slug, post }) => {
@@ -16,6 +17,7 @@ const Post = ({ slug, post }) => {
   let description = post.description || ''
   let authorName = post.authorName || 'Unlock team'
   let publishDate = post.publishDate || ''
+  let paywallLock = post.paywallLock || ''
   let body = post.__content || ''
   let permalink = '/blog/' + slug
 
@@ -34,6 +36,7 @@ const Post = ({ slug, post }) => {
           type="application/rss+xml"
           href="/static/blog.rss"
         />
+        <PaywallTags lock={paywallLock} />
       </Head>
       <BlogPost
         body={body}
