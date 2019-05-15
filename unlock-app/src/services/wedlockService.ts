@@ -38,6 +38,11 @@ export default class WedlockService {
 
   confirmEmail = (recipient: string, confirmLink: string) => {
     return this.sendEmail(emailTemplate.signupConfirmation, recipient, {
+      email: recipient,
+      signedEmail: {
+        value: recipient,
+        encrypt: true,
+      },
       confirmLink,
     })
   }

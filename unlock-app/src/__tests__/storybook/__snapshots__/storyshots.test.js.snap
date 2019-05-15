@@ -40373,22 +40373,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-jlyJG jPfKKC"
+            class="sc-csuQGl MknIL"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-gipzik gRkbWi"
+            class="sc-Rmtcm deUOrk"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-csuQGl euBRTE"
+            class="sc-bRBYWo eVPHVS"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-csuQGl euBRTE"
+            class="sc-bRBYWo eVPHVS"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -40398,26 +40398,26 @@ Object {
             .
           </p>
           <form
-            class="sc-Rmtcm hYHtBO"
+            class="sc-hzDkRC iHZYYg"
           >
             <input
-              class="sc-bRBYWo fZelMn"
+              class="sc-jhAzac cJlwLr"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-hzDkRC ZyCuH"
+              class="sc-fBuWsC HLMFP"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-csuQGl euBRTE"
+              class="sc-bRBYWo eVPHVS"
             >
               Already have an account?
                
               <a
-                class="sc-fBuWsC ioYvfy"
+                class="sc-dVhcbM bidOAZ"
               >
                 Log in here.
               </a>
@@ -48942,243 +48942,6 @@ Object {
 }
 `;
 
-exports[`Storyshots LogInSignUp FinishSignUp 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
-  color: var(--darkgrey);
-}
-
-.c1 {
-  font-family: 'IBM Plex Serif',serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
-  color: var(--darkgrey);
-}
-
-.c2 {
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-  font-size: 20px;
-  color: var(--darkgrey);
-}
-
-.c3 {
-  display: grid;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 16px;
-  max-width: 600px;
-}
-
-.c4 {
-  height: 60px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.c5 {
-  height: 60px;
-  border: none;
-  background-color: var(--green);
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.c6 {
-  cursor: pointer;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div>
-        <h1
-          class="c0"
-        >
-          Pay For Content Seamlessly
-        </h1>
-        <h2
-          class="c1"
-        >
-          Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
-        </h2>
-        <p
-          class="c2"
-        >
-          At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
-        </p>
-        <p
-          class="c2"
-        >
-          If you want to know more about Unlock's decentralized payment protocol, check out our
-           
-          <span>
-            blog
-          </span>
-          .
-        </p>
-        <form
-          class="c3"
-        >
-          <input
-            class="c4"
-            name="emailAddress"
-            placeholder="Enter your email to get started"
-            type="email"
-          />
-          <input
-            class="c5"
-            type="submit"
-            value="Sign Up"
-          />
-          <p
-            class="c2"
-          >
-            Already have an account?
-             
-            <a
-              class="c6"
-            >
-              Log in here.
-            </a>
-          </p>
-        </form>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div>
-      <h1
-        class="sc-jlyJG jPfKKC"
-      >
-        Pay For Content Seamlessly
-      </h1>
-      <h2
-        class="sc-gipzik gRkbWi"
-      >
-        Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
-      </h2>
-      <p
-        class="sc-csuQGl euBRTE"
-      >
-        At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
-      </p>
-      <p
-        class="sc-csuQGl euBRTE"
-      >
-        If you want to know more about Unlock's decentralized payment protocol, check out our
-         
-        <span>
-          blog
-        </span>
-        .
-      </p>
-      <form
-        class="sc-Rmtcm hYHtBO"
-      >
-        <input
-          class="sc-bRBYWo fZelMn"
-          name="emailAddress"
-          placeholder="Enter your email to get started"
-          type="email"
-        />
-        <input
-          class="sc-hzDkRC ZyCuH"
-          type="submit"
-          value="Sign Up"
-        />
-        <p
-          class="sc-csuQGl euBRTE"
-        >
-          Already have an account?
-           
-          <a
-            class="sc-fBuWsC ioYvfy"
-          >
-            Log in here.
-          </a>
-        </p>
-      </form>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
 exports[`Storyshots LogInSignUp LogIn 1`] = `
 Object {
   "asFragment": [Function],
@@ -49536,22 +49299,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-jlyJG jPfKKC"
+        class="sc-csuQGl MknIL"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-gipzik gRkbWi"
+        class="sc-Rmtcm deUOrk"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-csuQGl euBRTE"
+        class="sc-bRBYWo eVPHVS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-csuQGl euBRTE"
+        class="sc-bRBYWo eVPHVS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -49561,26 +49324,26 @@ Object {
         .
       </p>
       <form
-        class="sc-Rmtcm hYHtBO"
+        class="sc-hzDkRC iHZYYg"
       >
         <input
-          class="sc-bRBYWo fZelMn"
+          class="sc-jhAzac cJlwLr"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hzDkRC ZyCuH"
+          class="sc-fBuWsC HLMFP"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-csuQGl euBRTE"
+          class="sc-bRBYWo eVPHVS"
         >
           Already have an account?
            
           <a
-            class="sc-fBuWsC ioYvfy"
+            class="sc-dVhcbM bidOAZ"
           >
             Log in here.
           </a>
@@ -49790,24 +49553,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-brqgnP jQLsHI"
+        class="sc-jAaTju kNpzMJ"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-cMljjf gYMVZY"
+        class="sc-jDwBTQ hyFtCE"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-jAaTju kacktH"
+          class="sc-gPEVay cqKage"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-jDwBTQ eKuMzH"
+          class="sc-iRbamj kLdkyx"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -49816,13 +49579,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jAaTju kacktH"
+          class="sc-gPEVay cqKage"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-jDwBTQ eKuMzH"
+          class="sc-iRbamj kLdkyx"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -49830,13 +49593,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jAaTju kacktH"
+          class="sc-gPEVay cqKage"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-jDwBTQ eKuMzH"
+          class="sc-iRbamj kLdkyx"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -49844,11 +49607,11 @@ Object {
         />
         <br />
         <span
-          class="sc-iRbamj fuctJq"
+          class="sc-gipzik erswUF"
         />
         <br />
         <input
-          class="sc-gPEVay hcbsdi"
+          class="sc-jlyJG dcdnFg"
           disabled=""
           type="submit"
           value="Submit"
@@ -50407,22 +50170,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-jlyJG jPfKKC"
+        class="sc-csuQGl MknIL"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-gipzik gRkbWi"
+        class="sc-Rmtcm deUOrk"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-csuQGl euBRTE"
+        class="sc-bRBYWo eVPHVS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-csuQGl euBRTE"
+        class="sc-bRBYWo eVPHVS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -50432,31 +50195,163 @@ Object {
         .
       </p>
       <form
-        class="sc-Rmtcm hYHtBO"
+        class="sc-hzDkRC iHZYYg"
       >
         <input
-          class="sc-bRBYWo fZelMn"
+          class="sc-jhAzac cJlwLr"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hzDkRC ZyCuH"
+          class="sc-fBuWsC HLMFP"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-csuQGl euBRTE"
+          class="sc-bRBYWo eVPHVS"
         >
           Already have an account?
            
           <a
-            class="sc-fBuWsC ioYvfy"
+            class="sc-dVhcbM bidOAZ"
           >
             Log in here.
           </a>
         </p>
       </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components SignupSuccess 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          You are now signed up! Go to
+           
+          <a
+            href="/keychain"
+          >
+            your key chain
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-brqgnP jQLsHI"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-cMljjf CJCHJ"
+      >
+        You are now signed up! Go to
+         
+        <a
+          href="/keychain"
+        >
+          your key chain
+        </a>
+        .
+      </p>
     </div>
   </div>,
   "debug": [Function],
@@ -54628,6 +54523,775 @@ Object {
           </svg>
         </div>
       </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp FinishSignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c5[disabled] {
+  background-color: var(--grey);
+  cursor: not-allowed;
+  color: black;
+}
+
+.c4 {
+  height: 30px;
+  line-height: 30px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Create Your Unlock Wallet
+        </h1>
+        <p
+          class="c1"
+        >
+          Create a password for your account.
+        </p>
+        <form>
+          <label
+            class="c2"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <input
+            class="c3"
+            disabled=""
+            id="emailPlaceholder"
+            name="emailPlaceholder"
+            type="email"
+            value="geoff@bitconnect.gov"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c3"
+            id="passwordInput"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordConfirmationInput"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="c3"
+            id="passwordConfirmationInput"
+            name="passwordConfirmation"
+            placeholder="Confirm Password"
+            type="password"
+          />
+          <br />
+          <span
+            class="c4"
+          />
+          <br />
+          <input
+            class="c5"
+            disabled=""
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-jAaTju kNpzMJ"
+      >
+        Create Your Unlock Wallet
+      </h1>
+      <p
+        class="sc-jDwBTQ hyFtCE"
+      >
+        Create a password for your account.
+      </p>
+      <form>
+        <label
+          class="sc-gPEVay cqKage"
+          for="emailPlaceholder"
+        >
+          Email
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          disabled=""
+          id="emailPlaceholder"
+          name="emailPlaceholder"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordInput"
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordConfirmationInput"
+        >
+          Confirm Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordConfirmationInput"
+          name="passwordConfirmation"
+          placeholder="Confirm Password"
+          type="password"
+        />
+        <br />
+        <span
+          class="sc-gipzik erswUF"
+        />
+        <br />
+        <input
+          class="sc-jlyJG dcdnFg"
+          disabled=""
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp InvalidLink 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          The link you used is invalid. Please try again.
+           
+          <a
+            href="/signup"
+          >
+            Sign up
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-cvbbAY hqEYNQ"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-jWBwVP fPZrbX"
+      >
+        The link you used is invalid. Please try again.
+         
+        <a
+          href="/signup"
+        >
+          Sign up
+        </a>
+        .
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp SignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 300;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c3 {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 16px;
+  max-width: 600px;
+}
+
+.c4 {
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c6 {
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Pay For Content Seamlessly
+        </h1>
+        <h2
+          class="c1"
+        >
+          Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+        </h2>
+        <p
+          class="c2"
+        >
+          At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+        </p>
+        <p
+          class="c2"
+        >
+          If you want to know more about Unlock's decentralized payment protocol, check out our
+           
+          <span>
+            blog
+          </span>
+          .
+        </p>
+        <form
+          class="c3"
+        >
+          <input
+            class="c4"
+            name="emailAddress"
+            placeholder="Enter your email to get started"
+            type="email"
+          />
+          <input
+            class="c5"
+            type="submit"
+            value="Sign Up"
+          />
+          <p
+            class="c2"
+          >
+            Already have an account?
+             
+            <a
+              class="c6"
+            >
+              Log in here.
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-csuQGl MknIL"
+      >
+        Pay For Content Seamlessly
+      </h1>
+      <h2
+        class="sc-Rmtcm deUOrk"
+      >
+        Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+      </h2>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+      </p>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        If you want to know more about Unlock's decentralized payment protocol, check out our
+         
+        <span>
+          blog
+        </span>
+        .
+      </p>
+      <form
+        class="sc-hzDkRC iHZYYg"
+      >
+        <input
+          class="sc-jhAzac cJlwLr"
+          name="emailAddress"
+          placeholder="Enter your email to get started"
+          type="email"
+        />
+        <input
+          class="sc-fBuWsC HLMFP"
+          type="submit"
+          value="Sign Up"
+        />
+        <p
+          class="sc-bRBYWo eVPHVS"
+        >
+          Already have an account?
+           
+          <a
+            class="sc-dVhcbM bidOAZ"
+          >
+            Log in here.
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp SignupSuccess 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          You are now signed up! Go to
+           
+          <a
+            href="/keychain"
+          >
+            your key chain
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-brqgnP jQLsHI"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-cMljjf CJCHJ"
+      >
+        You are now signed up! Go to
+         
+        <a
+          href="/keychain"
+        >
+          your key chain
+        </a>
+        .
+      </p>
     </div>
   </div>,
   "debug": [Function],

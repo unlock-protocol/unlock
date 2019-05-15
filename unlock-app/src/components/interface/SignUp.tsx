@@ -1,16 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import queryString from 'query-string'
 import { connect } from 'react-redux'
 import { signupEmail } from '../../actions/user'
 import InvalidLink from './InvalidLink'
+import SignupSuccess from './SignupSuccess'
+import { Router, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import FinishSignUp from './FinishSignup'
+import { verifyEmailSignature } from '../../utils/wedlocks'
 
 interface Props {
   signupEmail: (email: string) => any
   toggleSignup: () => void
   emailAddress?: string
   isLinkValid?: boolean
+  account?: Account
 }
 
 interface State {
@@ -51,7 +56,11 @@ export class SignUp extends React.Component<Props, State> {
 
   render() {
     const { submitted } = this.state
-    const { emailAddress, isLinkValid } = this.props
+    const { emailAddress, isLinkValid, account } = this.props
+
+    if (account && account.address) {
+      return <SignupSuccess />
+    }
 
     if (!emailAddress) {
       return (
@@ -107,12 +116,48 @@ export class SignUp extends React.Component<Props, State> {
   }
 }
 
+interface StoreState {
+  router: Router
+  account?: Account
+}
+
+export const mapStateToProps = ({ router, account }: StoreState) => {
+  const query = queryString.parse(router.location.search)
+  let emailAddress
+  let signedEmail
+  if (query) {
+    if (query.email) {
+      if (typeof query.email === 'string') {
+        emailAddress = query.email
+      } else if (Array.isArray(query.email)) {
+        emailAddress = query.email[0]
+      }
+    }
+    if (query.signedEmail) {
+      if (typeof query.signedEmail === 'string') {
+        signedEmail = query.signedEmail
+      } else if (Array.isArray(query.signedEmail)) {
+        signedEmail = query.signedEmail[0]
+      }
+    }
+  }
+
+  const isLinkValid =
+    !!signedEmail && verifyEmailSignature(emailAddress, signedEmail)
+
+  return {
+    emailAddress,
+    isLinkValid,
+    account,
+  }
+}
+
 export const mapDispatchToProps = (dispatch: any) => ({
   signupEmail: (email: string) => dispatch(signupEmail(email)),
 })
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SignUp)
 
