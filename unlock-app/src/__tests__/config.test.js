@@ -96,12 +96,7 @@ describe('config', () => {
       expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Dev')
       expect(config.providers).toMatchObject({
-        HTTP: {
-          connected: false,
-          headers: undefined,
-          host: 'http://127.0.0.1:8545',
-          timeout: 0,
-        },
+        HTTP: 'http://127.0.0.1:8545',
       })
     })
 
@@ -121,12 +116,7 @@ describe('config', () => {
         }
       )
       expect(config.providers).toMatchObject({
-        HTTP: {
-          connected: false,
-          headers: undefined,
-          host: 'http://127.0.0.1:8545',
-          timeout: 0,
-        },
+        HTTP: 'http://127.0.0.1:8545',
         Metamask: {
           isMetaMask: true,
         },
