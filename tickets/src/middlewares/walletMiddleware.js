@@ -193,18 +193,19 @@ const walletMiddleware = config => {
             eventAddress: eventAddress,
           })
 
-          const account = walletService.recoverAccountFromSignedData(
+          walletService.recoverAccountFromSignedData(
             data,
-            signedAddress
+            signedAddress,
+            (error, account) => {
+              if (error || account !== publicKey) {
+                dispatch(signedAddressMismatch(publicKey, signedAddress))
+              } else if (account === publicKey) {
+                dispatch(
+                  signedAddressVerified(publicKey, signedAddress, eventAddress)
+                )
+              }
+            }
           )
-
-          if (account === publicKey) {
-            dispatch(
-              signedAddressVerified(publicKey, signedAddress, eventAddress)
-            )
-          } else {
-            dispatch(signedAddressMismatch(publicKey, signedAddress))
-          }
         }
 
         if (action.type === SIGN_DATA) {

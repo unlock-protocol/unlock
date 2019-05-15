@@ -6,6 +6,8 @@ import {
   mapStateToProps,
 } from '../../../components/content/EventVerify'
 import createUnlockStore from '../../../createUnlockStore'
+import configure from '../../../config'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const store = createUnlockStore({})
 
@@ -19,6 +21,10 @@ Join us for an hour or two of fine entertainment.`,
   lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
 }
 
+const config = configure({})
+
+const ConfigProvider = ConfigContext.Provider
+
 const lock = {
   keyPrice: '0.01',
   expirationDuration: 172800,
@@ -30,39 +36,22 @@ const lock = {
 
 describe('EventVerify', () => {
   it('should display an event when given appropriate properties', () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={null} />
+        <ConfigProvider value={config}>
+          <EventVerify
+            lock={lock}
+            event={event}
+            valid={null}
+            loadEvent={() => {}}
+          />
+        </ConfigProvider>
       </Provider>
     )
 
     expect(wrapper.getByText(event.name)).not.toBeNull()
-  })
-
-  it('should display a valid notice when the valid property is set to true', () => {
-    expect.assertions(1)
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid />
-      </Provider>
-    )
-
-    expect(wrapper.getByText('Ticket Valid')).not.toBeNull()
-  })
-
-  it('should display an invalid notice when the valid property is set to false', () => {
-    expect.assertions(1)
-
-    const wrapper = rtl.render(
-      <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={false} />
-      </Provider>
-    )
-
-    expect(wrapper.getByText('Ticket Not Valid')).not.toBeNull()
   })
 
   it('should display a validating notice when the valid property is not set yet', () => {
@@ -70,7 +59,14 @@ describe('EventVerify', () => {
 
     const wrapper = rtl.render(
       <Provider store={store}>
-        <EventVerify lock={lock} event={event} valid={null} />
+        <ConfigProvider value={config}>
+          <EventVerify
+            lock={lock}
+            event={event}
+            valid={null}
+            loadEvent={() => {}}
+          />
+        </ConfigProvider>
       </Provider>
     )
 
@@ -79,38 +75,45 @@ describe('EventVerify', () => {
 })
 
 describe('mapStateToProps', () => {
-  expect.assertions(1)
+  it('should return correct properties', () => {
+    expect.assertions(1)
 
-  const props = mapStateToProps({
-    locks: {
-      abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
-    },
-    event,
-    account: {
-      address: 'foo',
-    },
-    router: {
-      location: {
-        pathname: '/event/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+    const props = mapStateToProps({
+      locks: {
+        abc123: { address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9' },
       },
-    },
+      event,
+      account: {
+        address: 'foo',
+      },
+      router: {
+        location: {
+          pathname:
+            '/checkin/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/' +
+            '0x49dbdc4CdBda8dc99c82D66d97B264386E41c0E9/' +
+            '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E943493903943',
+        },
+      },
+    })
+
+    const expectedProps = {
+      account: {
+        address: 'foo',
+      },
+      event: {
+        name: event.name,
+        date: event.date,
+        description: event.description,
+        location: event.location,
+        lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+      },
+      lock: {
+        address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+      },
+      publicKey: '0x49dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+      signature: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E943493903943',
+    }
+
+    expect(props).toEqual(expectedProps)
   })
-
-  const expectedProps = {
-    account: {
-      address: 'foo',
-    },
-    event: {
-      name: event.name,
-      date: event.date,
-      description: event.description,
-      location: event.location,
-      lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
-    },
-    lock: {
-      address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
-    },
-  }
-
-  expect(props).toEqual(expectedProps)
 })

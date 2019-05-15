@@ -77,7 +77,7 @@ class MockWalletService extends EventEmitter {
   signData() {}
 }
 
-let mockWalletService = new MockWalletService()
+jest.useFakeTimers()
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
@@ -89,38 +89,42 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-jest.useFakeTimers()
-
-beforeEach(() => {
-  mockConfig = jest.requireActual('../../config').default()
-  // Reset the mock
-  mockWalletService = new MockWalletService()
-
-  // Reset state!
-  account = {
-    address: '0xabc',
-  }
-  lock = {
-    address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-    keyPrice: '100',
-    owner: account.address,
-  }
-  state = {
-    account,
-    network,
-    provider: 'HTTP',
-    locks: {
-      [lock.address]: lock,
-    },
-    transactions: {},
-    keys: {},
-    walletStatus: {
-      waiting: true,
-    },
-  }
-})
+let mockWalletService
 
 describe('Wallet middleware', () => {
+  beforeEach(() => {
+    mockConfig = jest.requireActual('../../config').default()
+    // Reset the mock
+    mockWalletService = new MockWalletService()
+
+    // Reset state!
+    account = {
+      address: '0xabc',
+    }
+    lock = {
+      address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+      keyPrice: '100',
+      owner: account.address,
+    }
+    state = {
+      account,
+      network,
+      provider: 'HTTP',
+      locks: {
+        [lock.address]: lock,
+      },
+      transactions: {},
+      keys: {},
+      walletStatus: {
+        waiting: true,
+      },
+    }
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
@@ -380,15 +384,16 @@ describe('Wallet middleware', () => {
       signedAddress: 'encrypted sig',
     }
 
-    mockWalletService.recoverAccountFromSignedData = jest.fn(
-      data => data.message.address.publicKey
+    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
+      cb(null, data.message.address.publicKey)
     )
 
     invoke(action)
 
     expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
       data,
-      signedAddress
+      signedAddress,
+      expect.any(Function)
     )
 
     expect(dispatch).toHaveBeenCalledWith(
@@ -421,15 +426,16 @@ describe('Wallet middleware', () => {
       signedAddress: 'encrypted sig',
     }
 
-    mockWalletService.recoverAccountFromSignedData = jest.fn(
-      () => 'hello, I am an arbitrary string'
+    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
+      cb(null, 'hello, I am an arbitrary string')
     )
 
     invoke(action)
 
     expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
       data,
-      signedAddress
+      signedAddress,
+      expect.any(Function)
     )
 
     expect(dispatch).toHaveBeenCalledWith(

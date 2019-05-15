@@ -23,7 +23,6 @@ describe('route utilities', () => {
       })
     })
   })
-
   describe('rsvpRoute', () => {
     it('should return null value when it does not match', () => {
       expect.assertions(2)
