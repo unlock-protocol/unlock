@@ -19,3 +19,6 @@ export const FAILED_TO_WITHDRAW_FROM_LOCK = 'FAILED_TO_WITHDRAW_FROM_LOCK'
 
 // User acccount creation failures
 export const FAILED_TO_CREATE_USER = 'FAILED_TO_CREATE_USER'
+
+// Login failures
+export const FAILED_TO_DECRYPT_KEY = 'FAILED_TO_DECRYPT_KEY'

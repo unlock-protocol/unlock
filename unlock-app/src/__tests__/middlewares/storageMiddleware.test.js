@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
-import { storageError } from '../../actions/storage'
+import { storageError, STORAGE_ERROR } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
@@ -12,9 +12,7 @@ import configure from '../../config'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
-  loginSucceeded,
-  setEncryptedPrivateKey,
-  LOGIN_FAILED,
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 
@@ -357,14 +355,12 @@ describe('Storage middleware', () => {
     const emailAddress = 'tim@cern.ch'
     const password = 'guest'
     let key
-    let account
     beforeEach(() => {
       const info = createAccountAndPasswordEncryptKey(password)
       key = info.passwordEncryptedPrivateKey
-      account = { address: info.address }
     })
-    it('should dispatch the success cases when login succeeds', () => {
-      expect.assertions(5)
+    it('should dispatch the payload when it can get an encrypted private key', () => {
+      expect.assertions(4)
       const { next, invoke, store } = create()
 
       const action = {
@@ -379,38 +375,33 @@ describe('Storage middleware', () => {
 
       invoke(action)
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
-      expect(store.dispatch).toHaveBeenNthCalledWith(1, loginSucceeded())
-      expect(store.dispatch).toHaveBeenNthCalledWith(2, setAccount(account))
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        3,
-        setEncryptedPrivateKey(key, emailAddress)
-      )
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-
-    it("should dispatch an error when it doesn't", () => {
-      expect.assertions(4)
-      const { next, invoke, store } = create()
-
-      const action = {
-        type: LOGIN_CREDENTIALS,
-        emailAddress,
-        password: 'an incorrect password',
-      }
-
-      mockStorageService.getUserPrivateKey = jest.fn(() => ({
-        then: fn => fn(key),
-      }))
-
-      invoke(action)
-      expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: LOGIN_FAILED,
+          type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+          key,
+          emailAddress,
+          password,
         })
       )
       expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it("should dispatch a storageError when it doesn't", () => {
+      expect.assertions(2)
+      const { store } = create()
+
+      const errorMessage = "I haven't got that key."
+
+      mockStorageService.emit(failure.getUserPrivateKey, {
+        error: errorMessage,
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: STORAGE_ERROR,
+        error: errorMessage,
+      })
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
     })
   })
 })

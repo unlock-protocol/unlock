@@ -22,11 +22,16 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
+  FAILED_TO_DECRYPT_KEY,
 } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../actions/user'
 
 const { WalletService } = UnlockJs
 
@@ -209,6 +214,16 @@ const walletMiddleware = config => {
               dispatch(signedData(action.data, signature))
             }
           )
+        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
+          const { key, emailAddress, password } = action
+          // TODO: How will this interact with unlock-provider?
+          try {
+            const { address } = UnlockJs.getAccountFromPrivateKey(key, password)
+            dispatch(setAccount({ address }))
+            dispatch(setEncryptedPrivateKey(key, emailAddress))
+          } catch (err) {
+            dispatch(setError(FAILED_TO_DECRYPT_KEY, err))
+          }
         }
 
         next(action)
