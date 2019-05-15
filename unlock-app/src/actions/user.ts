@@ -11,6 +11,8 @@ export const CHANGE_PASSWORD = 'password/CHANGE'
 export const GOT_PASSWORD = 'userCredentials/PASSWORD'
 export const SET_ENCRYPTED_PRIVATE_KEY =
   'userCredentials/SET_ENCRYPTED_PRIVATE_KEY'
+export const GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD =
+  'userCredentials/GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD'
 
 export interface Credentials {
   emailAddress: string
@@ -73,9 +75,20 @@ export const gotPassword = (password: string) => ({
 // first.
 export const setEncryptedPrivateKey = (
   key: EncryptedPrivateKey,
-  email: string
+  emailAddress: string
 ) => ({
   type: SET_ENCRYPTED_PRIVATE_KEY,
   key,
-  email,
+  emailAddress,
+})
+
+export const gotEncryptedPrivateKeyPayload = (
+  key: EncryptedPrivateKey,
+  emailAddress: string,
+  password: string
+) => ({
+  type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  key,
+  emailAddress,
+  password,
 })
