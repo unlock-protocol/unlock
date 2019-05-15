@@ -44,13 +44,7 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
 
 describe('Dispatcher', () => {
   beforeAll(() => {
-    dispatcher = new Dispatcher(
-      unlockAddress,
-      recipient,
-      credential,
-      host,
-      buyer
-    )
+    dispatcher = new Dispatcher(unlockAddress, credential, host, buyer)
   })
 
   describe('retrieveLock', () => {

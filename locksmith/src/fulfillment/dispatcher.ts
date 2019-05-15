@@ -3,20 +3,17 @@ import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 const HDWalletProvider = require('truffle-hdwallet-provider')
 
 export default class Dispatcher {
-  purchasingAddress: string
   unlockAddress: string
   provider: any
   buyer: string
 
   constructor(
     unlockAddress: string,
-    purchasingAddress: string,
     credentials: any,
     host: string,
     buyer: string
   ) {
     this.unlockAddress = unlockAddress
-    this.purchasingAddress = purchasingAddress
     this.provider = new HDWalletProvider(credentials, host)
     this.buyer = buyer
   }
