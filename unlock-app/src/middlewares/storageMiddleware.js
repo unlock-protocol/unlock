@@ -1,9 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import {
-  createAccountAndPasswordEncryptKey,
-  getAccountFromPrivateKey,
-} from '@unlock-protocol/unlock-js'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -18,9 +15,7 @@ import { SIGNED_DATA, signData } from '../actions/signature'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
-  loginFailed,
-  loginSucceeded,
-  setEncryptedPrivateKey,
+  gotEncryptedPrivateKeyPayload,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 
@@ -64,6 +59,8 @@ const storageMiddleware = config => {
 
     // SIGNUP_CREDENTIALS
     storageService.on(success.createUser, publicKey => {
+      // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
+      // setting here, will need to change what storageService emits
       dispatch(setAccount({ address: publicKey }))
     })
     storageService.on(failure.createUser, error => {
@@ -142,18 +139,7 @@ const storageMiddleware = config => {
         if (action.type === LOGIN_CREDENTIALS) {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
-            try {
-              // TODO: store more than just the account address (encrypted key, etc.)
-              const account = getAccountFromPrivateKey(key, password)
-              if (account && account.address) {
-                dispatch(loginSucceeded())
-                // setAccount call must come before setEncryptedPrivateKey
-                dispatch(setAccount({ address: account.address }))
-                dispatch(setEncryptedPrivateKey(key, emailAddress))
-              }
-            } catch (err) {
-              dispatch(loginFailed(err))
-            }
+            dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
           })
         }
 

@@ -1,4 +1,5 @@
 import EventEmitter from 'events'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
   CREATE_LOCK,
@@ -10,7 +11,7 @@ import {
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
@@ -21,6 +22,7 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
+  FAILED_TO_DECRYPT_KEY,
 } from '../../errors'
 import {
   SIGN_DATA,
@@ -28,6 +30,10 @@ import {
   SIGNATURE_ERROR,
 } from '../../actions/signature'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../../actions/user'
 
 let mockConfig
 
@@ -650,6 +656,57 @@ describe('Wallet middleware', () => {
         type: SIGNATURE_ERROR,
         error,
       })
+    })
+  })
+
+  describe('GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD', () => {
+    const emailAddress = 'test@us.er'
+    const password = 'guest'
+    let key
+    let address
+    beforeEach(() => {
+      const info = createAccountAndPasswordEncryptKey(password)
+      key = info.passwordEncryptedPrivateKey
+      address = info.address
+    })
+    it('should set the account and encrypted key in state', () => {
+      expect.assertions(3)
+      const { next, invoke, store } = create()
+
+      const action = {
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key,
+        emailAddress,
+        password,
+      }
+      invoke(action)
+      expect(store.dispatch).toHaveBeenNthCalledWith(1, setAccount({ address }))
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        2,
+        setEncryptedPrivateKey(key, emailAddress)
+      )
+      expect(next).toHaveBeenCalled()
+    })
+
+    it('should dispatch an error if it cannot decrypt', () => {
+      expect.assertions(2)
+      const { next, invoke, store } = create()
+
+      const action = {
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key,
+        emailAddress,
+        password: 'not the correct password, I assure you',
+      }
+
+      invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SET_ERROR,
+          error: FAILED_TO_DECRYPT_KEY,
+        })
+      )
+      expect(next).toHaveBeenCalled()
     })
   })
 })
