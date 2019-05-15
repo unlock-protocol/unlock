@@ -34,13 +34,14 @@ describe('route utilities', () => {
       expect.assertions(1)
       expect(
         rsvpRoute(
-          '/checkin/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/0x80b8825a3e7Fb15263D0DD455B8aAfc08503bb54/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54d23493439'
+          '/checkin/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/0x80b8825a3e7Fb15263D0DD455B8aAfc08503bb54/MMdskljfsdIOJWERO79b8825a3e7Fb15263D0DD455B8aAfc08503bb54d23493439'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         publicKey: '0x80b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        signature: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54d23493439',
+        signature:
+          'MMdskljfsdIOJWERO79b8825a3e7Fb15263D0DD455B8aAfc08503bb54d23493439',
         prefix: 'checkin',
       })
     })
