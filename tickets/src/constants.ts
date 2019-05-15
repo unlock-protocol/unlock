@@ -61,7 +61,7 @@ export const LOCK_PATH_NAME_REGEXP = new RegExp(
 
 // private helpers for the EVENT_PATH_NAME_REGEXP
 const userAddress = accountRegex
-const signature = '0x[a-fA-F0-9]+'
+const signature = '[a-zA-Z0-9]+'
 
 /**
  * This regexp matches several important parameters passed in the url for the demo and paywall pages.
