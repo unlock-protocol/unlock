@@ -77,3 +77,7 @@ export interface EncryptedPrivateKey {
   version: number
   [param: string]: any
 }
+
+export interface Router {
+  location: Location
+}

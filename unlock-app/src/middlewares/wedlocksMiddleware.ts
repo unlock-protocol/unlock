@@ -15,10 +15,7 @@ const wedlocksMiddleware = (config: any) => {
         if (action.type === SIGNUP_EMAIL && window && window.location) {
           const { origin } = window.location
           // TODO: then and catch? I think we really only need to worry about errors.
-          wedlockService.confirmEmail(
-            action.emailAddress,
-            `${origin}/keychain#${action.emailAddress}`
-          )
+          wedlockService.confirmEmail(action.emailAddress, `${origin}/signup`)
         }
         next(action)
       }
