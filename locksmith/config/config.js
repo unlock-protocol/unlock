@@ -10,6 +10,12 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    jaeger: {
+      serviceName: 'locksmith',
+      tags: [],
+      port: 6832,
+      maxPacketSize: 65000,
+    },
   },
   test: {
     username: process.env.DB_USERNAME,
@@ -24,6 +30,12 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    jaeger: {
+      serviceName: 'locksmith',
+      tags: [],
+      port: 6832,
+      maxPacketSize: 65000,
+    },
   },
   production: {
     username: process.env.DB_USERNAME,
@@ -37,5 +49,11 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    jaeger: {
+      serviceName: 'locksmith',
+      tags: [],
+      port: 6832,
+      maxPacketSize: 65000,
+    },
   },
 }
