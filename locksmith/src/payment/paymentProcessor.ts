@@ -101,7 +101,6 @@ export class PaymentProcessor {
     if (successfulCharge) {
       let fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',
-        recipient,
         credentials,
         providerHost,
         buyer
