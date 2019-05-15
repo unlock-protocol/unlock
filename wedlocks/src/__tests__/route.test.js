@@ -1,10 +1,12 @@
 import nodemailer from 'nodemailer'
 import { route } from '../route'
 import templates from '../templates'
+import encrypter from '../encrypter'
 import config from '../../config'
 
 jest.mock('nodemailer')
 jest.mock('../templates')
+jest.mock('../encrypter')
 
 describe('route', () => {
   describe('when there is no matching template', () => {
@@ -19,6 +21,56 @@ describe('route', () => {
   })
 
   describe('when there is a matching template', () => {
+    let transporter = {
+      sendMail: jest.fn((options, callback) => {
+        return callback()
+      }),
+    }
+
+    beforeEach(() => {
+      nodemailer.createTransport = jest.fn(params => {
+        expect(params).toEqual(config)
+        return transporter
+      })
+    })
+
+    it('should use the template with all the params', done => {
+      expect.assertions(4)
+      templates['template'] = {
+        subject: jest.fn(() => 'subject'),
+        text: jest.fn(() => 'text'),
+      }
+      const args = {
+        template: 'template',
+        params: {
+          hello: 'world',
+          encryptedEmail: {
+            value: 'email',
+            encrypt: true,
+          },
+        },
+        recipient: 'julien@unlock-protocol.com',
+        attachments: ['data:text/plain;base64,aGVsbG8gd29ybGQ='],
+      }
+
+      encrypter.signParam = jest.fn(value => {
+        expect(value).toEqual(args.params.encryptedEmail.value)
+        return 'encrypted!'
+      })
+
+      route(args, () => {
+        expect(templates['template'].subject).toHaveBeenCalledWith({
+          encryptedEmail: 'encrypted!',
+          hello: 'world',
+        })
+        expect(templates['template'].text).toHaveBeenCalledWith({
+          encryptedEmail: 'encrypted!',
+          hello: 'world',
+        })
+        done()
+      })
+    })
+
     it('should send the email using the transporter', done => {
       expect.assertions(4)
       templates['template'] = {
