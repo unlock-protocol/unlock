@@ -20,7 +20,7 @@ describe('PaywallTags', () => {
     ).not.toBeNull()
   })
 
-  it('should render paywall tags if a lock is notsupplied', () => {
+  it('should render paywall tags if a lock is not supplied', () => {
     expect.assertions(1)
 
     const tags = rtl.render(<PaywallTags lock={null} />)
