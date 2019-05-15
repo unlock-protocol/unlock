@@ -41,6 +41,8 @@ export const rsvpRoute = path => {
 
   if (!match) {
     return {
+      signature: null,
+      publicKey: null,
       lockAddress: null,
       prefix: null,
     }

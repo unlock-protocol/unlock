@@ -5,6 +5,12 @@ describe('route utilities', () => {
     lockAddress: null,
     prefix: null,
   }
+  const rsvpBaseRoute = {
+    signature: null,
+    publicKey: null,
+    lockAddress: null,
+    prefix: null,
+  }
   describe('lockRoute', () => {
     it('should return null value when it does not match', () => {
       expect.assertions(2)
@@ -26,8 +32,8 @@ describe('route utilities', () => {
   describe('rsvpRoute', () => {
     it('should return null value when it does not match', () => {
       expect.assertions(2)
-      expect(rsvpRoute('/dashboard')).toEqual(baseRoute)
-      expect(rsvpRoute('/lock')).toEqual(baseRoute)
+      expect(rsvpRoute('/dashboard')).toEqual(rsvpBaseRoute)
+      expect(rsvpRoute('/lock')).toEqual(rsvpBaseRoute)
     })
 
     it('should return the right prefix and lockAddress value when it matches', () => {

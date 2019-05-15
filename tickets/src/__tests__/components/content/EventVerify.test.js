@@ -34,6 +34,12 @@ const lock = {
   transaction: 'deployedid',
 }
 
+// Base64-encoded event signature
+const encodedSignature =
+  'MHgyNzJhNDU4MTFkMzdlM2VjNDFmMDRjMWZlZTRkNDYzZDE2Y2E1ZDExMmM0MThlZGNjNTA1NjcwZWJmZmE1MDE0MWU1OGU4MzBkMGUyMDNhMGY0Yzk0Yjc2MTYwZjI3NTlkMDkyOTZlYzA5OTZlYjVmNWI2NWM1NDNjMmY0NWEyMjAw'
+const decodedSignature =
+  '0x272a45811d37e3ec41f04c1fee4d463d16ca5d112c418edcc505670ebffa50141e58e830d0e203a0f4c94b76160f2759d09296ec0996eb5f5b65c543c2f45a2200'
+
 describe('EventVerify', () => {
   it('should display an event when given appropriate properties', () => {
     expect.assertions(1)
@@ -91,7 +97,7 @@ describe('mapStateToProps', () => {
           pathname:
             '/checkin/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/' +
             '0x49dbdc4CdBda8dc99c82D66d97B264386E41c0E9/' +
-            '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E943493903943',
+            encodedSignature,
         },
       },
     })
@@ -111,7 +117,7 @@ describe('mapStateToProps', () => {
         address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
       },
       publicKey: '0x49dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
-      signature: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E943493903943',
+      signature: decodedSignature,
     }
 
     expect(props).toEqual(expectedProps)
