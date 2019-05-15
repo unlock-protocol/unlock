@@ -59,6 +59,8 @@ const storageMiddleware = config => {
 
     // SIGNUP_CREDENTIALS
     storageService.on(success.createUser, publicKey => {
+      // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
+      // setting here, will need to change what storageService emits
       dispatch(setAccount({ address: publicKey }))
     })
     storageService.on(failure.createUser, error => {
