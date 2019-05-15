@@ -68,9 +68,12 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = ({ router, locks, account, event }) => {
-  const { lockAddress, publicKey, signature } = rsvpRoute(
+  let { lockAddress, publicKey, signature } = rsvpRoute(
     router.location.pathname
   )
+
+  signature = atob(signature) // Unlock.js encodes in base64 unnecessarily. Decoding for now
+  // TODO: remove base64 encoding from the signing method in unlock.js so we don't need this anymore
 
   const lock = Object.values(locks).find(
     thisLock => thisLock.address === lockAddress
