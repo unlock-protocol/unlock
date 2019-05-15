@@ -5,6 +5,7 @@
 - `getAccountFromPrivateKey` now returns the entire `Wallet`, not just the `SigningKey`
 - implemented `reEncryptPrivateKey`, which can be used to change the password an
   account is encrypted with.
+- Updates lock creation interface to support other backing contracts
   
 ## 0.0.28
 
