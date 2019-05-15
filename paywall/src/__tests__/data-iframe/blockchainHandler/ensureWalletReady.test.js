@@ -1,4 +1,4 @@
-import waitForReady from '../../../data-iframe/blockchainHandler/waitForReady'
+import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
 
 jest.useFakeTimers()
 describe('blockchain handler waitForReady', () => {
@@ -6,7 +6,7 @@ describe('blockchain handler waitForReady', () => {
     expect.assertions(1)
 
     try {
-      await waitForReady(false)
+      await ensureWalletReady(false)
     } catch (e) {
       expect(e.message).toBe(
         'initialize walletService before retrieving data or sending transactions'
@@ -16,7 +16,7 @@ describe('blockchain handler waitForReady', () => {
 
   it('fails if walletService is not ready after 10 seconds', done => {
     expect.assertions(1)
-    waitForReady({ once() {} }).catch(e => {
+    ensureWalletReady({ once() {} }).catch(e => {
       expect(e.message).toBe('connecting to blockchain timed out')
       done()
     })
@@ -25,14 +25,14 @@ describe('blockchain handler waitForReady', () => {
 
   it('succeeds immediately if walletService is ready', async () => {
     expect.assertions(0)
-    await waitForReady({ ready: true })
+    await ensureWalletReady({ ready: true })
   })
 
   it('succeed eventually when walletService emits ready', done => {
     expect.assertions(1)
     const once = jest.fn()
 
-    waitForReady({ ready: false, once }).then(() => done())
+    ensureWalletReady({ ready: false, once }).then(() => done())
 
     expect(once).toHaveBeenCalledWith('ready', expect.any(Function))
     once.mock.calls[0][1]()
