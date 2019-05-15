@@ -59,6 +59,19 @@ export const LOCK_PATH_NAME_REGEXP = new RegExp(
   `(?:/(${prefix}))?/(${lockAddress})(?:/(${urlEncodedUrl})/?)?`
 )
 
+// private helpers for the EVENT_PATH_NAME_REGEXP
+const userAddress = accountRegex
+const signature = '0x[a-fA-F0-9]+'
+
+/**
+ * This regexp matches several important parameters passed in the url for the demo and paywall pages.
+ *
+ * You should not use this directly, instead use the utils/routes.js eventRoute function
+ */
+export const EVENT_PATH_NAME_REGEXP = new RegExp(
+  `(?:/(${prefix}))?/(${lockAddress})/(${userAddress})/(${signature})`
+)
+
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
 
