@@ -1,0 +1,9 @@
+version: '3'
+services:
+   ganache:
+     restart: always
+     build:
+       context: ./development
+       dockerfile: ganache.dockerfile
+     ports:
+       - 8545:8545
