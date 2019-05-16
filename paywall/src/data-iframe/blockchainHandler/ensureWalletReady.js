@@ -1,4 +1,4 @@
-export default async function waitForReady(walletService) {
+export default async function ensureWalletReady(walletService) {
   let waiting = true
   return new Promise((resolve, reject) => {
     if (!walletService) {
