@@ -7,7 +7,7 @@ import {
 } from '../../../data-iframe/blockchainHandler/account'
 
 let mockPoll
-jest.mock('../../../data-iframe/blockchainHandler/waitForReady', () =>
+jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady', () =>
   jest.fn().mockResolvedValue()
 )
 jest.mock('../../../data-iframe/blockchainHandler/pollForChanges', () => {
@@ -96,7 +96,7 @@ describe('blockchainHandler account handling', () => {
         onAccountChange
       )
 
-      await pollForChanges.mock.calls[0][2]('new account')
+      await pollForChanges.mock.calls[0][3]('new account')
     })
   })
 })
