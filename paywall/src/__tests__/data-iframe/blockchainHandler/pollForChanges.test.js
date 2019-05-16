@@ -3,19 +3,31 @@ import pollForChanges from '../../../data-iframe/blockchainHandler/pollForChange
 // note: the "await Promise.resolve()" calls cause our test to "attach" to the await calls in the function.
 // without them, the function will run after the test has completed.
 describe('pollForChanges', () => {
+  // defaults
+  const getCurrentValue = () => 1
+  const hasValueChanged = () => false
+  let continuePolling
+  const changeListener = () => 1
+  function pollXTimes(X) {
+    let num = X
+    return () => num--
+  }
+
   async function runToInitValue() {
-    await Promise.resolve() // flushes the "await getFunc" line
+    await Promise.resolve() // flushes the "await getCurrentValue" line
   }
   // run the pollForChanges up to the next iteration
   async function runToFirstDelay() {
-    await runToInitValue() // flushes the "await getFunc" line
+    await runToInitValue() // flushes the "await getCurrentValue" line
+    await Promise.resolve() // flushes the continuePolling promise
     jest.runOnlyPendingTimers() // flushes the delayPromise setTimeout
     await Promise.resolve() // flushes the delayPromise promise
   }
 
   // this should be run after "runToInitValue" and then can be run repeatedly
   async function runIteration() {
-    await Promise.resolve() // flushes the "await getFunc" line
+    await Promise.resolve() // flushes the "await continuePolling" line
+    await Promise.resolve() // flushes the "await getCurrentValue" line
     await Promise.resolve() // flushes the "await hasValueChanged" line
     await Promise.resolve() // flushes the delayPromise promise
     jest.runOnlyPendingTimers() // flushes the delayPromise setTimeout
@@ -27,74 +39,117 @@ describe('pollForChanges', () => {
     jest.resetAllMocks()
     jest.restoreAllMocks()
     jest.useFakeTimers()
+    continuePolling = pollXTimes(1)
   })
 
-  it('calls getFunc on start', () => {
+  it('calls getCurrentValue on start', () => {
     expect.assertions(1)
-    const getFunc = jest.fn()
+    const getCurrentValue = jest.fn()
 
-    pollForChanges(getFunc, () => false, () => 1, 15)
-    expect(getFunc).toHaveBeenCalled()
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
+    expect(getCurrentValue).toHaveBeenCalled()
   })
 
   it('delays for the delay milliseconds on start', async () => {
     expect.assertions(1)
 
-    pollForChanges(() => 1, () => false, () => 1, 15)
-    // this quirk is needed to flush the Promise queue
-    await runToInitValue() // flushes the "await getFunc" line
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
+    await runToInitValue() // flushes the "await getCurrentValue" line
     expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 15)
   })
 
-  it('calls getFunc again after the first delay', async () => {
+  it('calls getCurrentValue again after the first delay', async () => {
     expect.assertions(1)
-    const getFunc = jest.fn()
+    const getCurrentValue = jest.fn()
 
-    pollForChanges(getFunc, () => false, () => 1, 15)
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
     await runToFirstDelay()
-    expect(getFunc).toHaveBeenCalledTimes(2)
+    expect(getCurrentValue).toHaveBeenCalledTimes(2)
   })
 
   it('does not call the change listener if hasValueChanged returns falsy', async () => {
     expect.assertions(1)
-    const listener = jest.fn()
+    const changeListener = jest.fn()
+    const hasValueChanged = () => false
 
-    pollForChanges(() => 1, () => false, listener, 15)
-    await runToFirstDelay()
-    expect(listener).not.toHaveBeenCalled()
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
+    await runToInitValue()
+    await runIteration()
+    expect(changeListener).not.toHaveBeenCalled()
   })
 
   it('calls the change listener if hasValueChanged returns truthy', async done => {
     expect.assertions(1)
-    let checkOnlyOnce = val => {
+    const hasValueChanged = () => true
+    const changeListener = val => {
       expect(val).toBe(1)
       done()
     }
-    const listener = val => {
-      checkOnlyOnce(val)
-      checkOnlyOnce = () => 1 // this continues to poll in the test, so stop asserting
-    }
 
-    pollForChanges(() => 1, () => true, listener, 15)
-    await runToFirstDelay()
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
+    await runToInitValue()
+    await runIteration()
   })
 
-  it('polls repeatedly', async () => {
-    expect.assertions(2)
-    const getFunc = jest.fn()
+  it('polls repeatedly, and only as many times as requested', async () => {
+    expect.assertions(4)
+    const getCurrentValue = jest.fn()
+    const continuePolling = pollXTimes(3)
 
-    pollForChanges(getFunc, () => false, () => 1, 15)
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
     await runToFirstDelay()
-    expect(getFunc).toHaveBeenCalledTimes(2)
+    expect(getCurrentValue).toHaveBeenCalledTimes(2)
 
     await runIteration()
-    expect(getFunc).toHaveBeenCalledTimes(3)
+    expect(getCurrentValue).toHaveBeenCalledTimes(3)
+
+    await runIteration()
+    expect(getCurrentValue).toHaveBeenCalledTimes(4)
+
+    await runIteration()
+    expect(getCurrentValue).toHaveBeenCalledTimes(4)
   })
 
   it('does not call change listener if the value has changed but remains unchanged on the next poll', async () => {
     expect.assertions(2)
-    const listener = jest.fn()
-
+    const changeListener = jest.fn()
+    const continuePolling = pollXTimes(2)
     let callNumber = 0
 
     const hasValueChanged = () => {
@@ -102,13 +157,19 @@ describe('pollForChanges', () => {
       return true // trigger a change notification on the first round only
     }
 
-    pollForChanges(() => 1, hasValueChanged, listener, 15)
+    pollForChanges(
+      getCurrentValue,
+      hasValueChanged,
+      continuePolling,
+      changeListener,
+      15
+    )
     await runToFirstDelay()
     await runIteration()
 
-    expect(listener).toHaveBeenCalledTimes(1)
+    expect(changeListener).toHaveBeenCalledTimes(1)
 
     await runIteration()
-    expect(listener).toHaveBeenCalledTimes(1)
+    expect(changeListener).toHaveBeenCalledTimes(1)
   })
 })
