@@ -16,7 +16,7 @@ import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
 import { addKey, updateKey } from '../actions/key'
-//import { SIGNED_ADDRESS_VERIFIED } from '../actions/ticket'
+import { SIGNED_ADDRESS_VERIFIED } from '../actions/ticket'
 
 const { Web3Service } = UnlockJs
 
@@ -184,18 +184,13 @@ const web3Middleware = config => {
           }
         }
 
-        /*        if (
+        if (
           action.type === SIGNED_ADDRESS_VERIFIED &&
           action.eventAddress &&
           action.address
         ) {
-          dispatch(
-            web3Service.getKeyByLockForOwner(
-              action.eventAddress,
-              action.address
-            )
-          )
-        }*/
+          web3Service.getKeyByLockForOwner(action.eventAddress, action.address)
+        }
       }
     }
   }

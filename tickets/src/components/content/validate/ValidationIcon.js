@@ -64,16 +64,33 @@ ValidationIcon.defaultProps = {
   valid: null,
 }
 
-const mapStateToProps = ({ tickets }, { signature, publicKey }) => {
-  let valid
-  if (
-    tickets.valid &&
-    tickets.valid[signature].toString().toLowerCase() ===
-      publicKey.toString().toLowerCase()
-  ) {
-    valid = true
-  } else if (tickets.invalid && tickets.invalid[signature]) {
-    valid = false
+export const mapStateToProps = (
+  { tickets, keys },
+  { signature, publicKey, eventAddress }
+) => {
+  let valid = null
+  let normalizedPublicKey
+
+  if (publicKey) {
+    normalizedPublicKey = publicKey.toString().toLowerCase()
+
+    const keysForEvent = Object.values(keys).filter(key => {
+      return (
+        key.lock === eventAddress &&
+        key.owner.toString().toLowerCase() === normalizedPublicKey
+      )
+    })
+
+    if (
+      tickets.valid &&
+      tickets.valid[signature].toString().toLowerCase() ===
+        normalizedPublicKey &&
+      keysForEvent.length
+    ) {
+      valid = true
+    } else if (tickets.invalid && tickets.invalid[signature]) {
+      valid = false
+    }
   }
 
   return {
