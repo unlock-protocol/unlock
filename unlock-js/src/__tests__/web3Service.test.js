@@ -2236,4 +2236,28 @@ describe('Web3Service', () => {
       await web3Service.getKeyByLockForOwner(lockAddress, account)
     })
   })
+
+  describe('recoverAccountFromSignedData', () => {
+    it('returns the signing address', async () => {
+      expect.assertions(2)
+
+      const data = 'hello world'
+      const signature =
+        '0xddd0a7290af9526056b4e35a077b9a11b513aa0028ec6c9880948544508f3c63' +
+        '265e99e47ad31bb2cab9646c504576b3abc6939a1710afc08cbf3034d73214b8' +
+        '1c'
+
+      web3Service.web3.eth.personal.ecRecover = jest.fn(() => '0x123')
+      const callback = jest.fn()
+
+      await web3Service.recoverAccountFromSignedData(data, signature, callback)
+
+      expect(web3Service.web3.eth.personal.ecRecover).toBeCalledWith(
+        data,
+        signature
+      )
+
+      expect(callback).toBeCalledWith(null, '0x123')
+    })
+  })
 })
