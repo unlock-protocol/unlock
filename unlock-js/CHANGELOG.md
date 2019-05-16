@@ -1,5 +1,16 @@
 # Changes
 
+## 0.0.30
+- `web3`-only version for tickets app
+- move signature verification from `walletService` to `web3Service`
+
+## 0.0.29
+
+- `getAccountFromPrivateKey` now returns the entire `Wallet`, not just the `SigningKey`
+- implemented `reEncryptPrivateKey`, which can be used to change the password an
+  account is encrypted with.
+- Updates lock creation interface to support other backing contracts
+
 ## 0.0.28
 
 - Modified recoverAccountFromSignedData to include callback API
