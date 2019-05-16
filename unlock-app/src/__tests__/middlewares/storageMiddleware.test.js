@@ -306,7 +306,7 @@ describe('Storage middleware', () => {
   })
 
   describe('SIGNUP_CREDENTIALS', () => {
-    it('should call storageService', () => {
+    it('should call storageService', done => {
       expect.assertions(2)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
@@ -318,10 +318,15 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.createUser = jest.fn()
+      mockStorageService.createUser = user => {
+        // Verify that we at least have a public key -- if async call is used
+        // incorrectly, it will be undefined instead of string
+        expect(user.message.user.publicKey).toBeDefined()
+        done()
+      }
 
       invoke(action)
-      expect(mockStorageService.createUser).toHaveBeenCalled()
+
       expect(next).toHaveBeenCalledTimes(1)
     })
 
@@ -355,8 +360,8 @@ describe('Storage middleware', () => {
     const emailAddress = 'tim@cern.ch'
     const password = 'guest'
     let key
-    beforeEach(() => {
-      const info = createAccountAndPasswordEncryptKey(password)
+    beforeEach(async () => {
+      const info = await createAccountAndPasswordEncryptKey(password)
       key = info.passwordEncryptedPrivateKey
     })
     it('should dispatch the payload when it can get an encrypted private key', () => {
