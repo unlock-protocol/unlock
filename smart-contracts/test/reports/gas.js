@@ -109,7 +109,7 @@ contract('reports / gas', accounts => {
       lockApi.safeTransferFrom(
         accounts[4],
         accounts[2],
-        (await lockErc20.getTokenIdFor.call(accounts[2])).toString(),
+        (await lockErc20.getTokenIdFor.call(accounts[4])).toString(),
         estimatedTransferFee,
         accounts[4]
       )
