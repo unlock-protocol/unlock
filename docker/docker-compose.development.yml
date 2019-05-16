@@ -7,7 +7,7 @@ services:
        dockerfile: ganache.dockerfile
      ports:
        - 8545:8545
-   jager:
+   jaeger:
       restart: always
       image: jaegertracing/all-in-one:1.6
       ports:
