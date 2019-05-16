@@ -30,6 +30,7 @@ export async function pollForAccountChange(
   pollForChanges(
     async () => await walletService.getAccount() /* getFunc */,
     (before, after) => before !== after /* hasValueChanged */,
+    () => 1 /* continuePolling */,
     async newAccount => {
       // only called when account has changed
       /* changeListener */
