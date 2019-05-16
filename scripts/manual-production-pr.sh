@@ -18,6 +18,7 @@ then
 fi
 
 # Refresh git
+git fetch
 git pull origin master
 
 COMMIT_TO_DEPLOY=`git rev-list -1 master`
