@@ -16,7 +16,13 @@ import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
 import { addKey, updateKey } from '../actions/key'
-import { SIGNED_ADDRESS_VERIFIED } from '../actions/ticket'
+import {
+  SIGNED_ADDRESS_VERIFIED,
+  VERIFY_SIGNED_ADDRESS,
+  signedAddressVerified,
+  signedAddressMismatch,
+} from '../actions/ticket'
+import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
 
 const { Web3Service } = UnlockJs
 
@@ -143,6 +149,42 @@ const web3Middleware = config => {
           web3Service.getTransaction(
             action.transaction.hash,
             action.transaction
+          )
+        }
+
+        if (
+          action.type === VERIFY_SIGNED_ADDRESS &&
+          action.eventAddress &&
+          action.publicKey &&
+          action.signedAddress
+        ) {
+          const { publicKey, eventAddress, signedAddress } = action
+
+          const data = UnlockEventRSVP.build({
+            publicKey: publicKey,
+            eventAddress: eventAddress,
+          })
+
+          web3Service.recoverAccountFromSignedData(
+            JSON.stringify(data),
+            signedAddress,
+            (error, account) => {
+              const normalizedAccount = account.toString().toLowerCase()
+              const normalizedPublicKey = publicKey.toString().toLowerCase()
+              if (error || normalizedAccount !== normalizedPublicKey) {
+                dispatch(
+                  signedAddressMismatch(normalizedPublicKey, signedAddress)
+                )
+              } else if (normalizedAccount === normalizedPublicKey) {
+                dispatch(
+                  signedAddressVerified(
+                    normalizedPublicKey,
+                    signedAddress,
+                    eventAddress
+                  )
+                )
+              }
+            }
           )
         }
 
