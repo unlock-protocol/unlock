@@ -8,6 +8,7 @@ node_env=$7
 is_forked_pr=$8
 build_id=$9
 message=$10
+staging_environment=${environment}_staging
 
 function check_is_forked_pr()
 {
@@ -23,10 +24,29 @@ function check_if_locksmith_changed()
     LATEST_COMMIT=$(git rev-parse HEAD)
     # latest commit where path/to/folder1 was changed
     LAST_LOCKSMITH_COMMIT=$(git log -1 --format=format:%H --full-diff ./locksmith)
-
+    
     if [ $LAST_LOCKSMITH_COMMIT != $LATEST_COMMIT ];then
-      echo "No changes to Locksmith, no need to deploy"
-      exit 0
+        echo "No changes to Locksmith, no need to deploy"
+        exit 0
+    fi
+}
+
+function deploy(environment_name)
+{
+    if eb status ${environment_name}; then
+        eb deploy ${environment_name} --label locksmith-${build_id} --message "${message:0:199}"
+    else
+        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
+    fi
+    
+}
+
+function deploy_staging()
+{
+    if eb status ${environment}_staging; then
+        eb deploy ${environment}_staging --label locksmith-${build_id} --message "${message:0:199}"
+    else
+        eb create ${environment}_staging --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
     fi
 }
 
@@ -37,8 +57,5 @@ cd locksmith
 
 eb init ${application} -p docker --region us-east-1
 
-if eb status ${environment}; then
-    eb deploy ${environment} --label locksmith-${build_id} --message "${message:0:199}"
-else
-    eb create ${environment} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
-fi
+deploy(environment_name)
+deploy(staging_environment)
