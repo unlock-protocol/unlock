@@ -307,7 +307,7 @@ describe('Storage middleware', () => {
 
   describe('SIGNUP_CREDENTIALS', () => {
     it('should call storageService', done => {
-      expect.assertions(2)
+      expect.assertions(4)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
       const { next, invoke } = create()
@@ -319,9 +319,15 @@ describe('Storage middleware', () => {
       }
 
       mockStorageService.createUser = user => {
-        // Verify that we at least have a public key -- if async call is used
-        // incorrectly, it will be undefined instead of string
-        expect(user.message.user.publicKey).toBeDefined()
+        // These properties will be undefined if async call is used incorrectly.
+        const {
+          emailAddress,
+          publicKey,
+          passwordEncryptedPrivateKey,
+        } = user.message.user
+        expect(emailAddress).toBeDefined()
+        expect(publicKey).toBeDefined()
+        expect(passwordEncryptedPrivateKey).toBeDefined()
         done()
       }
 
