@@ -1,5 +1,8 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import UnlockJs from '@unlock-protocol/unlock-js'
+import {
+  getAccountFromPrivateKey,
+  WalletService,
+} from '@unlock-protocol/unlock-js'
 
 import {
   CREATE_LOCK,
@@ -32,8 +35,6 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   setEncryptedPrivateKey,
 } from '../actions/user'
-
-const { WalletService } = UnlockJs
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -217,13 +218,16 @@ const walletMiddleware = config => {
         } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
           const { key, emailAddress, password } = action
           // TODO: How will this interact with unlock-provider?
-          try {
-            const { address } = UnlockJs.getAccountFromPrivateKey(key, password)
-            dispatch(setAccount({ address }))
-            dispatch(setEncryptedPrivateKey(key, emailAddress))
-          } catch (err) {
-            dispatch(setError(FAILED_TO_DECRYPT_KEY, err))
-          }
+          getAccountFromPrivateKey(key, password)
+            .then(wallet => {
+              const address = wallet.signingKey.address
+              dispatch(setAccount({ address }))
+              dispatch(setEncryptedPrivateKey(key, emailAddress))
+            })
+            .catch(error => {
+              // handle error here
+              dispatch(setError(FAILED_TO_DECRYPT_KEY, error))
+            })
         }
 
         next(action)

@@ -122,18 +122,16 @@ const storageMiddleware = config => {
         if (action.type === SIGNUP_CREDENTIALS) {
           const { emailAddress, password } = action
 
-          const {
-            address,
-            passwordEncryptedPrivateKey,
-          } = createAccountAndPasswordEncryptKey(password)
-
-          const user = UnlockUser.build({
-            emailAddress,
-            publicKey: address,
-            passwordEncryptedPrivateKey,
-          })
-
-          storageService.createUser(user)
+          createAccountAndPasswordEncryptKey(password).then(
+            ({ address, passwordEncryptedPrivateKey }) => {
+              const user = UnlockUser.build({
+                emailAddress,
+                publicKey: address,
+                passwordEncryptedPrivateKey,
+              })
+              storageService.createUser(user)
+            }
+          )
         }
 
         if (action.type === LOGIN_CREDENTIALS) {
