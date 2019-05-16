@@ -1,6 +1,7 @@
 import {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
+  reEncryptPrivateKey,
 } from '../accounts'
 
 jest.setTimeout(15000)
@@ -37,11 +38,13 @@ describe('account helpers', () => {
 
       expect(decryptedAddress).toEqual(
         expect.objectContaining({
-          address: address,
-          privateKey: expect.any(String),
-          publicKey: expect.any(String),
-          signDigest: expect.any(Function),
-          computeSharedSecret: expect.any(Function),
+          signingKey: expect.objectContaining({
+            address: address,
+            privateKey: expect.any(String),
+            publicKey: expect.any(String),
+            signDigest: expect.any(Function),
+            computeSharedSecret: expect.any(Function),
+          }),
         })
       )
     })
@@ -59,5 +62,48 @@ describe('account helpers', () => {
         expect(e.message).toBe('invalid password')
       }
     })
+  })
+
+  describe('re-encrypting a private key with a new password', () => {
+    it('should return a new wallet that can be decrypted with the new password', async () => {
+      expect.assertions(1)
+      const oldPassword = 'p@55ω0rd'
+      const newPassword = 'γΘτΕ'
+      const {
+        address,
+        passwordEncryptedPrivateKey,
+      } = await createAccountAndPasswordEncryptKey(oldPassword)
+
+      const newEncryptedKey = await reEncryptPrivateKey(
+        passwordEncryptedPrivateKey,
+        oldPassword,
+        newPassword
+      )
+
+      const wallet = await getAccountFromPrivateKey(
+        newEncryptedKey,
+        newPassword
+      )
+
+      const newKeyAddress = wallet.signingKey.address
+      // This means we successfully decrypted the new payload with the new
+      // password, and we got the same account back out of it.
+      expect(newKeyAddress).toEqual(address)
+    })
+  })
+
+  it('should throw when an incorrect password is given for an account', async () => {
+    expect.assertions(2)
+    const {
+      passwordEncryptedPrivateKey,
+    } = await createAccountAndPasswordEncryptKey('ghost')
+
+    try {
+      // Note that password order has been swapped
+      await reEncryptPrivateKey(passwordEncryptedPrivateKey, 'geist', 'ghost')
+    } catch (e) {
+      expect(e).toBeInstanceOf(Error)
+      expect(e.message).toBe('invalid password')
+    }
   })
 })

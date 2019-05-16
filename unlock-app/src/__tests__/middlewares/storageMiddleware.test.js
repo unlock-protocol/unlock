@@ -1,14 +1,19 @@
 import { EventEmitter } from 'events'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
-import { storageError } from '../../actions/storage'
+import { storageError, STORAGE_ERROR } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
-import { LOGIN_CREDENTIALS, SIGNUP_CREDENTIALS } from '../../actions/user'
+import {
+  LOGIN_CREDENTIALS,
+  SIGNUP_CREDENTIALS,
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+} from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 
 /**
@@ -301,8 +306,8 @@ describe('Storage middleware', () => {
   })
 
   describe('SIGNUP_CREDENTIALS', () => {
-    it('should call storageService', () => {
-      expect.assertions(2)
+    it('should call storageService', done => {
+      expect.assertions(4)
       const emailAddress = 'tim@cern.ch'
       const password = 'guest'
       const { next, invoke } = create()
@@ -313,10 +318,21 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.createUser = jest.fn()
+      mockStorageService.createUser = user => {
+        // These properties will be undefined if async call is used incorrectly.
+        const {
+          emailAddress,
+          publicKey,
+          passwordEncryptedPrivateKey,
+        } = user.message.user
+        expect(emailAddress).toBeDefined()
+        expect(publicKey).toBeDefined()
+        expect(passwordEncryptedPrivateKey).toBeDefined()
+        done()
+      }
 
       invoke(action)
-      expect(mockStorageService.createUser).toHaveBeenCalled()
+
       expect(next).toHaveBeenCalledTimes(1)
     })
 
@@ -347,11 +363,16 @@ describe('Storage middleware', () => {
   })
 
   describe('LOGIN_CREDENTIALS', () => {
-    it('', () => {
-      expect.assertions(2)
-      const emailAddress = 'tim@cern.ch'
-      const password = 'guest'
-      const { next, invoke } = create()
+    const emailAddress = 'tim@cern.ch'
+    const password = 'guest'
+    let key
+    beforeEach(async () => {
+      const info = await createAccountAndPasswordEncryptKey(password)
+      key = info.passwordEncryptedPrivateKey
+    })
+    it('should dispatch the payload when it can get an encrypted private key', () => {
+      expect.assertions(4)
+      const { next, invoke, store } = create()
 
       const action = {
         type: LOGIN_CREDENTIALS,
@@ -359,13 +380,39 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.getUserPrivateKey = jest.fn(() =>
-        Promise.resolve(true)
-      )
+      mockStorageService.getUserPrivateKey = jest.fn(() => ({
+        then: fn => fn(key),
+      }))
 
       invoke(action)
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+          key,
+          emailAddress,
+          password,
+        })
+      )
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it("should dispatch a storageError when it doesn't", () => {
+      expect.assertions(2)
+      const { store } = create()
+
+      const errorMessage = "I haven't got that key."
+
+      mockStorageService.emit(failure.getUserPrivateKey, {
+        error: errorMessage,
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: STORAGE_ERROR,
+        error: errorMessage,
+      })
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
     })
   })
 })

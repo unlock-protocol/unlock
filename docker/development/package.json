@@ -1,0 +1,12 @@
+{
+  "name": "unlock_development_network",
+  "version": "1.0.0",
+  "description": "A development network",
+  "author": "Unlock Inc",
+  "license": "ISC",
+  "dependencies": {
+    "@unlock-protocol/unlock-js": "0.0.29",
+    "ethers": "^4.0.26",
+    "unlock-abi-0-2": "1.0.0"
+  }
+}

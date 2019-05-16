@@ -34157,274 +34157,6 @@ Object {
 }
 `;
 
-exports[`Storyshots Finish Signup The form 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
-  color: var(--darkgrey);
-}
-
-.c1 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: 300;
-  font-size: 20px;
-  color: var(--darkgrey);
-}
-
-.c2 {
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-
-.c3 {
-  height: 60px;
-  width: 385px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-}
-
-.c5 {
-  height: 60px;
-  width: 385px;
-  border: none;
-  background-color: var(--green);
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.c5[disabled] {
-  background-color: var(--grey);
-  cursor: not-allowed;
-  color: black;
-}
-
-.c4 {
-  height: 30px;
-  line-height: 30px;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div>
-        <h1
-          class="c0"
-        >
-          Create Your Unlock Wallet
-        </h1>
-        <p
-          class="c1"
-        >
-          Create a password for your account.
-        </p>
-        <form>
-          <label
-            class="c2"
-            for="emailPlaceholder"
-          >
-            Email
-          </label>
-          <input
-            class="c3"
-            disabled=""
-            id="emailPlaceholder"
-            name="emailPlaceholder"
-            type="email"
-            value="geoff@bitconnect.gov"
-          />
-          <br />
-          <label
-            class="c2"
-            for="passwordInput"
-          >
-            Password
-          </label>
-          <input
-            class="c3"
-            id="passwordInput"
-            name="password"
-            placeholder="Password"
-            type="password"
-          />
-          <br />
-          <label
-            class="c2"
-            for="passwordConfirmationInput"
-          >
-            Confirm Password
-          </label>
-          <input
-            class="c3"
-            id="passwordConfirmationInput"
-            name="passwordConfirmation"
-            placeholder="Confirm Password"
-            type="password"
-          />
-          <br />
-          <span
-            class="c4"
-          />
-          <br />
-          <input
-            class="c5"
-            disabled=""
-            type="submit"
-            value="Submit"
-          />
-        </form>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div>
-      <h1
-        class="sc-hMqMXs gKGisj"
-      >
-        Create Your Unlock Wallet
-      </h1>
-      <p
-        class="sc-kEYyzF BnzjL"
-      >
-        Create a password for your account.
-      </p>
-      <form>
-        <label
-          class="sc-kkGfuU QvGlL"
-          for="emailPlaceholder"
-        >
-          Email
-        </label>
-        <input
-          class="sc-iAyFgw icMwdc"
-          disabled=""
-          id="emailPlaceholder"
-          name="emailPlaceholder"
-          type="email"
-          value="geoff@bitconnect.gov"
-        />
-        <br />
-        <label
-          class="sc-kkGfuU QvGlL"
-          for="passwordInput"
-        >
-          Password
-        </label>
-        <input
-          class="sc-iAyFgw icMwdc"
-          id="passwordInput"
-          name="password"
-          placeholder="Password"
-          type="password"
-        />
-        <br />
-        <label
-          class="sc-kkGfuU QvGlL"
-          for="passwordConfirmationInput"
-        >
-          Confirm Password
-        </label>
-        <input
-          class="sc-iAyFgw icMwdc"
-          id="passwordConfirmationInput"
-          name="passwordConfirmation"
-          placeholder="Confirm Password"
-          type="password"
-        />
-        <br />
-        <span
-          class="sc-eHgmQL iBSShp"
-        />
-        <br />
-        <input
-          class="sc-hSdWYo fKVqCw"
-          disabled=""
-          type="submit"
-          value="Submit"
-        />
-      </form>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
 exports[`Storyshots Footer the footer 1`] = `
 Object {
   "asFragment": [Function],
@@ -40439,7 +40171,6 @@ Object {
               </p>
             </form>
           </div>
-          
         </div>
         <div
           class="c23"
@@ -40642,22 +40373,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-gPEVay lcfiYK"
+            class="sc-csuQGl MknIL"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-iRbamj bkaUIQ"
+            class="sc-Rmtcm deUOrk"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-jlyJG haszTb"
+            class="sc-bRBYWo eVPHVS"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-jlyJG haszTb"
+            class="sc-bRBYWo eVPHVS"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -40667,33 +40398,32 @@ Object {
             .
           </p>
           <form
-            class="sc-gipzik KaKcg"
+            class="sc-hzDkRC iHZYYg"
           >
             <input
-              class="sc-csuQGl leQgJD"
+              class="sc-jhAzac cJlwLr"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-Rmtcm hTNgdO"
+              class="sc-fBuWsC HLMFP"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-jlyJG haszTb"
+              class="sc-bRBYWo eVPHVS"
             >
               Already have an account?
                
               <a
-                class="sc-hzDkRC ePBnMA"
+                class="sc-dVhcbM bidOAZ"
               >
                 Log in here.
               </a>
             </p>
           </form>
         </div>
-        
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
@@ -40768,23 +40498,26 @@ Object {
   "baseElement": <body>
     .c0 {
   cursor: default;
+  margin-bottom: 10px;
 }
 
 .c1 {
+  margin-bottom: 10px;
+}
+
+.c2 {
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 }
 
-.c2 {
+.c3 {
   margin-top: 20px;
   margin-left: 48px;
   margin-bottom: 30px;
@@ -40800,10 +40533,10 @@ Object {
         class="c0"
       >
         <div
-          class=""
+          class="c1"
         >
           <div
-            class="c1"
+            class="c2"
           >
             <div
               class=""
@@ -40815,15 +40548,10 @@ Object {
             >
               Expiration
             </div>
-            <div
-              class=""
-            >
-              Data
-            </div>
           </div>
         </div>
         <div
-          class="c2"
+          class="c3"
         >
           No keys have been purchased yet.
            
@@ -40844,13 +40572,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-4ambxn-0 hapDyB"
+      class="sc-4ambxn-0 cLnqXV"
     >
       <div
-        class="sc-4ambxn-1 hovMBr"
+        class="sc-4ambxn-1 bmGmVk"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
+          class="sc-4ambxn-2 sc-4ambxn-3 kKMTIy"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -40861,11 +40589,6 @@ Object {
             class="sc-4ambxn-4 PWHMN"
           >
             Expiration
-          </div>
-          <div
-            class="sc-4ambxn-4 PWHMN"
-          >
-            Data
           </div>
         </div>
       </div>
@@ -40950,7 +40673,7 @@ exports[`Storyshots KeyList 10 keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
+    .c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -40963,7 +40686,7 @@ Object {
   font-weight: bold;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -40976,15 +40699,15 @@ Object {
   font-weight: bold;
 }
 
-.c8 {
+.c9 {
   margin-right: 20px;
 }
 
-.c13 {
+.c14 {
   margin-left: 20px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41000,24 +40723,24 @@ Object {
   font-weight: bold;
 }
 
-.c11 {
+.c12 {
   margin: 0 10px;
   cursor: pointer;
 }
 
-.c10 {
+.c11 {
   margin: 0 10px;
   color: red;
 }
 
-.c5 {
+.c6 {
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
   margin-bottom: 10px;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41031,40 +40754,41 @@ Object {
   margin-right: 8px;
 }
 
-.c2 {
+.c3 {
   margin-top: 20px;
 }
 
 .c0 {
   cursor: default;
-}
-
-.c3 {
-  display: grid;
-  margin-top: 20px;
-  margin-left: 48px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
   margin-bottom: 10px;
 }
 
 .c1 {
+  margin-bottom: 10px;
+}
+
+.c4 {
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
+}
+
+.c2 {
+  display: grid;
+  margin-top: 20px;
+  margin-left: 48px;
+  display: grid;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 }
 
-.c4 {
+.c5 {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 72px;
@@ -41079,10 +40803,10 @@ Object {
         class="c0"
       >
         <div
-          class=""
+          class="c1"
         >
           <div
-            class="c1"
+            class="c2"
           >
             <div
               class=""
@@ -41094,21 +40818,16 @@ Object {
             >
               Expiration
             </div>
-            <div
-              class=""
-            >
-              Data
-            </div>
           </div>
         </div>
         <div
-          class="c2"
+          class="c3"
         >
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               0
             </div>
@@ -41117,17 +40836,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               1
             </div>
@@ -41136,17 +40850,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               2
             </div>
@@ -41155,17 +40864,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               3
             </div>
@@ -41174,17 +40878,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               4
             </div>
@@ -41193,17 +40892,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               5
             </div>
@@ -41212,17 +40906,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               6
             </div>
@@ -41231,17 +40920,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               7
             </div>
@@ -41250,17 +40934,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               8
             </div>
@@ -41269,17 +40948,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               9
             </div>
@@ -41288,57 +40962,52 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div>
             <div
-              class="c5"
+              class="c6"
             />
             <div
-              class="c6"
+              class="c7"
             >
               <div
-                class="c7"
+                class="c8"
               >
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;&lt;
                 </div>
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;
                 </div>
               </div>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   1
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   2
                 </div>
               </div>
               <div
-                class="c12"
+                class="c13"
               >
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;
                 </div>
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;&gt;
                 </div>
@@ -41355,13 +41024,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-4ambxn-0 hapDyB"
+      class="sc-4ambxn-0 cLnqXV"
     >
       <div
-        class="sc-4ambxn-1 hovMBr"
+        class="sc-4ambxn-1 bmGmVk"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
+          class="sc-4ambxn-2 sc-4ambxn-3 kKMTIy"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -41373,18 +41042,13 @@ Object {
           >
             Expiration
           </div>
-          <div
-            class="sc-4ambxn-4 PWHMN"
-          >
-            Data
-          </div>
         </div>
       </div>
       <div
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41396,14 +41060,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41415,14 +41074,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41434,14 +41088,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41453,14 +41102,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41472,14 +41116,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41491,14 +41130,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41510,14 +41144,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41529,14 +41158,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41548,14 +41172,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -41566,11 +41185,6 @@ Object {
             class="sc-4ambxn-4 PWHMN"
           >
             Feb 7, 3000
-          </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
           </div>
         </div>
         <div>
@@ -41693,7 +41307,7 @@ exports[`Storyshots KeyList 50 keys on first page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
+    .c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41706,7 +41320,7 @@ Object {
   font-weight: bold;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41719,15 +41333,15 @@ Object {
   font-weight: bold;
 }
 
-.c8 {
+.c9 {
   margin-right: 20px;
 }
 
-.c13 {
+.c14 {
   margin-left: 20px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41743,24 +41357,24 @@ Object {
   font-weight: bold;
 }
 
-.c11 {
+.c12 {
   margin: 0 10px;
   cursor: pointer;
 }
 
-.c10 {
+.c11 {
   margin: 0 10px;
   color: red;
 }
 
-.c5 {
+.c6 {
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
   margin-bottom: 10px;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -41774,40 +41388,41 @@ Object {
   margin-right: 8px;
 }
 
-.c2 {
+.c3 {
   margin-top: 20px;
 }
 
 .c0 {
   cursor: default;
-}
-
-.c3 {
-  display: grid;
-  margin-top: 20px;
-  margin-left: 48px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
   margin-bottom: 10px;
 }
 
 .c1 {
+  margin-bottom: 10px;
+}
+
+.c4 {
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
+}
+
+.c2 {
+  display: grid;
+  margin-top: 20px;
+  margin-left: 48px;
+  display: grid;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 }
 
-.c4 {
+.c5 {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 72px;
@@ -41822,10 +41437,10 @@ Object {
         class="c0"
       >
         <div
-          class=""
+          class="c1"
         >
           <div
-            class="c1"
+            class="c2"
           >
             <div
               class=""
@@ -41837,21 +41452,16 @@ Object {
             >
               Expiration
             </div>
-            <div
-              class=""
-            >
-              Data
-            </div>
           </div>
         </div>
         <div
-          class="c2"
+          class="c3"
         >
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               0
             </div>
@@ -41860,17 +41470,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               1
             </div>
@@ -41879,17 +41484,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               2
             </div>
@@ -41898,17 +41498,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               3
             </div>
@@ -41917,17 +41512,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               4
             </div>
@@ -41936,17 +41526,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               5
             </div>
@@ -41955,17 +41540,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               6
             </div>
@@ -41974,17 +41554,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               7
             </div>
@@ -41993,17 +41568,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               8
             </div>
@@ -42012,17 +41582,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               9
             </div>
@@ -42031,57 +41596,52 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div>
             <div
-              class="c5"
+              class="c6"
             />
             <div
-              class="c6"
+              class="c7"
             >
               <div
-                class="c7"
+                class="c8"
               >
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;&lt;
                 </div>
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;
                 </div>
               </div>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   1
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   2
                 </div>
               </div>
               <div
-                class="c12"
+                class="c13"
               >
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;
                 </div>
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;&gt;
                 </div>
@@ -42098,13 +41658,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-4ambxn-0 hapDyB"
+      class="sc-4ambxn-0 cLnqXV"
     >
       <div
-        class="sc-4ambxn-1 hovMBr"
+        class="sc-4ambxn-1 bmGmVk"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
+          class="sc-4ambxn-2 sc-4ambxn-3 kKMTIy"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -42116,18 +41676,13 @@ Object {
           >
             Expiration
           </div>
-          <div
-            class="sc-4ambxn-4 PWHMN"
-          >
-            Data
-          </div>
         </div>
       </div>
       <div
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42139,14 +41694,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42158,14 +41708,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42177,14 +41722,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42196,14 +41736,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42215,14 +41750,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42234,14 +41764,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42253,14 +41778,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42272,14 +41792,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42291,14 +41806,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42309,11 +41819,6 @@ Object {
             class="sc-4ambxn-4 PWHMN"
           >
             Feb 7, 3000
-          </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
           </div>
         </div>
         <div>
@@ -42436,7 +41941,7 @@ exports[`Storyshots KeyList 50 keys on last page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c7 {
+    .c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42449,15 +41954,15 @@ Object {
   font-weight: bold;
 }
 
-.c8 {
+.c9 {
   margin-right: 20px;
 }
 
-.c11 {
+.c12 {
   margin-left: 20px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42473,19 +41978,19 @@ Object {
   font-weight: bold;
 }
 
-.c10 {
+.c11 {
   margin: 0 10px;
   cursor: pointer;
 }
 
-.c5 {
+.c6 {
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
   margin-bottom: 10px;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42499,40 +42004,41 @@ Object {
   margin-right: 8px;
 }
 
-.c2 {
+.c3 {
   margin-top: 20px;
 }
 
 .c0 {
   cursor: default;
-}
-
-.c3 {
-  display: grid;
-  margin-top: 20px;
-  margin-left: 48px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
   margin-bottom: 10px;
 }
 
 .c1 {
+  margin-bottom: 10px;
+}
+
+.c4 {
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
+}
+
+.c2 {
+  display: grid;
+  margin-top: 20px;
+  margin-left: 48px;
+  display: grid;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 }
 
-.c4 {
+.c5 {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 72px;
@@ -42547,10 +42053,10 @@ Object {
         class="c0"
       >
         <div
-          class=""
+          class="c1"
         >
           <div
-            class="c1"
+            class="c2"
           >
             <div
               class=""
@@ -42562,21 +42068,16 @@ Object {
             >
               Expiration
             </div>
-            <div
-              class=""
-            >
-              Data
-            </div>
           </div>
         </div>
         <div
-          class="c2"
+          class="c3"
         >
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               0
             </div>
@@ -42585,17 +42086,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               1
             </div>
@@ -42604,17 +42100,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               2
             </div>
@@ -42623,17 +42114,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               3
             </div>
@@ -42642,17 +42128,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               4
             </div>
@@ -42661,17 +42142,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               5
             </div>
@@ -42680,17 +42156,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               6
             </div>
@@ -42699,17 +42170,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               7
             </div>
@@ -42718,17 +42184,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               8
             </div>
@@ -42737,17 +42198,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               9
             </div>
@@ -42756,57 +42212,52 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div>
             <div
-              class="c5"
+              class="c6"
             />
             <div
-              class="c6"
+              class="c7"
             >
               <div
-                class="c7"
+                class="c8"
               >
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;&lt;
                 </div>
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;
                 </div>
               </div>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   1
                 </div>
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   2
                 </div>
               </div>
               <div
-                class="c7"
+                class="c8"
               >
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   &gt;
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   &gt;&gt;
                 </div>
@@ -42823,13 +42274,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-4ambxn-0 hapDyB"
+      class="sc-4ambxn-0 cLnqXV"
     >
       <div
-        class="sc-4ambxn-1 hovMBr"
+        class="sc-4ambxn-1 bmGmVk"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
+          class="sc-4ambxn-2 sc-4ambxn-3 kKMTIy"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -42841,18 +42292,13 @@ Object {
           >
             Expiration
           </div>
-          <div
-            class="sc-4ambxn-4 PWHMN"
-          >
-            Data
-          </div>
         </div>
       </div>
       <div
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42864,14 +42310,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42883,14 +42324,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42902,14 +42338,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42921,14 +42352,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42940,14 +42366,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42959,14 +42380,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42978,14 +42394,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -42997,14 +42408,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43016,14 +42422,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43034,11 +42435,6 @@ Object {
             class="sc-4ambxn-4 PWHMN"
           >
             Feb 7, 3000
-          </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
           </div>
         </div>
         <div>
@@ -43161,7 +42557,7 @@ exports[`Storyshots KeyList 50 keys on next page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c7 {
+    .c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43174,7 +42570,7 @@ Object {
   font-weight: bold;
 }
 
-.c12 {
+.c13 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43187,15 +42583,15 @@ Object {
   font-weight: bold;
 }
 
-.c8 {
+.c9 {
   margin-right: 20px;
 }
 
-.c13 {
+.c14 {
   margin-left: 20px;
 }
 
-.c9 {
+.c10 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43211,24 +42607,24 @@ Object {
   font-weight: bold;
 }
 
-.c10 {
+.c11 {
   margin: 0 10px;
   cursor: pointer;
 }
 
-.c11 {
+.c12 {
   margin: 0 10px;
   color: red;
 }
 
-.c5 {
+.c6 {
   width: 99%;
   height: 1px;
   background-color: var(--lightgrey);
   margin-bottom: 10px;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -43242,40 +42638,41 @@ Object {
   margin-right: 8px;
 }
 
-.c2 {
+.c3 {
   margin-top: 20px;
 }
 
 .c0 {
   cursor: default;
-}
-
-.c3 {
-  display: grid;
-  margin-top: 20px;
-  margin-left: 48px;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
   margin-bottom: 10px;
 }
 
 .c1 {
+  margin-bottom: 10px;
+}
+
+.c4 {
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
-  width: 100%;
   display: grid;
-  grid-template-columns: 450px 150px auto;
-  grid-gap: 36px;
-  margin-bottom: 10px;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
+}
+
+.c2 {
+  display: grid;
+  margin-top: 20px;
+  margin-left: 48px;
+  display: grid;
+  grid-template-columns: 450px 150px;
+  grid-gap: 20px;
   font-family: 'IBM Plex Sans';
   font-size: 10px;
   text-transform: uppercase;
 }
 
-.c4 {
+.c5 {
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 72px;
@@ -43290,10 +42687,10 @@ Object {
         class="c0"
       >
         <div
-          class=""
+          class="c1"
         >
           <div
-            class="c1"
+            class="c2"
           >
             <div
               class=""
@@ -43305,21 +42702,16 @@ Object {
             >
               Expiration
             </div>
-            <div
-              class=""
-            >
-              Data
-            </div>
           </div>
         </div>
         <div
-          class="c2"
+          class="c3"
         >
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               0
             </div>
@@ -43328,17 +42720,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               1
             </div>
@@ -43347,17 +42734,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               2
             </div>
@@ -43366,17 +42748,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               3
             </div>
@@ -43385,17 +42762,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               4
             </div>
@@ -43404,17 +42776,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               5
             </div>
@@ -43423,17 +42790,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               6
             </div>
@@ -43442,17 +42804,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               7
             </div>
@@ -43461,17 +42818,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               8
             </div>
@@ -43480,17 +42832,12 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div
-            class="c3"
+            class="c4"
           >
             <div
-              class="c4"
+              class="c5"
             >
               9
             </div>
@@ -43499,57 +42846,52 @@ Object {
             >
               Feb 7, 3000
             </div>
-            <div
-              class="c4"
-            >
-              ben@unlock-protocol.com
-            </div>
           </div>
           <div>
             <div
-              class="c5"
+              class="c6"
             />
             <div
-              class="c6"
+              class="c7"
             >
               <div
-                class="c7"
+                class="c8"
               >
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;&lt;
                 </div>
                 <div
-                  class="c8"
+                  class="c9"
                 >
                   &lt;
                 </div>
               </div>
               <div
-                class="c9"
+                class="c10"
               >
                 <div
-                  class="c10"
+                  class="c11"
                 >
                   1
                 </div>
                 <div
-                  class="c11"
+                  class="c12"
                 >
                   2
                 </div>
               </div>
               <div
-                class="c12"
+                class="c13"
               >
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;
                 </div>
                 <div
-                  class="c13"
+                  class="c14"
                 >
                   &gt;&gt;
                 </div>
@@ -43566,13 +42908,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-4ambxn-0 hapDyB"
+      class="sc-4ambxn-0 cLnqXV"
     >
       <div
-        class="sc-4ambxn-1 hovMBr"
+        class="sc-4ambxn-1 bmGmVk"
       >
         <div
-          class="sc-4ambxn-2 sc-4ambxn-3 ePVKG"
+          class="sc-4ambxn-2 sc-4ambxn-3 kKMTIy"
         >
           <div
             class="sc-4ambxn-4 PWHMN"
@@ -43584,18 +42926,13 @@ Object {
           >
             Expiration
           </div>
-          <div
-            class="sc-4ambxn-4 PWHMN"
-          >
-            Data
-          </div>
         </div>
       </div>
       <div
         class="sc-14bj30x-1 fYDZXe"
       >
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43607,14 +42944,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43626,14 +42958,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43645,14 +42972,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43664,14 +42986,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43683,14 +43000,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43702,14 +43014,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43721,14 +43028,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43740,14 +43042,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43759,14 +43056,9 @@ Object {
           >
             Feb 7, 3000
           </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
-          </div>
         </div>
         <div
-          class="sc-4ambxn-2 kpFeDj"
+          class="sc-4ambxn-2 cgARCD"
         >
           <div
             class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
@@ -43777,11 +43069,6 @@ Object {
             class="sc-4ambxn-4 PWHMN"
           >
             Feb 7, 3000
-          </div>
-          <div
-            class="sc-4ambxn-4 sc-4ambxn-5 fALQAr"
-          >
-            ben@unlock-protocol.com
           </div>
         </div>
         <div>
@@ -49655,7 +48942,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Login Form The form 1`] = `
+exports[`Storyshots LogInSignUp LogIn 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -49775,19 +49062,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-cvbbAY hqEYNQ"
+        class="sc-hMqMXs gKGisj"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-jAaTju kacktH"
+          class="sc-hSdWYo hUejMB"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-kkGfuU ghCGYh"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -49795,13 +49082,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jAaTju kacktH"
+          class="sc-hSdWYo hUejMB"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-kkGfuU ghCGYh"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -49809,21 +49096,1261 @@ Object {
         />
         <br />
         <input
-          class="sc-cMljjf jebWcH"
+          class="sc-iAyFgw cnGVmw"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-jWBwVP fPZrbX"
+        class="sc-kEYyzF cdKEmV"
       >
         Don't have an account?
          
         <a
-          class="sc-jDwBTQ gZvWKk"
+          class="sc-eHgmQL eGUkTu"
         >
           Sign up here.
         </a>
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp SignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 300;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c3 {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 16px;
+  max-width: 600px;
+}
+
+.c4 {
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c6 {
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Pay For Content Seamlessly
+        </h1>
+        <h2
+          class="c1"
+        >
+          Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+        </h2>
+        <p
+          class="c2"
+        >
+          At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+        </p>
+        <p
+          class="c2"
+        >
+          If you want to know more about Unlock's decentralized payment protocol, check out our
+           
+          <span>
+            blog
+          </span>
+          .
+        </p>
+        <form
+          class="c3"
+        >
+          <input
+            class="c4"
+            name="emailAddress"
+            placeholder="Enter your email to get started"
+            type="email"
+          />
+          <input
+            class="c5"
+            type="submit"
+            value="Sign Up"
+          />
+          <p
+            class="c2"
+          >
+            Already have an account?
+             
+            <a
+              class="c6"
+            >
+              Log in here.
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-csuQGl MknIL"
+      >
+        Pay For Content Seamlessly
+      </h1>
+      <h2
+        class="sc-Rmtcm deUOrk"
+      >
+        Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+      </h2>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+      </p>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        If you want to know more about Unlock's decentralized payment protocol, check out our
+         
+        <span>
+          blog
+        </span>
+        .
+      </p>
+      <form
+        class="sc-hzDkRC iHZYYg"
+      >
+        <input
+          class="sc-jhAzac cJlwLr"
+          name="emailAddress"
+          placeholder="Enter your email to get started"
+          type="email"
+        />
+        <input
+          class="sc-fBuWsC HLMFP"
+          type="submit"
+          value="Sign Up"
+        />
+        <p
+          class="sc-bRBYWo eVPHVS"
+        >
+          Already have an account?
+           
+          <a
+            class="sc-dVhcbM bidOAZ"
+          >
+            Log in here.
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components FinishSignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c5[disabled] {
+  background-color: var(--grey);
+  cursor: not-allowed;
+  color: black;
+}
+
+.c4 {
+  height: 30px;
+  line-height: 30px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Create Your Unlock Wallet
+        </h1>
+        <p
+          class="c1"
+        >
+          Create a password for your account.
+        </p>
+        <form>
+          <label
+            class="c2"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <input
+            class="c3"
+            disabled=""
+            id="emailPlaceholder"
+            name="emailPlaceholder"
+            type="email"
+            value="geoff@bitconnect.gov"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c3"
+            id="passwordInput"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordConfirmationInput"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="c3"
+            id="passwordConfirmationInput"
+            name="passwordConfirmation"
+            placeholder="Confirm Password"
+            type="password"
+          />
+          <br />
+          <span
+            class="c4"
+          />
+          <br />
+          <input
+            class="c5"
+            disabled=""
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-jAaTju kNpzMJ"
+      >
+        Create Your Unlock Wallet
+      </h1>
+      <p
+        class="sc-jDwBTQ hyFtCE"
+      >
+        Create a password for your account.
+      </p>
+      <form>
+        <label
+          class="sc-gPEVay cqKage"
+          for="emailPlaceholder"
+        >
+          Email
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          disabled=""
+          id="emailPlaceholder"
+          name="emailPlaceholder"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordInput"
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordConfirmationInput"
+        >
+          Confirm Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordConfirmationInput"
+          name="passwordConfirmation"
+          placeholder="Confirm Password"
+          type="password"
+        />
+        <br />
+        <span
+          class="sc-gipzik erswUF"
+        />
+        <br />
+        <input
+          class="sc-jlyJG dcdnFg"
+          disabled=""
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components InvalidLink 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          The link you used is invalid. Please try again.
+           
+          <a
+            href="/signup"
+          >
+            Sign up
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-cvbbAY hqEYNQ"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-jWBwVP fPZrbX"
+      >
+        The link you used is invalid. Please try again.
+         
+        <a
+          href="/signup"
+        >
+          Sign up
+        </a>
+        .
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components LogIn 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c4 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: 25px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c1 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c5 {
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Log In to Your Account
+        </h1>
+        <form>
+          <label
+            class="c1"
+            for="emailInput"
+          >
+            Email Address
+          </label>
+          <input
+            class="c2"
+            id="emailInput"
+            name="emailAddress"
+            placeholder="Enter your email"
+            type="email"
+          />
+          <br />
+          <label
+            class="c1"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c2"
+            id="passwordInput"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+          />
+          <br />
+          <input
+            class="c3"
+            type="submit"
+            value="Submit"
+          />
+        </form>
+        <p
+          class="c4"
+        >
+          Don't have an account?
+           
+          <a
+            class="c5"
+          >
+            Sign up here.
+          </a>
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-hMqMXs gKGisj"
+      >
+        Log In to Your Account
+      </h1>
+      <form>
+        <label
+          class="sc-hSdWYo hUejMB"
+          for="emailInput"
+        >
+          Email Address
+        </label>
+        <input
+          class="sc-kkGfuU ghCGYh"
+          id="emailInput"
+          name="emailAddress"
+          placeholder="Enter your email"
+          type="email"
+        />
+        <br />
+        <label
+          class="sc-hSdWYo hUejMB"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-kkGfuU ghCGYh"
+          id="passwordInput"
+          name="password"
+          placeholder="Enter your password"
+          type="password"
+        />
+        <br />
+        <input
+          class="sc-iAyFgw cnGVmw"
+          type="submit"
+          value="Submit"
+        />
+      </form>
+      <p
+        class="sc-kEYyzF cdKEmV"
+      >
+        Don't have an account?
+         
+        <a
+          class="sc-eHgmQL eGUkTu"
+        >
+          Sign up here.
+        </a>
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components SignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-size: 32px;
+  line-height: 42px;
+  font-weight: 300;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c3 {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  grid-column-gap: 16px;
+  max-width: 600px;
+}
+
+.c4 {
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c6 {
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Pay For Content Seamlessly
+        </h1>
+        <h2
+          class="c1"
+        >
+          Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+        </h2>
+        <p
+          class="c2"
+        >
+          At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+        </p>
+        <p
+          class="c2"
+        >
+          If you want to know more about Unlock's decentralized payment protocol, check out our
+           
+          <span>
+            blog
+          </span>
+          .
+        </p>
+        <form
+          class="c3"
+        >
+          <input
+            class="c4"
+            name="emailAddress"
+            placeholder="Enter your email to get started"
+            type="email"
+          />
+          <input
+            class="c5"
+            type="submit"
+            value="Sign Up"
+          />
+          <p
+            class="c2"
+          >
+            Already have an account?
+             
+            <a
+              class="c6"
+            >
+              Log in here.
+            </a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-csuQGl MknIL"
+      >
+        Pay For Content Seamlessly
+      </h1>
+      <h2
+        class="sc-Rmtcm deUOrk"
+      >
+        Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
+      </h2>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
+      </p>
+      <p
+        class="sc-bRBYWo eVPHVS"
+      >
+        If you want to know more about Unlock's decentralized payment protocol, check out our
+         
+        <span>
+          blog
+        </span>
+        .
+      </p>
+      <form
+        class="sc-hzDkRC iHZYYg"
+      >
+        <input
+          class="sc-jhAzac cJlwLr"
+          name="emailAddress"
+          placeholder="Enter your email to get started"
+          type="email"
+        />
+        <input
+          class="sc-fBuWsC HLMFP"
+          type="submit"
+          value="Sign Up"
+        />
+        <p
+          class="sc-bRBYWo eVPHVS"
+        >
+          Already have an account?
+           
+          <a
+            class="sc-dVhcbM bidOAZ"
+          >
+            Log in here.
+          </a>
+        </p>
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp/Components SignupSuccess 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          You are now signed up! Go to
+           
+          <a
+            href="/keychain"
+          >
+            your key chain
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-brqgnP jQLsHI"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-cMljjf CJCHJ"
+      >
+        You are now signed up! Go to
+         
+        <a
+          href="/keychain"
+        >
+          your key chain
+        </a>
+        .
       </p>
     </div>
   </div>,
@@ -54060,7 +54587,407 @@ Object {
 }
 `;
 
-exports[`Storyshots SignUp page The SignUp Page 1`] = `
+exports[`Storyshots SignUp FinishSignUp 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.c5[disabled] {
+  background-color: var(--grey);
+  cursor: not-allowed;
+  color: black;
+}
+
+.c4 {
+  height: 30px;
+  line-height: 30px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Create Your Unlock Wallet
+        </h1>
+        <p
+          class="c1"
+        >
+          Create a password for your account.
+        </p>
+        <form>
+          <label
+            class="c2"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <input
+            class="c3"
+            disabled=""
+            id="emailPlaceholder"
+            name="emailPlaceholder"
+            type="email"
+            value="geoff@bitconnect.gov"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c3"
+            id="passwordInput"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordConfirmationInput"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="c3"
+            id="passwordConfirmationInput"
+            name="passwordConfirmation"
+            placeholder="Confirm Password"
+            type="password"
+          />
+          <br />
+          <span
+            class="c4"
+          />
+          <br />
+          <input
+            class="c5"
+            disabled=""
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-jAaTju kNpzMJ"
+      >
+        Create Your Unlock Wallet
+      </h1>
+      <p
+        class="sc-jDwBTQ hyFtCE"
+      >
+        Create a password for your account.
+      </p>
+      <form>
+        <label
+          class="sc-gPEVay cqKage"
+          for="emailPlaceholder"
+        >
+          Email
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          disabled=""
+          id="emailPlaceholder"
+          name="emailPlaceholder"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordInput"
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+        <br />
+        <label
+          class="sc-gPEVay cqKage"
+          for="passwordConfirmationInput"
+        >
+          Confirm Password
+        </label>
+        <input
+          class="sc-iRbamj kLdkyx"
+          id="passwordConfirmationInput"
+          name="passwordConfirmation"
+          placeholder="Confirm Password"
+          type="password"
+        />
+        <br />
+        <span
+          class="sc-gipzik erswUF"
+        />
+        <br />
+        <input
+          class="sc-jlyJG dcdnFg"
+          disabled=""
+          type="submit"
+          value="Submit"
+        />
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp InvalidLink 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          The link you used is invalid. Please try again.
+           
+          <a
+            href="/signup"
+          >
+            Sign up
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-cvbbAY hqEYNQ"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-jWBwVP fPZrbX"
+      >
+        The link you used is invalid. Please try again.
+         
+        <a
+          href="/signup"
+        >
+          Sign up
+        </a>
+        .
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp SignUp 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -54183,22 +55110,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-gPEVay lcfiYK"
+        class="sc-csuQGl MknIL"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-iRbamj bkaUIQ"
+        class="sc-Rmtcm deUOrk"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-bRBYWo eVPHVS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-bRBYWo eVPHVS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -54208,31 +55135,163 @@ Object {
         .
       </p>
       <form
-        class="sc-gipzik KaKcg"
+        class="sc-hzDkRC iHZYYg"
       >
         <input
-          class="sc-csuQGl leQgJD"
+          class="sc-jhAzac cJlwLr"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-Rmtcm hTNgdO"
+          class="sc-fBuWsC HLMFP"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-jlyJG haszTb"
+          class="sc-bRBYWo eVPHVS"
         >
           Already have an account?
            
           <a
-            class="sc-hzDkRC ePBnMA"
+            class="sc-dVhcbM bidOAZ"
           >
             Log in here.
           </a>
         </p>
       </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots SignUp SignupSuccess 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c1 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Sign Up
+        </h1>
+        <p
+          class="c1"
+        >
+          You are now signed up! Go to
+           
+          <a
+            href="/keychain"
+          >
+            your key chain
+          </a>
+          .
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-brqgnP jQLsHI"
+      >
+        Sign Up
+      </h1>
+      <p
+        class="sc-cMljjf CJCHJ"
+      >
+        You are now signed up! Go to
+         
+        <a
+          href="/keychain"
+        >
+          your key chain
+        </a>
+        .
+      </p>
     </div>
   </div>,
   "debug": [Function],

@@ -6,7 +6,13 @@ import { PROVIDER_READY } from '../../actions/provider'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
-import { SIGN_ADDRESS, gotSignedAddress } from '../../actions/ticket'
+import {
+  SIGN_ADDRESS,
+  gotSignedAddress,
+  VERIFY_SIGNED_ADDRESS,
+  signedAddressVerified,
+  signedAddressMismatch,
+} from '../../actions/ticket'
 import {
   DISMISS_CHECK,
   GOT_WALLET,
@@ -71,7 +77,7 @@ class MockWalletService extends EventEmitter {
   signData() {}
 }
 
-let mockWalletService = new MockWalletService()
+jest.useFakeTimers()
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
@@ -83,38 +89,42 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-jest.useFakeTimers()
-
-beforeEach(() => {
-  mockConfig = jest.requireActual('../../config').default()
-  // Reset the mock
-  mockWalletService = new MockWalletService()
-
-  // Reset state!
-  account = {
-    address: '0xabc',
-  }
-  lock = {
-    address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-    keyPrice: '100',
-    owner: account.address,
-  }
-  state = {
-    account,
-    network,
-    provider: 'HTTP',
-    locks: {
-      [lock.address]: lock,
-    },
-    transactions: {},
-    keys: {},
-    walletStatus: {
-      waiting: true,
-    },
-  }
-})
+let mockWalletService
 
 describe('Wallet middleware', () => {
+  beforeEach(() => {
+    mockConfig = jest.requireActual('../../config').default()
+    // Reset the mock
+    mockWalletService = new MockWalletService()
+
+    // Reset state!
+    account = {
+      address: '0xabc',
+    }
+    lock = {
+      address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
+      keyPrice: '100',
+      owner: account.address,
+    }
+    state = {
+      account,
+      network,
+      provider: 'HTTP',
+      locks: {
+        [lock.address]: lock,
+      },
+      transactions: {},
+      keys: {},
+      walletStatus: {
+        waiting: true,
+      },
+    }
+  })
+
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
@@ -348,6 +358,90 @@ describe('Wallet middleware', () => {
         `ENCRYPTED: ${JSON.stringify(JSON.stringify(data))}`
       )
     )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a verified event when the addresses match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) => {
+      cb(null, JSON.parse(data).message.address.publicKey)
+    })
+
+    invoke(action)
+
+    expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      JSON.stringify(data),
+      signedAddress,
+      expect.any(Function)
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressVerified(account.address, signedAddress, address)
+    )
+
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a mismatched event when the addresses do not match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
+      cb(null, 'hello, I am an arbitrary string')
+    )
+
+    invoke(action)
+
+    expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      JSON.stringify(data),
+      signedAddress,
+      expect.any(Function)
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressMismatch(account.address, signedAddress)
+    )
+
     expect(next).toHaveBeenCalledWith(action)
   })
 })

@@ -8,65 +8,32 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import LogIn from '../interface/LogIn'
-import SignUp from '../interface/SignUp'
-import FinishSignup from '../interface/FinishSignup'
+import LogInSignUp from '../interface/LogInSignUp'
 
-export class KeyChainContent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      // TODO: Add method to toggle signup and pass it to subcomponents, so that
-      // we can switch back and forth between views for logging in and signing
-      // up.
-      signup: true,
-    }
-  }
+export const KeyChainContent = ({ account, network, router }) => {
+  const { hash } = router.location
+  const emailAddress = hash.slice(1) // trim off leading '#'
 
-  toggleSignup = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      signup: !prevState.signup,
-    }))
-  }
-
-  render() {
-    const { account, network, router } = this.props
-    const { signup } = this.state
-    const { hash } = router.location
-    const emailAddress = hash.slice(1) // trim off leading '#'
-
-    return (
-      <GlobalErrorConsumer>
-        <Layout title="Key Chain">
-          <Head>
-            <title>{pageTitle('Key Chain')}</title>
-          </Head>
-          {account && (
-            <BrowserOnly>
-              <Account network={network} account={account} />
-              <DeveloperOverlay />
-            </BrowserOnly>
-          )}
-          {!account && !signup && (
-            <BrowserOnly>
-              <LogIn toggleSignup={this.toggleSignup} />
-            </BrowserOnly>
-          )}
-          {!account && signup && !emailAddress && (
-            <BrowserOnly>
-              <SignUp toggleSignup={this.toggleSignup} />
-            </BrowserOnly>
-          )}
-          {!account && signup && emailAddress && (
-            <BrowserOnly>
-              <FinishSignup emailAddress={emailAddress} />
-            </BrowserOnly>
-          )}
-        </Layout>
-      </GlobalErrorConsumer>
-    )
-  }
+  return (
+    <GlobalErrorConsumer>
+      <Layout title="Key Chain">
+        <Head>
+          <title>{pageTitle('Key Chain')}</title>
+        </Head>
+        {account && (
+          <BrowserOnly>
+            <Account network={network} account={account} />
+            <DeveloperOverlay />
+          </BrowserOnly>
+        )}
+        {!account && (
+          // Default to sign up form. User can toggle to login. If email
+          // address is truthy, do the signup flow.
+          <LogInSignUp signup emailAddress={emailAddress} />
+        )}
+      </Layout>
+    </GlobalErrorConsumer>
+  )
 }
 
 KeyChainContent.propTypes = {

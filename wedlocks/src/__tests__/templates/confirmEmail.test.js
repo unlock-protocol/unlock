@@ -10,14 +10,16 @@ describe('confirmEmail', () => {
     expect.assertions(1)
     expect(
       confirmEmail.text({
-        confirmLink: 'https://unlock-protocol.com/confirm...',
+        confirmLink: 'https://staging-app.unlock-protocol.com/keychain/',
+        email: 'julien@unlock-protocol.com',
+        signedEmail: 'privatekeyEncryptedEmail',
       })
     ).toBe(
       `Welcome to Unlock!
 
 To get started, please confirm your email address by clicking on the following link:
 
-  https://unlock-protocol.com/confirm...
+  https://staging-app.unlock-protocol.com/keychain/?email=julien@unlock-protocol.com&signedEmail=privatekeyEncryptedEmail
 
 Once your email address is confirmed, you'll be able to use your Unlock account to pay for content and services.
 

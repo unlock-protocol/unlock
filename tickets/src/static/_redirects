@@ -3,3 +3,4 @@
 
 / /index 200
 /event/* /event 200
+/checkin/* /checkin 200
