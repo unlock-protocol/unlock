@@ -41,7 +41,7 @@ contract('Lock / erc721 / balanceOf', accounts => {
     assert.equal(balance.toFixed(), 1)
   })
 
-  it('should return 0 if the user has an expired key', async () => {
+  it('should return 1 if the user has an expired key', async () => {
     await locks['FIRST'].purchaseFor(accounts[5], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[5],
@@ -52,6 +52,6 @@ contract('Lock / erc721 / balanceOf', accounts => {
     const balance = new BigNumber(
       await locks['FIRST'].balanceOf.call(accounts[5])
     )
-    assert.equal(balance.toFixed(), 0)
+    assert.equal(balance.toFixed(), 1)
   })
 })

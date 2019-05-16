@@ -90,7 +90,7 @@ contract MixinPurchase is
     // Assign the key
     Key storage toKey = _getKeyFor(_recipient);
     uint previousExpiration = toKey.expirationTimestamp;
-    if (toKey.tokenId == 0) {
+    if (previousExpiration < block.timestamp) {
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
