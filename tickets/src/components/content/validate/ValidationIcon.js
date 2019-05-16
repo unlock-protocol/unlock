@@ -66,7 +66,11 @@ ValidationIcon.defaultProps = {
 
 const mapStateToProps = ({ tickets }, { signature, publicKey }) => {
   let valid
-  if (tickets.valid && tickets.valid[signature] === publicKey) {
+  if (
+    tickets.valid &&
+    tickets.valid[signature].toString().toLowerCase() ===
+      publicKey.toString().toLowerCase()
+  ) {
     valid = true
   } else if (tickets.invalid && tickets.invalid[signature]) {
     valid = false

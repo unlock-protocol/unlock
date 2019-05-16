@@ -194,14 +194,22 @@ const walletMiddleware = config => {
           })
 
           walletService.recoverAccountFromSignedData(
-            data,
+            JSON.stringify(data),
             signedAddress,
             (error, account) => {
-              if (error || account !== publicKey) {
-                dispatch(signedAddressMismatch(publicKey, signedAddress))
-              } else if (account === publicKey) {
+              const normalizedAccount = account.toString().toLowerCase()
+              const normalizedPublicKey = publicKey.toString().toLowerCase()
+              if (error || normalizedAccount !== normalizedPublicKey) {
                 dispatch(
-                  signedAddressVerified(publicKey, signedAddress, eventAddress)
+                  signedAddressMismatch(normalizedPublicKey, signedAddress)
+                )
+              } else if (normalizedAccount === normalizedPublicKey) {
+                dispatch(
+                  signedAddressVerified(
+                    normalizedPublicKey,
+                    signedAddress,
+                    eventAddress
+                  )
                 )
               }
             }
