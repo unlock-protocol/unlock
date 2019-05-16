@@ -275,7 +275,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
   })
 
   it('can transfer a FREE key', async () => {
-    locks['FREE'].purchaseFor(accounts[1], {
+    await locks['FREE'].purchaseFor(accounts[1], {
       from: accounts[1],
     })
     let ID = await locks['FREE'].getTokenIdFor.call(accounts[1])
