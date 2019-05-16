@@ -189,12 +189,7 @@ const web3Middleware = config => {
           action.eventAddress &&
           action.address
         ) {
-          dispatch(
-            web3Service.getKeyByLockForOwner(
-              action.eventAddress,
-              action.address
-            )
-          )
+          web3Service.getKeyByLockForOwner(action.eventAddress, action.address)
         }
       }
     }
