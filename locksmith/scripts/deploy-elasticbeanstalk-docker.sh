@@ -8,7 +8,7 @@ node_env=$7
 is_forked_pr=$8
 build_id=$9
 message=$10
-staging_environment=${environment}_staging
+staging_environment=${environment}-staging
 
 function check_is_forked_pr()
 {
@@ -31,23 +31,16 @@ function check_if_locksmith_changed()
     fi
 }
 
-function deploy(environment_name)
+function deploy()
 {
+    environment_name=$1
+
     if eb status ${environment_name}; then
         eb deploy ${environment_name} --label locksmith-${build_id} --message "${message:0:199}"
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
     fi
     
-}
-
-function deploy_staging()
-{
-    if eb status ${environment}_staging; then
-        eb deploy ${environment}_staging --label locksmith-${build_id} --message "${message:0:199}"
-    else
-        eb create ${environment}_staging --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
-    fi
 }
 
 check_is_forked_pr
@@ -57,5 +50,5 @@ cd locksmith
 
 eb init ${application} -p docker --region us-east-1
 
-deploy(environment_name)
-deploy(staging_environment)
+deploy ${environment_name}
+deploy ${staging_environment}
