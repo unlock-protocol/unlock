@@ -1,6 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import UnlockJs from '@unlock-protocol/unlock-js'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { CREATE_LOCK, addLock, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -20,8 +20,6 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { transactionTypeMapping } from '../utils/types'
-
-const { Web3Service } = UnlockJs
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
