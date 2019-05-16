@@ -42,13 +42,5 @@ contract('Lock / purchaseForFrom', accounts => {
           })
         })
     })
-
-    it('can purchaseForFrom a free key', async () => {
-      await locks['FREE'].purchaseFor(accounts[0])
-      const tx = await locks['FREE'].purchaseForFrom(accounts[2], accounts[0])
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args._from, 0)
-      assert.equal(tx.logs[0].args._to, accounts[2])
-    })
   })
 })
