@@ -12,7 +12,12 @@ import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
 import { ADD_KEY, addKey, updateKey } from '../../actions/key'
-import { signedAddressVerified } from '../../actions/ticket'
+import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
+import {
+  VERIFY_SIGNED_ADDRESS,
+  signedAddressVerified,
+  signedAddressMismatch,
+} from '../../actions/ticket'
 
 /**
  * Fake state
@@ -157,6 +162,90 @@ describe('Web3 middleware', () => {
         })
       )
     })
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a verified event when the addresses match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWeb3Service.recoverAccountFromSignedData = jest.fn((data, sa, cb) => {
+      cb(null, JSON.parse(data).message.address.publicKey)
+    })
+
+    invoke(action)
+
+    expect(mockWeb3Service.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      JSON.stringify(data),
+      signedAddress,
+      expect.any(Function)
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressVerified(account.address, signedAddress, address)
+    )
+
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a mismatched event when the addresses do not match', () => {
+    expect.hasAssertions()
+
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const address = '0x12345678'
+    const signedAddress = 'encrypted sig'
+
+    const data = UnlockEventRSVP.build({
+      publicKey: account.address,
+      eventAddress: address,
+    })
+
+    const action = {
+      type: VERIFY_SIGNED_ADDRESS,
+      publicKey: account.address,
+      eventAddress: address,
+      signedAddress: 'encrypted sig',
+    }
+
+    mockWeb3Service.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
+      cb(null, 'hello, I am an arbitrary string')
+    )
+
+    invoke(action)
+
+    expect(mockWeb3Service.recoverAccountFromSignedData).toHaveBeenCalledWith(
+      JSON.stringify(data),
+      signedAddress,
+      expect.any(Function)
+    )
+
+    expect(dispatch).toHaveBeenCalledWith(
+      signedAddressMismatch(account.address, signedAddress)
+    )
+
+    expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle account.updated events triggered by the web3Service', () => {
