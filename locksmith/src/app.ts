@@ -1,6 +1,17 @@
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
+import tracing from '@opencensus/nodejs'
+import { JaegerTraceExporter } from '@opencensus/exporter-jaeger'
+
+const env = process.env.NODE_ENV || 'development'
+const config = require('../config/config')[env]
+
+const exporter = new JaegerTraceExporter(config.jaeger)
+
+if (env != 'test') {
+  tracing.start({ exporter: exporter })
+}
 
 const app = express()
 
