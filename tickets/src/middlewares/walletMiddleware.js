@@ -11,7 +11,13 @@ import {
   FAILED_TO_SIGN_ADDRESS,
   FATAL_NO_USER_ACCOUNT,
 } from '../errors'
-import { SIGN_ADDRESS, gotSignedAddress } from '../actions/ticket'
+import {
+  SIGN_ADDRESS,
+  VERIFY_SIGNED_ADDRESS,
+  gotSignedAddress,
+  signedAddressVerified,
+  signedAddressMismatch,
+} from '../actions/ticket'
 import { PURCHASE_KEY } from '../actions/key'
 import {
   dismissWalletCheck,
@@ -169,6 +175,42 @@ const walletMiddleware = config => {
                 dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
               } else {
                 dispatch(gotSignedAddress(address, signedAddress))
+              }
+            }
+          )
+        }
+
+        if (
+          action.type === VERIFY_SIGNED_ADDRESS &&
+          action.eventAddress &&
+          action.publicKey &&
+          action.signedAddress
+        ) {
+          const { publicKey, eventAddress, signedAddress } = action
+
+          const data = UnlockEventRSVP.build({
+            publicKey: publicKey,
+            eventAddress: eventAddress,
+          })
+
+          walletService.recoverAccountFromSignedData(
+            JSON.stringify(data),
+            signedAddress,
+            (error, account) => {
+              const normalizedAccount = account.toString().toLowerCase()
+              const normalizedPublicKey = publicKey.toString().toLowerCase()
+              if (error || normalizedAccount !== normalizedPublicKey) {
+                dispatch(
+                  signedAddressMismatch(normalizedPublicKey, signedAddress)
+                )
+              } else if (normalizedAccount === normalizedPublicKey) {
+                dispatch(
+                  signedAddressVerified(
+                    normalizedPublicKey,
+                    signedAddress,
+                    eventAddress
+                  )
+                )
               }
             }
           )

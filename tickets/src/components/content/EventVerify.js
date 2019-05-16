@@ -9,11 +9,20 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import { loadEvent } from '../../actions/event'
-import { lockRoute } from '../../utils/routes'
 import Media from '../../theme/media'
 import ValidationIcon from './validate/ValidationIcon'
+import DeveloperOverlay from '../developer/DeveloperOverlay'
+import { rsvpRoute } from '../../utils/routes'
 
-export const EventVerify = ({ lock, event, valid }) => {
+export const EventVerify = ({
+  lock,
+  event,
+  publicKey,
+  signature,
+  loadEvent,
+}) => {
+  if (lock.address && !event) loadEvent(lock.address)
+
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
   const { name } = event
 
@@ -24,9 +33,14 @@ export const EventVerify = ({ lock, event, valid }) => {
           <Head>
             <title>{pageTitle(name)}</title>
           </Head>
-          <ValidationIcon valid={valid} />
+          <ValidationIcon
+            publicKey={publicKey}
+            eventAddress={lock.address}
+            signature={signature}
+          />
           <EventTitle>{name}</EventTitle>
         </Layout>
+        <DeveloperOverlay />
       </BrowserOnly>
     </GlobalErrorConsumer>
   )
@@ -35,13 +49,16 @@ export const EventVerify = ({ lock, event, valid }) => {
 EventVerify.propTypes = {
   lock: UnlockPropTypes.lock,
   event: UnlockPropTypes.ticketedEvent,
-  valid: PropTypes.bool,
+  publicKey: UnlockPropTypes.address,
+  signature: PropTypes.string,
+  loadEvent: PropTypes.func.isRequired,
 }
 
 EventVerify.defaultProps = {
   lock: {},
   event: {},
-  valid: null,
+  publicKey: null,
+  signature: null,
 }
 
 export const mapDispatchToProps = dispatch => ({
@@ -51,7 +68,15 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export const mapStateToProps = ({ router, locks, account, event }) => {
-  const { lockAddress } = lockRoute(router.location.pathname)
+  let { lockAddress, publicKey, signature } = rsvpRoute(
+    router.location.pathname
+  )
+
+  if (signature) {
+    const sigBuffer = Buffer.from(signature, 'base64')
+    signature = sigBuffer.toString('utf8') // Unlock.js encodes in base64 unnecessarily. Decoding for now
+    // TODO: remove base64 encoding from the signing method in unlock.js so we don't need this anymore
+  }
 
   const lock = Object.values(locks).find(
     thisLock => thisLock.address === lockAddress
@@ -60,6 +85,8 @@ export const mapStateToProps = ({ router, locks, account, event }) => {
   return {
     lock,
     event,
+    publicKey,
+    signature,
     account,
   }
 }

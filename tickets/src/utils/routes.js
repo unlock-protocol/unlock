@@ -1,4 +1,4 @@
-import { LOCK_PATH_NAME_REGEXP } from '../constants'
+import { LOCK_PATH_NAME_REGEXP, EVENT_PATH_NAME_REGEXP } from '../constants'
 
 if (!global.URL) {
   // polyfill for server
@@ -35,6 +35,28 @@ export const lockRoute = path => {
   }
 }
 
+export const rsvpRoute = path => {
+  const url = new URL(path, 'http://tickets.unlock-protocol.com')
+  const match = url.pathname.match(EVENT_PATH_NAME_REGEXP)
+
+  if (!match) {
+    return {
+      signature: null,
+      publicKey: null,
+      lockAddress: null,
+      prefix: null,
+    }
+  }
+
+  return {
+    signature: match[4] || null,
+    publicKey: match[3] || null,
+    lockAddress: match[2] || null,
+    prefix: match[1] || null,
+  }
+}
+
 export default {
   lockRoute,
+  rsvpRoute,
 }

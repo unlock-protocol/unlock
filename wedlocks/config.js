@@ -9,7 +9,12 @@ dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
 
-const requiredVariables = ['SMTP_HOST', 'SMTP_USERNAME', 'SMTP_PASSWORD']
+const requiredVariables = [
+  'SMTP_HOST',
+  'SMTP_USERNAME',
+  'SMTP_PASSWORD',
+  'BASE64_WEDLOCKS_PRIVATE_KEY',
+]
 requiredVariables.forEach(envVar => {
   if (!process.env[envVar]) {
     console.error(`Environment variable ${envVar} is required.`)
@@ -18,6 +23,16 @@ requiredVariables.forEach(envVar => {
     }
   }
 })
+
+let wedlocksPrivateKey
+if (process.env.BASE64_WEDLOCKS_PRIVATE_KEY) {
+  // This env variable is passed as base 64 to comply with the multiline reco by circleci:
+  // https://circleci.com/docs/2.0/env-vars/#encoding-multi-line-environment-variables
+  wedlocksPrivateKey = Buffer.from(
+    process.env.BASE64_WEDLOCKS_PRIVATE_KEY,
+    'base64'
+  ).toString('utf-8')
+}
 
 module.exports = {
   host: process.env.SMTP_HOST,
@@ -28,6 +43,7 @@ module.exports = {
     pass: process.env.SMTP_PASSWORD,
   },
   unlockEnv,
+  wedlocksPrivateKey,
   sender:
     process.env.SMTP_FROM_ADDRESS || 'Unlock <no-reply@unlock-protocol.com>', // TODO: can we do better eventually?
 }
