@@ -384,14 +384,14 @@ describe('Wallet middleware', () => {
       signedAddress: 'encrypted sig',
     }
 
-    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
-      cb(null, data.message.address.publicKey)
-    )
+    mockWalletService.recoverAccountFromSignedData = jest.fn((data, sa, cb) => {
+      cb(null, JSON.parse(data).message.address.publicKey)
+    })
 
     invoke(action)
 
     expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
-      data,
+      JSON.stringify(data),
       signedAddress,
       expect.any(Function)
     )
@@ -433,7 +433,7 @@ describe('Wallet middleware', () => {
     invoke(action)
 
     expect(mockWalletService.recoverAccountFromSignedData).toHaveBeenCalledWith(
-      data,
+      JSON.stringify(data),
       signedAddress,
       expect.any(Function)
     )
