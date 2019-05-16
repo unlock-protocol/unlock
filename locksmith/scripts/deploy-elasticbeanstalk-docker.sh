@@ -8,7 +8,7 @@ node_env=$7
 is_forked_pr=$8
 build_id=$9
 message=$10
-staging_environment=${environment}_staging
+staging_environment=${environment}-staging
 
 function check_is_forked_pr()
 {
