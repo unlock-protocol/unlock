@@ -53,6 +53,7 @@ describe('mapStateToProps', () => {
           mykey: {
             lock: eventAddress,
             owner: publicKey,
+            expiration: new Date().getTime() / 1000 + 86400,
           },
         },
       },
@@ -64,6 +65,37 @@ describe('mapStateToProps', () => {
     )
 
     expect(valid).toBe(true)
+  })
+
+  it('should return invalid if there is an expired key and the signature is marked as valid', () => {
+    expect.assertions(1)
+
+    const publicKey = '0x123'
+    const eventAddress = '0x321'
+
+    const { valid } = mapStateToProps(
+      {
+        tickets: {
+          valid: {
+            signature: publicKey,
+          },
+        },
+        keys: {
+          mykey: {
+            lock: eventAddress,
+            owner: publicKey,
+            expiration: 1,
+          },
+        },
+      },
+      {
+        signature: 'signature',
+        publicKey,
+        eventAddress,
+      }
+    )
+
+    expect(valid).toBe(false)
   })
 
   it('should return null if there is no key yet but the signature is marked as valid', () => {
@@ -108,6 +140,7 @@ describe('mapStateToProps', () => {
           mykey: {
             lock: eventAddress,
             owner: publicKey,
+            expiration: new Date().getTime() / 1000 + 86400,
           },
         },
       },

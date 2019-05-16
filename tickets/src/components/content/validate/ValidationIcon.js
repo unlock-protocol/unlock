@@ -70,14 +70,26 @@ export const mapStateToProps = (
 ) => {
   let valid = null
   let normalizedPublicKey
+  let potentialKeys = false
 
   if (publicKey) {
     normalizedPublicKey = publicKey.toString().toLowerCase()
 
+    const now = new Date().getTime() / 1000
+
     const keysForEvent = Object.values(keys).filter(key => {
-      return (
+      // We need to remember if there were some suitable keys so we know whether or not to return invalid
+      // or if we're in a state where the keys could potentially still be loading
+      if (
         key.lock === eventAddress &&
         key.owner.toString().toLowerCase() === normalizedPublicKey
+      )
+        potentialKeys = true
+
+      return (
+        key.lock === eventAddress &&
+        key.owner.toString().toLowerCase() === normalizedPublicKey &&
+        key.expiration > now
       )
     })
 
@@ -88,7 +100,10 @@ export const mapStateToProps = (
       keysForEvent.length
     ) {
       valid = true
-    } else if (tickets.invalid && tickets.invalid[signature]) {
+    } else if (
+      (tickets.invalid && tickets.invalid[signature]) ||
+      potentialKeys
+    ) {
       valid = false
     }
   }
