@@ -161,9 +161,13 @@ contract('Lock / erc721 / transferFrom', accounts => {
         )
       })
 
-      it("should invalidate the previous owner's key", async () => {
-        const response = await locks['FIRST'].getHasValidKey.call(from)
-        assert.equal(response, false)
+      it("should expire the previous owner's key", async () => {
+        const expirationTimestamp = new BigNumber(
+          await locks['FIRST'].keyExpirationTimestampFor.call(from)
+        )
+        const now = Math.floor(new Date().getTime() / 1000)
+        // Check only 10 seconds in the future to ensure deterministic test
+        assert(expirationTimestamp.lt(now + 10))
       })
     })
 

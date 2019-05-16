@@ -70,7 +70,4 @@ contract UnlockErrors {
 
   // This contract does NOT implement the IERC721Receiver interface.
   string public constant NON_COMPLIANT_ERC721_RECEIVER = 'NON_COMPLIANT_ERC721_RECEIVER';
-
-  // This address has never owned a key for this lock
-  string public constant HAS_NEVER_OWNED_KEY = 'HAS_NEVER_OWNED_KEY';
 }

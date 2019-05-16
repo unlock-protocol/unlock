@@ -142,6 +142,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to safeTransferFrom w/ data', async () => {
+      ID = await lock.getTokenIdFor.call(keyOwner)
       await shouldFail(
         lock.methods['safeTransferFrom(address,address,uint256,bytes)'](
           keyOwner,
