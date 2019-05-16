@@ -67,13 +67,16 @@ contract MixinTransfer is
 
     if (toKey.tokenId == 0) {
       toKey.tokenId = fromKey.tokenId;
+      _recordOwner(_recipient, toKey.tokenId);
     }
-    _recordOwner(_recipient, toKey.tokenId);
 
     if (previousExpiration <= block.timestamp) {
       // The recipient did not have a key, or had a key but it expired. The new expiration is the
       // sender's key expiration
+      // an expired key is no longer a valid key, so the new tokenID is the sender's tokenID
       toKey.expirationTimestamp = fromKey.expirationTimestamp;
+      toKey.tokenId = fromKey.tokenId;
+      _recordOwner(_recipient, _tokenId);
     } else {
       // The recipient has a non expired key. We just add them the corresponding remaining time
       // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
@@ -83,6 +86,9 @@ contract MixinTransfer is
 
     // Effectively expiring the key for the previous owner
     fromKey.expirationTimestamp = block.timestamp;
+
+    // Set the tokenID to 0 for the previous owner to avoid duplicates
+    fromKey.tokenId = 0;
 
     // Clear any previous approvals
     _clearApproval(_tokenId);

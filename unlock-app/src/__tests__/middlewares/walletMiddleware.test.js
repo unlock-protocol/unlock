@@ -1,4 +1,5 @@
 import EventEmitter from 'events'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
   CREATE_LOCK,
@@ -8,13 +9,9 @@ import {
   UPDATE_LOCK,
   UPDATE_LOCK_NAME,
 } from '../../actions/lock'
-import {
-  WAIT_FOR_WALLET,
-  GOT_WALLET,
-  DISMISS_CHECK,
-} from '../../actions/walletStatus'
+import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
@@ -25,6 +22,7 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
+  FAILED_TO_DECRYPT_KEY,
 } from '../../errors'
 import {
   SIGN_DATA,
@@ -32,6 +30,10 @@ import {
   SIGNATURE_ERROR,
 } from '../../actions/signature'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../../actions/user'
 
 let mockConfig
 
@@ -65,10 +67,10 @@ const network = {
  * This is a "fake" middleware caller
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
  */
-const create = () => {
+const create = (dispatchImplementation = () => true) => {
   const store = {
     getState: jest.fn(() => state),
-    dispatch: jest.fn(() => true),
+    dispatch: jest.fn((...args) => dispatchImplementation(...args)),
   }
   const next = jest.fn()
 
@@ -188,7 +190,7 @@ describe('Wallet middleware', () => {
     const { store } = create()
     mockWalletService.emit('transaction.pending')
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: WAIT_FOR_WALLET })
+      expect.objectContaining({ type: LAUNCH_MODAL })
     )
   })
 
@@ -210,7 +212,7 @@ describe('Wallet middleware', () => {
       status
     )
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: GOT_WALLET })
+      expect.objectContaining({ type: DISMISS_MODAL })
     )
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -232,7 +234,7 @@ describe('Wallet middleware', () => {
     const { store } = create()
     mockWalletService.emit('overlay.dismissed')
     expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: DISMISS_CHECK })
+      expect.objectContaining({ type: DISMISS_MODAL })
     )
   })
 
@@ -395,7 +397,7 @@ describe('Wallet middleware', () => {
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(
         1,
-        expect.objectContaining({ type: DISMISS_CHECK })
+        expect.objectContaining({ type: DISMISS_MODAL })
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, {
         type: DELETE_LOCK,
@@ -654,6 +656,75 @@ describe('Wallet middleware', () => {
         type: SIGNATURE_ERROR,
         error,
       })
+    })
+  })
+
+  describe('GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD', () => {
+    const emailAddress = 'test@us.er'
+    const password = 'guest'
+    let key
+    let address
+    beforeEach(async () => {
+      const info = await createAccountAndPasswordEncryptKey(password)
+      key = info.passwordEncryptedPrivateKey
+      address = info.address
+    })
+    it('should set the account and encrypted key in state', done => {
+      expect.assertions(3)
+      // This is a bit annoying, but it lets us more easily test the async stuff
+      const timesToCallDispatch = 2
+      let timesDispatchHasBeenCalled = 0
+      const dispatchImplementation = () => {
+        timesDispatchHasBeenCalled++
+        if (timesDispatchHasBeenCalled === timesToCallDispatch) {
+          expect(store.dispatch).toHaveBeenNthCalledWith(
+            1,
+            setAccount({ address })
+          )
+          expect(store.dispatch).toHaveBeenNthCalledWith(
+            2,
+            setEncryptedPrivateKey(key, emailAddress)
+          )
+          done()
+        }
+      }
+      const { next, invoke, store } = create(dispatchImplementation)
+
+      const action = {
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key,
+        emailAddress,
+        password,
+      }
+
+      invoke(action)
+
+      expect(next).toHaveBeenCalled()
+    })
+
+    it('should dispatch an error if it cannot decrypt', done => {
+      expect.assertions(2)
+      const dispatchImplementation = () => {
+        expect(store.dispatch).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: SET_ERROR,
+            error: FAILED_TO_DECRYPT_KEY,
+          })
+        )
+        done()
+      }
+      const { next, invoke, store } = create(dispatchImplementation)
+
+      const action = {
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key,
+        emailAddress,
+        password: 'not the correct password, I assure you',
+      }
+
+      invoke(action)
+
+      expect(next).toHaveBeenCalled()
     })
   })
 })

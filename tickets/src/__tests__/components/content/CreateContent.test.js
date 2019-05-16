@@ -13,9 +13,15 @@ import createUnlockStore from '../../../createUnlockStore'
 const config = {
   unlockAppUrl: 'https://unlock-protocol.com',
 }
+
+const account = {
+  address: '0x123',
+}
+
 const inputLocks = {
-  abc123: { address: 'abc123' },
-  def459: { address: 'def456' },
+  abc123: { address: 'abc123', owner: '0x123' },
+  def459: { address: 'def456', owner: '0x123' },
+  ghi789: { address: 'ghi789', owner: '0x567' },
 }
 
 // Fake select to mock react-select
@@ -163,6 +169,52 @@ describe('CreateContent', () => {
     expect(loadEvent).toHaveBeenCalledWith('abc123')
   })
 
+  it('should reset the fields when a different lock is selected', () => {
+    expect.assertions(2)
+
+    let date = new Date('2020-11-23T00:00:00.000')
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+    })
+
+    const event = {
+      lockAddress: 'abc123',
+      name: 'Test Event',
+      description: 'This is my test event',
+      location: 'Testville',
+      owner: 'ben',
+      logo: '',
+      date,
+    }
+    const addEvent = jest.fn()
+    const loadEvent = jest.fn()
+    const now = new Date('2022-03-02T00:00:00.000') // March 2nd, 2022
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <CreateContent
+          config={config}
+          account={{ address: 'ben' }}
+          locks={['abc123', 'def456']}
+          addEvent={addEvent}
+          loadEvent={loadEvent}
+          now={now}
+          event={event}
+        />
+      </Provider>
+    )
+
+    expect(form.getByDisplayValue('Test Event')).not.toBeNull()
+
+    // Now select a different lock!
+    rtl.fireEvent.change(form.getByTestId('Choose a lock'), {
+      target: { value: 'def456' }, // Selected abc123 lock
+    })
+
+    expect(form.queryByDisplayValue('Test Event')).toBeNull()
+  })
+
   it('should load an event from props', () => {
     expect.assertions(3)
 
@@ -206,9 +258,9 @@ describe('CreateContent', () => {
 })
 
 describe('mapStateToProps', () => {
-  it('should return an array of locks when given a redux lock object', () => {
+  it('should return an array of locks owned by the current user when given a redux locks object', () => {
     expect.assertions(4)
-    const props = mapStateToProps({ locks: inputLocks }, { now: null })
+    const props = mapStateToProps({ locks: inputLocks, account }, { now: null })
 
     expect(props.locks.length).toEqual(2)
     expect(props.locks[0]).toEqual('abc123')
@@ -219,7 +271,7 @@ describe('mapStateToProps', () => {
   it('should pass through an event to props when given one in state', () => {
     expect.assertions(1)
     const props = mapStateToProps(
-      { locks: inputLocks, event: 'foo' },
+      { locks: inputLocks, event: 'foo', account },
       { now: null }
     )
 

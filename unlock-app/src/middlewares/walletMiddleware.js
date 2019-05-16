@@ -1,5 +1,8 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import UnlockJs from '@unlock-protocol/unlock-js'
+import {
+  getAccountFromPrivateKey,
+  WalletService,
+} from '@unlock-protocol/unlock-js'
 
 import {
   CREATE_LOCK,
@@ -15,24 +18,23 @@ import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
-import {
-  waitForWallet,
-  gotWallet,
-  dismissWalletCheck,
-} from '../actions/walletStatus'
+import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
+  FAILED_TO_DECRYPT_KEY,
 } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
-
-const { WalletService } = UnlockJs
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../actions/user'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -77,7 +79,7 @@ const walletMiddleware = config => {
       (transactionHash, from, to, input, type, status) => {
         // At this point we know that a wallet was found, because a new transaction
         // cannot be created without it
-        dispatch(gotWallet())
+        dispatch(dismissWalletCheck())
         dispatch(
           newTransaction({
             hash: transactionHash,
@@ -213,6 +215,19 @@ const walletMiddleware = config => {
               dispatch(signedData(action.data, signature))
             }
           )
+        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
+          const { key, emailAddress, password } = action
+          // TODO: How will this interact with unlock-provider?
+          getAccountFromPrivateKey(key, password)
+            .then(wallet => {
+              const address = wallet.signingKey.address
+              dispatch(setAccount({ address }))
+              dispatch(setEncryptedPrivateKey(key, emailAddress))
+            })
+            .catch(error => {
+              // handle error here
+              dispatch(setError(FAILED_TO_DECRYPT_KEY, error))
+            })
         }
 
         next(action)

@@ -201,7 +201,7 @@ export const mapStateToProps = (
       event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
       event.description = `HEYOOOO!
 
-We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensys - did you see how packed the hallways were?
+We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensus - did you see how packed the hallways were?
 
 Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
 
@@ -295,7 +295,7 @@ const Links = styled.ul`
   }
 `
 
-const Title = styled.h1`
+export const Title = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
   font-weight: bold;

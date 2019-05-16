@@ -3,9 +3,19 @@ import * as rtl from 'react-testing-library'
 import {
   SignUp,
   mapDispatchToProps,
+  mapStateToProps,
 } from '../../../components/interface/SignUp'
-import { SIGNUP_EMAIL } from '../../../actions/signUp'
+import { SIGNUP_EMAIL } from '../../../actions/user'
 import doNothing from '../../../utils/doNothing'
+import wedlocksUtils from '../../../utils/wedlocks'
+
+let mockWedlocksUtil = { verifyEmailSignature: jest.fn() }
+
+jest.mock('../../../utils/wedlocks', () => {
+  return jest.fn().mockImplementation(() => {
+    return mockWedlocksUtil
+  })
+})
 
 let wrapper: rtl.RenderResult<typeof rtl.queries>
 let signupEmail: (email: string) => any
@@ -13,6 +23,13 @@ let signupEmail: (email: string) => any
 afterEach(rtl.cleanup)
 
 describe('Sign Up Page', () => {
+  beforeEach(() => {
+    signupEmail = jest.fn((email: string) => email)
+    wrapper = rtl.render(
+      <SignUp signupEmail={signupEmail} toggleSignup={doNothing} />
+    )
+  })
+
   describe('mapDispatchToProps', () => {
     it('should map the dispatch to the props', () => {
       expect.assertions(2)
@@ -26,12 +43,214 @@ describe('Sign Up Page', () => {
     })
   })
 
-  beforeEach(() => {
-    signupEmail = jest.fn((email: string) => email)
-    wrapper = rtl.render(
-      <SignUp signupEmail={signupEmail} toggleSignup={doNothing} />
-    )
+  describe('mapStateToProps', () => {
+    it('should yield the emailAddress from the location if there is one', () => {
+      expect.assertions(1)
+      const state = {
+        router: {
+          location: {
+            search: '?email=julien@unlock-protocol.com',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      const { emailAddress } = mapStateToProps(state)
+      expect(emailAddress).toEqual('julien@unlock-protocol.com')
+    })
+
+    it('should yield the emailAddress from the location if there are several', () => {
+      expect.assertions(1)
+      const state = {
+        router: {
+          location: {
+            search:
+              '?email=julien@unlock-protocol.com&email=chris@unlock-protocol.com',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      const { emailAddress } = mapStateToProps(state)
+      expect(emailAddress).toEqual('julien@unlock-protocol.com')
+    })
+
+    it('should yield no emailAddress from the location if there are none', () => {
+      expect.assertions(1)
+      const state = {
+        router: {
+          location: {
+            search: '',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      const { emailAddress } = mapStateToProps(state)
+      expect(emailAddress).toEqual(undefined)
+    })
+
+    it('should yield isLinkValid to false if signedEmail was not signed by wedlocks', () => {
+      expect.assertions(2)
+
+      const state = {
+        router: {
+          location: {
+            search:
+              '?email=hello@unlock-protocol.com&signedEmail=notavalidsignature',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      wedlocksUtils.verifyEmailSignature = jest.fn(() => {
+        return false
+      })
+
+      const { isLinkValid } = mapStateToProps(state)
+      expect(wedlocksUtils.verifyEmailSignature).toHaveBeenCalledWith(
+        'hello@unlock-protocol.com',
+        'notavalidsignature'
+      )
+      expect(isLinkValid).toEqual(false)
+    })
+
+    it('should yield isLinkValid to true if signedEmail was signed by wedlocks', () => {
+      expect.assertions(2)
+
+      const state = {
+        router: {
+          location: {
+            search:
+              '?email=hello@unlock-protocol.com&signedEmail=validSignature',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      wedlocksUtils.verifyEmailSignature = jest.fn(() => {
+        return true
+      })
+
+      const { isLinkValid } = mapStateToProps(state)
+      expect(wedlocksUtils.verifyEmailSignature).toHaveBeenCalledWith(
+        'hello@unlock-protocol.com',
+        'validSignature'
+      )
+      expect(isLinkValid).toEqual(true)
+    })
+
+    it('should yield the account is the user is logged in', () => {
+      expect.assertions(1)
+
+      const state = {
+        account: {
+          address: '0x123',
+          balance: '0',
+        },
+        router: {
+          location: {
+            search: '',
+            hash: '',
+            host: '',
+            hostname: '',
+            href: '',
+            origin: '',
+            pathname: '',
+            port: '',
+            protocol: '',
+            assign: () => {},
+            reload: () => {},
+            replace: () => {},
+            ancestorOrigins: {
+              length: 0,
+              contains: (_: string) => false, // eslint-disable-line no-unused-vars
+              item: (_: number) => null, // eslint-disable-line no-unused-vars
+            },
+          },
+        },
+      }
+
+      const { account } = mapStateToProps(state)
+      expect(account).toEqual(state.account)
+    })
   })
+
   it('should update the input field on change', () => {
     expect.assertions(1)
     const email = 'snsv@computer.net'

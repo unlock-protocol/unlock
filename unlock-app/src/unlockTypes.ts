@@ -20,6 +20,13 @@ export enum TransactionStatus {
 }
 /* eslint-enable no-unused-vars */
 
+/* eslint-disable no-unused-vars */
+export enum KindOfModal {
+  WalletCheckOverlay,
+  PasswordPrompt,
+}
+/* eslint-enable no-unused-vars */
+
 export interface Transaction {
   status: TransactionStatus
   confirmations: number
@@ -58,4 +65,19 @@ export interface Loading {
 export interface Action {
   type: string
   [key: string]: any
+}
+
+// TODO: Use this where we have TS files
+export type Dispatch = (action: Action) => any
+
+// This is currrently the way ethers checks the keystore format. TODO:
+// tighten this up? At the moment it just serves to make it difficult
+// to put a decrypted key into the state.
+export interface EncryptedPrivateKey {
+  version: number
+  [param: string]: any
+}
+
+export interface Router {
+  location: Location
 }

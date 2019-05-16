@@ -1,28 +1,34 @@
-import { utils, constants } from 'ethers'
+import { ethers } from 'ethers'
 
 // this allows us to flexibly upgrade web3 and fix bugs as they surface
 // or to migrate to a totally different library and have a single point of modification
-module.exports = {
-  toWei: (value, units) => utils.parseUnits(value, units),
-  hexlify: utils.hexlify,
-  hexStripZeros: utils.hexStripZeros,
-  bigNumberify: utils.bigNumberify,
+export default {
+  toWei: (value, units) => ethers.utils.parseUnits(value, units),
+  hexlify: ethers.utils.hexlify,
+  hexStripZeros: ethers.utils.hexStripZeros,
+  bigNumberify: ethers.utils.bigNumberify,
   hexToNumberString: num =>
-    utils.formatUnits(utils.bigNumberify(num), 'wei').replace('.0', ''),
-  toChecksumAddress: utils.getAddress,
+    ethers.utils
+      .formatUnits(ethers.utils.bigNumberify(num), 'wei')
+      .replace('.0', ''),
+  toChecksumAddress: ethers.utils.getAddress,
   fromWei: (num, units) => {
-    return utils.formatUnits(utils.bigNumberify(num), units).replace(/\.0$/, '')
+    return ethers.utils
+      .formatUnits(ethers.utils.bigNumberify(num), units)
+      .replace(/\.0$/, '')
   },
   isInfiniteKeys: value => {
-    return utils.bigNumberify(value).eq(constants.MaxUint256)
+    return ethers.utils.bigNumberify(value).eq(ethers.constants.MaxUint256)
   },
   toNumber: value => {
-    return utils.bigNumberify(value).toNumber()
+    return ethers.utils.bigNumberify(value).toNumber()
   },
   toRpcResultNumber: number => {
-    const num = utils.hexlify(utils.bigNumberify(number))
-    return utils.hexZeroPad(num, 32)
+    const num = ethers.utils.hexlify(ethers.utils.bigNumberify(number))
+    return ethers.utils.hexZeroPad(num, 32)
   },
-  utf8ToHex: str => utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0),
-  sha3: utils.keccak256,
+  utf8ToHex: str =>
+    ethers.utils.hexlify(str.length ? ethers.utils.toUtf8Bytes(str) : 0),
+  sha3: ethers.utils.keccak256,
+  verifyMessage: ethers.utils.verifyMessage,
 }

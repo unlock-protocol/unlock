@@ -16,7 +16,7 @@ dotenv.config({
 const copyFile = promisify(fs.copyFile)
 
 const requiredConfigVariables = {
-  unlockEnv: process.env.UNLOCK_ENV || 'dev',
+  unlockEnv,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
@@ -78,6 +78,7 @@ module.exports = withTypescript(
         '/': { page: '/home' },
         '/create': { page: '/create' },
         '/event': { page: '/event' },
+        '/checkin': { page: '/checkin' },
       }
     },
   })

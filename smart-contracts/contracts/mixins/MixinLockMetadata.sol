@@ -1,6 +1,7 @@
 pragma solidity 0.5.7;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
 import '../interfaces/IERC721.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
@@ -14,6 +15,7 @@ import './MixinLockCore.sol';
  */
 contract MixinLockMetadata is
   IERC721,
+  ERC165,
   Ownable,
   MixinLockCore,
   UnlockUtils,
@@ -37,6 +39,9 @@ contract MixinLockMetadata is
   ) internal
   {
     lockName = _lockName;
+    // registering the optional erc721 metadata interface with ERC165.sol using
+    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
+    _registerInterface(0x5b5e139f);
   }
 
   /**
@@ -81,13 +86,11 @@ contract MixinLockMetadata is
     external view
     returns(string memory)
   {
-    string memory symbol;
     if(bytes(lockSymbol).length == 0) {
-      symbol = unlockProtocol.getGlobalTokenSymbol();
+      return unlockProtocol.getGlobalTokenSymbol();
     } else {
-      symbol = lockSymbol;
+      return lockSymbol;
     }
-    return symbol;
   }
 
   /**
