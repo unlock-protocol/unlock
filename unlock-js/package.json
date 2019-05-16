@@ -1,21 +1,23 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.0.24",
+  "version": "0.0.29",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "lint": "eslint --ext .tsx,.ts,.js src/",
-    "build": "./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build-esm": "BABEL_ENV=esm ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir esm",
+    "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
+    "build": "npm run clean && node ./scripts/compressAbi.js && npm run build-cjs && npm run build-esm",
+    "clean": "rm -rf lib/ && rm -rf esm/",
     "ci": "npm run lint && npm run test"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "ethers": "4.0.27",
-    "unlock-abi-0": "^1.0.4",
-    "unlock-abi-0-1": "^1.0.0",
-    "unlock-abi-0-2": "^1.0.0"
+    "ethers": "4.0.27"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -32,6 +34,9 @@
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/preset-env": "^7.4.2",
-    "babel-jest": "^24.7.1"
+    "babel-jest": "^24.7.1",
+    "unlock-abi-0": "^1.0.4",
+    "unlock-abi-0-1": "^1.0.0",
+    "unlock-abi-0-2": "^1.0.0"
   }
 }

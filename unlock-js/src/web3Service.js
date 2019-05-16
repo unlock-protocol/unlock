@@ -1,10 +1,8 @@
-import {
-  providers as ethersProviders,
-  utils as ethersMetadataHandling,
-} from 'ethers'
+import { ethers } from 'ethers'
 import utils from './utils'
 import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
+import FetchJsonProvider from './FetchJsonProvider'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
 
 /**
@@ -118,9 +116,9 @@ export default class Web3Service extends UnlockService {
    */
   setup(readOnlyProvider) {
     if (typeof readOnlyProvider === 'string') {
-      this.provider = new ethersProviders.JsonRpcProvider(readOnlyProvider)
+      this.provider = new FetchJsonProvider(readOnlyProvider)
     } else if (readOnlyProvider.send) {
-      this.provider = new ethersProviders.Web3Provider(readOnlyProvider)
+      this.provider = new ethers.providers.Web3Provider(readOnlyProvider)
     }
   }
 
@@ -132,7 +130,7 @@ export default class Web3Service extends UnlockService {
       this.unlockContractAddress
     )
 
-    return ethersMetadataHandling.getContractAddress({
+    return ethers.utils.getContractAddress({
       from: this.unlockContractAddress,
       nonce: transactionCount,
     })
@@ -163,7 +161,7 @@ export default class Web3Service extends UnlockService {
       return null
     }
 
-    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+    const metadata = new ethers.utils.Interface(contract.abi)
     const transactionInfo = metadata.parseTransaction({ data })
 
     // If there is no matching method, return null
@@ -279,7 +277,7 @@ export default class Web3Service extends UnlockService {
     contract,
     transactionReceipt
   ) {
-    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+    const metadata = new ethers.utils.Interface(contract.abi)
 
     transactionReceipt.logs.forEach(log => {
       // For each log, let's find which event it is
@@ -319,7 +317,7 @@ export default class Web3Service extends UnlockService {
       blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
     })
 
-    const metadata = new ethersMetadataHandling.Interface(contract.abi)
+    const metadata = new ethers.utils.Interface(contract.abi)
 
     const transactionInfo = metadata.parseTransaction({ data })
 
@@ -515,11 +513,14 @@ export default class Web3Service extends UnlockService {
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
     return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
-      this.emit('key.updated', KEY_ID(lock, owner), {
+      let keyPayload = {
         lock,
         owner,
         expiration,
-      })
+      }
+
+      this.emit('key.updated', KEY_ID(lock, owner), keyPayload)
+      return keyPayload
     })
   }
 

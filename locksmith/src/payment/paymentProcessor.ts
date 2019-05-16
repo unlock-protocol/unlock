@@ -90,21 +90,23 @@ export class PaymentProcessor {
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
   }
 
-  initiatePurchase(
-    purchaser: ethereumAddress,
+  async initiatePurchase(
+    recipient: ethereumAddress /** this is the managed user/buyer */,
     lock: ethereumAddress,
     credentials: string,
-    providerHost: string
+    providerHost: string,
+    buyer: ethereumAddress
   ) {
-    let successfulCharge = this.chargeUser(purchaser, lock)
+    let successfulCharge = this.chargeUser(recipient, lock)
     if (successfulCharge) {
       let fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',
-        purchaser,
         credentials,
-        providerHost
+        providerHost,
+        buyer
       )
-      fulfillmentDispatcher.purchase(lock, purchaser)
+
+      await fulfillmentDispatcher.purchase(lock, recipient)
     }
   }
 }

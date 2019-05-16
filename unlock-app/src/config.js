@@ -41,6 +41,7 @@ export default function configure(
   let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
   let services = {}
   let supportedProviders = []
+  let base64WedlocksPublicKey = runtimeConfig.base64WedlocksPublicKey
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
     runtimeConfig.paywallScriptUrl ||
@@ -56,6 +57,12 @@ export default function configure(
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
+
+  // If there is an existing web3 injected provider, we also add this one to the list of possible providers
+  if (typeof environment.web3 !== 'undefined') {
+    providers[getCurrentProvider(environment)] =
+      environment.web3.currentProvider
+  }
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
@@ -82,12 +89,6 @@ export default function configure(
       host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
     }
 
-    // If there is an existing web3 injected provider, we also add this one to the list of possible providers
-    if (typeof environment.web3 !== 'undefined') {
-      providers[getCurrentProvider(environment)] =
-        environment.web3.currentProvider
-    }
-
     supportedProviders = ['HTTP']
 
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
@@ -99,12 +100,6 @@ export default function configure(
   }
 
   if (env === 'staging') {
-    // In staging, for now, we require a web3 injected provider.
-    if (typeof environment.web3 !== 'undefined') {
-      providers[getCurrentProvider(environment)] =
-        environment.web3.currentProvider
-    }
-
     // In staging, the network can only be rinkeby
     isRequiredNetwork = networkId => networkId === 4
     chainExplorerUrlBuilders.etherScan = address =>
@@ -125,12 +120,6 @@ export default function configure(
   }
 
   if (env === 'prod') {
-    // In prod, for now, we require a web3 injected provider.
-    if (typeof environment.web3 !== 'undefined') {
-      providers[getCurrentProvider(environment)] =
-        environment.web3.currentProvider
-    }
-
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
     chainExplorerUrlBuilders.etherScan = address =>
@@ -160,6 +149,7 @@ export default function configure(
   }
 
   return {
+    base64WedlocksPublicKey,
     blockTime,
     isServer,
     isInIframe,

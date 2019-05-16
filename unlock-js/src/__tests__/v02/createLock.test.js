@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import * as UnlockV02 from 'unlock-abi-0-2'
-import * as utils from '../../utils'
+import utils from '../../utils'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -22,7 +22,16 @@ const lock = {
   keyPrice: '0.1', // 0.1 Eth
   maxNumberOfKeys: 100,
 }
+
+const callMethodData = prepContract({
+  contract: UnlockV02.Unlock,
+  functionName: 'createLock',
+  signature: 'uint256,address,uint256,uint256',
+  nock,
+})
+
 const owner = '0xdeadfeed'
+let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
 describe('v02', () => {
   describe('createLock', () => {
@@ -34,13 +43,6 @@ describe('v02', () => {
         nock,
         true // this is the Unlock contract, not PublicLock
       )
-
-      const callMethodData = prepContract({
-        contract: UnlockV02.Unlock,
-        functionName: 'createLock',
-        signature: 'uint256,address,uint256,uint256',
-        nock,
-      })
 
       const {
         testTransaction,
@@ -60,29 +62,60 @@ describe('v02', () => {
       setupFail = fail
     }
 
-    it('should invoke _handleMethodCall with the right params', async () => {
-      expect.assertions(2)
+    describe('when not explicitly providing the address of a denominating currency contract ', () => {
+      it('should invoke _handleMethodCall with the right params', async () => {
+        expect.assertions(2)
 
-      await nockBeforeEach()
-      setupSuccess()
+        await nockBeforeEach()
+        setupSuccess()
 
-      walletService._handleMethodCall = jest.fn(() =>
-        Promise.resolve(transaction.hash)
-      )
-      const mock = walletService._handleMethodCall
+        walletService._handleMethodCall = jest.fn(() =>
+          Promise.resolve(transaction.hash)
+        )
+        const mock = walletService._handleMethodCall
 
-      await walletService.createLock(lock, owner)
+        await walletService.createLock(lock, owner)
 
-      expect(mock).toHaveBeenCalledWith(
-        expect.any(Promise),
-        TransactionTypes.LOCK_CREATION
-      )
+        expect(mock).toHaveBeenCalledWith(
+          expect.any(Promise),
+          TransactionTypes.LOCK_CREATION
+        )
 
-      // verify that the promise passed to _handleMethodCall actually resolves
-      // to the result the chain returns from a sendTransaction call to createLock
-      const result = await mock.mock.calls[0][0]
-      expect(result).toEqual(transactionResult)
-      await nock.resolveWhenAllNocksUsed()
+        // verify that the promise passed to _handleMethodCall actually resolves
+        // to the result the chain returns from a sendTransaction call to createLock
+        const result = await mock.mock.calls[0][0]
+        await result.wait()
+        expect(result).toEqual(transactionResult)
+        await nock.resolveWhenAllNocksUsed()
+      })
+    })
+
+    describe('when providing the address of a denominating currency contract', () => {
+      it('should invoke _handleMethodCall with the right params', async () => {
+        expect.assertions(0)
+
+        await nockBeforeEach()
+
+        let {
+          testTransaction,
+          testTransactionResult,
+          success,
+        } = callMethodData(
+          lock.expirationDuration,
+          testERC20ContractAddress,
+          utils.toWei(lock.keyPrice, 'ether'),
+          lock.maxNumberOfKeys
+        )
+
+        transaction = testTransaction
+        transactionResult = testTransactionResult
+        setupSuccess = success
+
+        setupSuccess()
+
+        await walletService.createLock(lock, owner, testERC20ContractAddress)
+        await nock.resolveWhenAllNocksUsed()
+      })
     })
 
     it('should emit lock.updated with the transaction', async () => {
