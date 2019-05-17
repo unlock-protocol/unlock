@@ -420,6 +420,10 @@ export default class Web3Service extends UnlockService {
       this.provider.getBlockNumber(),
       this.provider.getTransaction(transactionHash),
     ]).then(async ([blockNumber, blockTransaction]) => {
+      if (!blockTransaction && !defaults) {
+        // transaction is pending, but we have refreshed the page
+        return null
+      }
       // Let's find the type of contract before we can get its version
       const to = blockTransaction ? blockTransaction.to : defaults.to
       let version

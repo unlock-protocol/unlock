@@ -1129,6 +1129,29 @@ describe('Web3Service', () => {
         })
       })
 
+      describe('when the transaction is submitted and the user has refreshed the page', () => {
+        function testsSetup() {
+          // nock calls cannot be in beforeEach
+          nock.ethBlockNumber(`0x${(29).toString('16')}`)
+          nock.ethGetTransactionByHash(transaction.hash, null)
+          nock.ethGetCodeAndYield(unlockAddress, bytecode[version].Unlock)
+          // this is the call to unlockVersion() with params []
+          nock.ethCallAndYield('0x4220bd46', unlockAddress, actualVersion)
+        }
+
+        it('should not crash (#3246)', async () => {
+          expect.assertions(1)
+          await versionedNockBeforeEach()
+          testsSetup()
+
+          const result = await web3Service.getTransaction(
+            transaction.hash // no defaults, because we refreshed
+          )
+
+          expect(result).toBeNull()
+        })
+      })
+
       describe('when the transaction is pending/waiting to be mined', () => {
         const input =
           '0x2bc888bf00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000278d00000000000000000000000000000000000000000000000000002386f26fc10000000000000000000000000000000000000000000000000000000000000000000a'
