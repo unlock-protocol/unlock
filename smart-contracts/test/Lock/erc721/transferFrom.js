@@ -273,4 +273,17 @@ contract('Lock / erc721 / transferFrom', accounts => {
       })
     })
   })
+
+  it('can transfer a FREE key', async () => {
+    await locks['FREE'].purchaseFor(accounts[1], {
+      from: accounts[1],
+    })
+    let ID = await locks['FREE'].getTokenIdFor.call(accounts[1])
+    await locks['FREE'].transferFrom(accounts[1], accounts[2], ID, {
+      from: accounts[1],
+    })
+    let toID = await locks['FREE'].getTokenIdFor.call(accounts[2])
+    assert.notEqual(ID, 0)
+    assert.equal(ID.toString(), toID.toString())
+  })
 })
