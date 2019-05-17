@@ -19,6 +19,7 @@ import { lockRoute } from '../utils/routes'
 
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
+import { TRANSACTION_TYPES } from '../constants'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -105,6 +106,24 @@ const web3Middleware = config => ({ getState, dispatch }) => {
   return function(next) {
     return function(action) {
       if (action.type === ADD_TRANSACTION) {
+        const {
+          account,
+          router: {
+            location: { pathname, hash },
+          },
+        } = getState()
+        const { lockAddress } = lockRoute(pathname + hash)
+        const accountAddress = account && account.address
+        const { to, from } = action.transaction
+        if (from === accountAddress && to === lockAddress) {
+          // this is probably a key purchase transaction, so let's make sure we know it is in the UI
+          // pending key transactions will never see this detail otherwise
+          action.transaction.type = TRANSACTION_TYPES.KEY_PURCHASE
+          action.transaction.key = `${lockAddress}-${accountAddress}`
+          action.transaction.lock = lockAddress
+          action.transaction.status = 'submitted'
+          action.transaction.confirmations = 0
+        }
         web3Service.getTransaction(action.transaction.hash)
       }
 
@@ -178,33 +197,18 @@ const web3Middleware = config => ({ getState, dispatch }) => {
       }
 
       const keyId = `${lockAddress}-${accountAddress}`
-      if (action.type === NEW_TRANSACTION) {
-        // when the web3Service is retrieving transactions, only transactionHash is set
-        // this line checks to see if we are instead getting the transaction with all the stuff we need
+      if (
+        action.type === UPDATE_TRANSACTION ||
+        action.type === NEW_TRANSACTION ||
+        action.type === ADD_TRANSACTION
+      ) {
+        const transactionHash = action.hash || action.transaction.hash
+        const existingTransaction = getState().transactions[transactionHash]
         if (
-          action.transaction.to === lockAddress &&
-          action.transaction.from === accountAddress
-        ) {
-          // this is key purchase transaction from us to the lock!
-          const key = getState().keys[keyId]
-
-          dispatch(
-            updateKey(keyId, {
-              ...key,
-              transactions: {
-                ...key.transactions,
-                [action.transaction.hash]: action.transaction,
-              },
-            })
-          )
-        }
-      }
-      if (action.type === UPDATE_TRANSACTION) {
-        const existingTransaction = getState().transactions[action.hash]
-        if (
-          (existingTransaction.to === lockAddress &&
+          existingTransaction.to &&
+          ((existingTransaction.to === lockAddress &&
             existingTransaction.from === accountAddress) ||
-          existingTransaction.key === keyId
+            existingTransaction.key === keyId)
         ) {
           // this is key purchase transaction from us to the lock!
           const key = getState().keys[keyId]
@@ -215,7 +219,7 @@ const web3Middleware = config => ({ getState, dispatch }) => {
                 ...key,
                 transactions: {
                   ...key.transactions,
-                  [action.hash]: existingTransaction,
+                  [transactionHash]: existingTransaction,
                 },
               })
             )
@@ -228,7 +232,7 @@ const web3Middleware = config => ({ getState, dispatch }) => {
                 data: null,
                 id: keyId,
                 transactions: {
-                  [action.hash]: existingTransaction,
+                  [transactionHash]: existingTransaction,
                 },
               })
             )

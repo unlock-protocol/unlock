@@ -532,6 +532,17 @@ describe('Web3 middleware', () => {
 
   it('should handle ADD_TRANSACTION', () => {
     expect.assertions(2)
+    state = {
+      router: {
+        location: {
+          pathname: '',
+          hash: '',
+        },
+      },
+      transactions: {
+        [transaction.hash]: transaction,
+      },
+    }
     const { next, invoke } = create()
     const action = { type: ADD_TRANSACTION, transaction }
     mockWeb3Service.getTransaction = jest.fn()
@@ -543,8 +554,66 @@ describe('Web3 middleware', () => {
     )
   })
 
+  it('should augment ADD_TRANSACTION for submitted state', () => {
+    expect.assertions(1)
+    const transactionFromLocksmith = {
+      hash: 'hash',
+      to: lock.address,
+      from: account.address,
+    }
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+      },
+    }
+    state.transactions = {
+      hash: transactionFromLocksmith,
+    }
+    state.keys = {
+      [`${lock.address}-${account.address}`]: {
+        id: `${lock.address}-from`,
+        owner: 'from',
+        lock: lock.address,
+        expiration: 0,
+      },
+    }
+    const { invoke, next } = create()
+    const action = {
+      type: ADD_TRANSACTION,
+      transaction: transactionFromLocksmith,
+    }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalledWith({
+      type: ADD_TRANSACTION,
+      transaction: {
+        confirmations: 0,
+        from: account.address,
+        hash: 'hash',
+        key: `${lock.address}-${account.address}`,
+        lock: lock.address,
+        status: 'submitted',
+        to: lock.address,
+        type: TRANSACTION_TYPES.KEY_PURCHASE,
+      },
+    })
+  })
+
   it('should handle NEW_TRANSACTION', () => {
     expect.assertions(3)
+    state = {
+      router: {
+        location: {
+          pathname: '',
+          hash: '',
+        },
+      },
+      transactions: {
+        [transaction.hash]: transaction,
+      },
+    }
     const {
       next,
       invoke,
@@ -593,6 +662,50 @@ describe('Web3 middleware', () => {
     expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
       transaction.hash,
       transaction
+    )
+    expect(dispatch).toHaveBeenCalledWith(
+      updateKey(
+        key.id,
+        expect.objectContaining({
+          ...key,
+          transactions: {
+            [transaction.hash]: transaction,
+          },
+        })
+      )
+    )
+  })
+
+  it('should dispatch key update on ADD_TRANSACTION if it is a key purchase of our lock from us', () => {
+    expect.assertions(3)
+    state.router = {
+      location: {
+        pathname: `/${lock.address}`,
+        hash: '',
+        search: '',
+      },
+    }
+    transaction = {
+      ...transaction,
+      to: lock.address,
+      from: account.address,
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+    }
+    state.transactions = {
+      [transaction.hash]: transaction,
+    }
+    const {
+      next,
+      invoke,
+      store: { dispatch },
+    } = create()
+    const action = { type: ADD_TRANSACTION, transaction }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash
     )
     expect(dispatch).toHaveBeenCalledWith(
       updateKey(
