@@ -1,3 +1,4 @@
+import shallowEqual from 'shallow-equal/objects'
 import { getNetwork } from './network'
 import { getAccount } from './account'
 import ensureWalletReady from './ensureWalletReady'
@@ -26,21 +27,6 @@ function resolveOnEvent(service, event) {
     })
     service.once(event, (...args) => resolve(args))
   })
-}
-
-/**
- * Does a basic shallow equal for transaction objects to see if any changes have occurred
- * This is used to decide whether to trigger an update to the data
- * @param {*} a old transaction object
- * @param {*} b new transaction object
- */
-function sortOfEqual(a, b) {
-  const aKeys = Object.keys(a).sort()
-  const bKeys = Object.keys(b).sort()
-  if (aKeys.length !== bKeys.length) return false
-  if (aKeys.filter((key, index) => bKeys[index] !== key).length) return false
-  if (aKeys.filter(key => a[key] !== b[key]).length) return false
-  return true
 }
 
 /**
@@ -152,7 +138,7 @@ export async function pollForKeyPurchaseTransaction({
       }
     } /* getCurrentValue */,
     (oldTransaction, newTransaction) => {
-      return !sortOfEqual(oldTransaction, newTransaction)
+      return !shallowEqual(oldTransaction, newTransaction)
     } /* hasValueChanged */,
     newTransaction => {
       if (newTransaction.confirmations < requiredConfirmations) return true
