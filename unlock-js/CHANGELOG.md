@@ -1,5 +1,10 @@
 # Changes
 
+## 0.0.30
+
+- `getTransaction` no longer crashes if the user refreshes while a key purchase transaction is pending
+- moved `recoverAccountFromSignedData` to `web3Service`
+
 ## 0.0.29
 
 - `getAccountFromPrivateKey` now returns the entire `Wallet`, not just the `SigningKey`
