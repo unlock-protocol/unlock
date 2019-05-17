@@ -1,18 +1,38 @@
 import getLocksAndKeys from '../../../data-iframe/blockchainHandler/getLocks'
 import { setAccount } from '../../../data-iframe/blockchainHandler/account'
+import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
+
+jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady', () =>
+  jest.fn().mockResolvedValue()
+)
 
 describe('getLocks', () => {
   let fakeWeb3Service
+  const fakeWalletService = {}
   beforeEach(() => {
     fakeWeb3Service = {
       getLock: jest.fn(address => Promise.resolve({ address })),
     }
   })
 
+  it('ensures the wallet is ready for account validation', async () => {
+    expect.assertions(1)
+
+    await getLocksAndKeys({
+      walletService: fakeWalletService,
+      locksToRetrieve: [1, 2, 3],
+      existingKeys: {},
+      web3Service: fakeWeb3Service,
+    })
+
+    expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
+  })
+
   it('calls web3Service.getLock for all the locks', async () => {
     expect.assertions(4)
 
     await getLocksAndKeys({
+      walletService: fakeWalletService,
       locksToRetrieve: [1, 2, 3],
       existingKeys: {},
       web3Service: fakeWeb3Service,
@@ -29,6 +49,7 @@ describe('getLocks', () => {
 
     setAccount('account')
     const result = await getLocksAndKeys({
+      walletService: fakeWalletService,
       locksToRetrieve: [1, 2, 3],
       existingKeys: { '2-account': 'hi' },
       web3Service: fakeWeb3Service,

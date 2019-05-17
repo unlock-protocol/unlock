@@ -1,4 +1,5 @@
 import { getAccount } from './account'
+import ensureWalletReady from './ensureWalletReady'
 
 /**
  * Retrieve lock information and construct default keys for the locks
@@ -9,10 +10,13 @@ import { getAccount } from './account'
  * @returns {{ locks, keys }}
  */
 export default async function getLocksAndKeys({
+  walletService,
   locksToRetrieve,
   existingKeys,
   web3Service,
 }) {
+  await ensureWalletReady(walletService)
+
   const newLocks = await Promise.all(
     locksToRetrieve.map(lockAddress => web3Service.getLock(lockAddress))
   )
