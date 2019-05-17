@@ -9,7 +9,6 @@ import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
-import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import usePurchaseKey from '../../hooks/usePurchaseKey'
 
 export const Lock = ({
@@ -24,14 +23,6 @@ export const Lock = ({
   keyStatus,
 }) => {
   const purchase = usePurchaseKey(purchaseKey, openInNewWindow)
-  // When the lock is not disabled for other reasons (pending key on
-  // other lock...), we need to ensure that the lock is disabled
-  // when the lock is sold out or too expensive for the current account
-  const soldOut =
-    lock.outstandingKeys >= lock.maxNumberOfKeys &&
-    lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
-  const tooExpensive =
-    account && parseFloat(account.balance) <= parseFloat(lock.keyPrice)
   switch (keyStatus) {
     case 'submitted':
     case 'pending':
@@ -46,11 +37,10 @@ export const Lock = ({
     default:
       return (
         <NoKeyLock
+          account={account}
           lock={lock}
-          disabled={disabled || soldOut || tooExpensive}
+          disabled={disabled}
           purchaseKey={purchase}
-          soldOut={soldOut}
-          tooExpensive={tooExpensive}
           lockKey={lockKey}
         />
       )
