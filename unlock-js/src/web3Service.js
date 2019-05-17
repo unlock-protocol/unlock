@@ -646,4 +646,14 @@ export default class Web3Service extends UnlockService {
         ).then(keyPromises => this._emitKeyOwners(lock, page, keyPromises))
       })
   }
+
+  /**
+   * Given some data and a signed version of the same, returns the address of the account that signed it
+   * @param data
+   * @param signedData
+   * @returns {Promise<*>}
+   */
+  async recoverAccountFromSignedData(data, signedData) {
+    return utils.verifyMessage(data, signedData)
+  }
 }
