@@ -5,64 +5,77 @@ import UnlockPropTypes from '../../propTypes'
 import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
+import { UNLIMITED_KEYS_COUNT } from '../../constants'
 
 export const NoKeyLock = ({
+  account,
   lock,
   disabled,
   purchaseKey,
   lockKey,
-  soldOut,
-  tooExpensive,
-}) => (
-  <Wrapper
-    lock={lock}
-    disabled={disabled}
-    onClick={() => {
-      !disabled && purchaseKey(lockKey)
-    }}
-  >
-    <LockHeader>{lock.name}</LockHeader>
-    <BalanceProvider
-      amount={lock.keyPrice}
-      render={(ethPrice, fiatPrice) => (
-        <div>
-          <Body disabled={disabled}>
-            <EthPrice>{ethPrice} Eth</EthPrice>
-            <div>
-              <FiatPrice>${fiatPrice}</FiatPrice>
-              <Separator> | </Separator>
-              <ExpirationDuration>
-                <Duration seconds={lock.expirationDuration} round />
-              </ExpirationDuration>
-            </div>
-            <Footer>
-              {soldOut
-                ? 'Sold Out'
-                : tooExpensive
-                ? 'Insufficient funds'
-                : 'Purchase'}
-            </Footer>
-          </Body>
-        </div>
-      )}
-    />
-  </Wrapper>
-)
+}) => {
+  const soldOut =
+    lock.outstandingKeys >= lock.maxNumberOfKeys &&
+    lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
+
+  // When the lock is not disabled for other reasons (pending key on
+  // other lock...), we need to ensure that the lock is disabled
+  // when the lock is sold out or too expensive for the current account
+  const tooExpensive =
+    account && parseFloat(account.balance) <= parseFloat(lock.keyPrice)
+
+  const disableClick = disabled || tooExpensive || soldOut
+
+  let footerMessage = 'Purchase'
+  if (soldOut) {
+    footerMessage = 'Sold Out'
+  } else if (tooExpensive) {
+    footerMessage = 'Insufficient funds'
+  }
+
+  return (
+    <Wrapper
+      lock={lock}
+      disabled={disableClick}
+      onClick={() => {
+        !disabled && purchaseKey(lockKey)
+      }}
+    >
+      <LockHeader>{lock.name}</LockHeader>
+      <BalanceProvider
+        amount={lock.keyPrice}
+        render={(ethPrice, fiatPrice) => (
+          <div>
+            <Body disabled={disabled}>
+              <EthPrice>{ethPrice} Eth</EthPrice>
+              <div>
+                <FiatPrice>${fiatPrice}</FiatPrice>
+                <Separator> | </Separator>
+                <ExpirationDuration>
+                  <Duration seconds={lock.expirationDuration} round />
+                </ExpirationDuration>
+              </div>
+              <Footer>{footerMessage}</Footer>
+            </Body>
+          </div>
+        )}
+      />
+    </Wrapper>
+  )
+}
 
 NoKeyLock.propTypes = {
+  account: UnlockPropTypes.account,
   lock: UnlockPropTypes.lock.isRequired,
   purchaseKey: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
-  soldOut: PropTypes.bool,
   lockKey: UnlockPropTypes.key,
-  tooExpensive: PropTypes.bool,
 }
 
 NoKeyLock.defaultProps = {
+  account: null,
   disabled: false,
   lockKey: null,
-  soldOut: false,
-  tooExpensive: false,
 }
 
 export default NoKeyLock
