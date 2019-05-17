@@ -2,12 +2,19 @@ import ensureWalletReady from './ensureWalletReady'
 import { getAccount } from './account'
 import { getNetwork } from './network'
 
+/**
+ * @param {window} window the global window context, needed for both `fetch`
+ * @param {string} locksmithHost the full URI for locksmith
+ * @param {web3Service} web3Service the web3Service instance
+ * @param {walletService} walletService the walletService instance, needed to ensure account and network are accurate
+ */
 export default async function locksmithTransactions(
   window,
   locksmithHost,
-  web3Service
+  web3Service,
+  walletService
 ) {
-  await ensureWalletReady(window)
+  await ensureWalletReady(walletService)
   const account = getAccount()
   const network = getNetwork()
 

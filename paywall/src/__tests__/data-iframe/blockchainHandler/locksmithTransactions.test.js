@@ -11,6 +11,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
   let fakeWindow
   let fakeWeb3Service
   let fetchedResult
+  const fakeWalletService = {}
 
   beforeEach(() => {
     setAccount('account')
@@ -29,15 +30,25 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
   it('ensures wallet is ready', async () => {
     expect.assertions(1)
 
-    await locksmithTransactions(fakeWindow, 'host', fakeWeb3Service)
+    await locksmithTransactions(
+      fakeWindow,
+      'host',
+      fakeWeb3Service,
+      fakeWalletService
+    )
 
-    expect(ensureWalletReady).toHaveBeenCalled()
+    expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
   })
 
   it('calls fetch with the correct url', async () => {
     expect.assertions(1)
 
-    await locksmithTransactions(fakeWindow, 'host', fakeWeb3Service)
+    await locksmithTransactions(
+      fakeWindow,
+      'host',
+      fakeWeb3Service,
+      fakeWalletService
+    )
 
     expect(fakeWindow.fetch).toHaveBeenCalledWith(
       'host/transactions?sender=account'
@@ -50,7 +61,8 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
     const result = await locksmithTransactions(
       fakeWindow,
       'host',
-      fakeWeb3Service
+      fakeWeb3Service,
+      fakeWalletService
     )
 
     expect(result).toEqual({})
@@ -81,7 +93,8 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
     const result = await locksmithTransactions(
       fakeWindow,
       'host',
-      fakeWeb3Service
+      fakeWeb3Service,
+      fakeWalletService
     )
 
     expect(result).toEqual({
@@ -119,7 +132,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       },
     }
 
-    await locksmithTransactions(fakeWindow, 'host', fakeWeb3Service)
+    await locksmithTransactions(
+      fakeWindow,
+      'host',
+      fakeWeb3Service,
+      fakeWalletService
+    )
 
     expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(1, 'hash2')
     expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(2, 'hash3')
