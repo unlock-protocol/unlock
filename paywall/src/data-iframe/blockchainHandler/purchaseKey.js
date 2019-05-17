@@ -11,6 +11,12 @@ export async function purchaseKey(walletService, window, lock, amountToSend) {
   return walletService.purchaseKey(lock, account, amountToSend)
 }
 
+/**
+ * Listens for the next time an event occurs, and resolves. If an error occurs first, it rejects
+ *
+ * @param {*} service either web3Service or walletService
+ * @param {string} event event to listen for
+ */
 function resolveOnEvent(service, event) {
   let resolved = false
   return new Promise((resolve, reject) => {
@@ -22,6 +28,12 @@ function resolveOnEvent(service, event) {
   })
 }
 
+/**
+ * Does a basic shallow equal for transaction objects to see if any changes have occurred
+ * This is used to decide whether to trigger an update to the data
+ * @param {*} a old transaction object
+ * @param {*} b new transaction object
+ */
 function sortOfEqual(a, b) {
   const aKeys = Object.keys(a).sort()
   const bKeys = Object.keys(b).sort()
@@ -31,6 +43,13 @@ function sortOfEqual(a, b) {
   return true
 }
 
+/**
+ * Listen for the transaction.pending and transaction.new events
+ *
+ * It calls `onTransactionUpdate` whenever one of these events is emitted
+ *
+ * It returns the updated list of all transactions, keys, and the current transaction status
+ */
 export async function processKeyPurchaseTransaction({
   walletService,
   lock,
@@ -92,6 +111,13 @@ export async function processKeyPurchaseTransaction({
   return { transactions, keys, status }
 }
 
+/**
+ * At this point, the transaction has been mined at least once.
+ *
+ * This function polls for transaction updates (transaction.updated event) and emits
+ * changes in `onTransactionUpdate`. When the required minimum number of confirmations are met
+ * it stops polling and returns the current transactions and keys
+ */
 export async function pollForKeyPurchaseTransaction({
   web3Service,
   hash,
