@@ -13,18 +13,20 @@ const TokenDeployer = require('./deploy-locks')
  * This script is meant to be used in dev environment to deploy a version of the Unlock smart
  * contract from the packaged version to the local ganache server.
  */
+const host = process.env.HTTP_PROVIDER_HOST
+const port = process.env.HTTP_PROVIDER_PORT
+let deployedLockAddress
+let pk = process.env.CONTRACT_APPROVER_PRIVATE_KEY
+let recipientAddress = process.env.ERC20_TOKEN_RECIPIENT
+let bootstrapTransferAmount = process.env.BOOTSTRAP_AMOUNT
+let bootstrapTranferRecipient = process.env.ETHEREUM_ADDRESS
+let bootstrapTranferSenderPrivateKey = process.env.BOOTSTRAP_SENDER_PRIVATE_KEY
+let contractOwnerCredentials = process.env.CONTRACT_OWNER_CREDENTIALS
 
-const host = process.env.HTTP_PROVIDER || '127.0.0.1'
-const port = 8545
 let providerURL = `http://${host}:${port}`
-
 let provider = new ethers.providers.JsonRpcProvider(providerURL, {
   chainId: 1984,
 })
-
-let deployedLockAddress
-let pk = '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
-let recipientAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
@@ -81,11 +83,25 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       wallet.on('account.changed', async account => {
         TokenDeployer.prepareEnvironment(
           wallet,
+          contractOwnerCredentials,
           account,
           provider,
           pk,
           recipientAddress
         )
+
+        let eWallet = new ethers.Wallet(
+          bootstrapTranferSenderPrivateKey,
+          provider
+        )
+        await new Promise(resolve => {
+          setTimeout(resolve, 5000)
+        })
+
+        await eWallet.sendTransaction({
+          to: bootstrapTranferRecipient,
+          value: ethers.utils.parseEther(bootstrapTransferAmount.toString()),
+        })
       })
 
       wallet.on('network.changed', () => {

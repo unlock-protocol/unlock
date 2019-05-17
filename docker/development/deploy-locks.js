@@ -25,15 +25,19 @@ async function deployTestERC20Token(provider) {
   return testERC20
 }
 
-async function mintForAddress(contractAddress, recipient, provider) {
+async function mintForAddress(
+  contractOwnerCredentials,
+  contractAddress,
+  recipient,
+  provider
+) {
   let contract = new ethers.Contract(
     contractAddress,
     testErc20Token.abi,
     provider
   )
 
-  let user0PrivateKey = '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229' 
-
+  let user0PrivateKey = contractOwnerCredentials
   let wallet = new ethers.Wallet(user0PrivateKey, provider)
   let contractWSigner = contract.connect(wallet)
   let tx = await contractWSigner.mint(recipient, 500, { gasLimit: 6000000 })
@@ -81,6 +85,7 @@ async function approveContract(provider, privateKey, contractAddress) {
 
 async function prepareEnvironment(
   wallet,
+  contractOwnerCredentials,
   account,
   provider,
   pk,
@@ -88,7 +93,12 @@ async function prepareEnvironment(
 ) {
   let testERC20Token = await deployTestERC20Token(provider)
 
-  await mintForAddress(testERC20Token.address, recipientAddress, provider)
+  await mintForAddress(
+    contractOwnerCredentials,
+    testERC20Token.address,
+    recipientAddress,
+    provider
+  )
   await deployERC20Lock(wallet, account, testERC20Token.address)
   await deployETHLock(wallet, account)
   await approveContract(provider, pk, testERC20Token.address)
