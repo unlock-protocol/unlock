@@ -36,6 +36,12 @@ contract('Lock / updateKeyPrice', accounts => {
     )
   })
 
+  it('should allow changing price to 0', async () => {
+    await locks['FIRST'].updateKeyPrice(0)
+    const keyPriceAfter = new BigNumber(await locks['FIRST'].keyPrice.call())
+    assert.equal(keyPriceAfter.toFixed(), 0)
+  })
+
   describe('when the sender is not the lock owner', () => {
     let keyPrice
 
