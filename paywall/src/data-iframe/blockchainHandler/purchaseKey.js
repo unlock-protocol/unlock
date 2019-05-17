@@ -4,13 +4,11 @@ import ensureWalletReady from './ensureWalletReady'
 import { TRANSACTION_TYPES } from '../../constants'
 import pollForChanges from './pollForChanges'
 
-export async function purchaseKey(walletService, window, lock) {
+export async function purchaseKey(walletService, window, lock, amountToSend) {
   await ensureWalletReady(window)
   const account = getAccount()
 
-  const keyToPurchase = `${lock}-${account}`
-
-  await walletService.purchaseKey(keyToPurchase)
+  return walletService.purchaseKey(lock, account, amountToSend)
 }
 
 function resolveOnEvent(service, event) {

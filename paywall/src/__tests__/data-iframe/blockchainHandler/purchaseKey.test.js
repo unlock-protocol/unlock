@@ -31,12 +31,16 @@ describe('blockchainHandler purchaseKey', () => {
       expect(ensureWalletReady).toHaveBeenCalled()
     })
 
-    it('calls purchaseKey with the key id to purchase', async () => {
+    it('calls purchaseKey with the lock, account, and the amount of eth to send', async () => {
       expect.assertions(1)
 
       setAccount('account')
-      await purchaseKey(fakeWalletService, window, 'lock')
-      expect(fakeWalletService.purchaseKey).toHaveBeenCalledWith('lock-account')
+      await purchaseKey(fakeWalletService, window, 'lock', '1000')
+      expect(fakeWalletService.purchaseKey).toHaveBeenCalledWith(
+        'lock',
+        'account',
+        '1000'
+      )
     })
   })
 
