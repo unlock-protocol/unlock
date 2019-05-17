@@ -20,5 +20,5 @@ If you need any help (or Eth) to purchase your ticket, please get in touch with 
 Bushwick Generator, 215 Moore St, Brooklyn
 
 <figure class="video_container">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/pfMRTHQg1Lg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Qq4bBs-zPZw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </figure>
