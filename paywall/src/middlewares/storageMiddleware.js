@@ -1,5 +1,4 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import { batch } from 'react-redux'
 
 import StorageService from '../services/storageService'
 import { storageError } from '../actions/storage'
@@ -20,14 +19,12 @@ const storageMiddleware = config => {
           storageService
             .getTransactionsHashesSentBy(action.account.address)
             .then(transactions => {
-              // Dispatch each transaction, but only trigger 1 re-render
-              batch(() =>
-                transactions.forEach(transaction => {
-                  if (transaction.network === getState().network.name) {
-                    dispatch(addTransaction(transaction))
-                  }
+              transactions.forEach(transaction => {
+                if (transaction.network !== getState().network.name) return
+                setTimeout(() => {
+                  dispatch(addTransaction(transaction))
                 })
-              )
+              })
             })
             .catch(error => {
               dispatch(storageError(error))
