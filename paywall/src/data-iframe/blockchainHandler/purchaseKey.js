@@ -146,12 +146,16 @@ export async function pollForKeyPurchaseTransaction({
       return !shallowEqual(oldTransaction, newTransaction)
     } /* hasValueChanged */,
     newTransaction => {
-      if (newTransaction.confirmations < requiredConfirmations) return true
+      if (newTransaction.confirmations <= requiredConfirmations) return true
     } /* continuePolling */,
     newTransaction => {
       transactions[hash] = newTransaction
       keys[keyToPurchase].transactions[hash] = newTransaction
-      keys[keyToPurchase].status = newTransaction.status
+      const status =
+        newTransaction.confirmations < requiredConfirmations
+          ? 'confirming'
+          : 'valid'
+      keys[keyToPurchase].status = status
       onTransactionUpdate(transactions, keys, newTransaction.status)
     } /* changeListener */,
     0 /* delay */

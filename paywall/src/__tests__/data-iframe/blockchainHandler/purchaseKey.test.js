@@ -403,8 +403,8 @@ describe('blockchainHandler purchaseKey', () => {
       const continuePolling = pollForChanges.mock.calls[0][2]
 
       expect(continuePolling({ confirmations: 1 })).toBeTruthy()
-      expect(continuePolling({ confirmations: 2 })).toBeTruthy()
-      expect(continuePolling({ confirmations: 3 })).toBeFalsy()
+      expect(continuePolling({ confirmations: 3 })).toBeTruthy()
+      expect(continuePolling({ confirmations: 4 })).toBeFalsy()
     })
 
     it('changeListener updates the transactions, keys and returns status', async done => {
@@ -419,6 +419,7 @@ describe('blockchainHandler purchaseKey', () => {
           ...existingTransactions,
           hash: {
             hi: 'there',
+            confirmations: 12,
             status: 'confirmed',
           },
         })
@@ -426,9 +427,9 @@ describe('blockchainHandler purchaseKey', () => {
           ...existingKeys,
           'lock-account': {
             ...existingKeys['lock-account'],
-            status: 'confirmed',
+            status: 'valid',
             transactions: {
-              hash: { hi: 'there', status: 'confirmed' },
+              hash: { hi: 'there', confirmations: 12, status: 'confirmed' },
             },
           },
         })
@@ -448,7 +449,52 @@ describe('blockchainHandler purchaseKey', () => {
 
       const changeListener = pollForChanges.mock.calls[0][3]
 
-      changeListener({ hi: 'there', status: 'confirmed' })
+      changeListener({ hi: 'there', confirmations: 12, status: 'confirmed' })
+    })
+
+    it('key status is confirming when transaction is confirming', async done => {
+      expect.assertions(3)
+      const web3Service = {
+        handlers: {},
+        getTransaction: jest.fn(),
+        once: (type, cb) => (web3Service.handlers[type] = cb),
+      }
+      const onTransactionUpdate = (t, k, s) => {
+        expect(t).toEqual({
+          ...existingTransactions,
+          hash: {
+            hi: 'there',
+            confirmations: 1,
+            status: 'confirmed',
+          },
+        })
+        expect(k).toEqual({
+          ...existingKeys,
+          'lock-account': {
+            ...existingKeys['lock-account'],
+            status: 'confirming',
+            transactions: {
+              hash: { hi: 'there', confirmations: 1, status: 'confirmed' },
+            },
+          },
+        })
+        expect(s).toBe('confirmed')
+        done()
+      }
+
+      await pollForKeyPurchaseTransaction({
+        web3Service,
+        hash,
+        existingTransactions,
+        existingKeys,
+        requiredConfirmations,
+        lock,
+        onTransactionUpdate,
+      })
+
+      const changeListener = pollForChanges.mock.calls[0][3]
+
+      changeListener({ hi: 'there', confirmations: 1, status: 'confirmed' })
     })
 
     it('returns the transactions and keys with the new transaction', async () => {
