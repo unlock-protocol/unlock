@@ -72,6 +72,16 @@ describe('blockchainHandler purchaseKey', () => {
             lock: 'lock',
             owner: 'account',
             expiration: 0,
+            status: 'pending',
+            transactions: {
+              pending: {
+                status: 'pending',
+                type: TRANSACTION_TYPES.KEY_PURCHASE,
+                lock: 'lock',
+                key: 'lock-account',
+                confirmations: 0,
+              },
+            },
           },
         })
         expect(status).toBe('pending')
@@ -102,6 +112,16 @@ describe('blockchainHandler purchaseKey', () => {
             lock: 'lock',
             owner: 'account',
             expiration: 0,
+            status: 'pending',
+            transactions: {
+              pending: {
+                status: 'pending',
+                type: TRANSACTION_TYPES.KEY_PURCHASE,
+                lock: 'lock',
+                key: 'lock-account',
+                confirmations: 0,
+              },
+            },
           },
         })
         expect(status).toBe('pending')
@@ -180,6 +200,7 @@ describe('blockchainHandler purchaseKey', () => {
           lock: 'lock',
           owner: 'account',
           expiration: 0,
+          status: 'submitted',
           transactions: {
             hash: newTransactions.hash,
           },
@@ -222,6 +243,7 @@ describe('blockchainHandler purchaseKey', () => {
             lock: 'lock',
             owner: 'account',
             expiration: 0,
+            status: 'submitted',
             transactions: {
               hash: newTransaction,
             },
@@ -272,6 +294,7 @@ describe('blockchainHandler purchaseKey', () => {
         lock: 'lock',
         owner: 'account',
         expiration: 0,
+        status: 'submitted',
         transactions: {
           hash: startingTransaction,
         },
@@ -403,6 +426,7 @@ describe('blockchainHandler purchaseKey', () => {
           ...existingKeys,
           'lock-account': {
             ...existingKeys['lock-account'],
+            status: 'confirmed',
             transactions: {
               hash: { hi: 'there', status: 'confirmed' },
             },

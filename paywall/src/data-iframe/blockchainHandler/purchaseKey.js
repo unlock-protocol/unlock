@@ -55,6 +55,8 @@ export async function processKeyPurchaseTransaction({
       lock,
       owner: account,
       expiration: 0,
+      transactions: {},
+      status: 'pending',
     },
   }
   const network = getNetwork()
@@ -74,6 +76,7 @@ export async function processKeyPurchaseTransaction({
     key: keyToPurchase,
     confirmations: 0,
   }
+  keys[keyToPurchase].transactions.pending = transaction
   onTransactionUpdate(transactions, keys, 'pending')
   const [hash, from, to, input, type, status] = await resolveOnEvent(
     walletService,
@@ -91,6 +94,8 @@ export async function processKeyPurchaseTransaction({
     network,
   }
   transactions[hash] = transaction
+  delete keys[keyToPurchase].transactions.pending
+  keys[keyToPurchase].status = status
   keys[keyToPurchase].transactions = keys[keyToPurchase].transactions || {}
   keys[keyToPurchase].transactions[hash] = transaction
   onTransactionUpdate(transactions, keys, status)
@@ -146,6 +151,7 @@ export async function pollForKeyPurchaseTransaction({
     newTransaction => {
       transactions[hash] = newTransaction
       keys[keyToPurchase].transactions[hash] = newTransaction
+      keys[keyToPurchase].status = newTransaction.status
       onTransactionUpdate(transactions, keys, newTransaction.status)
     } /* changeListener */,
     0 /* delay */
