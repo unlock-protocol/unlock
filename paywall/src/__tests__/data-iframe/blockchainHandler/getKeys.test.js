@@ -26,6 +26,7 @@ describe('getKeys', () => {
       walletService: fakeWalletService,
       locks: [1, 2],
       web3Service: fakeWeb3Service,
+      requiredConfirmations: 12,
     })
 
     expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
@@ -39,6 +40,7 @@ describe('getKeys', () => {
       walletService: fakeWalletService,
       locks: [1, 2],
       web3Service: fakeWeb3Service,
+      requiredConfirmations: 12,
     })
 
     expect(fakeWeb3Service.getKeysByLockForOwner).toHaveBeenCalledTimes(2)
@@ -58,10 +60,29 @@ describe('getKeys', () => {
     expect.assertions(1)
 
     setAccount('account')
+    let counter = 0
+    const expiration = new Date().getTime() + 10000
+    fakeWeb3Service.getKeysByLockForOwner = jest.fn((lock, owner) => {
+      if (!counter++) {
+        return Promise.resolve({
+          id: `${lock}-${owner}`,
+          lock,
+          owner,
+          expiration: 0,
+        })
+      }
+      return Promise.resolve({
+        id: `${lock}-${owner}`,
+        lock,
+        owner,
+        expiration,
+      })
+    })
     const keys = await getKeys({
       walletService: fakeWalletService,
       locks: [1, 2],
       web3Service: fakeWeb3Service,
+      requiredConfirmations: 12,
     })
 
     expect(keys).toEqual({
@@ -70,12 +91,18 @@ describe('getKeys', () => {
         lock: 1,
         owner: 'account',
         expiration: 0,
+        status: 'none',
+        confirmations: 0,
+        transactions: [],
       },
       '2-account': {
         id: '2-account',
         lock: 2,
         owner: 'account',
-        expiration: 0,
+        expiration,
+        status: 'valid',
+        confirmations: 0,
+        transactions: [],
       },
     })
   })

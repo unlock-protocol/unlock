@@ -1,22 +1,33 @@
 import ensureWalletReady from './ensureWalletReady'
 import { getAccount } from './account'
+import { getKeyStatus } from './keyStatus'
 
-export default async function getKeys({ walletService, locks, web3Service }) {
+export default async function getKeys({
+  walletService,
+  locks,
+  web3Service,
+  requiredConfirmations,
+}) {
   await ensureWalletReady(walletService)
 
   const account = getAccount()
-  const keys = {}
 
   const newKeys = await Promise.all(
     locks.map(lock => web3Service.getKeysByLockForOwner(lock, account))
   )
 
-  newKeys.forEach(key => {
-    const fullKey = {
-      ...key,
-      id: `${key.lock}-${account}`,
-    }
-    keys[fullKey.id] = fullKey
-  })
+  const keys = newKeys.reduce(
+    (allKeys, key) => ({
+      ...allKeys,
+      [`${key.lock}-${account}`]: {
+        ...key,
+        status: getKeyStatus(key, requiredConfirmations),
+        // defaults. to fill in actual values, call linkTransactionsToKeys
+        confirmations: 0,
+        transactions: [],
+      },
+    }),
+    {}
+  )
   return keys
 }
