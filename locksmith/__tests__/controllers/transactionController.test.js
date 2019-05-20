@@ -57,7 +57,10 @@ describe('transactionController', () => {
   describe('storing a transaction', () => {
     describe("when the transaction hasn't already been stored", () => {
       it('stores the provided transaction', async () => {
-        expect.assertions(2)
+        expect.assertions(3)
+
+        let transactionData =
+          '0x00000000000000000000000006b5955a67d827cdf91823e3bb8f069e6c89c1d6000000000000000000000000000000000000000000000000016345785d8a0000'
 
         let response = await request(app)
           .post('/transaction')
@@ -66,6 +69,7 @@ describe('transactionController', () => {
             transactionHash: '0xsdbegjkbg,egf',
             sender: '0xSDgErGR',
             recipient: '0xSdaG433r',
+            data: transactionData,
             chain: 42,
           })
 
@@ -73,6 +77,7 @@ describe('transactionController', () => {
           where: { sender: '0xSDgErGR', recipient: '0xSdaG433r', chain: 42 },
         })
         expect(record.sender).toBe('0xSDgErGR')
+        expect(record.data).toEqual(transactionData)
         expect(response.statusCode).toBe(202)
       })
     })

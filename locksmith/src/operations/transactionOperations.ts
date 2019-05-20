@@ -19,6 +19,7 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
       sender: ethJsUtil.toChecksumAddress(transaction.sender),
       recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
       chain: transaction.chain,
+      data: transaction.data,
     },
   })
 }
