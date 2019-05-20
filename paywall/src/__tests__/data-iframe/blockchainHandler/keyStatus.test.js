@@ -4,6 +4,7 @@ import {
   linkTransactionsToKeys,
 } from '../../../data-iframe/blockchainHandler/keyStatus'
 import { setAccount } from '../../../data-iframe/blockchainHandler/account'
+import { MAX_UINT, TRANSACTION_TYPES } from '../../../constants'
 
 describe('key status manipulation', () => {
   describe('validKey', () => {
@@ -46,23 +47,40 @@ describe('key status manipulation', () => {
     it('none', () => {
       expect.assertions(1)
 
-      expect(getKeyStatus({ transactions: [{}] }, 1)).toBe('none')
+      expect(
+        getKeyStatus(
+          { expiration: new Date().getTime() / 1000 + 100, transactions: [{}] },
+          1
+        )
+      ).toBe('none')
     })
 
     it('pending', () => {
       expect.assertions(1)
 
-      expect(getKeyStatus({ transactions: [{ status: 'pending' }] }, 1)).toBe(
-        'pending'
-      )
+      expect(
+        getKeyStatus(
+          {
+            expiration: new Date().getTime() / 1000 + 100,
+            transactions: [{ status: 'pending' }],
+          },
+          1
+        )
+      ).toBe('pending')
     })
 
     it('submitted', () => {
       expect.assertions(1)
 
-      expect(getKeyStatus({ transactions: [{ status: 'submitted' }] }, 1)).toBe(
-        'submitted'
-      )
+      expect(
+        getKeyStatus(
+          {
+            expiration: new Date().getTime() / 1000 + 100,
+            transactions: [{ status: 'submitted' }],
+          },
+          1
+        )
+      ).toBe('submitted')
     })
 
     it('confirming', () => {
@@ -70,7 +88,10 @@ describe('key status manipulation', () => {
 
       expect(
         getKeyStatus(
-          { transactions: [{ status: 'mined', confirmations: 0 }] },
+          {
+            expiration: new Date().getTime() / 1000 + 100,
+            transactions: [{ status: 'mined', confirmations: 0 }],
+          },
           1
         )
       ).toBe('confirming')
@@ -82,6 +103,7 @@ describe('key status manipulation', () => {
       expect(
         getKeyStatus(
           {
+            expiration: new Date().getTime() / 1000 + 10000,
             transactions: [{ status: 'mined', confirmations: 1 }],
           },
           1
@@ -183,9 +205,346 @@ describe('key status manipulation', () => {
         },
       })
     })
-    it.todo('submitted')
-    it.todo('confirming')
-    it.todo('valid')
-    it.todo('expired')
+
+    it('none', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: 0,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        notme: {
+          hash: 'notme',
+          from: 'another account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 1,
+        })
+      ).toEqual(keys)
+    })
+
+    it('submitted', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 + 100,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        submitted: {
+          hash: null,
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: MAX_UINT,
+          confirmations: 0,
+          status: 'submitted',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 1,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.submitted, transactions.old],
+          status: 'submitted',
+          confirmations: 0,
+        },
+      })
+    })
+
+    it('pending', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 + 100,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        new: {
+          hash: 'new',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: MAX_UINT,
+          confirmations: 0,
+          status: 'pending',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 1,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.new, transactions.old],
+          status: 'pending',
+          confirmations: 0,
+        },
+      })
+    })
+
+    it('confirming', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 + 10000,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        confirming: {
+          hash: 'confirming',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 234,
+          confirmations: 2,
+          status: 'mined',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 5,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.confirming, transactions.old],
+          status: 'confirming',
+          confirmations: 2,
+        },
+      })
+    })
+
+    it('valid', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 + 10000,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        confirming: {
+          hash: 'confirming',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 234,
+          confirmations: 6,
+          status: 'mined',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 5,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.confirming, transactions.old],
+          status: 'valid',
+          confirmations: 6,
+        },
+      })
+    })
+
+    it('expired', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 - 10000,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        confirming: {
+          hash: 'confirming',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 234,
+          confirmations: 6,
+          status: 'mined',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 5,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.confirming, transactions.old],
+          status: 'expired',
+          confirmations: 6,
+        },
+      })
+    })
+
+    it('expired while confirming', () => {
+      expect.assertions(1)
+
+      const keys = {
+        'lock-account': {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 - 10000,
+          transaction: [],
+          status: 'none',
+        },
+      }
+      const transactions = {
+        confirming: {
+          hash: 'confirming',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 234,
+          confirmations: 4,
+          status: 'mined',
+        },
+        old: {
+          hash: 'old',
+          from: 'account',
+          to: 'lock',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          blockNumber: 123,
+          confirmations: 12345,
+          status: 'mined',
+        },
+      }
+
+      expect(
+        linkTransactionsToKeys({
+          keys,
+          transactions,
+          locks: ['lock'],
+          requiredConfirmations: 5,
+        })
+      ).toEqual({
+        'lock-account': {
+          ...keys['lock-account'],
+          transactions: [transactions.confirming, transactions.old],
+          status: 'expired',
+          confirmations: 4,
+        },
+      })
+    })
   })
 })
