@@ -59,8 +59,9 @@ export const signupSucceeded = () => ({
   type: SIGNUP_SUCCEEDED,
 })
 
-export const changePassword = (newPassword: string) => ({
+export const changePassword = (oldPassword: string, newPassword: string) => ({
   type: CHANGE_PASSWORD,
+  oldPassword,
   newPassword,
 })
 

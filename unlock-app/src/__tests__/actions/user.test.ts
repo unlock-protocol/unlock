@@ -157,14 +157,16 @@ describe('user account actions', () => {
   describe('user account maintenance actions', () => {
     it('should create an action indicating a password change', () => {
       expect.assertions(1)
+      const oldPassword = 'guest'
       // Much more secure now
       const newPassword = 'gUeSt1337'
       const expectedAction = {
         type: CHANGE_PASSWORD,
+        oldPassword,
         newPassword,
       }
 
-      expect(changePassword(newPassword)).toEqual(expectedAction)
+      expect(changePassword(oldPassword, newPassword)).toEqual(expectedAction)
     })
   })
 
