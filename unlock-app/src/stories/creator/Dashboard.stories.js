@@ -184,17 +184,3 @@ storiesOf('DashboardContent', module)
       </Provider>
     )
   })
-  .add('dashboard, no locks', () => {
-    return (
-      <Provider store={store}>
-        <DashboardContent
-          hideForm={doNothing}
-          showForm={doNothing}
-          network={network}
-          account={account}
-          lockFeed={[]}
-          formIsVisible={false}
-        />
-      </Provider>
-    )
-  })
