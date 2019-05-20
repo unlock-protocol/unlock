@@ -337,12 +337,15 @@ workflows:
       - deploy-locksmith-beanstalk:
           filters:
             branches:
-              only: master
+              only:
+                - master
           requires:
             - integration-tests
       - deploy-wedlocks-netlify:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - production
           requires:
             - integration-tests
