@@ -1,9 +1,9 @@
 import { setAccount } from '../../../../data-iframe/blockchainHandler/account'
 import { TRANSACTION_TYPES } from '../../../../constants'
-import submittedListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
+import pendingListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
 import { setNetwork } from '../../../../data-iframe/blockchainHandler/network'
 
-describe('submittedListener', () => {
+describe('pendingListener', () => {
   let fakeWalletService
 
   beforeEach(() => {
@@ -18,8 +18,8 @@ describe('submittedListener', () => {
 
     setAccount('account')
     const transactions = {
-      'submitted-lock-account': {
-        hash: null,
+      hash: {
+        hash: 'hash',
         from: 'account',
         to: 'lock',
         key: 'lock-account',
@@ -42,7 +42,7 @@ describe('submittedListener', () => {
       },
     }
 
-    const result = await submittedListener({
+    const result = await pendingListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKeys: keys,
@@ -83,7 +83,7 @@ describe('submittedListener', () => {
       },
     }
 
-    const result = await submittedListener({
+    const result = await pendingListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKeys: keys,
@@ -124,7 +124,7 @@ describe('submittedListener', () => {
       },
     }
 
-    const result = await submittedListener({
+    const result = await pendingListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKeys: keys,
@@ -165,7 +165,7 @@ describe('submittedListener', () => {
       },
     }
 
-    const result = await submittedListener({
+    const result = await pendingListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKeys: keys,
@@ -177,36 +177,38 @@ describe('submittedListener', () => {
     expect(result.keys).toBe(keys)
   })
 
-  it('ignores transaction.pending for other transaction types', async done => {
+  it('handles key with no transactions', async done => {
     expect.assertions(2)
 
     setAccount('account')
     setNetwork(1)
+
     const existingTransactions = {}
     const existingKeys = {
       'lock-account': {
         id: 'lock-account',
         lock: 'lock',
         owner: 'account',
-        expiration: 0,
+        expiration: new Date().getTime() / 1000 - 1000,
         transactions: [],
         status: 'none',
         confirmations: 0,
       },
     }
 
-    submittedListener({
+    pendingListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKeys,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).then(({ transactions, keys }) => {
-      const submitted = {
-        hash: null,
+      const hash = {
+        hash: 'hash',
         from: 'account',
         to: 'lock',
         status: 'submitted',
+        input: 'input',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         key: 'lock-account',
         lock: 'lock',
@@ -215,22 +217,26 @@ describe('submittedListener', () => {
         blockNumber: Number.MAX_SAFE_INTEGER,
       }
       expect(transactions).toEqual({
-        'submitted-lock-account': submitted,
+        hash,
       })
 
       expect(keys).toEqual({
         'lock-account': {
           ...existingKeys['lock-account'],
           status: 'submitted',
-          transactions: [submitted],
+          transactions: [hash],
         },
       })
       done()
     })
 
-    fakeWalletService.handlers['transaction.pending']('not a key purchase')
-    fakeWalletService.handlers['transaction.pending'](
-      TRANSACTION_TYPES.KEY_PURCHASE
+    fakeWalletService.handlers['transaction.new'](
+      'hash' /* transaction hash */,
+      'account' /* from */,
+      'lock' /* to */,
+      'input' /* input */,
+      TRANSACTION_TYPES.KEY_PURCHASE /* type */,
+      'submitted' /* status */
     )
   })
 
@@ -266,18 +272,19 @@ describe('submittedListener', () => {
       },
     }
 
-    submittedListener({
+    pendingListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKeys,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).then(({ transactions, keys }) => {
-      const submitted = {
-        hash: null,
+      const hash = {
+        hash: 'hash',
         from: 'account',
         to: 'lock',
         status: 'submitted',
+        input: 'input',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         key: 'lock-account',
         lock: 'lock',
@@ -286,7 +293,7 @@ describe('submittedListener', () => {
         blockNumber: Number.MAX_SAFE_INTEGER,
       }
       expect(transactions).toEqual({
-        'submitted-lock-account': submitted,
+        hash,
         old,
       })
 
@@ -294,14 +301,19 @@ describe('submittedListener', () => {
         'lock-account': {
           ...existingKeys['lock-account'],
           status: 'submitted',
-          transactions: [submitted, old],
+          transactions: [hash, old],
         },
       })
       done()
     })
 
-    fakeWalletService.handlers['transaction.pending'](
-      TRANSACTION_TYPES.KEY_PURCHASE
+    fakeWalletService.handlers['transaction.new'](
+      'hash' /* transaction hash */,
+      'account' /* from */,
+      'lock' /* to */,
+      'input' /* input */,
+      TRANSACTION_TYPES.KEY_PURCHASE /* type */,
+      'submitted'
     )
   })
 })

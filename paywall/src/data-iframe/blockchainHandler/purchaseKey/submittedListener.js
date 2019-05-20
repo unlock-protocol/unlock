@@ -1,17 +1,16 @@
-import { linkTransactionsToKeys } from '../keyStatus'
-import { TRANSACTION_TYPES } from '../../../constants'
 import { getAccount } from '../account'
+import { linkTransactionsToKeys } from '../keyStatus'
 import { getNetwork } from '../network'
 
 /**
  * Listen for a submitted key purchase transaction
  *
- * If the latest transaction for a key is already pending or newer, we immediately return
+ * If the latest transaction for a key is already submitted or newer, we immediately return
  * in order to allow declarative chaining of transaction listeners.
  *
- * This allows us to call the transaction listener chain for all transactions, including when
- * the user refreshes the page in the middle of a transaction chain. In this case, the
- * submitted listener will skip its work and pass to the next one in the chain
+ * This allows us to call the transaction listener sequence for all transactions, including when
+ * the user refreshes the page in the middle of a transaction sequence. In this case, the
+ * submitted listener will skip its work and pass to the next one in the sequence
  *
  * @param {string} lockAddress the address of the lock we are listening for a submitted key purchase transaction
  * @param {object} existingTransactions transactions, indexed by hash
@@ -38,7 +37,7 @@ export default async function submittedListener({
   const keyToPurchase = `${lockAddress}-${account}`
   const key = keys[keyToPurchase]
   if (
-    (key.status !== 'expired' && key.status !== 'none') ||
+    (key.status !== 'none' && key.status !== 'expired') ||
     key.status === 'failed'
   ) {
     return {
@@ -47,42 +46,33 @@ export default async function submittedListener({
     }
   }
 
-  // we are initiating a key purchase
+  // wait for the submitted transaction to become pending
   let done
   const pendingTransactionFinished = new Promise(resolve => (done = resolve))
 
-  function waitForKeyPurchase(type) {
-    // ensure we don't match an errant transaction (this is highly unlikely and is just a sanity check)
-    if (type !== TRANSACTION_TYPES.KEY_PURCHASE) {
-      return walletService.once('transaction.pending', waitForKeyPurchase)
+  walletService.once(
+    'transaction.new',
+    (hash, from, to, input, type, status) => {
+      done({ hash, from, to, input, type, status })
     }
-    done(type)
-  }
-  walletService.once('transaction.pending', waitForKeyPurchase)
-  const transactionType = await pendingTransactionFinished // wait for walletService to emit transaction.pending
+  )
 
-  // default values
-  const submittedTransaction = {
-    hash: null,
-    from: account,
-    to: lockAddress,
-    status: 'submitted',
-    type: transactionType,
+  const newTransaction = await pendingTransactionFinished
+  const transaction = {
+    ...newTransaction,
     key: keyToPurchase,
-    lock: lockAddress,
+    lock: newTransaction.to,
     confirmations: 0,
     network,
-    blockNumber: Number.MAX_SAFE_INTEGER,
-  }
-  const transactions = {
-    ...existingTransactions,
-    // we have no transaction hash yet, so we will use "submitted" with the lock and owner to namespace this transaction
-    [`submitted-${lockAddress}-${account}`]: submittedTransaction,
+    blockNumber: Number.MAX_SAFE_INTEGER, // ensure this is always the current transaction until it is mined
   }
 
+  const transactions = {
+    ...existingTransactions,
+    [transaction.hash]: transaction,
+  }
   return {
     transactions,
-    // update the keys to include the new submitted transaction
     keys: linkTransactionsToKeys({
       keys: existingKeys,
       transactions,
