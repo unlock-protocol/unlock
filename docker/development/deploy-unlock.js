@@ -16,12 +16,11 @@ const TokenDeployer = require('./deploy-locks')
 const host = process.env.HTTP_PROVIDER_HOST
 const port = process.env.HTTP_PROVIDER_PORT
 let deployedLockAddress
-let pk = process.env.CONTRACT_APPROVER_PRIVATE_KEY
+let purchaser = process.env.PURCHASER_ADDRESS
 let recipientAddress = process.env.ERC20_TOKEN_RECIPIENT
 let bootstrapTransferAmount = process.env.BOOTSTRAP_AMOUNT
 let bootstrapTranferRecipient = process.env.ETHEREUM_ADDRESS
-let bootstrapTranferSenderPrivateKey = process.env.BOOTSTRAP_SENDER_PRIVATE_KEY
-let contractOwnerCredentials = process.env.CONTRACT_OWNER_CREDENTIALS
+let contractOwnerAddress = process.env.CONTRACT_OWNER_ADDRESS
 
 let providerURL = `http://${host}:${port}`
 let provider = new ethers.providers.JsonRpcProvider(providerURL, {
@@ -83,17 +82,15 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       wallet.on('account.changed', async account => {
         TokenDeployer.prepareEnvironment(
           wallet,
-          contractOwnerCredentials,
+          contractOwnerAddress,
           account,
           provider,
-          pk,
+          purchaser,
           recipientAddress
         )
 
-        let eWallet = new ethers.Wallet(
-          bootstrapTranferSenderPrivateKey,
-          provider
-        )
+        let eWallet = provider.getSigner(contractOwnerAddress)
+
         await new Promise(resolve => {
           setTimeout(resolve, 5000)
         })
