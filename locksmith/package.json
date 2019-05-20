@@ -32,7 +32,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@opencensus/core": "0.0.12",
+    "@opencensus/core": "0.0.13",
     "@opencensus/exporter-jaeger": "0.0.12",
     "@opencensus/nodejs": "0.0.12",
     "@types/cors": "^2.8.5",
