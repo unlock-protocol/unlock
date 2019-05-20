@@ -25,16 +25,19 @@ async function deployTestERC20Token(provider) {
   return testERC20
 }
 
-async function mintForAddress(contractAddress, recipient, provider) {
+async function mintForAddress(
+  contractOwner,
+  contractAddress,
+  recipient,
+  provider
+) {
   let contract = new ethers.Contract(
     contractAddress,
     testErc20Token.abi,
     provider
   )
 
-  let user0PrivateKey = '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229' 
-
-  let wallet = new ethers.Wallet(user0PrivateKey, provider)
+  let wallet = provider.getSigner(contractOwner)
   let contractWSigner = contract.connect(wallet)
   let tx = await contractWSigner.mint(recipient, 500, { gasLimit: 6000000 })
 
@@ -65,14 +68,14 @@ async function deployERC20Lock(wallet, account, contractAddress) {
   )
 }
 
-async function approveContract(provider, privateKey, contractAddress) {
+async function approveContract(provider, purchaserAddress, contractAddress) {
   let contract = new ethers.Contract(
     contractAddress,
     testErc20Token.abi,
     provider
   )
 
-  let purchaserWallet = new ethers.Wallet(privateKey, provider)
+  let purchaserWallet = provider.getSigner(purchaserAddress)
   let contractWPurchaser = contract.connect(purchaserWallet)
   let approvaltx = await contractWPurchaser.approve(contractAddress, 50)
   await approvaltx.wait(2)
@@ -81,17 +84,23 @@ async function approveContract(provider, privateKey, contractAddress) {
 
 async function prepareEnvironment(
   wallet,
+  contractOwnerAddress,
   account,
   provider,
-  pk,
+  purchaserAddress,
   recipientAddress
 ) {
   let testERC20Token = await deployTestERC20Token(provider)
 
-  await mintForAddress(testERC20Token.address, recipientAddress, provider)
+  await mintForAddress(
+    contractOwnerAddress,
+    testERC20Token.address,
+    recipientAddress,
+    provider
+  )
   await deployERC20Lock(wallet, account, testERC20Token.address)
   await deployETHLock(wallet, account)
-  await approveContract(provider, pk, testERC20Token.address)
+  await approveContract(provider, purchaserAddress, testERC20Token.address)
 }
 
 module.exports = {
