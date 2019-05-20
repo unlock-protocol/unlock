@@ -1,5 +1,5 @@
 import {
-  validKey,
+  isValidKey,
   getKeyStatus,
   linkTransactionsToKeys,
 } from '../../../data-iframe/blockchainHandler/keyStatus'
@@ -7,21 +7,21 @@ import { setAccount } from '../../../data-iframe/blockchainHandler/account'
 import { MAX_UINT, TRANSACTION_TYPES } from '../../../constants'
 
 describe('key status manipulation', () => {
-  describe('validKey', () => {
+  describe('isValidKey', () => {
     it('returns true when expiration is in the future', () => {
       expect.assertions(1)
 
-      expect(validKey({ expiration: new Date().getTime() / 1000 + 100 })).toBe(
-        true
-      )
+      expect(
+        isValidKey({ expiration: new Date().getTime() / 1000 + 100 })
+      ).toBe(true)
     })
 
     it('returns false when expiration is in the past', () => {
       expect.assertions(1)
 
-      expect(validKey({ expiration: new Date().getTime() / 1000 - 100 })).toBe(
-        false
-      )
+      expect(
+        isValidKey({ expiration: new Date().getTime() / 1000 - 100 })
+      ).toBe(false)
     })
   })
 

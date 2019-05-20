@@ -6,7 +6,7 @@ import { getAccount } from './account'
  * @oaram {key} key a key object, which must contain an expiration timestamp in seconds
  * @returns bool
  */
-export function validKey(key) {
+export function isValidKey(key) {
   return key.expiration > new Date().getTime() / 1000
 }
 
@@ -17,7 +17,7 @@ export function validKey(key) {
  * @returns {none|submitted|pending|confirming|valid|expired|failed}
  */
 export function getKeyStatus(key, requiredConfirmations) {
-  const valid = validKey(key)
+  const valid = isValidKey(key)
   if (!key.transactions || !key.transactions.length) {
     return valid ? 'valid' : 'none'
   }
@@ -42,7 +42,8 @@ export function getKeyStatus(key, requiredConfirmations) {
 /**
  * Construct the transactions field for each key
  * @param {object} keys keys, indexed by their lock/owner ID (not the same as smart contract ID)
- * @param {object} transactions transactions, indexed by hash (submitted transaction is always indexed under "submitted")
+ * @param {object} transactions transactions, indexed by hash (submitted transaction is always
+ *                              indexed under "submitted-${lock address}-${user account}")
  * @param {array} locks an array of lock addresses
  * @param {int} requiredConfirmations the number of confirmations needed to ensure a transaction went through
  */
@@ -61,7 +62,7 @@ export function linkTransactionsToKeys({
       .filter(transaction => {
         return transaction.from === account && transaction.to === lock
       })
-      // NOTE: submitted and pending transactions have an artificial blockNumber of MAX_UINT
+      // NOTE: submitted and pending transactions have an artificial blockNumber of Number.MAX_SAFE_INTEGER
       // set in walletService, so they are always the first transaction
       .sort((a, b) => (a.blockNumber > b.blockNumber ? -1 : 1))
 
