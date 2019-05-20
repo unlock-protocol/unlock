@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Dispatch, EncryptedPrivateKey } from '../../../unlockTypes' // eslint-disable-line
 import { MessageBox, Cancel, Submit, Input } from './styles'
-import { dismissPasswordPrompt } from '../../../actions/fullScreenModals'
+import { dismissResetPasswordPrompt } from '../../../actions/fullScreenModals'
 import { changePassword } from '../../../actions/user'
 
 interface Props {
@@ -36,7 +36,7 @@ export class ResetPasswordPrompt extends React.Component<Props, State> {
 
   dismiss = () => {
     const { dispatch } = this.props
-    dispatch(dismissPasswordPrompt())
+    dispatch(dismissResetPasswordPrompt())
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
