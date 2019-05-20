@@ -29,3 +29,8 @@ export const dismissWalletCheck = () =>
 export const promptForPassword = () => launchModal(KindOfModal.PasswordPrompt)
 export const dismissPasswordPrompt = () =>
   dismissModal(KindOfModal.PasswordPrompt)
+
+export const promptForResetPassword = () =>
+  launchModal(KindOfModal.ResetPasswordPrompt)
+export const dismissResetPasswordPrompt = () =>
+  dismissModal(KindOfModal.ResetPasswordPrompt)
