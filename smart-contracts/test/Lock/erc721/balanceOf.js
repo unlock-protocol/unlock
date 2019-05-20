@@ -54,4 +54,19 @@ contract('Lock / erc721 / balanceOf', accounts => {
     )
     assert.equal(balance.toFixed(), 0)
   })
+
+  it('should return 0 after a user transfers their key', async () => {
+    await locks['FIRST'].purchaseFor(accounts[6], {
+      value: Units.convert('0.01', 'eth', 'wei'),
+      from: accounts[6],
+    })
+    let ID = await locks['FIRST'].getTokenIdFor.call(accounts[6])
+    await locks['FIRST'].transferFrom(accounts[6], accounts[5], ID, {
+      from: accounts[6],
+    })
+    let balanceOf6 = await locks['FIRST'].balanceOf.call(accounts[6])
+    let balanceOf5 = await locks['FIRST'].balanceOf.call(accounts[5])
+    assert.equal(balanceOf6, 0)
+    assert.equal(balanceOf5, 1)
+  })
 })
