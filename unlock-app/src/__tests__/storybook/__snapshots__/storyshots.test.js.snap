@@ -34854,6 +34854,367 @@ Object {
 }
 `;
 
+exports[`Storyshots Full Screen Modals The Password Reset Prompt Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+  color: var(--lightred);
+}
+
+.c3:hover {
+  color: var(--link);
+}
+
+.c3:hover {
+  color: var(--red);
+}
+
+.c4 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+  color: var(--green);
+}
+
+.c4:hover {
+  color: var(--link);
+}
+
+.c4:hover {
+  color: var(--darkgreen);
+}
+
+.c1 {
+  background: var(--white);
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c0 {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: var(--alwaysontop);
+}
+
+.c2 {
+  height: 50px;
+  width: 75%;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 1em;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <p>
+            To change your password, please enter your current password and the desired new password.
+          </p>
+          <input
+            class="c2"
+            disabled=""
+            placeholder="Password"
+            type="email"
+            value="geoff@bitconnect.gov"
+          />
+          <input
+            class="c2"
+            name="currentPassword"
+            placeholder="Current Password"
+            type="password"
+            value=""
+          />
+          <input
+            class="c2"
+            name="newPassword"
+            placeholder="New Password"
+            type="password"
+            value=""
+          />
+          <input
+            class="c2"
+            name="confirmNewPassword"
+            placeholder="Confirm New Password"
+            type="password"
+            value=""
+          />
+          <div>
+            <button
+              class="c3"
+            >
+              Cancel
+            </button>
+            <button
+              class="c4"
+              disabled=""
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-chPdSV jcGbFL"
+    >
+      <div
+        class="sc-kAzzGY gfmPHv"
+      >
+        <p>
+          To change your password, please enter your current password and the desired new password.
+        </p>
+        <input
+          class="sc-kgoBCf jHyeuu"
+          disabled=""
+          placeholder="Password"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <input
+          class="sc-kgoBCf jHyeuu"
+          name="currentPassword"
+          placeholder="Current Password"
+          type="password"
+          value=""
+        />
+        <input
+          class="sc-kgoBCf jHyeuu"
+          name="newPassword"
+          placeholder="New Password"
+          type="password"
+          value=""
+        />
+        <input
+          class="sc-kgoBCf jHyeuu"
+          name="confirmNewPassword"
+          placeholder="Confirm New Password"
+          type="password"
+          value=""
+        />
+        <div>
+          <button
+            class="sc-fjdhpX sc-jzJRlG hxaimc"
+          >
+            Cancel
+          </button>
+          <button
+            class="sc-fjdhpX sc-cSHVUG liDWOB"
+            disabled=""
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals The Password Reset Prompt Overlay, inactive 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Full Screen Modals The Wallet Check Overlay 1`] = `
 Object {
   "asFragment": [Function],
@@ -35243,6 +35604,255 @@ Object {
         </button>
         <button
           class="sc-fjdhpX sc-cSHVUG liDWOB"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals/templates The Password Reset Prompt Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+  color: var(--lightred);
+}
+
+.c2:hover {
+  color: var(--link);
+}
+
+.c2:hover {
+  color: var(--red);
+}
+
+.c3 {
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto,sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+  color: var(--green);
+}
+
+.c3:hover {
+  color: var(--link);
+}
+
+.c3:hover {
+  color: var(--darkgreen);
+}
+
+.c0 {
+  background: var(--white);
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c1 {
+  height: 50px;
+  width: 75%;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 1em;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <p>
+          To change your password, please enter your current password and the desired new password.
+        </p>
+        <input
+          class="c1"
+          disabled=""
+          placeholder="Password"
+          type="email"
+          value="geoff@bitconnect.gov"
+        />
+        <input
+          class="c1"
+          name="currentPassword"
+          placeholder="Current Password"
+          type="password"
+          value=""
+        />
+        <input
+          class="c1"
+          name="newPassword"
+          placeholder="New Password"
+          type="password"
+          value=""
+        />
+        <input
+          class="c1"
+          name="confirmNewPassword"
+          placeholder="Confirm New Password"
+          type="password"
+          value=""
+        />
+        <div>
+          <button
+            class="c2"
+          >
+            Cancel
+          </button>
+          <button
+            class="c3"
+            disabled=""
+          >
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-kAzzGY gfmPHv"
+    >
+      <p>
+        To change your password, please enter your current password and the desired new password.
+      </p>
+      <input
+        class="sc-kgoBCf jHyeuu"
+        disabled=""
+        placeholder="Password"
+        type="email"
+        value="geoff@bitconnect.gov"
+      />
+      <input
+        class="sc-kgoBCf jHyeuu"
+        name="currentPassword"
+        placeholder="Current Password"
+        type="password"
+        value=""
+      />
+      <input
+        class="sc-kgoBCf jHyeuu"
+        name="newPassword"
+        placeholder="New Password"
+        type="password"
+        value=""
+      />
+      <input
+        class="sc-kgoBCf jHyeuu"
+        name="confirmNewPassword"
+        placeholder="Confirm New Password"
+        type="password"
+        value=""
+      />
+      <div>
+        <button
+          class="sc-fjdhpX sc-jzJRlG hxaimc"
+        >
+          Cancel
+        </button>
+        <button
+          class="sc-fjdhpX sc-cSHVUG liDWOB"
+          disabled=""
         >
           Submit
         </button>

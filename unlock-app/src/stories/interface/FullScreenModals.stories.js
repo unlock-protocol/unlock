@@ -18,7 +18,8 @@ const emailState = {
 
 const store = {
   getState: () => emailState,
-  subscribe: () => doNothing,
+  subscribe: doNothing,
+  dispatch: doNothing,
 }
 
 storiesOf('Full Screen Modals', module)
