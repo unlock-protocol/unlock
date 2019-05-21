@@ -16,7 +16,6 @@ import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
 import {
   VERIFY_SIGNED_ADDRESS,
   signedAddressVerified,
-  signedAddressMismatch,
 } from '../../actions/ticket'
 
 /**
@@ -164,14 +163,10 @@ describe('Web3 middleware', () => {
     })
   })
 
-  it('should handle VERIFY_SIGNED_ADDRESS and emit a verified event when the addresses match', () => {
+  it('should handle VERIFY_SIGNED_ADDRESS and emit a verified event when the addresses match', async () => {
     expect.hasAssertions()
 
-    const {
-      next,
-      invoke,
-      store: { dispatch },
-    } = create()
+    const { invoke } = create()
     const address = '0x12345678'
     const signedAddress = 'encrypted sig'
 
@@ -187,33 +182,22 @@ describe('Web3 middleware', () => {
       signedAddress: 'encrypted sig',
     }
 
-    mockWeb3Service.recoverAccountFromSignedData = jest.fn((data, sa, cb) => {
-      cb(null, JSON.parse(data).message.address.publicKey)
+    mockWeb3Service.recoverAccountFromSignedData = jest.fn(async data => {
+      JSON.parse(data).message.address.publicKey
     })
 
     invoke(action)
 
     expect(mockWeb3Service.recoverAccountFromSignedData).toHaveBeenCalledWith(
       JSON.stringify(data),
-      signedAddress,
-      expect.any(Function)
+      signedAddress
     )
-
-    expect(dispatch).toHaveBeenCalledWith(
-      signedAddressVerified(account.address, signedAddress, address)
-    )
-
-    expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle VERIFY_SIGNED_ADDRESS and emit a mismatched event when the addresses do not match', () => {
     expect.hasAssertions()
 
-    const {
-      next,
-      invoke,
-      store: { dispatch },
-    } = create()
+    const { invoke } = create()
     const address = '0x12345678'
     const signedAddress = 'encrypted sig'
 
@@ -229,23 +213,16 @@ describe('Web3 middleware', () => {
       signedAddress: 'encrypted sig',
     }
 
-    mockWeb3Service.recoverAccountFromSignedData = jest.fn((data, sa, cb) =>
-      cb(null, 'hello, I am an arbitrary string')
+    mockWeb3Service.recoverAccountFromSignedData = jest.fn(
+      async () => 'hello, I am an arbitrary string'
     )
 
     invoke(action)
 
     expect(mockWeb3Service.recoverAccountFromSignedData).toHaveBeenCalledWith(
       JSON.stringify(data),
-      signedAddress,
-      expect.any(Function)
+      signedAddress
     )
-
-    expect(dispatch).toHaveBeenCalledWith(
-      signedAddressMismatch(account.address, signedAddress)
-    )
-
-    expect(next).toHaveBeenCalledWith(action)
   })
 
   it('should handle account.updated events triggered by the web3Service', () => {
