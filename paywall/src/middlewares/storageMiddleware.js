@@ -38,7 +38,8 @@ const storageMiddleware = config => {
               action.transaction.hash,
               action.transaction.from,
               action.transaction.to,
-              getState().network.name
+              getState().network.name,
+              action.transaction.input
             )
             .catch(error => {
               dispatch(storageError(error))
