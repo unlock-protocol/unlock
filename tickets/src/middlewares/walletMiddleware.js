@@ -1,5 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import UnlockJs from '@unlock-protocol/unlock-js'
+import { WalletService } from '@unlock-protocol/unlock-js'
 import { setAccount } from '../actions/accounts'
 import { PROVIDER_READY } from '../actions/provider'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
@@ -22,8 +22,6 @@ import { newTransaction } from '../actions/transaction'
 import { transactionTypeMapping } from '../utils/types'
 import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
 import { SIGN_DATA, signatureError, signedData } from '../actions/signature'
-
-const { WalletService } = UnlockJs
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
