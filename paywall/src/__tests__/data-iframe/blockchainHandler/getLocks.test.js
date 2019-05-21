@@ -48,14 +48,16 @@ describe('getLocks', () => {
           lock: 1,
           owner: 'account',
           expiration: 0,
-          transactions: {},
+          status: 'none',
+          transactions: [],
         },
         '2-account': 'hi',
         '3-account': {
           lock: 3,
           owner: 'account',
           expiration: 0,
-          transactions: {},
+          status: 'none',
+          transactions: [],
         },
       },
     })

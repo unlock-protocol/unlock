@@ -33,7 +33,8 @@ export default async function getLocksAndKeys({
           lock: lockAddress,
           owner: account,
           expiration: 0,
-          transactions: {},
+          status: 'none',
+          transactions: [],
         }
       }
     }
