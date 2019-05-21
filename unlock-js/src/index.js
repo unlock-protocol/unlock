@@ -3,6 +3,7 @@ export { default as WalletService } from './walletService'
 export {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
+  reEncryptPrivateKey,
 } from './accounts'
 export { getCurrentProvider, getWeb3Provider } from './providers'
 export { default as deploy } from './deploy'
