@@ -37,6 +37,12 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
     const iframe = getIframe(document, paywallUrlWithOrigin)
     const origin = new window.URL(paywallUrl).origin
 
+    // If the user removes the iframe, make sure we add it back!
+    // TODO: consider performance/battery impact
+    setInterval(() => {
+      add(document, iframe)
+    }, 500)
+
     add(document, iframe)
     setupReadyListener(window, iframe, origin)
 
