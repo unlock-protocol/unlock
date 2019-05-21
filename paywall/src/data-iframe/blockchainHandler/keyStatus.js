@@ -42,8 +42,7 @@ export function getKeyStatus(key, requiredConfirmations) {
 /**
  * Construct the transactions field for each key
  * @param {object} keys keys, indexed by their lock/owner ID (not the same as smart contract ID)
- * @param {object} transactions transactions, indexed by hash (submitted transaction is always
- *                              indexed under "submitted-${lock address}-${user account}")
+ * @param {object} transactions transactions, indexed by hash
  * @param {array} locks an array of lock addresses
  * @param {int} requiredConfirmations the number of confirmations needed to ensure a transaction went through
  */
