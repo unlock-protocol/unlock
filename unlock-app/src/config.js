@@ -1,4 +1,4 @@
-import { getCurrentProvider, getWeb3Provider } from '@unlock-protocol/unlock-js'
+import { getCurrentProvider } from '@unlock-protocol/unlock-js'
 
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
@@ -66,7 +66,7 @@ export default function configure(
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
-    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
+    providers['HTTP'] = `http://${httpProvider}:8545`
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
     services['storage'] = {
@@ -81,7 +81,7 @@ export default function configure(
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
+    providers['HTTP'] = `http://${httpProvider}:8545`
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
@@ -145,7 +145,7 @@ export default function configure(
 
   let readOnlyProvider
   if (readOnlyProviderUrl) {
-    readOnlyProvider = getWeb3Provider(readOnlyProviderUrl)
+    readOnlyProvider = readOnlyProviderUrl
   }
 
   return {
