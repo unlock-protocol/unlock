@@ -23,6 +23,7 @@ export async function processKeyPurchaseTransactions({
   lockAddress,
   requiredConfirmations,
   update,
+  walletAction,
 }) {
   let transactions = startingTransactions
   let keys = startingKeys
@@ -31,9 +32,11 @@ export async function processKeyPurchaseTransactions({
   let error
   const setError = e => (error = e)
   walletService.addListener('error', setError)
+  walletService.addListener('transaction.pending', walletAction)
   const afterEventProcessed = () => {
     if (error) {
       walletService.removeListener('error', setError)
+      walletService.removeListener('transaction.pending', walletAction)
       throw error
     }
     if (transactions !== result.transactions) {
@@ -69,4 +72,5 @@ export async function processKeyPurchaseTransactions({
     key = keys[keyId]
   } while (key.status === 'confirming')
   web3Service.removeListener('error', setError)
+  walletService.removeListener('transaction.pending', walletAction)
 }
