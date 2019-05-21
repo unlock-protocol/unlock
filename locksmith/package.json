@@ -73,7 +73,6 @@
     "truffle-hdwallet-provider": "^1.0.9",
     "ts-jest": "24.0.2",
     "typescript": "3.4.5",
-    "unlock-abi-0-2": "1.0.0",
     "web3": "1.0.0-beta.37",
     "winston": "^3.1.0"
   },
