@@ -79,12 +79,14 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
             chain: 2,
             to: 'lock 1',
             from: 'account',
+            data: undefined,
           },
           {
             transactionHash: 'hash2',
             chain: 1,
             to: 'lock 2',
             from: 'account',
+            data: 'data 2',
           },
         ],
       },
@@ -113,20 +115,23 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
           {
             transactionHash: 'hash1',
             chain: 2,
-            to: 'lock 1',
-            from: 'account',
+            recipient: 'lock 1',
+            sender: 'account',
+            data: null,
           },
           {
             transactionHash: 'hash2',
             chain: 1,
-            to: 'lock 2',
-            from: 'account',
+            recipient: 'lock 2',
+            sender: 'account',
+            data: 'data 2',
           },
           {
             transactionHash: 'hash3',
             chain: 1,
-            to: 'lock 3',
-            from: 'account',
+            recipient: 'lock 3',
+            sender: 'account',
+            data: null,
           },
         ],
       },
@@ -139,7 +144,21 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       fakeWalletService
     )
 
-    expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(1, 'hash2')
-    expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(2, 'hash3')
+    expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
+      1,
+      'hash2',
+      expect.objectContaining({
+        to: 'lock 2',
+        from: 'account',
+        input: 'data 2',
+        network: 1,
+        hash: 'hash2',
+      })
+    )
+    expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
+      2,
+      'hash3',
+      undefined
+    )
   })
 })

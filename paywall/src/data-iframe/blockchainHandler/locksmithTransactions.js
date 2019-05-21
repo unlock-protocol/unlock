@@ -28,11 +28,18 @@ export default async function locksmithTransactions(
         hash: t.transactionHash,
         network: t.chain,
         to: t.recipient,
+        input: t.data,
         from: t.sender,
       }))
       .filter(transaction => transaction.network === network)
       .map(transaction => {
-        return web3Service.getTransaction(transaction.hash)
+        // we pass the transaction as defaults if it has input set, so that we can
+        // parse out the transaction type and other details. If input is not set,
+        // we can't safely pass the transaction default
+        return web3Service.getTransaction(
+          transaction.hash,
+          transaction.input ? transaction : undefined
+        )
       })
     const updatedTransactions = await Promise.all(newTransactions)
     return updatedTransactions.reduce(

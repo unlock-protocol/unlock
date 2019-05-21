@@ -24,6 +24,7 @@ describe('StorageService', () => {
               transactionHash: '0x456',
               sender: '0xabc',
               recipient: '0xfgh',
+              data: 'data',
               chain: 1984,
             },
           ],
@@ -32,7 +33,13 @@ describe('StorageService', () => {
       const hashes = await storageService.getTransactionsHashesSentBy(sender)
       expect(hashes).toEqual([
         { hash: '0x123', from: '0xabc', to: '0xcde', network: 1984 },
-        { hash: '0x456', from: '0xabc', to: '0xfgh', network: 1984 },
+        {
+          hash: '0x456',
+          from: '0xabc',
+          to: '0xfgh',
+          network: 1984,
+          input: 'data',
+        },
       ])
       expect(axios.get).toHaveBeenCalledWith(
         `${serviceHost}/transactions?sender=${sender}`
@@ -47,19 +54,22 @@ describe('StorageService', () => {
       const senderAddress = ' 0xsender'
       const recipientAddress = ' 0xrecipient'
       const chain = 1984
+      const data = 'data'
       axios.post.mockReturnValue({})
 
       await storageService.storeTransaction(
         transactionHash,
         senderAddress,
         recipientAddress,
-        chain
+        chain,
+        data
       )
       expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/transaction`, {
         transactionHash,
         sender: senderAddress,
         recipient: recipientAddress,
         chain,
+        data,
       })
     })
   })

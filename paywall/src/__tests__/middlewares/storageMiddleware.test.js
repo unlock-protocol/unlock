@@ -69,6 +69,7 @@ describe('Storage middleware', () => {
         to: 'unlock',
         from: 'julien',
         network: 1984,
+        input: 'data',
       }
       const action = { type: NEW_TRANSACTION, transaction }
 
@@ -80,7 +81,8 @@ describe('Storage middleware', () => {
         transaction.hash,
         transaction.from,
         transaction.to,
-        transaction.network
+        transaction.network,
+        transaction.input
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
