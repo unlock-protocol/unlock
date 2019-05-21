@@ -21,7 +21,7 @@ Startup
 
 ### The cache handler
 
-The cache handler is a tiny script, and is the one that loads first on the main Forbes site. It does these things:
+The cache handler is a tiny script, and is the one that loads first in the main window script. It does these things:
 - Check the Cache for
   - saved keys
   - locks

@@ -46,9 +46,9 @@ The key data structure contains these fields:
   - `confirming` A key purchase transaction has been mined, and is awaiting required confirmations
   - `valid` The key has been purchased, transaction confirmed, and has not expired
   - `expired` The key has been purchased, transaction confirmed, and is now expired
-- `transactions` An array of all key purchase transactions by this owner on the lock. This is sorted by block number, with
-  pending and submitted transactions first (pending transactions are assigned a block number that is the highest number javascript
-  can represent, and show up first)
+- `transactions` An array of all key purchase transactions by this owner on the lock. This is sorted by block
+  number, with pending and submitted transactions first (pending transactions are assigned a block number that 
+  is the highest number javascript can represent, and show up first)
 
 The `status` and `transactions` fields are calculated in `keyStatus.js` with the `linkTransactionsToKeys` function.
 
