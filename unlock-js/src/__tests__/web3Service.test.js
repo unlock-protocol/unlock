@@ -13,7 +13,7 @@ import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
 
-import { KEY_ID, ZERO, UNLIMITED_KEYS_COUNT } from '../constants'
+import { KEY_ID, UNLIMITED_KEYS_COUNT } from '../constants'
 
 const supportedVersions = [v0, v01, v02]
 
@@ -260,159 +260,6 @@ describe('Web3Service', () => {
     })
   })
 
-  describe('inputsHandlers', () => {
-    describe('createLock', () => {
-      it('should emit lock.updated with correctly typed values', async done => {
-        expect.assertions(2)
-        await nockBeforeEach()
-        const params = {
-          _expirationDuration: '7',
-          _maxNumberOfKeys: '5',
-          _keyPrice: '5',
-        }
-        web3Service.generateLockAddress = jest.fn()
-        web3Service.on('lock.updated', (newLockAddress, update) => {
-          expect(update.expirationDuration).toBe(7)
-          expect(update.maxNumberOfKeys).toBe(5)
-          done()
-        })
-
-        await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
-      })
-
-      it('createLock (infinite keys)', async () => {
-        expect.assertions(4)
-        await nockBeforeEach()
-
-        const contract = new ethers.utils.Interface(abis.v02.Unlock.abi)
-
-        const inputs = contract.functions[
-          'createLock(uint256,address,uint256,uint256)'
-        ].encode([100, ZERO, 100000000, ethers.constants.MaxUint256])
-
-        let called = 0
-        web3Service.on('transaction.updated', (hash, transaction) => {
-          if (called++) {
-            // the first call is in _parseTransactionFromInput, which we ignore
-            expect(hash).toBe('hash')
-            expect(transaction).toEqual({
-              lock: unlockAddress,
-            })
-          }
-        })
-        web3Service.on('lock.updated', (address, lock) => {
-          expect(address).toBe(unlockAddress)
-          expect(lock).toEqual({
-            transaction: 'hash',
-            address: unlockAddress,
-            expirationDuration: 100,
-            keyPrice: '0.0000000001', // Must be expressed in Eth!
-            maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-            outstandingKeys: 0,
-            balance: '0', // Must be expressed in Eth!
-          })
-        })
-        web3Service.generateLockAddress = jest.fn(() =>
-          Promise.resolve(unlockAddress)
-        )
-        web3Service._parseTransactionFromInput(
-          'unused',
-          'hash',
-          abis.v02.Unlock,
-          inputs
-        )
-      })
-
-      it('createLock (non-infinite keys)', async () => {
-        expect.assertions(4)
-        await nockBeforeEach()
-
-        const contract = new ethers.utils.Interface(abis.v02.Unlock.abi)
-
-        const inputs = contract.functions[
-          'createLock(uint256,address,uint256,uint256)'
-        ].encode([100, ZERO, 100000000, 10])
-
-        let called = 0
-        web3Service.on('transaction.updated', (hash, transaction) => {
-          if (called++) {
-            // the first call is in _parseTransactionFromInput, which we ignore
-            expect(hash).toBe('hash')
-            expect(transaction).toEqual({
-              lock: unlockAddress,
-            })
-          }
-        })
-        web3Service.on('lock.updated', (address, lock) => {
-          expect(address).toBe(unlockAddress)
-          expect(lock).toEqual({
-            transaction: 'hash',
-            address: unlockAddress,
-            expirationDuration: 100,
-            keyPrice: '0.0000000001', // Must be expressed in Eth!
-            maxNumberOfKeys: 10,
-            outstandingKeys: 0,
-            balance: '0', // Must be expressed in Eth!
-          })
-        })
-        web3Service.generateLockAddress = jest.fn(() =>
-          Promise.resolve(unlockAddress)
-        )
-        web3Service._parseTransactionFromInput(
-          'unused',
-          'hash',
-          abis.v02.Unlock,
-          inputs
-        )
-      })
-    })
-
-    it('purchaseFor', async () => {
-      expect.assertions(4)
-      await nockBeforeEach()
-      let resolveKeySaver
-      let resolveTransactionUpdater
-      const owner = '0x9876'
-      const fakeParams = {
-        _recipient: owner,
-      }
-      const fakeContractAddress = '0xabc'
-      const fakeHash = '0x12345'
-
-      const keySaver = new Promise(resolve => {
-        resolveKeySaver = resolve
-      })
-      const transactionUpdater = new Promise(resolve => {
-        resolveTransactionUpdater = resolve
-      })
-
-      web3Service.once('transaction.updated', (transactionHash, params) => {
-        expect(transactionHash).toBe(fakeHash)
-        expect(params).toEqual({
-          key: KEY_ID(fakeContractAddress, owner),
-          lock: fakeContractAddress,
-        })
-        resolveTransactionUpdater()
-      })
-
-      web3Service.once('key.saved', (id, params) => {
-        expect(id).toBe(KEY_ID(fakeContractAddress, owner))
-        expect(params).toEqual({
-          owner,
-          lock: fakeContractAddress,
-        })
-        resolveKeySaver()
-      })
-
-      web3Service.inputsHandlers.purchaseFor(
-        fakeHash,
-        fakeContractAddress,
-        fakeParams
-      )
-      await Promise.all([keySaver, transactionUpdater])
-    })
-  })
-
   describe('_getTransactionType', () => {
     function getEncoder(abi, method) {
       const contractInterface = new ethersUtils.Interface(abi)
@@ -636,6 +483,92 @@ describe('Web3Service', () => {
     })
   })
 
+  describe('inputsHandlers', () => {
+    describe('createLock', () => {
+      it('should emit lock.updated with correctly typed values', async done => {
+        expect.assertions(2)
+        await nockBeforeEach()
+        const params = {
+          _expirationDuration: '7',
+          _maxNumberOfKeys: '5',
+          _keyPrice: '5',
+        }
+        web3Service.generateLockAddress = jest.fn()
+        web3Service.on('lock.updated', (newLockAddress, update) => {
+          expect(update.expirationDuration).toBe(7)
+          expect(update.maxNumberOfKeys).toBe(5)
+          done()
+        })
+
+        await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
+      })
+
+      it('should emit lock.updated with correctly typed values for infinite keys', async done => {
+        expect.assertions(2)
+        await nockBeforeEach()
+        const params = {
+          _expirationDuration: '7',
+          _maxNumberOfKeys:
+            '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+          _keyPrice: '5',
+        }
+        web3Service.generateLockAddress = jest.fn()
+        web3Service.on('lock.updated', (newLockAddress, update) => {
+          expect(update.expirationDuration).toBe(7)
+          expect(update.maxNumberOfKeys).toBe(UNLIMITED_KEYS_COUNT)
+          done()
+        })
+
+        await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
+      })
+    })
+
+    it('purchaseFor', async () => {
+      expect.assertions(4)
+      await nockBeforeEach()
+      let resolveKeySaver
+      let resolveTransactionUpdater
+      const owner = '0x9876'
+      const fakeParams = {
+        _recipient: owner,
+      }
+      const fakeContractAddress = '0xabc'
+      const fakeHash = '0x12345'
+
+      const keySaver = new Promise(resolve => {
+        resolveKeySaver = resolve
+      })
+      const transactionUpdater = new Promise(resolve => {
+        resolveTransactionUpdater = resolve
+      })
+
+      web3Service.once('transaction.updated', (transactionHash, params) => {
+        expect(transactionHash).toBe(fakeHash)
+        expect(params).toEqual({
+          key: KEY_ID(fakeContractAddress, owner),
+          lock: fakeContractAddress,
+        })
+        resolveTransactionUpdater()
+      })
+
+      web3Service.once('key.saved', (id, params) => {
+        expect(id).toBe(KEY_ID(fakeContractAddress, owner))
+        expect(params).toEqual({
+          owner,
+          lock: fakeContractAddress,
+        })
+        resolveKeySaver()
+      })
+
+      web3Service.inputsHandlers.purchaseFor(
+        fakeHash,
+        fakeContractAddress,
+        fakeParams
+      )
+      await Promise.all([keySaver, transactionUpdater])
+    })
+  })
+
   describe.each([
     ['v0', abis.v0, v0, 0],
     ['v01', abis.v01, v01, 1],
@@ -664,7 +597,7 @@ describe('Web3Service', () => {
       describe('events', () => {
         it('handles the NewLock event from Unlock contract', async () => {
           expect.assertions(5)
-          await nockBeforeEach()
+          await versionedNockBeforeEach()
           const EventInfo = new ethers.utils.Interface(UnlockVersion.Unlock.abi)
           const receipt = {
             blockNumber: 123,
@@ -709,7 +642,7 @@ describe('Web3Service', () => {
 
         it('handles the PriceChanged event from PublicLock contract', async () => {
           expect.assertions(4)
-          await nockBeforeEach()
+          await versionedNockBeforeEach()
           const EventInfo = new ethers.utils.Interface(
             UnlockVersion.PublicLock.abi
           )
@@ -751,7 +684,7 @@ describe('Web3Service', () => {
 
         it('handles the Transfer event from PublicLock contract', async () => {
           expect.assertions(4)
-          await nockBeforeEach()
+          await versionedNockBeforeEach()
           const EventInfo = new ethers.utils.Interface(
             UnlockVersion.PublicLock.abi
           )
@@ -795,7 +728,7 @@ describe('Web3Service', () => {
 
         it('handles the Withdrawal event from PublicLock contract', async () => {
           expect.assertions(2)
-          await nockBeforeEach()
+          await versionedNockBeforeEach()
           const EventInfo = new ethers.utils.Interface(
             UnlockVersion.PublicLock.abi
           )
