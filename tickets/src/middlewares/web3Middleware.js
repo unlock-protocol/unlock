@@ -1,6 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import UnlockJs from '@unlock-protocol/unlock-js'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { LOCATION_CHANGE } from 'connected-react-router'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -23,8 +23,6 @@ import {
   signedAddressMismatch,
 } from '../actions/ticket'
 import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
-
-const { Web3Service } = UnlockJs
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
