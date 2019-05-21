@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import v0 from './v0'
 import v01 from './v01'
 import v02 from './v02'
+import v10 from './v10'
 
 import FastJsonRpcSigner from './FastJsonRpcSigner'
 
@@ -61,6 +62,10 @@ export default class UnlockService extends EventEmitter {
 
     if (2 === version) {
       return v02
+    }
+
+    if (3 === version) {
+      return v10
     }
 
     // Defaults to v0
