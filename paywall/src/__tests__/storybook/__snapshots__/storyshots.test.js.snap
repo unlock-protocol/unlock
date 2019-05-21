@@ -5552,10 +5552,6 @@ Object {
   color: var(--white);
 }
 
-.c9:hover .c7 {
-  background-color: var(--activegreen);
-}
-
 .c2 {
   display: grid;
   height: 140px;
@@ -5578,6 +5574,14 @@ Object {
   border-radius: 4px;
   background-color: var(--white);
   padding-top: 13px;
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -5621,7 +5625,6 @@ Object {
         <div>
           <div
             class="c2"
-            disabled=""
           >
             <div
               class="price c3"
@@ -5676,8 +5679,7 @@ Object {
       </header>
       <div>
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-          disabled=""
+          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
         >
           <div
             class="sc-5sgq84-3 price bIZSQm"
@@ -5833,10 +5835,6 @@ Object {
   color: var(--white);
 }
 
-.c9:hover .c7 {
-  background-color: var(--activegreen);
-}
-
 .c2 {
   display: grid;
   height: 140px;
@@ -5859,6 +5857,14 @@ Object {
   border-radius: 4px;
   background-color: var(--white);
   padding-top: 13px;
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c7 {
+  background-color: var(--activegreen);
 }
 
 .c3 {
@@ -5902,7 +5908,6 @@ Object {
         <div>
           <div
             class="c2"
-            disabled=""
           >
             <div
               class="price c3"
@@ -5957,8 +5962,7 @@ Object {
       </header>
       <div>
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-          disabled=""
+          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
         >
           <div
             class="sc-5sgq84-3 price bIZSQm"

@@ -20,4 +20,7 @@ module.exports = {
   NAMED: Object.assign({}, publicLock, {
     lockName: 'Custom Named Lock',
   }),
+  FREE: Object.assign({}, publicLock, {
+    keyPrice: new BigNumber(0),
+  }),
 }
