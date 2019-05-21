@@ -1,5 +1,8 @@
 # Changes
 
+## 0.0.32
+- Actually export the function that re-encrypts a private key.
+
 ## 0.0.31
 
 - `getTransaction` no longer crashes if the user refreshes while a key purchase transaction is pending
