@@ -24,7 +24,7 @@ export const ValidationIcon = ({
       <Fragment>
         <ValidTitle>Ticket Valid</ValidTitle>
         <IconHolder>
-          <SvgIconCheckmark />
+          <Checkmark />
         </IconHolder>
       </Fragment>
     )
@@ -33,7 +33,7 @@ export const ValidationIcon = ({
       <Fragment>
         <Title>Ticket Not Valid</Title>
         <IconHolder>
-          <SvgIconBg />
+          <NoCheckmark />
         </IconHolder>
       </Fragment>
     )
@@ -42,7 +42,7 @@ export const ValidationIcon = ({
       <Fragment>
         <Title>Ticket Validating</Title>
         <IconHolder>
-          <SvgIconBg />
+          <NoCheckmark />
         </IconHolder>
       </Fragment>
     )
@@ -130,4 +130,14 @@ const IconHolder = styled.div`
 
 const ValidTitle = styled(Title)`
   color: var(--link);
+`
+
+const Checkmark = styled(SvgIconCheckmark)`
+  width: 450px;
+  max-width: 100%;
+`
+
+const NoCheckmark = styled(SvgIconBg)`
+  width: 450px;
+  max-width: 100%;
 `
