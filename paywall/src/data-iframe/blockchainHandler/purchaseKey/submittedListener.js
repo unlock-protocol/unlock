@@ -53,6 +53,7 @@ export default async function submittedListener({
     kill = reject
   })
 
+  walletService.on('error', kill)
   walletService.once(
     'transaction.new',
     (hash, from, to, input, type, status) => {
