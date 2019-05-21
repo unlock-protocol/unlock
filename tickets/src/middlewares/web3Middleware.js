@@ -163,13 +163,13 @@ const web3Middleware = config => {
             eventAddress: eventAddress,
           })
 
-          web3Service.recoverAccountFromSignedData(
-            JSON.stringify(data),
-            signedAddress,
-            (error, account) => {
+          web3Service
+            .recoverAccountFromSignedData(JSON.stringify(data), signedAddress)
+            .then(account => {
               const normalizedAccount = account.toString().toLowerCase()
               const normalizedPublicKey = publicKey.toString().toLowerCase()
-              if (error || normalizedAccount !== normalizedPublicKey) {
+
+              if (normalizedAccount !== normalizedPublicKey) {
                 dispatch(
                   signedAddressMismatch(normalizedPublicKey, signedAddress)
                 )
@@ -182,8 +182,7 @@ const web3Middleware = config => {
                   )
                 )
               }
-            }
-          )
+            })
         }
 
         const keyId = `${lockAddress}-${accountAddress}`
