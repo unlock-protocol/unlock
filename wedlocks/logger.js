@@ -3,8 +3,6 @@
 import winston from 'winston'
 import config from './config'
 
-// TODO: remove me. this is suggestion by the netlify support to debug logging...
-console.log('Logger imported')
 /**
  * The logger. Logging to stdout
  */
