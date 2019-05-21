@@ -34,6 +34,7 @@ export default async function getLocksAndKeys({
           owner: account,
           expiration: 0,
           status: 'none',
+          confirmations: 0,
           transactions: [],
         }
       }
