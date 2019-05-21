@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 
 const { deploy } = require('@unlock-protocol/unlock-js')
-const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 
 /*
@@ -37,7 +36,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, Unlock, newContractInstance => {
+    return deploy(host, port, 'v02', newContractInstance => {
       console.log(newContractInstance.options.address)
     })
   })
