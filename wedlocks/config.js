@@ -9,6 +9,7 @@ dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
 
+// Remember to add mapping in webpack for all environment variables below
 const requiredVariables = [
   'SMTP_HOST',
   'SMTP_USERNAME',
