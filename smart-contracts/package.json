@@ -49,7 +49,7 @@
     "ci": "npm run lint && npm run test",
     "build": "truffle compile --all",
     "zos": "zos",
-    "flatten": "truffle-flattener contracts/PublicLock.sol",
+    "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
     "verify": "truffle run verify"
   },
   "author": "",
