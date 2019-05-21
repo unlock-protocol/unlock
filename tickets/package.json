@@ -64,8 +64,7 @@
     "run-script-os": "1.0.5",
     "styled-components": "4.2.0",
     "ts-jest": "24.0.2",
-    "typescript": "3.4.5",
-    "unlock-abi-0-2": "^1.0.0"
+    "typescript": "3.4.5"
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",

@@ -4,7 +4,6 @@ const {
   WalletService,
   Web3Service,
 } = require('@unlock-protocol/unlock-js')
-const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 const ethers = require('ethers')
 const TokenDeployer = require('./deploy-locks')
@@ -52,7 +51,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, Unlock, newContractInstance => {
+    return deploy(host, port, 'v02', newContractInstance => {
       // Once unlock has been deployed, we need to deploy a lock too!
       const wallet = new WalletService({
         unlockAddress: newContractInstance.options.address,
