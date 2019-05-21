@@ -1,4 +1,4 @@
-pragma solidity 0.5.7;
+pragma solidity 0.5.8;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';

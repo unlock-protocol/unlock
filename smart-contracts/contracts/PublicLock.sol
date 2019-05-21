@@ -1,4 +1,4 @@
-pragma solidity 0.5.7;
+pragma solidity 0.5.8;
 
 import './interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
