@@ -543,6 +543,26 @@ describe('Web3 middleware', () => {
     )
   })
 
+  it('should handle ADD_TRANSACTION with data input', () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    const action = {
+      type: ADD_TRANSACTION,
+      transaction: {
+        ...transaction,
+        input: 'data',
+      },
+    }
+    mockWeb3Service.getTransaction = jest.fn()
+
+    invoke(action)
+    expect(next).toHaveBeenCalled()
+    expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
+      transaction.hash,
+      action.transaction
+    )
+  })
+
   it('should handle NEW_TRANSACTION', () => {
     expect.assertions(3)
     const {
