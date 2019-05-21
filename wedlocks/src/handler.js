@@ -11,9 +11,15 @@ const headers = {
 export const handler = (event, context, responseCallback) => {
   const callback = (err /** alway null! */, response) => {
     if (response.statusCode >= 400) {
-      logger.error(response)
+      logger.error({
+        event,
+        response,
+      })
     } else {
-      logger.info(response)
+      logger.info({
+        event,
+        response,
+      })
     }
     return responseCallback(err, {
       ...response,
@@ -60,7 +66,7 @@ export const handler = (event, context, responseCallback) => {
         return callback(null, {
           statusCode: 400,
           body: 'Client Error',
-          details: error,
+          details: error.toString(),
         })
       }
 
@@ -73,7 +79,7 @@ export const handler = (event, context, responseCallback) => {
     return callback(null, {
       statusCode: 500,
       body: 'Server Error',
-      details: error,
+      details: error.toString(),
     })
   }
 }
