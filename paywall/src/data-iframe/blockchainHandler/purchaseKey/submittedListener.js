@@ -36,9 +36,14 @@ export default async function submittedListener({
   const network = getNetwork()
   const keyToPurchase = `${lockAddress}-${account}`
   const key = keys[keyToPurchase]
+  // key.status is one of:
+  // none, submitted, pending, confirming, valid, expired, failed
+  // we can only initiate a new purchase if the current key is not valid, and is
+  // not being purchased. These 3 statuses are the
   if (
-    (key.status !== 'none' && key.status !== 'expired') ||
-    key.status === 'failed'
+    key.status !== 'none' &&
+    key.status !== 'expired' &&
+    key.status !== 'failed'
   ) {
     return {
       transactions: existingTransactions,
