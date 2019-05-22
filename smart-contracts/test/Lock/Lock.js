@@ -47,7 +47,7 @@ contract('Lock / Lock', accounts => {
         assert.equal(maxNumberOfKeys.toFixed(), 10)
         assert.equal(totalSupply.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
-        assert.equal(publicLockVersion.toFixed(), 3) // needs updating each lock-version change
+        assert.equal(publicLockVersion.toFixed(), 4) // needs updating each lock-version change
         assert.equal(isAlive, true)
       }
     )
