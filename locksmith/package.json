@@ -46,7 +46,7 @@
     "@types/stripe": "^6.25.10",
     "@types/supertest": "^2.0.7",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "@unlock-protocol/unlock-js": "0.0.33",
+    "@unlock-protocol/unlock-js": "0.1.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
