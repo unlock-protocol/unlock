@@ -1,4 +1,3 @@
-import { getAccount } from '../account'
 import { linkTransactionsToKey } from '../keyStatus'
 import { getNetwork } from '../network'
 
@@ -24,7 +23,6 @@ export default async function submittedListener({
   walletService,
   requiredConfirmations,
 }) {
-  const account = getAccount()
   // update key status for expired keys
   const key = linkTransactionsToKey({
     key: existingKey,
@@ -61,7 +59,7 @@ export default async function submittedListener({
   const newTransaction = await pendingTransactionFinished
   const transaction = {
     ...newTransaction,
-    key: `${newTransaction.to}-${account}`,
+    key: `${newTransaction.to}-${newTransaction.from}`,
     lock: newTransaction.to,
     confirmations: 0,
     network,

@@ -1,4 +1,3 @@
-import { setAccount } from '../../../../data-iframe/blockchainHandler/account'
 import { TRANSACTION_TYPES } from '../../../../constants'
 import submittedListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
 import { setNetwork } from '../../../../data-iframe/blockchainHandler/network'
@@ -16,7 +15,6 @@ describe('pendingListener', () => {
   it('returns immediately if the key is submitted', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -55,7 +53,6 @@ describe('pendingListener', () => {
   it('returns immediately if the key is pending', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -94,7 +91,6 @@ describe('pendingListener', () => {
   it('returns immediately if the key is confirming', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -133,7 +129,6 @@ describe('pendingListener', () => {
   it('returns immediately if the key is valid', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -172,7 +167,6 @@ describe('pendingListener', () => {
   it('handles key with no transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     setNetwork(1)
 
     const existingTransactions = {}
@@ -231,7 +225,6 @@ describe('pendingListener', () => {
   it('handles expired key new transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     setNetwork(1)
     const old = {
       hash: 'old',
@@ -304,7 +297,6 @@ describe('pendingListener', () => {
   it('handles failed key new transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     setNetwork(1)
     const old = {
       hash: 'old',
