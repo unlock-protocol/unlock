@@ -1,5 +1,3 @@
-import { getAccount } from './account'
-
 /**
  * Determine whether a key is valid based solely on its expiration
  *
@@ -40,49 +38,60 @@ export function getKeyStatus(key, requiredConfirmations) {
 }
 
 /**
+ * Construct the transactions field for a key
+ * @param {object} key key to process
+ * @param {object} transactions transactions, indexed by hash (submitted transaction is always
+ *                              indexed under "submitted-${lock address}-${user account}")
+ * @param {int} requiredConfirmations the number of confirmations needed to ensure a transaction went through
+ */
+export function linkTransactionsToKey({
+  key,
+  transactions,
+  requiredConfirmations,
+}) {
+  const account = key.owner
+  const keyPurchaseTransactions = Object.values(transactions)
+    .filter(transaction => {
+      return transaction.from === account && transaction.to === key.lock
+    })
+    // NOTE: submitted and pending transactions have an artificial blockNumber of Number.MAX_SAFE_INTEGER
+    // set in walletService, so they are always the first transaction
+    .sort((a, b) => (a.blockNumber > b.blockNumber ? -1 : 1))
+  const fullKey = {
+    ...key,
+    status: getKeyStatus(key, requiredConfirmations),
+    confirmations: 0,
+    transactions: [],
+  }
+  if (!keyPurchaseTransactions.length) {
+    return fullKey
+  }
+  fullKey.confirmations = keyPurchaseTransactions[0].confirmations
+  fullKey.transactions = keyPurchaseTransactions
+  fullKey.status = getKeyStatus(fullKey, requiredConfirmations)
+  return fullKey
+}
+
+/**
  * Construct the transactions field for each key
  * @param {object} keys keys, indexed by their lock/owner ID (not the same as smart contract ID)
  * @param {object} transactions transactions, indexed by hash
- * @param {array} locks an array of lock addresses
  * @param {int} requiredConfirmations the number of confirmations needed to ensure a transaction went through
  */
 export function linkTransactionsToKeys({
   keys,
   transactions,
-  locks,
   requiredConfirmations,
 }) {
-  const account = getAccount()
-  const newKeys = {}
-
-  const transactionsByLock = locks.reduce((indexedTransactions, lock) => {
-    // get the key purchase transactions sorted in reverse chronological order
-    const keyPurchaseTransactions = Object.values(transactions)
-      .filter(transaction => {
-        return transaction.from === account && transaction.to === lock
-      })
-      // NOTE: submitted and pending transactions have an artificial blockNumber of Number.MAX_SAFE_INTEGER
-      // set in walletService, so they are always the first transaction
-      .sort((a, b) => (a.blockNumber > b.blockNumber ? -1 : 1))
-
-    indexedTransactions[lock] = keyPurchaseTransactions
-    return indexedTransactions
-  }, {})
-
-  Object.values(keys).forEach(key => {
-    const fullKey = {
-      ...key,
-      status: getKeyStatus(key, requiredConfirmations),
-    }
-    if (!transactionsByLock[key.lock] || !transactionsByLock[key.lock].length) {
-      newKeys[key.id] = fullKey
-      return
-    }
-    fullKey.confirmations = transactionsByLock[key.lock][0].confirmations
-    fullKey.transactions = transactionsByLock[key.lock]
-    fullKey.status = getKeyStatus(fullKey, requiredConfirmations)
-    newKeys[fullKey.id] = fullKey
-  })
-
-  return newKeys
+  return Object.values(keys).reduce(
+    (newKeys, key) => ({
+      ...newKeys,
+      [`${key.lock}-${key.owner}`]: linkTransactionsToKey({
+        key,
+        transactions,
+        requiredConfirmations,
+      }),
+    }),
+    {}
+  )
 }
