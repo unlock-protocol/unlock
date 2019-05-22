@@ -1,5 +1,12 @@
 # Changes
 
+## 0.0.33
+- Introduce a constant that sets the `N` property of `scrypt` in the `Crypto`
+  section of the `Wallet.encrypt` options parameter to `1 << 16` -- this value
+  being a compromise between the `web3.js` default (very fast) and the `ethers`
+  default (very secure).
+- Update `createAccountAndPasswordEncryptKey` to use this new constant
+
 ## 0.0.32
 - Actually export the function that re-encrypts a private key.
 
