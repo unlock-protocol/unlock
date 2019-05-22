@@ -8,7 +8,9 @@ describe('pendingListener', () => {
   beforeEach(() => {
     fakeWalletService = {
       handlers: {},
+      on: (type, cb) => (fakeWalletService.handlers[type] = cb),
       once: (type, cb) => (fakeWalletService.handlers[type] = cb),
+      off: type => delete fakeWalletService.handlers[type],
     }
   })
 
@@ -364,5 +366,48 @@ describe('pendingListener', () => {
       TRANSACTION_TYPES.KEY_PURCHASE /* type */,
       'submitted'
     )
+  })
+
+  it('throws on failed transaction', async done => {
+    expect.assertions(1)
+
+    setNetwork(1)
+    const old = {
+      hash: 'old',
+      from: 'account',
+      to: 'lock',
+      status: 'failed',
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: 'lock-account',
+      lock: 'lock',
+      confirmations: 1345,
+      network: 1,
+      blockNumber: 123,
+    }
+    const existingTransactions = {
+      old,
+    }
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 - 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
+    }
+
+    submittedListener({
+      lockAddress: 'lock',
+      existingTransactions,
+      existingKey,
+      walletService: fakeWalletService,
+      requiredConfirmations: 3,
+    }).catch(e => {
+      expect(e).toBeInstanceOf(Error)
+      done()
+    })
+
+    fakeWalletService.handlers.error(new Error('fail'))
   })
 })
