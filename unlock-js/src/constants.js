@@ -24,4 +24,14 @@ export default {
   KEY_ID,
 }
 
+// See
+// https://docs.ethers.io/ethers.js/html/api-wallet.html#encrypted-json-wallets
+// for available params; right now a custom value of scrypt/N covers our needs.
+export const walletEncryptionOptions = {
+  scrypt: {
+    // web3 used 1 << 13, ethers default is 1 << 18 so this is a nice middle ground
+    N: 1 << 16,
+  },
+}
+
 export const ZERO = ethers.constants.AddressZero
