@@ -5,6 +5,7 @@ import NockHelper from './helpers/nockHelper'
 import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
+import v10 from '../v10'
 
 import utils from '../utils'
 import WalletService from '../walletService'
@@ -444,7 +445,7 @@ describe('WalletService (ethers)', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    const supportedVersions = [v0, v01, v02]
+    const supportedVersions = [v0, v01, v02, v10]
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
