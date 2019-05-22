@@ -10,6 +10,7 @@ import createUnlockStore from '../../createUnlockStore'
 const ConfigProvider = ConfigContext.Provider
 const config = configure({
   unlockAppUrl: 'https://unlock-protocol.com',
+  unlockTicketsUrl: 'https://tickets.unlock-protocol.com',
 })
 
 const store = createUnlockStore({

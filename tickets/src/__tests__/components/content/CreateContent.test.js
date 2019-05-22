@@ -9,10 +9,14 @@ import {
   mapStateToProps,
 } from '../../../components/content/CreateContent'
 import createUnlockStore from '../../../createUnlockStore'
+import { ConfigContext } from '../../../utils/withConfig'
 
 const config = {
   unlockAppUrl: 'https://unlock-protocol.com',
+  unlockTicketsUrl: 'https://tickets.unlock-protocol.com',
 }
+
+const ConfigProvider = ConfigContext.Provider
 
 const account = {
   address: '0x123',
@@ -96,14 +100,16 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent
-          config={config}
-          account={{ address: 'ben' }}
-          locks={['abc123', 'def456']}
-          addEvent={addEvent}
-          now={now}
-          loadEvent={jest.fn()}
-        />
+        <ConfigProvider value={config}>
+          <CreateContent
+            config={config}
+            account={{ address: 'ben' }}
+            locks={['abc123', 'def456']}
+            addEvent={addEvent}
+            now={now}
+            loadEvent={jest.fn()}
+          />
+        </ConfigProvider>
       </Provider>
     )
 
@@ -151,14 +157,16 @@ describe('CreateContent', () => {
 
     const form = rtl.render(
       <Provider store={store}>
-        <CreateContent
-          config={config}
-          account={{ address: 'ben' }}
-          locks={['abc123', 'def456']}
-          addEvent={addEvent}
-          loadEvent={loadEvent}
-          now={now}
-        />
+        <ConfigProvider value={config}>
+          <CreateContent
+            config={config}
+            account={{ address: 'ben' }}
+            locks={['abc123', 'def456']}
+            addEvent={addEvent}
+            loadEvent={loadEvent}
+            now={now}
+          />
+        </ConfigProvider>
       </Provider>
     )
 

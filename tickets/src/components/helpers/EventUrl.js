@@ -1,14 +1,16 @@
 import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
+import withConfig from '../../utils/withConfig'
+import UnlockPropTypes from '../../propTypes'
 
-export const EventUrl = ({ address }) => {
+export const EventUrl = ({ address, config }) => {
   if (!address) {
     return <span />
   }
 
   const path = `/event/${address}`
-  const url = `https://tickets.unlock-protocol.com${path}`
+  const url = config.unlockTicketsUrl + path
 
   return (
     <Text>
@@ -22,13 +24,14 @@ export const EventUrl = ({ address }) => {
 
 EventUrl.propTypes = {
   address: PropTypes.string,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 EventUrl.defaultProps = {
   address: null,
 }
 
-export default EventUrl
+export default withConfig(EventUrl)
 
 const Text = styled.label`
   font-size: 13px;
