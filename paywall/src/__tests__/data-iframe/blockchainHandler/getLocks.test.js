@@ -47,24 +47,6 @@ describe('Locks retrieval', () => {
   })
 
   describe('linkKeysToLocks', () => {
-    let fakeWeb3Service
-    let fakeWalletService
-
-    beforeEach(() => {
-      fakeWalletService = {}
-      fakeWeb3Service = {
-        keyExpiry: {},
-        getKeyByLockForOwner(lock) {
-          return {
-            id: 'whatever' + lock,
-            lock,
-            owner: 'account',
-            expiration: fakeWeb3Service.keyExpiry[lock] || 0,
-          }
-        },
-      }
-    })
-
     it('links keys to the locks they unlock', async () => {
       expect.assertions(1)
 
@@ -83,9 +65,19 @@ describe('Locks retrieval', () => {
         },
       }
 
-      fakeWeb3Service.keyExpiry = {
-        '0x123': new Date().getTime() / 1000 + 123,
-        // no expiry for '0x456' means 0
+      const keys = {
+        '0x123': {
+          id: 'whatever0x123',
+          lock: '0x123',
+          owner: 'account',
+          expiration: new Date().getTime() / 1000 + 123,
+        },
+        '0x456': {
+          id: 'whatever0x456',
+          lock: '0x456',
+          owner: 'account',
+          expiration: 0,
+        },
       }
 
       const transactions = {
@@ -113,9 +105,8 @@ describe('Locks retrieval', () => {
 
       const newLocks = await linkKeysToLocks({
         locks,
-        walletService: fakeWalletService,
+        keys,
         transactions,
-        web3Service: fakeWeb3Service,
         requiredConfirmations: 3,
       })
 
@@ -124,7 +115,7 @@ describe('Locks retrieval', () => {
           ...locks['0x123'],
           key: {
             confirmations: 2,
-            expiration: fakeWeb3Service.keyExpiry['0x123'],
+            expiration: keys['0x123'].expiration,
             id: 'whatever0x123',
             lock: '0x123',
             owner: 'account',

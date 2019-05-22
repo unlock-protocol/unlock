@@ -1,4 +1,3 @@
-import getKeys from './getKeys'
 import { linkTransactionsToKey } from './keyStatus'
 
 /**
@@ -25,19 +24,11 @@ export async function getLocks({ locksToRetrieve, web3Service }) {
 
 export async function linkKeysToLocks({
   locks,
-  walletService,
+  keys,
   transactions,
-  web3Service,
   requiredConfirmations,
 }) {
   const lockArray = Object.values(locks)
-  const keys = await getKeys({
-    locks: lockArray.map(lock => lock.address),
-    walletService,
-    transactions,
-    web3Service,
-    requiredConfirmations,
-  })
 
   // convert into a map indexed by lock address
   // and link each key to its lock
