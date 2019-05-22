@@ -223,14 +223,4 @@ export default class WalletService extends UnlockService {
       return callback(error, null)
     }
   }
-
-  /**
-   * Given some data and a signed version of the same, returns the address of the account that signed it
-   * @param data
-   * @param signedData
-   * @returns {Promise<*>}
-   */
-  async recoverAccountFromSignedData(data, signedData) {
-    return utils.verifyMessage(data, signedData)
-  }
 }
