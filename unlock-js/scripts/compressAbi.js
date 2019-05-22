@@ -14,12 +14,14 @@ var path = require('path')
 var v0 = require('unlock-abi-0')
 var v01 = require('unlock-abi-0-1')
 var v02 = require('unlock-abi-0-2')
+var v10 = require('unlock-abi-1-0')
 /* eslint-enable import/no-extraneous-dependencies */
 
 const toCompress = {
   v0,
   v01,
   v02,
+  v10,
 }
 const output = {}
 
