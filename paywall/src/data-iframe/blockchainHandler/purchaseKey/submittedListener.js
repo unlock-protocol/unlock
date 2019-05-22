@@ -47,7 +47,11 @@ export default async function submittedListener({
 
   // wait for the submitted transaction to become pending
   let done
-  const pendingTransactionFinished = new Promise(resolve => (done = resolve))
+  let kill
+  const pendingTransactionFinished = new Promise((resolve, reject) => {
+    done = resolve
+    kill = reject
+  })
 
   walletService.once(
     'transaction.new',
@@ -55,8 +59,14 @@ export default async function submittedListener({
       done({ hash, from, to, input, type, status })
     }
   )
+  walletService.on('error', kill)
 
-  const newTransaction = await pendingTransactionFinished
+  let newTransaction
+  try {
+    newTransaction = await pendingTransactionFinished
+  } finally {
+    walletService.off('error', kill)
+  }
   const transaction = {
     ...newTransaction,
     key: `${newTransaction.to}-${newTransaction.from}`,

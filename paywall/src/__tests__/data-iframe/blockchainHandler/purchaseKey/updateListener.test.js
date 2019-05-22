@@ -1,4 +1,3 @@
-import { setAccount } from '../../../../data-iframe/blockchainHandler/account'
 import { TRANSACTION_TYPES } from '../../../../constants'
 import updateListener from '../../../../data-iframe/blockchainHandler/purchaseKey/updateListener'
 
@@ -8,13 +7,14 @@ describe('updateListener', () => {
   beforeEach(() => {
     fakeWeb3Service = {
       handlers: {},
+      on: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
       once: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
+      off: type => delete fakeWeb3Service.handlers[type],
     }
   })
   it('ignores transactions that are not in process', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -53,7 +53,6 @@ describe('updateListener', () => {
   it('ignores confirmed transactions', async () => {
     expect.assertions(2)
 
-    setAccount('account')
     const transactions = {
       hash: {
         hash: 'hash',
@@ -92,7 +91,6 @@ describe('updateListener', () => {
   it('gets a transaction update for submitted transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     const hash = {
       hash: 'hash',
       from: 'account',
@@ -150,7 +148,6 @@ describe('updateListener', () => {
   it('gets a transaction update for pending transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     const hash = {
       hash: 'hash',
       from: 'account',
@@ -209,7 +206,6 @@ describe('updateListener', () => {
   it('gets a transaction update for mined transactions', async done => {
     expect.assertions(2)
 
-    setAccount('account')
     const hash = {
       hash: 'hash',
       from: 'account',
@@ -263,5 +259,57 @@ describe('updateListener', () => {
       'hash' /* transaction hash */,
       { thing: 'hi', confirmations: 1 }
     )
+  })
+
+  it('throws on transaction failure', async done => {
+    expect.assertions(1)
+
+    const hash = {
+      hash: 'hash',
+      from: 'account',
+      to: 'lock',
+      status: 'mined',
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: 'lock-account',
+      lock: 'lock',
+      confirmations: 0,
+      blockNumber: 1234,
+    }
+    const existingTransactions = {
+      hash,
+    }
+    const existingKeys = {
+      'lock-account': {
+        id: 'lock-account',
+        lock: 'lock',
+        owner: 'account',
+        expiration: new Date().getTime() / 1000 + 1000,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
+      },
+    }
+
+    updateListener({
+      lockAddress: 'lock',
+      existingTransactions,
+      existingKeys,
+      web3Service: fakeWeb3Service,
+      requiredConfirmations: 3,
+    }).catch(e => {
+      expect(e).toBeInstanceOf(Error)
+      done()
+    })
+
+    await new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (fakeWeb3Service.handlers.error) {
+          clearInterval(interval)
+          resolve()
+        }
+      })
+    })
+
+    fakeWeb3Service.handlers.error(new Error('fail'))
   })
 })
