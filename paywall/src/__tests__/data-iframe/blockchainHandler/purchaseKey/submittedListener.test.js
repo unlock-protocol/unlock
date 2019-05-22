@@ -2,7 +2,7 @@ import { TRANSACTION_TYPES } from '../../../../constants'
 import submittedListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
 import { setNetwork } from '../../../../data-iframe/blockchainHandler/network'
 
-describe('submittedListener', () => {
+describe('pendingListener', () => {
   let fakeWalletService
 
   beforeEach(() => {

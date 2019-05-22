@@ -23,7 +23,6 @@ export default async function submittedListener({
   walletService,
   requiredConfirmations,
 }) {
-  const account = getAccount()
   // update key status for expired keys
   const key = linkTransactionsToKey({
     key: existingKey,
@@ -62,12 +61,11 @@ export default async function submittedListener({
   )
   walletService.on('error', kill)
 
-  walletService.on('error', kill)
   let newTransaction
   try {
     newTransaction = await pendingTransactionFinished
   } finally {
-    walletService.off('kill')
+    walletService.off('error', kill)
   }
   const transaction = {
     ...newTransaction,
