@@ -1,23 +1,17 @@
-import { getAccount } from '../account'
-import { linkTransactionsToKeys } from '../keyStatus'
+import { linkTransactionsToKey } from '../keyStatus'
 
 export default async function updateListener({
-  lockAddress,
   existingTransactions,
-  existingKeys,
+  existingKey,
   web3Service,
   requiredConfirmations,
 }) {
-  const account = getAccount()
-  const keyToPurchase = `${lockAddress}-${account}`
   // expire any keys that are expired
-  const keys = linkTransactionsToKeys({
-    keys: existingKeys,
+  const key = linkTransactionsToKey({
+    key: existingKey,
     transactions: existingTransactions,
-    locks: [lockAddress],
     requiredConfirmations,
   })
-  const key = keys[keyToPurchase]
   const transaction = key.transactions[0]
   if (
     !['submitted', 'pending', 'mined'].includes(transaction.status) ||
@@ -26,7 +20,7 @@ export default async function updateListener({
   ) {
     return {
       transactions: existingTransactions,
-      keys: existingKeys,
+      key: existingKey,
     }
   }
 
@@ -54,10 +48,9 @@ export default async function updateListener({
   }
   return {
     transactions,
-    keys: linkTransactionsToKeys({
-      keys: existingKeys,
+    key: linkTransactionsToKey({
+      key: existingKey,
       transactions,
-      locks: [lockAddress],
       requiredConfirmations,
     }),
   }

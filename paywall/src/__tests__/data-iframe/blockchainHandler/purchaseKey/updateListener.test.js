@@ -28,28 +28,26 @@ describe('updateListener', () => {
         status: 'mined',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: 0,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: 0,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
     const result = await updateListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('ignores confirmed transactions', async () => {
@@ -69,28 +67,26 @@ describe('updateListener', () => {
         status: 'mined',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
     const result = await updateListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('gets a transaction update for submitted transactions', async done => {
@@ -111,25 +107,23 @@ describe('updateListener', () => {
     const existingTransactions = {
       hash,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
     updateListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const newHash = {
         ...hash,
         status: 'pending',
@@ -139,12 +133,10 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'pending',
-          transactions: [newHash],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'pending',
+        transactions: [newHash],
       })
       done()
     })
@@ -173,25 +165,23 @@ describe('updateListener', () => {
     const existingTransactions = {
       hash,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
     updateListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const newHash = {
         ...hash,
         status: 'mined',
@@ -202,12 +192,10 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'confirming',
-          transactions: [newHash],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'confirming',
+        transactions: [newHash],
       })
       done()
     })
@@ -236,25 +224,23 @@ describe('updateListener', () => {
     const existingTransactions = {
       hash,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
     updateListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const newHash = {
         ...hash,
         confirmations: 1,
@@ -264,13 +250,11 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'confirming',
-          confirmations: 1,
-          transactions: [newHash],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'confirming',
+        confirmations: 1,
+        transactions: [newHash],
       })
       done()
     })

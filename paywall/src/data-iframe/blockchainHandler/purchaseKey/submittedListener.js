@@ -1,5 +1,4 @@
-import { getAccount } from '../account'
-import { linkTransactionsToKeys } from '../keyStatus'
+import { linkTransactionsToKey } from '../keyStatus'
 import { getNetwork } from '../network'
 
 /**
@@ -19,23 +18,18 @@ import { getNetwork } from '../network'
  * @param {int} requiredConfirmations the number of required confirmations for a transaction to be considered permanent
  */
 export default async function submittedListener({
-  lockAddress,
   existingTransactions,
-  existingKeys,
+  existingKey,
   walletService,
   requiredConfirmations,
 }) {
   // update key status for expired keys
-  const keys = linkTransactionsToKeys({
-    keys: existingKeys,
+  const key = linkTransactionsToKey({
+    key: existingKey,
     transactions: existingTransactions,
-    locks: [lockAddress],
     requiredConfirmations,
   })
-  const account = getAccount()
   const network = getNetwork()
-  const keyToPurchase = `${lockAddress}-${account}`
-  const key = keys[keyToPurchase]
   // key.status is one of:
   // none, submitted, pending, confirming, valid, expired, failed
   // we can only initiate a new purchase if the current key is not valid, and is
@@ -47,7 +41,7 @@ export default async function submittedListener({
   ) {
     return {
       transactions: existingTransactions,
-      keys: existingKeys,
+      key: existingKey,
     }
   }
 
@@ -65,7 +59,7 @@ export default async function submittedListener({
   const newTransaction = await pendingTransactionFinished
   const transaction = {
     ...newTransaction,
-    key: keyToPurchase,
+    key: `${newTransaction.to}-${newTransaction.from}`,
     lock: newTransaction.to,
     confirmations: 0,
     network,
@@ -78,10 +72,9 @@ export default async function submittedListener({
   }
   return {
     transactions,
-    keys: linkTransactionsToKeys({
-      keys: existingKeys,
+    key: linkTransactionsToKey({
+      key: existingKey,
       transactions,
-      locks: [lockAddress],
       requiredConfirmations,
     }),
   }
