@@ -17,10 +17,10 @@ import ConfirmedKey, {
 import { HoverFooter, NotHoverFooter } from './HoverFooters'
 import BalanceProvider from '../helpers/BalanceProvider'
 
-const ConfirmedKeyLock = ({ lock, hideModal }) => (
+const ConfirmedKeyLock = ({ lock, onClick }) => (
   <LockWrapper lock={lock}>
     <LockHeader>{lock.name}</LockHeader>
-    <Body onClick={() => hideModal()}>
+    <Body onClick={onClick}>
       <BalanceProvider
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
@@ -32,7 +32,7 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
           </React.Fragment>
         )}
       />
-      <ConfirmedKey size="50px" hideModal={hideModal} />
+      <ConfirmedKey size="50px" onClick={onClick} />
       <NotHoverFooter backgroundColor="var(--green)">
         Payment Confirmed
       </NotHoverFooter>
@@ -42,7 +42,7 @@ const ConfirmedKeyLock = ({ lock, hideModal }) => (
 )
 
 ConfirmedKeyLock.propTypes = {
-  hideModal: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
 }
 

@@ -31,7 +31,7 @@ export const Lock = ({
       return <ConfirmingKeyLock lock={lock} transaction={transaction} />
     case 'confirmed':
     case 'valid':
-      return <ConfirmedKeyLock lock={lock} hideModal={hideModal} />
+      return <ConfirmedKeyLock lock={lock} onClick={hideModal} />
     case 'none':
     case 'expired':
     default:

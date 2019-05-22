@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import Svg from '../../svg'
 import Button from '../Button'
 
-const ConfirmedKey = ({ hideModal, ...props }) => (
+const ConfirmedKey = ({ onClick, ...props }) => (
   <ConfirmedKeyButton
     {...props}
     backgroundHoverColor="var(--green)"
-    onClick={() => hideModal()}
+    onClick={onClick}
   >
     <Checkmark />
     <Arrow />
@@ -16,7 +16,7 @@ const ConfirmedKey = ({ hideModal, ...props }) => (
 )
 
 ConfirmedKey.propTypes = {
-  hideModal: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export const Checkmark = styled(Svg.Checkmark)``
