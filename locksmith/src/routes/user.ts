@@ -37,6 +37,8 @@ router.get(
   '/:emailAddress/recoveryphrase',
   userController.retrieveRecoveryPhrase
 )
+
+router.get('/:emailAddress/cards', userController.cards)
 router.put('/:emailAddress', userController.updateUser)
 router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
 router.put(

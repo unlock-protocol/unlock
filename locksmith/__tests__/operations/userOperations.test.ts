@@ -6,10 +6,63 @@ import Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const models = require('../../src/models')
 
-jest.mock('../../src/utils/recoveryPhrase', () => ({}))
-
 let User: any = models.User
 let UserReference: any = models.UserReference
+let sampleCards = [
+  {
+    address_city: null,
+    address_country: null,
+    address_line1: null,
+    address_line1_check: null,
+    address_line2: null,
+    address_state: null,
+    address_zip: null,
+    address_zip_check: null,
+    brand: 'Visa',
+    country: 'US',
+    customer: 'cus_AsampleID',
+    cvc_check: null,
+    dynamic_last4: null,
+    exp_month: 4,
+    exp_year: 2020,
+    fingerprint: 'AFKXiqgyjbiUvf93',
+    funding: 'credit',
+    id: 'card_1ES3nrIsiZS2oQBMVuCvrDJo',
+    last4: '4242',
+    metadata: {},
+    name: null,
+    object: 'card',
+    tokenization_method: null,
+  },
+]
+
+let mockStripeCards = {
+  customers: {
+    listSources: jest.fn().mockImplementation(() => {
+      return {
+        data: sampleCards,
+      }
+    }),
+  },
+}
+
+let mockStripeWithoutCards = {
+  customers: {
+    listSources: jest.fn().mockImplementation(() => {
+      return {
+        data: [],
+      }
+    }),
+  },
+}
+
+jest.mock('../../src/utils/recoveryPhrase', () => ({}))
+jest.mock('stripe', () => {
+  return jest
+    .fn()
+    .mockImplementationOnce(() => mockStripeCards)
+    .mockImplementationOnce(() => mockStripeWithoutCards)
+})
 
 describe('User creation', () => {
   /* details are crafted to ensure normalization downstream*/
@@ -161,5 +214,50 @@ describe('Updating encrypted private key', () => {
         },
       }
     )
+  })
+})
+
+describe("Retrieving a user's cards", () => {
+  describe('when the user has credit cards', () => {
+    beforeAll(() => {
+      UserReference.findOne = jest.fn().mockImplementationOnce(() => {
+        return {
+          stripe_customer_id: 'cus_AsampleID',
+        }
+      })
+    })
+
+    it('returns an array of card endings', async () => {
+      expect.assertions(1)
+      let cards = await UserOperations.getCards(
+        'user_with_credit_cards@example.com'
+      )
+      expect(cards.length).toEqual(1)
+    })
+  })
+  describe('when the user does not have credit cards', () => {
+    it('returns an empty array', async () => {
+      expect.assertions(1)
+      let cards = await UserOperations.getCards(
+        'user_without_credit_cards@example.com'
+      )
+      expect(cards).toEqual([])
+    })
+  })
+  describe('when the user does not have a stripe customer id', () => {
+    beforeAll(() => {
+      UserReference.findOne = jest.fn().mockImplementationOnce(() => {
+        return {
+          stripe_customer_id: null,
+        }
+      })
+    })
+    it('returns an empty array', async () => {
+      expect.assertions(1)
+      let cards = await UserOperations.getCards(
+        'user_without_stripe_customer_id@example.com'
+      )
+      expect(cards).toEqual([])
+    })
   })
 })

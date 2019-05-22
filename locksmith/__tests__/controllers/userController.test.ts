@@ -193,6 +193,16 @@ describe('User Controller', () => {
     })
   })
 
+  describe("retrieving a user's card details ", () => {
+    it("return the user's card details available", async () => {
+      expect.assertions(1)
+      UserOperations.getCards = jest.fn()
+
+      await request(app).get('/users/user@example.com/cards')
+      expect(UserOperations.getCards).toHaveBeenCalledWith('user@example.com')
+    })
+  })
+
   describe("updating a user's email address", () => {
     let message = {
       user: {
