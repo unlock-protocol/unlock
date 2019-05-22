@@ -26,7 +26,11 @@ export default async function updateListener({
 
   // get one transaction update
   let done
-  const transactionUpdateReceived = new Promise(resolve => (done = resolve))
+  let kill
+  const transactionUpdateReceived = new Promise((resolve, reject) => {
+    done = resolve
+    kill = reject
+  })
 
   function handleTransactionUpdate(hash, update) {
     if (hash !== transaction.hash) {
@@ -36,8 +40,14 @@ export default async function updateListener({
     done(update)
   }
 
+  web3Service.on('error', kill)
   web3Service.once('transaction.updated', handleTransactionUpdate)
-  const update = await transactionUpdateReceived
+  let update
+  try {
+    update = await transactionUpdateReceived
+  } finally {
+    web3Service.off('error', kill)
+  }
   const newTransaction = {
     ...transaction,
     ...update,
