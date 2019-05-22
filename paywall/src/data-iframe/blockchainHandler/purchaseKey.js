@@ -24,6 +24,8 @@ export async function purchaseKey({
 }
 
 /**
+ * This function is re-entrant, thus can be called at any stage of the transaction life cycle (on page refresh, for example)
+ *
  * @param {walletService} walletService the walletService instance to use for monitoring key purchase initiation.
  *                                      Should implement emitting 'transaction.new', 'transaction.pending', 'error'
  * @param {web3Service} web3Service the web3Service instance to use for monitoring the transaction cycle after transaction
