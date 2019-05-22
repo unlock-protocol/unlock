@@ -57,13 +57,13 @@ describe('blockchainHandler purchaseKey', () => {
 
     function assertOnUpdates(expected, done) {
       let expectedIndex = 0
-      return (newTransactions, newKeys) => {
-        const [expectedTransactions, expectedKeys, desc] = expected[
+      return (newTransactions, newKey) => {
+        const [expectedTransactions, expectedKey, desc] = expected[
           expectedIndex
         ]
         try {
           expect(newTransactions).toEqual(expectedTransactions)
-          expect(newKeys).toEqual(expectedKeys)
+          expect(newKey).toEqual(expectedKey)
         } catch (e) {
           // eslint-disable-next-line
           console.log(`failure on ${desc}`)
@@ -102,16 +102,14 @@ describe('blockchainHandler purchaseKey', () => {
       setNetwork(1)
       setAccount('account')
       const transactions = {}
-      const keys = {
-        'lock-account': {
-          id: 'lock-account',
-          lock: 'lock',
-          owner: 'account',
-          expiration: 0,
-          transactions: [],
-          status: 'none',
-          confirmations: 0,
-        },
+      const key = {
+        id: 'lock-account',
+        lock: 'lock',
+        owner: 'account',
+        expiration: 0,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
       }
       // expected values to be sent to the updater
       const submittedTransaction = {
@@ -133,15 +131,13 @@ describe('blockchainHandler purchaseKey', () => {
             hash: submittedTransaction,
           },
           {
-            'lock-account': {
-              confirmations: 0,
-              expiration: 0,
-              id: 'lock-account',
-              lock: 'lock',
-              owner: 'account',
-              status: 'submitted',
-              transactions: [submittedTransaction],
-            },
+            confirmations: 0,
+            expiration: 0,
+            id: 'lock-account',
+            lock: 'lock',
+            owner: 'account',
+            status: 'submitted',
+            transactions: [submittedTransaction],
           },
         ],
       ]
@@ -151,7 +147,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -183,16 +179,14 @@ describe('blockchainHandler purchaseKey', () => {
       setNetwork(1)
       setAccount('account')
       const transactions = {}
-      const keys = {
-        'lock-account': {
-          id: 'lock-account',
-          lock: 'lock',
-          owner: 'account',
-          expiration: 0,
-          transactions: [],
-          status: 'none',
-          confirmations: 0,
-        },
+      const key = {
+        id: 'lock-account',
+        lock: 'lock',
+        owner: 'account',
+        expiration: 0,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
       }
       const update = jest.fn()
 
@@ -200,7 +194,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -228,16 +222,14 @@ describe('blockchainHandler purchaseKey', () => {
       setNetwork(1)
       setAccount('account')
       const transactions = {}
-      const keys = {
-        'lock-account': {
-          id: 'lock-account',
-          lock: 'lock',
-          owner: 'account',
-          expiration: 0,
-          transactions: [],
-          status: 'none',
-          confirmations: 0,
-        },
+      const key = {
+        id: 'lock-account',
+        lock: 'lock',
+        owner: 'account',
+        expiration: 0,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
       }
       // expected values to be sent to the updater
       const submittedTransaction = {
@@ -278,9 +270,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: submittedTransaction,
           },
-          {
-            'lock-account': submittedKey,
-          },
+          submittedKey,
           'submitted transaction',
         ],
         [
@@ -288,9 +278,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: pendingTransaction,
           },
-          {
-            'lock-account': pendingKey,
-          },
+          pendingKey,
           'pending transaction',
         ],
       ]
@@ -300,7 +288,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -362,16 +350,14 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: submittedTransaction,
       }
-      const keys = {
-        'lock-account': {
-          id: 'lock-account',
-          lock: 'lock',
-          owner: 'account',
-          expiration: 0,
-          transactions: [],
-          status: 'none',
-          confirmations: 0,
-        },
+      const key = {
+        id: 'lock-account',
+        lock: 'lock',
+        owner: 'account',
+        expiration: 0,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
       }
       // expected values to be sent to the updater
       const submittedKey = {
@@ -399,9 +385,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: pendingTransaction,
           },
-          {
-            'lock-account': pendingKey,
-          },
+          pendingKey,
           'pending transaction',
         ],
       ]
@@ -411,7 +395,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -463,9 +447,7 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: submittedTransaction,
       }
-      const keys = {
-        'lock-account': submittedKey,
-      }
+      const key = submittedKey
       // expected values to be sent to the updater
       const confirmingTransaction = {
         ...submittedTransaction,
@@ -485,9 +467,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: confirmingTransaction,
           },
-          {
-            'lock-account': confirmingKey,
-          },
+          confirmingKey,
           'confirming transaction',
         ],
       ]
@@ -497,7 +477,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -550,9 +530,7 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: submittedTransaction,
       }
-      const keys = {
-        'lock-account': submittedKey,
-      }
+      const key = submittedKey
       // expected values to be sent to the updater
       const confirmingTransaction = {
         ...submittedTransaction,
@@ -572,9 +550,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: confirmingTransaction,
           },
-          {
-            'lock-account': confirmingKey,
-          },
+          confirmingKey,
           'confirming transaction',
         ],
       ]
@@ -584,7 +560,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -636,16 +612,14 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: confirmedTransaction,
       }
-      const keys = {
-        'lock-account': startingKey,
-      }
+      const key = startingKey
       const update = jest.fn()
 
       await processKeyPurchaseTransactions({
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
@@ -684,9 +658,7 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: expiredTransaction,
       }
-      const keys = {
-        'lock-account': expiredKey,
-      }
+      const key = expiredKey
       // expected values to be sent to the updater
       const submittedTransaction = {
         blockNumber: Number.MAX_SAFE_INTEGER,
@@ -711,9 +683,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: submittedTransaction,
           },
-          {
-            'lock-account': submittedKey,
-          },
+          submittedKey,
           'submitted transaction after expire',
         ],
       ]
@@ -723,7 +693,7 @@ describe('blockchainHandler purchaseKey', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
-        startingKeys: keys,
+        startingKey: key,
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,

@@ -19,46 +19,42 @@ export async function processKeyPurchaseTransactions({
   walletService,
   web3Service,
   startingTransactions,
-  startingKeys,
+  startingKey,
   lockAddress,
   requiredConfirmations,
   update,
   walletAction,
 }) {
   let transactions = startingTransactions
-  let keys = startingKeys
+  let key = startingKey
   let result
-  const account = getAccount()
   walletService.addListener('transaction.pending', walletAction)
   const afterEventProcessed = () => {
     if (transactions !== result.transactions) {
       transactions = result.transactions
-      keys = result.keys
-      update(transactions, keys)
+      key = result.key
+      update(transactions, key)
     }
   }
 
   result = await submittedListener({
     lockAddress,
     existingTransactions: transactions,
-    existingKeys: keys,
+    existingKey: key,
     walletService,
     requiredConfirmations,
   })
   afterEventProcessed()
 
-  let key
-  const keyId = `${lockAddress}-${account}`
   do {
     result = await updateListener({
       lockAddress,
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       web3Service,
       requiredConfirmations,
     })
     afterEventProcessed()
-    key = keys[keyId]
   } while (key.status === 'confirming')
   walletService.removeListener('transaction.pending', walletAction)
 }
