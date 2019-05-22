@@ -132,7 +132,6 @@ namespace UserOperations {
 
       return cardsResponse.data
     } catch (_e) {
-      console.log(_e)
       return []
     }
   }
