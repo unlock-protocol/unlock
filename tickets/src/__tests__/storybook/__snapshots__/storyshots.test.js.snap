@@ -3487,7 +3487,7 @@ Object {
                       href="/event/abc123"
                       target="_blank"
                     >
-                      https://tickets.unlock-protocol.com/event/abc123
+                      http://0.0.0.0:3003/event/abc123
                     </a>
                   </label>
                 </div>
@@ -3936,7 +3936,7 @@ Object {
                     href="/event/abc123"
                     target="_blank"
                   >
-                    https://tickets.unlock-protocol.com/event/abc123
+                    http://0.0.0.0:3003/event/abc123
                   </a>
                 </label>
               </div>
