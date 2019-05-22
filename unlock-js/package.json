@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -12,7 +12,8 @@
     "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "build": "npm run clean && node ./scripts/compressAbi.js && npm run build-cjs && npm run build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
-    "ci": "npm run lint && npm run test"
+    "ci": "npm run lint && npm run test",
+    "prepublishOnly": "npm run build"
   },
   "author": "",
   "license": "MIT",
