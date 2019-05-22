@@ -1,6 +1,6 @@
 import { setAccount } from '../../../../data-iframe/blockchainHandler/account'
 import { TRANSACTION_TYPES } from '../../../../constants'
-import pendingListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
+import submittedListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
 import { setNetwork } from '../../../../data-iframe/blockchainHandler/network'
 
 describe('pendingListener', () => {
@@ -30,28 +30,26 @@ describe('pendingListener', () => {
         status: 'submitted',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 10000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    const result = await pendingListener({
+    const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('returns immediately if the key is pending', async () => {
@@ -71,28 +69,26 @@ describe('pendingListener', () => {
         status: 'pending',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 10000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    const result = await pendingListener({
+    const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('returns immediately if the key is confirming', async () => {
@@ -112,28 +108,26 @@ describe('pendingListener', () => {
         status: 'mined',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 10000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    const result = await pendingListener({
+    const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('returns immediately if the key is valid', async () => {
@@ -153,28 +147,26 @@ describe('pendingListener', () => {
         status: 'mined',
       },
     }
-    const keys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 10000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    const result = await pendingListener({
+    const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
-      existingKeys: keys,
+      existingKey: key,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
 
     expect(result.transactions).toBe(transactions)
-    expect(result.keys).toBe(keys)
+    expect(result.key).toBe(key)
   })
 
   it('handles key with no transactions', async done => {
@@ -184,25 +176,23 @@ describe('pendingListener', () => {
     setNetwork(1)
 
     const existingTransactions = {}
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 - 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 - 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    pendingListener({
+    submittedListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -220,12 +210,10 @@ describe('pendingListener', () => {
         hash,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'submitted',
-          transactions: [hash],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'submitted',
+        transactions: [hash],
       })
       done()
     })
@@ -260,25 +248,23 @@ describe('pendingListener', () => {
     const existingTransactions = {
       old,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 - 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 - 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    pendingListener({
+    submittedListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -297,12 +283,10 @@ describe('pendingListener', () => {
         old,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'submitted',
-          transactions: [hash, old],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'submitted',
+        transactions: [hash, old],
       })
       done()
     })
@@ -337,25 +321,23 @@ describe('pendingListener', () => {
     const existingTransactions = {
       old,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 - 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 - 1000,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
     }
 
-    pendingListener({
+    submittedListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, keys }) => {
+    }).then(({ transactions, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -374,12 +356,10 @@ describe('pendingListener', () => {
         old,
       })
 
-      expect(keys).toEqual({
-        'lock-account': {
-          ...existingKeys['lock-account'],
-          status: 'submitted',
-          transactions: [hash, old],
-        },
+      expect(key).toEqual({
+        ...existingKey,
+        status: 'submitted',
+        transactions: [hash, old],
       })
       done()
     })
