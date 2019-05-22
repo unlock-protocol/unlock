@@ -53,6 +53,16 @@ contract('Lock / cancelAndRefund', accounts => {
     assert(estimatedRefund.lt(keyPrice))
   })
 
+  it('the estimated refund for a free Key should be 0', async () => {
+    await locks['FREE'].grantKey(accounts[5], 999999999999, {
+      from: accounts[0],
+    })
+    const estimatedRefund = new BigNumber(
+      await locks['FREE'].getCancelAndRefundValueFor.call(accounts[5])
+    )
+    assert(estimatedRefund, 0)
+  })
+
   describe('should cancel and refund when enough time remains', () => {
     let initialLockBalance,
       initialKeyOwnerBalance,
@@ -118,6 +128,16 @@ contract('Lock / cancelAndRefund', accounts => {
           .toFixed()
       )
     })
+  })
+
+  it('can cancel a free key', async () => {
+    await locks['FREE'].grantKey(accounts[1], 999999999999, {
+      from: accounts[0],
+    })
+    const txObj = await locks['FREE'].cancelAndRefund({
+      from: accounts[1],
+    })
+    assert.equal(txObj.logs[0].event, 'CancelKey')
   })
 
   describe('allows the Lock owner to specify a different cancelation penalty', () => {

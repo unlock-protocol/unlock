@@ -2,6 +2,7 @@ import storageMiddleware from '../../middlewares/storageMiddleware'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import configure from '../../config'
+import { delayPromise } from '../../utils/promises'
 
 /**
  * This is a "fake" middleware caller
@@ -111,6 +112,7 @@ describe('Storage middleware', () => {
         ])
       })
       await invoke(action)
+      await delayPromise(1)
 
       expect(
         mockStorageService.getTransactionsHashesSentBy

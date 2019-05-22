@@ -160,5 +160,12 @@ contract('Lock / purchaseFor', accounts => {
         )
       })
     })
+
+    it('can purchase a free key', async () => {
+      const tx = await locks['FREE'].purchaseFor(accounts[2])
+      assert.equal(tx.logs[0].event, 'Transfer')
+      assert.equal(tx.logs[0].args._from, 0)
+      assert.equal(tx.logs[0].args._to, accounts[2])
+    })
   })
 })

@@ -21,7 +21,7 @@
     "public-lock-abi-0": "1.0.0",
     "solium": "1.2.4",
     "truffle": "5.0.18",
-    "truffle-hdwallet-provider": "1.0.7",
+    "truffle-hdwallet-provider": "1.0.9",
     "unlock-abi-0": "1.0.4",
     "web3-eth-abi": "1.0.0-beta.52",
     "web3-utils": "1.0.0-beta.37",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "remixd": "0.1.8",
-    "truffle-security": "1.3.7"
+    "truffle-security": "1.4.2"
   },
   "lint-staged": {
     "linters": {
