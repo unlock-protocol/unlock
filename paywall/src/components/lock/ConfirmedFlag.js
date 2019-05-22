@@ -24,7 +24,7 @@ export default function ConfirmedFlag({ dismiss }) {
       </OptimisticLogo>
       <p>Purchase Confirmed</p>
       <ConfirmedKeyWrapper>
-        <ConfirmedKey height="24px" width="24px" hideModal={dismiss} />
+        <ConfirmedKey height="24px" width="24px" onClick={dismiss} />
       </ConfirmedKeyWrapper>
       <PoweredByUnlock>
         <p>Powered by</p>
