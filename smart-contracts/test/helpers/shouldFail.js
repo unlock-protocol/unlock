@@ -28,10 +28,9 @@ module.exports = async function shouldFail(promise, expectedRevertReason) {
     }
 
     // Check for an alternate message format
-    expectedMessage =
-      'Error: shouldFail reason for revert does not match. Got "Transaction has been reverted by the EVM:'
+    expectedMessage = 'Transaction has been reverted by the EVM:'
 
-    if (error.message.startsWith(expectedMessage)) {
+    if (error.message.startsWith(expectedMessage) && !expectedRevertReason) {
       return
     }
 
