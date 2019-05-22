@@ -30,7 +30,7 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         amountToSend: '1000',
       })
-      expect(ensureWalletReady).toHaveBeenCalled()
+      expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
     })
 
     it('calls purchaseKey with the lock, account, and the amount of eth to send', async () => {
