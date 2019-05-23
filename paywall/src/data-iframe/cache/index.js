@@ -8,4 +8,8 @@ export {
   addListener,
   removeListener,
   storageId,
+  getAccount,
+  getNetwork,
+  setAccount,
+  setNetwork,
 } from './localStorage'
