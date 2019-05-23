@@ -71,7 +71,7 @@
     "styled-components": "^4.2.0",
     "ts-jest": "^24.0.2",
     "typescript": "3.4.5",
-    "validator": "^10.11.0"
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",
