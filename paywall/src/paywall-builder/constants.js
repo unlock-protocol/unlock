@@ -17,3 +17,4 @@ export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'
 export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'
 
 export const POST_MESSAGE_ERROR = 'error'
+export const POST_MESSAGE_DATA_REQUEST = 'data/request'
