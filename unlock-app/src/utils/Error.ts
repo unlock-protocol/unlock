@@ -7,58 +7,67 @@
  * dispatch(StorageError.Fatal('we ran out of magnetic tape.'))
  */
 
-/* eslint-disable */
-export enum ErrorLevel {
-  Fatal,
-  Warn,
-}
+type ErrorLevel = 'Fatal' | 'Warning'
 
-export enum ErrorKind {
-  StorageError,
-  SignatureError,
-  FormValidationError,
-  LogInError,
-  SignUpError,
-}
-/* eslint-enable */
+type ErrorKind =
+  | 'StorageError'
+  | 'SignatureError'
+  | 'FormValidationError'
+  | 'LogInError'
+  | 'SignUpError'
 
-export interface UnlockError {
-  level: ErrorLevel
-  kind: ErrorKind
+interface UnlockError<L extends ErrorLevel, K extends ErrorKind> {
+  level: L
+  kind: K
   message: string
 }
 
-// We very purposely do not export this: error messaging should be centralized
+// We very purposely do not export these: error messaging should be centralized
 // here. We want to avoid ad-hoc creation of unhandled error types.
-const errorMaker = (kind: ErrorKind, level: ErrorLevel) => (
-  message: string
-): UnlockError => ({
-  level,
-  kind,
-  message,
-})
-
-export const StorageError = {
-  Fatal: errorMaker(ErrorKind.StorageError, ErrorLevel.Fatal),
-  Warn: errorMaker(ErrorKind.StorageError, ErrorLevel.Warn),
+function fatalMaker<K extends ErrorKind>(kind: K) {
+  return (message: string): UnlockError<'Fatal', K> => ({
+    level: 'Fatal',
+    kind,
+    message,
+  })
 }
 
-export const SignatureError = {
-  Fatal: errorMaker(ErrorKind.SignatureError, ErrorLevel.Fatal),
-  Warn: errorMaker(ErrorKind.SignatureError, ErrorLevel.Warn),
+function warningMaker<K extends ErrorKind>(kind: K) {
+  return (message: string): UnlockError<'Warning', K> => ({
+    level: 'Warning',
+    kind,
+    message,
+  })
 }
 
-export const FormValidationError = {
-  Fatal: errorMaker(ErrorKind.FormValidationError, ErrorLevel.Fatal),
-  Warn: errorMaker(ErrorKind.FormValidationError, ErrorLevel.Warn),
+// This is here to enforce that the Fatal property of a group of error
+// constructors will actually be fatal -- no accidentally ignored errors.
+interface ErrorMakers<K extends ErrorKind> {
+  Fatal: (message: string) => UnlockError<'Fatal', K>
+  Warn: (message: string) => UnlockError<'Warning', K>
 }
 
-export const LogInError = {
-  Fatal: errorMaker(ErrorKind.LogInError, ErrorLevel.Fatal),
-  Warn: errorMaker(ErrorKind.LogInError, ErrorLevel.Warn),
+export const StorageError: ErrorMakers<'StorageError'> = {
+  Fatal: fatalMaker('StorageError'),
+  Warn: warningMaker('StorageError'),
 }
 
-export const SignUpError = {
-  Fatal: errorMaker(ErrorKind.SignUpError, ErrorLevel.Fatal),
-  Warn: errorMaker(ErrorKind.SignUpError, ErrorLevel.Warn),
+export const SignatureError: ErrorMakers<'SignatureError'> = {
+  Fatal: fatalMaker('SignatureError'),
+  Warn: warningMaker('SignatureError'),
+}
+
+export const FormValidationError: ErrorMakers<'FormValidationError'> = {
+  Fatal: fatalMaker('FormValidationError'),
+  Warn: warningMaker('FormValidationError'),
+}
+
+export const LogInError: ErrorMakers<'LogInError'> = {
+  Fatal: fatalMaker('LogInError'),
+  Warn: warningMaker('LogInError'),
+}
+
+export const SignUpError: ErrorMakers<'SignUpError'> = {
+  Fatal: fatalMaker('SignUpError'),
+  Warn: warningMaker('SignUpError'),
 }
