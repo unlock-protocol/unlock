@@ -103,7 +103,7 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   const balance = await getAccountBalance(window)
   const networkId = await getNetwork(window)
   if (!account) {
-    const cachedLocks = await getLocks(window)
+    const cachedLocks = (await getLocks(window)) || {}
     const nullAccount = '0x0000000000000000000000000000000000000000'
     // construct the default keys for locks if there is no user
     const noKeys = Object.keys(cachedLocks).reduce(
@@ -143,9 +143,9 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   ])
   return {
     locks: await linkKeysToLocks({
-      locks: cachedLocks,
+      locks: cachedLocks || {},
       keys: cachedKeys,
-      transactions: cachedTransactions,
+      transactions: cachedTransactions || {},
       requiredConfirmations,
     }),
     account,
