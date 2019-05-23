@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.1
+
+- Version bump after publishing older code inside 0.1.0
+
 ## 0.1.0
 
 - Adds support for v1.0 of Unlock.sol and PublicLock.sol. Lock names can now be passed when creating
