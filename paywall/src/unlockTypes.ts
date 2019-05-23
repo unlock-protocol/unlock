@@ -51,3 +51,56 @@ export interface Network {
 export interface ChainExplorerURLBuilders {
   [site: string]: (address: string) => string
 }
+
+export interface PaywallCallToAction {
+  default: string
+  expired: string
+  pending: string
+  confirmed: string
+}
+
+export interface PaywallConfigLocks {
+  [address: string]: PaywallConfigLock
+}
+
+export interface PaywallConfigLock {
+  name: string
+}
+
+// This interface describes an individual paywall's config
+export interface PaywallConfig {
+  icon: string
+  callToAction: PaywallCallToAction
+  locks: PaywallConfigLocks
+}
+
+export enum KeyStatus {
+  NONE = 'none',
+  CONFIRMING = 'confirming',
+  CONFIRMED = 'confirmed',
+  EXPIRED = 'expired',
+  VALID = 'valid',
+  SUBMITTED = 'submitted',
+  PENDING = 'pending',
+  FAILED = 'failed',
+}
+
+export interface Lock {
+  name: string
+  address: string
+  keyPrice: string
+  expirationDuration: number
+  key: Key
+}
+
+export interface Locks {
+  [address: string]: Lock
+}
+
+export interface Key {
+  expiration: number
+  transactions: Transaction[]
+  status: string
+  confirmations: number
+  owner: string
+}
