@@ -6,8 +6,6 @@ import {
   setAccount,
   getNetwork,
   setNetwork,
-  getReadOnly,
-  putReadOnly,
 } from '../../../data-iframe/cache'
 
 jest.mock('../../../utils/localStorage', () => () => false)
@@ -18,19 +16,11 @@ describe('localStorage cache', () => {
       expect.assertions(1)
 
       try {
-        await get()
+        await get({ type: 'thing' })
       } catch (e) {
-        expect(e.message).toBe('Cannot get value from localStorage')
-      }
-    })
-
-    it('getReadOnly', async () => {
-      expect.assertions(1)
-
-      try {
-        await getReadOnly()
-      } catch (e) {
-        expect(e.message).toBe('Cannot get value from localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot get thing from cache'
+        )
       }
     })
 
@@ -38,19 +28,11 @@ describe('localStorage cache', () => {
       expect.assertions(1)
 
       try {
-        await put()
+        await put({ type: 'thing' })
       } catch (e) {
-        expect(e.message).toBe('Cannot put value into localStorage')
-      }
-    })
-
-    it('putReadOnly', async () => {
-      expect.assertions(1)
-
-      try {
-        await putReadOnly()
-      } catch (e) {
-        expect(e.message).toBe('Cannot put value into localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot save thing in cache'
+        )
       }
     })
 
@@ -58,9 +40,11 @@ describe('localStorage cache', () => {
       expect.assertions(1)
 
       try {
-        await clear()
+        await clear({})
       } catch (e) {
-        expect(e.message).toBe('Cannot clear localStorage cache')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot clear cache'
+        )
       }
     })
 
@@ -70,7 +54,9 @@ describe('localStorage cache', () => {
       try {
         await getAccount()
       } catch (e) {
-        expect(e.message).toBe('Cannot get value from localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot get account from cache'
+        )
       }
     })
 
@@ -80,7 +66,9 @@ describe('localStorage cache', () => {
       try {
         await getNetwork()
       } catch (e) {
-        expect(e.message).toBe('Cannot get value from localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot get network from cache'
+        )
       }
     })
 
@@ -90,7 +78,9 @@ describe('localStorage cache', () => {
       try {
         await setAccount()
       } catch (e) {
-        expect(e.message).toBe('Cannot put value into localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot save account in cache'
+        )
       }
     })
 
@@ -100,7 +90,9 @@ describe('localStorage cache', () => {
       try {
         await setNetwork()
       } catch (e) {
-        expect(e.message).toBe('Cannot put value into localStorage')
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot save network in cache'
+        )
       }
     })
   })

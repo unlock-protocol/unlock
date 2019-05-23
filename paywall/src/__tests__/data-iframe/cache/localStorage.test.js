@@ -9,8 +9,6 @@ import {
   setAccount,
   setNetwork,
   getNetwork,
-  putReadOnly,
-  getReadOnly,
 } from '../../../data-iframe/cache'
 
 jest.mock('../../../utils/localStorage', () => () => true)
@@ -44,7 +42,14 @@ describe('localStorage cache', () => {
     it('value is not yet set', async () => {
       expect.assertions(1)
 
-      expect(await get(fakeWindow, 123, 'hi', 'there')).toBeNull()
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+          accountAddress: 'hi',
+        })
+      ).toBeNull()
     })
 
     it('value is set', async () => {
@@ -53,7 +58,29 @@ describe('localStorage cache', () => {
         there: 'hello',
       })
 
-      expect(await get(fakeWindow, 123, 'hi', 'there')).toEqual('hello')
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+          accountAddress: 'hi',
+        })
+      ).toEqual('hello')
+    })
+
+    it('no account retrieves generic value', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      })
+
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+        })
+      ).toEqual('hello')
     })
 
     it('value is set, but malformed', async () => {
@@ -62,7 +89,14 @@ describe('localStorage cache', () => {
         there: 'hello',
       }).substring(1, 4)
 
-      expect(await get(fakeWindow, 123, 'hi', 'there')).toBeNull()
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+          accountAddress: 'hi',
+        })
+      ).toBeNull()
     })
 
     it('value is set, different network', async () => {
@@ -71,7 +105,14 @@ describe('localStorage cache', () => {
         there: 'hello',
       })
 
-      expect(await get(fakeWindow, 123, 'hi', 'there')).toBeNull()
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+          accountAddress: 'hi',
+        })
+      ).toBeNull()
     })
 
     it('value is set, different account', async () => {
@@ -80,7 +121,14 @@ describe('localStorage cache', () => {
         there: 'hello',
       })
 
-      expect(await get(fakeWindow, 123, 'hi', 'there')).toBeNull()
+      expect(
+        await get({
+          window: fakeWindow,
+          networkId: 123,
+          type: 'there',
+          accountAddress: 'hi',
+        })
+      ).toBeNull()
     })
 
     it('value is set, entire cache for user wanted', async () => {
@@ -90,59 +138,9 @@ describe('localStorage cache', () => {
         it: 'is',
       })
 
-      expect(await get(fakeWindow, 123, 'hi')).toEqual({
-        there: 'hello',
-        it: 'is',
-      })
-    })
-  })
-
-  describe('getReadOnly', () => {
-    beforeEach(() => {
-      makeWindow()
-    })
-
-    it('value is not yet set', async () => {
-      expect.assertions(1)
-
-      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
-    })
-
-    it('value is set', async () => {
-      expect.assertions(1)
-      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
-        there: 'hello',
-      })
-
-      expect(await getReadOnly(fakeWindow, 123, 'there')).toEqual('hello')
-    })
-
-    it('value is set, but malformed', async () => {
-      expect.assertions(1)
-      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
-        there: 'hello',
-      }).substring(1, 4)
-
-      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
-    })
-
-    it('value is set, different network', async () => {
-      expect.assertions(1)
-      fakeWindow.storage[storageId(456, 'hi')] = JSON.stringify({
-        there: 'hello',
-      })
-
-      expect(await getReadOnly(fakeWindow, 123, 'hi', 'there')).toBeNull()
-    })
-
-    it('value is set, entire cache for user wanted', async () => {
-      expect.assertions(1)
-      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
-        there: 'hello',
-        it: 'is',
-      })
-
-      expect(await getReadOnly(fakeWindow, 123)).toEqual({
+      expect(
+        await get({ window: fakeWindow, networkId: 123, accountAddress: 'hi' })
+      ).toEqual({
         there: 'hello',
         it: 'is',
       })
@@ -153,10 +151,17 @@ describe('localStorage cache', () => {
     beforeEach(() => {
       makeWindow()
     })
+
     it('saves the value', async () => {
       expect.assertions(1)
 
-      await put(fakeWindow, 123, 'hi', 'there', 'hello')
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'there',
+        value: 'hello',
+      })
 
       expect(fakeWindow.storage[storageId(123, 'hi')]).toBe(
         JSON.stringify({
@@ -164,16 +169,16 @@ describe('localStorage cache', () => {
         })
       )
     })
-  })
 
-  describe('putReadOnly', () => {
-    beforeEach(() => {
-      makeWindow()
-    })
-    it('saves the value', async () => {
+    it('saves the value in generic storage if no account is specified', async () => {
       expect.assertions(1)
 
-      await putReadOnly(fakeWindow, 123, 'there', 'hello')
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'there',
+        value: 'hello',
+      })
 
       expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
         JSON.stringify({
@@ -186,12 +191,48 @@ describe('localStorage cache', () => {
   describe('clear', () => {
     beforeEach(async () => {
       makeWindow()
-      await put(fakeWindow, 123, 'hi', 'foo', 'bar')
-      await put(fakeWindow, 456, 'hi', 'foo', 'bar')
-      await put(fakeWindow, 123, 'hi', 'bar', 'bar')
-      await put(fakeWindow, 123, 'bar', 'fooe', 'bare')
-      await put(fakeWindow, 456, 'bar', 'fooe', 'bare')
-      await put(fakeWindow, 123, 'bar', 'bare', 'bare')
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'foo',
+        value: 'bar',
+      })
+      await put({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'hi',
+        type: 'foo',
+        value: 'bar',
+      })
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'bar',
+        value: 'bar',
+      })
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bar',
+        type: 'fooe',
+        value: 'bare',
+      })
+      await put({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'bar',
+        type: 'fooe',
+        value: 'bare',
+      })
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bar',
+        type: 'bare',
+        value: 'bare',
+      })
     })
 
     it('initial value is correct', () => {
@@ -208,7 +249,12 @@ describe('localStorage cache', () => {
     it('clearing just one value of the cache', async () => {
       expect.assertions(2)
 
-      await clear(fakeWindow, 123, 'hi', 'foo')
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'foo',
+      })
       expect(fakeWindow.storage).toEqual({
         'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
         'unlock-protocol/123/hi': '{"bar":"bar"}',
@@ -216,7 +262,12 @@ describe('localStorage cache', () => {
         'unlock-protocol/456/hi': '{"foo":"bar"}',
       })
 
-      await clear(fakeWindow, 123, 'hi', 'bar')
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'bar',
+      })
       expect(fakeWindow.storage).toEqual({
         'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
         'unlock-protocol/123/hi': '{}',
@@ -228,7 +279,11 @@ describe('localStorage cache', () => {
     it('clearing the whole cache for a user', async () => {
       expect.assertions(1)
 
-      await clear(fakeWindow, 123, 'hi')
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+      })
       expect(fakeWindow.storage).toEqual({
         'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
         'unlock-protocol/456/bar': '{"fooe":"bare"}',
@@ -239,8 +294,16 @@ describe('localStorage cache', () => {
     it("does not clear other user's cache", async () => {
       expect.assertions(1)
 
-      await clear(fakeWindow, 123, 'hi')
-      const bare = await get(fakeWindow, 123, 'bar')
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+      })
+      const bare = await get({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bar',
+      })
 
       expect(bare).toEqual({
         fooe: 'bare',
@@ -251,8 +314,16 @@ describe('localStorage cache', () => {
     it("does not clear same user's cache on a different network", async () => {
       expect.assertions(1)
 
-      await clear(fakeWindow, 123, 'hi')
-      const other = await get(fakeWindow, 456, 'hi')
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+      })
+      const other = await get({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'hi',
+      })
 
       expect(other).toEqual({
         foo: 'bar',
@@ -326,7 +397,12 @@ describe('localStorage cache', () => {
       expect.assertions(2)
       const listen = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(1)
 
@@ -344,8 +420,19 @@ describe('localStorage cache', () => {
       expect.assertions(1)
       const listen = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
-      await addListener(fakeWindow, 123, 'hi', listen)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
+
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(1)
     })
@@ -355,8 +442,19 @@ describe('localStorage cache', () => {
       const listen = jest.fn()
       const listen2 = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
-      await addListener(fakeWindow, 456, 'hi', listen2)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
+
+      await addListener({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(2)
 
@@ -377,8 +475,19 @@ describe('localStorage cache', () => {
       const listen = jest.fn()
       const listen2 = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
-      await addListener(fakeWindow, 123, 'bye', listen2)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
+
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bye',
+        changeCallback: listen2,
+      })
 
       expect(listeners.storage.size).toBe(2)
 
@@ -416,11 +525,21 @@ describe('localStorage cache', () => {
       expect.assertions(2)
       const listen = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(1)
 
-      await removeListener(fakeWindow, 123, 'hi', listen)
+      await removeListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(0)
     })
@@ -430,12 +549,28 @@ describe('localStorage cache', () => {
       const listen = jest.fn()
       const listen2 = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
-      await addListener(fakeWindow, 456, 'hi', listen2)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
+
+      await addListener({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'hi',
+        changeCallback: listen2,
+      })
 
       expect(listeners.storage.size).toBe(2)
 
-      await removeListener(fakeWindow, 123, 'hi', listen)
+      await removeListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(1)
 
@@ -450,7 +585,12 @@ describe('localStorage cache', () => {
       expect(listen).not.toHaveBeenCalled()
       expect(listen2).not.toHaveBeenCalled()
 
-      await removeListener(fakeWindow, 456, 'hi', listen2)
+      await removeListener({
+        window: fakeWindow,
+        networkId: 456,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(0)
     })
@@ -460,12 +600,28 @@ describe('localStorage cache', () => {
       const listen = jest.fn()
       const listen2 = jest.fn()
 
-      await addListener(fakeWindow, 123, 'hi', listen)
-      await addListener(fakeWindow, 123, 'bye', listen2)
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
+
+      await addListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bye',
+        changeCallback: listen2,
+      })
 
       expect(listeners.storage.size).toBe(2)
 
-      await removeListener(fakeWindow, 123, 'hi', listen)
+      await removeListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(1)
 
@@ -480,7 +636,12 @@ describe('localStorage cache', () => {
       expect(listen).not.toHaveBeenCalled()
       expect(listen2).not.toHaveBeenCalled()
 
-      await removeListener(fakeWindow, 123, 'bye', listen2)
+      await removeListener({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'bye',
+        changeCallback: listen,
+      })
 
       expect(listeners.storage.size).toBe(0)
     })

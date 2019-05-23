@@ -46,39 +46,14 @@ function getContainer(window, key, type = false) {
 }
 
 /**
- * Retrieve a cached value for a non-user-specific type on a specific network
- *
+ * check for local storage, throw if it is unavailable with a nicely formatted error message
  * @param {object} window this is the global context, either global, window, or self
- * @param {int} networkId the ethereum network id
- * @param {string} type the type of account data to retrieve
+ * @param {string} action a description of the action that will be performed if localStorage exists
  */
-export async function getReadOnly(window, networkId, type) {
-  return get(
-    window,
-    networkId,
-    // using null account guarantees no collisions with real ethereum users
-    nullAccount,
-    type
-  )
-}
-
-/**
- * Cache a value for a non-user-specific type on a network
- *
- * @param {object} window this is the global context, either global, window, or self
- * @param {int} networkId the ethereum network id
- * @param {string} type the type of account data to set
- * @param {*} value the value to store. This must be serializable as JSON
- */
-export async function putReadOnly(window, networkId, type, value) {
-  return put(
-    window,
-    networkId,
-    // using null account guarantees no collisions with real ethereum users
-    nullAccount,
-    type,
-    value
-  )
+function ensureLocalStorageAvailable(window, action) {
+  if (!localStorageAvailable(window)) {
+    throw new Error(`localStorage is unavailable, cannot ${action}`)
+  }
 }
 
 /**
@@ -86,13 +61,17 @@ export async function putReadOnly(window, networkId, type, value) {
  *
  * @param {object} window this is the global context, either global, window, or self
  * @param {int} networkId the ethereum network id
- * @param {string} accountAddress the ethereum account address of the user whose data is cached
  * @param {string} type the type of account data to retrieve
+ * @param {string} accountAddress the ethereum account address of the user whose data is cached. For general
+ *                                values like locks, use null account to make them available to anyone
  */
-export async function get(window, networkId, accountAddress, type) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot get value from localStorage')
-  }
+export async function get({
+  window,
+  networkId,
+  type,
+  accountAddress = nullAccount,
+}) {
+  ensureLocalStorageAvailable(window, `get ${type} from cache`)
   const key = storageId(networkId, accountAddress)
 
   const container = getContainer(window, key, type)
@@ -105,14 +84,19 @@ export async function get(window, networkId, accountAddress, type) {
  *
  * @param {object} window this is the global context, either global, window, or self
  * @param {int} networkId the ethereum network id
- * @param {string} accountAddress the ethereum account address of the user whose data is cached
  * @param {string} type the type of account data to set
  * @param {*} value the value to store. This must be serializable as JSON
+ * @param {string} accountAddress the ethereum account address of the user whose data is cached. For general
+ *                                values like locks, use null account to make them available to anyone
  */
-export async function put(window, networkId, accountAddress, type, value) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot put value into localStorage')
-  }
+export async function put({
+  window,
+  networkId,
+  type,
+  value,
+  accountAddress = nullAccount,
+}) {
+  ensureLocalStorageAvailable(window, `save ${type} in cache`)
   const key = storageId(networkId, accountAddress)
   const container = getContainer(window, key, type)
   if (value === undefined) {
@@ -131,9 +115,7 @@ export async function put(window, networkId, accountAddress, type, value) {
  * @returns {string}
  */
 export async function getAccount(window) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot get value from localStorage')
-  }
+  ensureLocalStorageAvailable(window, 'get account from cache')
   return window.localStorage.getItem('__unlockProtocol.account') || null
 }
 
@@ -144,9 +126,7 @@ export async function getAccount(window) {
  * @param {string} account the ethereum account address of the current user
  */
 export async function setAccount(window, account) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot put value into localStorage')
-  }
+  ensureLocalStorageAvailable(window, 'save account in cache')
   window.localStorage.setItem('__unlockProtocol.account', account)
 }
 
@@ -157,9 +137,7 @@ export async function setAccount(window, account) {
  * @returns {number}
  */
 export async function getNetwork(window) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot get value from localStorage')
-  }
+  ensureLocalStorageAvailable(window, 'get network from cache')
   return +window.localStorage.getItem('__unlockProtocol.network') || null
 }
 
@@ -170,9 +148,7 @@ export async function getNetwork(window) {
  * @param {number} network the id of the current ethereum network
  */
 export async function setNetwork(window, network) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot put value into localStorage')
-  }
+  ensureLocalStorageAvailable(window, 'save network in cache')
   window.localStorage.setItem('__unlockProtocol.network', String(network))
 }
 
@@ -184,17 +160,15 @@ export async function setNetwork(window, network) {
  * @param {string} accountAddress the ethereum account address of the user whose data is cached
  * @param {string} type the type of account data to set
  */
-export async function clear(window, networkId, accountAddress, type) {
-  if (!localStorageAvailable(window)) {
-    throw new Error('Cannot clear localStorage cache')
-  }
+export async function clear({ window, networkId, accountAddress, type }) {
+  ensureLocalStorageAvailable(window, 'clear cache')
   const key = storageId(networkId, accountAddress)
   if (!type) {
     window.localStorage.removeItem(key)
     return
   }
 
-  await put(window, networkId, accountAddress, type, undefined)
+  await put({ window, networkId, accountAddress, type, value: undefined })
 }
 
 const listeners = {}
@@ -206,15 +180,15 @@ const listeners = {}
  * @param {int} networkId the ethereum network id
  * @param {string} accountAddress the ethereum account address of the user whose data is cached
  */
-export async function addListener(
+export async function addListener({
   window,
   networkId,
-  accountAddress,
-  changeCallback = () => {}
-) {
+  changeCallback,
+  accountAddress = nullAccount,
+}) {
   const key = storageId(networkId, accountAddress)
   if (listeners[key]) {
-    removeListener(window, networkId, accountAddress)
+    removeListener({ window, networkId, accountAddress })
   }
   listeners[key] = evt => {
     if (evt.storageArea !== window.localStorage) return // ignore sessionStorage
@@ -233,7 +207,11 @@ export async function addListener(
  * @param {int} networkId the ethereum network id
  * @param {string} accountAddress the ethereum account address of the user whose data is cached
  */
-export async function removeListener(window, networkId, accountAddress) {
+export async function removeListener({
+  window,
+  networkId,
+  accountAddress = nullAccount,
+}) {
   const key = storageId(networkId, accountAddress)
   if (!listeners[key]) return
   window.removeEventListener('storage', listeners[key])
