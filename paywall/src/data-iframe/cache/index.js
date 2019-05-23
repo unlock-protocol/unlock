@@ -4,8 +4,6 @@
 export {
   get,
   put,
-  getReadOnly,
-  putReadOnly,
   clear,
   addListener,
   removeListener,
