@@ -10,7 +10,7 @@ export function setup(networkId, account) {
 }
 
 async function _get(window, key) {
-  return await cache.get({
+  return cache.get({
     window,
     networkId: currentNetwork,
     accountAddress: currentAccount,
@@ -19,7 +19,7 @@ async function _get(window, key) {
 }
 
 async function _put(window, key, value) {
-  return await cache.put({
+  return cache.put({
     window,
     networkId: currentNetwork,
     accountAddress: currentAccount,
@@ -33,11 +33,7 @@ export async function getKeys(window) {
 }
 
 export async function getLocks(window) {
-  return cache.get({
-    window,
-    networkId: currentNetwork,
-    type: 'locks',
-  })
+  return cache.get({ window, networkId: currentNetwork, type: 'locks' })
 }
 
 export async function getTransactions(window) {

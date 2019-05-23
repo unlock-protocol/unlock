@@ -17,7 +17,7 @@ import { TRANSACTION_TYPES } from '../../constants'
 describe('cacheHandler', () => {
   let fakeWindow
   const id = storageId('network', 'account')
-  const readOnlyId = storageId(
+  const nonAccountSpecificId = storageId(
     'network',
     '0x0000000000000000000000000000000000000000'
   )
@@ -79,7 +79,7 @@ describe('cacheHandler', () => {
       await setLocks(fakeWindow, myLocks)
 
       expect(fakeWindow.storage).toEqual({
-        [readOnlyId]: JSON.stringify({
+        [nonAccountSpecificId]: JSON.stringify({
           locks: myLocks,
         }),
       })
@@ -105,7 +105,7 @@ describe('cacheHandler', () => {
       await setTransactions(fakeWindow, myTransactions)
 
       expect(fakeWindow.storage).toEqual({
-        [readOnlyId]: JSON.stringify({
+        [nonAccountSpecificId]: JSON.stringify({
           locks: myLocks,
         }),
         [id]: JSON.stringify({
