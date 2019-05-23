@@ -147,6 +147,58 @@ describe('localStorage cache', () => {
     })
   })
 
+  describe('getReadOnly', () => {
+    beforeEach(() => {
+      makeWindow()
+    })
+
+    it('value is not yet set', async () => {
+      expect.assertions(1)
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
+    })
+
+    it('value is set', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toEqual('hello')
+    })
+
+    it('value is set, but malformed', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      }).substring(1, 4)
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
+    })
+
+    it('value is set, different network', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(456, 'hi')] = JSON.stringify({
+        there: 'hello',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123, 'hi', 'there')).toBeNull()
+    })
+
+    it('value is set, entire cache for user wanted', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+        it: 'is',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123)).toEqual({
+        there: 'hello',
+        it: 'is',
+      })
+    })
+  })
+
   describe('put', () => {
     beforeEach(() => {
       makeWindow()
@@ -179,6 +231,23 @@ describe('localStorage cache', () => {
         type: 'there',
         value: 'hello',
       })
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
+        JSON.stringify({
+          there: 'hello',
+        })
+      )
+    })
+  })
+
+  describe('putReadOnly', () => {
+    beforeEach(() => {
+      makeWindow()
+    })
+    it('saves the value', async () => {
+      expect.assertions(1)
+
+      await putReadOnly(fakeWindow, 123, 'there', 'hello')
 
       expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
         JSON.stringify({
