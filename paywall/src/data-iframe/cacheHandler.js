@@ -4,6 +4,9 @@ import linkKeysToLocks from './blockchainHandler/linkKeysToLocks'
 let currentNetwork
 let currentAccount
 
+export const getAccount = cache.getAccount
+export const getNetwork = cache.getNetwork
+
 export function setup(networkId, account) {
   currentNetwork = networkId
   currentAccount = account
@@ -57,9 +60,6 @@ export async function getAccountBalance(window) {
 export async function setAccountBalance(window, balance) {
   return _put(window, 'balance', balance)
 }
-
-export const getAccount = cache.getAccount
-export const getNetwork = cache.getNetwork
 
 export async function setKeys(window, keys) {
   return _put(window, 'keys', keys)
