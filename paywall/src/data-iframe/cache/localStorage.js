@@ -44,6 +44,40 @@ function getContainer(window, key, type = false) {
 }
 
 /**
+ * Retrieve a cached value for a non-user-specific type on a specific network
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {int} networkId the ethereum network id
+ * @param {string} type the type of account data to retrieve
+ */
+export async function getReadOnly(window, networkId, type) {
+  return get(
+    window,
+    networkId,
+    '0x0000000000000000000000000000000000000000',
+    type
+  )
+}
+
+/**
+ * Cache a value for a non-user-specific type on a network
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {int} networkId the ethereum network id
+ * @param {string} type the type of account data to set
+ * @param {*} value the value to store. This must be serializable as JSON
+ */
+export async function putReadOnly(window, networkId, type, value) {
+  return put(
+    window,
+    networkId,
+    '0x0000000000000000000000000000000000000000',
+    type,
+    value
+  )
+}
+
+/**
  * Retrieve a cached value for a user on a specific network
  *
  * @param {object} window this is the global context, either global, window, or self
@@ -84,6 +118,58 @@ export async function put(window, networkId, accountAddress, type, value) {
   }
 
   window.localStorage.setItem(key, JSON.stringify(container))
+}
+
+/**
+ * Retrieve the current cached account
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @returns {string}
+ */
+export async function getAccount(window) {
+  if (!localStorageAvailable(window)) {
+    throw new Error('Cannot get value from localStorage')
+  }
+  return window.localStorage.getItem('__unlockProtocol.account') || null
+}
+
+/**
+ * Set the current cached account
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {string} account the ethereum account address of the current user
+ */
+export async function setAccount(window, account) {
+  if (!localStorageAvailable(window)) {
+    throw new Error('Cannot put value into localStorage')
+  }
+  window.localStorage.setItem('__unlockProtocol.account', account)
+}
+
+/**
+ * Retrieve the current cached ethereum network
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @returns {number}
+ */
+export async function getNetwork(window) {
+  if (!localStorageAvailable(window)) {
+    throw new Error('Cannot get value from localStorage')
+  }
+  return +window.localStorage.getItem('__unlockProtocol.network') || null
+}
+
+/**
+ * Set the current cached network
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {number} network the id of the current ethereum network
+ */
+export async function setNetwork(window, network) {
+  if (!localStorageAvailable(window)) {
+    throw new Error('Cannot put value into localStorage')
+  }
+  window.localStorage.setItem('__unlockProtocol.network', String(network))
 }
 
 /**

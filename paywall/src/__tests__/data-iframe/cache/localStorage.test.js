@@ -5,11 +5,18 @@ import {
   storageId,
   addListener,
   removeListener,
+  getAccount,
+  setAccount,
+  setNetwork,
+  getNetwork,
+  putReadOnly,
+  getReadOnly,
 } from '../../../data-iframe/cache'
 
 jest.mock('../../../utils/localStorage', () => () => true)
 
 describe('localStorage cache', () => {
+  const nullAccount = '0x0000000000000000000000000000000000000000'
   let fakeWindow
   function makeWindow() {
     fakeWindow = {
@@ -28,6 +35,7 @@ describe('localStorage cache', () => {
       },
     }
   }
+
   describe('get', () => {
     beforeEach(() => {
       makeWindow()
@@ -89,6 +97,58 @@ describe('localStorage cache', () => {
     })
   })
 
+  describe('getReadOnly', () => {
+    beforeEach(() => {
+      makeWindow()
+    })
+
+    it('value is not yet set', async () => {
+      expect.assertions(1)
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
+    })
+
+    it('value is set', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toEqual('hello')
+    })
+
+    it('value is set, but malformed', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      }).substring(1, 4)
+
+      expect(await getReadOnly(fakeWindow, 123, 'there')).toBeNull()
+    })
+
+    it('value is set, different network', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(456, 'hi')] = JSON.stringify({
+        there: 'hello',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123, 'hi', 'there')).toBeNull()
+    })
+
+    it('value is set, entire cache for user wanted', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+        it: 'is',
+      })
+
+      expect(await getReadOnly(fakeWindow, 123)).toEqual({
+        there: 'hello',
+        it: 'is',
+      })
+    })
+  })
+
   describe('put', () => {
     beforeEach(() => {
       makeWindow()
@@ -99,6 +159,23 @@ describe('localStorage cache', () => {
       await put(fakeWindow, 123, 'hi', 'there', 'hello')
 
       expect(fakeWindow.storage[storageId(123, 'hi')]).toBe(
+        JSON.stringify({
+          there: 'hello',
+        })
+      )
+    })
+  })
+
+  describe('putReadOnly', () => {
+    beforeEach(() => {
+      makeWindow()
+    })
+    it('saves the value', async () => {
+      expect.assertions(1)
+
+      await putReadOnly(fakeWindow, 123, 'there', 'hello')
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
         JSON.stringify({
           there: 'hello',
         })
@@ -179,6 +256,51 @@ describe('localStorage cache', () => {
 
       expect(other).toEqual({
         foo: 'bar',
+      })
+    })
+  })
+
+  describe('direct access', () => {
+    beforeEach(() => {
+      makeWindow()
+    })
+
+    it('getAccount', async () => {
+      expect.assertions(1)
+
+      await setAccount(fakeWindow, 'hi')
+
+      const account = await getAccount(fakeWindow)
+      expect(account).toBe('hi')
+    })
+
+    it('getNetwork', async () => {
+      expect.assertions(1)
+
+      await setNetwork(fakeWindow, 3)
+
+      const network = await getNetwork(fakeWindow)
+
+      expect(network).toBe(3)
+    })
+
+    it('setNetwork', async () => {
+      expect.assertions(1)
+
+      await setNetwork(fakeWindow, 3)
+
+      expect(fakeWindow.storage).toEqual({
+        '__unlockProtocol.network': '3',
+      })
+    })
+
+    it('setAccount', async () => {
+      expect.assertions(1)
+
+      await setAccount(fakeWindow, 'hi')
+
+      expect(fakeWindow.storage).toEqual({
+        '__unlockProtocol.account': 'hi',
       })
     })
   })
