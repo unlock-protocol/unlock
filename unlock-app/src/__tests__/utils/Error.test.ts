@@ -1,19 +1,23 @@
 import {
-  StorageError,
-  SignatureError,
+  ApplicationError,
   FormValidationError,
   LogInError,
   SignUpError,
+  SignatureError,
+  StorageError,
+  TransactionError,
 } from '../../utils/Error'
 
 describe('Error constructors', () => {
   it.each([
-    StorageError,
-    SignatureError,
+    ApplicationError,
     FormValidationError,
     LogInError,
     SignUpError,
-  ])('%s carries the message passed to it', constructors => {
+    SignatureError,
+    StorageError,
+    TransactionError,
+  ])('each of these carries the message passed to it', constructors => {
     expect.assertions(2)
     const fatalMessage = 'Not enough teapots, dumping core'
     const warning = 'Passwords must contain at least 43 different characters'
