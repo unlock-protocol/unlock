@@ -35,6 +35,11 @@ export async function getKeys(window) {
   return _get(window, 'keys')
 }
 
+/**
+ * Locks are not user-dependent
+ *
+ * So we retrieve from the non-account-specific cache
+ */
 export async function getLocks(window) {
   return cache.get({ window, networkId: currentNetwork, type: 'locks' })
 }
@@ -44,11 +49,13 @@ export async function getTransactions(window) {
 }
 
 export async function setAccount(window, account) {
+  // intercept the account setting so we have it available as well for retrieving user-specific cache
   currentAccount = account
   return cache.setAccount(window, account)
 }
 
 export async function setNetwork(window, network) {
+  // intercept the network setting so we have it available as well for retrieving user-specific cache
   currentNetwork = network
   return cache.setNetwork(window, network)
 }
@@ -65,6 +72,11 @@ export async function setKeys(window, keys) {
   return _put(window, 'keys', keys)
 }
 
+/**
+ * Locks are not user-dependent
+ *
+ * So we save in the non-account-specific cache
+ */
 export async function setLocks(window, locks) {
   return cache.put({
     window,
@@ -78,6 +90,14 @@ export async function setTransactions(window, transactions) {
   return _put(window, 'transactions', transactions)
 }
 
+/**
+ * Based on the current raw cache values, get the data the UI will need to
+ * display information
+ *
+ * @param {window} window the current global context (window, self, global)
+ * @param {number} requiredConfirmations the number of confirmations needed to consider a key valid
+ * @returns {object} returns locks, account, balance, and networkId, all formatted for use in the UI
+ */
 export async function getFormattedCacheValues(window, requiredConfirmations) {
   const account = await getAccount(window)
   const balance = await getAccountBalance(window)
@@ -85,6 +105,7 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   if (!account) {
     const cachedLocks = await getLocks(window)
     const nullAccount = '0x0000000000000000000000000000000000000000'
+    // construct the default keys for locks if there is no user
     const noKeys = Object.keys(cachedLocks).reduce(
       (keys, lockAddress) => ({
         ...keys,
