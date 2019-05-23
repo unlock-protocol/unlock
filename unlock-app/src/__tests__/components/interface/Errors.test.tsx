@@ -10,7 +10,7 @@ describe('Errors Component', () => {
   describe('when the component has no children or no message', () => {
     it('should not render anything', () => {
       expect.assertions(1)
-      const wrapper = rtl.render(<Errors close={close} />)
+      const wrapper = rtl.render(<Errors errors={[]} close={close} />)
       expect(wrapper.container.firstChild).toBeNull()
     })
 

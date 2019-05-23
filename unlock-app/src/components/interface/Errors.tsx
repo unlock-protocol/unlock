@@ -1,20 +1,24 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
-import UnlockPropTypes from '../../propTypes'
+import { Error } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 
-export const Errors = ({ errors, close }) => {
+interface Props {
+  errors: Error[]
+  close: (errorName: string) => any
+}
+
+export const Errors = ({ errors, close }: Props) => {
   const content = errors.map(error => (
-    <Wrapper key={error.name}>
-      <Error>{ErrorMessage(error.name)}</Error>
+    <ErrorWrapper key={error.name}>
+      <Message>{ErrorMessage(error.name)}</Message>
       <Buttons.Close as="button" onClick={() => close(error.name)} size="16px">
         X
       </Buttons.Close>
-    </Wrapper>
+    </ErrorWrapper>
   ))
   if (!content || !content.length) {
     return null
@@ -23,29 +27,24 @@ export const Errors = ({ errors, close }) => {
   return <React.Fragment>{content}</React.Fragment>
 }
 
-export const mapStateToProps = ({ errors }) => ({ errors })
+interface ReduxState {
+  errors: Error[]
+}
 
-const mapDispatchToProps = dispatch => ({
-  close: error => {
-    dispatch(resetError(error))
+export const mapStateToProps = ({ errors }: ReduxState) => ({ errors })
+
+const mapDispatchToProps = (dispatch: (action: any) => any) => ({
+  close: (errorName: string) => {
+    dispatch(resetError(errorName))
   },
 })
-
-Errors.propTypes = {
-  errors: PropTypes.arrayOf(UnlockPropTypes.error),
-  close: PropTypes.func.isRequired,
-}
-
-Errors.defaultProps = {
-  errors: [],
-}
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Errors)
 
-const Wrapper = styled.section`
+const ErrorWrapper = styled.section`
   grid-template-columns: 1fr 20px;
   display: grid;
   border: 1px solid var(--lightgrey);
@@ -62,7 +61,7 @@ const Wrapper = styled.section`
   }
 `
 
-const Error = styled.div`
+const Message = styled.div`
   grid-column: 1;
   color: var(--red);
 `
