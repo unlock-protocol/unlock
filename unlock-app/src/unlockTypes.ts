@@ -82,3 +82,10 @@ export interface EncryptedPrivateKey {
 export interface Router {
   location: Location
 }
+
+export interface Error {
+  name: string
+  data?: {
+    [key: string]: any
+  }
+}
