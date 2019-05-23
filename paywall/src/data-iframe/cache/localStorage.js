@@ -4,6 +4,8 @@ export function storageId(networkId, accountAddress) {
   return `unlock-protocol/${networkId}/${accountAddress}`
 }
 
+const nullAccount = '0x0000000000000000000000000000000000000000'
+
 /**
  * retrieve the container from localStorage, ensure the optional type
  * exists as a key if requested
@@ -54,7 +56,8 @@ export async function getReadOnly(window, networkId, type) {
   return get(
     window,
     networkId,
-    '0x0000000000000000000000000000000000000000',
+    // using null account guarantees no collisions with real ethereum users
+    nullAccount,
     type
   )
 }
@@ -71,7 +74,8 @@ export async function putReadOnly(window, networkId, type, value) {
   return put(
     window,
     networkId,
-    '0x0000000000000000000000000000000000000000',
+    // using null account guarantees no collisions with real ethereum users
+    nullAccount,
     type,
     value
   )
