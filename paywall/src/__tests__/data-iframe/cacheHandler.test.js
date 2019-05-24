@@ -163,6 +163,40 @@ describe('cacheHandler', () => {
 
       expect(transactions).toEqual(myTransactions)
     })
+
+    describe('values not set', () => {
+      beforeEach(async () => {
+        fakeWindow = {
+          storage: {},
+          localStorage: {
+            setItem(key, item) {
+              fakeWindow.storage[key] = item
+            },
+            getItem(key) {
+              return fakeWindow.storage[key]
+            },
+            removeItem(key) {
+              delete fakeWindow.storage[key]
+            },
+          },
+        }
+      })
+      it('getLocks', async () => {
+        expect.assertions(1)
+
+        const locks = await getLocks(fakeWindow)
+
+        expect(locks).toEqual({})
+      })
+
+      it('getTransactions', async () => {
+        expect.assertions(1)
+
+        const transactions = await getTransactions(fakeWindow)
+
+        expect(transactions).toEqual({})
+      })
+    })
   })
 
   describe('getFormattedCacheValues', () => {
