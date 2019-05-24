@@ -1,14 +1,15 @@
 import { _clearHandlers, iframePostOffice } from '../../utils/postOffice'
 import setupPostOfficeListener from '../../data-iframe/postOfficeListener'
 import {
-  POST_MESSAGE_READY,
   POST_MESSAGE_DATA_REQUEST,
+  POST_MESSAGE_CONFIG,
 } from '../../paywall-builder/constants'
 
 describe('postOffice listener', () => {
   let fakeWindow
   let fakeTarget
   let fakeUpdater
+  let fakeSetConfig
 
   function callListener(type, payload) {
     fakeWindow.handlers.message({
@@ -26,6 +27,7 @@ describe('postOffice listener', () => {
       postMessage: jest.fn(),
     }
     fakeUpdater = jest.fn()
+    fakeSetConfig = jest.fn()
 
     fakeWindow = {
       console: {
@@ -44,18 +46,38 @@ describe('postOffice listener', () => {
     iframePostOffice(fakeWindow)
   })
 
-  it('responds to ready message by calling updater for all the data', () => {
-    expect.assertions(5)
+  it('responds to config message by calling setConfig when the config is valid', () => {
+    expect.assertions(2)
 
-    setupPostOfficeListener(fakeWindow, fakeUpdater)
+    setupPostOfficeListener(fakeWindow, fakeUpdater, fakeSetConfig)
 
-    callListener(POST_MESSAGE_READY, undefined)
+    const validConfig = {
+      locks: {
+        '0x1234567890123456789012345678901234567890': {
+          name: 'hi',
+        },
+        '0x0987654321098765432109876543210987654321': {
+          name: 'bye',
+        },
+      },
+      icon: false,
+      callToAction: {
+        default:
+          'You have reached your limit of free articles. Please purchase access',
+        expired:
+          'Your subscription has expired, please purchase a new key to continue',
+        pending: 'Purchase pending...',
+        confirmed: 'Purchase confirmed, content unlocked!',
+      },
+    }
 
-    expect(fakeUpdater).toHaveBeenCalledTimes(4)
-    expect(fakeUpdater).toHaveBeenNthCalledWith(1, 'network')
-    expect(fakeUpdater).toHaveBeenNthCalledWith(2, 'account')
-    expect(fakeUpdater).toHaveBeenNthCalledWith(3, 'balance')
-    expect(fakeUpdater).toHaveBeenNthCalledWith(4, 'locks')
+    callListener(POST_MESSAGE_CONFIG, {
+      not: 'a valid config',
+    })
+    callListener(POST_MESSAGE_CONFIG, validConfig)
+
+    expect(fakeSetConfig).toHaveBeenCalledTimes(1)
+    expect(fakeSetConfig).toHaveBeenCalledWith(validConfig)
   })
 
   it('responds to a data request message "locks" by calling updater with "locks"', () => {

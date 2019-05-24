@@ -1,20 +1,22 @@
 import { setHandler } from '../utils/postOffice'
 import {
-  POST_MESSAGE_READY,
   POST_MESSAGE_DATA_REQUEST,
+  POST_MESSAGE_CONFIG,
 } from '../paywall-builder/constants'
+import { isValidPaywallConfig } from '../utils/validators'
 
 /**
- * Create the listener to send all data when the main window is ready
- * @param {Function} updater a callback returned from the postOffice used to trigger data sending
- *                           to the main window
+ * Create the listener to respond to the configuration, which lists all locks on the page
+ * @param {Function} setConfig a callback that accepts the configuration. This is used to
+ *                             get the list of locks to monitor
  */
-export const makeReadyListener = updater =>
-  function readyPostOfficeListener() {
-    updater('network')
-    updater('account')
-    updater('balance')
-    updater('locks')
+export const makeConfigListener = (logger, setConfig) =>
+  function configPostOfficeListener(config) {
+    if (isValidPaywallConfig(config)) {
+      setConfig(config)
+    } else {
+      logger('ignoring malformed paywall config')
+    }
   }
 
 /**
@@ -42,9 +44,9 @@ export const makeRequestListener = (logger, updater) =>
  * @param {Function} updater a callback returned from the postOffice used to trigger data sending
  *                           to the main window
  */
-export default function setupPostOfficeListener(window, updater) {
-  const readyListener = makeReadyListener(updater)
+export default function setupPostOfficeListener(window, updater, setConfig) {
+  const configListener = makeConfigListener(window.console.error, setConfig)
   const requestListener = makeRequestListener(window.console.error, updater)
-  setHandler(POST_MESSAGE_READY, readyListener)
+  setHandler(POST_MESSAGE_CONFIG, configListener)
   setHandler(POST_MESSAGE_DATA_REQUEST, requestListener)
 }
