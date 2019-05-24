@@ -30,7 +30,7 @@
     "email-validator": "^2.0.4",
     "fork-ts-checker-webpack-plugin": "^1.0.0",
     "isomorphic-unfetch": "^3.0.0",
-    "jest-dom": "3.2.1",
+    "jest-dom": "3.4.0",
     "jest-mock-axios": "2.4.0",
     "jest-styled-components": "^6.3.1",
     "js-base64": "^2.5.1",
