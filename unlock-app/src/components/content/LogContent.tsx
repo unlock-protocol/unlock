@@ -5,7 +5,6 @@ import Link from 'next/link'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import BrowserOnly from '../helpers/BrowserOnly'
-import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import CreatorLog from '../creator/CreatorLog'
 import { pageTitle } from '../../constants'
 import withConfig from '../../utils/withConfig'
@@ -35,29 +34,27 @@ export const LogContent = ({
   showForm,
 }: Props) => {
   return (
-    <GlobalErrorConsumer>
-      <Layout title="Creator Log">
-        <Head>
-          <title>{pageTitle('Log')}</title>
-        </Head>
-        {account && (
-          <BrowserOnly>
-            <AccountWrapper>
-              <Account network={network} account={account} />
-              <Link href="/dashboard">
-                <CreateLockButton onClick={showForm} id="CreateLockButton">
-                  Create Lock
-                </CreateLockButton>
-              </Link>
-            </AccountWrapper>
-            <CreatorLog
-              transactionFeed={transactionFeed}
-              explorerLinks={explorerLinks}
-            />
-          </BrowserOnly>
-        )}
-      </Layout>
-    </GlobalErrorConsumer>
+    <Layout title="Creator Log">
+      <Head>
+        <title>{pageTitle('Log')}</title>
+      </Head>
+      {account && (
+        <BrowserOnly>
+          <AccountWrapper>
+            <Account network={network} account={account} />
+            <Link href="/dashboard">
+              <CreateLockButton onClick={showForm} id="CreateLockButton">
+                Create Lock
+              </CreateLockButton>
+            </Link>
+          </AccountWrapper>
+          <CreatorLog
+            transactionFeed={transactionFeed}
+            explorerLinks={explorerLinks}
+          />
+        </BrowserOnly>
+      )}
+    </Layout>
   )
 }
 

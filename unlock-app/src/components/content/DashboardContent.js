@@ -8,7 +8,6 @@ import Account from '../interface/Account'
 import CreatorLocks from '../creator/CreatorLocks'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
-import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { pageTitle } from '../../constants'
 import {
   CreateLockButton,
@@ -27,25 +26,23 @@ export const DashboardContent = ({
     formIsVisible ? hideForm() : showForm()
   }
   return (
-    <GlobalErrorConsumer>
-      <Layout title="Creator Dashboard">
-        <Head>
-          <title>{pageTitle('Dashboard')}</title>
-        </Head>
-        {account && (
-          <BrowserOnly>
-            <AccountWrapper>
-              <Account network={network} account={account} />
-              <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
-                Create Lock
-              </CreateLockButton>
-            </AccountWrapper>
-            <CreatorLocks />
-            <DeveloperOverlay />
-          </BrowserOnly>
-        )}
-      </Layout>
-    </GlobalErrorConsumer>
+    <Layout title="Creator Dashboard">
+      <Head>
+        <title>{pageTitle('Dashboard')}</title>
+      </Head>
+      {account && (
+        <BrowserOnly>
+          <AccountWrapper>
+            <Account network={network} account={account} />
+            <CreateLockButton id="CreateLockButton" onClick={toggleForm}>
+              Create Lock
+            </CreateLockButton>
+          </AccountWrapper>
+          <CreatorLocks />
+          <DeveloperOverlay />
+        </BrowserOnly>
+      )}
+    </Layout>
   )
 }
 
