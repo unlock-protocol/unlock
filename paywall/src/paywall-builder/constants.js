@@ -18,3 +18,5 @@ export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'
 
 export const POST_MESSAGE_ERROR = 'error'
 export const POST_MESSAGE_DATA_REQUEST = 'data/request'
+
+export const POST_MESSAGE_PURCHASE_KEY = 'purchaseKey'
