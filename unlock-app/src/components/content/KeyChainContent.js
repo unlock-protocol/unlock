@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import Head from 'next/head'
 import BrowserOnly from '../helpers/BrowserOnly'
 import UnlockPropTypes from '../../propTypes'
-import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
@@ -15,24 +14,22 @@ export const KeyChainContent = ({ account, network, router }) => {
   const emailAddress = hash.slice(1) // trim off leading '#'
 
   return (
-    <GlobalErrorConsumer>
-      <Layout title="Key Chain">
-        <Head>
-          <title>{pageTitle('Key Chain')}</title>
-        </Head>
-        {account && (
-          <BrowserOnly>
-            <Account network={network} account={account} />
-            <DeveloperOverlay />
-          </BrowserOnly>
-        )}
-        {!account && (
-          // Default to sign up form. User can toggle to login. If email
-          // address is truthy, do the signup flow.
-          <LogInSignUp signup emailAddress={emailAddress} />
-        )}
-      </Layout>
-    </GlobalErrorConsumer>
+    <Layout title="Key Chain">
+      <Head>
+        <title>{pageTitle('Key Chain')}</title>
+      </Head>
+      {account && (
+        <BrowserOnly>
+          <Account network={network} account={account} />
+          <DeveloperOverlay />
+        </BrowserOnly>
+      )}
+      {!account && (
+        // Default to sign up form. User can toggle to login. If email
+        // address is truthy, do the signup flow.
+        <LogInSignUp signup emailAddress={emailAddress} />
+      )}
+    </Layout>
   )
 }
 
