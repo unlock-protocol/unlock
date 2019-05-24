@@ -2,6 +2,7 @@ import { getAccount } from './account'
 import ensureWalletReady from './ensureWalletReady'
 import submittedListener from './purchaseKey/submittedListener'
 import updateListener from './purchaseKey/updateListener'
+import { linkTransactionsToKey } from './keyStatus'
 
 /**
  * Purchase a key on a lock for the current user
@@ -49,34 +50,44 @@ export async function processKeyPurchaseTransactions({
 }) {
   let transactions = startingTransactions
   let key = startingKey
+  let linkedKey
   let result
   walletService.addListener('transaction.pending', walletAction)
-  const afterEventProcessed = () => {
-    if (transactions !== result.transactions) {
-      transactions = result.transactions
-      key = result.key
-      update(transactions, key)
+  try {
+    const afterEventProcessed = () => {
+      if (transactions !== result.transactions) {
+        transactions = result.transactions
+        key = result.key
+        update(transactions, key)
+      }
     }
-  }
 
-  result = await submittedListener({
-    lockAddress,
-    existingTransactions: transactions,
-    existingKey: key,
-    walletService,
-    requiredConfirmations,
-  })
-  afterEventProcessed()
-
-  do {
-    result = await updateListener({
+    result = await submittedListener({
       lockAddress,
       existingTransactions: transactions,
       existingKey: key,
+      walletService,
       web3Service,
       requiredConfirmations,
     })
     afterEventProcessed()
-  } while (key.status === 'confirming')
-  walletService.removeListener('transaction.pending', walletAction)
+
+    do {
+      result = await updateListener({
+        lockAddress,
+        existingTransactions: transactions,
+        existingKey: key,
+        web3Service,
+        requiredConfirmations,
+      })
+      afterEventProcessed()
+      linkedKey = linkTransactionsToKey({
+        key,
+        transactions,
+        requiredConfirmations,
+      })
+    } while (linkedKey.status === 'confirming')
+  } finally {
+    walletService.removeListener('transaction.pending', walletAction)
+  }
 }

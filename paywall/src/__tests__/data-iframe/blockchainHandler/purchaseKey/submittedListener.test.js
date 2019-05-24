@@ -2,8 +2,10 @@ import { TRANSACTION_TYPES } from '../../../../constants'
 import submittedListener from '../../../../data-iframe/blockchainHandler/purchaseKey/submittedListener'
 import { setNetwork } from '../../../../data-iframe/blockchainHandler/network'
 
-describe('pendingListener', () => {
+describe('submittedListener', () => {
   let fakeWalletService
+  let fakeWeb3Service
+  let newKey
 
   beforeEach(() => {
     fakeWalletService = {
@@ -11,6 +13,9 @@ describe('pendingListener', () => {
       on: (type, cb) => (fakeWalletService.handlers[type] = cb),
       once: (type, cb) => (fakeWalletService.handlers[type] = cb),
       off: type => delete fakeWalletService.handlers[type],
+    }
+    fakeWeb3Service = {
+      getKeyByLockForOwner: jest.fn(() => newKey),
     }
   })
 
@@ -35,9 +40,6 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
 
     const result = await submittedListener({
@@ -45,6 +47,7 @@ describe('pendingListener', () => {
       existingTransactions: transactions,
       existingKey: key,
       walletService: fakeWalletService,
+      web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
     })
 
@@ -73,15 +76,13 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
 
     const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKey: key,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
@@ -111,15 +112,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = key
 
     const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKey: key,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
@@ -149,15 +149,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = key
 
     const result = await submittedListener({
       lockAddress: 'lock',
       existingTransactions: transactions,
       existingKey: key,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     })
@@ -177,15 +176,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 - 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     submittedListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKey,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).then(({ transactions, key }) => {
@@ -206,11 +204,7 @@ describe('pendingListener', () => {
         hash,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'submitted',
-        transactions: [hash],
-      })
+      expect(key).toEqual(existingKey)
       done()
     })
 
@@ -248,15 +242,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 - 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     submittedListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKey,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).then(({ transactions, key }) => {
@@ -278,11 +271,7 @@ describe('pendingListener', () => {
         old,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'submitted',
-        transactions: [hash, old],
-      })
+      expect(key).toEqual(existingKey)
       done()
     })
 
@@ -320,15 +309,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 - 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     submittedListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKey,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).then(({ transactions, key }) => {
@@ -350,11 +338,7 @@ describe('pendingListener', () => {
         old,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'submitted',
-        transactions: [hash, old],
-      })
+      expect(key).toEqual(existingKey)
       done()
     })
 
@@ -392,15 +376,14 @@ describe('pendingListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 - 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     submittedListener({
       lockAddress: 'lock',
       existingTransactions,
       existingKey,
+      web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
     }).catch(e => {

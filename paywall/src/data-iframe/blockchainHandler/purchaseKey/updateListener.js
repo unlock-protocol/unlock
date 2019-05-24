@@ -6,14 +6,14 @@ export default async function updateListener({
   web3Service,
   requiredConfirmations,
 }) {
-  // expire any keys that are expired
-  const key = linkTransactionsToKey({
+  const linkedKey = linkTransactionsToKey({
     key: existingKey,
     transactions: existingTransactions,
     requiredConfirmations,
   })
-  const transaction = key.transactions[0]
+  const transaction = linkedKey.transactions[0]
   if (
+    !transaction ||
     !['submitted', 'pending', 'mined'].includes(transaction.status) ||
     (transaction.status === 'mined' &&
       transaction.confirmations > requiredConfirmations)
@@ -58,10 +58,10 @@ export default async function updateListener({
   }
   return {
     transactions,
-    key: linkTransactionsToKey({
-      key: existingKey,
-      transactions,
-      requiredConfirmations,
-    }),
+    // this ensures we always have the latest expiration info
+    key: await web3Service.getKeyByLockForOwner(
+      existingKey.lock,
+      existingKey.owner
+    ),
   }
 }

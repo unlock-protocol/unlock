@@ -15,16 +15,18 @@ import { getNetwork } from '../network'
  * @param {object} existingTransactions transactions, indexed by hash
  * @param {object} existingKeys keys, indexed by "lock address-owner address"
  * @param {walletService} walletService the walletService that initiated the key transaction
+ * @param {web3Service} web3Service used to retrieve the latest key expiration timestamp
  * @param {int} requiredConfirmations the number of required confirmations for a transaction to be considered permanent
  */
 export default async function submittedListener({
   existingTransactions,
   existingKey,
   walletService,
+  web3Service,
   requiredConfirmations,
 }) {
   // update key status for expired keys
-  const key = linkTransactionsToKey({
+  const linkedKey = linkTransactionsToKey({
     key: existingKey,
     transactions: existingTransactions,
     requiredConfirmations,
@@ -35,9 +37,9 @@ export default async function submittedListener({
   // we can only initiate a new purchase if the current key is not valid, and is
   // not being purchased. These 3 statuses are the
   if (
-    key.status !== 'none' &&
-    key.status !== 'expired' &&
-    key.status !== 'failed'
+    linkedKey.status !== 'none' &&
+    linkedKey.status !== 'expired' &&
+    linkedKey.status !== 'failed'
   ) {
     return {
       transactions: existingTransactions,
@@ -82,10 +84,9 @@ export default async function submittedListener({
   }
   return {
     transactions,
-    key: linkTransactionsToKey({
-      key: existingKey,
-      transactions,
-      requiredConfirmations,
-    }),
+    key: await web3Service.getKeyByLockForOwner(
+      existingKey.lock,
+      existingKey.owner
+    ),
   }
 }
