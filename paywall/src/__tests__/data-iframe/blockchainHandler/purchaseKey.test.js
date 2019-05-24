@@ -54,6 +54,7 @@ describe('blockchainHandler purchaseKey', () => {
   describe('processKeyPurchaseTransaction', () => {
     let fakeWalletService
     let fakeWeb3Service
+    let newKeys
 
     function assertOnUpdates(expected, done) {
       let expectedIndex = 0
@@ -74,6 +75,7 @@ describe('blockchainHandler purchaseKey', () => {
     }
 
     beforeEach(() => {
+      newKeys = {}
       fakeWalletService = {
         handlers: {},
         on: (type, cb) => (fakeWalletService.handlers[type] = cb),
@@ -93,6 +95,7 @@ describe('blockchainHandler purchaseKey', () => {
           delete fakeWeb3Service.handlers[type]
         },
         once: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
+        getKeyByLockForOwner: jest.fn(lock => newKeys[lock]),
       }
     })
 
@@ -107,10 +110,8 @@ describe('blockchainHandler purchaseKey', () => {
         lock: 'lock',
         owner: 'account',
         expiration: 0,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
       }
+      newKeys.lock = key
       // expected values to be sent to the updater
       const submittedTransaction = {
         blockNumber: Number.MAX_SAFE_INTEGER,
@@ -131,13 +132,10 @@ describe('blockchainHandler purchaseKey', () => {
             hash: submittedTransaction,
           },
           {
-            confirmations: 0,
             expiration: 0,
             id: 'lock-account',
             lock: 'lock',
             owner: 'account',
-            status: 'submitted',
-            transactions: [submittedTransaction],
           },
         ],
       ]
@@ -184,9 +182,6 @@ describe('blockchainHandler purchaseKey', () => {
         lock: 'lock',
         owner: 'account',
         expiration: 0,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
       }
       const update = jest.fn()
 
@@ -227,9 +222,14 @@ describe('blockchainHandler purchaseKey', () => {
         lock: 'lock',
         owner: 'account',
         expiration: 0,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
+      }
+      newKeys = {
+        lock: {
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+          expiration: 0,
+        },
       }
       // expected values to be sent to the updater
       const submittedTransaction = {
@@ -245,24 +245,10 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const submittedKey = {
-        confirmations: 0,
-        expiration: 0,
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        status: 'submitted',
-        transactions: [submittedTransaction],
-      }
       const pendingTransaction = {
         ...submittedTransaction,
         status: 'pending',
         blockNumber: 123,
-      }
-      const pendingKey = {
-        ...submittedKey,
-        transactions: [pendingTransaction],
-        status: 'pending',
       }
       const expected = [
         [
@@ -270,7 +256,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: submittedTransaction,
           },
-          submittedKey,
+          newKeys.lock,
           'submitted transaction',
         ],
         [
@@ -278,7 +264,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: pendingTransaction,
           },
-          pendingKey,
+          newKeys.lock,
           'pending transaction',
         ],
       ]
@@ -355,29 +341,15 @@ describe('blockchainHandler purchaseKey', () => {
         lock: 'lock',
         owner: 'account',
         expiration: 0,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
+      }
+      newKeys = {
+        lock: key,
       }
       // expected values to be sent to the updater
-      const submittedKey = {
-        confirmations: 0,
-        expiration: 0,
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        status: 'submitted',
-        transactions: [submittedTransaction],
-      }
       const pendingTransaction = {
         ...submittedTransaction,
         status: 'pending',
         blockNumber: 123,
-      }
-      const pendingKey = {
-        ...submittedKey,
-        transactions: [pendingTransaction],
-        status: 'pending',
       }
       const expected = [
         [
@@ -385,7 +357,7 @@ describe('blockchainHandler purchaseKey', () => {
           {
             hash: pendingTransaction,
           },
-          pendingKey,
+          newKeys.lock,
           'pending transaction',
         ],
       ]
@@ -435,19 +407,16 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const submittedKey = {
-        confirmations: 0,
+      const key = {
         expiration: new Date().getTime() / 1000 + 1000,
         id: 'lock-account',
         lock: 'lock',
         owner: 'account',
-        status: 'submitted',
-        transactions: [submittedTransaction],
       }
+      newKeys.lock = key
       const transactions = {
         hash: submittedTransaction,
       }
-      const key = submittedKey
       // expected values to be sent to the updater
       const confirmingTransaction = {
         ...submittedTransaction,
@@ -455,19 +424,13 @@ describe('blockchainHandler purchaseKey', () => {
         confirmations: 1,
         blockNumber: 123,
       }
-      const confirmingKey = {
-        ...submittedKey,
-        transactions: [confirmingTransaction],
-        confirmations: 1,
-        status: 'confirming',
-      }
       const expected = [
         [
           // update
           {
             hash: confirmingTransaction,
           },
-          confirmingKey,
+          key,
           'confirming transaction',
         ],
       ]
@@ -501,7 +464,7 @@ describe('blockchainHandler purchaseKey', () => {
     })
 
     it('throws on error in listening for confirming transaction', async done => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       setNetwork(1)
       setAccount('account')
@@ -518,44 +481,23 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const submittedKey = {
-        confirmations: 0,
+      const key = {
         expiration: new Date().getTime() / 1000 + 1000,
         id: 'lock-account',
         lock: 'lock',
         owner: 'account',
-        status: 'submitted',
-        transactions: [submittedTransaction],
       }
       const transactions = {
         hash: submittedTransaction,
       }
-      const key = submittedKey
-      // expected values to be sent to the updater
-      const confirmingTransaction = {
-        ...submittedTransaction,
-        status: 'mined',
-        confirmations: 1,
-        blockNumber: 123,
-      }
-      const confirmingKey = {
-        ...submittedKey,
-        transactions: [confirmingTransaction],
-        confirmations: 1,
-        status: 'confirming',
-      }
-      const expected = [
-        [
-          // update
-          {
-            hash: confirmingTransaction,
-          },
-          confirmingKey,
-          'confirming transaction',
-        ],
-      ]
-      const update = assertOnUpdates(expected, done)
+      const update = jest.fn()
 
+      const listener = fakeWalletService.removeListener
+      fakeWalletService.removeListener = jest.fn((...args) => {
+        listener(...args)
+        expect(fakeWalletService.removeListener).toHaveBeenCalled()
+        done()
+      })
       processKeyPurchaseTransactions({
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
@@ -566,7 +508,6 @@ describe('blockchainHandler purchaseKey', () => {
         update,
       }).catch(e => {
         expect(e).toBeInstanceOf(Error)
-        done()
       })
 
       // wait for the transaction.once handler to be called before we call it
@@ -583,7 +524,7 @@ describe('blockchainHandler purchaseKey', () => {
     })
 
     it('works with confirmed transaction', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       setNetwork(1)
       setAccount('account')
@@ -600,21 +541,21 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const startingKey = {
-        confirmations: 500,
+      const key = {
         expiration: new Date().getTime() / 1000 + 1000,
         id: 'lock-account',
         lock: 'lock',
         owner: 'account',
-        status: 'submitted',
-        transactions: [confirmedTransaction],
       }
       const transactions = {
         hash: confirmedTransaction,
       }
-      const key = startingKey
+      newKeys.lock = key
       const update = jest.fn()
 
+      fakeWalletService.removeListener = jest.fn(
+        fakeWalletService.removeListener
+      )
       await processKeyPurchaseTransactions({
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
@@ -626,6 +567,7 @@ describe('blockchainHandler purchaseKey', () => {
       })
 
       expect(update).not.toHaveBeenCalled()
+      expect(fakeWalletService.removeListener).toHaveBeenCalled()
     })
 
     it('if key is expired, listens for newly submitted transaction', async done => {
@@ -646,19 +588,19 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const expiredKey = {
-        confirmations: 0,
+      const key = {
         expiration: new Date().getTime() / 1000 - 1000,
         id: 'lock-account',
         lock: 'lock',
         owner: 'account',
-        status: 'valid',
-        transactions: [expiredTransaction],
+      }
+      newKeys.lock = {
+        ...key,
+        expiration: 0,
       }
       const transactions = {
         hash: expiredTransaction,
       }
-      const key = expiredKey
       // expected values to be sent to the updater
       const submittedTransaction = {
         blockNumber: Number.MAX_SAFE_INTEGER,
@@ -673,17 +615,12 @@ describe('blockchainHandler purchaseKey', () => {
         to: 'lock',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
       }
-      const submittedKey = {
-        ...expiredKey,
-        transactions: [submittedTransaction],
-        status: 'submitted',
-      }
       const expected = [
         [
           {
             hash: submittedTransaction,
           },
-          submittedKey,
+          newKeys.lock,
           'submitted transaction after expire',
         ],
       ]
