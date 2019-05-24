@@ -41,11 +41,15 @@ export async function getKeys(window) {
  * So we retrieve from the non-account-specific cache
  */
 export async function getLocks(window) {
-  return cache.get({ window, networkId: currentNetwork, type: 'locks' })
+  const locks =
+    (await cache.get({ window, networkId: currentNetwork, type: 'locks' })) ||
+    {}
+  return locks
 }
 
 export async function getTransactions(window) {
-  return _get(window, 'transactions')
+  const transactions = (await _get(window, 'transactions')) || {}
+  return transactions
 }
 
 export async function setAccount(window, account) {
