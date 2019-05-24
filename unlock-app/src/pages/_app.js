@@ -9,6 +9,7 @@ import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
 import FullScreenModal from '../components/interface/FullScreenModals'
+import GlobalErrorConsumer from '../components/interface/GlobalErrorConsumer'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
@@ -110,7 +111,9 @@ The Unlock team
           <FullScreenModal />
           <ConnectedRouter>
             <ConfigProvider value={config}>
-              <Component {...pageProps} />
+              <GlobalErrorConsumer>
+                <Component {...pageProps} />
+              </GlobalErrorConsumer>
             </ConfigProvider>
           </ConnectedRouter>
         </Provider>
