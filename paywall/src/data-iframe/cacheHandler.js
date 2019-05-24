@@ -32,7 +32,23 @@ async function _put(window, key, value) {
 }
 
 export async function getKeys(window) {
-  return _get(window, 'keys')
+  const lockAddresses = await getLockAddresses(window)
+
+  const keys = await Promise.all(
+    lockAddresses.map(address => getKey(window, address))
+  )
+
+  return keys.reduce(
+    (allKeys, key) => ({
+      ...allKeys,
+      [key.lock]: key,
+    }),
+    {}
+  )
+}
+
+export async function getLockAddresses(window) {
+  return _get(window, 'lockAddresses')
 }
 
 /**
@@ -48,8 +64,19 @@ export async function getLocks(window) {
 }
 
 export async function getTransactions(window) {
-  const transactions = (await _get(window, 'transactions')) || {}
-  return transactions
+  const hashes = await getTransactionHashes(window)
+  if (!hashes.length) return {}
+
+  const transactions = await Promise.all(
+    hashes.map(hash => getTransaction(window, hash))
+  )
+  return transactions.reduce(
+    (allTransactions, transaction) => ({
+      ...allTransactions,
+      [transaction.hash]: transaction,
+    }),
+    {}
+  )
 }
 
 export async function setAccount(window, account) {
@@ -64,6 +91,10 @@ export async function setNetwork(window, network) {
   return cache.setNetwork(window, network)
 }
 
+export async function getTransactionHashes(window) {
+  return (await _get(window, 'transactionHashes')) || []
+}
+
 export async function getAccountBalance(window) {
   return _get(window, 'balance')
 }
@@ -73,7 +104,40 @@ export async function setAccountBalance(window, balance) {
 }
 
 export async function setKeys(window, keys) {
-  return _put(window, 'keys', keys)
+  return Promise.all(Object.values(keys).map(key => setKey(window, key)))
+}
+
+export async function setLockAddresses(window, addresses) {
+  return _put(window, 'lockAddresses', addresses)
+}
+
+export async function setKey(window, key) {
+  return _put(window, `key/${key.lock}`, key)
+}
+
+export async function setLock(window, key) {
+  return _put(window, `lock/${key.lock}`, key)
+}
+
+export async function getKey(window, lockAddress) {
+  return _get(window, `key/${lockAddress}`)
+}
+
+export async function getLock(window, lockAddress) {
+  return _get(window, `lock/${lockAddress}`)
+}
+
+export async function setTransaction(window, transaction) {
+  const hashes = await getTransactionHashes(window)
+  if (!hashes.includes(transaction.hash)) {
+    hashes.push(transaction.hash)
+    await _put(window, 'transactionHashes', hashes)
+  }
+  return _put(window, `transaction/${transaction.hash}`, transaction)
+}
+
+export async function getTransaction(window, transaction) {
+  return _get(window, `transaction/${transaction.hash}`)
 }
 
 /**
@@ -82,6 +146,7 @@ export async function setKeys(window, keys) {
  * So we save in the non-account-specific cache
  */
 export async function setLocks(window, locks) {
+  await _put(window, 'lockAddresses', Object.keys(locks))
   return cache.put({
     window,
     networkId: currentNetwork,
@@ -91,7 +156,11 @@ export async function setLocks(window, locks) {
 }
 
 export async function setTransactions(window, transactions) {
-  return _put(window, 'transactions', transactions)
+  const transactionHashes = Object.keys(transactions)
+  await _put(window, 'transactionHashes', transactionHashes)
+  return Promise.all(
+    transactionHashes.map(hash => setTransaction(window, transactions[hash]))
+  )
 }
 
 /**

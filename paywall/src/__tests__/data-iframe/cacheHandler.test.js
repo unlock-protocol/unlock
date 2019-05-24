@@ -10,19 +10,21 @@ import {
   setNetwork,
   getFormattedCacheValues,
   setAccountBalance,
+  setKey,
+  getKey,
 } from '../../data-iframe/cacheHandler'
-import { storageId } from '../../data-iframe/cache'
 import { TRANSACTION_TYPES } from '../../constants'
 
 describe('cacheHandler', () => {
   let fakeWindow
-  const id = storageId('network', 'account')
-  const nonAccountSpecificId = storageId(
-    'network',
-    '0x0000000000000000000000000000000000000000'
-  )
   const myKeys = {
     lock: {
+      id: 'myKey',
+      owner: 'owner',
+      lock: 'lock',
+      expirationTimestamp: 0,
+    },
+    lock2: {
       id: 'myKey',
       owner: 'owner',
       lock: 'lock',
@@ -60,17 +62,23 @@ describe('cacheHandler', () => {
     }
   })
 
-  describe('setting values', () => {
+  fdescribe('setting values', () => {
+    fit('setKey', async () => {
+      expect.assertions(1)
+
+      await setKey(fakeWindow, {
+        key: 'my key',
+      })
+
+      expect(await getKey(fakeWindow, ''))
+    })
+
     it('setKeys', async () => {
       expect.assertions(1)
 
       await setKeys(fakeWindow, myKeys)
 
-      expect(fakeWindow.storage).toEqual({
-        [id]: JSON.stringify({
-          keys: myKeys,
-        }),
-      })
+      expect(await getKeys(fakeWindow)).toEqual(myKeys)
     })
 
     it('setLocks', async () => {
@@ -78,11 +86,7 @@ describe('cacheHandler', () => {
 
       await setLocks(fakeWindow, myLocks)
 
-      expect(fakeWindow.storage).toEqual({
-        [nonAccountSpecificId]: JSON.stringify({
-          locks: myLocks,
-        }),
-      })
+      expect(await getLocks(fakeWindow)).toEqual(myLocks)
     })
 
     it('setTransactions', async () => {
@@ -90,11 +94,7 @@ describe('cacheHandler', () => {
 
       await setTransactions(fakeWindow, myTransactions)
 
-      expect(fakeWindow.storage).toEqual({
-        [id]: JSON.stringify({
-          transactions: myTransactions,
-        }),
-      })
+      expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
     })
 
     it('setting multiple cache values', async () => {
@@ -104,15 +104,9 @@ describe('cacheHandler', () => {
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
 
-      expect(fakeWindow.storage).toEqual({
-        [nonAccountSpecificId]: JSON.stringify({
-          locks: myLocks,
-        }),
-        [id]: JSON.stringify({
-          keys: myKeys,
-          transactions: myTransactions,
-        }),
-      })
+      expect(await getKeys(fakeWindow)).toEqual(myKeys)
+      expect(await getLocks(fakeWindow)).toEqual(myLocks)
+      expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
     })
   })
 
