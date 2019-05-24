@@ -111,6 +111,8 @@ export async function retrieveChainData({
         requiredConfirmations,
         walletAction: () => onChange({ walletModal: true }),
         update,
+      }).catch(error => {
+        onChange({ error })
       })
     }
   })

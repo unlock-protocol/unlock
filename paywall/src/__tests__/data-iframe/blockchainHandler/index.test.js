@@ -75,6 +75,12 @@ describe('blockchain handler index', () => {
       getAccount.mockImplementation(() => 'account')
       fakeWalletService = {
         ready: true,
+        handlers: {},
+        addListener: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        removeListener: type => delete fakeWalletService.handlers[type],
+        on: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        once: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        off: type => delete fakeWalletService.handlers[type],
       }
       fakeWeb3Service = {
         getLock: jest.fn(address => ({ address })),
@@ -200,6 +206,12 @@ describe('blockchain handler index', () => {
     it('processes key purchase transactions and ignores others', async () => {
       expect.assertions(1)
 
+      const purchase = require.requireActual(
+        '../../../data-iframe/blockchainHandler/purchaseKey'
+      )
+      processKeyPurchaseTransactions.mockImplementationOnce(
+        purchase.processKeyPurchaseTransactions
+      )
       setNetwork(2)
       fakeTransactions = {
         data: {
@@ -281,11 +293,11 @@ describe('blockchain handler index', () => {
       }
 
       fakeTransactionResults = {
-        hash2: {
+        hash: {
           hash: 'hash',
           type: TRANSACTION_TYPES.LOCK_CREATION,
         },
-        hash: {
+        hash2: {
           hash: 'hash2',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           key: '0x123-account',
@@ -312,6 +324,243 @@ describe('blockchain handler index', () => {
         onChange,
         requiredConfirmations: 1,
       })
+    })
+
+    it('passes walletModal to onChange', async done => {
+      expect.assertions(1)
+      const purchase = require.requireActual(
+        '../../../data-iframe/blockchainHandler/purchaseKey'
+      )
+      processKeyPurchaseTransactions.mockImplementationOnce(
+        purchase.processKeyPurchaseTransactions
+      )
+
+      setNetwork(2)
+      fakeTransactions = {
+        data: {
+          transactions: [
+            {
+              transactionHash: 'hash',
+              chain: 2,
+              recipient: '0x123',
+              sender: 'account',
+            },
+          ],
+        },
+      }
+
+      fakeTransactionResults = {
+        hash: {
+          hash: 'hash',
+          to: 'lock',
+          from: 'key',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: '0x123-account',
+          lock: '0x123',
+          status: 'mined',
+          confirmations: 1563472,
+        },
+      }
+
+      fakeWeb3Service.getKeyByLockForOwner = jest.fn((lock, owner) => ({
+        id: `${lock}-${owner}`,
+        lock,
+        owner,
+        expiration: 0,
+      }))
+
+      onChange = info => {
+        expect(info).toEqual({ walletModal: true })
+        done()
+      }
+
+      await retrieveChainData({
+        locksToRetrieve: ['0x123'],
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+        window: fakeWindow,
+        locksmithHost: 'http://locksmith',
+        onChange,
+        requiredConfirmations: 1,
+      })
+
+      await new Promise(resolve => {
+        setInterval(() => {
+          if (fakeWalletService.handlers['transaction.pending']) resolve()
+        })
+      })
+      // this will trigger the async onChange handler
+      fakeWalletService.handlers['transaction.pending'](
+        TRANSACTION_TYPES.KEY_PURCHASE
+      )
+    })
+
+    it('passes transaction updates to onChange', async done => {
+      expect.assertions(1)
+      const purchase = require.requireActual(
+        '../../../data-iframe/blockchainHandler/purchaseKey'
+      )
+      processKeyPurchaseTransactions.mockImplementationOnce(
+        purchase.processKeyPurchaseTransactions
+      )
+
+      setNetwork(2)
+      fakeTransactions = {
+        data: {
+          transactions: [
+            {
+              transactionHash: 'hash',
+              chain: 2,
+              recipient: '0x123',
+              sender: 'account',
+            },
+          ],
+        },
+      }
+
+      fakeTransactionResults = {
+        hash: {
+          hash: 'hash',
+          to: '0x123',
+          from: 'key',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: '0x123-account',
+          lock: '0x123',
+          status: 'mined',
+          confirmations: 1563472,
+        },
+      }
+
+      fakeWeb3Service.getKeyByLockForOwner = jest.fn((lock, owner) => ({
+        id: `${lock}-${owner}`,
+        lock,
+        owner,
+        expiration: 0,
+      }))
+
+      onChange = info => {
+        expect(info).toEqual({
+          transactions: {
+            ...fakeTransactionResults,
+            hash2: {
+              hash: 'hash2',
+              blockNumber: Number.MAX_SAFE_INTEGER,
+              confirmations: 0,
+              from: 'account',
+              to: 'lock',
+              input: 'input',
+              key: 'lock-account',
+              lock: 'lock',
+              network: 2,
+              status: 'submitted',
+              type: TRANSACTION_TYPES.KEY_PURCHASE,
+            },
+          },
+          key: {
+            id: '0x123-account',
+            lock: '0x123',
+            owner: 'account',
+            expiration: 0,
+          },
+        })
+        done()
+      }
+
+      await retrieveChainData({
+        locksToRetrieve: ['0x123'],
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+        window: fakeWindow,
+        locksmithHost: 'http://locksmith',
+        onChange,
+        requiredConfirmations: 1,
+      })
+
+      await new Promise(resolve => {
+        setInterval(() => {
+          if (fakeWalletService.handlers['transaction.new']) resolve()
+        })
+      })
+
+      // this will trigger the async onChange handler
+      fakeWalletService.handlers['transaction.new'](
+        'hash2' /* transaction hash */,
+        'account' /* from */,
+        'lock' /* to */,
+        'input' /* input */,
+        TRANSACTION_TYPES.KEY_PURCHASE /* type */,
+        'submitted' /* status */
+      )
+    })
+
+    it('passes errors to onChange', async done => {
+      expect.assertions(1)
+      const purchase = require.requireActual(
+        '../../../data-iframe/blockchainHandler/purchaseKey'
+      )
+      processKeyPurchaseTransactions.mockImplementationOnce(
+        purchase.processKeyPurchaseTransactions
+      )
+
+      setNetwork(2)
+      fakeTransactions = {
+        data: {
+          transactions: [
+            {
+              transactionHash: 'hash',
+              chain: 2,
+              recipient: '0x123',
+              sender: 'account',
+            },
+          ],
+        },
+      }
+
+      fakeTransactionResults = {
+        hash: {
+          hash: 'hash',
+          to: 'lock',
+          from: 'key',
+          type: TRANSACTION_TYPES.KEY_PURCHASE,
+          key: '0x123-account',
+          lock: '0x123',
+          status: 'mined',
+          confirmations: 1563472,
+        },
+      }
+
+      fakeWeb3Service.getKeyByLockForOwner = jest.fn((lock, owner) => ({
+        id: `${lock}-${owner}`,
+        lock,
+        owner,
+        expiration: 0,
+      }))
+
+      fakeWalletService.addListener = jest.fn()
+      fakeWalletService.removeListener = jest.fn()
+      const error = new Error('fail')
+      onChange = info => {
+        expect(info).toEqual({ error })
+        done()
+      }
+
+      await retrieveChainData({
+        locksToRetrieve: ['0x123'],
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+        window: fakeWindow,
+        locksmithHost: 'http://locksmith',
+        onChange,
+        requiredConfirmations: 1,
+      })
+
+      await new Promise(resolve => {
+        setInterval(() => {
+          if (fakeWalletService.handlers.error) resolve()
+        })
+      })
+      // this will trigger the async onChange handler
+      fakeWalletService.handlers.error(error)
     })
   })
 
