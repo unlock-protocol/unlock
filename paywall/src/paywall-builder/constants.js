@@ -12,6 +12,6 @@ export const POST_MESSAGE_WALLET_INFO = 'walletInfo'
 
 export const POST_MESSAGE_UPDATE_LOCKS = 'update/locks'
 export const POST_MESSAGE_UPDATE_ACCOUNT = 'update/account'
-export const POST_MESSAGE_UPDATE_ACCOUNT_BALANCE = 'update/balance'
+export const POST_MESSAGE_UPDATE_ACCOUNT_BALANCE = 'update/accountBalance'
 export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'
 export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'

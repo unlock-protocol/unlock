@@ -41,11 +41,15 @@ export async function getKeys(window) {
  * So we retrieve from the non-account-specific cache
  */
 export async function getLocks(window) {
-  return cache.get({ window, networkId: currentNetwork, type: 'locks' })
+  const locks =
+    (await cache.get({ window, networkId: currentNetwork, type: 'locks' })) ||
+    {}
+  return locks
 }
 
 export async function getTransactions(window) {
-  return _get(window, 'transactions')
+  const transactions = (await _get(window, 'transactions')) || {}
+  return transactions
 }
 
 export async function setAccount(window, account) {
@@ -103,7 +107,7 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   const balance = await getAccountBalance(window)
   const networkId = await getNetwork(window)
   if (!account) {
-    const cachedLocks = (await getLocks(window)) || {}
+    const cachedLocks = await getLocks(window)
     const nullAccount = '0x0000000000000000000000000000000000000000'
     // construct the default keys for locks if there is no user
     const noKeys = Object.keys(cachedLocks).reduce(
@@ -143,9 +147,9 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   ])
   return {
     locks: await linkKeysToLocks({
-      locks: cachedLocks || {},
+      locks: cachedLocks,
       keys: cachedKeys,
-      transactions: cachedTransactions || {},
+      transactions: cachedTransactions,
       requiredConfirmations,
     }),
     account,
