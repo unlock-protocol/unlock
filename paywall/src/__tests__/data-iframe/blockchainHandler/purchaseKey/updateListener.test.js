@@ -3,6 +3,7 @@ import updateListener from '../../../../data-iframe/blockchainHandler/purchaseKe
 
 describe('updateListener', () => {
   let fakeWeb3Service
+  let newKey
 
   beforeEach(() => {
     fakeWeb3Service = {
@@ -10,8 +11,33 @@ describe('updateListener', () => {
       on: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
       once: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
       off: type => delete fakeWeb3Service.handlers[type],
+      getKeyByLockForOwner: jest.fn(() => newKey),
     }
   })
+
+  it('ignores keys with no transactions', async () => {
+    expect.assertions(2)
+
+    const transactions = {}
+    const key = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: 0,
+    }
+
+    const result = await updateListener({
+      lockAddress: 'lock',
+      existingTransactions: transactions,
+      existingKey: key,
+      web3Service: fakeWeb3Service,
+      requiredConfirmations: 3,
+    })
+
+    expect(result.transactions).toBe(transactions)
+    expect(result.key).toBe(key)
+  })
+
   it('ignores transactions that are not in process', async () => {
     expect.assertions(2)
 
@@ -33,10 +59,8 @@ describe('updateListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: 0,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = key
 
     const result = await updateListener({
       lockAddress: 'lock',
@@ -71,10 +95,8 @@ describe('updateListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = key
 
     const result = await updateListener({
       lockAddress: 'lock',
@@ -110,10 +132,8 @@ describe('updateListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     updateListener({
       lockAddress: 'lock',
@@ -131,13 +151,65 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'pending',
-        transactions: [newHash],
-      })
+      expect(key).toEqual(existingKey)
       done()
     })
+
+    fakeWeb3Service.handlers['transaction.updated'](
+      'hash' /* transaction hash */,
+      { thing: 'hi', status: 'pending' }
+    )
+  })
+
+  it('only handles updates for our transaction', async done => {
+    expect.assertions(2)
+
+    const hash = {
+      hash: 'hash',
+      from: 'account',
+      to: 'lock',
+      status: 'submitted',
+      type: TRANSACTION_TYPES.KEY_PURCHASE,
+      key: 'lock-account',
+      lock: 'lock',
+      confirmations: 0,
+      blockNumber: Number.MAX_SAFE_INTEGER,
+    }
+    const existingTransactions = {
+      hash,
+    }
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
+    }
+    newKey = existingKey
+
+    updateListener({
+      lockAddress: 'lock',
+      existingTransactions,
+      existingKey,
+      web3Service: fakeWeb3Service,
+      requiredConfirmations: 3,
+    }).then(({ transactions, key }) => {
+      const newHash = {
+        ...hash,
+        status: 'pending',
+        thing: 'hi',
+      }
+      expect(transactions).toEqual({
+        hash: newHash,
+      })
+
+      expect(key).toEqual(existingKey)
+      done()
+    })
+
+    fakeWeb3Service.handlers['transaction.updated'](
+      'hash2' /* transaction hash */,
+      { thing: 'hi', status: 'mined' }
+    )
 
     fakeWeb3Service.handlers['transaction.updated'](
       'hash' /* transaction hash */,
@@ -167,10 +239,8 @@ describe('updateListener', () => {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
+    newKey = existingKey
 
     updateListener({
       lockAddress: 'lock',
@@ -189,11 +259,7 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'confirming',
-        transactions: [newHash],
-      })
+      expect(key).toEqual(existingKey)
       done()
     })
 
@@ -224,10 +290,11 @@ describe('updateListener', () => {
       id: 'lock-account',
       lock: 'lock',
       owner: 'account',
+      expiration: 0,
+    }
+    newKey = {
+      ...existingKey,
       expiration: new Date().getTime() / 1000 + 1000,
-      transactions: [],
-      status: 'none',
-      confirmations: 0,
     }
 
     updateListener({
@@ -246,12 +313,7 @@ describe('updateListener', () => {
         hash: newHash,
       })
 
-      expect(key).toEqual({
-        ...existingKey,
-        status: 'confirming',
-        confirmations: 1,
-        transactions: [newHash],
-      })
+      expect(key).toEqual(newKey)
       done()
     })
 
@@ -278,22 +340,18 @@ describe('updateListener', () => {
     const existingTransactions = {
       hash,
     }
-    const existingKeys = {
-      'lock-account': {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: new Date().getTime() / 1000 + 1000,
-        transactions: [],
-        status: 'none',
-        confirmations: 0,
-      },
+    const existingKey = {
+      id: 'lock-account',
+      lock: 'lock',
+      owner: 'account',
+      expiration: new Date().getTime() / 1000 + 1000,
     }
+    newKey = existingKey
 
     updateListener({
       lockAddress: 'lock',
       existingTransactions,
-      existingKeys,
+      existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
     }).catch(e => {
