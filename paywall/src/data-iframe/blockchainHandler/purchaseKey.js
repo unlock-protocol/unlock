@@ -55,10 +55,14 @@ export async function processKeyPurchaseTransactions({
   walletService.addListener('transaction.pending', walletAction)
   try {
     const afterEventProcessed = () => {
-      if (transactions !== result.transactions) {
-        transactions = result.transactions
+      if (result) {
+        const transaction = result.transaction
+        transactions = {
+          ...transactions,
+          [transaction.hash]: transaction,
+        }
         key = result.key
-        update(transactions, key)
+        update(transaction, key)
       }
     }
 

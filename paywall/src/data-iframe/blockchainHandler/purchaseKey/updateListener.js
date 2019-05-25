@@ -18,10 +18,7 @@ export default async function updateListener({
     (transaction.status === 'mined' &&
       transaction.confirmations > requiredConfirmations)
   ) {
-    return {
-      transactions: existingTransactions,
-      key: existingKey,
-    }
+    return false
   }
 
   // get one transaction update
@@ -52,12 +49,8 @@ export default async function updateListener({
     ...transaction,
     ...update,
   }
-  const transactions = {
-    ...existingTransactions,
-    [newTransaction.hash]: newTransaction,
-  }
   return {
-    transactions,
+    transaction: newTransaction,
     // this ensures we always have the latest expiration info
     key: await web3Service.getKeyByLockForOwner(
       existingKey.lock,
