@@ -44,7 +44,7 @@ export function setupWeb3Service({
  * POST_MESSAGE_CONFIG from the main window. This function assumes that the config was
  * already validated by the postOffice
  *
- * @param {seb3Service} web3Service used to retrieve locks, and keys
+ * @param {web3Service} web3Service used to retrieve locks, and keys
  * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
  * @param {string} locksmithHost the endpoint for locksmith
  * @param {Function} onChange the change callback, which is used by the data iframe to cache data and pass it to the
