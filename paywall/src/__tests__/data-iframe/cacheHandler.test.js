@@ -20,15 +20,25 @@ describe('cacheHandler', () => {
   const myKeys = {
     lock: {
       id: 'myKey',
-      owner: 'owner',
+      owner: 'account',
       lock: 'lock',
+      expirationTimestamp: 0,
+    },
+    lock2: {
+      id: 'myKey',
+      owner: 'account',
+      lock: 'lock2',
       expirationTimestamp: 0,
     },
   }
   const myLocks = {
-    myLock: {
-      address: 'myLock',
+    lock: {
+      address: 'lock',
       keyPrice: '1',
+    },
+    lock2: {
+      address: 'lock2',
+      keyPrice: '12',
     },
   }
   const myTransactions = {
@@ -57,9 +67,32 @@ describe('cacheHandler', () => {
   })
 
   describe('setting values', () => {
+    it('setLockAddresses', async () => {
+      expect.assertions(1)
+
+      await setLockAddresses(fakeWindow, ['0x123', '0x456'])
+
+      expect(await getLockAddresses(fakeWindow)).toEqual(['0x123', '0x456'])
+    })
+
+    it('setKey', async () => {
+      expect.assertions(1)
+
+      await setKey(fakeWindow, {
+        owner: 'my key',
+        lock: 'lock',
+      })
+
+      expect(await getKey(fakeWindow, 'lock')).toEqual({
+        owner: 'my key',
+        lock: 'lock',
+      })
+    })
+
     it('setKeys', async () => {
       expect.assertions(1)
 
+      await setLockAddresses(fakeWindow, Object.keys(myKeys))
       await setKeys(fakeWindow, myKeys)
 
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
@@ -144,13 +177,14 @@ describe('cacheHandler', () => {
     it('setting multiple cache values', async () => {
       expect.assertions(3)
 
+      await setAccount(fakeWindow, 'account')
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
 
-      expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
-      expect(await getLocks(fakeWindow)).toEqual(myLocks)
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
+      expect(await getLocks(fakeWindow)).toEqual(myLocks)
+      expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
     })
   })
 
@@ -172,7 +206,7 @@ describe('cacheHandler', () => {
       }
 
       await setAccount(fakeWindow, 'account')
-      await setNetwork(fakeWindow, 'network')
+      await setNetwork(fakeWindow, 2)
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
@@ -228,6 +262,22 @@ describe('cacheHandler', () => {
         expect(locks).toEqual({})
       })
 
+      it('getLockAddresses', async () => {
+        expect.assertions(1)
+
+        const locks = await getLockAddresses(fakeWindow)
+
+        expect(locks).toEqual([])
+      })
+
+      it('getTransactionHashes', async () => {
+        expect.assertions(1)
+
+        const hashes = await getTransactionHashes(fakeWindow)
+
+        expect(hashes).toEqual([])
+      })
+
       it('getTransactions', async () => {
         expect.assertions(1)
 
@@ -237,6 +287,7 @@ describe('cacheHandler', () => {
       })
     })
   })
+
   describe('user account changes', () => {
     beforeEach(async () => {
       fakeWindow = {

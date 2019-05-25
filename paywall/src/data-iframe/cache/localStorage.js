@@ -1,7 +1,9 @@
 import localStorageAvailable from '../../utils/localStorage'
 
-export function storageId(networkId, accountAddress) {
-  return `unlock-protocol/${networkId}/${accountAddress}`
+export function storageId(networkId, accountAddress, type) {
+  return `unlock-protocol/${networkId}/${accountAddress}${
+    type ? `#${type}` : ''
+  }`
 }
 
 const nullAccount = '0x0000000000000000000000000000000000000000'
@@ -11,30 +13,20 @@ const nullAccount = '0x0000000000000000000000000000000000000000'
  * exists as a key if requested
  *
  * @param {string} key the key for the item in localStorage
- * @param {string} type the sub-key (if any) which must exist on return
  */
-function getContainer(window, key, type = false) {
+function getContainer(window, key) {
   const value = window.localStorage.getItem(key)
   if (!value) {
-    if (type) {
-      return { [type]: null }
-    }
-    return {}
+    return null
   }
   let container
   try {
     container = JSON.parse(value)
   } catch (e) {
     // always work, cache is invalid, so we will overwrite on next write
-    return { [type]: null }
+    return null
   }
 
-  if (!type) {
-    return container
-  }
-  if (!container[type]) {
-    container[type] = null
-  }
   return container
 }
 
@@ -65,11 +57,9 @@ export async function get({
   accountAddress = nullAccount,
 }) {
   ensureLocalStorageAvailable(window, `get ${type} from cache`)
-  const key = storageId(networkId, accountAddress)
+  const key = storageId(networkId, accountAddress, type)
 
-  const container = getContainer(window, key, type)
-  if (!type) return container
-  return container[type]
+  return getContainer(window, key)
 }
 
 /**
@@ -90,15 +80,12 @@ export async function put({
   accountAddress = nullAccount,
 }) {
   ensureLocalStorageAvailable(window, `save ${type} in cache`)
-  const key = storageId(networkId, accountAddress)
-  const container = getContainer(window, key, type)
+  const key = storageId(networkId, accountAddress, type)
   if (value === undefined) {
-    delete container[type]
+    return clear({ window, networkId, accountAddress, type })
   } else {
-    container[type] = value
+    window.localStorage.setItem(key, JSON.stringify(value))
   }
-
-  window.localStorage.setItem(key, JSON.stringify(container))
 }
 
 /**
@@ -185,13 +172,8 @@ export async function setNetwork(window, network) {
  */
 export async function clear({ window, networkId, accountAddress, type }) {
   ensureLocalStorageAvailable(window, 'clear cache')
-  const key = storageId(networkId, accountAddress)
-  if (!type) {
-    window.localStorage.removeItem(key)
-    return
-  }
-
-  await put({ window, networkId, accountAddress, type, value: undefined })
+  const key = storageId(networkId, accountAddress, type)
+  window.localStorage.removeItem(key)
 }
 
 const listeners = {}
@@ -210,13 +192,14 @@ export async function addListener({
   accountAddress = nullAccount,
 }) {
   const key = storageId(networkId, accountAddress)
+  const keyMatcher = new RegExp('^' + key)
   if (listeners[key]) {
     removeListener({ window, networkId, accountAddress })
   }
   listeners[key] = evt => {
     if (evt.storageArea !== window.localStorage) return // ignore sessionStorage
     const changedKey = evt.key
-    if (changedKey === key) {
+    if (changedKey.match(keyMatcher)) {
       changeCallback(evt.oldValue, evt.newValue)
     }
   }
