@@ -12,13 +12,15 @@ export const getNetwork = cache.getNetwork
 export async function setAccount(window, account) {
   // intercept the account setting so we have it available as well for retrieving user-specific cache
   currentAccount = account
-  return cache.setAccount(window, account)
+  await cache.setAccount(window, account)
+  return notifyListeners(window, 'account')
 }
 
 export async function setNetwork(window, network) {
   // intercept the network setting so we have it available as well for retrieving user-specific cache
   currentNetwork = network
-  return cache.setNetwork(window, network)
+  await cache.setNetwork(window, network)
+  return notifyListeners(window, 'network')
 }
 
 export async function getAccountBalance(window) {
@@ -26,7 +28,8 @@ export async function getAccountBalance(window) {
 }
 
 export async function setAccountBalance(window, balance) {
-  return _put(window, 'balance', balance)
+  await _put(window, 'balance', balance)
+  return notifyListeners(window, 'balance')
 }
 
 export function setup(networkId, account) {
@@ -101,7 +104,8 @@ export async function getLocks(window) {
  */
 export async function setLocks(window, locks) {
   await setLockAddresses(window, Object.keys(locks))
-  return _put(window, 'locks', locks, true /* non-account specific */)
+  await _put(window, 'locks', locks, true /* non-account specific */)
+  return notifyListeners(window, 'locks')
 }
 
 /**
@@ -129,14 +133,16 @@ export async function getKeys(window) {
  * Cache the keys for the active account and network
  */
 export async function setKeys(window, keys) {
-  return Promise.all(Object.values(keys).map(key => setKey(window, key)))
+  await Promise.all(Object.values(keys).map(key => setKey(window, key)))
+  return notifyListeners(window, 'keys')
 }
 
 /**
  * Save a specific key in the cache for the current user in the current network
  */
 export async function setKey(window, key) {
-  return _put(window, `key/${key.lock}`, key)
+  await _put(window, `key/${key.lock}`, key)
+  return notifyListeners(window, 'keys')
 }
 
 /**
@@ -188,9 +194,10 @@ export async function getTransactions(window) {
 export async function setTransactions(window, transactions) {
   const transactionHashes = Object.keys(transactions)
   await setTransactionHashes(window, transactionHashes)
-  return Promise.all(
+  await Promise.all(
     transactionHashes.map(hash => setTransaction(window, transactions[hash]))
   )
+  return notifyListeners(window, 'transactions')
 }
 
 /**
@@ -205,7 +212,8 @@ export async function setTransaction(window, transaction) {
     hashes.push(transaction.hash)
     await setTransactionHashes(window, hashes)
   }
-  return _put(window, `transaction/${transaction.hash}`, transaction)
+  await _put(window, `transaction/${transaction.hash}`, transaction)
+  return notifyListeners(window, 'transactions')
 }
 
 /**
@@ -284,4 +292,54 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
     balance,
     networkId,
   }
+}
+
+let listeners = new Map()
+
+export function addListener(listener) {
+  if (listeners.has(listener)) return
+  listeners.set(listener, listener)
+}
+
+export function removeListener(listener) {
+  return listeners.delete(listener)
+}
+
+export function clearListeners() {
+  listeners.clear()
+}
+
+export async function notifyListeners(window, type) {
+  let value
+  switch (type) {
+    case 'locks':
+    case 'keys':
+    case 'transactions':
+      value = {
+        locks: await getLocks(window),
+        keys: await getKeys(window),
+        transactions: await getTransactions(window),
+      }
+      break
+    case 'account':
+      value = {
+        account: await getAccount(window),
+      }
+      break
+    case 'balance':
+      value = {
+        account: await getAccount(window),
+        balance: await getAccountBalance(window),
+      }
+      break
+    case 'network':
+      value = {
+        network: await getNetwork(window),
+      }
+      break
+    default:
+      throw new Error(`internal error, unknown type ${type}`)
+  }
+
+  listeners.forEach(listener => listener(value))
 }
