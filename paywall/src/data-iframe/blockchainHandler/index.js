@@ -97,8 +97,8 @@ export async function retrieveChainData({
     getKeys({ walletService, locks: locksToRetrieve, web3Service }),
     locksmithTransactions(window, locksmithHost, web3Service, walletService),
   ])
-  const update = async (transactions, key) => {
-    onChange({ transactions, key })
+  const update = async (transaction, key) => {
+    onChange({ transaction, key })
   }
   Object.values(transactions).forEach(transaction => {
     if (transaction.type === TRANSACTION_TYPES.KEY_PURCHASE) {

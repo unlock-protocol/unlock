@@ -16,7 +16,7 @@ describe('updateListener', () => {
   })
 
   it('ignores keys with no transactions', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {}
     const key = {
@@ -34,12 +34,11 @@ describe('updateListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('ignores transactions that are not in process', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -70,12 +69,11 @@ describe('updateListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('ignores confirmed transactions', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -106,8 +104,7 @@ describe('updateListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('gets a transaction update for submitted transactions', async done => {
@@ -141,15 +138,13 @@ describe('updateListener', () => {
       existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const newHash = {
         ...hash,
         status: 'pending',
         thing: 'hi',
       }
-      expect(transactions).toEqual({
-        hash: newHash,
-      })
+      expect(transaction).toEqual(newHash)
 
       expect(key).toEqual(existingKey)
       done()
@@ -192,15 +187,13 @@ describe('updateListener', () => {
       existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const newHash = {
         ...hash,
         status: 'pending',
         thing: 'hi',
       }
-      expect(transactions).toEqual({
-        hash: newHash,
-      })
+      expect(transaction).toEqual(newHash)
 
       expect(key).toEqual(existingKey)
       done()
@@ -248,16 +241,14 @@ describe('updateListener', () => {
       existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const newHash = {
         ...hash,
         status: 'mined',
         thing: 'hi',
         blockNumber: 1234,
       }
-      expect(transactions).toEqual({
-        hash: newHash,
-      })
+      expect(transaction).toEqual(newHash)
 
       expect(key).toEqual(existingKey)
       done()
@@ -303,15 +294,13 @@ describe('updateListener', () => {
       existingKey,
       web3Service: fakeWeb3Service,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const newHash = {
         ...hash,
         confirmations: 1,
         thing: 'hi',
       }
-      expect(transactions).toEqual({
-        hash: newHash,
-      })
+      expect(transaction).toEqual(newHash)
 
       expect(key).toEqual(newKey)
       done()
