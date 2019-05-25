@@ -14,7 +14,7 @@
     "netlify-cli": "^2.8.3",
     "node-forge": "^0.8.2",
     "nodemailer": "^6.1.0",
-    "nodemon": "^1.19.0",
+    "nodemon": "^1.19.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "winston": "^3.2.1"
