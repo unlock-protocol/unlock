@@ -41,10 +41,7 @@ export default async function submittedListener({
     linkedKey.status !== 'expired' &&
     linkedKey.status !== 'failed'
   ) {
-    return {
-      transactions: existingTransactions,
-      key: existingKey,
-    }
+    return false
   }
 
   // wait for the submitted transaction to become pending
@@ -78,12 +75,8 @@ export default async function submittedListener({
     blockNumber: Number.MAX_SAFE_INTEGER, // ensure this is always the current transaction until it is mined
   }
 
-  const transactions = {
-    ...existingTransactions,
-    [transaction.hash]: transaction,
-  }
   return {
-    transactions,
+    transaction,
     key: await web3Service.getKeyByLockForOwner(
       existingKey.lock,
       existingKey.owner

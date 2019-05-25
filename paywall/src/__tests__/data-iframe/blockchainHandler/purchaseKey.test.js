@@ -58,12 +58,10 @@ describe('blockchainHandler purchaseKey', () => {
 
     function assertOnUpdates(expected, done) {
       let expectedIndex = 0
-      return (newTransactions, newKey) => {
-        const [expectedTransactions, expectedKey, desc] = expected[
-          expectedIndex
-        ]
+      return (newTransaction, newKey) => {
+        const [expectedTransaction, expectedKey, desc] = expected[expectedIndex]
         try {
-          expect(newTransactions).toEqual(expectedTransactions)
+          expect(newTransaction).toEqual(expectedTransaction)
           expect(newKey).toEqual(expectedKey)
         } catch (e) {
           // eslint-disable-next-line
@@ -128,9 +126,7 @@ describe('blockchainHandler purchaseKey', () => {
       }
       const expected = [
         [
-          {
-            hash: submittedTransaction,
-          },
+          submittedTransaction,
           {
             expiration: 0,
             id: 'lock-account',
@@ -253,17 +249,13 @@ describe('blockchainHandler purchaseKey', () => {
       const expected = [
         [
           // submitted transaction
-          {
-            hash: submittedTransaction,
-          },
+          submittedTransaction,
           newKeys.lock,
           'submitted transaction',
         ],
         [
           // update
-          {
-            hash: pendingTransaction,
-          },
+          pendingTransaction,
           newKeys.lock,
           'pending transaction',
         ],
@@ -354,9 +346,7 @@ describe('blockchainHandler purchaseKey', () => {
       const expected = [
         [
           // update
-          {
-            hash: pendingTransaction,
-          },
+          pendingTransaction,
           newKeys.lock,
           'pending transaction',
         ],
@@ -427,9 +417,7 @@ describe('blockchainHandler purchaseKey', () => {
       const expected = [
         [
           // update
-          {
-            hash: confirmingTransaction,
-          },
+          confirmingTransaction,
           key,
           'confirming transaction',
         ],
@@ -617,9 +605,7 @@ describe('blockchainHandler purchaseKey', () => {
       }
       const expected = [
         [
-          {
-            hash: submittedTransaction,
-          },
+          submittedTransaction,
           newKeys.lock,
           'submitted transaction after expire',
         ],

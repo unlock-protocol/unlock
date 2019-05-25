@@ -440,21 +440,18 @@ describe('blockchain handler index', () => {
 
       onChange = info => {
         expect(info).toEqual({
-          transactions: {
-            ...fakeTransactionResults,
-            hash2: {
-              hash: 'hash2',
-              blockNumber: Number.MAX_SAFE_INTEGER,
-              confirmations: 0,
-              from: 'account',
-              to: 'lock',
-              input: 'input',
-              key: 'lock-account',
-              lock: 'lock',
-              network: 2,
-              status: 'submitted',
-              type: TRANSACTION_TYPES.KEY_PURCHASE,
-            },
+          transaction: {
+            hash: 'hash2',
+            blockNumber: Number.MAX_SAFE_INTEGER,
+            confirmations: 0,
+            from: 'account',
+            to: 'lock',
+            input: 'input',
+            key: 'lock-account',
+            lock: 'lock',
+            network: 2,
+            status: 'submitted',
+            type: TRANSACTION_TYPES.KEY_PURCHASE,
           },
           key: {
             id: '0x123-account',

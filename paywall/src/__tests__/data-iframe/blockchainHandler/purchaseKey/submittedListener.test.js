@@ -20,7 +20,7 @@ describe('submittedListener', () => {
   })
 
   it('returns immediately if the key is submitted', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -51,12 +51,11 @@ describe('submittedListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('returns immediately if the key is pending', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -87,12 +86,11 @@ describe('submittedListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('returns immediately if the key is confirming', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -124,12 +122,11 @@ describe('submittedListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('returns immediately if the key is valid', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
 
     const transactions = {
       hash: {
@@ -161,8 +158,7 @@ describe('submittedListener', () => {
       requiredConfirmations: 3,
     })
 
-    expect(result.transactions).toBe(transactions)
-    expect(result.key).toBe(key)
+    expect(result).toBe(false)
   })
 
   it('handles key with no transactions', async done => {
@@ -186,7 +182,7 @@ describe('submittedListener', () => {
       web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -200,9 +196,7 @@ describe('submittedListener', () => {
         network: 1,
         blockNumber: Number.MAX_SAFE_INTEGER,
       }
-      expect(transactions).toEqual({
-        hash,
-      })
+      expect(transaction).toEqual(hash)
 
       expect(key).toEqual(existingKey)
       done()
@@ -252,7 +246,7 @@ describe('submittedListener', () => {
       web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -266,10 +260,7 @@ describe('submittedListener', () => {
         network: 1,
         blockNumber: Number.MAX_SAFE_INTEGER,
       }
-      expect(transactions).toEqual({
-        hash,
-        old,
-      })
+      expect(transaction).toEqual(hash)
 
       expect(key).toEqual(existingKey)
       done()
@@ -319,7 +310,7 @@ describe('submittedListener', () => {
       web3Service: fakeWeb3Service,
       walletService: fakeWalletService,
       requiredConfirmations: 3,
-    }).then(({ transactions, key }) => {
+    }).then(({ transaction, key }) => {
       const hash = {
         hash: 'hash',
         from: 'account',
@@ -333,10 +324,7 @@ describe('submittedListener', () => {
         network: 1,
         blockNumber: Number.MAX_SAFE_INTEGER,
       }
-      expect(transactions).toEqual({
-        hash,
-        old,
-      })
+      expect(transaction).toEqual(hash)
 
       expect(key).toEqual(existingKey)
       done()
