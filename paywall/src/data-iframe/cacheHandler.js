@@ -315,27 +315,12 @@ export async function notifyListeners(window, type) {
     case 'locks':
     case 'keys':
     case 'transactions':
-      value = {
-        locks: await getLocks(window),
-        keys: await getKeys(window),
-        transactions: await getTransactions(window),
-      }
+      value = 'locks'
       break
     case 'account':
-      value = {
-        account: await getAccount(window),
-      }
-      break
     case 'balance':
-      value = {
-        account: await getAccount(window),
-        balance: await getAccountBalance(window),
-      }
-      break
     case 'network':
-      value = {
-        network: await getNetwork(window),
-      }
+      value = type
       break
     default:
       throw new Error(`internal error, unknown type ${type}`)

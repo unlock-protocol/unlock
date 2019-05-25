@@ -679,7 +679,7 @@ describe('cacheHandler', () => {
           clearListeners()
         })
 
-        it('sends locks, keys, transactions when calling setLocks', async () => {
+        it('sends locks when calling setLocks', async () => {
           expect.assertions(1)
 
           await setLockAddresses(fakeWindow, ['lock', 'lock2'])
@@ -690,16 +690,10 @@ describe('cacheHandler', () => {
 
           await setLocks(fakeWindow, locks)
 
-          expect(listener).toHaveBeenCalledWith(
-            expect.objectContaining({
-              locks,
-              keys,
-              transactions: {},
-            })
-          )
+          expect(listener).toHaveBeenCalledWith('locks')
         })
 
-        it('sends locks, keys, transactions when calling setKeys', async () => {
+        it('sends locks when calling setKeys', async () => {
           expect.assertions(1)
 
           await setLockAddresses(fakeWindow, ['lock', 'lock2'])
@@ -710,16 +704,10 @@ describe('cacheHandler', () => {
 
           await setKeys(fakeWindow, keys)
 
-          expect(listener).toHaveBeenCalledWith(
-            expect.objectContaining({
-              locks,
-              keys,
-              transactions: {},
-            })
-          )
+          expect(listener).toHaveBeenCalledWith('locks')
         })
 
-        it('sends locks, keys, transactions when calling setKey', async () => {
+        it('sends locks when calling setKey', async () => {
           expect.assertions(1)
 
           await setLockAddresses(fakeWindow, ['lock', 'lock2'])
@@ -732,19 +720,10 @@ describe('cacheHandler', () => {
           const newKey = { lock: 'lock', expiration: 5 }
           await setKey(fakeWindow, newKey)
 
-          expect(listener).toHaveBeenCalledWith(
-            expect.objectContaining({
-              locks,
-              keys: {
-                ...keys,
-                lock: newKey,
-              },
-              transactions: {},
-            })
-          )
+          expect(listener).toHaveBeenCalledWith('locks')
         })
 
-        it('sends locks, keys, transactions when calling setTransactions', async () => {
+        it('sends locks when calling setTransactions', async () => {
           expect.assertions(1)
 
           await setLockAddresses(fakeWindow, ['lock', 'lock2'])
@@ -756,16 +735,10 @@ describe('cacheHandler', () => {
 
           await setTransactions(fakeWindow, transactions)
 
-          expect(listener).toHaveBeenCalledWith(
-            expect.objectContaining({
-              locks,
-              keys,
-              transactions,
-            })
-          )
+          expect(listener).toHaveBeenCalledWith('locks')
         })
 
-        it('sends locks, keys, transactions when calling setTransaction', async () => {
+        it('sends locks when calling setTransaction', async () => {
           expect.assertions(1)
 
           await setLockAddresses(fakeWindow, ['lock', 'lock2'])
@@ -783,16 +756,7 @@ describe('cacheHandler', () => {
           }
           await setTransaction(fakeWindow, newTransaction)
 
-          expect(listener).toHaveBeenCalledWith(
-            expect.objectContaining({
-              locks,
-              keys,
-              transactions: {
-                ...transactions,
-                hash2: newTransaction,
-              },
-            })
-          )
+          expect(listener).toHaveBeenCalledWith('locks')
         })
       })
 
@@ -810,12 +774,10 @@ describe('cacheHandler', () => {
 
           await setAccount(fakeWindow, 'account')
 
-          expect(listener).toHaveBeenCalledWith({
-            account: 'account',
-          })
+          expect(listener).toHaveBeenCalledWith('account')
         })
 
-        it('sends account and balance when balance is modified', async () => {
+        it('sends balance when balance is modified', async () => {
           expect.assertions(1)
 
           await setAccount(fakeWindow, 'account')
@@ -824,10 +786,7 @@ describe('cacheHandler', () => {
           addListener(listener)
           await setAccountBalance(fakeWindow, '12')
 
-          expect(listener).toHaveBeenCalledWith({
-            account: 'account',
-            balance: '12',
-          })
+          expect(listener).toHaveBeenCalledWith('balance')
         })
       })
 
@@ -845,9 +804,7 @@ describe('cacheHandler', () => {
 
           await setNetwork(fakeWindow, 2)
 
-          expect(listener).toHaveBeenCalledWith({
-            network: 2,
-          })
+          expect(listener).toHaveBeenCalledWith('network')
         })
       })
     })
