@@ -15,3 +15,5 @@ export const POST_MESSAGE_UPDATE_ACCOUNT = 'update/account'
 export const POST_MESSAGE_UPDATE_ACCOUNT_BALANCE = 'update/accountBalance'
 export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'
 export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'
+
+export const POST_MESSAGE_ERROR = 'error'
