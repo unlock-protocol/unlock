@@ -1,7 +1,7 @@
 import { _clearHandlers, iframePostOffice } from '../../utils/postOffice'
 import setupPostOfficeListener from '../../data-iframe/postOfficeListener'
 import {
-  POST_MESSAGE_DATA_REQUEST,
+  POST_MESSAGE_SEND_UPDATES,
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_PURCHASE_KEY,
 } from '../../paywall-builder/constants'
@@ -96,7 +96,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, 'locks')
+    callListener(POST_MESSAGE_SEND_UPDATES, 'locks')
 
     expect(fakeUpdater).toHaveBeenCalledTimes(1)
     expect(fakeUpdater).toHaveBeenCalledWith('locks')
@@ -107,7 +107,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, 'account')
+    callListener(POST_MESSAGE_SEND_UPDATES, 'account')
 
     expect(fakeUpdater).toHaveBeenCalledTimes(1)
     expect(fakeUpdater).toHaveBeenCalledWith('account')
@@ -118,7 +118,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, 'balance')
+    callListener(POST_MESSAGE_SEND_UPDATES, 'balance')
 
     expect(fakeUpdater).toHaveBeenCalledTimes(1)
     expect(fakeUpdater).toHaveBeenCalledWith('balance')
@@ -129,7 +129,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, 'network')
+    callListener(POST_MESSAGE_SEND_UPDATES, 'network')
 
     expect(fakeUpdater).toHaveBeenCalledTimes(1)
     expect(fakeUpdater).toHaveBeenCalledWith('network')
@@ -140,7 +140,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, { try: 'to crash us and fail' })
+    callListener(POST_MESSAGE_SEND_UPDATES, { try: 'to crash us and fail' })
 
     expect(fakeWindow.console.error).toHaveBeenCalledWith(
       'ignoring malformed data'
@@ -153,7 +153,7 @@ describe('postOffice listener', () => {
 
     makePostOffice()
 
-    callListener(POST_MESSAGE_DATA_REQUEST, 'nitwerk')
+    callListener(POST_MESSAGE_SEND_UPDATES, 'nitwerk')
 
     expect(fakeWindow.console.error).toHaveBeenCalledWith(
       'Unknown data type "nitwerk" requested, ignoring'

@@ -1,6 +1,6 @@
 import { setHandler } from '../utils/postOffice'
 import {
-  POST_MESSAGE_DATA_REQUEST,
+  POST_MESSAGE_SEND_UPDATES,
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_PURCHASE_KEY,
 } from '../paywall-builder/constants'
@@ -84,6 +84,6 @@ export default function setupPostOfficeListener(
     purchase
   )
   setHandler(POST_MESSAGE_CONFIG, configListener)
-  setHandler(POST_MESSAGE_DATA_REQUEST, requestListener)
+  setHandler(POST_MESSAGE_SEND_UPDATES, requestListener)
   setHandler(POST_MESSAGE_PURCHASE_KEY, purchaseListener)
 }
