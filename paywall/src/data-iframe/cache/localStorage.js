@@ -1,9 +1,7 @@
 import localStorageAvailable from '../../utils/localStorage'
 
-export function storageId(networkId, accountAddress, type) {
-  return `unlock-protocol/${networkId}/${accountAddress}${
-    type ? `#${type}` : ''
-  }`
+export function storageId(networkId, accountAddress) {
+  return `unlock-protocol/${networkId}/${accountAddress}`
 }
 
 const nullAccount = '0x0000000000000000000000000000000000000000'
@@ -13,20 +11,30 @@ const nullAccount = '0x0000000000000000000000000000000000000000'
  * exists as a key if requested
  *
  * @param {string} key the key for the item in localStorage
+ * @param {string} type the sub-key (if any) which must exist on return
  */
-function getContainer(window, key) {
+function getContainer(window, key, type = false) {
   const value = window.localStorage.getItem(key)
   if (!value) {
-    return null
+    if (type) {
+      return { [type]: null }
+    }
+    return {}
   }
   let container
   try {
     container = JSON.parse(value)
   } catch (e) {
     // always work, cache is invalid, so we will overwrite on next write
-    return null
+    return { [type]: null }
   }
 
+  if (!type) {
+    return container
+  }
+  if (!container[type]) {
+    container[type] = null
+  }
   return container
 }
 
@@ -57,9 +65,11 @@ export async function get({
   accountAddress = nullAccount,
 }) {
   ensureLocalStorageAvailable(window, `get ${type} from cache`)
-  const key = storageId(networkId, accountAddress, type)
+  const key = storageId(networkId, accountAddress)
 
-  return getContainer(window, key)
+  const container = getContainer(window, key, type)
+  if (!type) return container
+  return container[type]
 }
 
 /**
@@ -80,12 +90,45 @@ export async function put({
   accountAddress = nullAccount,
 }) {
   ensureLocalStorageAvailable(window, `save ${type} in cache`)
-  const key = storageId(networkId, accountAddress, type)
+  const key = storageId(networkId, accountAddress)
+  const container = getContainer(window, key, type)
   if (value === undefined) {
-    return clear({ window, networkId, accountAddress, type })
+    delete container[type]
   } else {
-    window.localStorage.setItem(key, JSON.stringify(value))
+    container[type] = value
   }
+
+  window.localStorage.setItem(key, JSON.stringify(container))
+}
+
+/**
+ * Merge a sub-value into a larger value store in the cache
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {int} networkId the ethereum network id
+ * @param {string} type the type of account data to set
+ * @param {*} value the value to store. This must be serializable as JSON
+ * @param {string} accountAddress the ethereum account address of the user whose data is cached. For general
+ *                                values like locks, use null account to make them available to anyone
+ */
+export async function merge({
+  window,
+  networkId,
+  type,
+  subType,
+  value,
+  accountAddress = nullAccount,
+}) {
+  ensureLocalStorageAvailable(window, `save ${type}/${subType} in cache`)
+  const key = storageId(networkId, accountAddress)
+  const container = getContainer(window, key, type)
+  if (value === undefined) {
+    delete container[type][subType]
+  } else {
+    container[type][subType] = value
+  }
+
+  window.localStorage.setItem(key, JSON.stringify(container))
 }
 
 /**
@@ -172,8 +215,13 @@ export async function setNetwork(window, network) {
  */
 export async function clear({ window, networkId, accountAddress, type }) {
   ensureLocalStorageAvailable(window, 'clear cache')
-  const key = storageId(networkId, accountAddress, type)
-  window.localStorage.removeItem(key)
+  const key = storageId(networkId, accountAddress)
+  if (!type) {
+    window.localStorage.removeItem(key)
+    return
+  }
+
+  await put({ window, networkId, accountAddress, type, value: undefined })
 }
 
 const listeners = {}
@@ -192,14 +240,13 @@ export async function addListener({
   accountAddress = nullAccount,
 }) {
   const key = storageId(networkId, accountAddress)
-  const keyMatcher = new RegExp('^' + key)
   if (listeners[key]) {
     removeListener({ window, networkId, accountAddress })
   }
   listeners[key] = evt => {
     if (evt.storageArea !== window.localStorage) return // ignore sessionStorage
     const changedKey = evt.key
-    if (changedKey.match(keyMatcher)) {
+    if (changedKey === key) {
       changeCallback(evt.oldValue, evt.newValue)
     }
   }

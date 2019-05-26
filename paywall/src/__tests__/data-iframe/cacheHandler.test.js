@@ -11,10 +11,10 @@ import {
   getFormattedCacheValues,
   setAccountBalance,
   setKey,
+  setTransaction,
   clearListeners,
   addListener,
   removeListener,
-  setTransaction,
 } from '../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../constants'
 
@@ -70,35 +70,43 @@ describe('cacheHandler', () => {
   })
 
   describe('setting values', () => {
-    it('setLockAddresses', async () => {
-      expect.assertions(1)
-
-      await setLockAddresses(fakeWindow, ['0x123', '0x456'])
-
-      expect(await getLockAddresses(fakeWindow)).toEqual(['0x123', '0x456'])
-    })
-
-    it('setKey', async () => {
-      expect.assertions(1)
-
-      await setKey(fakeWindow, {
-        owner: 'my key',
-        lock: 'lock',
-      })
-
-      expect(await getKey(fakeWindow, 'lock')).toEqual({
-        owner: 'my key',
-        lock: 'lock',
-      })
-    })
-
     it('setKeys', async () => {
       expect.assertions(1)
 
-      await setLockAddresses(fakeWindow, Object.keys(myKeys))
       await setKeys(fakeWindow, myKeys)
 
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
+    })
+
+    describe('setKey', () => {
+      it('sets a new key without disturbing existing keys', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock2',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          ...myKeys,
+          lock2: { lock: 'lock2' },
+        })
+      })
+
+      it('overwrites an existing key', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock',
+          new: 'guy',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          ...myKeys,
+          lock: { lock: 'lock', new: 'guy' },
+        })
+      })
     })
 
     describe('setKey', () => {
@@ -180,14 +188,13 @@ describe('cacheHandler', () => {
     it('setting multiple cache values', async () => {
       expect.assertions(3)
 
-      await setAccount(fakeWindow, 'account')
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
 
-      expect(await getKeys(fakeWindow)).toEqual(myKeys)
-      expect(await getLocks(fakeWindow)).toEqual(myLocks)
       expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
+      expect(await getLocks(fakeWindow)).toEqual(myLocks)
+      expect(await getKeys(fakeWindow)).toEqual(myKeys)
     })
   })
 
@@ -263,22 +270,6 @@ describe('cacheHandler', () => {
         const locks = await getLocks(fakeWindow)
 
         expect(locks).toEqual({})
-      })
-
-      it('getLockAddresses', async () => {
-        expect.assertions(1)
-
-        const locks = await getLockAddresses(fakeWindow)
-
-        expect(locks).toEqual([])
-      })
-
-      it('getTransactionHashes', async () => {
-        expect.assertions(1)
-
-        const hashes = await getTransactionHashes(fakeWindow)
-
-        expect(hashes).toEqual([])
       })
 
       it('getTransactions', async () => {
@@ -682,7 +673,6 @@ describe('cacheHandler', () => {
         it('sends locks when calling setLocks', async () => {
           expect.assertions(1)
 
-          await setLockAddresses(fakeWindow, ['lock', 'lock2'])
           await setKeys(fakeWindow, keys)
 
           const listener = jest.fn()
@@ -696,7 +686,6 @@ describe('cacheHandler', () => {
         it('sends locks when calling setKeys', async () => {
           expect.assertions(1)
 
-          await setLockAddresses(fakeWindow, ['lock', 'lock2'])
           await setLocks(fakeWindow, locks)
 
           const listener = jest.fn()
@@ -710,7 +699,6 @@ describe('cacheHandler', () => {
         it('sends locks when calling setKey', async () => {
           expect.assertions(1)
 
-          await setLockAddresses(fakeWindow, ['lock', 'lock2'])
           await setLocks(fakeWindow, locks)
           await setKeys(fakeWindow, keys)
 
@@ -726,7 +714,6 @@ describe('cacheHandler', () => {
         it('sends locks when calling setTransactions', async () => {
           expect.assertions(1)
 
-          await setLockAddresses(fakeWindow, ['lock', 'lock2'])
           await setLocks(fakeWindow, locks)
           await setKeys(fakeWindow, keys)
 
@@ -741,7 +728,6 @@ describe('cacheHandler', () => {
         it('sends locks when calling setTransaction', async () => {
           expect.assertions(1)
 
-          await setLockAddresses(fakeWindow, ['lock', 'lock2'])
           await setLocks(fakeWindow, locks)
           await setKeys(fakeWindow, keys)
           await setTransactions(fakeWindow, transactions)

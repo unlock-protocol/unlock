@@ -4,69 +4,40 @@ import linkKeysToLocks from './blockchainHandler/linkKeysToLocks'
 let currentNetwork
 let currentAccount
 
-const nullAccount = '0x0000000000000000000000000000000000000000'
-
 export const getAccount = cache.getAccount
 export const getNetwork = cache.getNetwork
-
-export async function setAccount(window, account) {
-  // intercept the account setting so we have it available as well for retrieving user-specific cache
-  currentAccount = account
-  await cache.setAccount(window, account)
-  return notifyListeners(window, 'account')
-}
-
-export async function setNetwork(window, network) {
-  // intercept the network setting so we have it available as well for retrieving user-specific cache
-  currentNetwork = network
-  await cache.setNetwork(window, network)
-  return notifyListeners(window, 'network')
-}
-
-export async function getAccountBalance(window) {
-  return _get(window, 'balance')
-}
-
-export async function setAccountBalance(window, balance) {
-  await _put(window, 'balance', balance)
-  return notifyListeners(window, 'balance')
-}
 
 export function setup(networkId, account) {
   currentNetwork = networkId
   currentAccount = account
 }
 
-/**
- * @param {window} window the global context (window, self, global)
- * @param {string} key the name of the item to access
- * @param {bool} nonAccountSpecific if true, then the value will return even if the
- *                                  user changes their active account. It does not persist
- *                                  across network changes
- */
-async function _get(window, key, nonAccountSpecific = false) {
+async function _get(window, key) {
   return cache.get({
     window,
     networkId: currentNetwork,
-    accountAddress: nonAccountSpecific ? nullAccount : currentAccount,
+    accountAddress: currentAccount,
     type: key,
   })
 }
 
-/**
- * @param {window} window the global context (window, self, global)
- * @param {string} key the name of the item to access
- * @param {*} value a JSON serializable value to store
- * @param {bool} nonAccountSpecific if true, then the value will return even if the
- *                                  user changes their active account. It does not persist
- *                                  across network changes
- */
-async function _put(window, key, value, nonAccountSpecific = false) {
+async function _put(window, key, value) {
   return cache.put({
     window,
     networkId: currentNetwork,
-    accountAddress: nonAccountSpecific ? nullAccount : currentAccount,
+    accountAddress: currentAccount,
     type: key,
+    value,
+  })
+}
+
+async function _merge(window, key, subType, value) {
+  return cache.merge({
+    window,
+    networkId: currentNetwork,
+    accountAddress: currentAccount,
+    type: key,
+    subType,
     value,
   })
 }
@@ -93,8 +64,55 @@ export async function getKeys(window) {
  */
 export async function getLocks(window) {
   const locks =
-    (await _get(window, 'locks', true /* non-account specific */)) || {}
+    (await cache.get({ window, networkId: currentNetwork, type: 'locks' })) ||
+    {}
   return locks
+}
+
+export async function getTransactions(window) {
+  const transactions = (await _get(window, 'transactions')) || {}
+  return transactions
+}
+
+export async function setAccount(window, account) {
+  // intercept the account setting so we have it available as well for retrieving user-specific cache
+  currentAccount = account
+  await cache.setAccount(window, account)
+  notifyListeners('account')
+  return
+}
+
+export async function setNetwork(window, network) {
+  // intercept the network setting so we have it available as well for retrieving user-specific cache
+  currentNetwork = network
+  await cache.setNetwork(window, network)
+  notifyListeners('network')
+  return
+}
+
+export async function getAccountBalance(window) {
+  return _get(window, 'balance')
+}
+
+export async function setAccountBalance(window, balance) {
+  await _put(window, 'balance', balance)
+  notifyListeners('balance')
+  return
+}
+
+export async function setKeys(window, keys) {
+  await _put(window, 'keys', keys)
+  notifyListeners('keys')
+  return
+}
+
+/**
+ * Save a single key without overwriting the other keys with potentially stale data
+ */
+export async function setKey(window, key) {
+  await _merge(window, 'keys', key.lock, key)
+  notifyListeners('keys')
+  return
 }
 
 /**
@@ -103,124 +121,29 @@ export async function getLocks(window) {
  * So we save in the non-account-specific cache
  */
 export async function setLocks(window, locks) {
-  await setLockAddresses(window, Object.keys(locks))
-  await _put(window, 'locks', locks, true /* non-account specific */)
-  return notifyListeners(window, 'locks')
+  await cache.put({
+    window,
+    networkId: currentNetwork,
+    type: 'locks',
+    value: locks,
+  })
+  notifyListeners('locks')
+  return
 }
 
-/**
- * Retrieve all of the cached keys for the active account and network
- *
- * Note that the list of lock addresse must have been saved first.
- */
-export async function getKeys(window) {
-  const lockAddresses = await getLockAddresses(window)
-
-  const keys = (await Promise.all(
-    lockAddresses.map(address => getKey(window, address))
-  )).filter(key => key) // remove non-existing cache entries
-
-  return keys.reduce(
-    (allKeys, key) => ({
-      ...allKeys,
-      [key.lock]: key,
-    }),
-    {}
-  )
-}
-
-/**
- * Cache the keys for the active account and network
- */
-export async function setKeys(window, keys) {
-  await Promise.all(Object.values(keys).map(key => setKey(window, key)))
-  return notifyListeners(window, 'keys')
-}
-
-/**
- * Save a specific key in the cache for the current user in the current network
- */
-export async function setKey(window, key) {
-  await _put(window, `key/${key.lock}`, key)
-  return notifyListeners(window, 'keys')
-}
-
-/**
- * Retrieve a specific key in the cache for the current user in the current network
- */
-export async function getKey(window, lockAddress) {
-  return _get(window, `key/${lockAddress}`)
-}
-
-/**
- * get the list of key purchase transaction hashes returned from locksmith for this user on this network
- */
-export async function getTransactionHashes(window) {
-  return (await _get(window, 'transactionHashes')) || []
-}
-
-/**
- * set the list of key purchase transaction hashes returned from locksmith for this user on this network
- */
-export async function setTransactionHashes(window, hashes) {
-  return _put(window, 'transactionHashes', hashes)
-}
-
-/**
- * Get the list of key purchase transactions as an object, indexed by transaction hash,
- * for the current user on the current network
- */
-export async function getTransactions(window) {
-  const hashes = await getTransactionHashes(window)
-  if (!hashes.length) return {}
-
-  const transactions = (await Promise.all(
-    hashes.map(hash => getTransaction(window, hash))
-  )).filter(transaction => transaction) // remove non-existing cache entries
-
-  return transactions.reduce(
-    (allTransactions, transaction) => ({
-      ...allTransactions,
-      [transaction.hash]: transaction,
-    }),
-    {}
-  )
-}
-
-/**
- * Set the list of key purchase transactions, indexed by transaction hash, for the current user
- * on the current network
- */
 export async function setTransactions(window, transactions) {
-  const transactionHashes = Object.keys(transactions)
-  await setTransactionHashes(window, transactionHashes)
-  await Promise.all(
-    transactionHashes.map(hash => setTransaction(window, transactions[hash]))
-  )
-  return notifyListeners(window, 'transactions')
+  await _put(window, 'transactions', transactions)
+  notifyListeners('transactions')
+  return
 }
 
 /**
- * Save a single transaction for the current user on the current network
- *
- * Also updates the list of transaction hashes if it is a brand-new
- * key purchase transaction
+ * Save a single transaction without overwriting the other transactions with potentially stale data
  */
 export async function setTransaction(window, transaction) {
-  const hashes = await getTransactionHashes(window)
-  if (!hashes.includes(transaction.hash)) {
-    hashes.push(transaction.hash)
-    await setTransactionHashes(window, hashes)
-  }
-  await _put(window, `transaction/${transaction.hash}`, transaction)
-  return notifyListeners(window, 'transactions')
-}
-
-/**
- * Retrieve a specific key purchase transaction by hash for the current user on the current network
- */
-export async function getTransaction(window, hash) {
-  return _get(window, `transaction/${hash}`)
+  await _merge(window, 'transactions', transaction.hash, transaction)
+  notifyListeners('transactions')
+  return
 }
 
 /**
@@ -309,7 +232,7 @@ export function clearListeners() {
   listeners.clear()
 }
 
-export async function notifyListeners(window, type) {
+export async function notifyListeners(type) {
   let value
   switch (type) {
     case 'locks':

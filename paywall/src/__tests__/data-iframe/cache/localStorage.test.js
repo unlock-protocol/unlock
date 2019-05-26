@@ -55,9 +55,9 @@ describe('localStorage cache', () => {
 
     it('value is set', async () => {
       expect.assertions(1)
-      fakeWindow.storage[storageId(123, 'hi', 'there')] = JSON.stringify(
-        'hello'
-      )
+      fakeWindow.storage[storageId(123, 'hi')] = JSON.stringify({
+        there: 'hello',
+      })
 
       expect(
         await get({
@@ -66,14 +66,14 @@ describe('localStorage cache', () => {
           type: 'there',
           accountAddress: 'hi',
         })
-      ).toBe('hello')
+      ).toEqual('hello')
     })
 
     it('no account retrieves generic value', async () => {
       expect.assertions(1)
-      fakeWindow.storage[storageId(123, nullAccount, 'there')] = JSON.stringify(
-        'hello'
-      )
+      fakeWindow.storage[storageId(123, nullAccount)] = JSON.stringify({
+        there: 'hello',
+      })
 
       expect(
         await get({
@@ -81,14 +81,14 @@ describe('localStorage cache', () => {
           networkId: 123,
           type: 'there',
         })
-      ).toBe('hello')
+      ).toEqual('hello')
     })
 
     it('value is set, but malformed', async () => {
       expect.assertions(1)
-      fakeWindow.storage[storageId(123, 'hi', 'there')] = JSON.stringify(
-        'hello'
-      ).substring(1, 4)
+      fakeWindow.storage[storageId(123, 'hi')] = JSON.stringify({
+        there: 'hello',
+      }).substring(1, 4)
 
       expect(
         await get({
@@ -102,9 +102,9 @@ describe('localStorage cache', () => {
 
     it('value is set, different network', async () => {
       expect.assertions(1)
-      fakeWindow.storage[storageId(456, 'hi', 'there')] = JSON.stringify(
-        'hello'
-      )
+      fakeWindow.storage[storageId(456, 'hi')] = JSON.stringify({
+        there: 'hello',
+      })
 
       expect(
         await get({
@@ -118,9 +118,9 @@ describe('localStorage cache', () => {
 
     it('value is set, different account', async () => {
       expect.assertions(1)
-      fakeWindow.storage[storageId(123, 'another', 'there')] = JSON.stringify(
-        'hello'
-      )
+      fakeWindow.storage[storageId(123, 'another')] = JSON.stringify({
+        there: 'hello',
+      })
 
       expect(
         await get({
@@ -130,6 +130,21 @@ describe('localStorage cache', () => {
           accountAddress: 'hi',
         })
       ).toBeNull()
+    })
+
+    it('value is set, entire cache for user wanted', async () => {
+      expect.assertions(1)
+      fakeWindow.storage[storageId(123, 'hi')] = JSON.stringify({
+        there: 'hello',
+        it: 'is',
+      })
+
+      expect(
+        await get({ window: fakeWindow, networkId: 123, accountAddress: 'hi' })
+      ).toEqual({
+        there: 'hello',
+        it: 'is',
+      })
     })
   })
 
@@ -149,8 +164,10 @@ describe('localStorage cache', () => {
         value: 'hello',
       })
 
-      expect(fakeWindow.storage[storageId(123, 'hi', 'there')]).toBe(
-        JSON.stringify('hello')
+      expect(fakeWindow.storage[storageId(123, 'hi')]).toBe(
+        JSON.stringify({
+          there: 'hello',
+        })
       )
     })
 
@@ -164,8 +181,10 @@ describe('localStorage cache', () => {
         value: 'hello',
       })
 
-      expect(fakeWindow.storage[storageId(123, nullAccount, 'there')]).toBe(
-        JSON.stringify('hello')
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
+        JSON.stringify({
+          there: 'hello',
+        })
       )
     })
   })
@@ -382,13 +401,6 @@ describe('localStorage cache', () => {
       })
       await put({
         window: fakeWindow,
-        networkId: 123,
-        accountAddress: 'bar',
-        type: 'foo',
-        value: 'bar',
-      })
-      await put({
-        window: fakeWindow,
         networkId: 456,
         accountAddress: 'hi',
         type: 'foo',
@@ -428,13 +440,10 @@ describe('localStorage cache', () => {
       expect.assertions(1)
 
       expect(fakeWindow.storage).toEqual({
-        'unlock-protocol/123/bar#fooe': '"bare"',
-        'unlock-protocol/123/bar#bare': '"bare"',
-        'unlock-protocol/123/hi#foo': '"bar"',
-        'unlock-protocol/123/bar#foo': '"bar"',
-        'unlock-protocol/123/hi#bar': '"bar"',
-        'unlock-protocol/456/bar#fooe': '"bare"',
-        'unlock-protocol/456/hi#foo': '"bar"',
+        'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
+        'unlock-protocol/123/hi': '{"foo":"bar","bar":"bar"}',
+        'unlock-protocol/456/bar': '{"fooe":"bare"}',
+        'unlock-protocol/456/hi': '{"foo":"bar"}',
       })
     })
 
@@ -447,14 +456,11 @@ describe('localStorage cache', () => {
         accountAddress: 'hi',
         type: 'foo',
       })
-
       expect(fakeWindow.storage).toEqual({
-        'unlock-protocol/123/bar#fooe': '"bare"',
-        'unlock-protocol/123/bar#bare': '"bare"',
-        'unlock-protocol/123/hi#bar': '"bar"',
-        'unlock-protocol/123/bar#foo': '"bar"',
-        'unlock-protocol/456/bar#fooe': '"bare"',
-        'unlock-protocol/456/hi#foo': '"bar"',
+        'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
+        'unlock-protocol/123/hi': '{"bar":"bar"}',
+        'unlock-protocol/456/bar': '{"fooe":"bare"}',
+        'unlock-protocol/456/hi': '{"foo":"bar"}',
       })
 
       await clear({
@@ -463,13 +469,26 @@ describe('localStorage cache', () => {
         accountAddress: 'hi',
         type: 'bar',
       })
-
       expect(fakeWindow.storage).toEqual({
-        'unlock-protocol/123/bar#fooe': '"bare"',
-        'unlock-protocol/123/bar#bare': '"bare"',
-        'unlock-protocol/123/bar#foo': '"bar"',
-        'unlock-protocol/456/bar#fooe': '"bare"',
-        'unlock-protocol/456/hi#foo': '"bar"',
+        'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
+        'unlock-protocol/123/hi': '{}',
+        'unlock-protocol/456/bar': '{"fooe":"bare"}',
+        'unlock-protocol/456/hi': '{"foo":"bar"}',
+      })
+    })
+
+    it('clearing the whole cache for a user', async () => {
+      expect.assertions(1)
+
+      await clear({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+      })
+      expect(fakeWindow.storage).toEqual({
+        'unlock-protocol/123/bar': '{"fooe":"bare","bare":"bare"}',
+        'unlock-protocol/456/bar': '{"fooe":"bare"}',
+        'unlock-protocol/456/hi': '{"foo":"bar"}',
       })
     })
 
@@ -480,42 +499,36 @@ describe('localStorage cache', () => {
         window: fakeWindow,
         networkId: 123,
         accountAddress: 'hi',
-        type: 'foo',
       })
       const bare = await get({
         window: fakeWindow,
         networkId: 123,
         accountAddress: 'bar',
-        type: 'foo',
       })
 
-      expect(bare).toBe('bar')
+      expect(bare).toEqual({
+        fooe: 'bare',
+        bare: 'bare',
+      })
     })
 
     it("does not clear same user's cache on a different network", async () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       await clear({
         window: fakeWindow,
         networkId: 123,
         accountAddress: 'hi',
-        type: 'foo',
       })
       const other = await get({
         window: fakeWindow,
         networkId: 456,
         accountAddress: 'hi',
-        type: 'foo',
-      })
-      const mine = await get({
-        window: fakeWindow,
-        networkId: 123,
-        accountAddress: 'hi',
-        type: 'foo',
       })
 
-      expect(mine).toBeNull()
-      expect(other).toBe('bar')
+      expect(other).toEqual({
+        foo: 'bar',
+      })
     })
   })
 
