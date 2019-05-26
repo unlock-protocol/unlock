@@ -32,7 +32,7 @@ async function _put(window, key, value) {
 }
 
 export async function getKeys(window) {
-  return _get(window, 'keys')
+  return (await _get(window, 'keys')) || {}
 }
 
 /**
