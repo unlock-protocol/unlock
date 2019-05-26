@@ -17,3 +17,6 @@ export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'
 export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'
 
 export const POST_MESSAGE_ERROR = 'error'
+export const POST_MESSAGE_SEND_UPDATES = 'semd/updates'
+
+export const POST_MESSAGE_PURCHASE_KEY = 'purchaseKey'
