@@ -10,6 +10,8 @@ import {
   setNetwork,
   getFormattedCacheValues,
   setAccountBalance,
+  setKey,
+  setTransaction,
 } from '../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../constants'
 
@@ -63,6 +65,36 @@ describe('cacheHandler', () => {
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
     })
 
+    describe('setKey', () => {
+      it('sets a new key without disturbing existing keys', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock2',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          ...myKeys,
+          lock2: { lock: 'lock2' },
+        })
+      })
+
+      it('overwrites an existing key', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock',
+          new: 'guy',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          lock: { lock: 'lock', new: 'guy' },
+        })
+      })
+    })
+
     it('setLocks', async () => {
       expect.assertions(1)
 
@@ -77,6 +109,36 @@ describe('cacheHandler', () => {
       await setTransactions(fakeWindow, myTransactions)
 
       expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
+    })
+
+    describe('setTransaction', () => {
+      it('sets a new transaction without disturbing existing transactions', async () => {
+        expect.assertions(1)
+
+        await setTransactions(fakeWindow, myTransactions)
+        await setTransaction(fakeWindow, {
+          hash: 'hash2',
+        })
+
+        expect(await getTransactions(fakeWindow)).toEqual({
+          ...myTransactions,
+          hash2: { hash: 'hash2' },
+        })
+      })
+
+      it('overwrites an existing transaction', async () => {
+        expect.assertions(1)
+
+        await setTransactions(fakeWindow, myTransactions)
+        await setTransaction(fakeWindow, {
+          hash: 'myTransaction',
+          new: 'guy',
+        })
+
+        expect(await getTransactions(fakeWindow)).toEqual({
+          myTransaction: { hash: 'myTransaction', new: 'guy' },
+        })
+      })
     })
 
     it('setting multiple cache values', async () => {
@@ -157,6 +219,7 @@ describe('cacheHandler', () => {
           },
         }
       })
+
       it('getLocks', async () => {
         expect.assertions(1)
 
@@ -275,6 +338,130 @@ describe('cacheHandler', () => {
     })
 
     it('should not return cached transactions', async () => {
+      expect.assertions(1)
+
+      expect(await getTransactions(fakeWindow)).toEqual({})
+    })
+
+    it('setting a new cache value does not interfere with other networks', async () => {
+      expect.assertions(2)
+
+      const differentKeys = {
+        lock2: {
+          lock: 'lock2',
+          owner: 'different',
+        },
+      }
+
+      await setKeys(fakeWindow, differentKeys)
+      expect(await getKeys(fakeWindow)).toEqual(differentKeys)
+
+      await setNetwork(fakeWindow, 2)
+      expect(await getKeys(fakeWindow)).toEqual(myKeys)
+    })
+  })
+
+  describe('user account changes', () => {
+    beforeEach(async () => {
+      fakeWindow = {
+        storage: {},
+        localStorage: {
+          setItem(key, item) {
+            fakeWindow.storage[key] = item
+          },
+          getItem(key) {
+            return fakeWindow.storage[key]
+          },
+          removeItem(key) {
+            delete fakeWindow.storage[key]
+          },
+        },
+      }
+
+      await setAccount(fakeWindow, 'account')
+      await setNetwork(fakeWindow, 2)
+      await setKeys(fakeWindow, myKeys)
+      await setLocks(fakeWindow, myLocks)
+      await setTransactions(fakeWindow, myTransactions)
+
+      await setAccount(fakeWindow, 'different')
+    })
+
+    it('cached locks still return', async () => {
+      expect.assertions(1)
+
+      expect(await getLocks(fakeWindow)).toEqual(myLocks)
+    })
+
+    it('cached keys are not returned', async () => {
+      expect.assertions(1)
+
+      expect(await getKeys(fakeWindow)).toEqual({})
+    })
+
+    it('cached transactions are not returned', async () => {
+      expect.assertions(1)
+
+      expect(await getTransactions(fakeWindow)).toEqual({})
+    })
+
+    it('setting a new cache value does not interfere with other accounts', async () => {
+      expect.assertions(2)
+
+      const differentKeys = {
+        lock2: {
+          lock: 'lock2',
+          owner: 'different',
+        },
+      }
+
+      await setKeys(fakeWindow, differentKeys)
+      expect(await getKeys(fakeWindow)).toEqual(differentKeys)
+
+      await setAccount(fakeWindow, 'account')
+      expect(await getKeys(fakeWindow)).toEqual(myKeys)
+    })
+  })
+
+  describe('network changes', () => {
+    beforeEach(async () => {
+      fakeWindow = {
+        storage: {},
+        localStorage: {
+          setItem(key, item) {
+            fakeWindow.storage[key] = item
+          },
+          getItem(key) {
+            return fakeWindow.storage[key]
+          },
+          removeItem(key) {
+            delete fakeWindow.storage[key]
+          },
+        },
+      }
+
+      await setAccount(fakeWindow, 'account')
+      await setNetwork(fakeWindow, 2)
+      await setKeys(fakeWindow, myKeys)
+      await setLocks(fakeWindow, myLocks)
+      await setTransactions(fakeWindow, myTransactions)
+
+      await setNetwork(fakeWindow, 4)
+    })
+
+    it('cached locks from a different network do not return', async () => {
+      expect.assertions(1)
+
+      expect(await getLocks(fakeWindow)).toEqual({})
+    })
+
+    it('cached keys are not returned', async () => {
+      expect.assertions(1)
+
+      expect(await getKeys(fakeWindow)).toEqual({})
+    })
+
+    it('cached transactions are not returned', async () => {
       expect.assertions(1)
 
       expect(await getTransactions(fakeWindow)).toEqual({})

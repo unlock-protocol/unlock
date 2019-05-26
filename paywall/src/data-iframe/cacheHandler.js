@@ -31,6 +31,17 @@ async function _put(window, key, value) {
   })
 }
 
+async function _merge(window, key, subType, value) {
+  return cache.merge({
+    window,
+    networkId: currentNetwork,
+    accountAddress: currentAccount,
+    type: key,
+    subType,
+    value,
+  })
+}
+
 export async function getKeys(window) {
   return (await _get(window, 'keys')) || {}
 }
@@ -77,6 +88,13 @@ export async function setKeys(window, keys) {
 }
 
 /**
+ * Save a single key without overwriting the other keys with potentially stale data
+ */
+export async function setKey(window, key) {
+  return _merge(window, 'keys', key.lock, key)
+}
+
+/**
  * Locks are not user-dependent
  *
  * So we save in the non-account-specific cache
@@ -92,6 +110,13 @@ export async function setLocks(window, locks) {
 
 export async function setTransactions(window, transactions) {
   return _put(window, 'transactions', transactions)
+}
+
+/**
+ * Save a single transaction without overwriting the other transactions with potentially stale data
+ */
+export async function setTransaction(window, transaction) {
+  return _merge(window, 'transactions', transaction.hash, transaction)
 }
 
 /**
