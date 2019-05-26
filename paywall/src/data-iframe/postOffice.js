@@ -7,6 +7,7 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_NETWORK,
   POST_MESSAGE_UPDATE_WALLET,
+  POST_MESSAGE_ERROR,
 } from '../paywall-builder/constants'
 import { getFormattedCacheValues } from './cacheHandler'
 
@@ -56,9 +57,12 @@ export default function postOffice(window, requiredConfirmations) {
     walletModal() {
       postMessage(POST_MESSAGE_UPDATE_WALLET)
     },
+    error(error) {
+      postMessage(POST_MESSAGE_ERROR, error)
+    },
   }
 
-  return async update => {
+  return async (update, content) => {
     const cachedData = await getFormattedCacheValues(
       window,
       requiredConfirmations
@@ -91,6 +95,9 @@ export default function postOffice(window, requiredConfirmations) {
         break
       case 'walletModal':
         actions.walletModal()
+        break
+      case 'error':
+        actions.error(content.message ? content.message : content)
         break
     }
   }

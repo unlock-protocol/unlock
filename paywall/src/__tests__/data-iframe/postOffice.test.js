@@ -7,6 +7,7 @@ import {
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
+  POST_MESSAGE_ERROR,
 } from '../../paywall-builder/constants'
 import {
   setAccount,
@@ -86,6 +87,38 @@ describe('data iframe postOffice', () => {
           done()
         }
         updater('walletModal')
+      })
+
+      it('error passes on the error message of an Error to the main window', done => {
+        expect.assertions(1)
+
+        fakeTarget.postMessage = (...args) => {
+          expect(args).toEqual([
+            {
+              type: POST_MESSAGE_ERROR,
+              payload: 'fail',
+            },
+            'http://fun.times',
+          ])
+          done()
+        }
+        updater('error', new Error('fail'))
+      })
+
+      it('error passes on the error message to the main window', done => {
+        expect.assertions(1)
+
+        fakeTarget.postMessage = (...args) => {
+          expect(args).toEqual([
+            {
+              type: POST_MESSAGE_ERROR,
+              payload: 'fail',
+            },
+            'http://fun.times',
+          ])
+          done()
+        }
+        updater('error', 'fail')
       })
 
       it('account passes account address to the main window', async done => {
