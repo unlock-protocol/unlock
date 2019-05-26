@@ -7,6 +7,7 @@ import {
   getNetwork,
   setNetwork,
 } from '../../../data-iframe/cache'
+import { merge } from '../../../data-iframe/cache/localStorage'
 
 jest.mock('../../../utils/localStorage', () => () => false)
 
@@ -32,6 +33,18 @@ describe('localStorage cache', () => {
       } catch (e) {
         expect(e.message).toBe(
           'localStorage is unavailable, cannot save thing in cache'
+        )
+      }
+    })
+
+    it('merge', async () => {
+      expect.assertions(1)
+
+      try {
+        await merge({ type: 'thing', subType: 'another' })
+      } catch (e) {
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot save thing/another in cache'
         )
       }
     })
