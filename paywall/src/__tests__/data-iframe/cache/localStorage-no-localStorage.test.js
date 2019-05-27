@@ -7,12 +7,13 @@ import {
   getNetwork,
   setNetwork,
 } from '../../../data-iframe/cache'
+import { merge } from '../../../data-iframe/cache/localStorage'
 
 jest.mock('../../../utils/localStorage', () => () => false)
 
 describe('localStorage cache', () => {
   describe('localStorage unavailable', () => {
-    it('get', async () => {
+    it('should throw when get is called', async () => {
       expect.assertions(1)
 
       try {
@@ -24,7 +25,7 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('put', async () => {
+    it('should throw when put is called', async () => {
       expect.assertions(1)
 
       try {
@@ -36,7 +37,19 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('clear', async () => {
+    it('should throw when merge is called', async () => {
+      expect.assertions(1)
+
+      try {
+        await merge({ type: 'thing', subType: 'another' })
+      } catch (e) {
+        expect(e.message).toBe(
+          'localStorage is unavailable, cannot save thing/another in cache'
+        )
+      }
+    })
+
+    it('should throw when clear is called', async () => {
       expect.assertions(1)
 
       try {
@@ -48,7 +61,7 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('getAccount', async () => {
+    it('should throw when getAccount is called', async () => {
       expect.assertions(1)
 
       try {
@@ -60,7 +73,7 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('getNetwork', async () => {
+    it('should throw when getNetwork is called', async () => {
       expect.assertions(1)
 
       try {
@@ -72,7 +85,7 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('setAccount', async () => {
+    it('should throw when setAccount is called', async () => {
       expect.assertions(1)
 
       try {
@@ -84,7 +97,7 @@ describe('localStorage cache', () => {
       }
     })
 
-    it('setNetwork', async () => {
+    it('should throw when setNetwork is called', async () => {
       expect.assertions(1)
 
       try {
