@@ -11,6 +11,7 @@ import {
   POST_MESSAGE_UPDATE_NETWORK,
 } from '../paywall-builder/constants'
 import dispatchEvent from './dispatchEvent'
+import web3Proxy from '../paywall-builder/web3Proxy'
 
 export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   const dataPostOffice = setupPostOffice(
@@ -29,6 +30,9 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
       respond(POST_MESSAGE_CONFIG, window.unlockProtocolConfig)
     }
   })
+
+  // set up the main window side of Web3ProxyProvider
+  web3Proxy(window, dataIframe, process.env.PAYWALL_URL)
 
   setHandler(POST_MESSAGE_UNLOCKED, locks => {
     CheckoutUIPostOffice(POST_MESSAGE_UNLOCKED, locks)

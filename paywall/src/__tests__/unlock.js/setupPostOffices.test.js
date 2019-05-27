@@ -9,6 +9,7 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT,
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_LOCKS,
+  POST_MESSAGE_WALLET_INFO,
 } from '../../paywall-builder/constants'
 
 describe('setupPostOffice', () => {
@@ -31,6 +32,11 @@ describe('setupPostOffice', () => {
     process.env.PAYWALL_URL = 'http://paywall'
     fakeWindow = {
       origin: 'http://fun.times',
+      web3: {
+        currentProvider: {
+          send: jest.fn(),
+        },
+      },
       CustomEvent: window.CustomEvent,
       dispatchEvent: jest.fn(),
       unlockProtocolConfig: {
@@ -59,13 +65,35 @@ describe('setupPostOffice', () => {
     setupPostOffices(fakeWindow, fakeDataIframe, fakeUIIframe)
   })
 
+  it('responds to POST_MESSAGE_READY by sending POST_MESSAGE_WALLET_INFO', () => {
+    expect.assertions(1)
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_READY, {
+      lock: { address: 'lock' },
+    })
+
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      2,
+      {
+        type: POST_MESSAGE_WALLET_INFO,
+        payload: {
+          noWallet: false,
+          notEnabled: true,
+          isMetamask: false,
+        },
+      },
+      'http://paywall'
+    )
+  })
+
   it('responds to POST_MESSAGE_READY by sending the config to both iframes', () => {
     expect.assertions(2)
 
     sendMessage(fakeDataIframe, POST_MESSAGE_READY)
     sendMessage(fakeUIIframe, POST_MESSAGE_READY)
 
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      1,
       {
         type: POST_MESSAGE_CONFIG,
         payload: fakeWindow.unlockProtocolConfig,
