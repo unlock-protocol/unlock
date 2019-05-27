@@ -243,6 +243,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
         )
         assert.equal(expirationTimestamp.toFixed(), keyExpiration.toFixed())
       })
+
+      it("should no longer associate the transferred tokenId with the previous owner's address", async () => {
+        let transferredKeyTokenId = ID
+        let ownerOfToken = await locks['FIRST'].ownerOf.call(
+          transferredKeyTokenId
+        )
+        assert.notEqual(from, ownerOfToken)
+      })
     })
 
     describe('when the lock is sold out', () => {

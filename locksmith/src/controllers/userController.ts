@@ -120,6 +120,12 @@ namespace UserController {
       return res.sendStatus(400)
     }
   }
+
+  export const cards = async (req: Request, res: Response) => {
+    let emailAddress = req.params.emailAddress
+    let result = await UserOperations.getCards(emailAddress)
+    return res.json(result)
+  }
 }
 
 export = UserController

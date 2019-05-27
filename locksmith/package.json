@@ -34,7 +34,7 @@
   "dependencies": {
     "@opencensus/core": "0.0.12",
     "@opencensus/exporter-jaeger": "0.0.12",
-    "@opencensus/nodejs": "0.0.12",
+    "@opencensus/nodejs": "0.0.13",
     "@types/cors": "^2.8.5",
     "@types/eth-sig-util": "^2.1.0",
     "@types/ethereumjs-util": "^5.2.0",
@@ -46,7 +46,7 @@
     "@types/stripe": "^6.25.10",
     "@types/supertest": "^2.0.7",
     "@typescript-eslint/eslint-plugin": "^1.5.0",
-    "@unlock-protocol/unlock-js": "0.0.27",
+    "@unlock-protocol/unlock-js": "0.1.1",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "cross-env": "^5.2.0",
@@ -73,8 +73,6 @@
     "truffle-hdwallet-provider": "^1.0.9",
     "ts-jest": "24.0.2",
     "typescript": "3.4.5",
-    "unlock-abi-0-2": "1.0.0",
-    "web3": "1.0.0-beta.37",
     "winston": "^3.1.0"
   },
   "devDependencies": {
