@@ -6,7 +6,6 @@ export {
   put,
   merge,
   clear,
-  clear,
   addListener,
   removeListener,
   storageId,
