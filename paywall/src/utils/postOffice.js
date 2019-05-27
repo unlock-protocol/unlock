@@ -87,7 +87,10 @@ export function mainWindowPostOffice(window, iframe, iframeOrigin) {
  * @param {handlerCallback}}handler the callback. This should
  */
 export function setHandler(type, handler) {
-  handlers[type] = handler
+  const currentHandler = handlers[type] || (() => 1)
+  handlers[type] = (type, response) => (
+    currentHandler(type, response), handler(type, response)
+  )
 }
 
 // for unit testing, clearing state between tests

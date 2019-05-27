@@ -195,6 +195,7 @@ describe('postOffice', () => {
       describe('message handler', () => {
         let listener
         beforeEach(() => {
+          _clearHandlers()
           listener = jest.fn()
           setHandler('hi', listener)
           setupPostOffice(fakeWindow, fakeTarget, 'origin')
@@ -219,6 +220,35 @@ describe('postOffice', () => {
           expect(fakeTarget.postMessage).toHaveBeenCalledWith(
             { type: 'type', payload: 'response' },
             'origin'
+          )
+        })
+
+        it('chains handlers', () => {
+          expect.assertions(2)
+
+          listener = jest.fn()
+          const listener2 = jest.fn()
+          _clearHandlers()
+
+          setHandler('hi', listener)
+          setHandler('hi', listener2)
+
+          fakeWindow.handlers.message({
+            source: fakeTarget,
+            origin: 'origin',
+            data: {
+              type: 'hi',
+              payload: 'it worked!',
+            },
+          })
+
+          expect(listener).toHaveBeenCalledWith(
+            'it worked!',
+            expect.any(Function)
+          )
+          expect(listener2).toHaveBeenCalledWith(
+            'it worked!',
+            expect.any(Function)
           )
         })
       })
