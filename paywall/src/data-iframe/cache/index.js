@@ -4,6 +4,7 @@
 export {
   get,
   put,
+  merge,
   clear,
   addListener,
   removeListener,

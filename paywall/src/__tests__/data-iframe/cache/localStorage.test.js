@@ -10,6 +10,7 @@ import {
   setNetwork,
   getNetwork,
 } from '../../../data-iframe/cache'
+import { merge } from '../../../data-iframe/cache/localStorage'
 
 jest.mock('../../../utils/localStorage', () => () => true)
 
@@ -183,6 +184,206 @@ describe('localStorage cache', () => {
       expect(fakeWindow.storage[storageId(123, nullAccount)]).toBe(
         JSON.stringify({
           there: 'hello',
+        })
+      )
+    })
+  })
+
+  describe('merge', () => {
+    const keys = {
+      key1: {
+        thing: 'hi',
+      },
+      key2: {
+        thing2: 'hi2',
+      },
+    }
+    beforeEach(async () => {
+      makeWindow()
+    })
+
+    it('saves a new sub-value', async () => {
+      expect.assertions(1)
+
+      const key3 = {
+        thing3: 'hi3',
+      }
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        subType: 'key3',
+        value: key3,
+      })
+
+      expect(fakeWindow.storage[storageId(123, 'hi')]).toEqual(
+        JSON.stringify({
+          keys: {
+            ...keys,
+            key3,
+          },
+        })
+      )
+    })
+
+    it('removes an existing sub-value', async () => {
+      expect.assertions(1)
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        subType: 'key2',
+      })
+
+      expect(fakeWindow.storage[storageId(123, 'hi')]).toEqual(
+        JSON.stringify({
+          keys: {
+            key1: keys.key1,
+          },
+        })
+      )
+    })
+
+    it('replaces an existing sub-value', async () => {
+      expect.assertions(1)
+
+      const key2 = {
+        thing3: 'hi3',
+      }
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        accountAddress: 'hi',
+        type: 'keys',
+        subType: 'key2',
+        value: key2,
+      })
+
+      expect(fakeWindow.storage[storageId(123, 'hi')]).toEqual(
+        JSON.stringify({
+          keys: {
+            key1: keys.key1,
+            key2,
+          },
+        })
+      )
+    })
+
+    it('saves a new sub-value, non-account-specific', async () => {
+      expect.assertions(1)
+
+      const key3 = {
+        thing3: 'hi3',
+      }
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        subType: 'key3',
+        value: key3,
+      })
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toEqual(
+        JSON.stringify({
+          keys: {
+            ...keys,
+            key3,
+          },
+        })
+      )
+    })
+
+    it('removes a sub-value, non-account-specific', async () => {
+      expect.assertions(1)
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        subType: 'key2',
+      })
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toEqual(
+        JSON.stringify({
+          keys: {
+            key1: keys.key1,
+          },
+        })
+      )
+    })
+
+    it('replaces an existing sub-value, non-account-specific', async () => {
+      expect.assertions(1)
+
+      const key2 = {
+        thing3: 'hi3',
+      }
+
+      await put({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        value: keys,
+      })
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        subType: 'key2',
+        value: key2,
+      })
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toEqual(
+        JSON.stringify({
+          keys: {
+            key1: keys.key1,
+            key2,
+          },
         })
       )
     })
