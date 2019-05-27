@@ -200,19 +200,19 @@ describe('cacheHandler', () => {
       await setAccount(fakeWindow, 'different')
     })
 
-    it('cached locks still return', async () => {
+    it('should still return cached locks', async () => {
       expect.assertions(1)
 
       expect(await getLocks(fakeWindow)).toEqual(myLocks)
     })
 
-    it('cached keys are not returned', async () => {
+    it('should not return cached keys', async () => {
       expect.assertions(1)
 
       expect(await getKeys(fakeWindow)).toEqual({})
     })
 
-    it('cached transactions are not returned', async () => {
+    it('should not return cached transactions', async () => {
       expect.assertions(1)
 
       expect(await getTransactions(fakeWindow)).toEqual({})
@@ -268,13 +268,13 @@ describe('cacheHandler', () => {
       expect(await getLocks(fakeWindow)).toEqual({})
     })
 
-    it('cached keys are not returned', async () => {
+    it('should not return cached keys', async () => {
       expect.assertions(1)
 
       expect(await getKeys(fakeWindow)).toEqual({})
     })
 
-    it('cached transactions are not returned', async () => {
+    it('should not return cached transactions', async () => {
       expect.assertions(1)
 
       expect(await getTransactions(fakeWindow)).toEqual({})
