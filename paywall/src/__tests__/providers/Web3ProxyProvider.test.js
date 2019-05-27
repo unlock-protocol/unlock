@@ -159,7 +159,18 @@ describe('Web3ProxyProvider', () => {
         })
       })
     }
-    await walletService.connect(provider)
+    walletService.connect(provider)
+
+    // resolve when the spy has been called
+    // if we await on the connect call, it may hang
+    await new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (spy.mock.calls.length) {
+          clearInterval(interval)
+          resolve()
+        }
+      })
+    })
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({
