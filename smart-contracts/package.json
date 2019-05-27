@@ -26,7 +26,7 @@
     "web3-eth-abi": "1.0.0-beta.52",
     "web3-utils": "1.0.0-beta.37",
     "zos": "2.2.3",
-    "zos-lib": "2.2.3"
+    "zos-lib": "2.3.0"
   },
   "devDependencies": {
     "remixd": "0.1.8",
