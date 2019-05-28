@@ -42,17 +42,6 @@ async function _merge(window, key, subType, value) {
   })
 }
 
-async function _merge(window, key, subType, value) {
-  return cache.merge({
-    window,
-    networkId: currentNetwork,
-    accountAddress: currentAccount,
-    type: key,
-    subType,
-    value,
-  })
-}
-
 export async function getKeys(window) {
   return (await _get(window, 'keys')) || {}
 }
@@ -144,13 +133,6 @@ export async function setTransaction(window, transaction) {
   await _merge(window, 'transactions', transaction.hash, transaction)
   notifyListeners('transactions')
   return
-}
-
-/**
- * Save a single transaction without overwriting the other transactions with potentially stale data
- */
-export async function setTransaction(window, transaction) {
-  return _merge(window, 'transactions', transaction.hash, transaction)
 }
 
 /**
