@@ -44,6 +44,9 @@ module.exports = {
       'process.env.SMTP_FROM_ADDRESS': JSON.stringify(
         process.env.SMTP_FROM_ADDRESS
       ),
+      'process.env.BASE64_WEDLOCKS_PRIVATE_KEY': JSON.stringify(
+        process.env.BASE64_WEDLOCKS_PRIVATE_KEY
+      ),
     }),
   ],
 }

@@ -3487,7 +3487,7 @@ Object {
                       href="/event/abc123"
                       target="_blank"
                     >
-                      https://tickets.unlock-protocol.com/event/abc123
+                      http://0.0.0.0:3003/event/abc123
                     </a>
                   </label>
                 </div>
@@ -3936,7 +3936,7 @@ Object {
                     href="/event/abc123"
                     target="_blank"
                   >
-                    https://tickets.unlock-protocol.com/event/abc123
+                    http://0.0.0.0:3003/event/abc123
                   </a>
                 </label>
               </div>
@@ -9667,6 +9667,11 @@ Object {
   margin: auto;
 }
 
+.c2 {
+  width: 450px;
+  max-width: 100%;
+}
+
 @media only screen and (min-width:736px) {
   .c0 {
     padding-left: 20px;
@@ -9687,6 +9692,7 @@ Object {
         class="c1"
       >
         <svg
+          class="c2"
           fill="none"
           viewBox="0 0 92 92"
         >
@@ -9715,6 +9721,7 @@ Object {
       class="r7g3m7-0 fSVEBA"
     >
       <svg
+        class="r7g3m7-3 cupMqN"
         fill="none"
         viewBox="0 0 92 92"
       >
@@ -9809,6 +9816,11 @@ Object {
   color: var(--link);
 }
 
+.c2 {
+  width: 450px;
+  max-width: 100%;
+}
+
 @media only screen and (min-width:736px) {
   .c0 {
     padding-left: 20px;
@@ -9829,6 +9841,7 @@ Object {
         class="c1"
       >
         <svg
+          class="c2"
           fill="none"
           viewBox="0 0 92 92"
         >
@@ -9863,6 +9876,7 @@ Object {
       class="r7g3m7-0 fSVEBA"
     >
       <svg
+        class="r7g3m7-2 dFyPjO"
         fill="none"
         viewBox="0 0 92 92"
       >
@@ -9962,6 +9976,11 @@ Object {
   margin: auto;
 }
 
+.c2 {
+  width: 450px;
+  max-width: 100%;
+}
+
 @media only screen and (min-width:736px) {
   .c0 {
     padding-left: 20px;
@@ -9982,6 +10001,7 @@ Object {
         class="c1"
       >
         <svg
+          class="c2"
           fill="none"
           viewBox="0 0 92 92"
         >
@@ -10010,6 +10030,7 @@ Object {
       class="r7g3m7-0 fSVEBA"
     >
       <svg
+        class="r7g3m7-3 cupMqN"
         fill="none"
         viewBox="0 0 92 92"
       >
@@ -10089,14 +10110,14 @@ exports[`Storyshots Event verification page Event verification page with verific
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c9 {
+    .c10 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c9 > svg {
+.c10 > svg {
   fill: white;
 }
 
@@ -10115,7 +10136,7 @@ Object {
   height: 24px;
 }
 
-.c8 {
+.c9 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -10162,6 +10183,11 @@ Object {
 }
 
 .c7 {
+  width: 450px;
+  max-width: 100%;
+}
+
+.c8 {
   font-family: 'IBM Plex Sans',sans serif;
   font-weight: bold;
   font-size: 16px;
@@ -10169,7 +10195,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c9 {
+  .c10 {
     height: 16px;
     width: 16px;
   }
@@ -10193,13 +10219,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c10 {
+  .c11 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c8 {
+  .c9 {
     display: none;
   }
 }
@@ -10217,7 +10243,7 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c8 {
     padding-left: 20px;
   }
 }
@@ -10255,6 +10281,7 @@ Object {
             class="c6"
           >
             <svg
+              class="c7"
               fill="none"
               viewBox="0 0 92 92"
             >
@@ -10268,15 +10295,15 @@ Object {
             </svg>
           </div>
           <h2
-            class="c7"
+            class="c8"
           >
             My Doctor Who party
           </h2>
           <div
-            class="c8"
+            class="c9"
           >
             <div
-              class="c9"
+              class="c10"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -10293,7 +10320,7 @@ Object {
           </div>
         </div>
         <div
-          class="c10"
+          class="c11"
         />
       </div>
     </div>
@@ -10331,6 +10358,7 @@ Object {
           class="r7g3m7-0 fSVEBA"
         >
           <svg
+            class="r7g3m7-3 cupMqN"
             fill="none"
             viewBox="0 0 92 92"
           >
