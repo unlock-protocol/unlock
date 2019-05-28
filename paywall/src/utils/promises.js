@@ -6,3 +6,15 @@
 export function delayPromise(ms) {
   return new Promise(resolve => setTimeout(resolve.bind(null, ms), ms))
 }
+
+export function waitFor(condition) {
+  return new Promise(resolve => {
+    if (condition()) return resolve()
+    const interval = setInterval(() => {
+      if (condition()) {
+        clearInterval(interval)
+        resolve()
+      }
+    })
+  })
+}
