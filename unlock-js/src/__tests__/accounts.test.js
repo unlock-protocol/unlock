@@ -4,12 +4,14 @@ import {
   reEncryptPrivateKey,
 } from '../accounts'
 
+import { walletEncryptionOptions } from '../constants'
+
 jest.setTimeout(15000)
 
 describe('account helpers', () => {
   describe('web3 accounts creation', () => {
     it('should call ethers.createRandom', async () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       const {
         address,
@@ -19,6 +21,9 @@ describe('account helpers', () => {
       expect(address).toMatch(/^0x[a-fA-F0-9]{40}$/)
       expect(passwordEncryptedPrivateKey.address).toBe(
         address.substring(2).toLowerCase()
+      )
+      expect(passwordEncryptedPrivateKey.Crypto.kdfparams.n).toBe(
+        walletEncryptionOptions.scrypt.N
       )
     })
   })

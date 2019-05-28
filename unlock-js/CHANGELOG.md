@@ -1,11 +1,33 @@
 # Changes
 
+## 0.1.1
+
+- Version bump after publishing older code inside 0.1.0
+
+## 0.1.0
+
+- Adds support for v1.0 of Unlock.sol and PublicLock.sol. Lock names can now be passed when creating
+  them
+
+## 0.0.33
+
+- Introduce a constant that sets the `N` property of `scrypt` in the `Crypto`
+  section of the `Wallet.encrypt` options parameter to `1 << 16` -- this value
+  being a compromise between the `web3.js` default (very fast) and the `ethers`
+  default (very secure).
+- Update `createAccountAndPasswordEncryptKey` to use this new constant
+
+## 0.0.32
+
+- Actually export the function that re-encrypts a private key.
+
 ## 0.0.31
 
 - `getTransaction` no longer crashes if the user refreshes while a key purchase transaction is pending
 - moved `recoverAccountFromSignedData` to `web3Service`
 
 ## 0.0.30
+
 - `web3`-only version for tickets app
 - move signature verification from `walletService` to `web3Service`
 
@@ -15,7 +37,7 @@
 - implemented `reEncryptPrivateKey`, which can be used to change the password an
   account is encrypted with.
 - Updates lock creation interface to support other backing contracts
-  
+
 ## 0.0.28
 
 - Modified recoverAccountFromSignedData to include callback API
@@ -29,6 +51,7 @@
 ## 0.0.26
 
 (legacy web3 release, for tickets app only)
+
 - implement signature verification with `recoverAccountFromSignedData` in `walletService`
 
 ## 0.0.25

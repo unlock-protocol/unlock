@@ -1,3 +1,4 @@
+import Stripe from 'stripe'
 import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
@@ -107,6 +108,32 @@ namespace UserOperations {
         },
       }
     )
+  }
+
+  export const getCards = async (emailAddress: string): Promise<any[]> => {
+    let user = await UserReference.findOne({
+      where: { emailAddress: Normalizer.emailAddress(emailAddress) },
+    })
+
+    if (user) {
+      return getCardDetailsFromStripe(user.stripe_customer_id)
+    } else {
+      return []
+    }
+  }
+
+  const getCardDetailsFromStripe = async (customer_id: any): Promise<any[]> => {
+    let stripe = new Stripe(config.stripeSecret)
+
+    try {
+      let cardsResponse = await stripe.customers.listSources(customer_id, {
+        object: 'card',
+      })
+
+      return cardsResponse.data
+    } catch (_e) {
+      return []
+    }
   }
 }
 

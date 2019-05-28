@@ -24,6 +24,7 @@ export enum TransactionStatus {
 export enum KindOfModal {
   WalletCheckOverlay,
   PasswordPrompt,
+  ResetPasswordPrompt,
 }
 /* eslint-enable no-unused-vars */
 
@@ -80,4 +81,11 @@ export interface EncryptedPrivateKey {
 
 export interface Router {
   location: Location
+}
+
+export interface Error {
+  name: string
+  data?: {
+    [key: string]: any
+  }
 }

@@ -18,7 +18,7 @@
     "ci": "npm run lint && npm test"
   },
   "dependencies": {
-    "@babel/core": "7.4.3",
+    "@babel/core": "7.4.5",
     "@storybook/addon-actions": "5.0.10",
     "@storybook/addon-knobs": "5.0.10",
     "@storybook/addon-storyshots": "5.0.10",
@@ -27,10 +27,11 @@
     "@storybook/react": "5.0.10",
     "@types/jest": "24.0.13",
     "@types/node": "^12.0.0",
-    "@types/react": "16.8.17",
+    "@types/react": "16.8.18",
     "@types/react-dom": "^16.8.3",
     "@types/react-redux": "7.0.9",
-    "@unlock-protocol/unlock-js": "0.0.31",
+    "@unlock-protocol/unlock-js": "0.1.1",
+    "@types/styled-components": "^4.1.15",
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
@@ -63,14 +64,14 @@
     "rollup": "^1.6.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-postcss": "^2.0.3",
-    "rollup-plugin-terser": "^4.0.4",
+    "rollup-plugin-terser": "^5.0.0",
     "run-script-os": "^1.0.5",
     "shallow-equal": "1.1.0",
     "storybook-react-router": "^1.0.5",
     "styled-components": "^4.2.0",
     "ts-jest": "^24.0.2",
     "typescript": "3.4.5",
-    "validator": "^10.11.0"
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "@svgr/cli": "4.2.0",
