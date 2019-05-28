@@ -5,7 +5,7 @@ This deploys the code from master as of commit $COMMIT_TO_DEPLOY.
 
 Reviewing code for this Pull Request is not practical, however, you are asked to check wether the current staging environment is stable and could be released. For this, follow these steps:
 
-* [ ] This pull request has no conflicts with the `production` branch.
+* [ ] This pull request has no conflicts with the \`production\` branch.
 * [ ] Go to http://staging.unlock-protocol.com/ and ensure that the website loads fine.
 
 ## Creator Dashboard
