@@ -10,6 +10,8 @@ import {
   setNetwork,
   getFormattedCacheValues,
   setAccountBalance,
+  setKey,
+  setTransaction,
 } from '../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../constants'
 
@@ -63,6 +65,36 @@ describe('cacheHandler', () => {
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
     })
 
+    describe('setKey', () => {
+      it('sets a new key without disturbing existing keys', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock2',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          ...myKeys,
+          lock2: { lock: 'lock2' },
+        })
+      })
+
+      it('overwrites an existing key', async () => {
+        expect.assertions(1)
+
+        await setKeys(fakeWindow, myKeys)
+        await setKey(fakeWindow, {
+          lock: 'lock',
+          new: 'guy',
+        })
+
+        expect(await getKeys(fakeWindow)).toEqual({
+          lock: { lock: 'lock', new: 'guy' },
+        })
+      })
+    })
+
     it('setLocks', async () => {
       expect.assertions(1)
 
@@ -77,6 +109,36 @@ describe('cacheHandler', () => {
       await setTransactions(fakeWindow, myTransactions)
 
       expect(await getTransactions(fakeWindow)).toEqual(myTransactions)
+    })
+
+    describe('setTransaction', () => {
+      it('sets a new transaction without disturbing existing transactions', async () => {
+        expect.assertions(1)
+
+        await setTransactions(fakeWindow, myTransactions)
+        await setTransaction(fakeWindow, {
+          hash: 'hash2',
+        })
+
+        expect(await getTransactions(fakeWindow)).toEqual({
+          ...myTransactions,
+          hash2: { hash: 'hash2' },
+        })
+      })
+
+      it('overwrites an existing transaction', async () => {
+        expect.assertions(1)
+
+        await setTransactions(fakeWindow, myTransactions)
+        await setTransaction(fakeWindow, {
+          hash: 'myTransaction',
+          new: 'guy',
+        })
+
+        expect(await getTransactions(fakeWindow)).toEqual({
+          myTransaction: { hash: 'myTransaction', new: 'guy' },
+        })
+      })
     })
 
     it('setting multiple cache values', async () => {
@@ -157,6 +219,7 @@ describe('cacheHandler', () => {
           },
         }
       })
+
       it('getLocks', async () => {
         expect.assertions(1)
 
