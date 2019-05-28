@@ -132,36 +132,6 @@ export async function merge({
 }
 
 /**
- * Merge a sub-value into a larger value store in the cache
- *
- * @param {object} window this is the global context, either global, window, or self
- * @param {int} networkId the ethereum network id
- * @param {string} type the type of account data to set
- * @param {*} value the value to store. This must be serializable as JSON
- * @param {string} accountAddress the ethereum account address of the user whose data is cached. For general
- *                                values like locks, use null account to make them available to anyone
- */
-export async function merge({
-  window,
-  networkId,
-  type,
-  subType,
-  value,
-  accountAddress = nullAccount,
-}) {
-  ensureLocalStorageAvailable(window, `save ${type}/${subType} in cache`)
-  const key = storageId(networkId, accountAddress)
-  const container = getContainer(window, key, type)
-  if (value === undefined) {
-    delete container[type][subType]
-  } else {
-    container[type][subType] = value
-  }
-
-  window.localStorage.setItem(key, JSON.stringify(container))
-}
-
-/**
  * Retrieve the current cached account
  *
  * @param {object} window this is the global context, either global, window, or self
