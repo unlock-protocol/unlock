@@ -83,11 +83,20 @@ export function mainWindowPostOffice(window, iframe, iframeOrigin) {
 /**
  * Set a handler for a posted message
  *
+ * This creates a linked list of handlers for a specific message type
+ *
  * @param {string} type the message type this handler is intended to respond to
  * @param {handlerCallback}}handler the callback. This should
  */
 export function setHandler(type, handler) {
-  handlers[type] = handler
+  const currentHandler =
+    handlers[type] ||
+    (() => {
+      /* no-op */
+    })
+  handlers[type] = (type, response) => (
+    currentHandler(type, response), handler(type, response)
+  )
 }
 
 // for unit testing, clearing state between tests
