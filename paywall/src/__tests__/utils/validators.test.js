@@ -588,4 +588,452 @@ describe('Form field validators', () => {
       })
     })
   })
+
+  describe('isValidKey', () => {
+    const validKey = {
+      expiration: 1,
+      transactions: [],
+      status: 'none',
+      confirmations: 0,
+      owner: '0x1234567890123456789012345678901234567890',
+    }
+
+    describe('failures', () => {
+      it('should fail with invalid objects', () => {
+        expect.assertions(5)
+
+        expect(validators.isValidKey(false)).toBe(false)
+        expect(validators.isValidKey('hi')).toBe(false)
+        expect(validators.isValidKey(0)).toBe(false)
+        expect(validators.isValidKey([])).toBe(false)
+        expect(
+          validators.isValidKey({
+            expiration: 1,
+            transactions: [],
+            status: 'hi',
+            confirmations: 2,
+            notakey: 4,
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if expiration is invalid', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            expiration: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            expiration: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            expiration: '1',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            expiration: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if transactions is not an array', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            transactions: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            transactions: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            transactions: 'hi',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            transactions: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if status is not a string', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            status: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            status: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            status: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            status: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if status is not a known value', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            status: 'notvalid',
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if confirmations is invalid', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            confirmations: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            confirmations: '1',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            confirmations: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            confirmations: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail if owner is not a valid ethereum address', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            owner: '0xIamnot a valid ethereum address',
+          })
+        ).toBe(false)
+      })
+    })
+
+    describe('valid keys', () => {
+      it('should accept a basic valid key', () => {
+        expect.assertions(1)
+
+        expect(validators.isValidKey(validKey)).toBe(true)
+      })
+
+      it('should accept a basic valid key with optional id', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidKey({
+            ...validKey,
+            id: 'id',
+          })
+        ).toBe(true)
+      })
+
+      describe('status', () => {
+        it.each([
+          'none',
+          'confirming',
+          'confirmed',
+          'expired',
+          'valid',
+          'submitted',
+          'pending',
+          'failed',
+        ])('should accept "%s" as a valid status', status => {
+          expect.assertions(1)
+
+          expect(
+            validators.isValidKey({
+              ...validKey,
+              status,
+            })
+          ).toBe(true)
+        })
+      })
+    })
+  })
+
+  describe('isValidLock', () => {
+    const validLock = {
+      address: '0x1234567890123456789009876543210987654321',
+      keyPrice: '123',
+      expirationDuration: 123,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
+        owner: '0x1234567890123456789012345678901234567890',
+      },
+    }
+    describe('failures', () => {
+      it('should fail with invalid objects', () => {
+        expect.assertions(6)
+
+        expect(validators.isValidLock(false)).toBe(false)
+        expect(validators.isValidLock('hi')).toBe(false)
+        expect(validators.isValidLock(0)).toBe(false)
+        expect(validators.isValidLock([])).toBe(false)
+        expect(
+          validators.isValidLock({
+            address: 1,
+            keyPrice: [],
+            expirationDuration: 'hi',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            address: 1,
+            keyPrice: [],
+            expirationDuration: 'hi',
+            kery: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail on invalid name', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            name: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            name: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            name: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            name: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail on invalid lock address', () => {
+        expect.assertions(5)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            address: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            address: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            address: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            address: {},
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            address: 'not a valid lock address',
+          })
+        ).toBe(false)
+      })
+
+      it('should fail on invalid lock keyPrice', () => {
+        expect.assertions(5)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            keyPrice: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            keyPrice: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            keyPrice: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            keyPrice: {},
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            keyPrice: 'not a valid key price',
+          })
+        ).toBe(false)
+      })
+
+      it('should fail on invalid lock expirationDuration', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            expirationDuration: null,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            expirationDuration: '1',
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            expirationDuration: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            expirationDuration: {},
+          })
+        ).toBe(false)
+      })
+
+      it('should fail on invalid lock key', () => {
+        expect.assertions(1)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            key: null,
+          })
+        ).toBe(false)
+      })
+    })
+
+    describe('valid locks', () => {
+      it('should accept a basic valid lock', () => {
+        expect.assertions(1)
+
+        expect(validators.isValidLock(validLock)).toBe(true)
+      })
+    })
+  })
+
+  describe('isValidLocks', () => {
+    const validLock = {
+      address: '0x1234567890123456789009876543210987654321',
+      keyPrice: '123',
+      expirationDuration: 123,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'none',
+        confirmations: 0,
+        owner: '0x1234567890123456789012345678901234567890',
+      },
+    }
+    const invalidLock = {
+      ...validLock,
+      address: 'not a valid lock',
+    }
+
+    it('should fail on invalid locks', () => {
+      expect.assertions(3)
+
+      expect(validators.isValidLocks(null)).toBe(false)
+      expect(validators.isValidLocks('hi')).toBe(false)
+      expect(validators.isValidLocks([])).toBe(false)
+    })
+
+    it('should fail on any invalid locks', () => {
+      expect.assertions(1)
+
+      expect(
+        validators.isValidLocks({
+          [validLock.address]: validLock,
+          invalidLock,
+        })
+      ).toBe(false)
+    })
+
+    it('should succeed if all locks are valid', () => {
+      expect.assertions(1)
+      const address = '0x0987654321098765432109876543210987654321'
+
+      expect(
+        validators.isValidLocks({
+          [validLock.address]: validLock,
+          [address]: {
+            ...validLock,
+            address,
+          },
+        })
+      ).toBe(true)
+    })
+  })
 })
