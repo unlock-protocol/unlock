@@ -10,6 +10,8 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_WALLET_INFO,
+  POST_MESSAGE_ERROR,
+  POST_MESSAGE_UPDATE_WALLET,
 } from '../../paywall-builder/constants'
 
 describe('setupPostOffice', () => {
@@ -161,6 +163,34 @@ describe('setupPostOffice', () => {
         type: 'unlockProtocol',
         detail: 'locked',
       })
+    )
+  })
+
+  it('responds to POST_MESSAGE_ERROR by sending error messages to the UI iframe', () => {
+    expect.assertions(1)
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_ERROR, 'fail')
+
+    expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      {
+        type: POST_MESSAGE_ERROR,
+        payload: 'fail',
+      },
+      'http://paywall'
+    )
+  })
+
+  it('responds to POST_MESSAGE_UPDATE_WALLET by sending modal info to the UI iframe', () => {
+    expect.assertions(1)
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_WALLET, true)
+
+    expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      {
+        type: POST_MESSAGE_UPDATE_WALLET,
+        payload: true,
+      },
+      'http://paywall'
     )
   })
 
