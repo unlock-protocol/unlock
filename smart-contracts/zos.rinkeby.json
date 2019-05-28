@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0xF6b469ccB081329cb1693cFC7307215e35AA3e72",
-      "constructorCode": "608060405234801561001057600080fd5b50614092806100206000396000f3fe",
-      "bodyBytecodeHash": "dd2947cdb893709bb31fafc97376ece7a08a7793851b5247d82f0d9ccbb654f7",
-      "localBytecodeHash": "4907809c7bf33d5889a4434b1a4a9c2505aec9a3eea891b14d06cd78cec862f9",
-      "deployedBytecodeHash": "4907809c7bf33d5889a4434b1a4a9c2505aec9a3eea891b14d06cd78cec862f9",
+      "address": "0x37A4cb60EEA65d1879a3BB86564CCe7cB3f0d780",
+      "constructorCode": "608060405234801561001057600080fd5b5061578b806100206000396000f3fe",
+      "bodyBytecodeHash": "d683bec7802f7b74e345a1c0da047200d67aae6f7d412a279d1f4dadfd322e17",
+      "localBytecodeHash": "bad9afcbc1bd438ed413046aedceaa4f08bbe746004febf269ad8e8cc33318e9",
+      "deployedBytecodeHash": "bad9afcbc1bd438ed413046aedceaa4f08bbe746004febf269ad8e8cc33318e9",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -36,19 +36,19 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 154,
+              "astId": 166,
               "type": "t_bool",
               "src": "2085:13:2"
             },
             {
               "label": "totalSales",
-              "astId": 156,
+              "astId": 168,
               "type": "t_uint256",
               "src": "2104:15:2"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 158,
+              "astId": 170,
               "type": "t_uint256",
               "src": "2143:26:2"
             }
@@ -59,6 +59,11 @@
           "valueType": "t_struct<Unlock.LockBalances>",
           "label": "mapping(key => Unlock.LockBalances)",
           "kind": "mapping"
+        },
+        "t_string": {
+          "id": "t_string",
+          "kind": "elementary",
+          "label": "string"
         }
       },
       "storage": [
@@ -66,47 +71,47 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 3939,
+          "astId": 4700,
           "type": "t_bool",
-          "src": "757:24:36"
+          "src": "757:24:38"
         },
         {
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 3941,
+          "astId": 4702,
           "type": "t_bool",
-          "src": "876:25:36"
+          "src": "876:25:38"
         },
         {
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 3990,
+          "astId": 4751,
           "type": "t_array:50<t_uint256>",
-          "src": "1891:29:36"
+          "src": "1891:29:38"
         },
         {
           "contract": "Ownable",
           "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
           "label": "_owner",
-          "astId": 2610,
+          "astId": 3290,
           "type": "t_address",
-          "src": "302:22:21"
+          "src": "302:22:22"
         },
         {
           "contract": "Ownable",
           "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
           "label": "______gap",
-          "astId": 2721,
+          "astId": 3401,
           "type": "t_array:50<t_uint256>",
-          "src": "2186:29:21"
+          "src": "2186:29:22"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 174,
+          "astId": 186,
           "type": "t_uint256",
           "src": "2281:31:2"
         },
@@ -114,7 +119,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 176,
+          "astId": 188,
           "type": "t_uint256",
           "src": "2317:32:2"
         },
@@ -122,9 +127,25 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 180,
+          "astId": 192,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
           "src": "2438:46:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "globalBaseTokenURI",
+          "astId": 194,
+          "type": "t_string",
+          "src": "2582:33:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "globalTokenSymbol",
+          "astId": 196,
+          "type": "t_string",
+          "src": "2714:32:2"
         }
       ],
       "warnings": {
@@ -138,12 +159,37 @@
             "contract": "Unlock",
             "path": "contracts/Unlock.sol",
             "label": "locks",
-            "astId": 180,
+            "astId": 192,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
             "src": "2438:46:2"
           }
         ],
-        "storageDiff": []
+        "storageDiff": [
+          {
+            "action": "append",
+            "updated": {
+              "index": 8,
+              "contract": "Unlock",
+              "path": "contracts/Unlock.sol",
+              "label": "globalBaseTokenURI",
+              "astId": 194,
+              "type": "t_string",
+              "src": "2582:33:2"
+            }
+          },
+          {
+            "action": "append",
+            "updated": {
+              "index": 9,
+              "contract": "Unlock",
+              "path": "contracts/Unlock.sol",
+              "label": "globalTokenSymbol",
+              "astId": 196,
+              "type": "t_string",
+              "src": "2714:32:2"
+            }
+          }
+        ]
       }
     }
   },
@@ -153,7 +199,8 @@
       {
         "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
-        "implementation": "0xF6b469ccB081329cb1693cFC7307215e35AA3e72"
+        "implementation": "0x37A4cb60EEA65d1879a3BB86564CCe7cB3f0d780",
+        "admin": "0x04e855D82c079222d6bDBc041F6202d5A0137267"
       }
     ]
   },

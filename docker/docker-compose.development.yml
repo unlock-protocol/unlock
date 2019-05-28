@@ -5,6 +5,7 @@ services:
      build:
        context: ./development
        dockerfile: ganache.dockerfile
+     env_file: ./development/.env
      ports:
        - 8545:8545
    jaeger:

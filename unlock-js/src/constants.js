@@ -1,11 +1,11 @@
 import { ethers } from 'ethers'
 
 export const GAS_AMOUNTS = {
-  createLock: 3500000,
-  updateKeyPrice: 1000000,
+  createLock: 4500000,
+  updateKeyPrice: 100000,
   purchaseFor: 300000, // purchaseKey in walletService
-  withdraw: 1000000, // withdrawFromLock in walletService
-  partialWithdraw: 1000000, // partialWithdrawFromLock in walletService
+  withdraw: 100000, // withdrawFromLock in walletService
+  partialWithdraw: 100000, // partialWithdrawFromLock in walletService
   deployContract: 6000000,
 }
 
@@ -22,6 +22,16 @@ export default {
   UNLIMITED_KEYS_COUNT,
   GAS_AMOUNTS,
   KEY_ID,
+}
+
+// See
+// https://docs.ethers.io/ethers.js/html/api-wallet.html#encrypted-json-wallets
+// for available params; right now a custom value of scrypt/N covers our needs.
+export const walletEncryptionOptions = {
+  scrypt: {
+    // web3 used 1 << 13, ethers default is 1 << 18 so this is a nice middle ground
+    N: 1 << 16,
+  },
 }
 
 export const ZERO = ethers.constants.AddressZero

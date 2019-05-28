@@ -80,7 +80,7 @@ module.exports = {
     rinkeby: {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
-      gas: 5000000,
+      gas: 6000000,
       gasPrice: 5000000000, // 5GWEI
     },
     ropsten: {
@@ -98,7 +98,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.7',
+      version: '0.5.8',
       settings: {
         optimizer: {
           enabled: true,

@@ -9,15 +9,15 @@ describe('Wedlocks Service', () => {
     w = new WedlockService('http://notareal.host')
   })
 
-  it('should should request an email confirmation, with the right headers', async () => {
+  it('should should request an email confirmation, with the right headers and params', async () => {
     expect.assertions(1)
-    const recipient = 'thomas.elphinstone@hambled.on'
+    const recipient = 'thomas.elphinstone+2@hambled.on'
     const expectedPayload = {
       template: emailTemplate.signupConfirmation,
       recipient,
       params: {
         confirmLink: 'https://mcdonalds.gov',
-        email: recipient,
+        email: encodeURIComponent(recipient),
         signedEmail: {
           encrypt: true,
           value: recipient,

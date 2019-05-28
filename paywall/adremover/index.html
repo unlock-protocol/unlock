@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Lorem Ipsum Daily</title>
+  <script>
+    (function (d, s) {
+      var js = d.createElement(s),
+        sc = d.getElementsByTagName(s)[0];
+      js.src = "http://localhost:3001/unlock.1.0.min.js";
+      sc.parentNode.insertBefore(js, sc);
+    }(document, "script"));
+  </script>
+  <script>
+    var unlockProtocolConfig = {
+      locks: {
+        '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267': {
+          name: 'One Week',
+        },
+        '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f': {
+          name: 'One Month',
+        },
+        '0x45DeBF700aB8120aC0665119467EA82BDB45E00b': {
+          name: 'One Year',
+        },
+      },
+      icon: 'https://...',
+      callToAction: {
+        default:
+          'Enjoy Unlock Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.',
+      },
+    }
+  </script>
+
+</head>
+<style>
+  body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1em;
+  }
+
+  header {
+    grid-column: 1 / span 5;
+  }
+
+  main {
+    grid-column: 1 / span 3;
+  }
+
+  aside {
+    grid-column: span 2;
+  }
+
+  @media (max-width: 700px) {
+
+    main,
+    aside {
+      grid-column: 1 / span 5;
+    }
+
+  }
+
+  body {
+    margin: 0 auto;
+    max-width: 56em;
+    padding: 1em 0;
+  }
+
+  header,
+  main,
+  aside {}
+
+  header {
+    height: 10vw;
+  }
+</style>
+
+<script>
+
+  /**
+   * Shows the ads on the page!
+   */
+  function loadAds() {
+    // Let's look for all ad elements
+    document.querySelectorAll('.ad').forEach((adElement) => {
+      adElement.style.height = `${adElement.attributes['data-height'].value}px`
+      adElement.style.width = `${adElement.attributes['data-width'].value}px`
+      adElement.style['background-color'] = 'red'
+      adElement.style.content = 'ad'
+      adElement.style.display = 'block'
+    })
+  }
+
+  /**
+   * Hides the ads on the page!
+   */
+  function hideAds() {
+    document.querySelectorAll('.ad').forEach((adElement) => {
+      adElement.style.display = 'none'
+    })
+  }
+
+  /**
+   * Shows the Unlock checkout page
+   */
+  function loadCheckout() {
+    window.unlockProtocol && unlockProtocol.loadCheckoutModal()
+  }
+
+  // Once the doc has been loaded
+  window.addEventListener('DOMContentLoaded', (event) => {
+    loadAds()
+    setTimeout(hideAds, 100)
+  })
+
+  window.addEventListener('unlockProtocol', function (e) {
+    var state = e.data
+    if (state === 'locked') {
+      loadAds()
+    }
+    else if (state === 'unlocked') {
+      hideAds()
+    }
+  }
+})
+
+
+</script>
+
+<body>
+
+  <header>
+    <h1>Lorem Ipsum Daily</h1>
+    <button onclick="loadCheckout()">Unlock the ads free experience!</button>
+  </header>
+  <main>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+      consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    </p>
+    <div class="ad" data-width="300" data-height="250"></div>
+    <p>
+      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
+      aperiam,
+      eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
+      voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
+      voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci
+      velit,
+      sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad
+      minima
+      veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?
+      Quis
+      autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui
+      dolorem
+      eum fugiat quo voluptas nulla pariatur?
+    </p>
+  </main>
+  <aside>
+    <div class="ad" data-width="160" data-height="600"></div>
+  </aside>
+
+</body>
+
+</html>

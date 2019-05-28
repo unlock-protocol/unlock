@@ -105,7 +105,16 @@ const web3Middleware = config => ({ getState, dispatch }) => {
   return function(next) {
     return function(action) {
       if (action.type === ADD_TRANSACTION) {
-        web3Service.getTransaction(action.transaction.hash)
+        if (action.transaction.input) {
+          // we only pass the transaction defaults if input is set, otherwise
+          // parsing of input will crash
+          web3Service.getTransaction(
+            action.transaction.hash,
+            action.transaction
+          )
+        } else {
+          web3Service.getTransaction(action.transaction.hash)
+        }
       }
 
       if (action.type === NEW_TRANSACTION) {
