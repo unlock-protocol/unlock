@@ -109,36 +109,6 @@ describe('cacheHandler', () => {
       })
     })
 
-    describe('setKey', () => {
-      it('sets a new key without disturbing existing keys', async () => {
-        expect.assertions(1)
-
-        await setKeys(fakeWindow, myKeys)
-        await setKey(fakeWindow, {
-          lock: 'lock2',
-        })
-
-        expect(await getKeys(fakeWindow)).toEqual({
-          ...myKeys,
-          lock2: { lock: 'lock2' },
-        })
-      })
-
-      it('overwrites an existing key', async () => {
-        expect.assertions(1)
-
-        await setKeys(fakeWindow, myKeys)
-        await setKey(fakeWindow, {
-          lock: 'lock',
-          new: 'guy',
-        })
-
-        expect(await getKeys(fakeWindow)).toEqual({
-          lock: { lock: 'lock', new: 'guy' },
-        })
-      })
-    })
-
     it('setLocks', async () => {
       expect.assertions(1)
 
