@@ -132,6 +132,7 @@ describe('Web3ProxyProvider', () => {
     const spy = jest.spyOn(provider, 'sendAsync')
     const walletService = new WalletService({ unlockAddress })
 
+    let called = false
     fakeEvent(POST_MESSAGE_WALLET_INFO, {
       isMetamask: false,
       noWallet: false,
@@ -157,9 +158,21 @@ describe('Web3ProxyProvider', () => {
             result: '1',
           },
         })
+        setTimeout(() => (called = true))
       })
     }
-    await walletService.connect(provider)
+    walletService.connect(provider)
+
+    // resolve when the spy has been called
+    // if we await on the connect call, it may hang
+    await new Promise(resolve => {
+      const interval = setInterval(() => {
+        if (called) {
+          clearInterval(interval)
+          resolve()
+        }
+      })
+    })
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({
