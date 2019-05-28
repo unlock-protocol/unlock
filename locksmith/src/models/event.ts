@@ -27,6 +27,9 @@ export class Event extends Model<Event> {
   @Column
   duration!: number
 
+  @Column
+  image!: string
+
   @HasMany(() => EventLink)
   eventLinks!: EventLink[]
 }
