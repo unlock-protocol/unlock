@@ -30,7 +30,7 @@ export default async function connectToBlockchain({
   locksmithHost,
   onChange,
 }) {
-  // lazy-loading the blockchain handler, this is essential to impelment
+  // lazy-loading the blockchain handler, this is essential to implement
   // code splitting
   const [
     {
