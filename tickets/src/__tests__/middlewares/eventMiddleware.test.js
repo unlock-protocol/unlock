@@ -1,6 +1,8 @@
 import eventMiddleware from '../../middlewares/eventMiddleware'
-import { LOAD_EVENT } from '../../actions/event'
+import { LOAD_EVENT, ADD_EVENT } from '../../actions/event'
+import { SIGN_DATA } from '../../actions/signature'
 import configure from '../../config'
+import UnlockEvent from '../../structured_data/unlockEvent'
 
 /**
  * This is a "fake" middleware caller
@@ -44,6 +46,48 @@ describe('Event middleware', () => {
     }
     // reset the mock
     mockeventService = {}
+  })
+
+  describe('handling ADD_EVENT', () => {
+    it('should save an event from the provided object', async () => {
+      expect.assertions(2)
+      const { next, invoke, store } = create()
+
+      const eventDate = new Date()
+
+      const action = {
+        type: ADD_EVENT,
+        event: {
+          name: 'Arbitrary name',
+          date: eventDate,
+          lockAddress: '0x123',
+          description: 'Arbitrary description',
+          location: 'My house',
+          duration: 360,
+          logo: 'Some string',
+          image: 'Image hash',
+          outOfSchemaField: 'What is this doing here?!',
+        },
+      }
+
+      const data = UnlockEvent.build({
+        name: 'Arbitrary name',
+        date: eventDate,
+        lockAddress: '0x123',
+        description: 'Arbitrary description',
+        location: 'My house',
+        duration: 360,
+        logo: 'Some string',
+        image: 'Image hash',
+      })
+
+      await invoke(action)
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SIGN_DATA,
+        data,
+      })
+      expect(next).toHaveBeenCalledTimes(1)
+    })
   })
 
   describe('handling LOAD_EVENT', () => {
