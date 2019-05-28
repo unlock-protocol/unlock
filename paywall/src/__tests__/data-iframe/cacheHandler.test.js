@@ -12,6 +12,9 @@ import {
   setAccountBalance,
   setKey,
   setTransaction,
+  clearListeners,
+  addListener,
+  removeListener,
 } from '../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../constants'
 
@@ -20,15 +23,25 @@ describe('cacheHandler', () => {
   const myKeys = {
     lock: {
       id: 'myKey',
-      owner: 'owner',
+      owner: 'account',
       lock: 'lock',
+      expirationTimestamp: 0,
+    },
+    lock2: {
+      id: 'myKey',
+      owner: 'account',
+      lock: 'lock2',
       expirationTimestamp: 0,
     },
   }
   const myLocks = {
-    myLock: {
-      address: 'myLock',
+    lock: {
+      address: 'lock',
       keyPrice: '1',
+    },
+    lock2: {
+      address: 'lock2',
+      keyPrice: '12',
     },
   }
   const myTransactions = {
@@ -90,6 +103,7 @@ describe('cacheHandler', () => {
         })
 
         expect(await getKeys(fakeWindow)).toEqual({
+          ...myKeys,
           lock: { lock: 'lock', new: 'guy' },
         })
       })
@@ -172,7 +186,7 @@ describe('cacheHandler', () => {
       }
 
       await setAccount(fakeWindow, 'account')
-      await setNetwork(fakeWindow, 'network')
+      await setNetwork(fakeWindow, 2)
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
@@ -237,6 +251,7 @@ describe('cacheHandler', () => {
       })
     })
   })
+
   describe('user account changes', () => {
     beforeEach(async () => {
       fakeWindow = {
@@ -536,6 +551,217 @@ describe('cacheHandler', () => {
             },
           },
         },
+      })
+    })
+  })
+
+  describe('notifications', () => {
+    const fakeWindow = {
+      storage: {},
+      localStorage: {
+        setItem(key, item) {
+          fakeWindow.storage[key] = item
+        },
+        getItem(key) {
+          return fakeWindow.storage[key]
+        },
+        removeItem(key) {
+          delete fakeWindow.storage[key]
+        },
+      },
+    }
+    describe('addListener and removeListener', () => {
+      beforeEach(() => {
+        fakeWindow.storage = {}
+        clearListeners()
+      })
+
+      it('notifies all listeners', async () => {
+        expect.assertions(2)
+
+        const listener1 = jest.fn()
+        const listener2 = jest.fn()
+
+        addListener(listener1)
+        addListener(listener2)
+
+        await setAccount(fakeWindow, 'hi')
+
+        expect(listener1).toHaveBeenCalledTimes(1)
+        expect(listener2).toHaveBeenCalledTimes(1)
+      })
+
+      it('adds and removes listeners', async () => {
+        expect.assertions(4)
+
+        const listener1 = jest.fn()
+        const listener2 = jest.fn()
+
+        addListener(listener1)
+        addListener(listener2)
+
+        await setAccount(fakeWindow, 'hi')
+
+        expect(listener1).toHaveBeenCalledTimes(1)
+        expect(listener2).toHaveBeenCalledTimes(1)
+
+        listener1.mockReset()
+        listener2.mockReset()
+        removeListener(listener1)
+
+        await setAccount(fakeWindow, 'hi')
+
+        expect(listener1).not.toHaveBeenCalled()
+        expect(listener2).toHaveBeenCalledTimes(1)
+      })
+    })
+
+    describe('notifying on cache change events', () => {
+      describe('locks, keys, transactions', () => {
+        const keys = {
+          lock: { lock: 'lock' },
+          lock2: { lock: 'lock2' },
+        }
+        const locks = {
+          lock: { address: 'lock' },
+          lock2: { address: 'lock2' },
+        }
+
+        const transactions = {
+          hash: {
+            hash: 'hash',
+            lock: 'lock',
+            key: 'lock-account',
+          },
+        }
+
+        beforeEach(() => {
+          fakeWindow.storage = {}
+          clearListeners()
+        })
+
+        it('sends locks when calling setLocks', async () => {
+          expect.assertions(1)
+
+          await setKeys(fakeWindow, keys)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          await setLocks(fakeWindow, locks)
+
+          expect(listener).toHaveBeenCalledWith('locks')
+        })
+
+        it('sends locks when calling setKeys', async () => {
+          expect.assertions(1)
+
+          await setLocks(fakeWindow, locks)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          await setKeys(fakeWindow, keys)
+
+          expect(listener).toHaveBeenCalledWith('locks')
+        })
+
+        it('sends locks when calling setKey', async () => {
+          expect.assertions(1)
+
+          await setLocks(fakeWindow, locks)
+          await setKeys(fakeWindow, keys)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          const newKey = { lock: 'lock', expiration: 5 }
+          await setKey(fakeWindow, newKey)
+
+          expect(listener).toHaveBeenCalledWith('locks')
+        })
+
+        it('sends locks when calling setTransactions', async () => {
+          expect.assertions(1)
+
+          await setLocks(fakeWindow, locks)
+          await setKeys(fakeWindow, keys)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          await setTransactions(fakeWindow, transactions)
+
+          expect(listener).toHaveBeenCalledWith('locks')
+        })
+
+        it('sends locks when calling setTransaction', async () => {
+          expect.assertions(1)
+
+          await setLocks(fakeWindow, locks)
+          await setKeys(fakeWindow, keys)
+          await setTransactions(fakeWindow, transactions)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          const newTransaction = {
+            hash: 'hash2',
+            lock: 'lock',
+            key: 'lock-account',
+          }
+          await setTransaction(fakeWindow, newTransaction)
+
+          expect(listener).toHaveBeenCalledWith('locks')
+        })
+      })
+
+      describe('account', () => {
+        beforeEach(() => {
+          fakeWindow.storage = {}
+          clearListeners()
+        })
+
+        it('sends account when it is modified', async () => {
+          expect.assertions(1)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          await setAccount(fakeWindow, 'account')
+
+          expect(listener).toHaveBeenCalledWith('account')
+        })
+
+        it('sends balance when balance is modified', async () => {
+          expect.assertions(1)
+
+          await setAccount(fakeWindow, 'account')
+
+          const listener = jest.fn()
+          addListener(listener)
+          await setAccountBalance(fakeWindow, '12')
+
+          expect(listener).toHaveBeenCalledWith('balance')
+        })
+      })
+
+      describe('network', () => {
+        beforeEach(() => {
+          fakeWindow.storage = {}
+          clearListeners()
+        })
+
+        it('sends network when it is modified', async () => {
+          expect.assertions(1)
+
+          const listener = jest.fn()
+          addListener(listener)
+
+          await setNetwork(fakeWindow, 2)
+
+          expect(listener).toHaveBeenCalledWith('network')
+        })
       })
     })
   })

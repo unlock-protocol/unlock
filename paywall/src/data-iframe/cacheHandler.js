@@ -66,13 +66,17 @@ export async function getTransactions(window) {
 export async function setAccount(window, account) {
   // intercept the account setting so we have it available as well for retrieving user-specific cache
   currentAccount = account
-  return cache.setAccount(window, account)
+  await cache.setAccount(window, account)
+  notifyListeners('account')
+  return
 }
 
 export async function setNetwork(window, network) {
   // intercept the network setting so we have it available as well for retrieving user-specific cache
   currentNetwork = network
-  return cache.setNetwork(window, network)
+  await cache.setNetwork(window, network)
+  notifyListeners('network')
+  return
 }
 
 export async function getAccountBalance(window) {
@@ -80,18 +84,24 @@ export async function getAccountBalance(window) {
 }
 
 export async function setAccountBalance(window, balance) {
-  return _put(window, 'balance', balance)
+  await _put(window, 'balance', balance)
+  notifyListeners('balance')
+  return
 }
 
 export async function setKeys(window, keys) {
-  return _put(window, 'keys', keys)
+  await _put(window, 'keys', keys)
+  notifyListeners('keys')
+  return
 }
 
 /**
  * Save a single key without overwriting the other keys with potentially stale data
  */
 export async function setKey(window, key) {
-  return _merge(window, 'keys', key.lock, key)
+  await _merge(window, 'keys', key.lock, key)
+  notifyListeners('keys')
+  return
 }
 
 /**
@@ -100,23 +110,29 @@ export async function setKey(window, key) {
  * So we save in the non-account-specific cache
  */
 export async function setLocks(window, locks) {
-  return cache.put({
+  await cache.put({
     window,
     networkId: currentNetwork,
     type: 'locks',
     value: locks,
   })
+  notifyListeners('locks')
+  return
 }
 
 export async function setTransactions(window, transactions) {
-  return _put(window, 'transactions', transactions)
+  await _put(window, 'transactions', transactions)
+  notifyListeners('transactions')
+  return
 }
 
 /**
  * Save a single transaction without overwriting the other transactions with potentially stale data
  */
 export async function setTransaction(window, transaction) {
-  return _merge(window, 'transactions', transaction.hash, transaction)
+  await _merge(window, 'transactions', transaction.hash, transaction)
+  notifyListeners('transactions')
+  return
 }
 
 /**
@@ -181,4 +197,39 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
     balance,
     networkId,
   }
+}
+
+let listeners = new Map()
+
+export function addListener(listener) {
+  if (listeners.has(listener)) return
+  listeners.set(listener, listener)
+}
+
+export function removeListener(listener) {
+  return listeners.delete(listener)
+}
+
+export function clearListeners() {
+  listeners.clear()
+}
+
+export async function notifyListeners(type) {
+  let value
+  switch (type) {
+    case 'locks':
+    case 'keys':
+    case 'transactions':
+      value = 'locks'
+      break
+    case 'account':
+    case 'balance':
+    case 'network':
+      value = type
+      break
+    default:
+      throw new Error(`internal error, unknown type ${type}`)
+  }
+
+  listeners.forEach(listener => listener(value))
 }
