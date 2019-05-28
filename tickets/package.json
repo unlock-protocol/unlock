@@ -62,9 +62,7 @@
     "react-testing-library": "6.1.2",
     "redux": "4.0.1",
     "run-script-os": "1.0.5",
-    "styled-components": "4.2.0",
-    "ts-jest": "24.0.2",
-    "typescript": "3.4.5"
+    "styled-components": "4.2.0"
   },
   "devDependencies": {
     "@svgr/cli": "4.3.0",
