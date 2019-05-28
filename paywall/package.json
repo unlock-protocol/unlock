@@ -76,7 +76,7 @@
     "webpack-cli": "^3.3.2"
   },
   "devDependencies": {
-    "@svgr/cli": "4.2.0",
+    "@svgr/cli": "4.3.0",
     "nodemon": "1.19.1"
   },
   "lint-staged": {
