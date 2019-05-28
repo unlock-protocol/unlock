@@ -65,7 +65,7 @@ describe('Event middleware', () => {
           location: 'My house',
           duration: 360,
           logo: 'Some string',
-          image: 'Image hash',
+          image: 'Image URI',
           outOfSchemaField: 'What is this doing here?!',
         },
       }
