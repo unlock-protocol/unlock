@@ -22,7 +22,6 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
-  FAILED_TO_DECRYPT_KEY,
 } from '../../errors'
 import {
   SIGN_DATA,
@@ -283,10 +282,10 @@ describe('Wallet middleware', () => {
           expect(store.dispatch).toHaveBeenCalledWith(
             expect.objectContaining({
               type: SET_ERROR,
-              error: FATAL_WRONG_NETWORK,
-              data: {
-                currentNetwork: 'Winston',
-                requiredNetworkId: 1984,
+              error: {
+                level: 'Fatal',
+                kind: 'Application',
+                message: FATAL_WRONG_NETWORK,
               },
             })
           )
@@ -311,8 +310,11 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: SET_ERROR,
-            error: error.message,
-            data: {},
+            error: {
+              level: 'Fatal',
+              kind: 'Application',
+              message: 'An error',
+            },
           })
         )
 
@@ -334,8 +336,11 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: SET_ERROR,
-            error: FATAL_NON_DEPLOYED_CONTRACT,
-            data: {},
+            error: {
+              level: 'Fatal',
+              kind: 'Application',
+              message: FATAL_NON_DEPLOYED_CONTRACT,
+            },
           })
         )
 
@@ -407,7 +412,11 @@ describe('Wallet middleware', () => {
         3,
         expect.objectContaining({
           type: SET_ERROR,
-          error: 'Failed to create lock. Did you decline the transaction?',
+          error: {
+            level: 'Warning',
+            kind: 'Transaction',
+            message: 'Failed to create lock. Did you decline the transaction?',
+          },
         })
       )
     })
@@ -419,7 +428,11 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: SET_ERROR,
-          error: 'this was broken',
+          error: {
+            level: 'Warning',
+            kind: 'Transaction',
+            message: 'this was broken',
+          },
         })
       )
     })
@@ -447,8 +460,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
@@ -483,8 +499,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
@@ -517,8 +536,11 @@ describe('Wallet middleware', () => {
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
           type: SET_ERROR,
-          error: FATAL_NO_USER_ACCOUNT,
-          data: {},
+          error: {
+            level: 'Fatal',
+            kind: 'Application',
+            message: FATAL_NO_USER_ACCOUNT,
+          },
         })
 
         expect(mockWalletService.createLock).not.toHaveBeenCalled()
@@ -565,7 +587,7 @@ describe('Wallet middleware', () => {
   })
 
   describe('UPDATE_LOCK_KEY_PRICE', () => {
-    it('when the service is not ready it should set an error and not try to update the ley price', () => {
+    it('when the service is not ready it should set an error and not try to update the key price', () => {
       expect.assertions(3)
       const { next, invoke, store } = create()
       const action = { type: UPDATE_LOCK_KEY_PRICE, lock }
@@ -574,8 +596,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
@@ -708,7 +733,12 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: SET_ERROR,
-            error: FAILED_TO_DECRYPT_KEY,
+            error: {
+              level: 'Warning',
+              kind: 'LogIn',
+              message:
+                'Failed to decrypt private key. Check your password and try again.',
+            },
           })
         )
         done()
