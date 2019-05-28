@@ -9,6 +9,8 @@ const makePurchaseCallback = ({
   window,
 }) =>
   async function purchase(lockAddress /*, extraTip */) {
+    // note that the dynamic import is what makes code splitting
+    // happen, and cannot be changed to a static import
     const [
       { purchaseKey, processKeyPurchaseTransactions },
       locks,
@@ -22,7 +24,7 @@ const makePurchaseCallback = ({
     ])
     const startingKey = keys[lockAddress]
 
-    Promise.all([
+    return Promise.all([
       purchaseKey({
         walletService,
         lockAddress,

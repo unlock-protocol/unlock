@@ -54,6 +54,7 @@ describe('makePurchaseCallback', () => {
         removeListener: jest.fn(),
         once: jest.fn(),
         on: jest.fn(),
+        off: jest.fn(),
         purchaseKey: jest.fn().mockResolvedValue(),
       }
       update = jest.fn()
@@ -86,7 +87,7 @@ describe('makePurchaseCallback', () => {
     it('should initiate a key purchase', async () => {
       expect.assertions(1)
 
-      await purchase('lock')
+      purchase('lock')
 
       await new Promise(resolve => {
         const interval = setInterval(() => {
@@ -103,10 +104,22 @@ describe('makePurchaseCallback', () => {
       )
     })
 
+    it('should pass on any error thrown in keyPurchase', async () => {
+      expect.assertions(1)
+
+      walletService.purchaseKey = jest.fn().mockRejectedValue(new Error('fail'))
+
+      try {
+        await purchase('lock')
+      } catch (e) {
+        expect(e.message).toBe('fail')
+      }
+    })
+
     it('should initiate monitoring of key purchase transaction', async () => {
       expect.assertions(1)
 
-      await purchase('lock')
+      purchase('lock')
 
       await new Promise(resolve => {
         const interval = setInterval(() => {
@@ -123,6 +136,22 @@ describe('makePurchaseCallback', () => {
         'transaction.pending',
         expect.any(Function)
       )
+    })
+
+    it('should pass on any error thrown in monitoring key purchase transaction', async () => {
+      expect.assertions(1)
+
+      walletService.on = (type, cb) => {
+        if (type === 'error') {
+          // trigger an error in the midst of listening for the submitted transaction
+          cb(new Error('fail'))
+        }
+      }
+      try {
+        await purchase('lock')
+      } catch (e) {
+        expect(e.message).toBe('fail')
+      }
     })
   })
 })
