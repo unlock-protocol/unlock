@@ -27,13 +27,25 @@ const eventMiddleware = config => {
       setTimeout(() => {
         if (lockAddress) {
           eventService.getEvent(lockAddress).then(res => {
-            const { name, date, lockAddress, description, location } = res.data
+            const {
+              name,
+              date,
+              lockAddress,
+              description,
+              location,
+              duration,
+              logo,
+              image,
+            } = res.data
             const event = {
               name,
               date: new Date(date),
               lockAddress,
               description,
               location,
+              duration,
+              logo,
+              image,
             }
             dispatch(updateEvent(event))
           })
@@ -50,7 +62,9 @@ const eventMiddleware = config => {
             location,
             date,
             owner,
+            duration,
             logo,
+            image,
           } = action.event
           const data = UnlockEvent.build({
             lockAddress,
@@ -59,7 +73,9 @@ const eventMiddleware = config => {
             location,
             date,
             owner,
+            duration,
             logo,
+            image,
           })
           // We need to sign the data before we can store it
           dispatch(signData(data))
@@ -79,13 +95,25 @@ const eventMiddleware = config => {
         // Load an event from locksmith
         if (action.type === LOAD_EVENT) {
           eventService.getEvent(action.address).then(res => {
-            const { name, date, lockAddress, description, location } = res.data
+            const {
+              name,
+              date,
+              lockAddress,
+              description,
+              location,
+              duration,
+              logo,
+              image,
+            } = res.data
             const event = {
               name,
               date: new Date(date),
               lockAddress,
               description,
               location,
+              duration,
+              logo,
+              image,
             }
             dispatch(updateEvent(event))
           })

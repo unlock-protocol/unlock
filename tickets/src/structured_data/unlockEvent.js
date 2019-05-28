@@ -16,6 +16,7 @@ export default class UnlockEvent {
       { name: 'location', type: 'string' },
       { name: 'date', type: 'uint64' },
       { name: 'logo', type: 'string' },
+      { name: 'image', type: 'string' },
       { name: 'duration', type: 'uint64' },
     ]
 
@@ -33,6 +34,8 @@ export default class UnlockEvent {
         location: input.location,
         date: input.date,
         logo: input.logo,
+        image: input.image,
+        duration: input.duration,
       },
     }
 
