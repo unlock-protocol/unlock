@@ -50,4 +50,4 @@ cd locksmith
 
 eb init ${application} -p docker --region us-east-1
 
-deploy ${environment_name} 
+deploy ${environment} 
