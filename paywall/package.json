@@ -14,7 +14,7 @@
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js",
-    "build-unlock.js": "webpack --config unlock.js.webpack.config.js --env.UNLOCK_ENV=$UNLOCK_ENV --env.PAYWALL_URL=$PAYWALL_URL",
+    "build-unlock.1.0.js": "webpack --config unlock.1.0.js.webpack.config.js --env.UNLOCK_ENV=$UNLOCK_ENV --env.PAYWALL_URL=$PAYWALL_URL",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
     "ci": "npm run lint && npm test"
   },
