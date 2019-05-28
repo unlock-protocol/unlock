@@ -223,7 +223,7 @@ describe('postOffice', () => {
           )
         })
 
-        it('chains handlers', () => {
+        it('should call all handlers registered with setHandler for the message type', () => {
           expect.assertions(2)
 
           listener = jest.fn()
