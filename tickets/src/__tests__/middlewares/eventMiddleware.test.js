@@ -78,7 +78,7 @@ describe('Event middleware', () => {
         location: 'My house',
         duration: 360,
         logo: 'Some string',
-        image: 'Image hash',
+        image: 'Image URI',
       })
 
       await invoke(action)
