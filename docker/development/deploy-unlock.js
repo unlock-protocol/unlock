@@ -4,7 +4,6 @@ const {
   WalletService,
   Web3Service,
 } = require('@unlock-protocol/unlock-js')
-const Unlock = require('unlock-abi-0-2').Unlock
 const net = require('net')
 const ethers = require('ethers')
 const TokenDeployer = require('./deploy-locks')
@@ -13,18 +12,19 @@ const TokenDeployer = require('./deploy-locks')
  * This script is meant to be used in dev environment to deploy a version of the Unlock smart
  * contract from the packaged version to the local ganache server.
  */
+const host = process.env.HTTP_PROVIDER_HOST
+const port = process.env.HTTP_PROVIDER_PORT
+let deployedLockAddress
+let purchaser = process.env.PURCHASER_ADDRESS
+let recipientAddress = process.env.ERC20_TOKEN_RECIPIENT
+let bootstrapTransferAmount = process.env.BOOTSTRAP_AMOUNT
+let bootstrapTranferRecipient = process.env.ETHEREUM_ADDRESS
+let contractOwnerAddress = process.env.CONTRACT_OWNER_ADDRESS
 
-const host = process.env.HTTP_PROVIDER || '127.0.0.1'
-const port = 8545
 let providerURL = `http://${host}:${port}`
-
 let provider = new ethers.providers.JsonRpcProvider(providerURL, {
   chainId: 1984,
 })
-
-let deployedLockAddress
-let pk = '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
-let recipientAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
@@ -51,7 +51,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, Unlock, newContractInstance => {
+    return deploy(host, port, 'v02', newContractInstance => {
       // Once unlock has been deployed, we need to deploy a lock too!
       const wallet = new WalletService({
         unlockAddress: newContractInstance.options.address,
@@ -81,11 +81,23 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       wallet.on('account.changed', async account => {
         TokenDeployer.prepareEnvironment(
           wallet,
+          contractOwnerAddress,
           account,
           provider,
-          pk,
+          purchaser,
           recipientAddress
         )
+
+        let eWallet = provider.getSigner(contractOwnerAddress)
+
+        await new Promise(resolve => {
+          setTimeout(resolve, 5000)
+        })
+
+        await eWallet.sendTransaction({
+          to: bootstrapTranferRecipient,
+          value: ethers.utils.parseEther(bootstrapTransferAmount.toString()),
+        })
       })
 
       wallet.on('network.changed', () => {

@@ -163,6 +163,15 @@ describe('buildPaywall', () => {
       expect(mockAdd).toHaveBeenCalledWith(document, mockIframeImpl)
     })
 
+    it('adds the iframe to the page over and over again', () => {
+      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
+      jest.useFakeTimers()
+      buildPaywall(window, document, fakeLockAddress)
+      expect(setInterval).toHaveBeenCalledTimes(1)
+      jest.advanceTimersByTime(500)
+      expect(mockAdd).toHaveBeenCalledTimes(2)
+    })
+
     it('passes the correct origin to scrollLoop', () => {
       expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
 
