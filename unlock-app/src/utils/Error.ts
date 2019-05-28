@@ -8,87 +8,89 @@
  * dispatch(setError(err))
  */
 
-type ErrorLevel = 'Fatal' | 'Warning'
+type ErrorLevel = 'Fatal' | 'Warning' | 'Diagnostic'
 
 type ErrorKind =
-  | 'ApplicationError'
-  | 'FormValidationError'
-  | 'LogInError'
-  | 'SignUpError'
-  | 'SignatureError'
-  | 'StorageError'
-  | 'TransactionError'
+  | 'Application'
+  | 'FormValidation'
+  | 'LogIn'
+  | 'SignUp'
+  | 'Signature'
+  | 'Storage'
+  | 'Transaction'
 
-interface UnlockError<L extends ErrorLevel, K extends ErrorKind> {
-  level: L
-  kind: K
+export interface UnlockError {
+  level: ErrorLevel
+  kind: ErrorKind
   message: string
 }
 
-// We very purposely do not export these: error messaging should be centralized
-// here. We want to avoid ad-hoc creation of unhandled error types.
-function fatalMaker<K extends ErrorKind>(kind: K) {
-  return (message: string): UnlockError<'Fatal', K> => ({
-    level: 'Fatal',
-    kind,
-    message,
-  })
+export interface FatalError extends UnlockError {
+  level: 'Fatal'
 }
 
-function warningMaker<K extends ErrorKind>(kind: K) {
-  return (message: string): UnlockError<'Warning', K> => ({
-    level: 'Warning',
-    kind,
-    message,
-  })
+export function isFatalError(e: UnlockError): e is FatalError {
+  return e.level === 'Fatal'
 }
 
-// This is here to enforce that the Fatal property of a group of error
-// constructors will actually be fatal -- no accidentally ignored errors.
-interface ErrorMakers<K extends ErrorKind> {
-  Fatal: (message: string) => UnlockError<'Fatal', K>
-  Warn: (message: string) => UnlockError<'Warning', K>
+export interface WarningError extends UnlockError {
+  level: 'Warning'
 }
+
+export function isWarningError(e: UnlockError): e is WarningError {
+  return e.level === 'Warning'
+}
+
+export interface DiagnosticError extends UnlockError {
+  level: 'Diagnostic'
+}
+
+export function isDiagnosticError(e: UnlockError): e is DiagnosticError {
+  return e.level === 'Diagnostic'
+}
+
+interface ErrorMakers {
+  Fatal: (message: string) => FatalError
+  Warning: (message: string) => WarningError
+  Diagnostic: (message: string) => DiagnosticError
+}
+
+const errorsFor = (kind: ErrorKind): ErrorMakers => ({
+  Fatal: (message: string) => ({ message, kind, level: 'Fatal' }),
+  Warning: (message: string) => ({ message, kind, level: 'Warning' }),
+  Diagnostic: (message: string) => ({ message, kind, level: 'Diagnostic' }),
+})
 
 // Used for application level failures -- most of these will be fatal (wrong
 // network, no provider...)
-export const ApplicationError: ErrorMakers<'ApplicationError'> = {
-  Fatal: fatalMaker('ApplicationError'),
-  Warn: warningMaker('ApplicationError'),
-}
+const Application: ErrorMakers = errorsFor('Application')
 
 // Used for errors in communicating with locksmith
-export const StorageError: ErrorMakers<'StorageError'> = {
-  Fatal: fatalMaker('StorageError'),
-  Warn: warningMaker('StorageError'),
-}
+const Storage: ErrorMakers = errorsFor('Storage')
 
 // Used for errors in signing data
-export const SignatureError: ErrorMakers<'SignatureError'> = {
-  Fatal: fatalMaker('SignatureError'),
-  Warn: warningMaker('SignatureError'),
-}
+const Signature: ErrorMakers = errorsFor('Signature')
 
 // Used for errors encountered while validating a form (invalid duration...)
-export const FormValidationError: ErrorMakers<'FormValidationError'> = {
-  Fatal: fatalMaker('FormValidationError'),
-  Warn: warningMaker('FormValidationError'),
-}
+const FormValidation: ErrorMakers = errorsFor('FormValidation')
 
 // errors that occur while logging in (wrong password...)
-export const LogInError: ErrorMakers<'LogInError'> = {
-  Fatal: fatalMaker('LogInError'),
-  Warn: warningMaker('LogInError'),
-}
+const LogIn: ErrorMakers = errorsFor('LogIn')
 
 // errors that occur while signing up/creating accounts
-export const SignUpError: ErrorMakers<'SignUpError'> = {
-  Fatal: fatalMaker('SignUpError'),
-  Warn: warningMaker('SignUpError'),
-}
+const SignUp: ErrorMakers = errorsFor('SignUp')
 
 // Transaction errors (failed to create lock, etc.)
-export const TransactionError: ErrorMakers<'TransactionError'> = {
-  Fatal: fatalMaker('TransactionError'),
-  Warn: warningMaker('TransactionError'),
+const Transaction: ErrorMakers = errorsFor('Transaction')
+
+const constructors: { [key: string]: ErrorMakers } = {
+  Application,
+  Storage,
+  Signature,
+  FormValidation,
+  LogIn,
+  SignUp,
+  Transaction,
 }
+
+export default constructors
