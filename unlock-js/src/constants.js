@@ -1,11 +1,11 @@
 import { ethers } from 'ethers'
 
 export const GAS_AMOUNTS = {
-  createLock: 3500000,
-  updateKeyPrice: 1000000,
+  createLock: 4500000,
+  updateKeyPrice: 100000,
   purchaseFor: 300000, // purchaseKey in walletService
-  withdraw: 1000000, // withdrawFromLock in walletService
-  partialWithdraw: 1000000, // partialWithdrawFromLock in walletService
+  withdraw: 100000, // withdrawFromLock in walletService
+  partialWithdraw: 100000, // partialWithdrawFromLock in walletService
   deployContract: 6000000,
 }
 

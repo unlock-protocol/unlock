@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.2
+
+- Updated gas amounts to fix deploying new locks
+
 ## 0.1.1
 
 - Version bump after publishing older code inside 0.1.0
