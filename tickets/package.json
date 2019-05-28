@@ -31,7 +31,7 @@
     "@storybook/react": "5.0.10",
     "@types/jest": "24.0.13",
     "@types/next": "8.0.5",
-    "@types/react": "16.8.18",
+    "@types/react": "16.8.19",
     "@types/react-redux": "7.0.9",
     "@types/storybook__react": "4.0.1",
     "@types/styled-components": "4.1.15",
@@ -62,7 +62,9 @@
     "react-testing-library": "6.1.2",
     "redux": "4.0.1",
     "run-script-os": "1.0.5",
-    "styled-components": "4.2.0"
+    "styled-components": "4.2.0",
+    "ts-jest": "24.0.2",
+    "typescript": "3.4.5"
   },
   "devDependencies": {
     "@svgr/cli": "4.3.0",
