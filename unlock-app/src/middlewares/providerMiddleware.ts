@@ -4,11 +4,14 @@ import {
   FATAL_MISSING_PROVIDER,
   FATAL_NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
-import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import Error from '../utils/Error'
+import { Action } from '../unlockTypes' // eslint-disable-line
+
+const { Application } = Error // eslint-disable-line no-unused-vars
 
 function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
   if (!provider) {
-    dispatch(setError(FATAL_MISSING_PROVIDER))
+    dispatch(setError(Application.Fatal(FATAL_MISSING_PROVIDER)))
     return
   }
 
@@ -18,7 +21,9 @@ function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
     provider
       .enable()
       .then(() => dispatch(providerReady()))
-      .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
+      .catch(() =>
+        dispatch(setError(Application.Fatal(FATAL_NOT_ENABLED_IN_PROVIDER)))
+      )
   } else {
     // Default case, provider doesn't have an enable method, so it must already be ready
     dispatch(providerReady())
