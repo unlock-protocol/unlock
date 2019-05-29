@@ -24,6 +24,8 @@ function _server(port, dev) {
           } else if (pathname.match('/demo')) {
             const params = route('demo/:lockAddress')(pathname)
             app.render(req, res, '/demo', Object.assign(params, query))
+          } else if (pathname.match('/checkout')) {
+            app.render(req, res, '/checkout', Object.assign({}, query))
           } else {
             app.render(req, res, '/home', Object.assign({}, query))
           }
