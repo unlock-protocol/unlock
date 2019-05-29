@@ -20,6 +20,15 @@ type ErrorKind =
   | 'Transaction'
   | 'Web3'
 
+export type NetworkInfo = {
+  currentNetwork: string
+  requiredNetworkId: number
+}
+
+// Additional data that can be passed along with an error. Currently
+// only used for required network info in a fatal error template.
+export type DataPayload = NetworkInfo
+
 export interface UnlockError {
   level: ErrorLevel
   kind: ErrorKind
@@ -28,6 +37,7 @@ export interface UnlockError {
 
 export interface FatalError extends UnlockError {
   level: 'Fatal'
+  data?: DataPayload
 }
 
 export function isFatalError(e: UnlockError): e is FatalError {
@@ -51,13 +61,18 @@ export function isDiagnosticError(e: UnlockError): e is DiagnosticError {
 }
 
 interface ErrorMakers {
-  Fatal: (message: string) => FatalError
+  Fatal: (message: string, data?: DataPayload) => FatalError
   Warning: (message: string) => WarningError
   Diagnostic: (message: string) => DiagnosticError
 }
 
 const errorsFor = (kind: ErrorKind): ErrorMakers => ({
-  Fatal: (message: string) => ({ message, kind, level: 'Fatal' }),
+  Fatal: (message: string, data?: DataPayload) => ({
+    message,
+    kind,
+    level: 'Fatal',
+    data,
+  }),
   Warning: (message: string) => ({ message, kind, level: 'Warning' }),
   Diagnostic: (message: string) => ({ message, kind, level: 'Diagnostic' }),
 })
