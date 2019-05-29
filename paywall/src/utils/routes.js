@@ -33,7 +33,9 @@ export const lockRoute = path => {
       redirect: null,
       account: null,
       transaction: null,
-      origin: null,
+      origin: url.searchParams.has('origin')
+        ? url.searchParams.get('origin')
+        : null,
     }
   }
 

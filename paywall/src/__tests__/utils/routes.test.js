@@ -59,6 +59,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should return the correct redirect parameter when it matches', () => {
       expect.assertions(1)
       expect(
@@ -73,6 +74,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should return the correct account parameter when it matches', () => {
       expect.assertions(2)
       expect(
@@ -99,6 +101,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should return the correct transaction parameter when it matches', () => {
       expect.assertions(2)
       expect(
@@ -126,6 +129,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should ignore malformed account parameter', () => {
       expect.assertions(1)
       expect(
@@ -141,6 +145,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should ignore malformed transaction parameter', () => {
       expect.assertions(1)
       expect(
@@ -156,6 +161,7 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
     it('should return account parameter if redirect is not present', () => {
       expect.assertions(1)
 
@@ -171,7 +177,21 @@ describe('route utilities', () => {
         origin: 'origin/',
       })
     })
+
+    it('should return the origin no matter what', () => {
+      expect.assertions(1)
+
+      expect(
+        lockRoute(
+          '/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+        )
+      ).toEqual({
+        ...baseRoute,
+        origin: 'origin/',
+      })
+    })
   })
+
   describe('getRouteFromWindow', () => {
     it('should parse route from window.location', () => {
       expect.assertions(1)
