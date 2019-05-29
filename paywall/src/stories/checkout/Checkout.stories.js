@@ -7,7 +7,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 
 const purchaseKey = () => {}
-const clickOnConfirmedLock = () => {}
+const hideCheckout = () => {}
 
 const ConfigProvider = ConfigContext.Provider
 
@@ -92,7 +92,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -117,7 +117,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -164,7 +164,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -211,7 +211,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -262,7 +262,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -309,7 +309,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
