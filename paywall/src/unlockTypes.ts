@@ -103,4 +103,5 @@ export interface Key {
   status: string
   confirmations: number
   owner: string
+  lock: string
 }

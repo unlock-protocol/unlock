@@ -35,6 +35,7 @@ const paywallConfig = {
 
 const account = {
   address: '0x123',
+  balance: '789',
 }
 
 const store = createUnlockStore()
@@ -56,6 +57,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x123',
         },
       },
       '0x456': {
@@ -67,6 +69,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x456',
         },
       },
       '0x789': {
@@ -78,6 +81,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x789',
         },
       },
     }
@@ -262,7 +266,7 @@ storiesOf('Checkout', module)
       />
     )
   })
-  .add('Checkout with 3 locks and one confirming key purchase', () => {
+  .add('Checkout with 3 locks and one valid key purchase', () => {
     const locks = {
       '0x123': {
         name: 'Weekly',
