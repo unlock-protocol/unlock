@@ -8,9 +8,9 @@ import CheckoutLock from './CheckoutLock'
 interface Props {
   locks: Locks
   config: PaywallConfig
-  account: Account
+  account: Account | null
   purchase: (...args: any[]) => any
-  clickOnConfirmedLock: (...args: any[]) => any
+  hideCheckout: (...args: any[]) => any
 }
 
 export const Checkout = ({
@@ -18,7 +18,7 @@ export const Checkout = ({
   config,
   account,
   purchase,
-  clickOnConfirmedLock,
+  hideCheckout,
 }: Props) => {
   const hasValidKey = Object.keys(locks).reduce(
     (isValid, address) => isValid || locks[address].key.status === 'valid',
@@ -41,7 +41,7 @@ export const Checkout = ({
                 account={account}
                 disabled={hasValidKey}
                 purchase={purchase}
-                clickOnConfirmedLock={clickOnConfirmedLock}
+                hideCheckout={hideCheckout}
               />
             )
           }
