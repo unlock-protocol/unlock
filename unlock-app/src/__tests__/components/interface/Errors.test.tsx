@@ -2,8 +2,11 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 
 import { Errors, mapStateToProps } from '../../../components/interface/Errors'
+import Error from '../../../utils/Error'
 
 const close = jest.fn()
+
+const errors = [Error.Storage.Warning('PC Load Letter')]
 
 afterEach(rtl.cleanup)
 describe('Errors Component', () => {
@@ -13,37 +16,26 @@ describe('Errors Component', () => {
       const wrapper = rtl.render(<Errors errors={[]} close={close} />)
       expect(wrapper.container.firstChild).toBeNull()
     })
-
-    it('should not render when errors length is 0', () => {
-      expect.assertions(1)
-      const wrapper = rtl.render(<Errors close={close} errors={[]} />)
-      expect(wrapper.container.firstChild).toBeNull()
-    })
   })
 
-  describe('when the component has a children', () => {
+  describe('when the component has children', () => {
     it('should dispatch a resetError action when clicking on the close icon', () => {
       expect.assertions(2)
       const close = jest.fn()
-      const wrapper = rtl.render(
-        <Errors close={close} errors={[{ name: 'There was an error.' }]} />
-      )
+      const wrapper = rtl.render(<Errors close={close} errors={errors} />)
       rtl.fireEvent.click(wrapper.getByTitle(/close/i))
       expect(close).toHaveBeenCalledTimes(1)
-      expect(close).toHaveBeenCalledWith('There was an error.')
+      expect(close).toHaveBeenCalledWith(errors[0])
     })
   })
 
-  describe('the the component has an error message', () => {
+  describe('the component has an error message', () => {
     it('should display the content of the children', () => {
       expect.assertions(1)
-      const message = 'Broken'
-      const wrapper = rtl.render(
-        <Errors close={close} errors={[{ name: message }]} />
-      )
+      const wrapper = rtl.render(<Errors close={close} errors={errors} />)
       expect(
         wrapper.queryByText(
-          'There was an error (Broken). Please retry and report if it happens again.'
+          'There was an error (PC Load Letter). Please retry and report if it happens again.'
         )
       ).not.toBeNull()
     })
@@ -52,12 +44,13 @@ describe('Errors Component', () => {
   describe('connecting to redux', () => {
     it('mapStateToProps', () => {
       expect.assertions(1)
-      const expectedState = [
-        { name: 'error 1' },
-        { name: 'error 2' },
-        { name: 'error 3' },
+      const startingState = [
+        Error.Storage.Warning('PC Load Letter'),
+        Error.Web3.Diagnostic('Web3 deprecated, upgrade to Web4 beta 37'),
+        Error.Signature.Warning('Pen low on ink, refill before signing'),
       ]
-      expect(mapStateToProps({ errors: expectedState })).toEqual({
+      const expectedState = [startingState[0], startingState[2]]
+      expect(mapStateToProps({ errors: startingState })).toEqual({
         errors: expectedState,
       })
     })

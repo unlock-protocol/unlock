@@ -18,6 +18,16 @@ type ErrorKind =
   | 'Signature'
   | 'Storage'
   | 'Transaction'
+  | 'Web3'
+
+export type NetworkInfo = {
+  currentNetwork: string
+  requiredNetworkId: number
+}
+
+// Additional data that can be passed along with an error. Currently
+// only used for required network info in a fatal error template.
+export type DataPayload = NetworkInfo
 
 export interface UnlockError {
   level: ErrorLevel
@@ -27,6 +37,7 @@ export interface UnlockError {
 
 export interface FatalError extends UnlockError {
   level: 'Fatal'
+  data?: DataPayload
 }
 
 export function isFatalError(e: UnlockError): e is FatalError {
@@ -50,38 +61,45 @@ export function isDiagnosticError(e: UnlockError): e is DiagnosticError {
 }
 
 interface ErrorMakers {
-  Fatal: (message: string) => FatalError
+  Fatal: (message: string, data?: DataPayload) => FatalError
   Warning: (message: string) => WarningError
   Diagnostic: (message: string) => DiagnosticError
 }
 
 const errorsFor = (kind: ErrorKind): ErrorMakers => ({
-  Fatal: (message: string) => ({ message, kind, level: 'Fatal' }),
+  Fatal: (message: string, data?: DataPayload) => ({
+    message,
+    kind,
+    level: 'Fatal',
+    data,
+  }),
   Warning: (message: string) => ({ message, kind, level: 'Warning' }),
   Diagnostic: (message: string) => ({ message, kind, level: 'Diagnostic' }),
 })
 
 // Used for application level failures -- most of these will be fatal (wrong
 // network, no provider...)
-const Application: ErrorMakers = errorsFor('Application')
+export const Application: ErrorMakers = errorsFor('Application')
 
 // Used for errors in communicating with locksmith
-const Storage: ErrorMakers = errorsFor('Storage')
+export const Storage: ErrorMakers = errorsFor('Storage')
 
 // Used for errors in signing data
-const Signature: ErrorMakers = errorsFor('Signature')
+export const Signature: ErrorMakers = errorsFor('Signature')
 
 // Used for errors encountered while validating a form (invalid duration...)
-const FormValidation: ErrorMakers = errorsFor('FormValidation')
+export const FormValidation: ErrorMakers = errorsFor('FormValidation')
 
 // errors that occur while logging in (wrong password...)
-const LogIn: ErrorMakers = errorsFor('LogIn')
+export const LogIn: ErrorMakers = errorsFor('LogIn')
 
 // errors that occur while signing up/creating accounts
-const SignUp: ErrorMakers = errorsFor('SignUp')
+export const SignUp: ErrorMakers = errorsFor('SignUp')
 
 // Transaction errors (failed to create lock, etc.)
-const Transaction: ErrorMakers = errorsFor('Transaction')
+export const Transaction: ErrorMakers = errorsFor('Transaction')
+
+export const Web3: ErrorMakers = errorsFor('Web3')
 
 const constructors: { [key: string]: ErrorMakers } = {
   Application,
@@ -91,6 +109,7 @@ const constructors: { [key: string]: ErrorMakers } = {
   LogIn,
   SignUp,
   Transaction,
+  Web3,
 }
 
 export default constructors

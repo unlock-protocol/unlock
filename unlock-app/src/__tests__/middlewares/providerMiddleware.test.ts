@@ -2,6 +2,9 @@ import providerMiddleware from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER } from '../../actions/provider'
 import { setError } from '../../actions/error'
 import { FATAL_MISSING_PROVIDER } from '../../errors'
+import Error from '../../utils/Error'
+
+const { Application } = Error
 
 const config = {
   providers: {
@@ -63,7 +66,9 @@ describe('provider middleware', () => {
       const next = () => {
         expect(config.providers['UNLOCK'].enable).not.toHaveBeenCalled()
         expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
-        expect(dispatch).toHaveBeenCalledWith(setError(FATAL_MISSING_PROVIDER))
+        expect(dispatch).toHaveBeenCalledWith(
+          setError(Application.Fatal(FATAL_MISSING_PROVIDER))
+        )
         done()
       }
 
