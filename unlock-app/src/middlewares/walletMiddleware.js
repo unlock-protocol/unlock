@@ -19,7 +19,7 @@ import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
-import { POLLING_INTERVAL } from '../constants'
+import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 import Error from '../utils/Error'
 
@@ -149,7 +149,17 @@ const walletMiddleware = config => {
 
       // Let's check if we're on the right network
       if (config.isRequiredNetwork && !config.isRequiredNetwork(networkId)) {
-        return dispatch(setError(Application.Fatal(FATAL_WRONG_NETWORK)))
+        const currentNetwork = ETHEREUM_NETWORKS_NAMES[networkId]
+          ? ETHEREUM_NETWORKS_NAMES[networkId][0]
+          : 'Unknown Network'
+        return dispatch(
+          setError(
+            Application.Fatal(FATAL_WRONG_NETWORK, {
+              currentNetwork,
+              requiredNetworkId: config.requiredNetworkId,
+            })
+          )
+        )
       }
 
       // Check if the smart contract exists
