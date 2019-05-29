@@ -266,7 +266,7 @@ jobs:
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC"
       - run:
           name: Deploy Staging to Beanstalk
-          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$DB_USERNAME" "$DB_PASSWORD" "$DB_NAME" "$DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC"
+          command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC"
 
   promote-unlock-images:
     machine: true
