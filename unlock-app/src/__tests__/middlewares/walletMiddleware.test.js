@@ -286,6 +286,10 @@ describe('Wallet middleware', () => {
                 level: 'Fatal',
                 kind: 'Application',
                 message: FATAL_WRONG_NETWORK,
+                data: {
+                  currentNetwork: 'Winston',
+                  requiredNetworkId: 1984,
+                },
               },
             })
           )
