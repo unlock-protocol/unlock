@@ -79,27 +79,27 @@ const errorsFor = (kind: ErrorKind): ErrorMakers => ({
 
 // Used for application level failures -- most of these will be fatal (wrong
 // network, no provider...)
-const Application: ErrorMakers = errorsFor('Application')
+export const Application: ErrorMakers = errorsFor('Application')
 
 // Used for errors in communicating with locksmith
-const Storage: ErrorMakers = errorsFor('Storage')
+export const Storage: ErrorMakers = errorsFor('Storage')
 
 // Used for errors in signing data
-const Signature: ErrorMakers = errorsFor('Signature')
+export const Signature: ErrorMakers = errorsFor('Signature')
 
 // Used for errors encountered while validating a form (invalid duration...)
-const FormValidation: ErrorMakers = errorsFor('FormValidation')
+export const FormValidation: ErrorMakers = errorsFor('FormValidation')
 
 // errors that occur while logging in (wrong password...)
-const LogIn: ErrorMakers = errorsFor('LogIn')
+export const LogIn: ErrorMakers = errorsFor('LogIn')
 
 // errors that occur while signing up/creating accounts
-const SignUp: ErrorMakers = errorsFor('SignUp')
+export const SignUp: ErrorMakers = errorsFor('SignUp')
 
 // Transaction errors (failed to create lock, etc.)
-const Transaction: ErrorMakers = errorsFor('Transaction')
+export const Transaction: ErrorMakers = errorsFor('Transaction')
 
-const Web3: ErrorMakers = errorsFor('Web3')
+export const Web3: ErrorMakers = errorsFor('Web3')
 
 const constructors: { [key: string]: ErrorMakers } = {
   Application,

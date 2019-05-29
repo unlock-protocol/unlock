@@ -17,10 +17,8 @@ import {
   gotEncryptedPrivateKeyPayload,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
-import Error from '../utils/Error'
+import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
-
-const { Storage } = Error
 
 const storageMiddleware = config => {
   const { services } = config

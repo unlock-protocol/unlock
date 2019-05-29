@@ -20,9 +20,7 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { transactionTypeMapping } from '../utils/types'
-import Error from '../utils/Error'
-
-const { Web3 } = Error
+import { Web3 } from '../utils/Error'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions

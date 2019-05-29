@@ -21,7 +21,7 @@ import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
-import Error from '../utils/Error'
+import { Application, Transaction, LogIn } from '../utils/Error'
 
 import {
   FATAL_NO_USER_ACCOUNT,
@@ -36,8 +36,6 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   setEncryptedPrivateKey,
 } from '../actions/user'
-
-const { Application, Transaction, LogIn } = Error
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
