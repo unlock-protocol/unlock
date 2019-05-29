@@ -1,4 +1,8 @@
-import { lockRoute, getRouteFromWindow } from '../../utils/routes'
+import {
+  lockRoute,
+  getRouteFromWindow,
+  polyfilledURL,
+} from '../../utils/routes'
 
 describe('route utilities', () => {
   const baseRoute = {
@@ -188,6 +192,15 @@ describe('route utilities', () => {
       ).toEqual({
         ...baseRoute,
         origin: 'origin/',
+      })
+    })
+
+    it('should not crash if there are no search params on polyfilled server URL', () => {
+      expect.assertions(1)
+
+      expect(lockRoute('/', polyfilledURL)).toEqual({
+        ...baseRoute,
+        origin: null,
       })
     })
   })

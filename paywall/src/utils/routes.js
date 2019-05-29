@@ -4,20 +4,24 @@ import {
   TRANSACTION_REGEXP,
 } from '../constants'
 
+export const polyfilledURL = function() {
+  return {
+    pathname: '',
+    hash: false,
+    searchParams: {
+      has: () => false,
+    },
+  }
+}
 if (!global.URL) {
   // polyfill for server
-  global.URL = function() {
-    return {
-      pathname: '',
-      hash: false,
-    }
-  }
+  global.URL = polyfilledURL
 }
 /**
  * Returns a hash of lockAddress and prefix based on a path.
  * @param {*} path
  */
-export const lockRoute = path => {
+export const lockRoute = (path, URL = global.URL) => {
   // note: undocumented "feature" of the URL class is that it throws
   // if the URL is invalid. In our case, we are passing in a relative path,
   // and so it throws unless we pass in a base url. Since the base URL
@@ -25,6 +29,9 @@ export const lockRoute = path => {
   // https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
   const url = new URL(path, 'http://paywall.unlock-protocol.com')
   const match = url.pathname.match(LOCK_PATH_NAME_REGEXP)
+  const origin = url.searchParams.has('origin')
+    ? url.searchParams.get('origin')
+    : null
 
   if (!match) {
     return {
@@ -33,9 +40,7 @@ export const lockRoute = path => {
       redirect: null,
       account: null,
       transaction: null,
-      origin: url.searchParams.has('origin')
-        ? url.searchParams.get('origin')
-        : null,
+      origin,
     }
   }
 
@@ -52,9 +57,7 @@ export const lockRoute = path => {
     redirect: (match[3] && decodeURIComponent(match[3])) || null,
     account,
     transaction,
-    origin: url.searchParams.has('origin')
-      ? url.searchParams.get('origin')
-      : null,
+    origin,
   }
 }
 
