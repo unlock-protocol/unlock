@@ -18,6 +18,7 @@ type ErrorKind =
   | 'Signature'
   | 'Storage'
   | 'Transaction'
+  | 'Web3'
 
 export interface UnlockError {
   level: ErrorLevel
@@ -83,6 +84,8 @@ const SignUp: ErrorMakers = errorsFor('SignUp')
 // Transaction errors (failed to create lock, etc.)
 const Transaction: ErrorMakers = errorsFor('Transaction')
 
+const Web3: ErrorMakers = errorsFor('Web3')
+
 const constructors: { [key: string]: ErrorMakers } = {
   Application,
   Storage,
@@ -91,6 +94,7 @@ const constructors: { [key: string]: ErrorMakers } = {
   LogIn,
   SignUp,
   Transaction,
+  Web3,
 }
 
 export default constructors
