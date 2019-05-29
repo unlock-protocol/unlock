@@ -61,7 +61,7 @@ describe('errors reducer', () => {
     expect(reducer(state, resetError(error2))).toBe(state)
   })
 
-  it('should reset all errors if CLEAR_ALL_ERRORS with no specific error received', () => {
+  it('should reset all errors if CLEAR_ALL_ERRORS is called', () => {
     expect.assertions(1)
     expect(reducer([error, error2], clearAllErrors())).toBe(initialState)
   })
