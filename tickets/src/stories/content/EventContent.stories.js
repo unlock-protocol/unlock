@@ -21,12 +21,13 @@ const lock = {
   transaction: 'deployedid',
 }
 const event = {
-  date: new Date(2063, 10, 23),
+  date: new Date(2063, 10, 23, 18, 30),
   name: 'My Doctor Who party',
   description: `Unbelievably, it's been 100 years since it first came to our screens.
 
 Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
+  duration: 3600,
 }
 const config = configure({})
 const purchaseKey = () => {}
