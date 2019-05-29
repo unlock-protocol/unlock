@@ -36,6 +36,7 @@ function deploy()
     environment_name=$1
 
     if eb status ${environment_name}; then
+        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} NODE_ENV=${node_env}
         eb deploy ${environment_name} --label locksmith-${build_id} --message "${message:0:199}"
     else
         eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env} --elb-type classic
