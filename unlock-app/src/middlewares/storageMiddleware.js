@@ -6,7 +6,6 @@ import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 import { startLoading, doneLoading } from '../actions/loading'
 
 import { StorageService, success, failure } from '../services/storageService'
-import { storageError } from '../actions/storage'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
@@ -18,6 +17,8 @@ import {
   gotEncryptedPrivateKeyPayload,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
+import { Storage } from '../utils/Error'
+import { setError } from '../actions/error'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -25,8 +26,10 @@ const storageMiddleware = config => {
     const storageService = new StorageService(services.storage.host)
 
     // NEW_TRANSACTION
-    storageService.on(failure.storeTransaction, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.storeTransaction, () => {
+      // TODO: we are in control of what storageService emits --
+      // construct helpful errors at source of failure?
+      dispatch(setError(Storage.Diagnostic('Failed to store transaction.')))
     })
 
     // SET_ACCOUNT
@@ -39,8 +42,10 @@ const storageMiddleware = config => {
       })
       dispatch(doneLoading())
     })
-    storageService.on(failure.getTransactionHashesSentBy, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.getTransactionHashesSentBy, () => {
+      dispatch(
+        setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
+      )
       dispatch(doneLoading())
     })
 
@@ -48,13 +53,13 @@ const storageMiddleware = config => {
     storageService.on(success.lockLookUp, ({ address, name }) => {
       dispatch(updateLock(address, { name }))
     })
-    storageService.on(failure.lockLookUp, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.lockLookUp, () => {
+      dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
     // SIGNED_DATA
-    storageService.on(failure.storeLockDetails, ({ error }) => {
-      dispatch(storageError(error))
+    storageService.on(failure.storeLockDetails, () => {
+      dispatch(setError(Storage.Warning('Could not store some lock metadata.')))
     })
 
     // SIGNUP_CREDENTIALS
@@ -63,13 +68,13 @@ const storageMiddleware = config => {
       // setting here, will need to change what storageService emits
       dispatch(setAccount({ address: publicKey }))
     })
-    storageService.on(failure.createUser, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.createUser, () => {
+      dispatch(setError(Storage.Warning('Could not create this user account.')))
     })
 
     // LOGIN_CREDENTIALS
-    storageService.on(failure.getUserPrivateKey, ({ error }) => {
-      dispatch(storageError(error))
+    storageService.on(failure.getUserPrivateKey, () => {
+      dispatch(setError(Storage.Warning('Could not find this user account.')))
     })
 
     return next => {

@@ -21,11 +21,12 @@ import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
+import { Application, Transaction, LogIn } from '../utils/Error'
+
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
-  FAILED_TO_DECRYPT_KEY,
 } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
@@ -50,7 +51,7 @@ const walletMiddleware = config => {
      */
     const ensureReadyBefore = callback => {
       if (!walletService.ready) {
-        return dispatch(setError(FATAL_NO_USER_ACCOUNT))
+        return dispatch(setError(Application.Fatal(FATAL_NO_USER_ACCOUNT)))
       }
       return callback()
     }
@@ -126,10 +127,14 @@ const walletMiddleware = config => {
         // delete the lock
         dispatch(deleteLock(transaction.lock))
         return dispatch(
-          setError('Failed to create lock. Did you decline the transaction?')
+          setError(
+            Transaction.Warning(
+              'Failed to create lock. Did you decline the transaction?'
+            )
+          )
         )
       }
-      dispatch(setError(error.message))
+      dispatch(setError(Transaction.Warning(error.message)))
     })
 
     /**
@@ -146,20 +151,24 @@ const walletMiddleware = config => {
           ? ETHEREUM_NETWORKS_NAMES[networkId][0]
           : 'Unknown Network'
         return dispatch(
-          setError(FATAL_WRONG_NETWORK, {
-            currentNetwork: currentNetwork,
-            requiredNetworkId: config.requiredNetworkId,
-          })
+          setError(
+            Application.Fatal(FATAL_WRONG_NETWORK, {
+              currentNetwork,
+              requiredNetworkId: config.requiredNetworkId,
+            })
+          )
         )
       }
 
       // Check if the smart contract exists
       walletService.isUnlockContractDeployed((error, isDeployed) => {
         if (error) {
-          return dispatch(setError(error.message))
+          return dispatch(setError(Application.Fatal(error.message)))
         }
         if (!isDeployed) {
-          return dispatch(setError(FATAL_NON_DEPLOYED_CONTRACT))
+          return dispatch(
+            setError(Application.Fatal(FATAL_NON_DEPLOYED_CONTRACT))
+          )
         }
         // We need a new account!
         return walletService.getAccount(true /* createIfNone */)
@@ -224,9 +233,15 @@ const walletMiddleware = config => {
               dispatch(setAccount({ address }))
               dispatch(setEncryptedPrivateKey(key, emailAddress))
             })
-            .catch(error => {
+            .catch(() => {
               // handle error here
-              dispatch(setError(FAILED_TO_DECRYPT_KEY, error))
+              dispatch(
+                setError(
+                  LogIn.Warning(
+                    'Failed to decrypt private key. Check your password and try again.'
+                  )
+                )
+              )
             })
         }
 

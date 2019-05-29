@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react'
 import FatalError from '../../components/creator/FatalError'
 
 storiesOf('FatalError', module)
-  .add('default', () => {
-    return <FatalError.DefaultError />
+  .add('Fallback', () => {
+    return <FatalError.FallbackError />
   })
   .add('Network mismatch', () => {
     return (

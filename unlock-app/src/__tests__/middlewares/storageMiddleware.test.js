@@ -2,7 +2,6 @@ import { EventEmitter } from 'events'
 import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
-import { storageError, STORAGE_ERROR } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA } from '../../actions/signature'
@@ -15,6 +14,10 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
+import Error from '../../utils/Error'
+import { setError } from '../../actions/error'
+
+const { Storage } = Error
 
 /**
  * This is a "fake" middleware caller
@@ -110,10 +113,10 @@ describe('Storage middleware', () => {
     it('should handle failure.storeTransaction events', () => {
       expect.assertions(1)
       const { store } = create()
-      mockStorageService.emit(failure.storeTransaction, 'You done goofed.')
+      mockStorageService.emit(failure.storeTransaction, 'No storage for you.')
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('You done goofed.')
+        setError(Storage.Diagnostic('Failed to store transaction.'))
       )
     })
   })
@@ -175,7 +178,7 @@ describe('Storage middleware', () => {
 
       expect(store.dispatch).toHaveBeenNthCalledWith(
         1,
-        storageError('API On Vacation')
+        setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
     })
@@ -213,7 +216,7 @@ describe('Storage middleware', () => {
       mockStorageService.emit(failure.lockLookUp, 'Not enough vespene gas.')
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('Not enough vespene gas.')
+        setError(Storage.Diagnostic('Could not look up lock details.'))
       )
     })
   })
@@ -262,7 +265,7 @@ describe('Storage middleware', () => {
       })
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('Not enough vespene gas.')
+        setError(Storage.Warning('Could not store some lock metadata.'))
       )
     })
   })
@@ -357,7 +360,7 @@ describe('Storage middleware', () => {
       )
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError("I don't really feel like it.")
+        setError(Storage.Warning('Could not create this user account.'))
       )
     })
   })
@@ -408,10 +411,9 @@ describe('Storage middleware', () => {
         error: errorMessage,
       })
 
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: STORAGE_ERROR,
-        error: errorMessage,
-      })
+      expect(store.dispatch).toHaveBeenCalledWith(
+        setError(Storage.Warning('Could not find this user account.'))
+      )
       expect(store.dispatch).toHaveBeenCalledTimes(1)
     })
   })

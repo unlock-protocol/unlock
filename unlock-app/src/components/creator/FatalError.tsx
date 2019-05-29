@@ -1,8 +1,9 @@
-import PropTypes from 'prop-types'
-
 import React from 'react'
 import styled from 'styled-components'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
+/* eslint-disable */
+import { FatalError, DataPayload } from '../../utils/Error'
+/* eslint-disable */
 
 const defaultError = (
   <p>
@@ -11,7 +12,18 @@ const defaultError = (
   </p>
 )
 
-export const DefaultError = ({ title, children, illustration, critical }) => (
+interface DefaultErrorProps {
+  illustration: string
+  title: string
+  children: React.ReactNode
+  critical: boolean
+}
+export const DefaultError = ({
+  title,
+  children,
+  illustration,
+  critical,
+}: DefaultErrorProps) => (
   <Container>
     <Image src={illustration} />
     <Message critical={critical}>
@@ -21,19 +33,15 @@ export const DefaultError = ({ title, children, illustration, critical }) => (
   </Container>
 )
 
-DefaultError.propTypes = {
-  illustration: PropTypes.string,
-  title: PropTypes.string,
-  children: PropTypes.node,
-  critical: PropTypes.bool,
-}
-
-DefaultError.defaultProps = {
-  illustration: '/static/images/illustrations/error.svg',
-  title: 'Fatal Error',
-  children: defaultError,
-  critical: true,
-}
+export const FallbackError = () => (
+  <DefaultError
+  illustration="/static/images/illustrations/error.svg"
+  title="Fatal Error"
+  critical
+  >
+  {defaultError}
+  </DefaultError>
+)
 
 const Container = styled.section`
   display: grid;
@@ -64,7 +72,8 @@ const Message = styled.div`
 
   & > h1 {
     font-weight: bold;
-    color: ${props => (props.critical ? 'var(--red)' : 'var(--grey)')};
+    color: ${(props: { critical?: boolean }) =>
+      props.critical ? 'var(--red)' : 'var(--grey)'};
     margin: 0px;
     padding: 0px;
   }
@@ -77,30 +86,27 @@ const Message = styled.div`
   }
 `
 
-export const WrongNetwork = ({ currentNetwork, requiredNetworkId }) => (
+export const WrongNetwork = ({ currentNetwork, requiredNetworkId }: DataPayload) => (
   <DefaultError
     title="Network mismatch"
     illustration="/static/images/illustrations/network.svg"
+    critical
   >
     <p>
       {`You’re currently on the ${currentNetwork} network but you need to be on the ${
-        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-      } network. Please switch to ${
-        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-      }.`}
+            ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
+          } network. Please switch to ${
+            ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
+          }.`}
     </p>
   </DefaultError>
 )
-
-WrongNetwork.propTypes = {
-  currentNetwork: PropTypes.string.isRequired,
-  requiredNetworkId: PropTypes.number.isRequired,
-}
-
+  
 export const MissingProvider = () => (
   <DefaultError
     title="Wallet missing"
     illustration="/static/images/illustrations/wallet.svg"
+    critical
   >
     <p>
       It looks like you’re using an incompatible browser or are missing a crypto
@@ -111,7 +117,11 @@ export const MissingProvider = () => (
 )
 
 export const MissingAccount = () => (
-  <DefaultError title="Need account">
+  <DefaultError
+    title="Need account"
+    illustration="/static/images/illustrations/wallet.svg"
+    critical
+  >
     <p>
       In order to display this content, you need to connect a crypto-wallet to
       your browser.
@@ -120,39 +130,52 @@ export const MissingAccount = () => (
 )
 
 export const ContractNotDeployed = () => (
-  <DefaultError title="Unlock not deployed">
+  <DefaultError
+    title="Unlock not deployed"
+    illustration="/static/images/illustrations/error.svg"
+    critical
+  >
     <p>The Unlock contract has not been deployed at the configured address.</p>
   </DefaultError>
 )
 
 export const NotEnabledInProvider = () => (
-  <DefaultError title="Not enabled in provider">
+  <DefaultError
+    title="Not enabled in provider"
+    illustration="/static/images/illustrations/wallet.svg"
+    critical
+  >
     <p>You did not approve Unlock in your web3 wallet.</p>
   </DefaultError>
 )
 
-export const mapping = {
+type Template = () => JSX.Element
+
+interface Mapping {
+  [key: string]: Template
+}
+export const mapping: Mapping = {
   FATAL_MISSING_PROVIDER: MissingProvider,
   FATAL_NO_USER_ACCOUNT: MissingAccount,
-  FATAL_WRONG_NETWORK: WrongNetwork,
   FATAL_NON_DEPLOYED_CONTRACT: ContractNotDeployed,
   FATAL_NOT_ENABLED_IN_PROVIDER: NotEnabledInProvider,
-  '*': DefaultError,
+  '*': FallbackError,
 }
 
 export function mapErrorToComponent(
-  error,
-  errorMetadata,
-  overrideMapping = {}
+  error: FatalError,
+  overrideMapping: Mapping = {}
 ) {
-  // if the error condition exists, set it to the mapped fatal error component
-  // or to the fallback
-  // if no error exists, set it to false
-  const Error = error
-    ? overrideMapping[error] || mapping[error] || mapping['*']
-    : false
+  const { message } = error
+  if (message === 'FATAL_WRONG_NETWORK') {
+    if (error.data && error.data.currentNetwork && error.data.requiredNetworkId) {
+      const { currentNetwork, requiredNetworkId } = error.data
+      return <WrongNetwork currentNetwork={currentNetwork} requiredNetworkId={requiredNetworkId} />
+    }
+  }
 
-  return Error && <Error {...errorMetadata} />
+  const Error = overrideMapping[message] || mapping[message] || mapping['*']
+  return <Error />
 }
 
 export default {
@@ -162,4 +185,5 @@ export default {
   MissingAccount,
   ContractNotDeployed,
   NotEnabledInProvider,
+  FallbackError,
 }
