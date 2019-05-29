@@ -12,7 +12,7 @@ interface Props {
   disabled: boolean
   account: Account | null
   purchase: (key: Key) => void
-  hideCheckout: (...args: any[]) => any
+  hideCheckout: (...args: any[]) => void
 }
 
 /**
