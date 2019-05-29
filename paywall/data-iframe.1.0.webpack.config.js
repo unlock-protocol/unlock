@@ -13,6 +13,7 @@ const requiredConfigVariables = {
   unlockEnv,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
+  paywallUrl: process.env.PAYWALL_URL,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
@@ -28,7 +29,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = env => {
+module.exports = () => {
   return {
     mode: 'production',
     devtool: 'source-map',
@@ -42,9 +43,12 @@ module.exports = env => {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.UNLOCK_ENV': "'" + unlockEnv + "'",
-        'process.env.PAYWALL_URL': "'" + env.PAYWALL_URL + "'",
-        'process.env.LOCKSMITH_URI': "'" + env.LOCKSMITH_URI + "'",
-        'process.env.READ_ONLY_PROVIDER': "'" + env.READ_ONLY_PROVIDER + "'",
+        'process.env.PAYWALL_URL':
+          "'" + requiredConfigVariables.paywallUrl + "'",
+        'process.env.LOCKSMITH_URI':
+          "'" + requiredConfigVariables.locksmithUri + "'",
+        'process.env.READ_ONLY_PROVIDER':
+          "'" + requiredConfigVariables.readOnlyProvider + "'",
       }),
     ],
   }
