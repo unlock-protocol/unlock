@@ -1,4 +1,5 @@
-const request = require('supertest')
+import request from 'supertest'
+
 const app = require('../../src/app')
 
 describe('Health Check Endpoint', () => {
@@ -6,6 +7,6 @@ describe('Health Check Endpoint', () => {
     expect.assertions(1)
 
     let response = await request(app).get('/health')
-    expect(response.statusCode).toBe(200)
+    expect(response.status).toBe(200)
   })
 })
