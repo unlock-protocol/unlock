@@ -132,7 +132,7 @@ export const MissingAccount = () => (
 export const ContractNotDeployed = () => (
   <DefaultError
     title="Unlock not deployed"
-    illustration="/static/images/illustrations/wallet.svg"
+    illustration="/static/images/illustrations/error.svg"
     critical
   >
     <p>The Unlock contract has not been deployed at the configured address.</p>
