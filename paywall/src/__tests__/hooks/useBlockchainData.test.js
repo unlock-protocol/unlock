@@ -186,6 +186,7 @@ describe('useBlockchainData hook', () => {
           status: 'none',
           confirmations: 0,
           owner: address,
+          lock: address,
         },
       },
     }

@@ -1,4 +1,6 @@
 import isURL from 'validator/lib/isURL'
+import isDataURI from 'validator/lib/isDataURI'
+import isDecimal from 'validator/lib/isDecimal'
 
 import { ACCOUNT_REGEXP } from '../constants'
 
@@ -66,7 +68,8 @@ export const isValidPaywallConfig = config => {
         allow_underscores: true,
         allow_protocol_relative_urls: true,
         disallow_auth: true,
-      })
+      }) &&
+      !isDataURI(config.icon)
     ) {
       return false
     }
@@ -125,7 +128,14 @@ export const isValidKey = key => {
   if (
     !isValidObject(
       key,
-      ['expiration', 'transactions', 'status', 'confirmations', 'owner'],
+      [
+        'expiration',
+        'transactions',
+        'status',
+        'confirmations',
+        'owner',
+        'lock',
+      ],
       ['id']
     )
   ) {
@@ -161,6 +171,7 @@ export const isValidKey = key => {
     return false
   }
   if (typeof key.owner !== 'string' || !isAccount(key.owner)) return false
+  if (typeof key.lock !== 'string' || !isAccount(key.lock)) return false
   // NOTE: transactions are not used in the UI, and may be removed, so
   // for now we do not validate them. If this ever changes, they must
   // be validated
@@ -191,14 +202,15 @@ export const isValidLock = lock => {
 
   if (lock.hasOwnProperty('name') && typeof lock.name !== 'string') return false
   if (typeof lock.address !== 'string' || !isAccount(lock.address)) return false
-  if (typeof lock.keyPrice !== 'string' || !lock.keyPrice.match(/[0-9]+/)) {
+  if (typeof lock.keyPrice !== 'string' || !isDecimal(lock.keyPrice)) {
     return false
   }
   if (
     typeof lock.expirationDuration !== 'number' ||
     !isPositiveInteger(lock.expirationDuration)
-  )
+  ) {
     return false
+  }
   if (!isValidKey(lock.key)) return false
   return true
 }
