@@ -5,14 +5,14 @@ import ConfirmingKeyLock from '../lock/ConfirmingKeyLock'
 import ConfirmedKeyLock from '../lock/ConfirmedKeyLock'
 import NoKeyLock from '../lock/NoKeyLock'
 
-import { Lock, Account, KeyStatus } from '../../unlockTypes'
+import { Lock, Account, KeyStatus, Key } from '../../unlockTypes'
 
 interface Props {
   lock: Lock
   disabled: boolean
-  account: Account
-  purchase: (...args: any[]) => any
-  clickOnConfirmedLock: (...args: any[]) => any
+  account: Account | null
+  purchase: (key: Key) => void
+  hideCheckout: (...args: any[]) => any
 }
 
 /**
@@ -27,7 +27,7 @@ export const CheckoutLock = ({
   account,
   disabled,
   purchase,
-  clickOnConfirmedLock,
+  hideCheckout,
 }: Props) => {
   const { key } = lock
 
@@ -45,7 +45,7 @@ export const CheckoutLock = ({
   }
 
   if (key.status === KeyStatus.VALID) {
-    return <ConfirmedKeyLock lock={lock} onClick={clickOnConfirmedLock} />
+    return <ConfirmedKeyLock lock={lock} onClick={hideCheckout} />
   }
 
   return (
