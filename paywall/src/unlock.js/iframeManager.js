@@ -8,10 +8,10 @@ export function makeIframe(window, src) {
 
 export function addIframeToDocument(window, iframe) {
   window.document.body.insertAdjacentElement('afterbegin', iframe)
-  window.setInterval(
-    () => window.document.body.insertAdjacentElement('afterbegin', iframe),
-    500
-  )
+  window.setInterval(() => {
+    if (document.querySelector(`iframe[src="${iframe.src}"]`)) return
+    window.document.body.insertAdjacentElement('afterbegin', iframe)
+  }, 500)
 }
 
 export function showIframe(window, iframe) {
