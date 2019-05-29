@@ -22,7 +22,7 @@ export default function usePostMessage() {
       lastMessage.current = message
       window.parent.postMessage(message, origin)
     },
-    [isServer, isInIframe]
+    [isServer, isInIframe, window]
   )
   return { postMessage }
 }
