@@ -48,6 +48,25 @@ export const getDaysMonthsAndYears = (now, year, month) => {
   return [days, months, years]
 }
 
+export const getTimeString = date => {
+  let timeString =
+    ':' +
+    date
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')
+  let hour = date.getHours()
+  if (hour > 11) {
+    timeString = hour - 12 + timeString + 'pm'
+  } else if (hour === 0) {
+    timeString = '12' + timeString + 'am'
+  } else {
+    timeString = hour + timeString + 'am'
+  }
+  return timeString
+}
+
 export default {
   getDaysMonthsAndYears,
+  getTimeString,
 }

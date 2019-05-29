@@ -1,4 +1,4 @@
-import { getDaysMonthsAndYears } from '../../utils/dates'
+import { getDaysMonthsAndYears, getTimeString } from '../../utils/dates'
 
 describe('getDaysMonthsAndYears', () => {
   describe('years', () => {
@@ -146,5 +146,28 @@ describe('getDaysMonthsAndYears', () => {
       days = getDaysMonthsAndYears(now, 2000, 2)[0]
       expect(days.length).toEqual(29)
     })
+  })
+})
+
+describe('getTimeString', () => {
+  it('should convert a morning time into a readable string', () => {
+    expect.assertions(1)
+    const now = new Date(2020, 4, 23, 6, 30)
+    const timeString = getTimeString(now)
+    expect(timeString).toEqual('6:30am')
+  })
+
+  it('should convert an evening time into a readable string', () => {
+    expect.assertions(1)
+    const now = new Date(2020, 4, 23, 18, 30)
+    const timeString = getTimeString(now)
+    expect(timeString).toEqual('6:30pm')
+  })
+
+  it('should convert a midnight time into a readable string', () => {
+    expect.assertions(1)
+    const now = new Date(2020, 4, 23, 0, 30)
+    const timeString = getTimeString(now)
+    expect(timeString).toEqual('12:30am')
   })
 })
