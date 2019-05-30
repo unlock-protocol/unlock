@@ -8,7 +8,8 @@ describe('Locks retrieval', () => {
     let fakeWeb3Service
     beforeEach(() => {
       fakeWeb3Service = {
-        getLock: jest.fn(address => Promise.resolve({ address })),
+        // locks returned from getLock do not have "address" set for some reason
+        getLock: jest.fn(address => Promise.resolve({ thing: address })),
       }
     })
 
@@ -36,9 +37,9 @@ describe('Locks retrieval', () => {
       })
 
       expect(result).toEqual({
-        1: { address: 1 },
-        2: { address: 2 },
-        3: { address: 3 },
+        1: { address: 1, thing: 1 },
+        2: { address: 2, thing: 2 },
+        3: { address: 3, thing: 3 },
       })
     })
   })
