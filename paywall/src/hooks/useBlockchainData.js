@@ -32,6 +32,7 @@ export default function useBlockchainData(window, paywallConfig) {
     validator: val => isPositiveInteger(val) && typeof val === 'number',
   })
   // our default account balance is '0' until we hear from the blockchain handler
+  // balance is in eth, we must use isPositiveNumber to validate
   const balance = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
     defaultValue: '0',
