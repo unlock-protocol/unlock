@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
+import Errors from '../interface/Errors'
 
 export const SignupContent = () => {
   return (
@@ -10,6 +11,7 @@ export const SignupContent = () => {
       <Head>
         <title>{pageTitle('Signup')}</title>
       </Head>
+      <Errors />
       <LogInSignUp signup />
     </Layout>
   )
