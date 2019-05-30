@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
 import { RoundedLogo } from '../interface/Logo'
+import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
@@ -28,7 +29,15 @@ export const Checkout = ({
   return (
     <Wrapper>
       <Header>
-        <Title>{config.icon && <Logo src={config.icon} />} Unlocked</Title>
+        <Title>
+          {config.icon && <Logo src={config.icon} />}
+          Unlocked
+          <CloseButton
+            backgroundColor="var(--lightgrey)"
+            fillColor="var(--grey)"
+            onClick={hideCheckout}
+          />
+        </Title>
         <p>{config.callToAction.default}</p>
       </Header>
       <CheckoutLocks>
@@ -56,6 +65,11 @@ export const Checkout = ({
 }
 
 export default Checkout
+
+const CloseButton = styled(Close)`
+  display: inline-flex;
+  float: right;
+`
 
 const Wrapper = styled.section`
   max-width: 1000px;
