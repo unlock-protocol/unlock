@@ -91,6 +91,11 @@ export interface Lock {
   keyPrice: string
   expirationDuration: number
   key: Key
+  asOf?: number
+  maxNumberOfKeys?: number
+  outstandingKeys?: number
+  balance: string
+  owner: string
 }
 
 export interface Locks {
@@ -102,6 +107,6 @@ export interface Key {
   transactions: Transaction[]
   status: string
   confirmations: number
-  owner: string
+  owner: string | null
   lock: string
 }
