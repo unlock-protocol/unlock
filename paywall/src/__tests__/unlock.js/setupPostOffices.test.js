@@ -12,6 +12,7 @@ import {
   POST_MESSAGE_WALLET_INFO,
   POST_MESSAGE_ERROR,
   POST_MESSAGE_UPDATE_WALLET,
+  POST_MESSAGE_READY_WEB3,
 } from '../../paywall-builder/constants'
 
 describe('setupPostOffice', () => {
@@ -84,10 +85,10 @@ describe('setupPostOffice', () => {
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to POST_MESSAGE_READY by sending POST_MESSAGE_WALLET_INFO', () => {
+  it('responds to POST_MESSAGE_READY_WEB3 by sending POST_MESSAGE_WALLET_INFO', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_READY, {
+    sendMessage(fakeDataIframe, POST_MESSAGE_READY_WEB3, {
       lock: { address: 'lock' },
     })
 
