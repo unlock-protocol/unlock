@@ -73,7 +73,7 @@
     "shallow-equal": "1.1.0",
     "storybook-react-router": "^1.0.5",
     "style-loader": "^0.23.1",
-    "styled-components": "^4.2.0",
+    "styled-components": "^4.2.1",
     "ts-jest": "^24.0.2",
     "typescript": "3.4.5",
     "validator": "^11.0.0",
