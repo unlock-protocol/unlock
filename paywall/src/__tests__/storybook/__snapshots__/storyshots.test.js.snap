@@ -1988,18 +1988,44 @@ exports[`Storyshots Checkout Checkout with 1 lock and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c15 > svg {
+.c17 > svg {
   fill: white;
 }
 
-.c6 {
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2017,7 +2043,7 @@ Object {
   color: var(--grey);
 }
 
-.c5 {
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -2032,7 +2058,7 @@ Object {
   cursor: pointer;
 }
 
-.c13 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2052,7 +2078,7 @@ Object {
   color: var(--white);
 }
 
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -2076,25 +2102,19 @@ Object {
   padding-top: 13px;
 }
 
-.c7:hover {
+.c9:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c7:hover .c12 {
+.c9:hover .c14 {
   background-color: var(--activegreen);
 }
 
-.c8 {
+.c10 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c9 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c11 {
@@ -2103,8 +2123,22 @@ Object {
   color: var(--grey);
 }
 
-.c10 {
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c12 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -2133,13 +2167,13 @@ Object {
   height: 30px;
 }
 
-.c14 {
+.c16 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c14 div {
+.c16 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2147,7 +2181,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2167,7 +2201,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c15 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -2191,48 +2225,65 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   0.1
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       7 days
@@ -2240,7 +2291,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -2249,10 +2300,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c14"
+          class="c16"
         >
           <div
-            class="c15"
+            class="c17"
           >
             <svg
               viewBox="0 0 56 56"
@@ -2274,26 +2325,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -2344,7 +2412,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -2428,18 +2496,44 @@ exports[`Storyshots Checkout Checkout with 3 locks and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c15 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c15 > svg {
+.c17 > svg {
   fill: white;
 }
 
-.c6 {
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2457,7 +2551,7 @@ Object {
   color: var(--grey);
 }
 
-.c5 {
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -2472,7 +2566,7 @@ Object {
   cursor: pointer;
 }
 
-.c13 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2492,7 +2586,7 @@ Object {
   color: var(--white);
 }
 
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -2516,25 +2610,19 @@ Object {
   padding-top: 13px;
 }
 
-.c7:hover {
+.c9:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c7:hover .c12 {
+.c9:hover .c14 {
   background-color: var(--activegreen);
 }
 
-.c8 {
+.c10 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c9 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c11 {
@@ -2543,8 +2631,22 @@ Object {
   color: var(--grey);
 }
 
-.c10 {
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c12 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -2573,13 +2675,13 @@ Object {
   height: 30px;
 }
 
-.c14 {
+.c16 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c14 div {
+.c16 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2587,7 +2689,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -2607,7 +2709,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c15 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -2631,48 +2733,65 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   0.1
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       7 days
@@ -2680,7 +2799,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -2688,38 +2807,38 @@ Object {
             </div>
           </li>
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x456"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Monthly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   0.3
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       30 days
@@ -2727,7 +2846,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -2735,38 +2854,38 @@ Object {
             </div>
           </li>
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x789"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Yearly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   3.00
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       365 days
@@ -2774,7 +2893,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -2783,10 +2902,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c14"
+          class="c16"
         >
           <div
-            class="c15"
+            class="c17"
           >
             <svg
               viewBox="0 0 56 56"
@@ -2808,26 +2927,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -2972,7 +3108,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -3056,18 +3192,44 @@ exports[`Storyshots Checkout Checkout with 3 locks and one confirming key purcha
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c22 > svg {
+.c24 > svg {
   fill: white;
 }
 
 .c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -3081,7 +3243,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3099,7 +3261,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c11 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -3114,7 +3276,7 @@ Object {
   align-self: center;
 }
 
-.c10 {
+.c12 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -3128,7 +3290,7 @@ Object {
   align-self: center;
 }
 
-.c11 {
+.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -3144,7 +3306,7 @@ Object {
   padding: 0px;
 }
 
-.c8 {
+.c10 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -3161,7 +3323,7 @@ Object {
   align-content: center;
 }
 
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -3185,7 +3347,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c12 {
+.c14 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3206,7 +3368,7 @@ Object {
   margin-top: 13px;
 }
 
-.c13 {
+.c15 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -3221,7 +3383,7 @@ Object {
   cursor: pointer;
 }
 
-.c20 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3241,7 +3403,7 @@ Object {
   color: var(--white);
 }
 
-.c14 {
+.c16 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -3265,25 +3427,19 @@ Object {
   padding-top: 13px;
 }
 
-.c14:hover {
+.c16:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c14:hover .c19 {
+.c16:hover .c21 {
   background-color: var(--activegreen);
 }
 
-.c15 {
+.c17 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c16 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c18 {
@@ -3292,8 +3448,22 @@ Object {
   color: var(--grey);
 }
 
-.c17 {
+.c20 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c19 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -3322,13 +3492,13 @@ Object {
   height: 30px;
 }
 
-.c21 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c21 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -3336,7 +3506,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -3356,7 +3526,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c22 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -3380,45 +3550,62 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div
-              class="c7"
+              class="c9"
             >
               <div
-                class="c8"
+                class="c10"
               >
                 <div
-                  class="c9"
+                  class="c11"
                 >
                   0.1
                    ETH
                 </div>
                 <div
-                  class="c10"
+                  class="c12"
                 >
                   $
                   ---
                 </div>
               </div>
               <div
-                class="c11"
+                class="c13"
               >
                 Waiting for confirmations
                 <br />
@@ -3427,45 +3614,45 @@ Object {
                 12
               </div>
               <footer
-                class="c12"
+                class="c14"
               >
                 Payment Pending
               </footer>
             </div>
           </li>
           <li
-            class="lock c13"
+            class="lock c15"
             data-address="0x456"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Monthly
             </header>
             <div>
               <div
-                class="c14"
+                class="c16"
               >
                 <div
-                  class="price c15"
+                  class="price c17"
                 >
                   0.3
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c16"
+                    class="c18"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c17"
+                    class="c19"
                   >
                      | 
                   </span>
                   <span
-                    class="c18"
+                    class="c20"
                   >
                     <span>
                       30 days
@@ -3473,7 +3660,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c19 c20"
+                  class="c21 c22"
                 >
                   Purchase
                 </footer>
@@ -3481,38 +3668,38 @@ Object {
             </div>
           </li>
           <li
-            class="lock c13"
+            class="lock c15"
             data-address="0x789"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Yearly
             </header>
             <div>
               <div
-                class="c14"
+                class="c16"
               >
                 <div
-                  class="price c15"
+                  class="price c17"
                 >
                   3.00
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c16"
+                    class="c18"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c17"
+                    class="c19"
                   >
                      | 
                   </span>
                   <span
-                    class="c18"
+                    class="c20"
                   >
                     <span>
                       365 days
@@ -3520,7 +3707,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c19 c20"
+                  class="c21 c22"
                 >
                   Purchase
                 </footer>
@@ -3529,10 +3716,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c21"
+          class="c23"
         >
           <div
-            class="c22"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -3554,26 +3741,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -3715,7 +3919,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -3799,18 +4003,44 @@ exports[`Storyshots Checkout Checkout with 3 locks and one pending key purchase 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c22 > svg {
+.c24 > svg {
   fill: white;
 }
 
 .c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -3824,7 +4054,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3842,7 +4072,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c11 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -3857,7 +4087,7 @@ Object {
   align-self: center;
 }
 
-.c10 {
+.c12 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -3871,7 +4101,7 @@ Object {
   align-self: center;
 }
 
-.c11 {
+.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -3887,7 +4117,7 @@ Object {
   padding: 0px;
 }
 
-.c8 {
+.c10 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -3904,7 +4134,7 @@ Object {
   align-content: center;
 }
 
-.c12 {
+.c14 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3925,7 +4155,7 @@ Object {
   margin-top: 13px;
 }
 
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -3949,7 +4179,7 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c13 {
+.c15 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -3964,7 +4194,7 @@ Object {
   cursor: pointer;
 }
 
-.c20 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3984,7 +4214,7 @@ Object {
   color: var(--white);
 }
 
-.c14 {
+.c16 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -4008,25 +4238,19 @@ Object {
   padding-top: 13px;
 }
 
-.c14:hover {
+.c16:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c14:hover .c19 {
+.c16:hover .c21 {
   background-color: var(--activegreen);
 }
 
-.c15 {
+.c17 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c16 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c18 {
@@ -4035,8 +4259,22 @@ Object {
   color: var(--grey);
 }
 
-.c17 {
+.c20 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c19 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -4065,13 +4303,13 @@ Object {
   height: 30px;
 }
 
-.c21 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c21 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -4079,7 +4317,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4099,7 +4337,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c22 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -4123,88 +4361,105 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div
-              class="c7"
+              class="c9"
             >
               <div
-                class="c8"
+                class="c10"
               >
                 <div
-                  class="c9"
+                  class="c11"
                 >
                   0.1
                    ETH
                 </div>
                 <div
-                  class="c10"
+                  class="c12"
                 >
                   $
                   ---
                 </div>
               </div>
               <div
-                class="c11"
+                class="c13"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c12"
+                class="c14"
               >
                 Payment Sent
               </footer>
             </div>
           </li>
           <li
-            class="lock c13"
+            class="lock c15"
             data-address="0x456"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Monthly
             </header>
             <div>
               <div
-                class="c14"
+                class="c16"
               >
                 <div
-                  class="price c15"
+                  class="price c17"
                 >
                   0.3
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c16"
+                    class="c18"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c17"
+                    class="c19"
                   >
                      | 
                   </span>
                   <span
-                    class="c18"
+                    class="c20"
                   >
                     <span>
                       30 days
@@ -4212,7 +4467,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c19 c20"
+                  class="c21 c22"
                 >
                   Purchase
                 </footer>
@@ -4220,38 +4475,38 @@ Object {
             </div>
           </li>
           <li
-            class="lock c13"
+            class="lock c15"
             data-address="0x789"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Yearly
             </header>
             <div>
               <div
-                class="c14"
+                class="c16"
               >
                 <div
-                  class="price c15"
+                  class="price c17"
                 >
                   3.00
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c16"
+                    class="c18"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c17"
+                    class="c19"
                   >
                      | 
                   </span>
                   <span
-                    class="c18"
+                    class="c20"
                   >
                     <span>
                       365 days
@@ -4259,7 +4514,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c19 c20"
+                  class="c21 c22"
                 >
                   Purchase
                 </footer>
@@ -4268,10 +4523,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c21"
+          class="c23"
         >
           <div
-            class="c22"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -4293,26 +4548,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -4450,7 +4722,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -4534,18 +4806,44 @@ exports[`Storyshots Checkout Checkout with 3 locks and one submitted key purchas
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c22 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c22 > svg {
+.c24 > svg {
   fill: white;
 }
 
-.c14 {
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c16 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -4559,7 +4857,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4577,7 +4875,7 @@ Object {
   color: var(--grey);
 }
 
-.c17 {
+.c19 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -4592,7 +4890,7 @@ Object {
   align-self: center;
 }
 
-.c18 {
+.c20 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -4606,7 +4904,7 @@ Object {
   align-self: center;
 }
 
-.c19 {
+.c21 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -4622,7 +4920,7 @@ Object {
   padding: 0px;
 }
 
-.c16 {
+.c18 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -4639,7 +4937,7 @@ Object {
   align-content: center;
 }
 
-.c20 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4660,7 +4958,7 @@ Object {
   margin-top: 13px;
 }
 
-.c15 {
+.c17 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -4684,7 +4982,7 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c5 {
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -4699,7 +4997,7 @@ Object {
   cursor: pointer;
 }
 
-.c13 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4719,7 +5017,7 @@ Object {
   color: var(--white);
 }
 
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -4743,25 +5041,19 @@ Object {
   padding-top: 13px;
 }
 
-.c7:hover {
+.c9:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c7:hover .c12 {
+.c9:hover .c14 {
   background-color: var(--activegreen);
 }
 
-.c8 {
+.c10 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c9 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c11 {
@@ -4770,8 +5062,22 @@ Object {
   color: var(--grey);
 }
 
-.c10 {
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c12 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -4800,13 +5106,13 @@ Object {
   height: 30px;
 }
 
-.c21 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c21 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -4814,7 +5120,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -4834,7 +5140,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c22 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -4858,48 +5164,65 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   0.1
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       7 days
@@ -4907,7 +5230,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -4915,78 +5238,78 @@ Object {
             </div>
           </li>
           <li
-            class="lock c14"
+            class="lock c16"
             data-address="0x456"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Monthly
             </header>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <div
-                  class="c17"
+                  class="c19"
                 >
                   0.3
                    ETH
                 </div>
                 <div
-                  class="c18"
+                  class="c20"
                 >
                   $
                   ---
                 </div>
               </div>
               <div
-                class="c19"
+                class="c21"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c20"
+                class="c22"
               >
                 Payment Sent
               </footer>
             </div>
           </li>
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x789"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Yearly
             </header>
             <div>
               <div
-                class="c7"
+                class="c9"
               >
                 <div
-                  class="price c8"
+                  class="price c10"
                 >
                   3.00
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c9"
+                    class="c11"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c10"
+                    class="c12"
                   >
                      | 
                   </span>
                   <span
-                    class="c11"
+                    class="c13"
                   >
                     <span>
                       365 days
@@ -4994,7 +5317,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c12 c13"
+                  class="c14 c15"
                 >
                   Purchase
                 </footer>
@@ -5003,10 +5326,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c21"
+          class="c23"
         >
           <div
-            class="c22"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -5028,26 +5351,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -5185,7 +5525,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -5269,18 +5609,44 @@ exports[`Storyshots Checkout Checkout with 3 locks and one valid key purchase 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c30 {
+    .c32 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c30 > svg {
+.c32 > svg {
   fill: white;
 }
 
-.c13 {
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c15 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -5292,21 +5658,21 @@ Object {
   line-height: 50px;
 }
 
-.c13 > svg {
+.c15 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c13:hover {
+.c15:hover {
   background-color: var(--green);
 }
 
-.c13:hover > svg {
+.c15:hover > svg {
   fill: white;
 }
 
-.c5 {
+.c7 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -5320,7 +5686,7 @@ Object {
   opacity: 1;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5338,7 +5704,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c11 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -5353,7 +5719,7 @@ Object {
   align-self: center;
 }
 
-.c10 {
+.c12 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -5367,7 +5733,7 @@ Object {
   align-self: center;
 }
 
-.c8 {
+.c10 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -5384,21 +5750,45 @@ Object {
   align-content: center;
 }
 
-.c16 {
+.c18 {
   display: none;
 }
 
-.c12 {
+.c14 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c12:hover .c15 {
+.c14:hover .c17 {
   display: block;
 }
 
-.c12:hover .c14 {
+.c14:hover .c16 {
+  display: none;
+}
+
+.c22 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
   display: none;
 }
 
@@ -5423,33 +5813,9 @@ Object {
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
-  display: none;
 }
 
-.c18 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c7 {
+.c9 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -5474,39 +5840,39 @@ Object {
   cursor: pointer;
 }
 
-.c7 .c19 {
+.c9 .c21 {
   display: none;
 }
 
-.c7 .c17 {
+.c9 .c19 {
   display: grid;
 }
 
-.c7:hover .c11 {
+.c9:hover .c13 {
   background-color: var(--green);
 }
 
-.c7:hover .c11 svg {
+.c9:hover .c13 svg {
   fill: var(--white);
 }
 
-.c7:hover .c15 {
+.c9:hover .c17 {
   display: block;
 }
 
-.c7:hover .c14 {
+.c9:hover .c16 {
   display: none;
 }
 
-.c7:hover .c19 {
+.c9:hover .c21 {
   display: grid;
 }
 
-.c7:hover .c17 {
+.c9:hover .c19 {
   display: none;
 }
 
-.c21 {
+.c23 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -5521,7 +5887,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c28 {
+.c30 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5541,11 +5907,11 @@ Object {
   color: var(--white);
 }
 
-.c31:hover .c27 {
+.c33:hover .c29 {
   background-color: var(--activegreen);
 }
 
-.c22 {
+.c24 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -5569,17 +5935,11 @@ Object {
   padding-top: 13px;
 }
 
-.c23 {
+.c25 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c24 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c26 {
@@ -5588,8 +5948,22 @@ Object {
   color: var(--grey);
 }
 
-.c25 {
+.c28 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c27 {
   color: var(--lightgrey);
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -5618,13 +5992,13 @@ Object {
   height: 30px;
 }
 
-.c29 {
+.c31 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c29 div {
+.c31 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -5632,7 +6006,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -5652,7 +6026,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c30 {
+  .c32 {
     height: 16px;
     width: 16px;
   }
@@ -5676,48 +6050,65 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         >
           <li
-            class="lock c5"
+            class="lock c7"
             data-address="0x123"
           >
             <header
-              class="c6"
+              class="c8"
             >
               Weekly
             </header>
             <div
-              class="c7"
+              class="c9"
             >
               <div
-                class="c8"
+                class="c10"
               >
                 <div
-                  class="c9"
+                  class="c11"
                 >
                   0.1
                    ETH
                 </div>
                 <div
-                  class="c10"
+                  class="c12"
                 >
                   $
                   ---
                 </div>
               </div>
               <a
-                class="c11 c12 c13"
+                class="c13 c14 c15"
               >
                 <svg
-                  class="c14 "
+                  class="c16 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -5728,7 +6119,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c15 c16"
+                  class="c17 c18"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -5741,52 +6132,52 @@ Object {
                 
               </a>
               <footer
-                class="c17 c18"
+                class="c19 c20"
               >
                 Payment Confirmed
               </footer>
               <footer
-                class="c19 c20"
+                class="c21 c22"
               >
                 Go to Content
               </footer>
             </div>
           </li>
           <li
-            class="lock c21"
+            class="lock c23"
             data-address="0x456"
             disabled=""
           >
             <header
-              class="c6"
+              class="c8"
             >
               Monthly
             </header>
             <div>
               <div
-                class="c22"
+                class="c24"
                 disabled=""
               >
                 <div
-                  class="price c23"
+                  class="price c25"
                 >
                   0.3
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c24"
+                    class="c26"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c25"
+                    class="c27"
                   >
                      | 
                   </span>
                   <span
-                    class="c26"
+                    class="c28"
                   >
                     <span>
                       30 days
@@ -5794,7 +6185,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c27 c28"
+                  class="c29 c30"
                 >
                   Purchase
                 </footer>
@@ -5802,40 +6193,40 @@ Object {
             </div>
           </li>
           <li
-            class="lock c21"
+            class="lock c23"
             data-address="0x789"
             disabled=""
           >
             <header
-              class="c6"
+              class="c8"
             >
               Yearly
             </header>
             <div>
               <div
-                class="c22"
+                class="c24"
                 disabled=""
               >
                 <div
-                  class="price c23"
+                  class="price c25"
                 >
                   3.00
                    Eth
                 </div>
                 <div>
                   <span
-                    class="c24"
+                    class="c26"
                   >
                     $
                     ---
                   </span>
                   <span
-                    class="c25"
+                    class="c27"
                   >
                      | 
                   </span>
                   <span
-                    class="c26"
+                    class="c28"
                   >
                     <span>
                       365 days
@@ -5843,7 +6234,7 @@ Object {
                   </span>
                 </div>
                 <footer
-                  class="c27 c28"
+                  class="c29 c30"
                 >
                   Purchase
                 </footer>
@@ -5852,10 +6243,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c29"
+          class="c31"
         >
           <div
-            class="c30"
+            class="c32"
           >
             <svg
               viewBox="0 0 56 56"
@@ -5877,26 +6268,43 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -6065,7 +6473,7 @@ Object {
         </li>
       </ul>
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -6149,15 +6557,49 @@ exports[`Storyshots Checkout page Checkout page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c8 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c6 > svg {
+.c8 > svg {
   fill: white;
+}
+
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -6186,13 +6628,13 @@ Object {
   height: 30px;
 }
 
-.c5 {
+.c7 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c5 div {
+.c7 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6200,7 +6642,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6220,7 +6662,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c6 {
+  .c8 {
     height: 16px;
     width: 16px;
   }
@@ -6244,20 +6686,37 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         />
         <footer
-          class="c5"
+          class="c7"
         >
           <div
-            class="c6"
+            class="c8"
           >
             <svg
               viewBox="0 0 56 56"
@@ -6279,29 +6738,46 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       />
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
@@ -6385,15 +6861,49 @@ exports[`Storyshots Checkout page Checkout page, wrong network 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c8 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c6 > svg {
+.c8 > svg {
   fill: white;
+}
+
+.c5 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c5 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c5:hover {
+  background-color: var(--link);
+}
+
+.c5:hover > svg {
+  fill: white;
+}
+
+.c4 {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  float: right;
 }
 
 .c0 {
@@ -6422,13 +6932,13 @@ Object {
   height: 30px;
 }
 
-.c5 {
+.c7 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c5 div {
+.c7 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6436,7 +6946,7 @@ Object {
   height: 20px;
 }
 
-.c4 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -6456,7 +6966,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c6 {
+  .c8 {
     height: 16px;
     width: 16px;
   }
@@ -6480,20 +6990,37 @@ Object {
               class="c3"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
-             Unlocked
+            Unlocked
+            <a
+              class="c4 c5"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Close
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
           </h1>
           <p>
             Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
           </p>
         </header>
         <ul
-          class="c4"
+          class="c6"
         />
         <footer
-          class="c5"
+          class="c7"
         >
           <div
-            class="c6"
+            class="c8"
           >
             <svg
               viewBox="0 0 56 56"
@@ -6515,29 +7042,46 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-bdVaJa eeigbB"
+      class="sc-bwzfXH caqaJR"
     >
       <header
-        class="sc-bwzfXH cZSkgv"
+        class="sc-htpNat fDkXcS"
       >
         <h1
-          class="sc-htpNat dMiWqt"
+          class="sc-bxivhb bEMNFv"
         >
           <img
-            class="sc-bxivhb ZFyFM"
+            class="sc-ifAKCX fZNcDk"
             src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
           />
-           Unlocked
+          Unlocked
+          <a
+            class="sc-bdVaJa XWMPF is925m-0 bYsUmJ"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
         </h1>
         <p>
           Enjoy Forbes Online without any ads for as little as $2 a week. Pay with Ethereum in just two clicks.
         </p>
       </header>
       <ul
-        class="sc-EHOje ilBouS"
+        class="sc-bZQynM jcYzPV"
       />
       <footer
-        class="sc-ifAKCX dEukKU"
+        class="sc-EHOje dRuRrt"
       >
         <div
           class="sth0f3-0 khsUlM"
