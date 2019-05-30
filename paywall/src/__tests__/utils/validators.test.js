@@ -1007,6 +1007,21 @@ describe('Form field validators', () => {
         expect(validators.isValidLock(validLock)).toBe(true)
       })
 
+      it('should accept a valid lock with optional fields', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            asOf: 1,
+            maxNumberOfKeys: -1,
+            outstandingKeys: 0,
+            balance: '0',
+            owner: '0x1234567890123456789012345678901234567890',
+          })
+        ).toBe(true)
+      })
+
       it('should accept valid key price', () => {
         expect.assertions(4)
 
