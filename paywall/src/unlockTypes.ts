@@ -94,8 +94,8 @@ export interface Lock {
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number
-  balance: string
-  owner: string
+  balance?: string
+  owner?: string
 }
 
 export interface Locks {
