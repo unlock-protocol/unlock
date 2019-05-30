@@ -6686,6 +6686,11 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c0 > * {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
   .c9 {
     height: 16px;
@@ -6767,7 +6772,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-gzVnrw blqFWn"
+      class="sc-gzVnrw fjVNqj"
     >
       <section
         class="sc-bwzfXH caqaJR"
@@ -7023,6 +7028,11 @@ Object {
   z-index: var(--alwaysontop);
 }
 
+.c0 > * {
+  max-height: 100%;
+  overflow-y: scroll;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
   .c9 {
     height: 16px;
@@ -7104,7 +7114,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-gzVnrw blqFWn"
+      class="sc-gzVnrw fjVNqj"
     >
       <section
         class="sc-bwzfXH caqaJR"
