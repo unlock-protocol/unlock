@@ -6662,7 +6662,7 @@ Object {
 }
 
 .c0 {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
   position: fixed;
   height: 100%;
   width: 100%;
@@ -6772,7 +6772,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-gzVnrw fjVNqj"
+      class="sc-gzVnrw jxfCwR"
     >
       <section
         class="sc-bwzfXH caqaJR"
@@ -7004,7 +7004,7 @@ Object {
 }
 
 .c0 {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
   position: fixed;
   height: 100%;
   width: 100%;
@@ -7114,7 +7114,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-gzVnrw fjVNqj"
+      class="sc-gzVnrw jxfCwR"
     >
       <section
         class="sc-bwzfXH caqaJR"
