@@ -2,7 +2,7 @@ import * as config from '../../paywall-builder/config'
 import web3Proxy from '../../paywall-builder/web3Proxy'
 import { _clearHandlers } from '../../utils/postOffice'
 import {
-  POST_MESSAGE_READY,
+  POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
   POST_MESSAGE_WEB3,
 } from '../../paywall-builder/constants'
@@ -40,7 +40,7 @@ describe('web3Proxy', () => {
       _clearHandlers()
     })
 
-    it('listens for POST_MESSAGE_READY and dispatches the result', done => {
+    it('listens for POST_MESSAGE_READY_WEB3 and dispatches the result', done => {
       expect.assertions(2)
 
       web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
@@ -49,7 +49,7 @@ describe('web3Proxy', () => {
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY,
+          type: POST_MESSAGE_READY_WEB3,
           payload: 'it worked!',
         },
       })
@@ -79,7 +79,7 @@ describe('web3Proxy', () => {
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY,
+          type: POST_MESSAGE_READY_WEB3,
           payload: 'it worked!',
         },
       })
@@ -152,7 +152,7 @@ describe('web3Proxy', () => {
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY,
+          type: POST_MESSAGE_READY_WEB3,
           payload: 'it worked!',
         },
       })
@@ -183,7 +183,7 @@ describe('web3Proxy', () => {
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY,
+          type: POST_MESSAGE_READY_WEB3,
           payload: 'it worked!',
         },
       })
@@ -221,7 +221,7 @@ describe('web3Proxy', () => {
           source: fakeIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
-            type: POST_MESSAGE_READY,
+            type: POST_MESSAGE_READY_WEB3,
             payload: 'it worked!',
           },
         })
@@ -289,7 +289,7 @@ describe('web3Proxy', () => {
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY,
+              type: POST_MESSAGE_READY_WEB3,
               payload: 'it worked!',
             },
           })
@@ -446,7 +446,7 @@ describe('web3Proxy', () => {
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY,
+              type: POST_MESSAGE_READY_WEB3,
               payload: 'it worked!',
             },
           })

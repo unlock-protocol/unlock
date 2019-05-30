@@ -8,6 +8,7 @@ export const POST_MESSAGE_READY = 'ready'
 export const POST_MESSAGE_CONFIG = 'config'
 export const POST_MESSAGE_ACCOUNT = 'account'
 export const POST_MESSAGE_WEB3 = 'web3'
+export const POST_MESSAGE_READY_WEB3 = 'ready/web3'
 export const POST_MESSAGE_WALLET_INFO = 'walletInfo'
 
 export const POST_MESSAGE_UPDATE_LOCKS = 'update/locks'
