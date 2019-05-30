@@ -8,6 +8,7 @@ import {
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
   POST_MESSAGE_ERROR,
+  POST_MESSAGE_READY,
 } from '../../paywall-builder/constants'
 import {
   setAccount,
@@ -71,6 +72,22 @@ describe('data iframe postOffice', () => {
         makeWindow()
 
         updater = postOffice(fakeWindow, 12)
+      })
+
+      it('should send POST_MESSAGE_READY on ready', done => {
+        expect.assertions(1)
+
+        fakeTarget.postMessage = (...args) => {
+          expect(args).toEqual([
+            {
+              type: POST_MESSAGE_READY,
+              payload: undefined,
+            },
+            'http://fun.times',
+          ])
+          done()
+        }
+        updater('ready')
       })
 
       it('walletModal notifies the main window that a wallet popup is active', done => {
@@ -415,6 +432,23 @@ describe('data iframe postOffice', () => {
           }
 
           updater('locks')
+        })
+      })
+
+      describe('no cache present', () => {
+        beforeEach(() => {
+          makeWindow()
+
+          updater = postOffice(fakeWindow, 12)
+          fakeTarget.postMessage = jest.fn()
+        })
+
+        it('should not post a network change if there is no cache', async () => {
+          expect.assertions(1)
+
+          await updater('network')
+
+          expect(fakeTarget.postMessage).not.toHaveBeenCalled()
         })
       })
     })
