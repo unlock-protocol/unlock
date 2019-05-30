@@ -5,6 +5,7 @@ import {
   getAccount,
   getAccountBalance,
 } from '../../../data-iframe/blockchainHandler/account'
+import { POLLING_INTERVAL } from '../../../constants'
 
 let mockPoll
 jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady', () =>
@@ -54,7 +55,7 @@ describe('blockchainHandler account handling', () => {
         expect.any(Function) /* hasValueChanged */,
         expect.any(Function) /* continuePolling */,
         expect.any(Function) /*changeListener */,
-        5000 /* delay */
+        POLLING_INTERVAL /* delay */
       )
     })
 
