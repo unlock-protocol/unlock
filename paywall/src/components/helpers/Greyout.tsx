@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Greyout = styled.div`
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   position: fixed;
   height: 100%;
   width: 100%;
