@@ -2189,14 +2189,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -2361,7 +2360,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -2697,14 +2696,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -2963,7 +2961,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -3514,14 +3512,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -3777,7 +3774,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -4325,14 +4322,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -4584,7 +4580,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -5128,14 +5124,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -5387,7 +5382,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -6014,14 +6009,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -6304,7 +6298,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-bZQynM jcYzPV"
+        class="sc-bZQynM droRCb"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -6650,14 +6644,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -6811,7 +6804,7 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-bZQynM jcYzPV"
+          class="sc-bZQynM droRCb"
         />
         <footer
           class="sc-EHOje dRuRrt"
@@ -6992,14 +6985,13 @@ Object {
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-box-pack: space-around;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
 }
 
@@ -7153,7 +7145,7 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-bZQynM jcYzPV"
+          class="sc-bZQynM droRCb"
         />
         <footer
           class="sc-EHOje dRuRrt"
