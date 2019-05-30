@@ -1,7 +1,20 @@
-import { makeIframe } from './iframeManager'
+import { makeIframe, addIframeToDocument } from './iframeManager'
 import setupPostOffices from './setupPostOffices'
+import '../paywall-builder/iframe.css'
 
-const dataIframe = makeIframe(window, '/static/dataIframe.html')
-const checkoutIframe = makeIframe(window, '/checkout')
+window.onload = () => {
+  const origin = '?origin=' + encodeURIComponent(window.origin)
 
-setupPostOffices(window, dataIframe, checkoutIframe)
+  const dataIframe = makeIframe(
+    window,
+    process.env.PAYWALL_URL + '/static/dataIframe.html' + origin
+  )
+  addIframeToDocument(window, dataIframe)
+  const checkoutIframe = makeIframe(
+    window,
+    process.env.PAYWALL_URL + '/checkout' + origin
+  )
+  addIframeToDocument(window, checkoutIframe)
+
+  setupPostOffices(window, dataIframe, checkoutIframe)
+}
