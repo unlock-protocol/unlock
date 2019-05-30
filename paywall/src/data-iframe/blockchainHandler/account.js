@@ -1,5 +1,6 @@
 import ensureWalletReady from './ensureWalletReady'
 import pollForChanges from './pollForChanges'
+import { POLLING_INTERVAL } from '../../constants'
 
 let account
 let accountBalance = 0
@@ -25,7 +26,7 @@ export async function pollForAccountChange(
   web3Service,
   onAccountChange = () => {}
 ) {
-  await ensureWalletReady()
+  await ensureWalletReady(walletService)
 
   pollForChanges(
     async () => await walletService.getAccount() /* getFunc */,
@@ -39,6 +40,7 @@ export async function pollForAccountChange(
         newAccount ? await web3Service.getAddressBalance(newAccount) : 0
       )
       onAccountChange(account, accountBalance)
-    }
+    } /*changeListener */,
+    POLLING_INTERVAL /* delay */
   )
 }
