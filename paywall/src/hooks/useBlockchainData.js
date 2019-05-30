@@ -5,7 +5,12 @@ import {
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_UPDATE_NETWORK,
 } from '../paywall-builder/constants'
-import { isAccount, isPositiveInteger, isValidLocks } from '../utils/validators'
+import {
+  isAccount,
+  isPositiveInteger,
+  isValidLocks,
+  isPositiveNumber,
+} from '../utils/validators'
 import useConfig from './utils/useConfig'
 
 /**
@@ -30,7 +35,7 @@ export default function useBlockchainData(window, paywallConfig) {
   const balance = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
     defaultValue: '0',
-    validator: val => isPositiveInteger(val) && typeof val === 'string',
+    validator: val => isPositiveNumber(val) && typeof val === 'string',
   })
   // retrieve the locks from the data iframe
   const blockChainLocks = useListenForPostMessage({
