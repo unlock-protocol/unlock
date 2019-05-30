@@ -1,5 +1,6 @@
 import ensureWalletReady from './ensureWalletReady'
 import pollForChanges from './pollForChanges'
+import { POLLING_INTERVAL } from '../../constants'
 
 let account
 let accountBalance = 0
@@ -40,6 +41,6 @@ export async function pollForAccountChange(
       )
       onAccountChange(account, accountBalance)
     } /*changeListener */,
-    5000 /* delay */
+    POLLING_INTERVAL /* delay */
   )
 }
