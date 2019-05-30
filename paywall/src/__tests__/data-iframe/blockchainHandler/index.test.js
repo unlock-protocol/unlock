@@ -44,6 +44,24 @@ describe('blockchain handler index', () => {
 
       expect(walletService).toBeInstanceOf(WalletService)
     })
+
+    it('should retrieve account after connecting', done => {
+      expect.assertions(1)
+
+      const fakeProvider = {
+        send({ method }, callback) {
+          if (method === 'net_version') return callback(null, 1)
+          // this proves we retrieve the account
+          expect(method).toBe('eth_accounts')
+          done()
+        },
+      }
+
+      setupWalletService({
+        unlockAddress: '0x1234567890123456789012345678901234567890',
+        provider: fakeProvider,
+      })
+    })
   })
 
   describe('setupWeb3Service', () => {
@@ -157,6 +175,31 @@ describe('blockchain handler index', () => {
       expect(fakeWeb3Service.getLock).toHaveBeenCalledTimes(2)
       expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(1, '0x123')
       expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(2, '0x456')
+    })
+
+    it('should ensure the wallet is ready after sending locks', async () => {
+      expect.assertions(2)
+
+      await retrieveChainData({
+        locksToRetrieve: ['0x123', '0x456'],
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+        window: fakeWindow,
+        locksmithHost: 'http://locksmith',
+        onChange,
+        requiredConfirmations: 1,
+      })
+
+      expect(onChange).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          locks: {
+            '0x123': { address: '0x123' },
+            '0x456': { address: '0x456' },
+          },
+        })
+      )
+      expect(ensureWalletReady).toHaveBeenCalled()
     })
 
     it('calls getKeys', async () => {
@@ -369,7 +412,10 @@ describe('blockchain handler index', () => {
         expiration: 0,
       }))
 
+      // the first call is locks
+      // second is walletModal
       onChange = info => {
+        if (info.locks) return
         expect(info).toEqual({ walletModal: true })
         done()
       }
@@ -439,6 +485,8 @@ describe('blockchain handler index', () => {
       }))
 
       onChange = info => {
+        // the first call is to send locks from getLocks
+        if (info.locks) return
         expect(info).toEqual({
           transaction: {
             hash: 'hash2',
@@ -537,6 +585,8 @@ describe('blockchain handler index', () => {
       fakeWalletService.removeListener = jest.fn()
       const error = new Error('fail')
       onChange = info => {
+        // the first call is to pass the locks
+        if (info.locks) return
         expect(info).toEqual({ error })
         done()
       }
@@ -582,7 +632,23 @@ describe('blockchain handler index', () => {
       expect.assertions(1)
 
       fakeWalletService.on = type => {
+        if (type !== 'network.changed') return
         expect(type).toBe('network.changed')
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+      })
+    })
+
+    it('listens for account.changed', async () => {
+      expect.assertions(1)
+
+      fakeWalletService.on = type => {
+        if (type !== 'account.changed') return
+        expect(type).toBe('account.changed')
       }
 
       await listenForAccountNetworkChanges({
