@@ -62,7 +62,7 @@ export async function processKeyPurchaseTransactions({
           [transaction.hash]: transaction,
         }
         key = result.key
-        update(transaction, key)
+        update({ transaction, key })
       }
     }
 
@@ -76,6 +76,14 @@ export async function processKeyPurchaseTransactions({
     })
     afterEventProcessed()
 
+    if (!result) {
+      // no change to the existing transaction/key
+      if (['submitted', 'pending', 'confirming'].includes(key.status)) {
+        web3Service.getTransaction(key.transactions[0]) // start the polling
+      }
+    } else {
+      web3Service.getTransaction(result.transaction.hash) // start the polling
+    }
     do {
       result = await updateListener({
         lockAddress,
@@ -90,7 +98,11 @@ export async function processKeyPurchaseTransactions({
         transactions,
         requiredConfirmations,
       })
-    } while (linkedKey.status === 'confirming')
+    } while (
+      result &&
+      linkedKey.status !== 'valid' &&
+      linkedKey.status !== 'failed'
+    )
   } finally {
     walletService.removeListener('transaction.pending', walletAction)
   }
