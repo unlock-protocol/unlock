@@ -117,13 +117,13 @@ DatePicker.defaultProps = {
   now: new Date(),
 }
 
-const EventDate = styled.div`
+export const EventDate = styled.div`
   display: grid;
   grid-template-columns: repeat(3, minmax(60px, 1fr));
   grid-gap: 10px;
 `
 
-const StyledSelect = styled(Select)`
+export const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
   border-radius: 4px;
 
