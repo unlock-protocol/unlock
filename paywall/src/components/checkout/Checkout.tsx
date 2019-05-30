@@ -114,10 +114,9 @@ const Footer = styled.footer`
 const CheckoutLocks = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  justify-content: center;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit, 186px);
 `
