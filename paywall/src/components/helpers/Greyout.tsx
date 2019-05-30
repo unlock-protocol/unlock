@@ -12,7 +12,10 @@ const Greyout = styled.div`
   justify-content: center;
   align-items: center;
   z-index: var(--alwaysontop);
-  overflow-y: scroll;
+  & > * {
+    max-height: 100%;
+    overflow-y: scroll;
+  }
 `
 
 export default Greyout
