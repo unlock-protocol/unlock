@@ -1,19 +1,21 @@
 import ethersUtils from '../utils'
 import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
+import { UNLIMITED_KEYS_COUNT, ZERO } from '../../lib/constants'
 
 /**
  * Creates a lock on behalf of the user, using version v10
  * @param {PropTypes.lock} lock
  * @param {PropTypes.address} owner
  */
-export default async function(lock, owner, currencyContractAddress) {
+export default async function(lock, owner) {
   const unlockContract = await this.getUnlockContract()
   let maxNumberOfKeys = lock.maxNumberOfKeys
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
+  let currencyContractAddress = lock.currencyContractAddress || ZERO
+
   let transactionPromise
   try {
     const lockName = lock.name || 'New Lock'
