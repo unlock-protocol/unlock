@@ -14,6 +14,7 @@ import {
 } from '../../paywall-builder/constants'
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
+import Greyout from '../helpers/Greyout'
 
 interface networkNames {
   [key: number]: string[]
@@ -51,9 +52,11 @@ export default function CheckoutContent() {
     })
   }
 
+  let child: React.ReactNode
+
   if (requiredNetworkId !== network) {
     // display the "wrong network" error for users who are on an unexpected network
-    return (
+    child = (
       <Fragment>
         <Head>
           <title>{pageTitle('Checkout')}</title>
@@ -64,21 +67,23 @@ export default function CheckoutContent() {
         />
       </Fragment>
     )
+  } else {
+    // for everyone else, display the checkout component
+    child = (
+      <Fragment>
+        <Head>
+          <title>{pageTitle('Checkout')}</title>
+        </Head>
+        <Checkout
+          account={account}
+          locks={locks}
+          config={paywallConfig}
+          purchase={purchaseKey}
+          hideCheckout={hideCheckout}
+        />
+      </Fragment>
+    )
   }
 
-  // for everyone else, display the checkout component
-  return (
-    <Fragment>
-      <Head>
-        <title>{pageTitle('Checkout')}</title>
-      </Head>
-      <Checkout
-        account={account}
-        locks={locks}
-        config={paywallConfig}
-        purchase={purchaseKey}
-        hideCheckout={hideCheckout}
-      />
-    </Fragment>
-  )
+  return <Greyout>{child}</Greyout>
 }
