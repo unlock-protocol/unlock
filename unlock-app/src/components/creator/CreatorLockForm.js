@@ -3,9 +3,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
+import withConfig from '../../utils/withConfig'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit, Eth } from '../helpers/Balance'
+import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
 import {
   LockRow,
   LockName,
@@ -60,11 +61,11 @@ export const lockToFormValues = lockValues => {
  */
 export const formValuesToLock = formValues => {
   const lockValues = {}
-
   lockValues.keyPrice = formValues.keyPrice
   lockValues.maxNumberOfKeys = formValues.maxNumberOfKeys
   lockValues.name = formValues.name
   lockValues.address = formValues.address
+  lockValues.currencyContractAddress = formValues.currency
 
   // In the form, duration is shown in days, vs seconds in the lock object
   lockValues.expirationDuration =
@@ -92,6 +93,7 @@ export class CreatorLockForm extends React.Component {
       expirationDurationUnit: 86400, // days
       keyPrice: '0.01',
       maxNumberOfKeys: 10,
+      currency: null, // Defaults to Eth
       name: 'New Lock',
       address: null,
     }
@@ -102,6 +104,7 @@ export class CreatorLockForm extends React.Component {
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
     this.saveLock = this.saveLock.bind(this)
     this.processFormErrors = this.sendErrorsToRedux.bind(this)
+    this.toggleCurrency = this.toggleCurrency.bind(this)
 
     // State represents the values in the form... and we may get a different format for them
     this.state = lockToFormValues(Object.assign(newLockDefaults, props.lock))
@@ -216,6 +219,16 @@ export class CreatorLockForm extends React.Component {
     }))
   }
 
+  toggleCurrency() {
+    const {
+      config: { ERC20Contract },
+    } = this.props
+    this.setState(state => ({
+      ...state,
+      currency: !state.currency ? ERC20Contract.address : null,
+    }))
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState(state => ({
       unlimitedKeys:
@@ -239,12 +252,16 @@ export class CreatorLockForm extends React.Component {
   }
 
   render() {
-    const { lock } = this.props
+    const {
+      lock,
+      config: { ERC20Contract },
+    } = this.props
     const isNew = !lock || !lock.address
     const {
       expirationDuration,
       maxNumberOfKeys,
       keyPrice,
+      currency,
       name,
       unlimitedKeys,
       valid,
@@ -296,7 +313,8 @@ export class CreatorLockForm extends React.Component {
           )}
         </FormLockKeys>
         <FormBalanceWithUnit>
-          <Eth />
+          {!currency && <Eth />}
+          {!!currency && <ERC20 name={ERC20Contract.name} />}
           <input
             type="number"
             step="0.00001"
@@ -307,7 +325,18 @@ export class CreatorLockForm extends React.Component {
             data-valid={valid.keyPrice}
             required
           />
+          {isNew && !currency && (
+            <LockLabelCurrency onClick={this.toggleCurrency}>
+              Use {ERC20Contract.name}
+            </LockLabelCurrency>
+          )}
+          {isNew && !!currency && (
+            <LockLabelCurrency onClick={this.toggleCurrency}>
+              Use Ether
+            </LockLabelCurrency>
+          )}
         </FormBalanceWithUnit>
+
         <div>-</div>
         <Status>
           <Button onClick={this.handleSubmit}>Submit</Button>
@@ -327,6 +356,7 @@ CreatorLockForm.propTypes = {
   setError: PropTypes.func.isRequired,
   resetError: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreatorLockForm.defaultProps = {
@@ -341,15 +371,24 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = { setError, resetError }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreatorLockForm)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CreatorLockForm)
+)
 
 const LockLabelUnlimited = styled(LockLabel)`
   font-size: 11px;
   width: 100%;
   padding: 5px;
+`
+
+const LockLabelCurrency = styled(LockLabel)`
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+  padding-left: 25px;
 `
 
 const FormLockRow = styled(LockRow)`
