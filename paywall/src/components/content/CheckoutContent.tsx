@@ -49,6 +49,7 @@ export default function CheckoutContent() {
   const hideCheckout = () => {
     postMessage({
       type: POST_MESSAGE_DISMISS_CHECKOUT,
+      payload: undefined, // this must be set to trigger a response in unlock.min.js
     })
   }
 
