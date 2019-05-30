@@ -38,7 +38,7 @@ describe('blockchainHandler account handling', () => {
         onAccountChange
       )
 
-      expect(ensureWalletReady).toBeCalled()
+      expect(ensureWalletReady).toBeCalledWith(fakeWalletService)
     })
 
     it('polls for account changes', async () => {
@@ -49,7 +49,13 @@ describe('blockchainHandler account handling', () => {
         onAccountChange
       )
 
-      expect(pollForChanges).toBeCalled()
+      expect(pollForChanges).toHaveBeenCalledWith(
+        expect.any(Function) /* getFunc */,
+        expect.any(Function) /* hasValueChanged */,
+        expect.any(Function) /* continuePolling */,
+        expect.any(Function) /*changeListener */,
+        5000 /* delay */
+      )
     })
 
     it('getFunc retrieves the current account', async () => {

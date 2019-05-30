@@ -25,7 +25,7 @@ export async function pollForAccountChange(
   web3Service,
   onAccountChange = () => {}
 ) {
-  await ensureWalletReady()
+  await ensureWalletReady(walletService)
 
   pollForChanges(
     async () => await walletService.getAccount() /* getFunc */,
@@ -39,6 +39,7 @@ export async function pollForAccountChange(
         newAccount ? await web3Service.getAddressBalance(newAccount) : 0
       )
       onAccountChange(account, accountBalance)
-    }
+    } /*changeListener */,
+    5000 /* delay */
   )
 }
