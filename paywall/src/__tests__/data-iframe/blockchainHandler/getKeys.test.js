@@ -67,14 +67,12 @@ describe('getKeys', () => {
         return Promise.resolve({
           id: `${lock}-${owner}`,
           lock,
-          owner,
           expiration: 0,
         })
       }
       return Promise.resolve({
         id: `${lock}-${owner}`,
         lock,
-        owner,
         expiration,
       })
     })
