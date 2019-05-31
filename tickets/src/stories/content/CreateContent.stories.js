@@ -23,7 +23,7 @@ const store = createUnlockStore({
   },
 })
 
-const now = new Date(Date.UTC(2019, 3, 25, 12, 0, 0)) // March 25th, 2019
+const now = new Date(2019, 3, 25, 12, 35, 0) // March 25th, 2019
 
 storiesOf('Create event landing page', module)
   .addDecorator(getStory => (

@@ -15,6 +15,7 @@ import UnlockPropTypes from '../../propTypes'
 import { addEvent, loadEvent } from '../../actions/event'
 import CreateEventButton from './create/CreateEventButton'
 import withConfig from '../../utils/withConfig'
+import TimePicker from '../interface/TimePicker'
 
 export const formValuesToEvent = formValues => {
   const { lockAddress, name, description, location, date } = formValues
@@ -53,6 +54,7 @@ export class CreateContent extends Component {
 
     this.onChange = this.onChange.bind(this)
     this.dateChanged = this.dateChanged.bind(this)
+    this.timeChanged = this.timeChanged.bind(this)
     this.lockChanged = this.lockChanged.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
     this.updateStateFromEvent = this.updateStateFromEvent.bind(this)
@@ -110,6 +112,18 @@ export class CreateContent extends Component {
 
   dateChanged(date) {
     this.setState(state => {
+      return {
+        ...state,
+        date,
+      }
+    })
+  }
+
+  timeChanged(timeDate) {
+    this.setState(state => {
+      const { date } = state
+      date.setHours(timeDate.getHours())
+      date.setMinutes(timeDate.getMinutes())
       return {
         ...state,
         date,
@@ -206,6 +220,14 @@ export class CreateContent extends Component {
                       <Input
                         onChange={this.onChange('location')}
                         value={location}
+                      />
+                    </Field>
+                    <Field>
+                      <Label>Start Time</Label>
+                      <TimePicker
+                        now={now}
+                        date={date}
+                        onChange={this.timeChanged}
                       />
                     </Field>
                   </Fieldset>
