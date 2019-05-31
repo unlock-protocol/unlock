@@ -7,3 +7,4 @@ export {
 } from './accounts'
 export { getCurrentProvider, getWeb3Provider } from './providers'
 export { default as deploy } from './deploy'
+export { default as UnlockProvider } from './unlockProvider'

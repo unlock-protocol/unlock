@@ -1,5 +1,8 @@
 # Changes
 
+## 0.2.0
+Introducing unlock-provider to enable use of user accounts
+
 ## 0.1.5
 
 - Yielding the Lock version on getLock, as publicLockVersion
