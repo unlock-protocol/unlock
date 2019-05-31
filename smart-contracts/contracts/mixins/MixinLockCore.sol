@@ -23,8 +23,9 @@ contract MixinLockCore is
   );
 
   event Withdrawal(
-    address indexed _sender,
-    uint _amount
+    address indexed sender,
+    address indexed beneficiary,
+    uint amount
   );
 
   // Unlock Protocol address
@@ -46,6 +47,9 @@ contract MixinLockCore is
   // A count of how many new key purchases there have been
   uint public numberOfKeysSold;
 
+  // The account which will receive funds on withdrawal
+  address public beneficiary;
+
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
     require(maxNumberOfKeys > numberOfKeysSold, 'LOCK_SOLD_OUT');
@@ -53,6 +57,7 @@ contract MixinLockCore is
   }
 
   constructor(
+    address _beneficiary,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -60,38 +65,40 @@ contract MixinLockCore is
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
+    beneficiary = _beneficiary;
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
   }
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock.
+   * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
+   * @param _amount specifies the max amount to withdraw, which may be reduced when
+   * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
+   *
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` use case.
    */
-  function withdraw()
-    external
+  function withdraw(
+    uint _amount
+  ) external
     onlyOwner
   {
     uint balance = getBalance(address(this));
-    require(balance > 0, 'NOT_ENOUGH_FUNDS');
-    // Security: re-entrancy not a risk as this is the last line of an external function
-    _withdraw(balance);
-  }
+    uint amount;
+    if(_amount == 0 || _amount > balance)
+    {
+      require(balance > 0, 'NOT_ENOUGH_FUNDS');
+      amount = balance;
+    }
+    else
+    {
+      amount = _amount;
+    uint balance = getBalance(address(this));
 
-  /**
-   * @dev Called by owner to partially withdraw funds from the lock.
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   */
-  function partialWithdraw(uint _amount)
-    external
-    onlyOwner
-  {
-    require(_amount > 0, 'GREATER_THAN_ZERO');
-    uint balance = getBalance(address(this));
-    require(balance >= _amount, 'NOT_ENOUGH_FUNDS');
+    emit Withdrawal(msg.sender, beneficiary, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
-    _withdraw(_amount);
+    _transfer(beneficiary, amount);
   }
 
   /**
@@ -110,6 +117,19 @@ contract MixinLockCore is
   }
 
   /**
+   * A function which lets the owner of the lock update the beneficiary account,
+   * which receives funds on withdrawal.
+   */
+  function updateBeneficiary(
+    address _beneficiary
+  ) external
+    onlyOwner
+  {
+    require(_beneficiary != address(0), "INVALID_ADDRESS");
+    beneficiary = _beneficiary;
+  }
+
+  /**
    * Public function which returns the total number of unique keys sold (both
    * expired and valid)
    */
@@ -119,17 +139,5 @@ contract MixinLockCore is
     returns (uint)
   {
     return numberOfKeysSold;
-  }
-
-  /**
-   * @dev private version of the withdraw function which handles all withdrawals from the lock.
-   *
-   * Security: Be wary of re-entrancy when calling this.
-   */
-  function _withdraw(uint _amount)
-    private
-  {
-    _transfer(Ownable.owner(), _amount);
-    emit Withdrawal(msg.sender, _amount);
   }
 }
