@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.5
+
+- Yielding the Lock version on getLock, as publicLockVersion
+
 ## 0.1.4
 
 - Yielding the ERC20 contract if the lock is an ERC20 lock
