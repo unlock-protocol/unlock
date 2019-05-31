@@ -33,27 +33,10 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
     // eslint-disable-next-line no-console
     console.log(
       `Deployed bytes4(keccak256(bytecode.substring(0, bytecode.length - 64)))
-  Unlock.bytecode: ${this.web3.utils
-    .keccak256(Unlock.bytecode.substring(0, Unlock.bytecode.length - 64))
-    .substring(0, 10)}
-  Unlock.deployedBytecode: ${this.web3.utils
-    .keccak256(
-      Unlock.deployedBytecode.substring(0, Unlock.deployedBytecode.length - 1)
-    )
-    .substring(0, 10)}
-  PublicLock.bytecode: ${this.web3.utils
-    .keccak256(
-      PublicLock.bytecode.substring(0, PublicLock.bytecode.length - 64)
-    )
-    .substring(0, 10)}
-  PublicLock.deployedBytecode: ${this.web3.utils
-    .keccak256(
-      PublicLock.deployedBytecode.substring(
-        0,
-        PublicLock.deployedBytecode.length - 64
-      )
-    )
-    .substring(0, 10)}`
+  Unlock.bytecode: ${Unlock.bytecode}
+  Unlock.deployedBytecode: ${Unlock.deployedBytecode}
+  PublicLock.bytecode: ${PublicLock.bytecode}
+  PublicLock.deployedBytecode: ${PublicLock.deployedBytecode}`
     )
   })
 }
