@@ -1,4 +1,4 @@
-import { setupPostOffice, setHandler } from '../utils/postOffice'
+import { setHandler, mainWindowPostOffice } from '../utils/postOffice'
 import {
   POST_MESSAGE_READY,
   POST_MESSAGE_CONFIG,
@@ -28,14 +28,14 @@ let loadCheckoutModal
  *                                  (created by document.createElement)
  */
 export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
-  const dataPostOffice = setupPostOffice(
+  const dataPostOffice = mainWindowPostOffice(
     window,
-    dataIframe.contentWindow,
+    dataIframe,
     process.env.PAYWALL_URL
   )
-  const CheckoutUIPostOffice = setupPostOffice(
+  const CheckoutUIPostOffice = mainWindowPostOffice(
     window,
-    CheckoutUIIframe.contentWindow,
+    CheckoutUIIframe,
     process.env.PAYWALL_URL
   )
 
@@ -98,11 +98,22 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   // set up the main window side of Web3ProxyProvider
   web3Proxy(window, dataIframe, process.env.PAYWALL_URL)
 
+  let savedLocks = {}
   // relay the unlocked event both to the main window
   // and to the checkout UI
   setHandler(POST_MESSAGE_UNLOCKED, locks => {
     CheckoutUIPostOffice(POST_MESSAGE_UNLOCKED, locks)
-    hideCheckoutModal()
+    if (
+      locks.filter(address => {
+        return (
+          savedLocks[address] &&
+          savedLocks[address].key &&
+          savedLocks[address].key.status === 'valid'
+        )
+      }).length
+    ) {
+      hideCheckoutModal()
+    }
     dispatchEvent(window, 'unlocked')
   })
 
@@ -148,6 +159,7 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
 
   // relay the most current lock objects to the checkout UI
   setHandler(POST_MESSAGE_UPDATE_LOCKS, locks => {
+    savedLocks = locks // to use for determining when to hide the checkout iframe
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_LOCKS, locks)
   })
 

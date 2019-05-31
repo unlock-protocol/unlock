@@ -133,12 +133,12 @@ describe('setupPostOffice', () => {
   it('responds to POST_MESSAGE_UNLOCKED by sending unlocked to the UI iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED)
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: POST_MESSAGE_UNLOCKED,
-        payload: undefined,
+        payload: ['lock'],
       },
       'http://paywall'
     )
@@ -147,7 +147,7 @@ describe('setupPostOffice', () => {
   it('responds to POST_MESSAGE_UNLOCKED by dispatching unlockProtocol event', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED)
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
 
     expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -157,12 +157,29 @@ describe('setupPostOffice', () => {
     )
   })
 
-  it('responds to POST_MESSAGE_UNLOCKED by hiding the checkout UI', () => {
+  it('responds to POST_MESSAGE_UNLOCKED by not hiding the checkout UI if the key is not confirmed', () => {
     expect.assertions(1)
 
     fakeUIIframe.className = 'unlock start show'
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED)
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+
+    expect(fakeUIIframe.className).toBe('unlock start show')
+  })
+
+  it('responds to POST_MESSAGE_UNLOCKED by hiding the checkout UI if the key is confirmed', () => {
+    expect.assertions(1)
+
+    fakeUIIframe.className = 'unlock start show'
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_LOCKS, {
+      lock: {
+        key: {
+          status: 'valid',
+        },
+      },
+    })
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
 
     expect(fakeUIIframe.className).toBe('unlock start')
   })
