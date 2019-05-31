@@ -1,4 +1,4 @@
-import { setHandler, mainWindowPostOffice } from '../utils/postOffice'
+import { mainWindowPostOffice } from '../utils/postOffice'
 import {
   POST_MESSAGE_READY,
   POST_MESSAGE_CONFIG,
@@ -28,16 +28,14 @@ let loadCheckoutModal
  *                                  (created by document.createElement)
  */
 export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
-  const dataPostOffice = mainWindowPostOffice(
-    window,
-    dataIframe,
-    process.env.PAYWALL_URL
-  )
-  const CheckoutUIPostOffice = mainWindowPostOffice(
-    window,
-    CheckoutUIIframe,
-    process.env.PAYWALL_URL
-  )
+  const {
+    postMessage: dataPostOffice,
+    addHandler: addDataMessageHandler,
+  } = mainWindowPostOffice(window, dataIframe, process.env.PAYWALL_URL)
+  const {
+    postMessage: CheckoutUIPostOffice,
+    addHandler: addCheckoutMessageHandler,
+  } = mainWindowPostOffice(window, CheckoutUIIframe, process.env.PAYWALL_URL)
 
   if (!loadCheckoutModal) {
     loadCheckoutModal = () => {
@@ -88,8 +86,15 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
     )
   }
 
-  // send the configuration to the iframe that requested it
-  setHandler(POST_MESSAGE_READY, (_, respond) => {
+  // send the configuration to the data iframe
+  addDataMessageHandler(POST_MESSAGE_READY, (_, respond) => {
+    if (window.unlockProtocolConfig) {
+      respond(POST_MESSAGE_CONFIG, window.unlockProtocolConfig)
+    }
+  })
+
+  // send the configuration to the checkout iframe
+  addCheckoutMessageHandler(POST_MESSAGE_READY, (_, respond) => {
     if (window.unlockProtocolConfig) {
       respond(POST_MESSAGE_CONFIG, window.unlockProtocolConfig)
     }
@@ -101,7 +106,7 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   let savedLocks = {}
   // relay the unlocked event both to the main window
   // and to the checkout UI
-  setHandler(POST_MESSAGE_UNLOCKED, locks => {
+  addDataMessageHandler(POST_MESSAGE_UNLOCKED, locks => {
     CheckoutUIPostOffice(POST_MESSAGE_UNLOCKED, locks)
     if (
       locks.filter(address => {
@@ -118,54 +123,54 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   })
 
   // if the user chooses to close the checkout modal, we hide the iframe
-  setHandler(POST_MESSAGE_DISMISS_CHECKOUT, () => {
+  addCheckoutMessageHandler(POST_MESSAGE_DISMISS_CHECKOUT, () => {
     hideCheckoutModal()
   })
 
   // relay the locked event both to the main window
   // and to the checkout UI
-  setHandler(POST_MESSAGE_LOCKED, () => {
+  addDataMessageHandler(POST_MESSAGE_LOCKED, () => {
     CheckoutUIPostOffice(POST_MESSAGE_LOCKED)
     dispatchEvent(window, 'locked')
   })
 
   // relay error messages to the checkout UI
-  setHandler(POST_MESSAGE_ERROR, error => {
+  addDataMessageHandler(POST_MESSAGE_ERROR, error => {
     CheckoutUIPostOffice(POST_MESSAGE_ERROR, error)
   })
 
   // relay the fact that action is needed to confirm
   // a key purchase transaction in the user's wallet
   // to the checkout UI in order to display a modal
-  setHandler(POST_MESSAGE_UPDATE_WALLET, update => {
+  addDataMessageHandler(POST_MESSAGE_UPDATE_WALLET, update => {
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_WALLET, update)
   })
 
   // relay a request to purchase a key to the data iframe
   // as the user has clicked on a key in the checkout UI
-  setHandler(POST_MESSAGE_PURCHASE_KEY, details => {
+  addCheckoutMessageHandler(POST_MESSAGE_PURCHASE_KEY, details => {
     dataPostOffice(POST_MESSAGE_PURCHASE_KEY, details)
   })
 
   // relay the most current account address to the checkout UI
-  setHandler(POST_MESSAGE_UPDATE_ACCOUNT, account => {
+  addDataMessageHandler(POST_MESSAGE_UPDATE_ACCOUNT, account => {
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_ACCOUNT, account)
   })
 
   // relay the most current account balance to the checkout UI
-  setHandler(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, balance => {
+  addDataMessageHandler(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, balance => {
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, balance)
   })
 
   // relay the most current lock objects to the checkout UI
-  setHandler(POST_MESSAGE_UPDATE_LOCKS, locks => {
+  addDataMessageHandler(POST_MESSAGE_UPDATE_LOCKS, locks => {
     savedLocks = locks // to use for determining when to hide the checkout iframe
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_LOCKS, locks)
   })
 
   // relay the user's wallet's current network, in order to
   // display errors if it is on the wrong network
-  setHandler(POST_MESSAGE_UPDATE_NETWORK, network => {
+  addDataMessageHandler(POST_MESSAGE_UPDATE_NETWORK, network => {
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_NETWORK, network)
   })
 }

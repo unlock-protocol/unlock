@@ -1,6 +1,5 @@
 import * as config from '../../paywall-builder/config'
 import web3Proxy from '../../paywall-builder/web3Proxy'
-import { _clearHandlers } from '../../utils/postOffice'
 import {
   POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
@@ -37,7 +36,6 @@ describe('web3Proxy', () => {
           fakeWindow.handlers[type] = handler
         },
       }
-      _clearHandlers()
     })
 
     it('listens for POST_MESSAGE_READY_WEB3 and dispatches the result', done => {
@@ -123,7 +121,6 @@ describe('web3Proxy', () => {
           fakeWindow.handlers[type] = handler
         },
       }
-      _clearHandlers()
     })
 
     afterEach(() => {
@@ -213,7 +210,6 @@ describe('web3Proxy', () => {
             fakeWindow.handlers[type] = handler
           },
         }
-        _clearHandlers()
 
         web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
 
@@ -281,7 +277,6 @@ describe('web3Proxy', () => {
               fakeWindow.handlers[type] = handler
             },
           }
-          _clearHandlers()
 
           web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
 
@@ -438,7 +433,6 @@ describe('web3Proxy', () => {
               fakeWindow.handlers[type] = handler
             },
           }
-          _clearHandlers()
 
           web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
 

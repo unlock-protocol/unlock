@@ -54,24 +54,42 @@ describe('data iframe postOffice', () => {
         },
       }
     }
+
     beforeEach(() => {
       makeWindow()
     })
 
-    it('returns an update listener callback', () => {
+    it('should return an update listener callback', () => {
       expect.assertions(1)
 
-      const listener = postOffice(fakeWindow, 12)
+      const { blockChainUpdater } = postOffice(fakeWindow, 12)
 
-      expect(listener).toBeInstanceOf(Function)
+      expect(blockChainUpdater).toBeInstanceOf(Function)
+    })
+
+    it('should return an addHandler callback', () => {
+      expect.assertions(1)
+
+      const { addHandler } = postOffice(fakeWindow, 12)
+
+      expect(addHandler).toBeInstanceOf(Function)
+    })
+
+    it('should return a postMessage callback', () => {
+      expect.assertions(1)
+
+      const { postMessage } = postOffice(fakeWindow, 12)
+
+      expect(postMessage).toBeInstanceOf(Function)
     })
 
     describe('update listener', () => {
-      let updater
+      let blockChainUpdater
       beforeEach(() => {
         makeWindow()
 
-        updater = postOffice(fakeWindow, 12)
+        const info = postOffice(fakeWindow, 12)
+        blockChainUpdater = info.blockChainUpdater
       })
 
       it('should send POST_MESSAGE_READY on ready', done => {
@@ -87,7 +105,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('ready')
+        blockChainUpdater('ready')
       })
 
       it('walletModal notifies the main window that a wallet popup is active', done => {
@@ -103,7 +121,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('walletModal')
+        blockChainUpdater('walletModal')
       })
 
       it('error passes on the error message of an Error to the main window', done => {
@@ -119,7 +137,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('error', new Error('fail'))
+        blockChainUpdater('error', new Error('fail'))
       })
 
       it('error passes on the error message to the main window', done => {
@@ -135,7 +153,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('error', 'fail')
+        blockChainUpdater('error', 'fail')
       })
 
       it('account passes account address to the main window', async done => {
@@ -153,7 +171,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('account')
+        blockChainUpdater('account')
       })
 
       it('balance passes account balance to the main window', async done => {
@@ -172,7 +190,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('balance')
+        blockChainUpdater('balance')
       })
 
       it('network passes the network id to the main window', async done => {
@@ -190,7 +208,7 @@ describe('data iframe postOffice', () => {
           ])
           done()
         }
-        updater('network')
+        blockChainUpdater('network')
       })
 
       it('locks passes the lock data to the main window', async done => {
@@ -258,7 +276,7 @@ describe('data iframe postOffice', () => {
           done()
         }
 
-        updater('locks')
+        blockChainUpdater('locks')
       })
 
       describe('locks', () => {
@@ -285,6 +303,7 @@ describe('data iframe postOffice', () => {
             },
           })
         }
+
         beforeEach(async () => {
           makeWindow()
 
@@ -312,7 +331,8 @@ describe('data iframe postOffice', () => {
               expiration: 0,
             },
           })
-          updater = postOffice(fakeWindow, 12)
+          const info = postOffice(fakeWindow, 12)
+          blockChainUpdater = info.blockChainUpdater
         })
 
         it('sends locked if no locks have valid keys', done => {
@@ -330,7 +350,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
 
         it('sends unlocked for keys whose transaction is submitted', async done => {
@@ -350,7 +370,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
 
         it('sends unlocked for keys whose transaction is pending', async done => {
@@ -370,7 +390,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
 
         it('sends unlocked for keys whose transaction is confirming', async done => {
@@ -390,7 +410,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
 
         it('sends unlocked for keys whose transaction is valid', async done => {
@@ -410,7 +430,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
 
         it('sends unlocked with multiple lock addresses if the user has keys on them', async done => {
@@ -431,7 +451,7 @@ describe('data iframe postOffice', () => {
             done()
           }
 
-          updater('locks')
+          blockChainUpdater('locks')
         })
       })
 
@@ -439,14 +459,15 @@ describe('data iframe postOffice', () => {
         beforeEach(() => {
           makeWindow()
 
-          updater = postOffice(fakeWindow, 12)
+          const info = postOffice(fakeWindow, 12)
+          blockChainUpdater = info.blockChainUpdater
           fakeTarget.postMessage = jest.fn()
         })
 
         it('should not post a network change if there is no cache', async () => {
           expect.assertions(1)
 
-          await updater('network')
+          await blockChainUpdater('network')
 
           expect(fakeTarget.postMessage).not.toHaveBeenCalled()
         })
