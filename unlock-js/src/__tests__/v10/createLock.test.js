@@ -93,12 +93,10 @@ describe('v10', () => {
     })
 
     describe('when providing the address of a denominating currency contract', () => {
-      it('should invoke _handleMethodCall with the right params', async () => {
-        expect.assertions(0)
+      let erc20Lock
 
-        await nockBeforeEach()
-
-        const Erc20Lock = {
+      beforeEach(() => {
+        erc20Lock = {
           name: 'ERC20 Lock',
           address: '0x0987654321098765432109876543210987654321',
           expirationDuration: 86400, // 1 day
@@ -106,17 +104,23 @@ describe('v10', () => {
           maxNumberOfKeys: 100,
           currencyContractAddress: testERC20ContractAddress,
         }
+      })
+
+      it('should invoke _handleMethodCall with the right params', async () => {
+        expect.assertions(0)
+
+        await nockBeforeEach()
 
         let {
           testTransaction,
           testTransactionResult,
           success,
         } = callMethodData(
-          Erc20Lock.expirationDuration,
+          erc20Lock.expirationDuration,
           testERC20ContractAddress,
-          utils.toWei(Erc20Lock.keyPrice, 'ether'),
-          Erc20Lock.maxNumberOfKeys,
-          Erc20Lock.name
+          utils.toWei(erc20Lock.keyPrice, 'ether'),
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name
         )
 
         transaction = testTransaction
@@ -125,7 +129,49 @@ describe('v10', () => {
 
         setupSuccess()
 
-        await walletService.createLock(Erc20Lock, owner)
+        await walletService.createLock(erc20Lock, owner)
+        await nock.resolveWhenAllNocksUsed()
+      })
+
+      it('should emit lock.updated with the right params', async () => {
+        expect.assertions(2)
+
+        await nockBeforeEach()
+
+        let {
+          testTransaction,
+          testTransactionResult,
+          success,
+        } = callMethodData(
+          erc20Lock.expirationDuration,
+          testERC20ContractAddress,
+          utils.toWei(erc20Lock.keyPrice, 'ether'),
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name
+        )
+
+        transaction = testTransaction
+        transactionResult = testTransactionResult
+        setupSuccess = success
+
+        setupSuccess()
+
+        walletService.on('lock.updated', (lockAddress, update) => {
+          expect(lockAddress).toBe(erc20Lock.address)
+          expect(update).toEqual({
+            transaction: transaction.hash,
+            balance: '0',
+            expirationDuration: erc20Lock.expirationDuration,
+            keyPrice: erc20Lock.keyPrice,
+            maxNumberOfKeys: erc20Lock.maxNumberOfKeys,
+            outstandingKeys: 0,
+            name: erc20Lock.name,
+            owner,
+            currencyContractAddress: testERC20ContractAddress,
+          })
+        })
+
+        await walletService.createLock(erc20Lock, owner)
         await nock.resolveWhenAllNocksUsed()
       })
     })
