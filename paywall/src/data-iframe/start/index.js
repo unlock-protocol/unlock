@@ -30,4 +30,6 @@ export default async function start(window, constants) {
     makeSetConfig(window, updater, constants),
     purchaseKey
   )
+  // start the ball rolling
+  updater('ready')
 }
