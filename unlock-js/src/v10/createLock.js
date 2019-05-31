@@ -48,6 +48,7 @@ export default async function(lock, owner) {
       balance: '0',
       transaction: hash,
       name: lockName,
+      currencyContractAddress: lock.currencyContractAddress,
     })
   } catch (error) {
     this.emit('error', new Error(TransactionTypes.FAILED_TO_CREATE_LOCK))
