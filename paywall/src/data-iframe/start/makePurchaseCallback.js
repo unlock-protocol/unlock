@@ -36,26 +36,27 @@ const makePurchaseCallback = ({
     ])
     const startingKey = keys[lockAddress]
 
-    // if purchaseKey errors out, it will emit an error, which
-    // is listened for by processKeyPurchaseTransactions, aborting both
-    // promises
-    return Promise.all([
-      purchaseKey({
-        walletService,
-        lockAddress,
-        amountToSend: locks[lockAddress].keyPrice,
-      }),
-      processKeyPurchaseTransactions({
-        walletService,
-        web3Service,
-        startingTransactions,
-        startingKey,
-        lockAddress,
-        requiredConfirmations,
-        update,
-        walletAction: () => update({ walletAction: true }),
-      }),
-    ])
+    try {
+      await Promise.all([
+        purchaseKey({
+          walletService,
+          lockAddress,
+          amountToSend: locks[lockAddress].keyPrice,
+        }),
+        processKeyPurchaseTransactions({
+          walletService,
+          web3Service,
+          startingTransactions,
+          startingKey,
+          lockAddress,
+          requiredConfirmations,
+          update,
+          walletAction: () => update({ walletModal: true }),
+        }),
+      ])
+    } catch (error) {
+      update({ error: error.message })
+    }
   }
 
 export default makePurchaseCallback

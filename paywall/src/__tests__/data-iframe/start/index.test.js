@@ -26,6 +26,11 @@ describe('data iframe startup index', () => {
   it('should set up the post office', async () => {
     expect.assertions(1)
 
+    const updater = jest.fn()
+    const setConfig = jest.fn()
+    postOffice.mockImplementationOnce(() => updater)
+    makeSetConfig.mockImplementationOnce(() => setConfig)
+
     await start(window, constants)
 
     expect(postOffice).toHaveBeenCalledWith(
@@ -60,5 +65,18 @@ describe('data iframe startup index', () => {
       setConfig,
       purchaseKey
     )
+  })
+
+  it('should send "ready" to the updater to start the entire process', async () => {
+    expect.assertions(1)
+
+    const updater = jest.fn()
+    const setConfig = jest.fn()
+    postOffice.mockImplementationOnce(() => updater)
+    makeSetConfig.mockImplementationOnce(() => setConfig)
+
+    await start(window, constants)
+
+    expect(updater).toHaveBeenCalledWith('ready')
   })
 })
