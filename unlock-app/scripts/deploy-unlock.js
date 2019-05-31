@@ -36,7 +36,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v02', newContractInstance => {
+    return deploy(host, port, 'v10', newContractInstance => {
       console.log(newContractInstance.options.address)
     })
   })
