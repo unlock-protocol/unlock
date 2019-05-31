@@ -98,16 +98,25 @@ describe('v10', () => {
 
         await nockBeforeEach()
 
+        const Erc20Lock = {
+          name: 'ERC20 Lock',
+          address: '0x0987654321098765432109876543210987654321',
+          expirationDuration: 86400, // 1 day
+          keyPrice: '0.1', // 0.1 Eth
+          maxNumberOfKeys: 100,
+          currencyContractAddress: testERC20ContractAddress,
+        }
+
         let {
           testTransaction,
           testTransactionResult,
           success,
         } = callMethodData(
-          lock.expirationDuration,
+          Erc20Lock.expirationDuration,
           testERC20ContractAddress,
-          utils.toWei(lock.keyPrice, 'ether'),
-          lock.maxNumberOfKeys,
-          lock.name
+          utils.toWei(Erc20Lock.keyPrice, 'ether'),
+          Erc20Lock.maxNumberOfKeys,
+          Erc20Lock.name
         )
 
         transaction = testTransaction
@@ -116,7 +125,7 @@ describe('v10', () => {
 
         setupSuccess()
 
-        await walletService.createLock(lock, owner, testERC20ContractAddress)
+        await walletService.createLock(Erc20Lock, owner)
         await nock.resolveWhenAllNocksUsed()
       })
     })

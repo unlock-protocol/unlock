@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.3
+
+- Changing the createLock API to remain consistent
+
 ## 0.1.2
 
 - Updated gas amounts to fix deploying new locks

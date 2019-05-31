@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
-import { GAS_AMOUNTS, ZERO } from './constants'
+import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
 
 /**
@@ -125,11 +125,10 @@ export default class WalletService extends UnlockService {
    * Creates a lock on behalf of the user.
    * @param {PropTypes.lock} lock
    * @param {PropTypes.address} owner
-   * @param {PropTypes.address} currencyContract : The address of the denominating contract
    */
-  async createLock(lock, owner, currencyContract = ZERO) {
+  async createLock(lock, owner) {
     const version = await this.unlockContractAbiVersion()
-    return version.createLock.bind(this)(lock, owner, currencyContract)
+    return version.createLock.bind(this)(lock, owner)
   }
 
   /**

@@ -62,9 +62,9 @@ async function deployERC20Lock(wallet, account, contractAddress) {
       expirationDuration: 60 * 5, // 1 minute!
       keyPrice: '0.02', // 0.01 Eth
       maxNumberOfKeys: -1, // Unlimited
+      currencyContractAddress: contractAddress,
     },
-    account,
-    contractAddress
+    account
   )
 }
 
