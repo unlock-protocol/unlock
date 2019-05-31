@@ -1,3 +1,5 @@
+import { getAccountFromPrivateKey } from './accounts'
+
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
@@ -8,10 +10,20 @@ export default class UnlockProvider {
     this.wallet = null
   }
 
-  connect(wallet) {
-    this.wallet = wallet
-    wallet.connect(this.fallbackProvider)
-    this.ready = true
+  // You should be able to just pass the action for
+  // GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD into here
+  async connect({ key, password }) {
+    try {
+      this.wallet = await getAccountFromPrivateKey(key, password)
+      this.wallet.connect(this.fallbackProvider)
+      this.ready = true
+
+      return true
+    } catch (err) {
+      // decryption failed (bad password?)
+      // Possible also that wallet couldn't connect with provider?
+      throw err
+    }
   }
 
   disconnect() {
