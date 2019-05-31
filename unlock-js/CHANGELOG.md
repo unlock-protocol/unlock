@@ -1,5 +1,9 @@
 # Changes
 
+## 0.1.4
+
+- Yielding the ERC20 contract if the lock is an ERC20 lock
+
 ## 0.1.3
 
 - Changing the createLock API to remain consistent
