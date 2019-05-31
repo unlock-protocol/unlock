@@ -56,6 +56,15 @@ contract MixinLockCore is
     _;
   }
 
+  modifier onlyOwnerOrBeneficiary()
+  {
+    require(
+      msg.sender == owner() || msg.sender == beneficiary,
+      'ONLY_LOCK_OWNER_OR_BENEFICIARY'
+    );
+    _;
+  }
+
   constructor(
     address _beneficiary,
     uint _expirationDuration,
@@ -82,7 +91,7 @@ contract MixinLockCore is
   function withdraw(
     uint _amount
   ) external
-    onlyOwner
+    onlyOwnerOrBeneficiary
   {
     uint balance = getBalance(address(this));
     uint amount;
@@ -123,9 +132,9 @@ contract MixinLockCore is
   function updateBeneficiary(
     address _beneficiary
   ) external
-    onlyOwner
+    onlyOwnerOrBeneficiary
   {
-    require(_beneficiary != address(0), "INVALID_ADDRESS");
+    require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }
 
