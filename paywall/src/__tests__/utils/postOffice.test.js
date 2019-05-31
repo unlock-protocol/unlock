@@ -1,7 +1,5 @@
 import {
   setupPostOffice,
-  _clearHandlers,
-  setHandler,
   iframePostOffice,
   mainWindowPostOffice,
 } from '../../utils/postOffice'
@@ -49,7 +47,7 @@ describe('postOffice', () => {
     it('returns a function that posts a message', () => {
       expect.assertions(2)
 
-      const postMessage = setupPostOffice(fakeWindow, fakeTarget, 'hi')
+      const { postMessage } = setupPostOffice(fakeWindow, fakeTarget, 'hi')
 
       expect(postMessage).toBeInstanceOf(Function)
       postMessage('hi', 'there')
@@ -63,6 +61,31 @@ describe('postOffice', () => {
       )
     })
 
+    it('should return a function that adds a handler', () => {
+      expect.assertions(2)
+
+      const listener = jest.fn()
+      const { addHandler } = setupPostOffice(
+        fakeWindow,
+        fakeTarget,
+        'http://fun.times'
+      )
+
+      expect(addHandler).toBeInstanceOf(Function)
+      addHandler('hi', listener)
+
+      fakeWindow.handlers.message({
+        source: fakeTarget,
+        origin: 'http://fun.times',
+        data: {
+          type: 'hi',
+          payload: 'it worked!',
+        },
+      })
+
+      expect(listener).toHaveBeenCalledWith('it worked!', expect.any(Function))
+    })
+
     describe('message listener', () => {
       beforeEach(() => {
         fakeWindow = {
@@ -74,15 +97,14 @@ describe('postOffice', () => {
         fakeTarget = {
           postMessage: jest.fn(),
         }
-        _clearHandlers()
       })
 
       it('bails if message is not from our target', () => {
         expect.assertions(2)
 
         const listener = jest.fn()
-        setHandler('hi', listener)
-        setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        addHandler('hi', listener)
 
         fakeWindow.handlers.message({
           source: 'not from us',
@@ -111,8 +133,8 @@ describe('postOffice', () => {
         expect.assertions(4)
 
         const listener = jest.fn()
-        setHandler('hi', listener)
-        setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        addHandler('hi', listener)
 
         fakeWindow.handlers.message({
           source: fakeTarget,
@@ -155,8 +177,8 @@ describe('postOffice', () => {
         expect.assertions(1)
 
         const listener = jest.fn()
-        setHandler('hi', listener)
-        setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        addHandler('hi', listener)
 
         fakeWindow.handlers.message({
           source: fakeTarget,
@@ -177,8 +199,8 @@ describe('postOffice', () => {
         expect.assertions(1)
 
         const listener = jest.fn()
-        setHandler('hi', listener)
-        setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        addHandler('hi', listener)
 
         fakeWindow.handlers.message({
           source: fakeTarget,
@@ -194,11 +216,12 @@ describe('postOffice', () => {
 
       describe('message handler', () => {
         let listener
+        let addHandler
         beforeEach(() => {
-          _clearHandlers()
           listener = jest.fn()
-          setHandler('hi', listener)
-          setupPostOffice(fakeWindow, fakeTarget, 'origin')
+          const info = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+          addHandler = info.addHandler
+          addHandler('hi', listener)
 
           fakeWindow.handlers.message({
             source: fakeTarget,
@@ -223,15 +246,14 @@ describe('postOffice', () => {
           )
         })
 
-        it('should call all handlers registered with setHandler for the message type', () => {
+        it('should call all handlers registered with addHandler for the message type', () => {
           expect.assertions(2)
 
           listener = jest.fn()
           const listener2 = jest.fn()
-          _clearHandlers()
 
-          setHandler('hi', listener)
-          setHandler('hi', listener2)
+          addHandler('hi', listener)
+          addHandler('hi', listener2)
 
           fakeWindow.handlers.message({
             source: fakeTarget,
@@ -274,16 +296,14 @@ describe('postOffice', () => {
           fakeWindow.handlers[type] = handler
         },
       }
-      _clearHandlers()
     })
 
     it('calls setupPostOffice with the iframe params', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      setHandler('hi', listener)
-
-      iframePostOffice(fakeWindow)
+      const { addHandler } = iframePostOffice(fakeWindow)
+      addHandler('hi', listener)
 
       fakeWindow.handlers.message({
         source: fakeTarget,
@@ -308,9 +328,8 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      setHandler('hi', listener)
-
-      const postMessage = iframePostOffice(fakeWindow)
+      const { addHandler, postMessage } = iframePostOffice(fakeWindow)
+      addHandler('hi', listener)
 
       postMessage('type', 'response')
 
@@ -341,16 +360,18 @@ describe('postOffice', () => {
           fakeWindow.handlers[type] = handler
         },
       }
-      _clearHandlers()
     })
 
     it('calls setupPostOffice with the main window params', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      setHandler('hi', listener)
-
-      mainWindowPostOffice(fakeWindow, iframe, 'http://fun.times')
+      const { addHandler } = mainWindowPostOffice(
+        fakeWindow,
+        iframe,
+        'http://fun.times'
+      )
+      addHandler('hi', listener)
 
       fakeWindow.handlers.message({
         source: iframe.contentWindow,
@@ -375,13 +396,12 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      setHandler('hi', listener)
-
-      const postMessage = mainWindowPostOffice(
+      const { addHandler, postMessage } = mainWindowPostOffice(
         fakeWindow,
         iframe,
         'http://fun.times'
       )
+      addHandler('hi', listener)
 
       postMessage('type', 'response')
 

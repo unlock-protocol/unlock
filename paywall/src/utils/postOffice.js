@@ -1,5 +1,3 @@
-let handlers = {}
-
 /**
  * postMessage manager
  *
@@ -24,6 +22,7 @@ export function setupPostOffice(window, target, targetOrigin) {
       'cannot safely postMessage without knowing the target origin'
     )
   }
+  let handlers = {}
   window.addEventListener('message', event => {
     // **SECURITY CHECKS**
     // ignore messages that do not come from our target window
@@ -32,18 +31,28 @@ export function setupPostOffice(window, target, targetOrigin) {
     if (!event.data || !event.data.type) return
     if (!event.data.hasOwnProperty('payload')) return
     if (typeof event.data.type !== 'string') return
-    if (handlers[event.data.type]) {
-      const handler = handlers[event.data.type]
-      handler(event.data.payload, (type, response) => {
-        if (typeof type !== 'string') {
-          throw new Error('internal error: type must be a string')
-        }
-        target.postMessage({ type, payload: response }, targetOrigin)
+    const listeners = handlers[event.data.type]
+    if (listeners && listeners.size) {
+      listeners.forEach(listener => {
+        listener(event.data.payload, (type, response) => {
+          if (typeof type !== 'string') {
+            throw new Error('internal error: type must be a string')
+          }
+          target.postMessage({ type, payload: response }, targetOrigin)
+        })
       })
     }
   })
-  return (type, payload) => {
-    target.postMessage({ type, payload }, targetOrigin)
+  return {
+    addHandler: (type, listener) => {
+      if (!handlers[type]) {
+        handlers[type] = new Map()
+      }
+      handlers[type].set(listener, listener)
+    },
+    postMessage: (type, payload) => {
+      target.postMessage({ type, payload }, targetOrigin)
+    },
   }
 }
 
@@ -71,35 +80,4 @@ export function iframePostOffice(window) {
  */
 export function mainWindowPostOffice(window, iframe, iframeOrigin) {
   return setupPostOffice(window, iframe.contentWindow, iframeOrigin)
-}
-
-/**
- * @callback handlerCallback
- * @param {string} type the message type to send
- * @param {*} response the response to the original message.
- *                     This is the payload of the response message
- */
-
-/**
- * Set a handler for a posted message
- *
- * This creates a linked list of handlers for a specific message type
- *
- * @param {string} type the message type this handler is intended to respond to
- * @param {handlerCallback}}handler the callback. This should
- */
-export function setHandler(type, handler) {
-  const currentHandler =
-    handlers[type] ||
-    (() => {
-      /* no-op */
-    })
-  handlers[type] = (type, response) => (
-    currentHandler(type, response), handler(type, response)
-  )
-}
-
-// for unit testing, clearing state between tests
-export function _clearHandlers() {
-  handlers = {}
 }

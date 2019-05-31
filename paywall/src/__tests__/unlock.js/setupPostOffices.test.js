@@ -86,14 +86,14 @@ describe('setupPostOffice', () => {
   })
 
   it('responds to POST_MESSAGE_READY_WEB3 by sending POST_MESSAGE_WALLET_INFO', () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     sendMessage(fakeDataIframe, POST_MESSAGE_READY_WEB3, {
       lock: { address: 'lock' },
     })
 
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-      2,
+    expect(fakeUIIframe.contentWindow.postMessage).not.toHaveBeenCalled()
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: POST_MESSAGE_WALLET_INFO,
         payload: {
@@ -107,13 +107,13 @@ describe('setupPostOffice', () => {
   })
 
   it('responds to POST_MESSAGE_READY by sending the config to both iframes', () => {
-    expect.assertions(2)
+    expect.assertions(4)
 
     sendMessage(fakeDataIframe, POST_MESSAGE_READY)
     sendMessage(fakeUIIframe, POST_MESSAGE_READY)
 
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
-      1,
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(1)
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: POST_MESSAGE_CONFIG,
         payload: fakeWindow.unlockProtocolConfig,
@@ -121,6 +121,7 @@ describe('setupPostOffice', () => {
       'http://paywall'
     )
 
+    expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledTimes(1)
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: POST_MESSAGE_CONFIG,

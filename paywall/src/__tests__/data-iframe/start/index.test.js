@@ -11,6 +11,9 @@ jest.mock('../../../data-iframe/postOfficeListener')
 jest.mock('../../../data-iframe/start/makeSetConfig')
 
 describe('data iframe startup index', () => {
+  let blockChainUpdater
+  let addHandler
+  let setConfig
   const constants = {
     readOnlyProvider: 'hi',
     unlockAddress: 'address',
@@ -20,16 +23,19 @@ describe('data iframe startup index', () => {
   }
 
   beforeEach(() => {
+    setConfig = jest.fn()
+    blockChainUpdater = jest.fn()
+    addHandler = jest.fn()
     postOffice.mockReset()
+    postOffice.mockImplementationOnce(() => ({
+      blockChainUpdater,
+      addHandler,
+    }))
+    makeSetConfig.mockImplementationOnce(() => setConfig)
   })
 
   it('should set up the post office', async () => {
     expect.assertions(1)
-
-    const updater = jest.fn()
-    const setConfig = jest.fn()
-    postOffice.mockImplementationOnce(() => updater)
-    makeSetConfig.mockImplementationOnce(() => setConfig)
 
     await start(window, constants)
 
@@ -42,41 +48,30 @@ describe('data iframe startup index', () => {
   it('should add a listener to the cache with the post office updater', async () => {
     expect.assertions(1)
 
-    const updater = jest.fn()
-    postOffice.mockImplementationOnce(() => updater)
     await start(window, constants)
 
-    expect(addListener).toHaveBeenCalledWith(updater)
+    expect(addListener).toHaveBeenCalledWith(blockChainUpdater)
   })
 
   it('should setup the post office listener', async () => {
     expect.assertions(1)
 
-    const updater = jest.fn()
-    const setConfig = jest.fn()
-    postOffice.mockImplementationOnce(() => updater)
-    makeSetConfig.mockImplementationOnce(() => setConfig)
-
     await start(window, constants)
 
     expect(setupPostOfficeListener).toHaveBeenCalledWith(
       window,
-      updater,
+      blockChainUpdater,
       setConfig,
-      purchaseKey
+      purchaseKey,
+      addHandler
     )
   })
 
   it('should send "ready" to the updater to start the entire process', async () => {
     expect.assertions(1)
 
-    const updater = jest.fn()
-    const setConfig = jest.fn()
-    postOffice.mockImplementationOnce(() => updater)
-    makeSetConfig.mockImplementationOnce(() => setConfig)
-
     await start(window, constants)
 
-    expect(updater).toHaveBeenCalledWith('ready')
+    expect(blockChainUpdater).toHaveBeenCalledWith('ready')
   })
 })

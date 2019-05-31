@@ -1,4 +1,3 @@
-import { setHandler } from '../utils/postOffice'
 import {
   POST_MESSAGE_SEND_UPDATES,
   POST_MESSAGE_CONFIG,
@@ -75,7 +74,8 @@ export default function setupPostOfficeListener(
   window,
   updater,
   setConfig,
-  purchase
+  purchase,
+  addHandler
 ) {
   const configListener = makeConfigListener(window.console.error, setConfig)
   const requestListener = makeRequestListener(window.console.error, updater)
@@ -83,7 +83,7 @@ export default function setupPostOfficeListener(
     window.console.error,
     purchase
   )
-  setHandler(POST_MESSAGE_CONFIG, configListener)
-  setHandler(POST_MESSAGE_SEND_UPDATES, requestListener)
-  setHandler(POST_MESSAGE_PURCHASE_KEY, purchaseListener)
+  addHandler(POST_MESSAGE_CONFIG, configListener)
+  addHandler(POST_MESSAGE_SEND_UPDATES, requestListener)
+  addHandler(POST_MESSAGE_PURCHASE_KEY, purchaseListener)
 }
