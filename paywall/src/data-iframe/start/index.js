@@ -19,17 +19,21 @@ export default async function start(window, constants) {
   import(/* webpackPrefetch: true */ '../blockchainHandler/purchaseKey')
   // set up the post office for communicating cache values, errors, and
   // wallet modal notifications to the main window
-  const updater = postOffice(window, constants.requiredConfirmations)
+  const { blockChainUpdater, addHandler } = postOffice(
+    window,
+    constants.requiredConfirmations
+  )
   // when the cache changes, we send the new information to the main window
-  addListener(updater)
+  addListener(blockChainUpdater)
   // listen for events from the main window, which include requests for blockchain
   // data (currently not used, we just push), and requests to purchase a key
   setupPostOfficeListener(
     window,
-    updater,
-    makeSetConfig(window, updater, constants),
-    purchaseKey
+    blockChainUpdater,
+    makeSetConfig(window, blockChainUpdater, constants),
+    purchaseKey,
+    addHandler
   )
   // start the ball rolling
-  updater('ready')
+  blockChainUpdater('ready')
 }
