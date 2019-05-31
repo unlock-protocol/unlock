@@ -46,6 +46,7 @@ describe('exportStatic', () => {
       '/log': { page: '/log' },
       '/login': { page: '/login' },
       '/signup': { page: '/signup' },
+      '/settings': { page: '/settings' },
     })
   })
 })
