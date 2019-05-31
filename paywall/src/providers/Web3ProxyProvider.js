@@ -1,4 +1,4 @@
-import { iframePostOffice, setHandler } from '../utils/postOffice'
+import { iframePostOffice } from '../utils/postOffice'
 import {
   POST_MESSAGE_WEB3,
   POST_MESSAGE_READY_WEB3,
@@ -19,11 +19,12 @@ import { waitFor } from '../utils/promises'
 export default class Web3ProxyProvider {
   constructor(window) {
     // set up the post office inside the iframe
-    this.postMessage = iframePostOffice(window)
+    const { postMessage, addHandler } = iframePostOffice(window)
+    this.postMessage = postMessage
     this.waiting = true
 
     // this is the postMessage version of connecting to the wallet
-    setHandler(POST_MESSAGE_WALLET_INFO, walletInfo => {
+    addHandler(POST_MESSAGE_WALLET_INFO, walletInfo => {
       if (!walletInfo || typeof walletInfo !== 'object') {
         return
       }
@@ -35,7 +36,7 @@ export default class Web3ProxyProvider {
     })
 
     // this is the postMessage version of the callback for sendAsync
-    setHandler(POST_MESSAGE_WEB3, web3Result => {
+    addHandler(POST_MESSAGE_WEB3, web3Result => {
       if (
         !web3Result.hasOwnProperty('error') ||
         !web3Result.hasOwnProperty('result')
