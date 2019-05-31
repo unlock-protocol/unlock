@@ -114,6 +114,12 @@ describe('v10', () => {
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [erc20ContractAddress])
       )
+
+      nock.ethCallAndYield(
+        contractMethods.publicLockVersion.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(3)])
+      )
     }
 
     it('should trigger an event when it has been loaded with an updated balance', async () => {
@@ -132,6 +138,7 @@ describe('v10', () => {
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: null,
+          publicLockVersion: 3,
         })
       })
 
@@ -154,6 +161,7 @@ describe('v10', () => {
           outstandingKeys: 17,
           asOf: 1337,
           currencyContractAddress: erc20ContractAddress,
+          publicLockVersion: 3,
         })
       })
 
@@ -185,6 +193,7 @@ describe('v10', () => {
         outstandingKeys: 17,
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
         currencyContractAddress: null,
+        publicLockVersion: 3,
       })
     })
   })
