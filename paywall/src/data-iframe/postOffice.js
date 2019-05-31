@@ -8,6 +8,7 @@ import {
   POST_MESSAGE_UPDATE_NETWORK,
   POST_MESSAGE_UPDATE_WALLET,
   POST_MESSAGE_ERROR,
+  POST_MESSAGE_READY,
 } from '../paywall-builder/constants'
 import { getFormattedCacheValues } from './cacheHandler'
 
@@ -57,6 +58,9 @@ export default function postOffice(window, requiredConfirmations) {
     walletModal() {
       postMessage(POST_MESSAGE_UPDATE_WALLET)
     },
+    ready() {
+      postMessage(POST_MESSAGE_READY)
+    },
     error(error) {
       postMessage(POST_MESSAGE_ERROR, error)
     },
@@ -68,6 +72,9 @@ export default function postOffice(window, requiredConfirmations) {
       requiredConfirmations
     )
     switch (update) {
+      case 'ready':
+        actions.ready()
+        break
       case 'locks':
         {
           actions.locks(cachedData.locks)
@@ -91,6 +98,7 @@ export default function postOffice(window, requiredConfirmations) {
         actions[update](cachedData[update])
         break
       case 'network':
+        if (cachedData.networkId === null) return
         actions.network(cachedData.networkId)
         break
       case 'walletModal':
