@@ -46,7 +46,7 @@
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run test && npm run lint",
     "build": "truffle compile --all",
     "zos": "zos",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
