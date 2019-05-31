@@ -73,7 +73,7 @@ contract MixinLockCore is
     external
     onlyOwner
   {
-    uint balance = _getBalance(address(this));
+    uint balance = getBalance(address(this));
     require(balance > 0, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(balance);
@@ -88,7 +88,7 @@ contract MixinLockCore is
     onlyOwner
   {
     require(_amount > 0, 'GREATER_THAN_ZERO');
-    uint balance = _getBalance(address(this));
+    uint balance = getBalance(address(this));
     require(balance >= _amount, 'NOT_ENOUGH_FUNDS');
     // Security: re-entrancy not a risk as this is the last line of an external function
     _withdraw(_amount);
