@@ -57,7 +57,7 @@
     "react-dom": "16.8.6",
     "react-redux": "7.0.2",
     "react-router": "^5.0.0",
-    "react-select": "2.4.4",
+    "react-select": "3.0.4",
     "react-test-renderer": "16.8.6",
     "react-testing-library": "6.1.2",
     "redux": "4.0.1",
