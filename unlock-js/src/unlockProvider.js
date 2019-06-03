@@ -1,11 +1,14 @@
+import { ethers } from 'ethers'
 import { getAccountFromPrivateKey } from './accounts'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
 export default class UnlockProvider {
-  constructor(fallbackProvider) {
-    this.fallbackProvider = fallbackProvider
+  constructor(readOnlyProviderUrl) {
+    this.fallbackProvider = new ethers.providers.JsonRpcProvider(
+      readOnlyProviderUrl
+    )
     this.ready = false
     this.wallet = null
   }
