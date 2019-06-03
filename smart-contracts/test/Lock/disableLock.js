@@ -98,12 +98,8 @@ contract('Lock / disableLock', accounts => {
       })
     })
 
-    it('Lock owner can still partialWithdraw', async () => {
-      await lock.partialWithdraw(1)
-    })
-
     it('Lock owner can still withdraw', async () => {
-      await lock.withdraw()
+      await lock.withdraw(0)
     })
 
     it('Lock owner can still expireKeyFor', async () => {

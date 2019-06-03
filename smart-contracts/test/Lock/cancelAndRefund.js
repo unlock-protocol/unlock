@@ -186,7 +186,7 @@ contract('Lock / cancelAndRefund', accounts => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw({
+      await lock.withdraw(0, {
         from: lockOwner,
       })
       await shouldFail(
