@@ -1,5 +1,16 @@
 import UnlockProvider from '../unlockProvider'
 
+const ethers = require.requireActual('ethers')
+
+function provider() {
+  return {
+    send: jest.fn((_, cb) => cb(null, 'a response')),
+    _ethersType: 'Provider',
+  }
+}
+
+ethers.providers.JsonRpcProvider = provider
+
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
   address: '88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290',
@@ -34,9 +45,8 @@ const rpc = method => ({
 describe('Unlock Provider', () => {
   let provider
   beforeEach(async () => {
-    const send = jest.fn((_, cb) => cb(null, 'a response'))
-    // TODO: Mock the fallback provider in a better way.
-    provider = new UnlockProvider({ send, _ethersType: 'Provider' })
+    const readOnlyProvider = 'http://localhost:8545'
+    provider = new UnlockProvider({ readOnlyProvider })
     await provider.connect({ key, password })
   })
 
