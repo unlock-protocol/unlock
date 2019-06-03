@@ -1,4 +1,6 @@
 import { ethers } from 'ethers'
+import sigUtil from 'eth-sig-util'
+import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
@@ -39,6 +41,14 @@ export default class UnlockProvider {
       return [this.wallet.address]
     }
     return []
+  }
+
+  async eth_signTypedData(params) {
+    // params is [ account, data ]
+    // we don't need account
+    const data = params[1]
+    const privateKey = toBuffer(this.wallet.privateKey)
+    return sigUtil.signTypedData(privateKey, data)
   }
 
   async send(method, params) {
