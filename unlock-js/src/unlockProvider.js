@@ -42,6 +42,13 @@ export default class UnlockProvider {
     }
   }
 
+  async eth_signTypedData(params) {
+    // params is [ account, data ]
+    // we don't need account
+    const data = params[1]
+    return this.wallet.signMessage(data)
+  }
+
   async send(method, params) {
     try {
       return this[method](method, params)
