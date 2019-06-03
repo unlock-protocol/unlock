@@ -42,7 +42,7 @@ describe('Form field validators', () => {
   })
 
   it('isAccount', () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     expect(
       validators.isAccount('0x12345678901234567890abcdef0123ABCDEF0123')
@@ -56,6 +56,7 @@ describe('Form field validators', () => {
     expect(
       validators.isAccount('0X12345678901234567890abcdef0123ABCDEF0123')
     ).toBeFalsy()
+    expect(validators.isAccount(null)).toBeTruthy()
   })
 
   describe('isValidPaywallConfig', () => {

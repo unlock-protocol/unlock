@@ -20,7 +20,7 @@ export const isPositiveNumber = val => {
 }
 
 export const isAccount = val => {
-  return val.match(ACCOUNT_REGEXP)
+  return val === null || val.match(ACCOUNT_REGEXP)
 }
 
 /**
