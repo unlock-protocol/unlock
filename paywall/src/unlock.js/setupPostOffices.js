@@ -20,24 +20,7 @@ import { showIframe, hideIframe } from './iframeManager'
 
 let loadCheckoutModal
 
-/**
- * set up the main window post office, relaying messages between the iframes
- *
- * @param {window} window the global context (window, global, self)
- * @param {iframe} dataIframe the data iframe element (created by document.createElement)
- * @param {iframe} CheckoutUIIframe the Checkout UI iframe element
- *                                  (created by document.createElement)
- */
-export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
-  const {
-    postMessage: dataPostOffice,
-    addHandler: addDataMessageHandler,
-  } = mainWindowPostOffice(window, dataIframe, process.env.PAYWALL_URL)
-  const {
-    postMessage: CheckoutUIPostOffice,
-    addHandler: addCheckoutMessageHandler,
-  } = mainWindowPostOffice(window, CheckoutUIIframe, process.env.PAYWALL_URL)
-
+export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
   if (!loadCheckoutModal) {
     loadCheckoutModal = () => {
       showIframe(window, CheckoutUIIframe)
@@ -86,6 +69,31 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
       'WARNING: unlockProtocol already defined, cannot re-define it'
     )
   }
+
+  return hideCheckoutModal
+}
+/**
+ * set up the main window post office, relaying messages between the iframes
+ *
+ * @param {window} window the global context (window, global, self)
+ * @param {iframe} dataIframe the data iframe element (created by document.createElement)
+ * @param {iframe} CheckoutUIIframe the Checkout UI iframe element
+ *                                  (created by document.createElement)
+ */
+export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
+  const {
+    postMessage: dataPostOffice,
+    addHandler: addDataMessageHandler,
+  } = mainWindowPostOffice(window, dataIframe, process.env.PAYWALL_URL)
+  const {
+    postMessage: CheckoutUIPostOffice,
+    addHandler: addCheckoutMessageHandler,
+  } = mainWindowPostOffice(window, CheckoutUIIframe, process.env.PAYWALL_URL)
+
+  const hideCheckoutModal = setupUnlockProtocolVariable(
+    window,
+    CheckoutUIIframe
+  )
 
   // send the configuration to the data iframe
   addDataMessageHandler(POST_MESSAGE_READY, (_, respond) => {
