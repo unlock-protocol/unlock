@@ -1,4 +1,4 @@
-pragma solidity 0.5.8;
+pragma solidity 0.5.9;
 
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
