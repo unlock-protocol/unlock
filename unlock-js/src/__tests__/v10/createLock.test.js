@@ -9,7 +9,7 @@ import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
 
 const { FAILED_TO_CREATE_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 let transaction
