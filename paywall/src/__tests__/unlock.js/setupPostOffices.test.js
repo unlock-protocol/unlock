@@ -108,12 +108,12 @@ describe('setupPostOffice', () => {
   })
 
   it('responds to POST_MESSAGE_READY by sending the config to both iframes', () => {
-    expect.assertions(5)
+    expect.assertions(8)
 
     sendMessage(fakeDataIframe, POST_MESSAGE_READY)
     sendMessage(fakeUIIframe, POST_MESSAGE_READY)
 
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(2)
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(5)
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       1,
       {
@@ -126,7 +126,31 @@ describe('setupPostOffice', () => {
       2,
       {
         type: POST_MESSAGE_SEND_UPDATES,
-        payload: undefined,
+        payload: 'network',
+      },
+      'http://paywall'
+    )
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      3,
+      {
+        type: POST_MESSAGE_SEND_UPDATES,
+        payload: 'account',
+      },
+      'http://paywall'
+    )
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      4,
+      {
+        type: POST_MESSAGE_SEND_UPDATES,
+        payload: 'balance',
+      },
+      'http://paywall'
+    )
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      5,
+      {
+        type: POST_MESSAGE_SEND_UPDATES,
+        payload: 'locks',
       },
       'http://paywall'
     )
