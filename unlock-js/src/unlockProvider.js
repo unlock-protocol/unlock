@@ -33,33 +33,21 @@ export default class UnlockProvider {
     return true
   }
 
-  async eth_accounts(respond) {
+  async eth_accounts() {
     // Must always return an array of addresses
     if (this.wallet) {
-      respond([this.wallet.address])
-    } else {
-      respond([])
+      return [this.wallet.address]
     }
+    return []
   }
 
-  send(args, cb) {
-    const { id, jsonrpc, method } = args
-    // Calling respond with some argument will call the callback with
-    // a "fake" JSON-RPC response constructed by the provider.
-    const respond = result => {
-      cb(null, {
-        id,
-        jsonrpc,
-        result,
-      })
-    }
-
-    try {
-      return this[method](respond)
-    } catch (err) {
+  async send(method, params) {
+    if (typeof this[method] === 'undefined') {
       // We haven't implemented this method, defer to the fallback provider.
       // TODO: Catch methods we don't want to dispatch and throw an error
-      return this.fallbackProvider.send(args, cb)
+      return this.fallbackProvider.send(method, params)
     }
+
+    return this[method](params)
   }
 }
