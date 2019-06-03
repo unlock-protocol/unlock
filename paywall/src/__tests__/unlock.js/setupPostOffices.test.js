@@ -13,6 +13,7 @@ import {
   POST_MESSAGE_ERROR,
   POST_MESSAGE_UPDATE_WALLET,
   POST_MESSAGE_READY_WEB3,
+  POST_MESSAGE_SEND_UPDATES,
 } from '../../paywall-builder/constants'
 
 describe('setupPostOffice', () => {
@@ -107,16 +108,25 @@ describe('setupPostOffice', () => {
   })
 
   it('responds to POST_MESSAGE_READY by sending the config to both iframes', () => {
-    expect.assertions(4)
+    expect.assertions(5)
 
     sendMessage(fakeDataIframe, POST_MESSAGE_READY)
     sendMessage(fakeUIIframe, POST_MESSAGE_READY)
 
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(1)
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(2)
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      1,
       {
         type: POST_MESSAGE_CONFIG,
         payload: fakeWindow.unlockProtocolConfig,
+      },
+      'http://paywall'
+    )
+    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+      2,
+      {
+        type: POST_MESSAGE_SEND_UPDATES,
+        payload: undefined,
       },
       'http://paywall'
     )
