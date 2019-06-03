@@ -12,6 +12,7 @@ import {
   POST_MESSAGE_ERROR,
   POST_MESSAGE_UPDATE_WALLET,
   POST_MESSAGE_DISMISS_CHECKOUT,
+  POST_MESSAGE_SEND_UPDATES,
 } from '../paywall-builder/constants'
 import dispatchEvent from './dispatchEvent'
 import web3Proxy from '../paywall-builder/web3Proxy'
@@ -97,6 +98,8 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   addCheckoutMessageHandler(POST_MESSAGE_READY, (_, respond) => {
     if (window.unlockProtocolConfig) {
       respond(POST_MESSAGE_CONFIG, window.unlockProtocolConfig)
+      // trigger a send of the current state
+      dataPostOffice(POST_MESSAGE_SEND_UPDATES)
     }
   })
 
