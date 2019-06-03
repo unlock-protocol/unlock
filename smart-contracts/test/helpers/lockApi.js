@@ -61,19 +61,6 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
-    async partialWithdraw(amount, from) {
-      const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(e => e.name === 'partialWithdraw'),
-        [amount]
-      )
-      return web3.eth.sendTransaction({
-        to: lockContract.address,
-        data: call,
-        from,
-        gas: walletService.gasAmountConstants().withdrawFromLock,
-      })
-    },
-
     async transferFrom(from, recipient, tokenId, transferFee, sender = from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'transferFrom'),
@@ -108,10 +95,10 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
-    async withdraw(from) {
+    async withdraw(amount, from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'withdraw'),
-        []
+        [amount]
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,
