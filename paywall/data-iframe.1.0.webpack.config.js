@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const dotenv = require('dotenv')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+const debug = process.env.DEBUG ? 1 : 0
 
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
@@ -43,6 +44,7 @@ module.exports = () => {
     plugins: [
       new webpack.DefinePlugin({
         'process.env.UNLOCK_ENV': "'" + unlockEnv + "'",
+        'process.env.DEBUG': debug,
         'process.env.PAYWALL_URL':
           "'" + requiredConfigVariables.paywallUrl + "'",
         'process.env.LOCKSMITH_URI':

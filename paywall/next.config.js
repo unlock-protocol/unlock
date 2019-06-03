@@ -23,6 +23,7 @@ const requiredConfigVariables = {
 
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
+  debugMode: process.env.DEBUG,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
