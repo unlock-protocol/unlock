@@ -43,9 +43,11 @@ export default function useListenForPostMessage({
   validator = false,
   defaultValue,
   getValue = (value, defaults) => value || defaults,
+  local = 'iframe',
+  remote = 'main window', // this is configurable because of web3ProxyProvider
 }) {
   const window = useWindow()
-  const { isInIframe, isServer } = useConfig()
+  const { isInIframe, isServer, debugMode } = useConfig()
   const parent = window && window.parent
   const [data, setData] = useState(defaultValue)
 
@@ -68,6 +70,15 @@ export default function useListenForPostMessage({
       // optional validator
       if (!validator || (validator && validator(event.data.payload))) {
         const newValue = getValue(event.data.payload, defaultValue)
+        if (debugMode) {
+          // eslint-disable-next-line no-console
+          console.log(
+            `[uLFPM] ${local} <-- ${remote}`,
+            type,
+            event.data.payload,
+            origin
+          )
+        }
         // this comparison is designed to avoid the need for deep equality check
         // If the configuration grows considerably, using some kind of traversing equality check
         // will make more sense
@@ -91,6 +102,9 @@ export default function useListenForPostMessage({
     type,
     validator,
     window,
+    local,
+    debugMode,
+    remote,
   ])
 
   return data
