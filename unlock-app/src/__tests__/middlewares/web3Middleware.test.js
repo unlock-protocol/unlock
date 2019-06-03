@@ -333,7 +333,11 @@ describe('Lock middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: SET_ERROR,
-          error: 'this was broken',
+          error: {
+            kind: 'Web3',
+            level: 'Diagnostic',
+            message: 'this was broken',
+          },
         })
       )
     })

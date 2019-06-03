@@ -8,6 +8,7 @@ import {
   POST_MESSAGE_UPDATE_NETWORK,
   POST_MESSAGE_UPDATE_WALLET,
   POST_MESSAGE_ERROR,
+  POST_MESSAGE_READY,
 } from '../paywall-builder/constants'
 import { getFormattedCacheValues } from './cacheHandler'
 
@@ -33,7 +34,7 @@ import { getFormattedCacheValues } from './cacheHandler'
  *                     "network" or "walletModal" to trigger a post of changed data to the main window
  */
 export default function postOffice(window, requiredConfirmations) {
-  const postMessage = iframePostOffice(window)
+  const { postMessage, addHandler } = iframePostOffice(window)
 
   const actions = {
     unlocked(unlockedLocks) {
@@ -57,48 +58,59 @@ export default function postOffice(window, requiredConfirmations) {
     walletModal() {
       postMessage(POST_MESSAGE_UPDATE_WALLET)
     },
+    ready() {
+      postMessage(POST_MESSAGE_READY)
+    },
     error(error) {
       postMessage(POST_MESSAGE_ERROR, error)
     },
   }
 
-  return async (update, content) => {
-    const cachedData = await getFormattedCacheValues(
-      window,
-      requiredConfirmations
-    )
-    switch (update) {
-      case 'locks':
-        {
-          actions.locks(cachedData.locks)
-          const unlockedLocks = Object.values(cachedData.locks)
-            .filter(lock =>
-              ['submitted', 'pending', 'valid', 'confirming'].includes(
-                lock.key.status
+  return {
+    blockChainUpdater: async (update, content) => {
+      const cachedData = await getFormattedCacheValues(
+        window,
+        requiredConfirmations
+      )
+      switch (update) {
+        case 'ready':
+          actions.ready()
+          break
+        case 'locks':
+          {
+            actions.locks(cachedData.locks)
+            const unlockedLocks = Object.values(cachedData.locks)
+              .filter(lock =>
+                ['submitted', 'pending', 'valid', 'confirming'].includes(
+                  lock.key.status
+                )
               )
-            )
-            .map(lock => lock.address)
+              .map(lock => lock.address)
 
-          if (unlockedLocks.length) {
-            actions.unlocked(unlockedLocks)
-          } else {
-            actions.locked()
+            if (unlockedLocks.length) {
+              actions.unlocked(unlockedLocks)
+            } else {
+              actions.locked()
+            }
           }
-        }
-        break
-      case 'account':
-      case 'balance':
-        actions[update](cachedData[update])
-        break
-      case 'network':
-        actions.network(cachedData.networkId)
-        break
-      case 'walletModal':
-        actions.walletModal()
-        break
-      case 'error':
-        actions.error(content.message ? content.message : content)
-        break
-    }
+          break
+        case 'account':
+        case 'balance':
+          actions[update](cachedData[update])
+          break
+        case 'network':
+          if (cachedData.networkId === null) return
+          actions.network(cachedData.networkId)
+          break
+        case 'walletModal':
+          actions.walletModal()
+          break
+        case 'error':
+          actions.error(content.message ? content.message : content)
+          break
+      }
+    },
+    addHandler,
+    postMessage,
   }
 }

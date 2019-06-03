@@ -4,18 +4,20 @@ import styled from 'styled-components'
 import { resetError } from '../../actions/error'
 import Buttons from './buttons/layout'
 import ErrorMessage from '../helpers/ErrorMessage'
-import { Error } from '../../unlockTypes' // eslint-disable-line no-unused-vars
+/* eslint-disable */
+import { UnlockError, WarningError, isWarningError } from '../../utils/Error'
+/* eslint-enable */
 
 interface Props {
-  errors: Error[]
-  close: (errorName: string) => any
+  errors: WarningError[]
+  close: (e: WarningError) => any
 }
 
 export const Errors = ({ errors, close }: Props) => {
   const content = errors.map(error => (
-    <ErrorWrapper key={error.name}>
-      <Message>{ErrorMessage(error.name)}</Message>
-      <Buttons.Close as="button" onClick={() => close(error.name)} size="16px">
+    <ErrorWrapper key={error.message}>
+      <Message>{ErrorMessage(error.message)}</Message>
+      <Buttons.Close as="button" onClick={() => close(error)} size="16px">
         X
       </Buttons.Close>
     </ErrorWrapper>
@@ -28,14 +30,20 @@ export const Errors = ({ errors, close }: Props) => {
 }
 
 interface ReduxState {
-  errors: Error[]
+  errors: UnlockError[]
 }
 
-export const mapStateToProps = ({ errors }: ReduxState) => ({ errors })
+export const mapStateToProps = ({ errors }: ReduxState) => {
+  const warnings = errors.filter(isWarningError)
+
+  return {
+    errors: warnings,
+  }
+}
 
 const mapDispatchToProps = (dispatch: (action: any) => any) => ({
-  close: (errorName: string) => {
-    dispatch(resetError(errorName))
+  close: (e: WarningError) => {
+    dispatch(resetError(e))
   },
 })
 

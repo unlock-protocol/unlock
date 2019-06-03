@@ -1,4 +1,4 @@
-pragma solidity 0.5.8;
+pragma solidity 0.5.9;
 
 import '../interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
@@ -63,7 +63,7 @@ contract MixinDisableAndDestroy is
     emit Destroy(address(this).balance, msg.sender);
 
     // this will send any ETH or ERC20 held by the lock to the owner
-    _transfer(msg.sender, _getBalance(address(this)));
+    _transfer(msg.sender, getBalance(address(this)));
     selfdestruct(msg.sender);
 
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary

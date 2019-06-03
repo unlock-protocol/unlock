@@ -1,5 +1,5 @@
 import utils from '../utils'
-import { UNLIMITED_KEYS_COUNT } from '../constants'
+import { UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
 
 /**
  * Refresh the lock's data.
@@ -19,6 +19,8 @@ export default async function(address) {
     },
     owner: x => x,
     totalSupply: parseInt,
+    tokenAddress: x => x,
+    publicLockVersion: parseInt,
   }
 
   // Let's load its balance
@@ -46,6 +48,14 @@ export default async function(address) {
   // we also assign it. This behavior will eventually be deprecated
   update.outstandingKeys = update.totalSupply
   delete update.totalSupply
+
+  // Using `currencyContractAddress` to be consistent with the createLock method
+  if (update.tokenAddress === ZERO) {
+    update.currencyContractAddress = null
+  } else {
+    update.currencyContractAddress = update.tokenAddress
+  }
+  delete update.tokenAddress
 
   // Once all lock attributes have been fetched
   this.emit('lock.updated', address, update)

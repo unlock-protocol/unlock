@@ -19,6 +19,7 @@ export default async function(address) {
     },
     owner: x => x,
     totalSupply: parseInt,
+    publicLockVersion: parseInt,
   }
 
   // Let's load its balance
