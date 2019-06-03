@@ -12,6 +12,7 @@ import {
   POST_MESSAGE_WALLET_INFO,
   POST_MESSAGE_ERROR,
   POST_MESSAGE_UPDATE_WALLET,
+  POST_MESSAGE_READY_WEB3,
 } from '../../paywall-builder/constants'
 
 describe('setupPostOffice', () => {
@@ -33,6 +34,11 @@ describe('setupPostOffice', () => {
   beforeEach(() => {
     process.env.PAYWALL_URL = 'http://paywall'
     fakeWindow = {
+      document: {
+        body: {
+          style: {},
+        },
+      },
       origin: 'http://fun.times',
       web3: {
         currentProvider: {
@@ -63,14 +69,26 @@ describe('setupPostOffice', () => {
         origin: 'http://paywall',
         postMessage: jest.fn(),
       },
+      className: 'unlock start',
     }
     setupPostOffices(fakeWindow, fakeDataIframe, fakeUIIframe)
   })
 
-  it('responds to POST_MESSAGE_READY by sending POST_MESSAGE_WALLET_INFO', () => {
+  it('should create the unlockProtocol object with "loadCheckoutModal" that shows the iframe', () => {
+    expect.assertions(3)
+
+    expect(fakeWindow.unlockProtocol).not.toBeNull()
+    expect(fakeUIIframe.className).toBe('unlock start')
+
+    fakeWindow.unlockProtocol.loadCheckoutModal()
+
+    expect(fakeUIIframe.className).toBe('unlock start show')
+  })
+
+  it('responds to POST_MESSAGE_READY_WEB3 by sending POST_MESSAGE_WALLET_INFO', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_READY, {
+    sendMessage(fakeDataIframe, POST_MESSAGE_READY_WEB3, {
       lock: { address: 'lock' },
     })
 
@@ -137,6 +155,16 @@ describe('setupPostOffice', () => {
         detail: 'unlocked',
       })
     )
+  })
+
+  it('responds to POST_MESSAGE_UNLOCKED by hiding the checkout UI', () => {
+    expect.assertions(1)
+
+    fakeUIIframe.className = 'unlock start show'
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED)
+
+    expect(fakeUIIframe.className).toBe('unlock start')
   })
 
   it('responds to POST_MESSAGE_LOCKED by sending locked to the UI iframe', () => {

@@ -1,7 +1,50 @@
 import axios from 'axios'
 import { StorageService, success, failure } from '../../services/storageService'
+import UnlockUser from '../../structured_data/unlockUser'
+import UnlockLock from '../../structured_data/unlockLock'
 
 jest.mock('axios')
+
+const emailAddress = 'stick@stick.ly'
+const publicKey = '0x88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290'
+const passwordEncryptedPrivateKey = {
+  id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
+  address: '88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290',
+  Crypto: {
+    kdfparams: {
+      dklen: 32,
+      p: 1,
+      salt: 'bbfa53547e3e3bfcc9786a2cbef8504a5031d82734ecef02153e29daeed658fd',
+      r: 8,
+      n: 262144,
+    },
+    kdf: 'scrypt',
+    ciphertext:
+      '10adcc8bcaf49474c6710460e0dc974331f71ee4c7baa7314b4a23d25fd6c406',
+    mac: '1cf53b5ae8d75f8c037b453e7c3c61b010225d916768a6b145adf5cf9cb3a703',
+    cipher: 'aes-128-ctr',
+    cipherparams: {
+      iv: '1dcdf13e49cea706994ed38804f6d171',
+    },
+  },
+  version: 3,
+}
+
+const lockName = 'A Paywall Concerning Human Understanding'
+const lockOwner = publicKey
+const lockAddress = '0xA875DB01d7113741C2E2037e9E12eCe5bd8A7363'
+
+const lock = UnlockLock.build({
+  name: lockName,
+  owner: lockOwner,
+  address: lockAddress,
+})
+
+const user = UnlockUser.build({
+  emailAddress,
+  publicKey,
+  passwordEncryptedPrivateKey,
+})
 
 describe('StorageService', () => {
   const serviceHost = 'http://127.0.0.1:8080'
@@ -73,24 +116,14 @@ describe('StorageService', () => {
       it('emits a success', done => {
         expect.assertions(2)
         axios.post.mockReturnValue()
-        storageService.storeLockDetails({
-          name: 'lock_name',
-          address: 'lock_address',
-        })
+        storageService.storeLockDetails(lock)
 
         storageService.on(success.storeLockDetails, address => {
-          expect(address).toBe('lock_address')
+          expect(address).toEqual(lockAddress)
           done()
         })
 
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/lock`,
-          {
-            name: 'lock_name',
-            address: 'lock_address',
-          },
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
 
@@ -99,25 +132,15 @@ describe('StorageService', () => {
         expect.assertions(3)
         axios.post.mockRejectedValue('An Error')
 
-        storageService.storeLockDetails({
-          name: 'lock_name',
-          address: 'existing_address',
-        })
+        storageService.storeLockDetails(lock)
 
         storageService.on(failure.storeLockDetails, ({ address, error }) => {
-          expect(address).toBe('existing_address')
+          expect(address).toBe(lockAddress)
           expect(error).toBe('An Error')
           done()
         })
 
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/lock`,
-          {
-            name: 'lock_name',
-            address: 'existing_address',
-          },
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
   })
@@ -127,22 +150,16 @@ describe('StorageService', () => {
       it('returns a successful promise', done => {
         expect.assertions(2)
         axios.put.mockReturnValue()
-        storageService.updateLockDetails('lock_address', {
-          name: 'new_lock_name',
-          address: 'lock_address',
-        })
+        storageService.updateLockDetails(lockAddress, lock)
 
         storageService.on(success.updateLockDetails, address => {
-          expect(address).toBe('lock_address')
+          expect(address).toBe(lockAddress)
           done()
         })
 
         expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/lock_address`,
-          {
-            name: 'new_lock_name',
-            address: 'lock_address',
-          },
+          `${serviceHost}/lock/${lockAddress}`,
+          lock,
           {}
         )
       })
@@ -153,17 +170,17 @@ describe('StorageService', () => {
         expect.assertions(3)
         axios.put.mockRejectedValue('An Error')
 
-        storageService.updateLockDetails('lock_address')
+        storageService.updateLockDetails(lockAddress, lock)
 
         storageService.on(failure.updateLockDetails, ({ address, error }) => {
-          expect(address).toBe('lock_address')
+          expect(address).toBe(lockAddress)
           expect(error).toBe('An Error')
           done()
         })
 
         expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/lock_address`,
-          undefined,
+          `${serviceHost}/lock/${lockAddress}`,
+          lock,
           {}
         )
       })
@@ -288,15 +305,10 @@ describe('StorageService', () => {
     describe('When a user can be created', () => {
       it('emits a success', done => {
         expect.assertions(2)
-        const user = {
-          emailAddress: 'hello@unlock-protocol.com',
-          publicKey: 'foo',
-          privateKey: 'bar',
-        }
         axios.post.mockReturnValue({})
 
-        storageService.on(success.createUser, publicKey => {
-          expect(publicKey).toBe(user.publicKey)
+        storageService.on(success.createUser, returnedPublicKey => {
+          expect(returnedPublicKey).toBe(publicKey)
           done()
         })
         storageService.createUser(user)
@@ -312,11 +324,6 @@ describe('StorageService', () => {
     describe('When a user cannot be created', () => {
       it('emits a failure', done => {
         expect.assertions(2)
-        const user = {
-          emailAddress: 'hello@unlock-protocol.com',
-          publicKey: 'foo',
-          privateKey: 'bar',
-        }
         axios.post.mockRejectedValue('Hark! An Error')
         storageService.createUser(user)
         storageService.on(failure.createUser, error => {
@@ -338,12 +345,6 @@ describe('StorageService', () => {
       it('emits a success', done => {
         expect.assertions(2)
         axios.put.mockReturnValue()
-        const user = {
-          emailAddress: 'goodbye@unlock-protocol.com',
-          publicKey: 'foo',
-          privateKey: 'bar',
-        }
-
         storageService.updateUser('hello@unlock-protocol.com', user, null)
 
         storageService.on(success.updateUser, lastEmail => {
@@ -365,12 +366,6 @@ describe('StorageService', () => {
       it('emits a failure', done => {
         expect.assertions(3)
         axios.put.mockRejectedValue('Egads! An Error')
-        const user = {
-          emailAddress: 'goodbye@unlock-protocol.com',
-          publicKey: 'foo',
-          privateKey: 'bar',
-        }
-
         storageService.updateUser('hello@unlock-protocol.com', user, null)
 
         storageService.on(failure.updateUser, ({ emailAddress, error }) => {

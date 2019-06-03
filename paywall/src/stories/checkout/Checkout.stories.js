@@ -7,7 +7,7 @@ import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 
 const purchaseKey = () => {}
-const clickOnConfirmedLock = () => {}
+const hideCheckout = () => {}
 
 const ConfigProvider = ConfigContext.Provider
 
@@ -35,6 +35,7 @@ const paywallConfig = {
 
 const account = {
   address: '0x123',
+  balance: '789',
 }
 
 const store = createUnlockStore()
@@ -56,6 +57,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x123',
         },
       },
       '0x456': {
@@ -67,6 +69,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x456',
         },
       },
       '0x789': {
@@ -78,6 +81,7 @@ storiesOf('Checkout', module)
           status: 'none',
           transactions: [],
           expiration: 0,
+          lock: '0x789',
         },
       },
     }
@@ -88,7 +92,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -113,7 +117,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -160,7 +164,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -207,7 +211,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
@@ -258,11 +262,11 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })
-  .add('Checkout with 3 locks and one confirming key purchase', () => {
+  .add('Checkout with 3 locks and one valid key purchase', () => {
     const locks = {
       '0x123': {
         name: 'Weekly',
@@ -305,7 +309,7 @@ storiesOf('Checkout', module)
         config={paywallConfig}
         account={account}
         purchase={purchaseKey}
-        clickOnConfirmedLock={clickOnConfirmedLock}
+        hideCheckout={hideCheckout}
       />
     )
   })

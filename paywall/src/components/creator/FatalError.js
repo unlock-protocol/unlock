@@ -40,6 +40,7 @@ const Container = styled.section`
   row-gap: 16px;
   column-gap: 32px;
   border: solid 1px var(--lightgrey);
+  background-color: var(--lightgrey);
   grid-template-columns: 72px;
   grid-auto-flow: column;
   border-radius: 4px;

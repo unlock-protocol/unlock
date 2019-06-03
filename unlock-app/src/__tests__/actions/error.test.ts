@@ -3,19 +3,20 @@ import {
   SET_ERROR,
   RESET_ERROR,
   resetError,
+  CLEAR_ALL_ERRORS,
+  clearAllErrors,
 } from '../../actions/error'
 
-const MY_ERROR = 'MY ERROR'
+import Error from '../../utils/Error'
+
+const error = Error.Storage.Fatal('Disk too fragmented')
 
 describe('error actions', () => {
   it('should create an action to set the error', () => {
     expect.assertions(1)
-    const error = MY_ERROR
-    const data = {}
     const expectedAction = {
       type: SET_ERROR,
       error,
-      data,
     }
 
     expect(setError(error)).toEqual(expectedAction)
@@ -23,19 +24,15 @@ describe('error actions', () => {
 
   it('should create an action to reset all errors', () => {
     expect.assertions(1)
-    const error = null
     const expectedAction = {
-      type: SET_ERROR,
-      error,
-      data: {},
+      type: CLEAR_ALL_ERRORS,
     }
 
-    expect(setError(error)).toEqual(expectedAction)
+    expect(clearAllErrors()).toEqual(expectedAction)
   })
 
   it('should create an action to reset a single error', () => {
     expect.assertions(1)
-    const error = MY_ERROR
     const expectedAction = {
       type: RESET_ERROR,
       error,

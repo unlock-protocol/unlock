@@ -1,8 +1,8 @@
 import { enable } from './config'
 import { mainWindowPostOffice, setHandler } from '../utils/postOffice'
 import {
-  POST_MESSAGE_READY,
   POST_MESSAGE_WEB3,
+  POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
 } from './constants'
 
@@ -59,7 +59,7 @@ export default function web3Proxy(window, iframe, origin) {
   // initialize, we do this once the iframe is ready to receive information on the wallet
   // we need to tell the iframe if the wallet is metamask
   // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
-  setHandler(POST_MESSAGE_READY, async (_, respond) => {
+  setHandler(POST_MESSAGE_READY_WEB3, async (_, respond) => {
     const isMetamask = !!(
       window.web3 &&
       window.web3.currentProvider &&
