@@ -10,7 +10,7 @@ import v01 from '../v01'
 import v02 from '../v02'
 
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 // This unlock address smart contract is fake
 let unlockAddress = '0x885ef47c3439ade0cb9b33a4d3c534c99964db93'

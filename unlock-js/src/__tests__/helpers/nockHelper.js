@@ -1,18 +1,24 @@
 /* eslint no-console: 0 */
 import nock from 'nock'
 
+// In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
+
 export class NockHelper {
-  constructor(endpoint, debug = false) {
+  constructor(endpoint, debug = false, record = false) {
     this.nockScope = nock(endpoint, { encodedQueryParams: true })
+
+    this.recording = record
+    if (record) {
+      nock.recorder.rec({
+        output_objects: true,
+      })
+    }
 
     this.anyRequestSetUp = false
     this.debug = debug
     // ethers hard-codes this value, see https://github.com/ethers-io/ethers.js/issues/489
     this._rpcRequestId = 42
     this._noMatches = []
-
-    // In order to monitor traffic without intercepting it (so that mocks can be built). uncomment the line below
-    // nock.recorder.rec()
 
     nock.emitter.on('no match', (clientRequestObject, options, body) => {
       this._noMatches.push(body)
@@ -47,8 +53,10 @@ export class NockHelper {
 
   cleanAll() {
     nock.cleanAll()
-    nock.restore()
-    nock.activate()
+    if (!this.recording) {
+      nock.restore()
+      nock.activate()
+    }
     this._noMatches = []
   }
 

@@ -7,7 +7,7 @@ import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
 const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 let transaction
