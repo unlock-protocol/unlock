@@ -4,7 +4,7 @@ const ethers = require.requireActual('ethers')
 
 function provider() {
   return {
-    send: jest.fn((_, cb) => cb(null, 'a response')),
+    send: jest.fn(() => 'a response'),
     _ethersType: 'Provider',
   }
 }
@@ -36,12 +36,6 @@ const key = {
 
 const password = 'foo'
 
-const rpc = method => ({
-  id: 1, // except for `method` these are just dummy values of no import
-  jsonrpc: 3,
-  method,
-})
-
 describe('Unlock Provider', () => {
   let provider
   beforeEach(async () => {
@@ -50,22 +44,16 @@ describe('Unlock Provider', () => {
     await provider.connect({ key, password })
   })
 
-  it('should respond to eth_account with an array containing only `this.wallet.address` after being initialized', done => {
+  it('should respond to eth_account with an array containing only `this.wallet.address` after being initialized', async () => {
     expect.assertions(2)
-    provider.send(rpc('eth_accounts'), (_, data) => {
-      expect(data.result).toHaveLength(1)
-      expect(data.result[0]).toEqual(
-        '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
-      )
-      done()
-    })
+    const accounts = await provider.send('eth_accounts')
+    expect(accounts).toHaveLength(1)
+    expect(accounts[0]).toEqual('0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290')
   })
 
-  it('should call the fallback provider for any method it does not implement', done => {
+  it('should call the fallback provider for any method it does not implement', async () => {
     expect.assertions(1)
-    provider.send(rpc('not_a_real_method'), () => {
-      expect(provider.fallbackProvider.send).toHaveBeenCalled()
-      done()
-    })
+    await provider.send('not_a_real_method')
+    expect(provider.fallbackProvider.send).toHaveBeenCalled()
   })
 })
