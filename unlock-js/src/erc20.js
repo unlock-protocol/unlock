@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import utils from './utils'
 
-// This files provides ways to interact with an ERC20 contract
+// This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
   erc20ContractAddress,
   lockContractAddress,
