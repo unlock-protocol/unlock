@@ -1,20 +1,12 @@
-import { makeIframe, addIframeToDocument } from './iframeManager'
-import setupPostOffices from './setupPostOffices'
+import startup from './startup'
 import '../paywall-builder/iframe.css'
 
-window.onload = () => {
-  const origin = '?origin=' + encodeURIComponent(window.origin)
-
-  const dataIframe = makeIframe(
-    window,
-    process.env.PAYWALL_URL + '/static/dataIframe.html' + origin
-  )
-  addIframeToDocument(window, dataIframe)
-  const checkoutIframe = makeIframe(
-    window,
-    process.env.PAYWALL_URL + '/checkout' + origin
-  )
-  addIframeToDocument(window, checkoutIframe)
-
-  setupPostOffices(window, dataIframe, checkoutIframe)
+if (document.readyState !== 'loading') {
+  // in most cases, we will start up after the document is interactive
+  // so listening for the DOMContentLoaded or load events is superfluous
+  startup(window)
+} else {
+  // if we reach here, the page is sitll loading
+  window.addEventListener('DOMContentLoaded', () => startup(window))
+  window.addEventListener('load', () => startup(window))
 }

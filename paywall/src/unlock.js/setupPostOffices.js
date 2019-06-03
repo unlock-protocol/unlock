@@ -121,6 +121,20 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   // relay the unlocked event both to the main window
   // and to the checkout UI
   addDataMessageHandler(POST_MESSAGE_UNLOCKED, locks => {
+    dispatchEvent(window, 'unlocked')
+    try {
+      // this is a fast cache. The value will only be used
+      // to prevent a flash of ads on startup. If a cheeky
+      // user attempts to prevent display of ads by setting
+      // the localStorage cache, it will only work for a
+      // few milliseconds
+      window.localStorage.setItem(
+        '__unlockProtocol.locked',
+        JSON.stringify(false)
+      )
+    } catch (e) {
+      // ignore
+    }
     CheckoutUIPostOffice(POST_MESSAGE_UNLOCKED, locks)
     if (
       locks.filter(address => {
@@ -133,7 +147,6 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
     ) {
       hideCheckoutModal()
     }
-    dispatchEvent(window, 'unlocked')
   })
 
   // if the user chooses to close the checkout modal, we hide the iframe
@@ -144,8 +157,17 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   // relay the locked event both to the main window
   // and to the checkout UI
   addDataMessageHandler(POST_MESSAGE_LOCKED, () => {
-    CheckoutUIPostOffice(POST_MESSAGE_LOCKED)
     dispatchEvent(window, 'locked')
+    try {
+      // reset the cache to locked for the next page view
+      window.localStorage.setItem(
+        '__unlockProtocol.locked',
+        JSON.stringify(true)
+      )
+    } catch (e) {
+      // ignore
+    }
+    CheckoutUIPostOffice(POST_MESSAGE_LOCKED)
   })
 
   // relay error messages to the checkout UI

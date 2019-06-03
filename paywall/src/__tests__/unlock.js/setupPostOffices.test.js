@@ -56,6 +56,19 @@ describe('setupPostOffice', () => {
         fakeWindow.handlers[type] = fakeWindow.handlers[type] || []
         fakeWindow.handlers[type].push(handler)
       },
+      storage: {},
+      localStorage: {
+        getItem: jest.fn(key => fakeWindow.storage[key]),
+        setItem: jest.fn((key, value) => {
+          if (typeof value !== 'string') {
+            throw new Error('localStorage only supports strings')
+          }
+          fakeWindow.storage[key] = value
+        }),
+        removeItem: jest.fn(key => {
+          delete fakeWindow.storage[key]
+        }),
+      },
     }
     fakeDataIframe = {
       contentWindow: {
@@ -192,6 +205,16 @@ describe('setupPostOffice', () => {
     )
   })
 
+  it('responds to POST_MESSAGE_UNLOCKED by storing in localStorage for quick recovery on next visit', () => {
+    expect.assertions(1)
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+
+    expect(fakeWindow.storage).toEqual({
+      '__unlockProtocol.locked': 'false',
+    })
+  })
+
   it('responds to POST_MESSAGE_UNLOCKED by not hiding the checkout UI if the key is not confirmed', () => {
     expect.assertions(1)
 
@@ -244,6 +267,16 @@ describe('setupPostOffice', () => {
         detail: 'locked',
       })
     )
+  })
+
+  it('responds to POST_MESSAGE_LOCKED by storing in localStorage for quick recovery on next visit', () => {
+    expect.assertions(1)
+
+    sendMessage(fakeDataIframe, POST_MESSAGE_LOCKED, ['lock'])
+
+    expect(fakeWindow.storage).toEqual({
+      '__unlockProtocol.locked': 'true',
+    })
   })
 
   it('responds to POST_MESSAGE_ERROR by sending error messages to the UI iframe', () => {
