@@ -12,7 +12,7 @@ const host = '127.0.0.1'
 const port = 8545
 
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 const gasPrice = `0x${(8000000).toString(16)}`
 
 describe('contract deployer', () => {
