@@ -99,7 +99,10 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
     if (window.unlockProtocolConfig) {
       respond(POST_MESSAGE_CONFIG, window.unlockProtocolConfig)
       // trigger a send of the current state
-      dataPostOffice(POST_MESSAGE_SEND_UPDATES)
+      dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'network')
+      dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'account')
+      dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'balance')
+      dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'locks')
     }
   })
 
