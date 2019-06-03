@@ -1,7 +1,12 @@
 # Changes
 
+## 0.2.1
+
+- getLock now returns the erc20 balance for erc20 locks
+
 ## 0.2.0
-Introducing unlock-provider to enable use of user accounts
+
+- Introducing unlock-provider to enable use of user accounts
 
 ## 0.1.5
 
