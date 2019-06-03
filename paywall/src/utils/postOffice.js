@@ -16,7 +16,8 @@
  * @param {string} targetOrigin the origin of the target (in CORS settings
  *                              this cannot be retrieved from the target)
  */
-export function setupPostOffice(window, target, targetOrigin) {
+export function setupPostOffice(window, target, targetOrigin, local, remote) {
+  const debug = process.env.DEBUG
   if (!targetOrigin || !target) {
     throw new Error(
       'cannot safely postMessage without knowing the target origin'
@@ -34,9 +35,27 @@ export function setupPostOffice(window, target, targetOrigin) {
     const listeners = handlers[event.data.type]
     if (listeners && listeners.size) {
       listeners.forEach(listener => {
+        if (debug) {
+          // eslint-disable-next-line no-console
+          console.log(
+            `[pO] ${local} <-- ${remote}`,
+            event.data.type,
+            event.data.payload,
+            targetOrigin
+          )
+        }
         listener(event.data.payload, (type, response) => {
           if (typeof type !== 'string') {
             throw new Error('internal error: type must be a string')
+          }
+          if (debug) {
+            // eslint-disable-next-line no-console
+            console.log(
+              `[pO respond] ${local} --> ${remote}`,
+              type,
+              response,
+              targetOrigin
+            )
           }
           target.postMessage({ type, payload: response }, targetOrigin)
         })
@@ -51,6 +70,10 @@ export function setupPostOffice(window, target, targetOrigin) {
       handlers[type].set(listener, listener)
     },
     postMessage: (type, payload) => {
+      if (debug) {
+        // eslint-disable-next-line no-console
+        console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
+      }
       target.postMessage({ type, payload }, targetOrigin)
     },
   }
@@ -65,10 +88,14 @@ export function setupPostOffice(window, target, targetOrigin) {
  *
  * @param {window} the iframe's window object
  */
-export function iframePostOffice(window) {
+export function iframePostOffice(
+  window,
+  local = 'iframe',
+  remote = 'main window'
+) {
   const url = new URL(window.location.href)
   const origin = url.searchParams.get('origin')
-  return setupPostOffice(window, window.parent, origin)
+  return setupPostOffice(window, window.parent, origin, local, remote)
 }
 
 /**
@@ -78,6 +105,18 @@ export function iframePostOffice(window) {
  * @param {iframe} iframe the iframe tag (created with document.createElement())
  * @param {string} iframeOrigin the origin of the created iframe
  */
-export function mainWindowPostOffice(window, iframe, iframeOrigin) {
-  return setupPostOffice(window, iframe.contentWindow, iframeOrigin)
+export function mainWindowPostOffice(
+  window,
+  iframe,
+  iframeOrigin,
+  local = 'main window',
+  remote = 'iframe'
+) {
+  return setupPostOffice(
+    window,
+    iframe.contentWindow,
+    iframeOrigin,
+    local,
+    remote
+  )
 }
