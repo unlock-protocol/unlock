@@ -176,20 +176,27 @@ contract('reports / gas', accounts => {
       locks['SECOND'].renounceOwnership({ from: accounts[2] })
     )
 
+    const setGlobalBaseTokenURI = await getGasFor(
+      unlock.setGlobalBaseTokenURI(
+        'https://locksmith.unlock-protocol.com/api/key/'
+      )
+    )
+    const setGlobalTokenSymbol = await getGasFor(
+      unlock.setGlobalTokenSymbol('KEY')
+    )
+
     // eslint-disable-next-line no-console
     console.log(`Gas Usage (slightly more gas may be required than what you see below)
   Key owner functions
     approve: ${approve.toFormat()}
     cancelAndRefund: ${cancelAndRefundEth.toFormat()} ETH / ${cancelAndRefundErc20.toFormat()} ERC20
-    expireKeyFor: ${expireKeyFor.toFormat()}
     purchaseFor: ${purchaseForEth.toFormat()} ETH / ${purchaseForErc20.toFormat()} ERC20
     purchaseForFrom: ${purchaseForFromEth.toFormat()} ETH / ${purchaseForFromErc20.toFormat()} ERC20
     safeTransferFrom: ${safeTransferFromEth.toFormat()} ETH / ${safeTransferFromErc20.toFormat()} ERC20
     setApprovalForAll: ${setApprovalForAll.toFormat()}
     transferFrom: ${transferFromEth.toFormat()} ETH / ${transferFromErc20.toFormat()} ERC20
-    updateKeyPrice: ${updateKeyPrice.toFormat()}
   Lock owner functions
-    createLock: ${createLock.toFormat()}
+    expireKeyFor: ${expireKeyFor.toFormat()}
     destroyLock: ${destroyLockEth.toFormat()} ETH / ${destroyLockErc20.toFormat()} ERC20
     disableLock: ${disableLock.toFormat()}
     grantKey: ${grantKey.toFormat()}
@@ -198,9 +205,14 @@ contract('reports / gas', accounts => {
     renounceOwnership: ${renounceOwnership.toFormat()}
     transferOwnership: ${transferOwnership.toFormat()}
     updateLockName: ${updateLockName.toFormat()}
+    updateKeyPrice: ${updateKeyPrice.toFormat()}
     updateRefundPenalty: ${updateRefundPenalty.toFormat()}
     updateTransferFee: ${updateTransferFee.toFormat()}
-    withdraw: ${withdrawEth.toFormat()} ETH / ${withdrawErc20.toFormat()} ERC20`)
+    withdraw: ${withdrawEth.toFormat()} ETH / ${withdrawErc20.toFormat()} ERC20
+  Unlock functions
+    createLock: ${createLock.toFormat()}
+    setGlobalTokenSymbol: ${setGlobalTokenSymbol.toFormat()}
+    setGlobalBaseURI: ${setGlobalBaseTokenURI.toFormat()}`)
   })
 })
 
