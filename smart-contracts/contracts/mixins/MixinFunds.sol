@@ -27,6 +27,21 @@ contract MixinFunds
   }
 
   /**
+   * Gets the current balance of the account provided.
+   */
+  function getBalance(
+    address _account
+  ) public view
+    returns (uint)
+  {
+    if(tokenAddress == address(0)) {
+      return _account.balance;
+    } else {
+      return IERC20(tokenAddress).balanceOf(_account);
+    }
+  }
+
+  /**
    * Ensures that the msg.sender has paid at least the price stated.
    *
    * With ETH, this means the function originally called was `payable` and the
@@ -77,21 +92,6 @@ contract MixinFunds
         // that a transfer occurred.
         require(token.balanceOf(_to) > balanceBefore, 'TRANSFER_FAILED');
       }
-    }
-  }
-
-  /**
-   * Gets the current balance of the account provided.
-   */
-  function _getBalance(
-    address _account
-  ) internal view
-    returns (uint)
-  {
-    if(tokenAddress == address(0)) {
-      return _account.balance;
-    } else {
-      return IERC20(tokenAddress).balanceOf(_account);
     }
   }
 }
