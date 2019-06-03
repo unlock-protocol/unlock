@@ -103,7 +103,7 @@ contract MixinLockCore is
     else
     {
       amount = _amount;
-    uint balance = getBalance(address(this));
+    }
 
     emit Withdrawal(msg.sender, beneficiary, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
