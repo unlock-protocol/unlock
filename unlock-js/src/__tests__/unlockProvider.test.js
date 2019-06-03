@@ -1,3 +1,4 @@
+import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
 
 const ethers = require.requireActual('ethers')
@@ -33,8 +34,37 @@ const key = {
   },
   version: 3,
 }
-
+const publicKey = '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
 const password = 'foo'
+
+const userData = {
+  types: {
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+      { name: 'salt', type: 'bytes32' },
+    ],
+    User: [
+      { name: 'emailAddress', type: 'string' },
+      { name: 'publicKey', type: 'address' },
+      { name: 'passwordEncryptedPrivateKey', type: 'string' },
+    ],
+  },
+  domain: {
+    name: 'Unlock',
+    version: '1',
+  },
+  primaryType: 'User',
+  message: {
+    user: {
+      emailAddress: 'geoff@bitconnect.gov',
+      publicKey: publicKey,
+      passwordEncryptedPrivateKey: key,
+    },
+  },
+}
 
 describe('Unlock Provider', () => {
   let provider
@@ -44,11 +74,25 @@ describe('Unlock Provider', () => {
     await provider.connect({ key, password })
   })
 
-  it('should respond to eth_account with an array containing only `this.wallet.address` after being initialized', async () => {
-    expect.assertions(2)
-    const accounts = await provider.send('eth_accounts')
-    expect(accounts).toHaveLength(1)
-    expect(accounts[0]).toEqual('0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290')
+  describe('implemented JSON-RPC calls', () => {
+    it('should respond to eth_accounts with an array containing only `this.wallet.address` after being initialized', async () => {
+      expect.assertions(2)
+      const accounts = await provider.send('eth_accounts')
+      expect(accounts).toHaveLength(1)
+      expect(accounts[0]).toEqual(publicKey)
+    })
+
+    it('should respond to eth_signTypedData with a valid signature', async () => {
+      expect.assertions(1)
+      const sig = await provider.send('eth_signTypedData', [
+        'account',
+        { data: userData },
+      ])
+      // sigutil seems to downcase things
+      expect(sigUtil.recoverTypedSignature({ data: userData, sig })).toEqual(
+        publicKey.toLowerCase()
+      )
+    })
   })
 
   it('should call the fallback provider for any method it does not implement', async () => {
