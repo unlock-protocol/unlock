@@ -31,7 +31,7 @@ export const Checkout = ({
       <Header>
         <Title>
           {config.icon && <Logo src={config.icon} />}
-          Unlocked
+          <UnlockedText>Unlocked</UnlockedText>
           <CloseButton
             backgroundColor="var(--lightgrey)"
             fillColor="var(--grey)"
@@ -72,11 +72,16 @@ const CloseButton = styled(Close)`
 `
 
 const Wrapper = styled.section`
-  max-width: 1000px;
+  max-width: 800px;
   padding: 10px 40px;
   display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
+  border-radius: 4px;
+`
+
+const UnlockedText = styled.span`
+  padding-left: 10px;
 `
 
 const Header = styled.header`
