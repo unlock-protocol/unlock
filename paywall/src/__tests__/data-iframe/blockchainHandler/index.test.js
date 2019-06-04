@@ -4,7 +4,6 @@ import {
   setupWeb3Service,
   listenForAccountNetworkChanges,
   retrieveChainData,
-  getSetConfigCallback,
 } from '../../../data-iframe/blockchainHandler'
 import {
   pollForAccountChange,
@@ -116,47 +115,6 @@ describe('blockchain handler index', () => {
         })),
       }
       pollForAccountChange.mockReset()
-    })
-
-    // this calls retrieveChainData, so we will test it
-    // as a sub-category to take advantage of the mocking
-    describe('getSetConfigCallback', () => {
-      it('returns a callback', async () => {
-        expect.assertions(1)
-
-        expect(
-          getSetConfigCallback({
-            web3Service: fakeWeb3Service,
-            walletService: fakeWalletService,
-            window: fakeWindow,
-            locksmithHost: 'http://locksmith',
-            onChange,
-            requiredConfirmations: 1,
-          })
-        ).toBeInstanceOf(Function)
-      })
-
-      it('callback retrieves chain data', async () => {
-        expect.assertions(3)
-
-        await getSetConfigCallback({
-          web3Service: fakeWeb3Service,
-          walletService: fakeWalletService,
-          window: fakeWindow,
-          locksmithHost: 'http://locksmith',
-          onChange,
-          requiredConfirmations: 1,
-        })({
-          locks: {
-            '0x123': { name: 'hi' },
-            '0x456': { name: 'bye' },
-          },
-        })
-
-        expect(fakeWeb3Service.getLock).toHaveBeenCalledTimes(2)
-        expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(1, '0x123')
-        expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(2, '0x456')
-      })
     })
 
     it('calls getLocks', async () => {
