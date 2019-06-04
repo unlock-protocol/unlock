@@ -57,6 +57,9 @@ export default async function connectToBlockchain({
     readOnlyProvider,
     blockTime,
     requiredConfirmations,
+    window,
+    onChange,
+    locksmithHost,
   })
 
   // sets up key purchase as available

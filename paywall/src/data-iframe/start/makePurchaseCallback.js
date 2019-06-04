@@ -15,6 +15,7 @@ const makePurchaseCallback = ({
   requiredConfirmations,
   update,
   window,
+  locksmithHost,
 }) =>
   async function purchase(lockAddress /*, extraTip */) {
     // note that the dynamic import is what makes code splitting
@@ -52,6 +53,8 @@ const makePurchaseCallback = ({
           requiredConfirmations,
           update,
           walletAction: () => update({ walletModal: true }),
+          window,
+          locksmithHost,
         }),
       ])
     } catch (error) {
