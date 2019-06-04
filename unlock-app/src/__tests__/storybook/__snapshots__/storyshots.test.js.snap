@@ -48041,19 +48041,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-eHgmQL ethFFU"
+        class="sc-jWBwVP jxrhEF"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-cMljjf eWiKRa"
+          class="sc-jDwBTQ ewBJjx"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-cMljjf bnsXNv"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48061,13 +48061,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cMljjf eWiKRa"
+          class="sc-jDwBTQ ewBJjx"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-cMljjf bnsXNv"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48075,18 +48075,18 @@ Object {
         />
         <br />
         <input
-          class="sc-brqgnP kRdmxU"
+          class="sc-jAaTju Aanxf"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-cvbbAY dbdRQm"
+        class="sc-brqgnP kLeLPN"
       >
         Don't have an account?
          
         <a
-          class="sc-jAaTju hdRCBs"
+          class="sc-gPEVay eKpZDv"
         >
           Sign up here.
         </a>
@@ -48712,12 +48712,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-jDwBTQ fertdr"
+        class="sc-iRbamj dRHgwJ"
       >
         Sign Up
       </h1>
       <p
-        class="sc-gPEVay idhqHf"
+        class="sc-jlyJG haszTb"
       >
         The link you used is invalid. Please try again.
          
@@ -48912,19 +48912,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-eHgmQL ethFFU"
+        class="sc-jWBwVP jxrhEF"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-cMljjf eWiKRa"
+          class="sc-jDwBTQ ewBJjx"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-cMljjf bnsXNv"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48932,13 +48932,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cMljjf eWiKRa"
+          class="sc-jDwBTQ ewBJjx"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-cMljjf bnsXNv"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48946,18 +48946,18 @@ Object {
         />
         <br />
         <input
-          class="sc-brqgnP kRdmxU"
+          class="sc-jAaTju Aanxf"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-cvbbAY dbdRQm"
+        class="sc-brqgnP kLeLPN"
       >
         Don't have an account?
          
         <a
-          class="sc-jAaTju hdRCBs"
+          class="sc-gPEVay eKpZDv"
         >
           Sign up here.
         </a>
@@ -49296,7 +49296,7 @@ Object {
         <p
           class="c1"
         >
-          You are now signed up! Go to
+          You are now signed in! Go to
            
           <a
             href="/keychain"
@@ -49315,14 +49315,14 @@ Object {
     />
     <div>
       <h1
-        class="sc-iRbamj dRHgwJ"
+        class="sc-eHgmQL ethFFU"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-cvbbAY dbdRQm"
       >
-        You are now signed up! Go to
+        You are now signed in! Go to
          
         <a
           href="/keychain"
@@ -53886,12 +53886,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-jDwBTQ fertdr"
+        class="sc-iRbamj dRHgwJ"
       >
         Sign Up
       </h1>
       <p
-        class="sc-gPEVay idhqHf"
+        class="sc-jlyJG haszTb"
       >
         The link you used is invalid. Please try again.
          
@@ -54236,7 +54236,7 @@ Object {
         <p
           class="c1"
         >
-          You are now signed up! Go to
+          You are now signed in! Go to
            
           <a
             href="/keychain"
@@ -54255,14 +54255,14 @@ Object {
     />
     <div>
       <h1
-        class="sc-iRbamj dRHgwJ"
+        class="sc-eHgmQL ethFFU"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-cvbbAY dbdRQm"
       >
-        You are now signed up! Go to
+        You are now signed in! Go to
          
         <a
           href="/keychain"
