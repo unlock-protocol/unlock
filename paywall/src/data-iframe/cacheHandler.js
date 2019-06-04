@@ -3,6 +3,7 @@ import linkKeysToLocks from './blockchainHandler/linkKeysToLocks'
 
 let currentNetwork
 let currentAccount
+const nullAccount = '0x0000000000000000000000000000000000000000'
 
 export const getAccount = cache.getAccount
 export const getNetwork = cache.getNetwork
@@ -42,7 +43,26 @@ async function _merge(window, key, subType, value) {
   })
 }
 
+export async function createMissingKeys(window, locks, keys) {
+  const account = (await getAccount(window)) || nullAccount
+  Object.keys(locks).forEach(async lockAddress => {
+    if (!keys[lockAddress]) {
+      // can't use setKey, triggers an infinite loop because of notifications
+      await _merge(window, 'keys', lockAddress, {
+        id: `${lockAddress}-${account}`,
+        owner: account,
+        lock: lockAddress,
+        expiration: 0,
+      })
+    }
+  })
+}
+
 export async function getKeys(window) {
+  const locks = await getLocks(window)
+  const existingKeys = (await _get(window, 'keys')) || {}
+  // create any missing keys just-in-time
+  await createMissingKeys(window, locks, existingKeys)
   return (await _get(window, 'keys')) || {}
 }
 
@@ -149,27 +169,11 @@ export async function getFormattedCacheValues(window, requiredConfirmations) {
   const networkId = await getNetwork(window)
   if (!account) {
     const cachedLocks = await getLocks(window)
-    const nullAccount = '0x0000000000000000000000000000000000000000'
-    // construct the default keys for locks if there is no user
-    const noKeys = Object.keys(cachedLocks).reduce(
-      (keys, lockAddress) => ({
-        ...keys,
-        [lockAddress]: {
-          id: `${lockAddress}-${nullAccount}`,
-          owner: nullAccount,
-          lock: lockAddress,
-          expiration: 0,
-          status: 'none',
-          confirmations: 0,
-          transactions: [],
-        },
-      }),
-      {}
-    )
+    const cachedKeys = await getKeys(window)
     return {
       locks: await linkKeysToLocks({
         locks: cachedLocks,
-        keys: noKeys,
+        keys: cachedKeys,
         transactions: {},
         requiredConfirmations,
       }),
