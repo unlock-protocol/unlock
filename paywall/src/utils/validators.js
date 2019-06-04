@@ -19,8 +19,12 @@ export const isPositiveNumber = val => {
   return !isNaN(parsedFloat) && +parsedFloat >= 0
 }
 
+export const isAccountOrNull = val => {
+  return val === null || val.match(ACCOUNT_REGEXP)
+}
+
 export const isAccount = val => {
-  return val.match(ACCOUNT_REGEXP)
+  return val && val.match(ACCOUNT_REGEXP)
 }
 
 /**

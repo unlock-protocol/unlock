@@ -6,7 +6,7 @@ import {
   POST_MESSAGE_UPDATE_NETWORK,
 } from '../paywall-builder/constants'
 import {
-  isAccount,
+  isAccountOrNull,
   isPositiveInteger,
   isValidLocks,
   isPositiveNumber,
@@ -24,7 +24,7 @@ export default function useBlockchainData(window, paywallConfig) {
   const address = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_ACCOUNT,
     defaultValue: null,
-    validator: isAccount,
+    validator: isAccountOrNull,
     local: 'useBlockchainData [account]',
   })
   const network = useListenForPostMessage({
