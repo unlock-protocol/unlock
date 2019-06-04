@@ -125,6 +125,7 @@ export async function merge({
   if (value === undefined) {
     delete container[type][subType]
   } else {
+    container[type] = container[type] || {}
     container[type][subType] = value
   }
 
