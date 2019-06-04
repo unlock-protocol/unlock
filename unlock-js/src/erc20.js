@@ -13,9 +13,25 @@ export async function getErc20BalanceForAddress(
     provider
   )
   const balance = await contract.balanceOf(lockContractAddress)
-  return utils.toNumber(balance)
+  return utils.hexToNumberString(balance)
+}
+
+/**
+ * Yiels the decimals for en ERC20 contract
+ * @param {*} erc20ContractAddress
+ * @param {*} provider
+ */
+export async function getErc20Decimals(erc20ContractAddress, provider) {
+  const contract = new ethers.Contract(
+    erc20ContractAddress,
+    ['function decimals() public view returns (uint)'],
+    provider
+  )
+  const decimals = await contract.decimals()
+  return utils.toNumber(decimals)
 }
 
 export default {
   getErc20BalanceForAddress,
+  getErc20Decimals,
 }
