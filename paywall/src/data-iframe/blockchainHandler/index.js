@@ -15,7 +15,9 @@ import ensureWalletReady from './ensureWalletReady'
  */
 export function setupWalletService({ unlockAddress, provider }) {
   const walletService = new WalletService({ unlockAddress })
-  walletService.connect(provider)
+  walletService.connect(provider).then(() => {
+    walletService.getAccount()
+  })
 
   return walletService
 }
@@ -92,14 +94,13 @@ export async function retrieveChainData({
   onChange,
   requiredConfirmations,
 }) {
-  const [locks, keys, transactions] = await Promise.all([
-    getLocks({ locksToRetrieve, web3Service }),
+  onChange({ locks: await getLocks({ locksToRetrieve, web3Service }) })
+
+  ensureWalletReady(walletService)
+  const [keys, transactions] = await Promise.all([
     getKeys({ walletService, locks: locksToRetrieve, web3Service }),
     locksmithTransactions(window, locksmithHost, web3Service, walletService),
   ])
-  const update = async (transaction, key) => {
-    onChange({ transaction, key })
-  }
   Object.values(transactions).forEach(transaction => {
     if (transaction.type === TRANSACTION_TYPES.KEY_PURCHASE) {
       processKeyPurchaseTransactions({
@@ -110,13 +111,13 @@ export async function retrieveChainData({
         lockAddress: transaction.lock,
         requiredConfirmations,
         walletAction: () => onChange({ walletModal: true }),
-        update,
+        update: onChange,
       }).catch(error => {
         onChange({ error })
       })
     }
   })
-  return { locks, keys, transactions }
+  return { keys, transactions }
 }
 
 /**
@@ -130,6 +131,9 @@ export async function listenForAccountNetworkChanges({
   web3Service,
   onChange,
 }) {
+  walletService.on('account.changed', address => {
+    setAccount(address)
+  })
   walletService.on('network.changed', id => {
     setNetwork(id)
     onChange({ network: id })

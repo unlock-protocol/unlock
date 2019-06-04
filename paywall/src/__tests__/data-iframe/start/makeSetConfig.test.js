@@ -8,6 +8,13 @@ jest.mock('../../../data-iframe/start/connectToBlockchain', () =>
 
 describe('makeSetConfig', () => {
   const window = 'window'
+  const keys = {
+    key: { lock: 'address' },
+  }
+  const transactions = {
+    hash: { hash: 'hash' },
+  }
+
   const constants = {
     hi: 'there',
     thing: 2,
@@ -24,10 +31,26 @@ describe('makeSetConfig', () => {
 
   describe('setConfig callback', () => {
     let setConfig
+    let fakeWindow
 
     beforeEach(() => {
+      fakeWindow = {
+        storage: {},
+        localStorage: {
+          setItem(key, item) {
+            fakeWindow.storage[key] = item
+          },
+          getItem(key) {
+            return fakeWindow.storage[key]
+          },
+          removeItem(key) {
+            delete fakeWindow.storage[key]
+          },
+        },
+      }
       updater = jest.fn()
-      setConfig = makeSetConfig(window, updater, constants)
+      setConfig = makeSetConfig(fakeWindow, updater, constants)
+      connectToBlockchain.mockImplementationOnce(() => ({ keys, transactions }))
     })
 
     it('should immediately trigger sends of cached blockchain data', async () => {
@@ -52,7 +75,7 @@ describe('makeSetConfig', () => {
         expect.objectContaining({
           ...constants,
           config,
-          window,
+          window: fakeWindow,
           onChange: expect.any(Function),
         })
       )
@@ -80,6 +103,10 @@ describe('makeSetConfig', () => {
           },
         }
         connectToBlockchain.mockReset()
+        connectToBlockchain.mockImplementationOnce(() => ({
+          keys,
+          transactions,
+        }))
 
         updater = jest.fn()
         setConfig = makeSetConfig(fakeWindow, updater, constants)

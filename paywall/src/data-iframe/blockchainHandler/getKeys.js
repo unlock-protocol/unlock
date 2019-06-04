@@ -13,7 +13,10 @@ export default async function getKeys({ walletService, locks, web3Service }) {
   return keys.reduce(
     (keysByLock, key) => ({
       ...keysByLock,
-      [key.lock]: key,
+      [key.lock]: {
+        ...key,
+        owner: account,
+      },
     }),
     {}
   )

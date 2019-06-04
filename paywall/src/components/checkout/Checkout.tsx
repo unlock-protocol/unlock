@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React from 'react'
 import { RoundedLogo } from '../interface/Logo'
+import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
@@ -8,9 +9,9 @@ import CheckoutLock from './CheckoutLock'
 interface Props {
   locks: Locks
   config: PaywallConfig
-  account: Account
+  account: Account | null
   purchase: (...args: any[]) => any
-  clickOnConfirmedLock: (...args: any[]) => any
+  hideCheckout: (...args: any[]) => any
 }
 
 export const Checkout = ({
@@ -18,7 +19,7 @@ export const Checkout = ({
   config,
   account,
   purchase,
-  clickOnConfirmedLock,
+  hideCheckout,
 }: Props) => {
   const hasValidKey = Object.keys(locks).reduce(
     (isValid, address) => isValid || locks[address].key.status === 'valid',
@@ -28,7 +29,15 @@ export const Checkout = ({
   return (
     <Wrapper>
       <Header>
-        <Title>{config.icon && <Logo src={config.icon} />} Unlocked</Title>
+        <Title>
+          {config.icon && <Logo src={config.icon} />}
+          Unlocked
+          <CloseButton
+            backgroundColor="var(--lightgrey)"
+            fillColor="var(--grey)"
+            onClick={hideCheckout}
+          />
+        </Title>
         <p>{config.callToAction.default}</p>
       </Header>
       <CheckoutLocks>
@@ -41,7 +50,7 @@ export const Checkout = ({
                 account={account}
                 disabled={hasValidKey}
                 purchase={purchase}
-                clickOnConfirmedLock={clickOnConfirmedLock}
+                hideCheckout={hideCheckout}
               />
             )
           }
@@ -56,6 +65,11 @@ export const Checkout = ({
 }
 
 export default Checkout
+
+const CloseButton = styled(Close)`
+  display: inline-flex;
+  float: right;
+`
 
 const Wrapper = styled.section`
   max-width: 1000px;
@@ -100,10 +114,9 @@ const Footer = styled.footer`
 const CheckoutLocks = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  grid-gap: 48px;
   list-style: none;
   margin: 0px;
   padding: 0px;
-  justify-content: center;
+  justify-content: space-around;
   grid-template-columns: repeat(auto-fit, 186px);
 `
