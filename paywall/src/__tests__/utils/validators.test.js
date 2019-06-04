@@ -56,7 +56,25 @@ describe('Form field validators', () => {
     expect(
       validators.isAccount('0X12345678901234567890abcdef0123ABCDEF0123')
     ).toBeFalsy()
-    expect(validators.isAccount(null)).toBeTruthy()
+    expect(validators.isAccount(null)).toBeFalsy()
+  })
+
+  it('isAccountOrNull', () => {
+    expect.assertions(5)
+
+    expect(
+      validators.isAccountOrNull('0x12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeTruthy()
+    expect(
+      validators.isAccountOrNull('00x12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeFalsy()
+    expect(
+      validators.isAccountOrNull('0x12345678901234567890abcdef0123ABCDEF01234')
+    ).toBeFalsy()
+    expect(
+      validators.isAccountOrNull('0X12345678901234567890abcdef0123ABCDEF0123')
+    ).toBeFalsy()
+    expect(validators.isAccountOrNull(null)).toBeTruthy()
   })
 
   describe('isValidPaywallConfig', () => {
