@@ -87,7 +87,7 @@ contract MixinPurchase is
     // Assign the key
     Key storage toKey = _getKeyFor(_recipient);
     uint previousExpiration = toKey.expirationTimestamp;
-    if(toKey.expirationTimestamp >= block.timestamp) {
+    if (toKey.expirationTimestamp >= block.timestamp) {
       // This is an existing owner trying to extend their key
       toKey.expirationTimestamp = previousExpiration.add(expirationDuration);
     } else {
