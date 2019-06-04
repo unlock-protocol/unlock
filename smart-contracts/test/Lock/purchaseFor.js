@@ -167,5 +167,44 @@ contract('Lock / purchaseFor', accounts => {
       assert.equal(tx.logs[0].args._from, 0)
       assert.equal(tx.logs[0].args._to, accounts[2])
     })
+
+    describe('can re-purchase an expired key', () => {
+      before(async () => {
+        await locks['SHORT'].purchaseFor(accounts[4], {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        })
+        // let's now expire the key
+        await locks['SHORT'].expireKeyFor(accounts[4])
+        // sleep 10 seconds
+        await sleep(10000)
+      })
+
+      it('should expand the validity by the default key duration', async () => {
+        // Purchase a new one
+        await locks['SHORT'].purchaseFor(accounts[4], {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        })
+        // And check the expiration which shiuld be exactly now + keyDuration
+        const expirationTimestamp = new BigNumber(
+          await locks['SHORT'].keyExpirationTimestampFor.call(accounts[4])
+        )
+        const now = parseInt(new Date().getTime() / 1000)
+        // we check +/- 10 seconds to fix for now being different inside the EVM and here... :(
+        assert(
+          expirationTimestamp.gt(
+            locks['SHORT'].params.expirationDuration.plus(now - 10)
+          )
+        )
+        assert(
+          expirationTimestamp.lt(
+            locks['SHORT'].params.expirationDuration.plus(now + 10)
+          )
+        )
+      })
+    })
   })
 })
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
