@@ -4,7 +4,6 @@ import { ethers } from 'ethers'
 // or to migrate to a totally different library and have a single point of modification
 export default {
   toWei: (value, units) => ethers.utils.parseUnits(value, units),
-  toDecimal: (value, decimals) => ethers.utils.parseUnits(value, decimals),
   hexlify: ethers.utils.hexlify,
   hexStripZeros: ethers.utils.hexStripZeros,
   bigNumberify: ethers.utils.bigNumberify,
@@ -16,11 +15,6 @@ export default {
   fromWei: (num, units) => {
     return ethers.utils
       .formatUnits(ethers.utils.bigNumberify(num), units)
-      .replace(/\.0$/, '')
-  },
-  fromDecimal: (num, decimals) => {
-    return ethers.utils
-      .formatUnits(ethers.utils.bigNumberify(num), decimals)
       .replace(/\.0$/, '')
   },
   isInfiniteKeys: value => {
