@@ -34,7 +34,7 @@ export default function CheckoutContent() {
     network
   ][0]
   // for sending purchase requests, hiding the checkout iframe
-  const { postMessage } = usePostMessage()
+  const { postMessage } = usePostMessage('Checkout UI')
   // purchase a key with this callback
   const purchaseKey = (key: Key) => {
     postMessage({

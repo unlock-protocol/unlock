@@ -40,12 +40,13 @@ export const defaultValue = {
 }
 
 export default function usePaywallConfig() {
-  const { postMessage } = usePostMessage()
+  const { postMessage } = usePostMessage('Checkout UI (usePaywallConfig)')
   const paywallConfig = useListenForPostMessage({
     type: POST_MESSAGE_CONFIG,
     validator: isValidPaywallConfig,
     defaultValue,
     getValue,
+    local: 'Checkout UI',
   })
   useEffect(() => {
     // this triggers the send of configuration from main window to the paywall
