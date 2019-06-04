@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.2
+- `unlock-provider` gains a property `isUnlock` that will allow Unlock-specific
+  provider configuration.
+
 ## 0.2.1
 
 - getLock now returns the erc20 balance for erc20 locks
