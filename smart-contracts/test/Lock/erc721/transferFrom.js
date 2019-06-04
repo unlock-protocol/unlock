@@ -132,7 +132,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
           await locks['FIRST'].keyExpirationTimestampFor.call(from)
         )
         previousExpirationTimestamp = new BigNumber(
-          await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])
+          await locks['FIRST'].keyExpirationTimestampFor.call(accountWithKey)
         )
         await locks['FIRST'].transferFrom(from, accountWithKey, ID, {
           from,
