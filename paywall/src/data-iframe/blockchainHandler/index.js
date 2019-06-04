@@ -32,12 +32,18 @@ export function setupWeb3Service({
   readOnlyProvider,
   blockTime,
   requiredConfirmations,
+  onChange,
+  window,
+  locksmithHost,
 }) {
   return new Web3Service({
     unlockAddress,
     readOnlyProvider,
     blockTime,
     requiredConfirmations,
+    onChange,
+    window,
+    locksmithHost,
   })
 }
 
@@ -64,7 +70,12 @@ export async function retrieveChainData({
   ensureWalletReady(walletService)
   const [keys, transactions] = await Promise.all([
     getKeys({ walletService, locks: locksToRetrieve, web3Service }),
-    locksmithTransactions(window, locksmithHost, web3Service, walletService),
+    locksmithTransactions({
+      window,
+      locksmithHost,
+      web3Service,
+      walletService,
+    }),
   ])
   Object.values(transactions).forEach(transaction => {
     if (transaction.type === TRANSACTION_TYPES.KEY_PURCHASE) {

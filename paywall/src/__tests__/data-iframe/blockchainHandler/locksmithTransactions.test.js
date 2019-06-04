@@ -82,12 +82,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
     it('ensures wallet is ready', async () => {
       expect.assertions(1)
 
-      await locksmithTransactions(
-        fakeWindow,
-        'host',
-        fakeWeb3Service,
-        fakeWalletService
-      )
+      await locksmithTransactions({
+        window: fakeWindow,
+        locksmithHost: 'host',
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+      })
 
       expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
     })
@@ -95,12 +95,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
     it('calls fetch with the correct url', async () => {
       expect.assertions(1)
 
-      await locksmithTransactions(
-        fakeWindow,
-        'host',
-        fakeWeb3Service,
-        fakeWalletService
-      )
+      await locksmithTransactions({
+        window: fakeWindow,
+        locksmithHost: 'host',
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+      })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
         'host/transactions?sender=account'
@@ -110,12 +110,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
     it('returns an empty {} if there are no transactions for that user', async () => {
       expect.assertions(1)
 
-      const result = await locksmithTransactions(
-        fakeWindow,
-        'host',
-        fakeWeb3Service,
-        fakeWalletService
-      )
+      const result = await locksmithTransactions({
+        window: fakeWindow,
+        locksmithHost: 'host',
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+      })
 
       expect(result).toEqual({})
     })
@@ -144,12 +144,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
         },
       }
 
-      const result = await locksmithTransactions(
-        fakeWindow,
-        'host',
-        fakeWeb3Service,
-        fakeWalletService
-      )
+      const result = await locksmithTransactions({
+        window: fakeWindow,
+        locksmithHost: 'host',
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+      })
 
       expect(result).toEqual({
         hash2: {
@@ -189,12 +189,12 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
         },
       }
 
-      await locksmithTransactions(
-        fakeWindow,
-        'host',
-        fakeWeb3Service,
-        fakeWalletService
-      )
+      await locksmithTransactions({
+        window: fakeWindow,
+        locksmithHost: 'host',
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+      })
 
       expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
         1,
