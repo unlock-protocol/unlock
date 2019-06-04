@@ -56,6 +56,7 @@ export async function initializeUnlockProvider(
     dispatch(setEncryptedPrivateKey(key, emailAddress))
     dispatch(providerReady())
   } catch (_) {
+    // TODO: password isn't the only thing that can go wrong here...
     dispatch(
       setError(
         LogIn.Warning(
@@ -83,7 +84,8 @@ export const providerMiddleware = (config: any) => {
             initializeProvider(provider, dispatch)
           }
         } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
-          initializeUnlockProvider(action, getState().provider, dispatch)
+          const provider = config.providers[getState().provider]
+          initializeUnlockProvider(action, provider, dispatch)
         }
 
         next(action)
