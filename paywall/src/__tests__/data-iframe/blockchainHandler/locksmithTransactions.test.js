@@ -107,86 +107,33 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       )
     })
 
-    it('returns an empty {} if there are no transactions for that user', async () => {
-      expect.assertions(1)
-
-      const result = await locksmithTransactions({
-        window: fakeWindow,
-        locksmithHost: 'host',
-        web3Service: fakeWeb3Service,
-        walletService: fakeWalletService,
-      })
-
-      expect(result).toEqual({})
-    })
-
-    it('returns the transactions for that user', async () => {
-      expect.assertions(1)
-
-      fetchedResult = {
-        data: {
-          transactions: [
-            {
-              transactionHash: 'hash1',
-              chain: 2,
-              to: 'lock 1',
-              from: 'account',
-              data: undefined,
-            },
-            {
-              transactionHash: 'hash2',
-              chain: 1,
-              to: 'lock 2',
-              from: 'account',
-              data: 'data 2',
-            },
-          ],
-        },
-      }
-
-      const result = await locksmithTransactions({
-        window: fakeWindow,
-        locksmithHost: 'host',
-        web3Service: fakeWeb3Service,
-        walletService: fakeWalletService,
-      })
-
-      expect(result).toEqual({
-        hash2: {
-          hash: 'hash2',
-        },
-      })
-    })
-
     it('calls web3Service.getTransaction for each transaction returned', async () => {
       expect.assertions(2)
 
       fetchedResult = {
-        data: {
-          transactions: [
-            {
-              transactionHash: 'hash1',
-              chain: 2,
-              recipient: 'lock 1',
-              sender: 'account',
-              data: null,
-            },
-            {
-              transactionHash: 'hash2',
-              chain: 1,
-              recipient: 'lock 2',
-              sender: 'account',
-              data: 'data 2',
-            },
-            {
-              transactionHash: 'hash3',
-              chain: 1,
-              recipient: 'lock 3',
-              sender: 'account',
-              data: null,
-            },
-          ],
-        },
+        transactions: [
+          {
+            transactionHash: 'hash1',
+            chain: 2,
+            recipient: 'lock 1',
+            sender: 'account',
+            data: null,
+          },
+          {
+            transactionHash: 'hash2',
+            chain: 1,
+            recipient: 'lock 2',
+            sender: 'account',
+            data: 'data 2',
+          },
+          {
+            transactionHash: 'hash3',
+            chain: 1,
+            recipient: 'lock 3',
+            sender: 'account',
+            data: null,
+          },
+        ],
       }
 
       await locksmithTransactions({
