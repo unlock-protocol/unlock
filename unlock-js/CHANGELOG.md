@@ -3,6 +3,7 @@
 ## 0.2.1
 
 - getLock now returns the erc20 balance for erc20 locks
+- `unlock-provider` gains a method allowing handling of `eth_signTypedData`
 
 ## 0.2.0
 
