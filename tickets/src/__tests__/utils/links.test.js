@@ -20,12 +20,12 @@ describe('googleCalendarLinkBuilder', () => {
     const link = googleCalendarLinkBuilder(
       'The party',
       'This is going to be a very cool party that you should attend',
-      new Date(Date.UTC(2019, 4, 16, 10, 30, 0)),
+      new Date(2019, 4, 16, 10, 30, 0),
       60 * 60 * 3,
       'The office'
     )
     expect(link).toEqual(
-      'https://calendar.google.com/calendar/r/eventedit?&text=The party&dates=20190516T103000Z/20190516T133000Z&details=This is going to be a very cool party that you should attend&location=The office&sf=true&output=xml'
+      'https://calendar.google.com/calendar/r/eventedit?&text=The party&dates=20190516T103000/20190516T133000&details=This is going to be a very cool party that you should attend&location=The office&sf=true&output=xml'
     )
   })
 })

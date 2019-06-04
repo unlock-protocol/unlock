@@ -21,6 +21,7 @@ import keyStatus from '../../selectors/keys'
 import withConfig from '../../utils/withConfig'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
+import { getTimeString } from '../../utils/dates'
 
 export const EventContent = ({
   lock,
@@ -49,8 +50,10 @@ export const EventContent = ({
     ', ' +
     date.getFullYear()
 
+  let timeString = getTimeString(date)
   if (duration) {
-    dateString += ' at ' + date.toLocaleTimeString()
+    timeString +=
+      ' - ' + getTimeString(new Date(date.getTime() + duration * 1000))
   }
 
   const externalLinks = links.map(({ href, title }) => {
@@ -82,7 +85,10 @@ export const EventContent = ({
           </Head>
           <Header>{image && <Image src={image} />}</Header>
           <Title>{name}</Title>
-          <DisplayDate>{dateString}</DisplayDate>
+          <DisplayDate>
+            {dateString}
+            <DisplayTime>{timeString}</DisplayTime>
+          </DisplayDate>
           <Columns count={2}>
             <Column>
               <Description>
@@ -338,6 +344,13 @@ const DisplayDate = styled.h2`
   ${Media.nophone`
     padding-left: 20px;
   `}
+`
+
+const DisplayTime = styled.span`
+  border: 0;
+  border-left: var(--grey) solid 2px;
+  padding-left: 10px;
+  margin-left: 10px;
 `
 
 const Description = styled.div`
