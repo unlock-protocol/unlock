@@ -200,6 +200,28 @@ describe('cacheHandler', () => {
       expect(keys).toEqual(myKeys)
     })
 
+    it("getKeys, some locks don't have a key", async () => {
+      expect.assertions(1)
+
+      await setLocks(fakeWindow, {
+        ...myLocks,
+        another: {
+          address: 'another',
+        },
+      })
+      const keys = await getKeys(fakeWindow)
+
+      expect(keys).toEqual({
+        ...myKeys,
+        another: {
+          expiration: 0,
+          id: 'another-account',
+          lock: 'another',
+          owner: 'account',
+        },
+      })
+    })
+
     it('getLocks', async () => {
       expect.assertions(1)
 
@@ -284,10 +306,23 @@ describe('cacheHandler', () => {
       expect(await getLocks(fakeWindow)).toEqual(myLocks)
     })
 
-    it('should not return cached keys', async () => {
+    it('should return dummy keys', async () => {
       expect.assertions(1)
 
-      expect(await getKeys(fakeWindow)).toEqual({})
+      expect(await getKeys(fakeWindow)).toEqual({
+        lock: {
+          expiration: 0,
+          id: 'lock-different',
+          lock: 'lock',
+          owner: 'different',
+        },
+        lock2: {
+          expiration: 0,
+          id: 'lock2-different',
+          lock: 'lock2',
+          owner: 'different',
+        },
+      })
     })
 
     it('should not return cached transactions', async () => {
@@ -300,6 +335,13 @@ describe('cacheHandler', () => {
       expect.assertions(2)
 
       const differentKeys = {
+        // a dummy key created just-in-time
+        lock: {
+          expiration: 0,
+          id: 'lock-different',
+          lock: 'lock',
+          owner: 'different',
+        },
         lock2: {
           lock: 'lock2',
           owner: 'different',
