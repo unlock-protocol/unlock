@@ -16,7 +16,13 @@ let hasWeb3 = true
  * @param {string} origin the iframe element's URL origin
  */
 export default function web3Proxy(window, iframe, origin) {
-  const { addHandler } = mainWindowPostOffice(window, iframe, origin)
+  const { addHandler } = mainWindowPostOffice(
+    window,
+    iframe,
+    origin,
+    'web3 proxy',
+    'Web3ProxyProvider'
+  )
 
   // handler for the actual web3 calls
   addHandler(POST_MESSAGE_WEB3, (payload, respond) => {
