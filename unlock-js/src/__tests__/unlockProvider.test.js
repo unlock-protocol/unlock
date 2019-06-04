@@ -74,6 +74,13 @@ describe('Unlock Provider', () => {
     await provider.connect({ key, password })
   })
 
+  describe('object properties', () => {
+    it('should have a property `isUnlock` that is set to `true`', () => {
+      expect.assertions(1)
+      expect(provider.isUnlock).toBeTruthy()
+    })
+  })
+
   describe('implemented JSON-RPC calls', () => {
     it('should respond to eth_accounts with an array containing only `this.wallet.address` after being initialized', async () => {
       expect.assertions(2)

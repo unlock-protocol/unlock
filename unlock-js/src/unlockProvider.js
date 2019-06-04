@@ -13,6 +13,7 @@ export default class UnlockProvider {
     )
     this.ready = false
     this.wallet = null
+    this.isUnlock = true
   }
 
   // You should be able to just pass the action for
