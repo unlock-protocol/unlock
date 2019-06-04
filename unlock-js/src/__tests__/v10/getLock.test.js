@@ -4,6 +4,7 @@ import Web3Service from '../../web3Service'
 import NockHelper from '../helpers/nockHelper'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
+import erc20 from '../../erc20'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -17,6 +18,12 @@ const lockAddress = '0xc43efe2c7116cb94d563b5a9d68f260ccc44256f'
 const checksumLockAddress = utils.toChecksumAddress(lockAddress)
 const owner = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
+
+jest.mock('../../erc20.js', () => {
+  return {
+    getErc20BalanceForAddress: jest.fn(() => Promise.resolve(0)),
+  }
+})
 
 describe('v10', () => {
   describe('getLock', () => {
@@ -40,10 +47,7 @@ describe('v10', () => {
       await nock.resolveWhenAllNocksUsed()
     }
 
-    function callReadOnlyFunction({
-      maxKeys = 10,
-      erc20ContractAddress = ZERO,
-    }) {
+    function nockGetLock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
       // check to see what version that is
       nock.ethGetCodeAndYield(
         lockAddress,
@@ -122,10 +126,22 @@ describe('v10', () => {
       )
     }
 
+    function nockGetEthLock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
+      nockGetLock({ maxKeys, erc20ContractAddress })
+      nock.getBalanceForAccountAndYieldBalance(
+        lockAddress,
+        utils.toRpcResultNumber('0xdeadfeed')
+      )
+    }
+
+    function nockGetErc20Lock({ maxKeys = 10, erc20ContractAddress = ZERO }) {
+      nockGetLock({ maxKeys, erc20ContractAddress })
+    }
+
     it('should trigger an event when it has been loaded with an updated balance', async () => {
       expect.assertions(2)
       await nockBeforeEach()
-      callReadOnlyFunction({})
+      nockGetEthLock({})
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
@@ -145,15 +161,18 @@ describe('v10', () => {
       await web3Service.getLock(lockAddress)
     })
 
-    it('should successfully yield a lock with an ERC20 currency', async () => {
-      expect.assertions(2)
+    it('should successfully yield a lock with an ERC20 currency, with the right balance', async () => {
+      expect.assertions(3)
       await nockBeforeEach()
-      callReadOnlyFunction({ erc20ContractAddress })
-
+      nockGetErc20Lock({ erc20ContractAddress })
+      const balance = 1929
+      erc20.getErc20BalanceForAddress = jest.fn(() => {
+        return Promise.resolve(balance)
+      })
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
-          balance: utils.fromWei('3735944941', 'ether'),
+          balance,
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
@@ -166,12 +185,17 @@ describe('v10', () => {
       })
 
       await web3Service.getLock(lockAddress)
+      expect(erc20.getErc20BalanceForAddress).toHaveBeenCalledWith(
+        erc20ContractAddress,
+        lockAddress,
+        web3Service.provider
+      )
     })
 
     it('should successfully yield a lock with an unlimited number of keys', async () => {
       expect.assertions(3)
       await nockBeforeEach()
-      callReadOnlyFunction({
+      nockGetEthLock({
         maxKeys:
           '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
       })
