@@ -4,8 +4,6 @@ import { setAccount, setAccountBalance, pollForAccountChange } from './account'
 import getLocks from './getLocks'
 import getKeys from './getKeys'
 import locksmithTransactions from './locksmithTransactions'
-import { processKeyPurchaseTransactions } from './purchaseKey'
-import { TRANSACTION_TYPES } from '../../constants'
 import ensureWalletReady from './ensureWalletReady'
 import web3ServiceHub from './web3ServiceHub'
 
@@ -35,12 +33,16 @@ export function setupWeb3Service({
   requiredConfirmations,
   onChange,
   window,
+  locksmithHost,
 }) {
   const web3Service = new Web3Service({
     unlockAddress,
     readOnlyProvider,
     blockTime,
     requiredConfirmations,
+    onChange,
+    window,
+    locksmithHost,
   })
   // start listening for transaction updates and errors
   web3ServiceHub({ web3Service, onChange, window })
@@ -63,12 +65,11 @@ export async function retrieveChainData({
   window,
   locksmithHost,
   onChange,
-  requiredConfirmations,
 }) {
   onChange({ locks: await getLocks({ locksToRetrieve, web3Service }) })
 
   ensureWalletReady(walletService)
-  const [keys, transactions] = await Promise.all([
+  const [keys] = await Promise.all([
     getKeys({ walletService, locks: locksToRetrieve, web3Service }),
     locksmithTransactions({
       window,
@@ -77,25 +78,7 @@ export async function retrieveChainData({
       walletService,
     }),
   ])
-  Object.values(transactions).forEach(transaction => {
-    if (transaction.type === TRANSACTION_TYPES.KEY_PURCHASE) {
-      processKeyPurchaseTransactions({
-        walletService,
-        web3Service,
-        startingTransactions: transactions,
-        startingKey: keys[transaction.lock],
-        lockAddress: transaction.lock,
-        requiredConfirmations,
-        walletAction: () => onChange({ walletModal: true }),
-        update: onChange,
-        window,
-        locksmithHost,
-      }).catch(error => {
-        onChange({ error })
-      })
-    }
-  })
-  return { keys, transactions }
+  return { keys }
 }
 
 /**
