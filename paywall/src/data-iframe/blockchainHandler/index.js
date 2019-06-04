@@ -88,6 +88,8 @@ export async function retrieveChainData({
         requiredConfirmations,
         walletAction: () => onChange({ walletModal: true }),
         update: onChange,
+        window,
+        locksmithHost,
       }).catch(error => {
         onChange({ error })
       })
