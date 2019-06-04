@@ -3,11 +3,15 @@ import React, { FormEvent } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 // eslint-disable-next-line no-unused-vars
+import { Account } from '../../unlockTypes'
+import SignupSuccess from './SignupSuccess'
+// eslint-disable-next-line no-unused-vars
 import { loginCredentials, Credentials } from '../../actions/user'
 
 interface Props {
   toggleSignup: () => void
   loginCredentials: (credentials: Credentials) => void
+  account?: Account
 }
 
 interface State {
@@ -58,6 +62,12 @@ export class LogIn extends React.Component<Props, State> {
   }
 
   render = () => {
+    const { account } = this.props
+
+    if (account && account.address) {
+      return <SignupSuccess />
+    }
+
     return (
       <div>
         <Heading>Log In to Your Account</Heading>
