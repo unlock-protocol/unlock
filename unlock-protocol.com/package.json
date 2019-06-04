@@ -14,7 +14,7 @@
     "@types/next": "8.0.5",
     "@types/react": "16.8.19",
     "@types/storybook__react": "^4.0.1",
-    "@types/styled-components": "4.1.15",
+    "@types/styled-components": "4.1.16",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "^1.1.1",
     "babel-loader": "^8.0.4",
