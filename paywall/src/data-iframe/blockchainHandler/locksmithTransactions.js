@@ -2,42 +2,6 @@ import ensureWalletReady from './ensureWalletReady'
 import { getAccount } from './account'
 import { getNetwork } from './network'
 
-export async function storeTransaction({
-  window,
-  transaction,
-  locksmithHost,
-  walletService,
-}) {
-  await ensureWalletReady(walletService)
-  const account = getAccount()
-  const network = getNetwork()
-
-  const url = `${locksmithHost}/transaction`
-
-  const payload = {
-    transactionHash: transaction.hash,
-    sender: account.toLowerCase(),
-    recipient: transaction.to.toLowerCase(),
-    data: transaction.input,
-    chain: network,
-  }
-  try {
-    await window.fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    })
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('unable to save key purchase transaction')
-    // eslint-disable-next-line no-console
-    console.error(e)
-  }
-}
-
 /**
  * sync a new transaction to locksmith
  *
