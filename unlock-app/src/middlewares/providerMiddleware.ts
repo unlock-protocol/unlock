@@ -55,7 +55,9 @@ export async function initializeUnlockProvider(
     dispatch(setAccount({ address }))
     dispatch(setEncryptedPrivateKey(key, emailAddress))
     dispatch(providerReady())
-  } catch (_) {
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
     // TODO: password isn't the only thing that can go wrong here...
     dispatch(
       setError(
