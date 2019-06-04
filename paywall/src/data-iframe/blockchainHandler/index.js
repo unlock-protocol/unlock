@@ -42,41 +42,6 @@ export function setupWeb3Service({
 }
 
 /**
- * This is used to create the callback that will be used by the postOfficeListener to respond to
- * POST_MESSAGE_CONFIG from the main window. This function assumes that the config was
- * already validated by the postOffice
- *
- * @param {web3Service} web3Service used to retrieve locks, and keys
- * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
- * @param {string} locksmithHost the endpoint for locksmith
- * @param {Function} onChange the change callback, which is used by the data iframe to cache data and pass it to the
- *                            main window
- * @param {number} requiredConfirmations the minimum number of confirmations needed to consider a key purchased
- * @returns {Function} a callback that accepts the paywall config, and retrieves all chain data in response
- */
-export function getSetConfigCallback({
-  web3Service,
-  walletService,
-  locksmithHost,
-  onChange,
-  window,
-  requiredConfirmations,
-}) {
-  return config => {
-    const locksToRetrieve = Object.keys(config.locks)
-    retrieveChainData({
-      locksToRetrieve,
-      web3Service,
-      walletService,
-      window,
-      locksmithHost,
-      onChange,
-      requiredConfirmations,
-    })
-  }
-}
-
-/**
  * @param {array} locksToRetrieve an array of lock ethereum addresses to retrieve
  * @param {seb3Service} web3Service used to retrieve locks, and keys
  * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
