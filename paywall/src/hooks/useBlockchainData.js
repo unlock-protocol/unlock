@@ -25,11 +25,13 @@ export default function useBlockchainData(window, paywallConfig) {
     type: POST_MESSAGE_UPDATE_ACCOUNT,
     defaultValue: null,
     validator: isAccount,
+    local: 'useBlockchainData [account]',
   })
   const network = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_NETWORK,
     defaultValue: requiredNetworkId,
     validator: val => isPositiveInteger(val) && typeof val === 'number',
+    local: 'useBlockchainData [network]',
   })
   // our default account balance is '0' until we hear from the blockchain handler
   // balance is in eth, we must use isPositiveNumber to validate
@@ -37,12 +39,14 @@ export default function useBlockchainData(window, paywallConfig) {
     type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
     defaultValue: '0',
     validator: val => isPositiveNumber(val) && typeof val === 'string',
+    local: 'useBlockchainData [balance]',
   })
   // retrieve the locks from the data iframe
   const blockChainLocks = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_LOCKS,
     defaultValue: {},
     validator: isValidLocks,
+    local: 'useBlockchainData [locks]',
   })
 
   // construct the object format expected by the checkout UI

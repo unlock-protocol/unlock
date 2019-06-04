@@ -19,7 +19,11 @@ import { waitFor } from '../utils/promises'
 export default class Web3ProxyProvider {
   constructor(window) {
     // set up the post office inside the iframe
-    const { postMessage, addHandler } = iframePostOffice(window)
+    const { postMessage, addHandler } = iframePostOffice(
+      window,
+      'Web3ProxyProvider',
+      'main window (web3 proxy)'
+    )
     this.postMessage = postMessage
     this.waiting = true
 

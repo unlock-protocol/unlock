@@ -84,11 +84,23 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
   const {
     postMessage: dataPostOffice,
     addHandler: addDataMessageHandler,
-  } = mainWindowPostOffice(window, dataIframe, process.env.PAYWALL_URL)
+  } = mainWindowPostOffice(
+    window,
+    dataIframe,
+    process.env.PAYWALL_URL,
+    'main window',
+    'Data iframe'
+  )
   const {
     postMessage: CheckoutUIPostOffice,
     addHandler: addCheckoutMessageHandler,
-  } = mainWindowPostOffice(window, CheckoutUIIframe, process.env.PAYWALL_URL)
+  } = mainWindowPostOffice(
+    window,
+    CheckoutUIIframe,
+    process.env.PAYWALL_URL,
+    'main window',
+    'Checkout UI'
+  )
 
   const hideCheckoutModal = setupUnlockProtocolVariable(
     window,

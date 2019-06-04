@@ -34,7 +34,11 @@ import { getFormattedCacheValues } from './cacheHandler'
  *                     "network" or "walletModal" to trigger a post of changed data to the main window
  */
 export default function postOffice(window, requiredConfirmations) {
-  const { postMessage, addHandler } = iframePostOffice(window)
+  const { postMessage, addHandler } = iframePostOffice(
+    window,
+    'data iframe',
+    'main window'
+  )
 
   const actions = {
     unlocked(unlockedLocks) {
