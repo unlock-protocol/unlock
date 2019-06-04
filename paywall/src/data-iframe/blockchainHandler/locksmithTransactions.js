@@ -53,12 +53,12 @@ export async function storeTransaction({
  * @param {web3Service} web3Service the web3Service instance
  * @param {walletService} walletService the walletService instance, needed to ensure account and network are accurate
  */
-export default async function locksmithTransactions(
+export default async function locksmithTransactions({
   window,
   locksmithHost,
   web3Service,
-  walletService
-) {
+  walletService,
+}) {
   await ensureWalletReady(walletService)
   const account = getAccount()
   const network = getNetwork()
