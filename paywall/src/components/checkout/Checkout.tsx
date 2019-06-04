@@ -14,6 +14,33 @@ interface Props {
   hideCheckout: (...args: any[]) => any
 }
 
+interface WrapperProps {
+  children: any
+  hideCheckout: (...args: any[]) => any
+  bgColor: string
+}
+
+interface WrapperStyleProps {
+  bgColor: string
+}
+
+export const CheckoutWrapper = ({
+  children,
+  hideCheckout,
+  bgColor = 'var(--offwhite)',
+}: WrapperProps) => {
+  return (
+    <Wrapper bgColor={bgColor}>
+      <CloseButton
+        backgroundColor="var(--lightgrey)"
+        fillColor="var(--grey)"
+        onClick={hideCheckout}
+      />
+      {children}
+    </Wrapper>
+  )
+}
+
 export const Checkout = ({
   locks,
   config,
@@ -27,7 +54,7 @@ export const Checkout = ({
   )
 
   return (
-    <Wrapper>
+    <React.Fragment>
       <Header>
         <Title>
           {config.icon && <Logo src={config.icon} />}
@@ -60,7 +87,7 @@ export const Checkout = ({
         <RoundedLogo />
         Powered by Unlock
       </Footer>
-    </Wrapper>
+    </React.Fragment>
   )
 }
 
@@ -75,7 +102,7 @@ const Wrapper = styled.section`
   max-width: 800px;
   padding: 10px 40px;
   display: grid;
-  background-color: var(--offwhite);
+  background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;
 `
