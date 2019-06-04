@@ -1,8 +1,8 @@
 import { getAccount } from './account'
 import ensureWalletReady from './ensureWalletReady'
 import submittedListener from './purchaseKey/submittedListener'
-import updateListener from './purchaseKey/updateListener'
 import { linkTransactionsToKey } from './keyStatus'
+import { storeTransaction } from './locksmithTransactions'
 
 /**
  * Purchase a key on a lock for the current user
@@ -47,62 +47,39 @@ export async function processKeyPurchaseTransactions({
   requiredConfirmations,
   update,
   walletAction,
+  window,
+  locksmithHost,
 }) {
-  let transactions = startingTransactions
-  let key = startingKey
-  let linkedKey
+  const transactions = startingTransactions
   let result
   walletService.addListener('transaction.pending', walletAction)
   try {
-    const afterEventProcessed = () => {
-      if (result) {
-        const transaction = result.transaction
-        transactions = {
-          ...transactions,
-          [transaction.hash]: transaction,
-        }
-        key = result.key
-        update({ transaction, key })
-      }
-    }
-
     result = await submittedListener({
       lockAddress,
       existingTransactions: transactions,
-      existingKey: key,
+      existingKey: startingKey,
       walletService,
       web3Service,
       requiredConfirmations,
     })
-    afterEventProcessed()
-
-    if (!result) {
-      // no change to the existing transaction/key
-      if (['submitted', 'pending', 'confirming'].includes(key.status)) {
-        web3Service.getTransaction(key.transactions[0]) // start the polling
-      }
+    if (result) {
+      const transaction = result.transaction
+      const key = result.key
+      update({ transaction, key })
+      storeTransaction({ window, transaction, locksmithHost, walletService })
+      // start the polling
+      web3Service.getTransaction(result.transaction.hash)
     } else {
-      web3Service.getTransaction(result.transaction.hash) // start the polling
-    }
-    do {
-      result = await updateListener({
-        lockAddress,
-        existingTransactions: transactions,
-        existingKey: key,
-        web3Service,
-        requiredConfirmations,
-      })
-      afterEventProcessed()
-      linkedKey = linkTransactionsToKey({
-        key,
+      const linkedKey = linkTransactionsToKey({
+        key: startingKey,
         transactions,
         requiredConfirmations,
       })
-    } while (
-      result &&
-      linkedKey.status !== 'valid' &&
-      linkedKey.status !== 'failed'
-    )
+      if (linkedKey.transactions[0]) {
+        // start the polling
+        web3Service.getTransaction(linkedKey.transactions[0].hash)
+      }
+    }
   } finally {
     walletService.removeListener('transaction.pending', walletAction)
   }
