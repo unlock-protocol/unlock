@@ -18,10 +18,12 @@ import {
 import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
 import { TRANSACTION_TYPES } from '../../../constants'
 import { processKeyPurchaseTransactions } from '../../../data-iframe/blockchainHandler/purchaseKey'
+import web3ServiceHub from '../../../data-iframe/blockchainHandler/web3ServiceHub'
 
 jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady')
 jest.mock('../../../data-iframe/blockchainHandler/account')
 jest.mock('../../../data-iframe/blockchainHandler/purchaseKey')
+jest.mock('../../../data-iframe/blockchainHandler/web3ServiceHub')
 
 describe('blockchain handler index', () => {
   describe('setupWalletService', () => {
@@ -64,6 +66,10 @@ describe('blockchain handler index', () => {
   })
 
   describe('setupWeb3Service', () => {
+    beforeEach(() => {
+      web3ServiceHub.mockReset()
+    })
+
     it('creates a web3Service', () => {
       expect.assertions(1)
 
@@ -76,7 +82,31 @@ describe('blockchain handler index', () => {
 
       expect(web3Service).toBeInstanceOf(Web3Service)
     })
+
+    it('should call web3ServiceHub', () => {
+      expect.assertions(1)
+
+      const onChange = jest.fn()
+      const web3Service = setupWeb3Service({
+        unlockAddress: '0x1234567890123456789012345678901234567890',
+        readOnlyProvider: 'http://localhost:8545',
+        blockTime: 123,
+        requiredConfirmations: 1,
+        window: 'window',
+        locksmithHost: 'http://example.com',
+        onChange,
+      })
+
+      expect(web3ServiceHub).toHaveBeenCalledWith(
+        expect.objectContaining({
+          window: 'window',
+          web3Service,
+          onChange,
+        })
+      )
+    })
   })
+
   describe('retrieveChainData', () => {
     let fakeWalletService
     let fakeWeb3Service

@@ -7,6 +7,7 @@ import locksmithTransactions from './locksmithTransactions'
 import { processKeyPurchaseTransactions } from './purchaseKey'
 import { TRANSACTION_TYPES } from '../../constants'
 import ensureWalletReady from './ensureWalletReady'
+import web3ServiceHub from './web3ServiceHub'
 
 /**
  * @param {string} unlockAddress the ethereum address of the current Unlock contract
@@ -34,17 +35,16 @@ export function setupWeb3Service({
   requiredConfirmations,
   onChange,
   window,
-  locksmithHost,
 }) {
-  return new Web3Service({
+  const web3Service = new Web3Service({
     unlockAddress,
     readOnlyProvider,
     blockTime,
     requiredConfirmations,
-    onChange,
-    window,
-    locksmithHost,
   })
+  // start listening for transaction updates and errors
+  web3ServiceHub({ web3Service, onChange, window })
+  return web3Service
 }
 
 /**
