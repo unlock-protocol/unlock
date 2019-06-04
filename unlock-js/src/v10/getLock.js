@@ -1,5 +1,6 @@
 import utils from '../utils'
 import { UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
+import { getErc20BalanceForAddress } from '../erc20'
 
 /**
  * Refresh the lock's data.
@@ -23,12 +24,6 @@ export default async function(address) {
     publicLockVersion: parseInt,
   }
 
-  // Let's load its balance
-  const getBalance = async () => {
-    const balance = await this.getAddressBalance(address)
-    update.balance = balance
-  }
-
   // Let's load the current block to use to compare versions
   const getBlockNumber = async () => {
     const blockNumber = await this.provider.getBlockNumber()
@@ -41,9 +36,20 @@ export default async function(address) {
     const result = await contract.functions[`${attribute}()`]()
     update[attribute] = attributes[attribute](result) // We cast the value
   })
-  constantPromises.push(getBalance(), getBlockNumber())
+  constantPromises.push(getBlockNumber())
 
   await Promise.all(constantPromises)
+
+  if (update.tokenAddress === ZERO) {
+    update.balance = await this.getAddressBalance(address)
+  } else {
+    update.balance = await getErc20BalanceForAddress(
+      update.tokenAddress,
+      address,
+      this.provider
+    )
+  }
+
   // totalSupply was previously called outstandingKeys. In order to keep compatibility
   // we also assign it. This behavior will eventually be deprecated
   update.outstandingKeys = update.totalSupply
