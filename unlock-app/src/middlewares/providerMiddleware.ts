@@ -17,7 +17,8 @@ interface Provider {
   isUnlock?: boolean
 }
 
-function initializeProvider(provider: Provider, dispatch: any) {
+export function initializeProvider(provider: Provider, dispatch: any) {
+  // TODO: when UnlockProvider is enabled, this error should never happen.
   if (!provider) {
     dispatch(setError(Application.Fatal(FATAL_MISSING_PROVIDER)))
     return
@@ -41,7 +42,7 @@ function initializeProvider(provider: Provider, dispatch: any) {
   }
 }
 
-async function initializeUnlockProvider(
+export async function initializeUnlockProvider(
   action: Action,
   unlockProvider: any,
   dispatch: any
@@ -65,7 +66,7 @@ async function initializeUnlockProvider(
   }
 }
 
-const providerMiddleware = (config: any) => {
+export const providerMiddleware = (config: any) => {
   return ({ getState, dispatch }: { [key: string]: any }) => {
     return function(next: any) {
       // Initialize provider based on the one grabbed in the state. Fragile?
