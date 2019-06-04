@@ -3,15 +3,15 @@ const dotenv = require('dotenv')
 var path = require('path')
 const webpack = require('webpack')
 
-const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+const unlockEnv = process.env.UNLOCK_ENV
 const debug = process.env.DEBUG ? 1 : 0
 
 dotenv.config({
-  path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
+  path: path.resolve(__dirname, '..', `.env.${unlockEnv || 'dev'}.local`),
 })
 
 const requiredConfigVariables = {
-  unlockEnv,
+  unlockEnv: process.env.UNLOCK_ENV,
   paywallUrl: process.env.PAYWALL_URL,
 }
 
