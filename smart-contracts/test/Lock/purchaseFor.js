@@ -179,7 +179,7 @@ contract('Lock / purchaseFor', accounts => {
         await sleep(10000)
       })
 
-      it.only('should expand the validity by the default key duration', async () => {
+      it('should expand the validity by the default key duration', async () => {
         // Purchase a new one
         await locks['SHORT'].purchaseFor(accounts[4], {
           value: Units.convert('0.01', 'eth', 'wei'),
