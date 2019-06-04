@@ -8,7 +8,7 @@ export const SignupSuccess = () => (
   <div>
     <Heading>Sign Up</Heading>
     <Description>
-      You are now signed up! Go to{' '}
+      You are now signed in! Go to{' '}
       <Link href="/keychain">
         <a>your key chain</a>
       </Link>
