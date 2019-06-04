@@ -4,10 +4,20 @@ import {
   FATAL_MISSING_PROVIDER,
   FATAL_NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
-import { Application } from '../utils/Error'
+import { Application, LogIn } from '../utils/Error'
 import { Action } from '../unlockTypes' // eslint-disable-line
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../actions/user'
+import { setAccount } from '../actions/accounts'
 
-function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
+interface Provider {
+  enable?: () => any
+  isUnlock?: boolean
+}
+
+function initializeProvider(provider: Provider, dispatch: any) {
   if (!provider) {
     dispatch(setError(Application.Fatal(FATAL_MISSING_PROVIDER)))
     return
@@ -22,9 +32,36 @@ function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
       .catch(() =>
         dispatch(setError(Application.Fatal(FATAL_NOT_ENABLED_IN_PROVIDER)))
       )
+  } else if (provider.isUnlock) {
+    // This initialization is handled on receipt of GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
+    return
   } else {
     // Default case, provider doesn't have an enable method, so it must already be ready
     dispatch(providerReady())
+  }
+}
+
+async function initializeUnlockProvider(
+  action: Action,
+  unlockProvider: any,
+  dispatch: any
+) {
+  const { key, emailAddress, password } = action
+  try {
+    await unlockProvider.connect({ key, password })
+
+    const address = unlockProvider.wallet.address
+    dispatch(setAccount({ address }))
+    dispatch(setEncryptedPrivateKey(key, emailAddress))
+    dispatch(providerReady())
+  } catch (_) {
+    dispatch(
+      setError(
+        LogIn.Warning(
+          'Failed to decrypt private key. Check your password and try again.'
+        )
+      )
+    )
   }
 }
 
@@ -44,7 +81,10 @@ const providerMiddleware = (config: any) => {
             const provider = config.providers[action.provider]
             initializeProvider(provider, dispatch)
           }
+        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
+          initializeUnlockProvider(action, getState().provider, dispatch)
         }
+
         next(action)
       }
     }
