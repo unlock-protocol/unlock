@@ -95,6 +95,7 @@ module.exports = withTypescript(
         '/': { page: '/home' },
         '/paywall': { page: '/paywall' },
         '/demo': { page: '/demo' },
+        '/checkout': { page: '/checkout' },
       }
     },
   })
