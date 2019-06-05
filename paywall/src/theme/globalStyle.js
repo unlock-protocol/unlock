@@ -16,6 +16,7 @@ const globalStyle = `
     --dimgrey: #6a6a6a;
     --silver: #d8d8d8;
     --darkgrey: #4a4a4a;
+    --offblack: #7d7d7d;
     --slate: #333333;
     --link: #4d8be8;
     --green: #74ce63;
