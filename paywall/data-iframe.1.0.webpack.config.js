@@ -32,6 +32,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 
 module.exports = () => {
   return {
+    cache: false,
     mode: 'production',
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.js'),
