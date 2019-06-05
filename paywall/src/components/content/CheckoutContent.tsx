@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import Head from 'next/head'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
-import Checkout from '../checkout/Checkout'
+import Checkout, { CheckoutWrapper } from '../checkout/Checkout'
 import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
@@ -54,8 +54,10 @@ export default function CheckoutContent() {
   }
 
   let child: React.ReactNode
+  let bgColor = 'var(--offwhite)'
 
   if (requiredNetworkId !== network) {
+    bgColor = 'var(--lightgrey)'
     // display the "wrong network" error for users who are on an unexpected network
     child = (
       <Fragment>
@@ -85,6 +87,21 @@ export default function CheckoutContent() {
       </Fragment>
     )
   }
+  const Wrapper = () => (
+    <CheckoutWrapper
+      hideCheckout={hideCheckout}
+      bgColor={bgColor}
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
+      {child}
+    </CheckoutWrapper>
+  )
 
-  return <Greyout>{child}</Greyout>
+  return (
+    <Greyout onClick={hideCheckout}>
+      <Wrapper />
+    </Greyout>
+  )
 }

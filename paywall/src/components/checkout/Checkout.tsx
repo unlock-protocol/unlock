@@ -5,6 +5,7 @@ import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
+import Media from '../../theme/media'
 
 interface Props {
   locks: Locks
@@ -12,6 +13,35 @@ interface Props {
   account: Account | null
   purchase: (...args: any[]) => any
   hideCheckout: (...args: any[]) => any
+}
+
+interface WrapperProps {
+  children: any
+  hideCheckout: (...args: any[]) => any
+  bgColor: string
+  onClick: (event: any) => void
+}
+
+interface WrapperStyleProps {
+  bgColor: string
+}
+
+export const CheckoutWrapper = ({
+  children,
+  hideCheckout,
+  bgColor = 'var(--offwhite)',
+  onClick = () => {},
+}: WrapperProps) => {
+  return (
+    <Wrapper bgColor={bgColor} onClick={onClick}>
+      <CloseButton
+        backgroundColor="var(--lightgrey)"
+        fillColor="var(--grey)"
+        onClick={hideCheckout}
+      />
+      {children}
+    </Wrapper>
+  )
 }
 
 export const Checkout = ({
@@ -27,16 +57,11 @@ export const Checkout = ({
   )
 
   return (
-    <Wrapper>
+    <React.Fragment>
       <Header>
         <Title>
           {config.icon && <Logo src={config.icon} />}
-          Unlocked
-          <CloseButton
-            backgroundColor="var(--lightgrey)"
-            fillColor="var(--grey)"
-            onClick={hideCheckout}
-          />
+          <UnlockedText>Unlocked</UnlockedText>
         </Title>
         <p>{config.callToAction.default}</p>
       </Header>
@@ -60,23 +85,33 @@ export const Checkout = ({
         <RoundedLogo />
         Powered by Unlock
       </Footer>
-    </Wrapper>
+    </React.Fragment>
   )
 }
 
 export default Checkout
 
 const CloseButton = styled(Close)`
-  display: inline-flex;
-  float: right;
+  position: absolute;
+  top: 24px;
+  right: 24px;
 `
 
 const Wrapper = styled.section`
-  max-width: 1000px;
+  max-width: 800px;
   padding: 10px 40px;
   display: grid;
-  background-color: var(--offwhite);
+  background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+`
+
+const UnlockedText = styled.span`
+  padding-left: 10px;
+  ${Media.phone`
+    padding-left: 0;
+  `}
 `
 
 const Header = styled.header`
