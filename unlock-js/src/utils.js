@@ -4,6 +4,8 @@ import { ethers } from 'ethers'
 // or to migrate to a totally different library and have a single point of modification
 export default {
   toWei: (value, units) => ethers.utils.parseUnits(value, units),
+  // This converts a string representation from a value to a number of units, based on the number of decimals passed in
+  toDecimal: (value, decimals) => ethers.utils.parseUnits(value, decimals),
   hexlify: ethers.utils.hexlify,
   hexStripZeros: ethers.utils.hexStripZeros,
   bigNumberify: ethers.utils.bigNumberify,
@@ -15,6 +17,12 @@ export default {
   fromWei: (num, units) => {
     return ethers.utils
       .formatUnits(ethers.utils.bigNumberify(num), units)
+      .replace(/\.0$/, '')
+  },
+  // This converts a string representation from a unit value to a higher base
+  fromDecimal: (num, decimals) => {
+    return ethers.utils
+      .formatUnits(ethers.utils.bigNumberify(num), decimals)
       .replace(/\.0$/, '')
   },
   isInfiniteKeys: value => {

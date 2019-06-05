@@ -45,7 +45,8 @@
     "@types/sequelize": "^4.27.44",
     "@types/stripe": "^6.25.10",
     "@types/supertest": "^2.0.7",
-    "@unlock-protocol/unlock-js": "0.1.2",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@unlock-protocol/unlock-js": "0.2.2",
     "aws-sdk": "^2.463.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
@@ -56,6 +57,7 @@
     "ethers": "^4.0.26",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
+    "jest": "^24.8.0",
     "jsontokens": "^1.0.0",
     "lodash.isequal": "^4.5.0",
     "multer": "^1.4.1",
@@ -71,7 +73,9 @@
     "sequelize-typescript": "^0.6.10",
     "stripe": "^7.0.0",
     "supertest": "^4.0.2",
-    "truffle-hdwallet-provider": "^1.0.9",
+    "truffle-hdwallet-provider": "^1.0.10",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.4.5",
     "winston": "^3.1.0"
   },
   "devDependencies": {

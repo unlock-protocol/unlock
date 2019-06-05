@@ -23,4 +23,7 @@ module.exports = {
   FREE: Object.assign({}, publicLock, {
     keyPrice: new BigNumber(0),
   }),
+  SHORT: Object.assign({}, publicLock, {
+    expirationDuration: new BigNumber(5), // 5 seconds
+  }),
 }

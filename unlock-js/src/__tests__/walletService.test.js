@@ -12,7 +12,7 @@ import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 

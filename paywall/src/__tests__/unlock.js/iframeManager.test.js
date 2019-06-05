@@ -18,12 +18,17 @@ describe('iframeManager', () => {
     expect(iframe.className).toBe('unlock start')
   })
 
-  it('adds the iframe to the document every 500 ms', () => {
-    expect.assertions(3)
+  it('should try to add the iframe to the document every 500 ms', () => {
+    expect.assertions(4)
+
     // unfortunately, this function does not exist in js-dom
     window.document.body.insertAdjacentElement = jest.fn()
 
     const iframe = makeIframe(window, 'http://example.com')
+
+    let doesItExist = false
+
+    window.document.querySelector = () => (doesItExist ? iframe : null)
 
     addIframeToDocument(window, iframe)
 
@@ -32,6 +37,10 @@ describe('iframeManager', () => {
       iframe
     )
     expect(window.document.body.insertAdjacentElement).toHaveBeenCalledTimes(1)
+    doesItExist = false // someone removed it from the DOM, so we should re-add it
+    jest.runOnlyPendingTimers()
+    expect(window.document.body.insertAdjacentElement).toHaveBeenCalledTimes(2)
+    doesItExist = true // no one removed it
     jest.runOnlyPendingTimers()
     expect(window.document.body.insertAdjacentElement).toHaveBeenCalledTimes(2)
   })

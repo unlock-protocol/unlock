@@ -298,6 +298,30 @@ describe('localStorage cache', () => {
       )
     })
 
+    it('should save a new sub-value if the primary value does not exist', async () => {
+      expect.assertions(1)
+
+      const key3 = {
+        thing3: 'hi3',
+      }
+
+      await merge({
+        window: fakeWindow,
+        networkId: 123,
+        type: 'keys',
+        subType: 'key3',
+        value: key3,
+      })
+
+      expect(fakeWindow.storage[storageId(123, nullAccount)]).toEqual(
+        JSON.stringify({
+          keys: {
+            key3,
+          },
+        })
+      )
+    })
+
     it('saves a new sub-value, non-account-specific', async () => {
       expect.assertions(1)
 

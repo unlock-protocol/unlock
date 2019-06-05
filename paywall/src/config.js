@@ -29,6 +29,7 @@ export default function configure(
 ) {
   const isServer = typeof window === 'undefined'
   const isInIframe = inIframe(useWindow)
+  const debugMode = runtimeConfig.debugMode
 
   const env = runtimeConfig.unlockEnv
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
@@ -131,5 +132,6 @@ export default function configure(
     unlockAddress,
     services,
     supportedProviders,
+    debugMode,
   }
 }

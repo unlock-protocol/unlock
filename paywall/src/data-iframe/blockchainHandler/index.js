@@ -4,9 +4,8 @@ import { setAccount, setAccountBalance, pollForAccountChange } from './account'
 import getLocks from './getLocks'
 import getKeys from './getKeys'
 import locksmithTransactions from './locksmithTransactions'
-import { processKeyPurchaseTransactions } from './purchaseKey'
-import { TRANSACTION_TYPES } from '../../constants'
 import ensureWalletReady from './ensureWalletReady'
+import web3ServiceHub from './web3ServiceHub'
 
 /**
  * @param {string} unlockAddress the ethereum address of the current Unlock contract
@@ -15,7 +14,9 @@ import ensureWalletReady from './ensureWalletReady'
  */
 export function setupWalletService({ unlockAddress, provider }) {
   const walletService = new WalletService({ unlockAddress })
-  walletService.connect(provider)
+  walletService.connect(provider).then(() => {
+    walletService.getAccount()
+  })
 
   return walletService
 }
@@ -30,48 +31,22 @@ export function setupWeb3Service({
   readOnlyProvider,
   blockTime,
   requiredConfirmations,
+  onChange,
+  window,
+  locksmithHost,
 }) {
-  return new Web3Service({
+  const web3Service = new Web3Service({
     unlockAddress,
     readOnlyProvider,
     blockTime,
     requiredConfirmations,
+    onChange,
+    window,
+    locksmithHost,
   })
-}
-
-/**
- * This is used to create the callback that will be used by the postOfficeListener to respond to
- * POST_MESSAGE_CONFIG from the main window. This function assumes that the config was
- * already validated by the postOffice
- *
- * @param {web3Service} web3Service used to retrieve locks, and keys
- * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
- * @param {string} locksmithHost the endpoint for locksmith
- * @param {Function} onChange the change callback, which is used by the data iframe to cache data and pass it to the
- *                            main window
- * @param {number} requiredConfirmations the minimum number of confirmations needed to consider a key purchased
- * @returns {Function} a callback that accepts the paywall config, and retrieves all chain data in response
- */
-export function getSetConfigCallback({
-  web3Service,
-  walletService,
-  locksmithHost,
-  onChange,
-  window,
-  requiredConfirmations,
-}) {
-  return config => {
-    const locksToRetrieve = Object.keys(config.locks)
-    retrieveChainData({
-      locksToRetrieve,
-      web3Service,
-      walletService,
-      window,
-      locksmithHost,
-      onChange,
-      requiredConfirmations,
-    })
-  }
+  // start listening for transaction updates and errors
+  web3ServiceHub({ web3Service, onChange, window })
+  return web3Service
 }
 
 /**
@@ -90,33 +65,20 @@ export async function retrieveChainData({
   window,
   locksmithHost,
   onChange,
-  requiredConfirmations,
 }) {
-  const [locks, keys, transactions] = await Promise.all([
-    getLocks({ locksToRetrieve, web3Service }),
+  onChange({ locks: await getLocks({ locksToRetrieve, web3Service }) })
+
+  ensureWalletReady(walletService)
+  const [keys] = await Promise.all([
     getKeys({ walletService, locks: locksToRetrieve, web3Service }),
-    locksmithTransactions(window, locksmithHost, web3Service, walletService),
+    locksmithTransactions({
+      window,
+      locksmithHost,
+      web3Service,
+      walletService,
+    }),
   ])
-  const update = async (transaction, key) => {
-    onChange({ transaction, key })
-  }
-  Object.values(transactions).forEach(transaction => {
-    if (transaction.type === TRANSACTION_TYPES.KEY_PURCHASE) {
-      processKeyPurchaseTransactions({
-        walletService,
-        web3Service,
-        startingTransactions: transactions,
-        startingKey: keys[transaction.lock],
-        lockAddress: transaction.lock,
-        requiredConfirmations,
-        walletAction: () => onChange({ walletModal: true }),
-        update,
-      }).catch(error => {
-        onChange({ error })
-      })
-    }
-  })
-  return { locks, keys, transactions }
+  return { keys }
 }
 
 /**
@@ -130,6 +92,9 @@ export async function listenForAccountNetworkChanges({
   web3Service,
   onChange,
 }) {
+  walletService.on('account.changed', address => {
+    setAccount(address)
+  })
   walletService.on('network.changed', id => {
     setNetwork(id)
     onChange({ network: id })

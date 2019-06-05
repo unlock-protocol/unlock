@@ -1,11 +1,12 @@
 import { EventEmitter } from 'events'
 import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
-import storageMiddleware from '../../middlewares/storageMiddleware'
+import storageMiddleware, {
+  changePassword,
+} from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
-import { storageError, STORAGE_ERROR } from '../../actions/storage'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
-import { SIGNED_DATA } from '../../actions/signature'
+import { SIGNED_DATA, SIGN_DATA } from '../../actions/signature'
 import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
@@ -13,8 +14,13 @@ import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
+import Error from '../../utils/Error'
+import { setError } from '../../actions/error'
+
+const { Storage } = Error
 
 /**
  * This is a "fake" middleware caller
@@ -79,6 +85,9 @@ describe('Storage middleware', () => {
         [lock.address]: lock,
       },
       keys: {},
+      userDetails: {
+        email: 'johnny@quest.biz',
+      },
     }
     mockStorageService = new MockStorageService()
   })
@@ -110,10 +119,10 @@ describe('Storage middleware', () => {
     it('should handle failure.storeTransaction events', () => {
       expect.assertions(1)
       const { store } = create()
-      mockStorageService.emit(failure.storeTransaction, 'You done goofed.')
+      mockStorageService.emit(failure.storeTransaction, 'No storage for you.')
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('You done goofed.')
+        setError(Storage.Diagnostic('Failed to store transaction.'))
       )
     })
   })
@@ -175,7 +184,7 @@ describe('Storage middleware', () => {
 
       expect(store.dispatch).toHaveBeenNthCalledWith(
         1,
-        storageError('API On Vacation')
+        setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
     })
@@ -213,13 +222,13 @@ describe('Storage middleware', () => {
       mockStorageService.emit(failure.lockLookUp, 'Not enough vespene gas.')
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('Not enough vespene gas.')
+        setError(Storage.Diagnostic('Could not look up lock details.'))
       )
     })
   })
 
   describe('handling SIGNED_DATA', () => {
-    it('should not do anything if the signed message is not for a lock', () => {
+    it('should not do anything if the signed message is not for a lock or user', () => {
       expect.assertions(2)
       const data = 'data'
       const signature = 'signature'
@@ -232,7 +241,7 @@ describe('Storage middleware', () => {
       expect(next).toHaveBeenCalledTimes(1)
     })
 
-    it('should call storageService', () => {
+    it('should call storageService for lock details', () => {
       expect.assertions(2)
       const data = {
         message: {
@@ -252,6 +261,27 @@ describe('Storage middleware', () => {
       expect(next).toHaveBeenCalledTimes(1)
     })
 
+    it('should call storageService for user updates', () => {
+      expect.assertions(2)
+      const data = {
+        message: {
+          user: {},
+        },
+      }
+      const signature = 'signature'
+      const { next, invoke } = create()
+      const action = { type: SIGNED_DATA, data, signature }
+      mockStorageService.updateUser = jest.fn()
+
+      invoke(action)
+      expect(mockStorageService.updateUser).toHaveBeenCalledWith(
+        expect.any(String),
+        data,
+        signature
+      )
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+
     it('should handle failure events', () => {
       expect.assertions(1)
       const { store } = create()
@@ -262,7 +292,7 @@ describe('Storage middleware', () => {
       })
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError('Not enough vespene gas.')
+        setError(Storage.Warning('Could not store some lock metadata.'))
       )
     })
   })
@@ -357,7 +387,7 @@ describe('Storage middleware', () => {
       )
 
       expect(store.dispatch).toHaveBeenCalledWith(
-        storageError("I don't really feel like it.")
+        setError(Storage.Warning('Could not create this user account.'))
       )
     })
   })
@@ -408,11 +438,77 @@ describe('Storage middleware', () => {
         error: errorMessage,
       })
 
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: STORAGE_ERROR,
-        error: errorMessage,
-      })
+      expect(store.dispatch).toHaveBeenCalledWith(
+        setError(Storage.Warning('Could not find this user account.'))
+      )
       expect(store.dispatch).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('CHANGE_PASSWORD', () => {
+    let passwordEncryptedPrivateKey
+    let publicKey
+    const oldPassword = 'guest'
+    const emailAddress = 'guest@temp.com'
+    beforeEach(async () => {
+      const info = await createAccountAndPasswordEncryptKey(oldPassword)
+      publicKey = info.address
+      passwordEncryptedPrivateKey = info.passwordEncryptedPrivateKey
+    })
+
+    it('should dispatch a new user object to be signed', async () => {
+      expect.assertions(1)
+      const dispatch = jest.fn()
+
+      await changePassword({
+        oldPassword,
+        newPassword: 'visitor',
+        passwordEncryptedPrivateKey,
+        publicKey,
+        emailAddress,
+        dispatch,
+      })
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SIGN_DATA,
+        })
+      )
+    })
+  })
+
+  describe('updateUser', () => {
+    it('always dispatches new user details on success', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const user = {
+        passwordEncryptedPrivateKey: 'BEGIN ROT13 DATA ===',
+      }
+      const emailAddress = 'race@bannon.io'
+
+      mockStorageService.emit(success.updateUser, { user, emailAddress })
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
+      )
+    })
+
+    it('should dispatch a storageError on failure', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      const error = 'not enough vespene gas.'
+      mockStorageService.emit(failure.updateUser, { error })
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          error: expect.objectContaining({
+            kind: 'Storage',
+            level: 'Warning',
+          }),
+        })
+      )
     })
   })
 })

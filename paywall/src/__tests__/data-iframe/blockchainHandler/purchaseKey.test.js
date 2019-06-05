@@ -55,10 +55,11 @@ describe('blockchainHandler purchaseKey', () => {
     let fakeWalletService
     let fakeWeb3Service
     let newKeys
+    let fakeWindow
 
     function assertOnUpdates(expected, done) {
       let expectedIndex = 0
-      return (newTransaction, newKey) => {
+      return ({ transaction: newTransaction, key: newKey }) => {
         const [expectedTransaction, expectedKey, desc] = expected[expectedIndex]
         try {
           expect(newTransaction).toEqual(expectedTransaction)
@@ -92,8 +93,25 @@ describe('blockchainHandler purchaseKey', () => {
         removeListener: type => {
           delete fakeWeb3Service.handlers[type]
         },
+        getTransaction: jest.fn(),
         once: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
         getKeyByLockForOwner: jest.fn(lock => newKeys[lock]),
+      }
+      fakeWindow = {
+        storage: {},
+        fetch: jest.fn(),
+        localStorage: {
+          getItem: jest.fn(key => fakeWindow.storage[key]),
+          setItem: jest.fn((key, value) => {
+            if (typeof value !== 'string') {
+              throw new Error('localStorage only supports strings')
+            }
+            fakeWindow.storage[key] = value
+          }),
+          removeItem: jest.fn(key => {
+            delete fakeWindow.storage[key]
+          }),
+        },
       }
     })
 
@@ -145,6 +163,7 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       })
 
       // wait for the transaction.once handler to be called before we call it
@@ -189,6 +208,7 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       }).catch(e => {
         expect(e).toBeInstanceOf(Error)
         done()
@@ -207,108 +227,8 @@ describe('blockchainHandler purchaseKey', () => {
       fakeWalletService.handlers.error(new Error('fail'))
     })
 
-    it('continues to updates after submitted', async done => {
-      expect.assertions(4)
-
-      setNetwork(1)
-      setAccount('account')
-      const transactions = {}
-      const key = {
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-        expiration: 0,
-      }
-      newKeys = {
-        lock: {
-          id: 'lock-account',
-          lock: 'lock',
-          owner: 'account',
-          expiration: 0,
-        },
-      }
-      // expected values to be sent to the updater
-      const submittedTransaction = {
-        blockNumber: Number.MAX_SAFE_INTEGER,
-        confirmations: 0,
-        from: 'account',
-        hash: 'hash',
-        input: 'input',
-        key: 'lock-account',
-        lock: 'lock',
-        network: 1,
-        status: 'submitted',
-        to: 'lock',
-        type: TRANSACTION_TYPES.KEY_PURCHASE,
-      }
-      const pendingTransaction = {
-        ...submittedTransaction,
-        status: 'pending',
-        blockNumber: 123,
-      }
-      const expected = [
-        [
-          // submitted transaction
-          submittedTransaction,
-          newKeys.lock,
-          'submitted transaction',
-        ],
-        [
-          // update
-          pendingTransaction,
-          newKeys.lock,
-          'pending transaction',
-        ],
-      ]
-      const update = assertOnUpdates(expected, done)
-
-      processKeyPurchaseTransactions({
-        walletService: fakeWalletService,
-        web3Service: fakeWeb3Service,
-        startingTransactions: transactions,
-        startingKey: key,
-        lockAddress: 'lock',
-        requiredConfirmations: 3,
-        update,
-      })
-
-      // wait for the transaction.once handler to be called before we call it
-      await new Promise(resolve => {
-        const interval = setInterval(() => {
-          if (fakeWalletService.handlers['transaction.new']) {
-            resolve()
-            clearInterval(interval)
-          }
-        })
-      })
-
-      fakeWalletService.handlers['transaction.new'](
-        'hash' /* transaction hash */,
-        'account' /* from */,
-        'lock' /* to */,
-        'input' /* input */,
-        TRANSACTION_TYPES.KEY_PURCHASE /* type */,
-        'submitted' /* status */
-      )
-
-      // wait for the transaction.once handler to be called before we call it
-      await new Promise(resolve => {
-        const interval = setInterval(() => {
-          if (fakeWeb3Service.handlers['transaction.updated']) {
-            resolve()
-            clearInterval(interval)
-          }
-        })
-      })
-
-      fakeWeb3Service.handlers['transaction.updated']('hash', {
-        status: 'pending',
-        blockNumber: 123,
-      })
-    })
-
-    it('skips submitted, goes straight to updates if transaction exists', async done => {
-      expect.assertions(2)
+    it('skips submitted, starts polling if transaction exists', async () => {
+      expect.assertions(1)
 
       setNetwork(1)
       setAccount('account')
@@ -337,23 +257,12 @@ describe('blockchainHandler purchaseKey', () => {
       newKeys = {
         lock: key,
       }
-      // expected values to be sent to the updater
-      const pendingTransaction = {
-        ...submittedTransaction,
-        status: 'pending',
-        blockNumber: 123,
+      const update = () => {
+        expect(false).toBe(true) // this should not be called
       }
-      const expected = [
-        [
-          // update
-          pendingTransaction,
-          newKeys.lock,
-          'pending transaction',
-        ],
-      ]
-      const update = assertOnUpdates(expected, done)
+      fakeWeb3Service.getTransaction = jest.fn()
 
-      processKeyPurchaseTransactions({
+      await processKeyPurchaseTransactions({
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
@@ -361,26 +270,14 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       })
 
-      // wait for the transaction.once handler to be called before we call it
-      await new Promise(resolve => {
-        const interval = setInterval(() => {
-          if (fakeWeb3Service.handlers['transaction.updated']) {
-            resolve()
-            clearInterval(interval)
-          }
-        })
-      })
-
-      fakeWeb3Service.handlers['transaction.updated']('hash', {
-        status: 'pending',
-        blockNumber: 123,
-      })
+      expect(fakeWeb3Service.getTransaction).toHaveBeenCalledWith('hash')
     })
 
-    it('works with confirming transaction', async done => {
-      expect.assertions(2)
+    it('works with confirming transaction', async () => {
+      expect.assertions(1)
 
       setNetwork(1)
       setAccount('account')
@@ -407,24 +304,12 @@ describe('blockchainHandler purchaseKey', () => {
       const transactions = {
         hash: submittedTransaction,
       }
-      // expected values to be sent to the updater
-      const confirmingTransaction = {
-        ...submittedTransaction,
-        status: 'mined',
-        confirmations: 1,
-        blockNumber: 123,
+      const update = () => {
+        expect(false).toBe(true) // this should not be called
       }
-      const expected = [
-        [
-          // update
-          confirmingTransaction,
-          key,
-          'confirming transaction',
-        ],
-      ]
-      const update = assertOnUpdates(expected, done)
+      fakeWeb3Service.getTransaction = jest.fn()
 
-      processKeyPurchaseTransactions({
+      await processKeyPurchaseTransactions({
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         startingTransactions: transactions,
@@ -432,83 +317,10 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       })
 
-      // wait for the transaction.once handler to be called before we call it
-      await new Promise(resolve => {
-        const interval = setInterval(() => {
-          if (fakeWeb3Service.handlers['transaction.updated']) {
-            resolve()
-            clearInterval(interval)
-          }
-        })
-      })
-
-      fakeWeb3Service.handlers['transaction.updated']('hash', {
-        status: 'mined',
-        confirmations: 1,
-        blockNumber: 123,
-      })
-    })
-
-    it('throws on error in listening for confirming transaction', async done => {
-      expect.assertions(2)
-
-      setNetwork(1)
-      setAccount('account')
-      const submittedTransaction = {
-        blockNumber: Number.MAX_SAFE_INTEGER,
-        confirmations: 0,
-        from: 'account',
-        hash: 'hash',
-        input: 'input',
-        key: 'lock-account',
-        lock: 'lock',
-        network: 1,
-        status: 'submitted',
-        to: 'lock',
-        type: TRANSACTION_TYPES.KEY_PURCHASE,
-      }
-      const key = {
-        expiration: new Date().getTime() / 1000 + 1000,
-        id: 'lock-account',
-        lock: 'lock',
-        owner: 'account',
-      }
-      const transactions = {
-        hash: submittedTransaction,
-      }
-      const update = jest.fn()
-
-      const listener = fakeWalletService.removeListener
-      fakeWalletService.removeListener = jest.fn((...args) => {
-        listener(...args)
-        expect(fakeWalletService.removeListener).toHaveBeenCalled()
-        done()
-      })
-      processKeyPurchaseTransactions({
-        walletService: fakeWalletService,
-        web3Service: fakeWeb3Service,
-        startingTransactions: transactions,
-        startingKey: key,
-        lockAddress: 'lock',
-        requiredConfirmations: 3,
-        update,
-      }).catch(e => {
-        expect(e).toBeInstanceOf(Error)
-      })
-
-      // wait for the transaction.once handler to be called before we call it
-      await new Promise(resolve => {
-        const interval = setInterval(() => {
-          if (fakeWeb3Service.handlers.error) {
-            resolve()
-            clearInterval(interval)
-          }
-        })
-      })
-
-      fakeWeb3Service.handlers.error(new Error('fail'))
+      expect(fakeWeb3Service.getTransaction).toHaveBeenCalledWith('hash')
     })
 
     it('works with confirmed transaction', async () => {
@@ -552,6 +364,7 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       })
 
       expect(update).not.toHaveBeenCalled()
@@ -620,6 +433,7 @@ describe('blockchainHandler purchaseKey', () => {
         lockAddress: 'lock',
         requiredConfirmations: 3,
         update,
+        window: fakeWindow,
       })
 
       // wait for the transaction.once handler to be called before we call it

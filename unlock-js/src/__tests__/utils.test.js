@@ -14,6 +14,32 @@ describe('ethers utils', () => {
     )
   })
 
+  describe('toDecimal', () => {
+    it('supports 18 decimals - which is the most frequent erc20', () => {
+      expect.assertions(2)
+
+      expect(ethersUtils.toDecimal('1', 18)).toEqual(
+        utils.bigNumberify('1000000000000000000')
+      )
+
+      expect(ethersUtils.toDecimal('100', 18)).toEqual(
+        utils.bigNumberify('100000000000000000000')
+      )
+    })
+
+    it('supports 0 decimal', () => {
+      expect.assertions(2)
+
+      expect(ethersUtils.toDecimal('1000', 0)).toEqual(
+        utils.bigNumberify('1000')
+      )
+
+      expect(ethersUtils.toDecimal('1000000000000', 0)).toEqual(
+        utils.bigNumberify('1000000000000')
+      )
+    })
+  })
+
   it('hexToNumberString', () => {
     expect.assertions(2)
 
@@ -37,6 +63,26 @@ describe('ethers utils', () => {
     )
 
     expect(ethersUtils.fromWei('100000000', 'ether')).toEqual('0.0000000001')
+  })
+
+  describe('fromDecimal', () => {
+    it('should support 18 decimals', () => {
+      expect.assertions(2)
+
+      expect(ethersUtils.fromDecimal('1000000000000000000000', 18)).toEqual(
+        '1000'
+      )
+
+      expect(ethersUtils.fromDecimal('100000000', 18)).toEqual('0.0000000001')
+    })
+
+    it('should support 0 decimals', () => {
+      expect.assertions(2)
+
+      expect(ethersUtils.fromDecimal('1000', 0)).toEqual('1000')
+
+      expect(ethersUtils.fromDecimal('100000000', 0)).toEqual('100000000')
+    })
   })
 
   it('isInfiniteKeys', () => {

@@ -1,8 +1,8 @@
 import { enable } from './config'
-import { mainWindowPostOffice, setHandler } from '../utils/postOffice'
+import { mainWindowPostOffice } from '../utils/postOffice'
 import {
-  POST_MESSAGE_READY,
   POST_MESSAGE_WEB3,
+  POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
 } from './constants'
 
@@ -16,10 +16,21 @@ let hasWeb3 = true
  * @param {string} origin the iframe element's URL origin
  */
 export default function web3Proxy(window, iframe, origin) {
-  mainWindowPostOffice(window, iframe, origin)
+  const { addHandler } = mainWindowPostOffice(
+    window,
+    iframe,
+    origin,
+    'web3 proxy',
+    'Web3ProxyProvider'
+  )
+  // use sendAsync if available, otherwise we will use send
+  const send =
+    window.web3 &&
+    window.web3.currentProvider &&
+    (window.web3.currentProvider.sendAsync || window.web3.currentProvider.send)
 
   // handler for the actual web3 calls
-  setHandler(POST_MESSAGE_WEB3, (payload, respond) => {
+  addHandler(POST_MESSAGE_WEB3, (payload, respond) => {
     if (!hasWeb3) {
       return respond(POST_MESSAGE_WEB3, {
         id,
@@ -43,7 +54,9 @@ export default function web3Proxy(window, iframe, origin) {
     }
 
     const { method, params, id } = payload
-    window.web3.currentProvider.send(
+    // we use call to bind the call to the current provider
+    send.call(
+      window.web3.currentProvider,
       {
         method,
         params,
@@ -59,7 +72,7 @@ export default function web3Proxy(window, iframe, origin) {
   // initialize, we do this once the iframe is ready to receive information on the wallet
   // we need to tell the iframe if the wallet is metamask
   // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
-  setHandler(POST_MESSAGE_READY, async (_, respond) => {
+  addHandler(POST_MESSAGE_READY_WEB3, async (_, respond) => {
     const isMetamask = !!(
       window.web3 &&
       window.web3.currentProvider &&

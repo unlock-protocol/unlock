@@ -1,8 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-import {
-  getAccountFromPrivateKey,
-  WalletService,
-} from '@unlock-protocol/unlock-js'
+import { WalletService } from '@unlock-protocol/unlock-js'
 
 import {
   CREATE_LOCK,
@@ -21,20 +18,17 @@ import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
+import { Application, Transaction } from '../utils/Error'
+
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
-  FAILED_TO_DECRYPT_KEY,
 } from '../errors'
 import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
-import {
-  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
-} from '../actions/user'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -50,7 +44,7 @@ const walletMiddleware = config => {
      */
     const ensureReadyBefore = callback => {
       if (!walletService.ready) {
-        return dispatch(setError(FATAL_NO_USER_ACCOUNT))
+        return dispatch(setError(Application.Fatal(FATAL_NO_USER_ACCOUNT)))
       }
       return callback()
     }
@@ -126,10 +120,14 @@ const walletMiddleware = config => {
         // delete the lock
         dispatch(deleteLock(transaction.lock))
         return dispatch(
-          setError('Failed to create lock. Did you decline the transaction?')
+          setError(
+            Transaction.Warning(
+              'Failed to create lock. Did you decline the transaction?'
+            )
+          )
         )
       }
-      dispatch(setError(error.message))
+      dispatch(setError(Transaction.Warning(error.message)))
     })
 
     /**
@@ -146,20 +144,24 @@ const walletMiddleware = config => {
           ? ETHEREUM_NETWORKS_NAMES[networkId][0]
           : 'Unknown Network'
         return dispatch(
-          setError(FATAL_WRONG_NETWORK, {
-            currentNetwork: currentNetwork,
-            requiredNetworkId: config.requiredNetworkId,
-          })
+          setError(
+            Application.Fatal(FATAL_WRONG_NETWORK, {
+              currentNetwork,
+              requiredNetworkId: config.requiredNetworkId,
+            })
+          )
         )
       }
 
       // Check if the smart contract exists
       walletService.isUnlockContractDeployed((error, isDeployed) => {
         if (error) {
-          return dispatch(setError(error.message))
+          return dispatch(setError(Application.Fatal(error.message)))
         }
         if (!isDeployed) {
-          return dispatch(setError(FATAL_NON_DEPLOYED_CONTRACT))
+          return dispatch(
+            setError(Application.Fatal(FATAL_NON_DEPLOYED_CONTRACT))
+          )
         }
         // We need a new account!
         return walletService.getAccount(true /* createIfNone */)
@@ -215,19 +217,6 @@ const walletMiddleware = config => {
               dispatch(signedData(action.data, signature))
             }
           )
-        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
-          const { key, emailAddress, password } = action
-          // TODO: How will this interact with unlock-provider?
-          getAccountFromPrivateKey(key, password)
-            .then(wallet => {
-              const address = wallet.signingKey.address
-              dispatch(setAccount({ address }))
-              dispatch(setEncryptedPrivateKey(key, emailAddress))
-            })
-            .catch(error => {
-              // handle error here
-              dispatch(setError(FAILED_TO_DECRYPT_KEY, error))
-            })
         }
 
         next(action)
