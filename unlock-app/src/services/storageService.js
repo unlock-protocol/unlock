@@ -196,7 +196,7 @@ export class StorageService extends EventEmitter {
         user,
         opts
       )
-      this.emit(success.updateUser, emailAddress)
+      this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
       this.emit(failure.updateUser, { emailAddress, error })
     }

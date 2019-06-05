@@ -347,8 +347,8 @@ describe('StorageService', () => {
         axios.put.mockReturnValue()
         storageService.updateUser('hello@unlock-protocol.com', user, null)
 
-        storageService.on(success.updateUser, lastEmail => {
-          expect(lastEmail).toBe('hello@unlock-protocol.com')
+        storageService.on(success.updateUser, ({ emailAddress }) => {
+          expect(emailAddress).toBe('hello@unlock-protocol.com')
           done()
         })
 
