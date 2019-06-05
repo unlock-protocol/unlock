@@ -5,6 +5,7 @@ import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
+import Media from '../../theme/media'
 
 interface Props {
   locks: Locks
@@ -61,11 +62,6 @@ export const Checkout = ({
         <Title>
           {config.icon && <Logo src={config.icon} />}
           <UnlockedText>Unlocked</UnlockedText>
-          <CloseButton
-            backgroundColor="var(--lightgrey)"
-            fillColor="var(--grey)"
-            onClick={hideCheckout}
-          />
         </Title>
         <p>{config.callToAction.default}</p>
       </Header>
@@ -96,8 +92,9 @@ export const Checkout = ({
 export default Checkout
 
 const CloseButton = styled(Close)`
-  display: inline-flex;
-  float: right;
+  position: absolute;
+  top: 24px;
+  right: 24px;
 `
 
 const Wrapper = styled.section`
@@ -107,6 +104,7 @@ const Wrapper = styled.section`
   background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;
+  position: relative;
 `
 
 const UnlockedText = styled.span`
