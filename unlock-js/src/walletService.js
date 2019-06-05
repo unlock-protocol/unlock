@@ -142,10 +142,18 @@ export default class WalletService extends UnlockService {
    * @param {string} keyPrice
    * @param {string} data
    * @param {string} account
+   * @param {string} erc20Address
    */
-  async purchaseKey(lock, owner, keyPrice, account, data = '') {
+  async purchaseKey(lock, owner, keyPrice, account, data = '', erc20Address) {
     const version = await this.lockContractAbiVersion(lock)
-    return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
+    return version.purchaseKey.bind(this)(
+      lock,
+      owner,
+      keyPrice,
+      account,
+      data,
+      erc20Address
+    )
   }
 
   /**
