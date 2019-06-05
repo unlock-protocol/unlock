@@ -11,6 +11,8 @@ import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
 
+const supportedVersions = [v0, v01, v02, v10]
+
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 
@@ -445,7 +447,6 @@ describe('WalletService (ethers)', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    const supportedVersions = [v0, v01, v02, v10]
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
