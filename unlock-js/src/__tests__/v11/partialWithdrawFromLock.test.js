@@ -31,7 +31,7 @@ describe('v11', () => {
 
       const callMethodData = prepContract({
         contract: UnlockV11.PublicLock,
-        functionName: 'partialWithdraw',
+        functionName: 'withdraw',
         signature: 'uint256',
         nock,
       })

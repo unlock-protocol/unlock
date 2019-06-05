@@ -69,7 +69,7 @@ describe('Web3Service', () => {
           '1000000000',
           '1',
         ])
-      } else if (version === 'v10') {
+      } else if (version === 'v11') {
         data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
           '1000', // _expirationDuration
           currencyAddress, // _tokenAddress
@@ -111,7 +111,7 @@ describe('Web3Service', () => {
     it('should return the right transaction type on withdrawals', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const data = getEncoder(UnlockVersion.PublicLock.abi, 'withdraw')([])
+      const data = getEncoder(UnlockVersion.PublicLock.abi, 'withdraw')([1])
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
       ).toBe(TransactionTypes.WITHDRAWAL)
@@ -359,7 +359,9 @@ describe('Web3Service', () => {
               address: lockAddress,
               data: encoder.encode(['address', 'uint256'], [unlockAddress, 2]),
               topics: [
-                EventInfo.events['Withdrawal(address,uint256)'].topic,
+                // sender, beneficiary, amount
+                EventInfo.events['Withdrawal(address,address,uint256)'].topic,
+                encoder.encode(['address'], [unlockAddress]),
                 encoder.encode(['address'], [unlockAddress]),
                 encoder.encode(['uint256'], [2]),
               ],

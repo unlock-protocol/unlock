@@ -151,12 +151,14 @@ export default class WalletService extends UnlockService {
   /**
    * Triggers a transaction to withdraw some funds from the lock and assign them
    * to the owner.
+   * TODO: REMOVE ME AS withdraw supports this
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
    * @param {string} ethAmount
    * @param {Function} callback
    */
   async partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    // DEPRECATED ! [note I do not think we every used it anway...]
     const version = await this.lockContractAbiVersion(lock)
     return version.partialWithdrawFromLock.bind(this)(
       lock,
@@ -168,6 +170,7 @@ export default class WalletService extends UnlockService {
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * TODO: remove the unused account and add support for amount (which will be ignored for old locks)
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
    * @param {Function} callback TODO: implement...

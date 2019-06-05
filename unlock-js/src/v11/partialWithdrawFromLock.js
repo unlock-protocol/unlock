@@ -6,6 +6,7 @@ import Errors from '../errors'
 /**
  * Triggers a transaction to withdraw some funds from the lock and assign them
  * to the owner.
+ * TODO: deprecate since `withdraw` now supports an amount!
  * @param {PropTypes.address} lock
  * @param {PropTypes.address} account
  * @param {string} ethAmount
@@ -16,8 +17,8 @@ export default async function(lockAddress, account, ethAmount, callback) {
   const weiAmount = utils.toWei(ethAmount)
   let transactionPromise
   try {
-    transactionPromise = lockContract['partialWithdraw(uint256)'](weiAmount, {
-      gasLimit: GAS_AMOUNTS.partialWithdraw, // overrides default value for transaction gas price
+    transactionPromise = lockContract['withdraw(uint256)'](weiAmount, {
+      gasLimit: GAS_AMOUNTS.withdraw, // overrides default value for transaction gas price
     })
     const hash = await this._handleMethodCall(
       transactionPromise,

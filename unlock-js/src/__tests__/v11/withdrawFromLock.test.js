@@ -1,4 +1,5 @@
 import * as UnlockV11 from 'unlock-abi-1-1'
+import utils from '../../utils'
 import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -16,8 +17,8 @@ let setupFail
 
 describe('v11', () => {
   describe('withdrawFromLock', () => {
-    const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const account = '0xdeadbeef'
+    const lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const amount = '3'
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -30,7 +31,7 @@ describe('v11', () => {
       const callMethodData = prepContract({
         contract: UnlockV11.PublicLock,
         functionName: 'withdraw',
-        signature: '',
+        signature: 'uint256',
         nock,
       })
 
@@ -39,7 +40,7 @@ describe('v11', () => {
         testTransactionResult,
         success,
         fail,
-      } = callMethodData()
+      } = callMethodData(utils.toWei(amount, 'ether'))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -58,7 +59,7 @@ describe('v11', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.withdrawFromLock(lock, amount)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -73,7 +74,7 @@ describe('v11', () => {
       await nock.resolveWhenAllNocksUsed()
     })
 
-    it('should emit an error if the transaction could not be sent', async () => {
+    it('should emit an error if the transaction cannot be sent', async () => {
       expect.assertions(1)
 
       const error = { code: 404, data: 'oops' }
@@ -83,7 +84,8 @@ describe('v11', () => {
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-      await walletService.withdrawFromLock(lockAddress, account)
+
+      await walletService.withdrawFromLock(lock, amount)
       await nock.resolveWhenAllNocksUsed()
     })
   })
