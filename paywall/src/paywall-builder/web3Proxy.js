@@ -23,6 +23,11 @@ export default function web3Proxy(window, iframe, origin) {
     'web3 proxy',
     'Web3ProxyProvider'
   )
+  // use sendAsync if available, otherwise we will use send
+  const send =
+    window.web3 &&
+    window.web3.currentProvider &&
+    (window.web3.currentProvider.sendAsync || window.web3.currentProvider.send)
 
   // handler for the actual web3 calls
   addHandler(POST_MESSAGE_WEB3, (payload, respond) => {
@@ -49,7 +54,9 @@ export default function web3Proxy(window, iframe, origin) {
     }
 
     const { method, params, id } = payload
-    window.web3.currentProvider.send(
+    // we use call to bind the call to the current provider
+    send.call(
+      window.web3.currentProvider,
       {
         method,
         params,
