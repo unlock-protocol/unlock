@@ -25,7 +25,7 @@ export default function startup(window) {
 
   const dataIframe = makeIframe(
     window,
-    process.env.PAYWALL_URL + '/static/dataIframe.html' + origin
+    process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin
   )
   addIframeToDocument(window, dataIframe)
   const checkoutIframe = makeIframe(
