@@ -128,10 +128,10 @@ export class StorageService extends EventEmitter {
     }
     try {
       await axios.post(`${this.host}/lock`, lockDetails, opts)
-      this.emit(success.storeLockDetails, lockDetails.address)
+      this.emit(success.storeLockDetails, lockDetails.message.lock.address)
     } catch (error) {
       this.emit(failure.storeLockDetails, {
-        address: lockDetails.address,
+        address: lockDetails.message.lock.address,
         error,
       })
     }
@@ -169,7 +169,7 @@ export class StorageService extends EventEmitter {
     const opts = {}
     try {
       await axios.post(`${this.host}/users/`, user, opts)
-      this.emit(success.createUser, user.publicKey)
+      this.emit(success.createUser, user.message.user.publicKey)
     } catch (error) {
       this.emit(failure.createUser, error)
     }
@@ -196,7 +196,7 @@ export class StorageService extends EventEmitter {
         user,
         opts
       )
-      this.emit(success.updateUser, emailAddress)
+      this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
       this.emit(failure.updateUser, { emailAddress, error })
     }

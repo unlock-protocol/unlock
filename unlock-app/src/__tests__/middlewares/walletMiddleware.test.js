@@ -1,5 +1,4 @@
 import EventEmitter from 'events'
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import walletMiddleware from '../../middlewares/walletMiddleware'
 import {
   CREATE_LOCK,
@@ -11,7 +10,7 @@ import {
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
+import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
@@ -22,7 +21,6 @@ import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
-  FAILED_TO_DECRYPT_KEY,
 } from '../../errors'
 import {
   SIGN_DATA,
@@ -30,10 +28,6 @@ import {
   SIGNATURE_ERROR,
 } from '../../actions/signature'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
-import {
-  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
-} from '../../actions/user'
 
 let mockConfig
 
@@ -283,10 +277,14 @@ describe('Wallet middleware', () => {
           expect(store.dispatch).toHaveBeenCalledWith(
             expect.objectContaining({
               type: SET_ERROR,
-              error: FATAL_WRONG_NETWORK,
-              data: {
-                currentNetwork: 'Winston',
-                requiredNetworkId: 1984,
+              error: {
+                level: 'Fatal',
+                kind: 'Application',
+                message: FATAL_WRONG_NETWORK,
+                data: {
+                  currentNetwork: 'Winston',
+                  requiredNetworkId: 1984,
+                },
               },
             })
           )
@@ -311,8 +309,11 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: SET_ERROR,
-            error: error.message,
-            data: {},
+            error: {
+              level: 'Fatal',
+              kind: 'Application',
+              message: 'An error',
+            },
           })
         )
 
@@ -334,8 +335,11 @@ describe('Wallet middleware', () => {
         expect(store.dispatch).toHaveBeenCalledWith(
           expect.objectContaining({
             type: SET_ERROR,
-            error: FATAL_NON_DEPLOYED_CONTRACT,
-            data: {},
+            error: {
+              level: 'Fatal',
+              kind: 'Application',
+              message: FATAL_NON_DEPLOYED_CONTRACT,
+            },
           })
         )
 
@@ -407,7 +411,11 @@ describe('Wallet middleware', () => {
         3,
         expect.objectContaining({
           type: SET_ERROR,
-          error: 'Failed to create lock. Did you decline the transaction?',
+          error: {
+            level: 'Warning',
+            kind: 'Transaction',
+            message: 'Failed to create lock. Did you decline the transaction?',
+          },
         })
       )
     })
@@ -419,7 +427,11 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
           type: SET_ERROR,
-          error: 'this was broken',
+          error: {
+            level: 'Warning',
+            kind: 'Transaction',
+            message: 'this was broken',
+          },
         })
       )
     })
@@ -447,8 +459,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
@@ -483,8 +498,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.withdrawFromLock).not.toHaveBeenCalled()
@@ -517,8 +535,11 @@ describe('Wallet middleware', () => {
         invoke(action)
         expect(store.dispatch).toHaveBeenCalledWith({
           type: SET_ERROR,
-          error: FATAL_NO_USER_ACCOUNT,
-          data: {},
+          error: {
+            level: 'Fatal',
+            kind: 'Application',
+            message: FATAL_NO_USER_ACCOUNT,
+          },
         })
 
         expect(mockWalletService.createLock).not.toHaveBeenCalled()
@@ -565,7 +586,7 @@ describe('Wallet middleware', () => {
   })
 
   describe('UPDATE_LOCK_KEY_PRICE', () => {
-    it('when the service is not ready it should set an error and not try to update the ley price', () => {
+    it('when the service is not ready it should set an error and not try to update the key price', () => {
       expect.assertions(3)
       const { next, invoke, store } = create()
       const action = { type: UPDATE_LOCK_KEY_PRICE, lock }
@@ -574,8 +595,11 @@ describe('Wallet middleware', () => {
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
-        error: FATAL_NO_USER_ACCOUNT,
-        data: {},
+        error: {
+          level: 'Fatal',
+          kind: 'Application',
+          message: FATAL_NO_USER_ACCOUNT,
+        },
       })
 
       expect(mockWalletService.updateKeyPrice).not.toHaveBeenCalled()
@@ -656,75 +680,6 @@ describe('Wallet middleware', () => {
         type: SIGNATURE_ERROR,
         error,
       })
-    })
-  })
-
-  describe('GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD', () => {
-    const emailAddress = 'test@us.er'
-    const password = 'guest'
-    let key
-    let address
-    beforeEach(async () => {
-      const info = await createAccountAndPasswordEncryptKey(password)
-      key = info.passwordEncryptedPrivateKey
-      address = info.address
-    })
-    it('should set the account and encrypted key in state', done => {
-      expect.assertions(3)
-      // This is a bit annoying, but it lets us more easily test the async stuff
-      const timesToCallDispatch = 2
-      let timesDispatchHasBeenCalled = 0
-      const dispatchImplementation = () => {
-        timesDispatchHasBeenCalled++
-        if (timesDispatchHasBeenCalled === timesToCallDispatch) {
-          expect(store.dispatch).toHaveBeenNthCalledWith(
-            1,
-            setAccount({ address })
-          )
-          expect(store.dispatch).toHaveBeenNthCalledWith(
-            2,
-            setEncryptedPrivateKey(key, emailAddress)
-          )
-          done()
-        }
-      }
-      const { next, invoke, store } = create(dispatchImplementation)
-
-      const action = {
-        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-        key,
-        emailAddress,
-        password,
-      }
-
-      invoke(action)
-
-      expect(next).toHaveBeenCalled()
-    })
-
-    it('should dispatch an error if it cannot decrypt', done => {
-      expect.assertions(2)
-      const dispatchImplementation = () => {
-        expect(store.dispatch).toHaveBeenCalledWith(
-          expect.objectContaining({
-            type: SET_ERROR,
-            error: FAILED_TO_DECRYPT_KEY,
-          })
-        )
-        done()
-      }
-      const { next, invoke, store } = create(dispatchImplementation)
-
-      const action = {
-        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-        key,
-        emailAddress,
-        password: 'not the correct password, I assure you',
-      }
-
-      invoke(action)
-
-      expect(next).toHaveBeenCalled()
     })
   })
 })

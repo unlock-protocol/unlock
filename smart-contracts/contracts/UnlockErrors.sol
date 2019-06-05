@@ -1,4 +1,4 @@
-pragma solidity 0.5.8;
+pragma solidity 0.5.9;
 
 
 // This contract documents the revert reasons used in Unlock and Lock contracts.
@@ -58,6 +58,9 @@ contract UnlockErrors {
 
   // This function may only be called by the key owner.
   string public constant ONLY_KEY_OWNER = 'ONLY_KEY_OWNER';
+
+  // This function may only be called by the lock owner or the lock's beneficiary.
+  string public constant ONLY_LOCK_OWNER_OR_BENEFICIARY = 'ONLY_LOCK_OWNER_OR_BENEFICIARY';
 
   // This function may only be called by the key owner or by a user approved to spend on their behalf.
   string public constant ONLY_KEY_OWNER_OR_APPROVED = 'ONLY_KEY_OWNER_OR_APPROVED';

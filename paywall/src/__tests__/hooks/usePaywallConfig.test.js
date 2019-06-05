@@ -60,7 +60,7 @@ describe('usePaywallConfig hook', () => {
     rtl.render(<Wrapper />)
 
     expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-      POST_MESSAGE_READY,
+      expect.objectContaining({ type: POST_MESSAGE_READY, payload: undefined }),
       'origin'
     )
   })

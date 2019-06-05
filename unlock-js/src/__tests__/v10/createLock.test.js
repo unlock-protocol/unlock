@@ -6,10 +6,11 @@ import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
+import erc20 from '../../erc20'
 
 const { FAILED_TO_CREATE_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 let transaction
@@ -29,6 +30,12 @@ const callMethodData = prepContract({
   functionName: 'createLock',
   signature: 'uint256,address,uint256,uint256,string',
   nock,
+})
+
+jest.mock('../../erc20.js', () => {
+  return {
+    getErc20Decimals: jest.fn(() => Promise.resolve(18)),
+  }
 })
 
 const owner = '0xdeadfeed'
@@ -93,6 +100,19 @@ describe('v10', () => {
     })
 
     describe('when providing the address of a denominating currency contract', () => {
+      let erc20Lock
+
+      beforeEach(() => {
+        erc20Lock = {
+          name: 'ERC20 Lock',
+          address: '0x0987654321098765432109876543210987654321',
+          expirationDuration: 86400, // 1 day
+          keyPrice: '0.1', // 0.1 Eth
+          maxNumberOfKeys: 100,
+          currencyContractAddress: testERC20ContractAddress,
+        }
+      })
+
       it('should invoke _handleMethodCall with the right params', async () => {
         expect.assertions(0)
 
@@ -103,11 +123,11 @@ describe('v10', () => {
           testTransactionResult,
           success,
         } = callMethodData(
-          lock.expirationDuration,
+          erc20Lock.expirationDuration,
           testERC20ContractAddress,
-          utils.toWei(lock.keyPrice, 'ether'),
-          lock.maxNumberOfKeys,
-          lock.name
+          utils.toDecimal(erc20Lock.keyPrice, 18),
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name
         )
 
         transaction = testTransaction
@@ -116,7 +136,79 @@ describe('v10', () => {
 
         setupSuccess()
 
-        await walletService.createLock(lock, owner, testERC20ContractAddress)
+        await walletService.createLock(erc20Lock, owner)
+        await nock.resolveWhenAllNocksUsed()
+      })
+
+      it('should emit lock.updated with the right params', async () => {
+        expect.assertions(2)
+
+        await nockBeforeEach()
+
+        let {
+          testTransaction,
+          testTransactionResult,
+          success,
+        } = callMethodData(
+          erc20Lock.expirationDuration,
+          testERC20ContractAddress,
+          utils.toDecimal(erc20Lock.keyPrice, 18),
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name
+        )
+
+        transaction = testTransaction
+        transactionResult = testTransactionResult
+        setupSuccess = success
+
+        setupSuccess()
+
+        walletService.on('lock.updated', (lockAddress, update) => {
+          expect(lockAddress).toBe(erc20Lock.address)
+          expect(update).toEqual({
+            transaction: transaction.hash,
+            balance: '0',
+            expirationDuration: erc20Lock.expirationDuration,
+            keyPrice: erc20Lock.keyPrice,
+            maxNumberOfKeys: erc20Lock.maxNumberOfKeys,
+            outstandingKeys: 0,
+            name: erc20Lock.name,
+            owner,
+            currencyContractAddress: testERC20ContractAddress,
+          })
+        })
+
+        await walletService.createLock(erc20Lock, owner)
+        await nock.resolveWhenAllNocksUsed()
+      })
+
+      it('should retrieve the locks number of decimals to convert the key price to the right unit', async () => {
+        expect.assertions(0)
+
+        await nockBeforeEach()
+        const decimals = 9
+        erc20.getErc20Decimals = jest.fn(() => {
+          return Promise.resolve(decimals)
+        })
+        let {
+          testTransaction,
+          testTransactionResult,
+          success,
+        } = callMethodData(
+          erc20Lock.expirationDuration,
+          testERC20ContractAddress,
+          utils.toDecimal(erc20Lock.keyPrice, decimals),
+          erc20Lock.maxNumberOfKeys,
+          erc20Lock.name
+        )
+
+        transaction = testTransaction
+        transactionResult = testTransactionResult
+        setupSuccess = success
+
+        setupSuccess()
+
+        await walletService.createLock(erc20Lock, owner)
         await nock.resolveWhenAllNocksUsed()
       })
     })

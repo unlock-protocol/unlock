@@ -5,7 +5,7 @@ import NockHelper from '../helpers/nockHelper'
 import utils from '../../utils'
 
 const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */, true /** ethers */)
+const nock = new NockHelper(endpoint, false /** debug */)
 let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 
 let web3Service
@@ -104,6 +104,12 @@ describe('v02', () => {
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(17)])
       )
+
+      nock.ethCallAndYield(
+        contractMethods.publicLockVersion.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(2)])
+      )
     }
 
     it('should trigger an event when it has been loaded woth an updated balance', async () => {
@@ -113,7 +119,7 @@ describe('v02', () => {
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
-        expect(update).toMatchObject({
+        expect(update).toEqual({
           balance: utils.fromWei('3735944941', 'ether'),
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
@@ -121,6 +127,7 @@ describe('v02', () => {
           owner,
           outstandingKeys: 17,
           asOf: 1337,
+          publicLockVersion: 2,
         })
       })
 
@@ -151,6 +158,7 @@ describe('v02', () => {
         maxNumberOfKeys: -1,
         outstandingKeys: 17,
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+        publicLockVersion: 2,
       })
     })
   })

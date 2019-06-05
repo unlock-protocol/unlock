@@ -4,11 +4,23 @@ import {
   FATAL_MISSING_PROVIDER,
   FATAL_NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
-import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { Application, LogIn } from '../utils/Error'
+import { Action } from '../unlockTypes' // eslint-disable-line
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  setEncryptedPrivateKey,
+} from '../actions/user'
+import { setAccount } from '../actions/accounts'
 
-function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
+interface Provider {
+  enable?: () => any
+  isUnlock?: boolean
+}
+
+export function initializeProvider(provider: Provider, dispatch: any) {
+  // TODO: when UnlockProvider is enabled, this error should never happen.
   if (!provider) {
-    dispatch(setError(FATAL_MISSING_PROVIDER))
+    dispatch(setError(Application.Fatal(FATAL_MISSING_PROVIDER)))
     return
   }
 
@@ -18,14 +30,46 @@ function initializeProvider(provider: { enable?: () => any }, dispatch: any) {
     provider
       .enable()
       .then(() => dispatch(providerReady()))
-      .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
+      .catch(() =>
+        dispatch(setError(Application.Fatal(FATAL_NOT_ENABLED_IN_PROVIDER)))
+      )
+  } else if (provider.isUnlock) {
+    // This initialization is handled on receipt of GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
+    return
   } else {
     // Default case, provider doesn't have an enable method, so it must already be ready
     dispatch(providerReady())
   }
 }
 
-const providerMiddleware = (config: any) => {
+export async function initializeUnlockProvider(
+  action: Action,
+  unlockProvider: any,
+  dispatch: any
+) {
+  const { key, emailAddress, password } = action
+  try {
+    await unlockProvider.connect({ key, password })
+
+    const address = unlockProvider.wallet.address
+    dispatch(setAccount({ address }))
+    dispatch(setEncryptedPrivateKey(key, emailAddress))
+    dispatch(providerReady())
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
+    // TODO: password isn't the only thing that can go wrong here...
+    dispatch(
+      setError(
+        LogIn.Warning(
+          'Failed to decrypt private key. Check your password and try again.'
+        )
+      )
+    )
+  }
+}
+
+export const providerMiddleware = (config: any) => {
   return ({ getState, dispatch }: { [key: string]: any }) => {
     return function(next: any) {
       // Initialize provider based on the one grabbed in the state. Fragile?
@@ -41,7 +85,11 @@ const providerMiddleware = (config: any) => {
             const provider = config.providers[action.provider]
             initializeProvider(provider, dispatch)
           }
+        } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
+          const provider = config.providers[getState().provider]
+          initializeUnlockProvider(action, provider, dispatch)
         }
+
         next(action)
       }
     }

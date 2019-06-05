@@ -4,6 +4,7 @@ import Arrow from './Arrow'
 import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
+import CoinbaseWallet from './CoinbaseWallet'
 import Copy from './Copy'
 import Download from './Download'
 import Edit from './Edit'
@@ -12,10 +13,12 @@ import Etherscan from './Etherscan'
 import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
+import Jobs from './Jobs'
 import Lemniscate from './Lemniscate'
 import LockClosed from './LockClosed'
 import Log from './Log'
-import Jobs from './Jobs'
+import Metamask from './Metamask'
+import Opera from './Opera'
 import Preview from './Preview'
 import Unlock from './Unlock'
 import UnlockWordMark from './UnlockWordMark'
@@ -41,6 +44,7 @@ export default {
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
+  CoinbaseWallet: wrapViewBox(CoinbaseWallet, '0 0 120 120'),
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),
   Edit: wrapViewBox(Edit, '0 0 24 24'),
@@ -53,6 +57,8 @@ export default {
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
   Log: wrapViewBox(Log, '0 0 24 24'),
+  Metamask: wrapViewBox(Metamask, '0 0 120 120'),
+  Opera: wrapViewBox(Opera, '0 0 120 120'),
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Unlock: wrapViewBox(Unlock, '0 0 56 56'),

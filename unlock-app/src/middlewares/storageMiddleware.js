@@ -1,12 +1,14 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
+import {
+  createAccountAndPasswordEncryptKey,
+  reEncryptPrivateKey,
+} from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
 import { StorageService, success, failure } from '../services/storageService'
-import { storageError } from '../actions/storage'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
@@ -15,9 +17,44 @@ import { SIGNED_DATA, signData } from '../actions/signature'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
+  CHANGE_PASSWORD,
   gotEncryptedPrivateKeyPayload,
+  setEncryptedPrivateKey,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
+import { Storage } from '../utils/Error'
+import { setError } from '../actions/error'
+
+export async function changePassword({
+  oldPassword,
+  newPassword,
+  passwordEncryptedPrivateKey,
+  publicKey,
+  emailAddress,
+  dispatch,
+}) {
+  try {
+    const newEncryptedKey = await reEncryptPrivateKey(
+      passwordEncryptedPrivateKey,
+      oldPassword,
+      newPassword
+    )
+
+    const payload = UnlockUser.build({
+      emailAddress,
+      publicKey,
+      passwordEncryptedPrivateKey: newEncryptedKey,
+    })
+
+    dispatch(signData(payload))
+  } catch (e) {
+    dispatch(
+      setError(
+        Storage.Warning('Could not re-encrypt private key -- bad password?')
+      )
+    )
+  }
+}
 
 const storageMiddleware = config => {
   const { services } = config
@@ -25,8 +62,10 @@ const storageMiddleware = config => {
     const storageService = new StorageService(services.storage.host)
 
     // NEW_TRANSACTION
-    storageService.on(failure.storeTransaction, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.storeTransaction, () => {
+      // TODO: we are in control of what storageService emits --
+      // construct helpful errors at source of failure?
+      dispatch(setError(Storage.Diagnostic('Failed to store transaction.')))
     })
 
     // SET_ACCOUNT
@@ -39,8 +78,10 @@ const storageMiddleware = config => {
       })
       dispatch(doneLoading())
     })
-    storageService.on(failure.getTransactionHashesSentBy, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.getTransactionHashesSentBy, () => {
+      dispatch(
+        setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
+      )
       dispatch(doneLoading())
     })
 
@@ -48,13 +89,13 @@ const storageMiddleware = config => {
     storageService.on(success.lockLookUp, ({ address, name }) => {
       dispatch(updateLock(address, { name }))
     })
-    storageService.on(failure.lockLookUp, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.lockLookUp, () => {
+      dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
     // SIGNED_DATA
-    storageService.on(failure.storeLockDetails, ({ error }) => {
-      dispatch(storageError(error))
+    storageService.on(failure.storeLockDetails, () => {
+      dispatch(setError(Storage.Warning('Could not store some lock metadata.')))
     })
 
     // SIGNUP_CREDENTIALS
@@ -63,13 +104,30 @@ const storageMiddleware = config => {
       // setting here, will need to change what storageService emits
       dispatch(setAccount({ address: publicKey }))
     })
-    storageService.on(failure.createUser, error => {
-      dispatch(storageError(error))
+    storageService.on(failure.createUser, () => {
+      dispatch(setError(Storage.Warning('Could not create this user account.')))
     })
 
     // LOGIN_CREDENTIALS
-    storageService.on(failure.getUserPrivateKey, ({ error }) => {
-      dispatch(storageError(error))
+    storageService.on(failure.getUserPrivateKey, () => {
+      dispatch(setError(Storage.Warning('Could not find this user account.')))
+    })
+
+    // When updating a user
+    // TODO: May have to separately handle different kinds of user updates
+    storageService.on(success.updateUser, ({ user, emailAddress }) => {
+      dispatch(
+        setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
+      )
+    })
+    storageService.on(failure.updateUser, () => {
+      dispatch(
+        setError(
+          Storage.Warning(
+            'Could not update user information. Please try again and report if problem persists.'
+          )
+        )
+      )
     })
 
     return next => {
@@ -98,13 +156,18 @@ const storageMiddleware = config => {
           }
         }
 
-        if (
-          action.type === SIGNED_DATA &&
-          action.data.message &&
-          action.data.message.lock
-        ) {
-          // Once signed, let's save it!
-          storageService.storeLockDetails(action.data, action.signature)
+        if (action.type === SIGNED_DATA) {
+          const { message } = action.data
+          if (message && message.lock) {
+            // Once signed, let's save it!
+            storageService.storeLockDetails(action.data, action.signature)
+          } else if (message && message.user) {
+            const {
+              userDetails: { email },
+            } = getState()
+            // Once signed, let's save it!
+            storageService.updateUser(email, action.data, action.signature)
+          }
         }
 
         if (action.type === UPDATE_LOCK_NAME) {
@@ -138,6 +201,23 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
+          })
+        }
+
+        if (action.type === CHANGE_PASSWORD) {
+          const { oldPassword, newPassword } = action
+          const {
+            userDetails: { key, email },
+            account: { address },
+          } = getState()
+
+          changePassword({
+            oldPassword,
+            newPassword,
+            passwordEncryptedPrivateKey: key,
+            publicKey: address,
+            emailAddress: email,
+            dispatch,
           })
         }
 
