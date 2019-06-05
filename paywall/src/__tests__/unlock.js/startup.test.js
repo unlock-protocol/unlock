@@ -114,7 +114,7 @@ describe('unlock.js startup', () => {
 
       expect(fakeDataIframe.setAttribute).toHaveBeenCalledWith(
         'src',
-        'http://paywall/static/dataIframe.html?origin=http%3A%2F%2Ffun.times'
+        'http://paywall/static/data-iframe.1.0.html?origin=http%3A%2F%2Ffun.times'
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
