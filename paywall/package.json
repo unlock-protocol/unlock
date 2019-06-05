@@ -25,7 +25,7 @@
     "@storybook/addon-actions": "5.1.1",
     "@storybook/addon-knobs": "5.1.1",
     "@storybook/addon-storyshots": "5.1.1",
-    "@storybook/addon-viewport": "5.0.10",
+    "@storybook/addon-viewport": "5.1.1",
     "@storybook/addons": "5.0.10",
     "@storybook/react": "5.0.10",
     "@types/jest": "24.0.13",
