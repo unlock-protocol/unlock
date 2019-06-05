@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
+import AccountInfo from '../interface/account-settings/AccountInfo'
 
 export const SettingsContent = () => {
   return (
@@ -11,6 +12,7 @@ export const SettingsContent = () => {
         <title>{pageTitle('Account Settings')}</title>
       </Head>
       <Errors />
+      <AccountInfo />
     </Layout>
   )
 }
