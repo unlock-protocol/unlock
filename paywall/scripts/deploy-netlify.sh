@@ -30,6 +30,8 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
 fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
+  # rebuild
+  UNLOCK_ENV="$DEPLOY_ENV" npm run build;
   # Package
   UNLOCK_ENV="$DEPLOY_ENV" npm run deploy;
   # And ship!
