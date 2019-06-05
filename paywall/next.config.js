@@ -23,6 +23,7 @@ const requiredConfigVariables = {
 
 const optionalConfigVariables = {
   httpProvider: process.env.HTTP_PROVIDER,
+  debugMode: process.env.DEBUG,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
@@ -94,6 +95,7 @@ module.exports = withTypescript(
         '/': { page: '/home' },
         '/paywall': { page: '/paywall' },
         '/demo': { page: '/demo' },
+        '/checkout': { page: '/checkout' },
       }
     },
   })

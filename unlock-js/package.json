@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -18,6 +18,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "eth-sig-util": "^2.2.0",
+    "ethereumjs-utils": "^5.2.5",
     "ethers": "4.0.27"
   },
   "browserslist": "> 0.25%, not dead",

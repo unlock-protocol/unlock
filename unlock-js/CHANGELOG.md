@@ -1,5 +1,30 @@
 # Changes
 
+## 0.2.2
+- `unlock-provider` gains a property `isUnlock` that will allow Unlock-specific
+  provider configuration.
+
+## 0.2.1
+
+- getLock now returns the erc20 balance for erc20 locks
+- `unlock-provider` gains a method allowing handling of `eth_signTypedData`
+
+## 0.2.0
+
+- Introducing unlock-provider to enable use of user accounts
+
+## 0.1.5
+
+- Yielding the Lock version on getLock, as publicLockVersion
+
+## 0.1.4
+
+- Yielding the ERC20 contract if the lock is an ERC20 lock
+
+## 0.1.3
+
+- Changing the createLock API to remain consistent
+
 ## 0.1.2
 
 - Updated gas amounts to fix deploying new locks

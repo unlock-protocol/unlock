@@ -67,27 +67,11 @@ contract('Lock / erc20', accounts => {
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 
-      it('the owner can do a partial withdraw of tokens', async () => {
-        const lockBalance = new BigNumber(await token.balanceOf(lock.address))
-        const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
-
-        await lockApi.partialWithdraw(1, accounts[0])
-
-        assert.equal(
-          await token.balanceOf(lock.address),
-          lockBalance.minus(1).toFixed()
-        )
-        assert.equal(
-          await token.balanceOf(accounts[0]),
-          ownerBalance.plus(1).toFixed()
-        )
-      })
-
       it('the owner can withdraw tokens', async () => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        await lockApi.withdraw(accounts[0])
+        await lockApi.withdraw(0, accounts[0])
 
         assert.equal(await token.balanceOf(lock.address), 0)
         assert.equal(

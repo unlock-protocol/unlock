@@ -17,13 +17,14 @@ const config = configure({})
 const ConfigProvider = ConfigContext.Provider
 
 const event = {
-  date: new Date(2063, 10, 23),
+  date: new Date(2063, 10, 23, 18, 30),
   name: 'My Doctor Who party',
   description: `Unbelievably, it's been 100 years since it first came to our screens.
 
 Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
   lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+  duration: 3600,
 }
 
 const lock = {
@@ -39,7 +40,7 @@ const account = { address: 'foo' }
 
 describe('EventContent', () => {
   it('should display an event when given appropriate properties', () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
     const wrapper = rtl.render(
       <Provider store={store}>
@@ -65,6 +66,7 @@ describe('EventContent', () => {
       ', ' +
       event.date.getFullYear()
     expect(wrapper.getByText(dateString)).not.toBeNull()
+    expect(wrapper.getByText('6:30pm - 7:30pm')).not.toBeNull()
   })
 })
 
@@ -127,6 +129,7 @@ describe('mapStateToProps', () => {
         description: event.description,
         location: event.location,
         lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
+        duration: event.duration,
       },
       lock: {
         address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',

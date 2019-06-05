@@ -1,4 +1,4 @@
-pragma solidity 0.5.8;
+pragma solidity 0.5.9;
 
 import 'openzeppelin-solidity/contracts/token/ERC20/IERC20.sol';
 
@@ -24,6 +24,21 @@ contract MixinFunds
       'INVALID_TOKEN'
     );
     tokenAddress = _tokenAddress;
+  }
+
+  /**
+   * Gets the current balance of the account provided.
+   */
+  function getBalance(
+    address _account
+  ) public view
+    returns (uint)
+  {
+    if(tokenAddress == address(0)) {
+      return _account.balance;
+    } else {
+      return IERC20(tokenAddress).balanceOf(_account);
+    }
   }
 
   /**
@@ -77,21 +92,6 @@ contract MixinFunds
         // that a transfer occurred.
         require(token.balanceOf(_to) > balanceBefore, 'TRANSFER_FAILED');
       }
-    }
-  }
-
-  /**
-   * Gets the current balance of the account provided.
-   */
-  function _getBalance(
-    address _account
-  ) internal view
-    returns (uint)
-  {
-    if(tokenAddress == address(0)) {
-      return _account.balance;
-    } else {
-      return IERC20(tokenAddress).balanceOf(_account);
     }
   }
 }

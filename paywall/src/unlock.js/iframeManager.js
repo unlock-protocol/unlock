@@ -7,11 +7,11 @@ export function makeIframe(window, src) {
 }
 
 export function addIframeToDocument(window, iframe) {
+  if (window.document.querySelector(`iframe[src="${iframe.src}"]`)) return
   window.document.body.insertAdjacentElement('afterbegin', iframe)
-  window.setInterval(
-    () => window.document.body.insertAdjacentElement('afterbegin', iframe),
-    500
-  )
+  window.setInterval(() => {
+    addIframeToDocument(window, iframe)
+  }, 500)
 }
 
 export function showIframe(window, iframe) {

@@ -1,4 +1,4 @@
-import { _clearHandlers, iframePostOffice } from '../../utils/postOffice'
+import { iframePostOffice } from '../../utils/postOffice'
 import setupPostOfficeListener from '../../data-iframe/postOfficeListener'
 import {
   POST_MESSAGE_SEND_UPDATES,
@@ -12,6 +12,7 @@ describe('postOffice listener', () => {
   let fakeUpdater
   let fakeSetConfig
   let fakePurchase
+  let addHandler
 
   function callListener(type, payload) {
     fakeWindow.handlers.message({
@@ -25,11 +26,14 @@ describe('postOffice listener', () => {
   }
 
   function makePostOffice() {
+    const info = iframePostOffice(fakeWindow)
+    addHandler = info.addHandler
     setupPostOfficeListener(
       fakeWindow,
       fakeUpdater,
       fakeSetConfig,
-      fakePurchase
+      fakePurchase,
+      addHandler
     )
   }
 
@@ -54,8 +58,6 @@ describe('postOffice listener', () => {
         fakeWindow.handlers[type] = handler
       },
     }
-    _clearHandlers()
-    iframePostOffice(fakeWindow)
   })
 
   it('responds to config message by calling setConfig when the config is valid', () => {

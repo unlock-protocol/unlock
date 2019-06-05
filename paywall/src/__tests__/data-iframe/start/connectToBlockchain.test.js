@@ -113,6 +113,7 @@ describe('connectToBlockchain', () => {
           requiredConfirmations,
           update: onChange,
           window,
+          locksmithHost,
         })
       )
     })
