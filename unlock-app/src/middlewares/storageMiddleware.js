@@ -48,8 +48,6 @@ export async function changePassword({
 
     dispatch(signData(payload))
   } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e)
     dispatch(
       setError(
         Storage.Warning('Could not re-encrypt private key -- bad password?')
@@ -122,9 +120,7 @@ const storageMiddleware = config => {
         setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
       )
     })
-    storageService.on(failure.updateUser, ({ error }) => {
-      // eslint-disable-next-line no-console
-      console.error(error)
+    storageService.on(failure.updateUser, () => {
       dispatch(
         setError(
           Storage.Warning(
