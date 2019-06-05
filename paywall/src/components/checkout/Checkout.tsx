@@ -18,6 +18,7 @@ interface WrapperProps {
   children: any
   hideCheckout: (...args: any[]) => any
   bgColor: string
+  onClick: (event: any) => void
 }
 
 interface WrapperStyleProps {
@@ -28,9 +29,10 @@ export const CheckoutWrapper = ({
   children,
   hideCheckout,
   bgColor = 'var(--offwhite)',
+  onClick = () => {},
 }: WrapperProps) => {
   return (
-    <Wrapper bgColor={bgColor}>
+    <Wrapper bgColor={bgColor} onClick={onClick}>
       <CloseButton
         backgroundColor="var(--lightgrey)"
         fillColor="var(--grey)"

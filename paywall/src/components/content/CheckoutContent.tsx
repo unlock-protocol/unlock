@@ -87,12 +87,21 @@ export default function CheckoutContent() {
       </Fragment>
     )
   }
+  const Wrapper = () => (
+    <CheckoutWrapper
+      hideCheckout={hideCheckout}
+      bgColor={bgColor}
+      onClick={e => {
+        e.stopPropagation()
+      }}
+    >
+      {child}
+    </CheckoutWrapper>
+  )
 
   return (
     <Greyout onClick={hideCheckout}>
-      <CheckoutWrapper hideCheckout={hideCheckout} bgColor={bgColor}>
-        {child}
-      </CheckoutWrapper>
+      <Wrapper />
     </Greyout>
   )
 }
