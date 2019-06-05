@@ -8,7 +8,7 @@
     "@storybook/addon-knobs": "5.1.1",
     "@storybook/addon-storyshots": "5.1.1",
     "@storybook/addon-viewport": "5.1.1",
-    "@storybook/addons": "5.0.10",
+    "@storybook/addons": "5.1.1",
     "@storybook/react": "5.0.10",
     "@types/jest": "24.0.13",
     "@types/next": "8.0.5",
