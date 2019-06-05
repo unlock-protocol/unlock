@@ -12,9 +12,12 @@ export default async function getLocks({ locksToRetrieve, web3Service }) {
   )
   // convert into a map indexed by lock address
   return newLocks.reduce(
-    (allLocks, lock) => ({
+    (allLocks, lock, index) => ({
       ...allLocks,
-      [lock.address]: lock,
+      [locksToRetrieve[index]]: {
+        address: locksToRetrieve[index],
+        ...lock,
+      },
     }),
     {}
   )

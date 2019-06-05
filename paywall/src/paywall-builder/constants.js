@@ -8,6 +8,7 @@ export const POST_MESSAGE_READY = 'ready'
 export const POST_MESSAGE_CONFIG = 'config'
 export const POST_MESSAGE_ACCOUNT = 'account'
 export const POST_MESSAGE_WEB3 = 'web3'
+export const POST_MESSAGE_READY_WEB3 = 'ready/web3'
 export const POST_MESSAGE_WALLET_INFO = 'walletInfo'
 
 export const POST_MESSAGE_UPDATE_LOCKS = 'update/locks'
@@ -17,6 +18,7 @@ export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'
 export const POST_MESSAGE_UPDATE_WALLET = 'update/walletmodal'
 
 export const POST_MESSAGE_ERROR = 'error'
-export const POST_MESSAGE_SEND_UPDATES = 'semd/updates'
+export const POST_MESSAGE_SEND_UPDATES = 'send/updates'
 
 export const POST_MESSAGE_PURCHASE_KEY = 'purchaseKey'
+export const POST_MESSAGE_DISMISS_CHECKOUT = 'dismiss/checkout'

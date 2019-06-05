@@ -20,6 +20,7 @@ import {
   setKeysOnPageForLock,
 } from '../actions/keysPages'
 import { transactionTypeMapping } from '../utils/types'
+import { Web3 } from '../utils/Error'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -103,7 +104,10 @@ const web3Middleware = config => {
     })
 
     web3Service.on('error', error => {
-      dispatch(setError(error.message))
+      const { message } = error
+      // TODO: better handling of these errors? We can't separate them
+      // by level right now, so they're all diagnostic.
+      dispatch(setError(Web3.Diagnostic(message)))
     })
 
     web3Service.on('keys.page', (lock, page, keys) => {

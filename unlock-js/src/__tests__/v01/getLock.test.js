@@ -104,6 +104,12 @@ describe('v01', () => {
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(17)])
       )
+
+      nock.ethCallAndYield(
+        contractMethods.publicLockVersion.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(1)])
+      )
     }
 
     it('should trigger an event when it has been loaded woth an updated balance', async () => {
@@ -113,7 +119,7 @@ describe('v01', () => {
 
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
-        expect(update).toMatchObject({
+        expect(update).toEqual({
           balance: utils.fromWei('3735944941', 'ether'),
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
@@ -121,6 +127,7 @@ describe('v01', () => {
           owner,
           outstandingKeys: 17,
           asOf: 1337,
+          publicLockVersion: 1,
         })
       })
 
@@ -151,6 +158,7 @@ describe('v01', () => {
         maxNumberOfKeys: -1,
         outstandingKeys: 17,
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
+        publicLockVersion: 1,
       })
     })
   })

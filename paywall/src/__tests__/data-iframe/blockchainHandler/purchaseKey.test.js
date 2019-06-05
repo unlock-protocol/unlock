@@ -58,7 +58,7 @@ describe('blockchainHandler purchaseKey', () => {
 
     function assertOnUpdates(expected, done) {
       let expectedIndex = 0
-      return (newTransaction, newKey) => {
+      return ({ transaction: newTransaction, key: newKey }) => {
         const [expectedTransaction, expectedKey, desc] = expected[expectedIndex]
         try {
           expect(newTransaction).toEqual(expectedTransaction)
@@ -92,6 +92,7 @@ describe('blockchainHandler purchaseKey', () => {
         removeListener: type => {
           delete fakeWeb3Service.handlers[type]
         },
+        getTransaction: jest.fn(),
         once: (type, cb) => (fakeWeb3Service.handlers[type] = cb),
         getKeyByLockForOwner: jest.fn(lock => newKeys[lock]),
       }
@@ -375,6 +376,7 @@ describe('blockchainHandler purchaseKey', () => {
 
       fakeWeb3Service.handlers['transaction.updated']('hash', {
         status: 'pending',
+        hash: 'hash',
         blockNumber: 123,
       })
     })
