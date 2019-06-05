@@ -1,31 +1,18 @@
-/* eslint no-console: 0 */
 const dotenv = require('dotenv')
 var path = require('path')
 const webpack = require('webpack')
+const requireEnvVariables = require('./requireEnvVariables')
+
+// Important: call this first so that builds fail if any env variable is missing
+const requiredConfigVariables = requireEnvVariables({
+  paywallUrl: process.env.PAYWALL_URL,
+})
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 const debug = process.env.DEBUG ? 1 : 0
 
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
-})
-
-const requiredConfigVariables = {
-  unlockEnv,
-  paywallUrl: process.env.PAYWALL_URL,
-}
-
-Object.keys(requiredConfigVariables).forEach(configVariableName => {
-  if (!requiredConfigVariables[configVariableName]) {
-    if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
-      return console.error(
-        `The configuration variable ${configVariableName} is falsy.`
-      )
-    }
-    throw new Error(
-      `The configuration variable ${configVariableName} is falsy.`
-    )
-  }
 })
 
 module.exports = () => {
