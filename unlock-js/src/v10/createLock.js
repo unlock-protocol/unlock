@@ -2,6 +2,28 @@ import ethersUtils from '../utils'
 import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT, ZERO } from '../../lib/constants'
+import { getErc20Decimals } from '../erc20'
+
+/**
+ * Returns the key price in its currency, rather than its decimal representation (Ether vs. Wei for example)
+ * @param {*} currencyContractAddress
+ * @param {*} lock
+ * @param {*} provider
+ */
+async function _getKeyPrice(lock, provider) {
+  let currencyContractAddress = lock.currencyContractAddress || ZERO
+
+  if (currencyContractAddress !== ZERO) {
+    // We need to get the decimal value
+    const erc20Decimals = await getErc20Decimals(
+      currencyContractAddress,
+      provider
+    )
+    return ethersUtils.toDecimal(lock.keyPrice, erc20Decimals)
+  } else {
+    return ethersUtils.toWei(lock.keyPrice, 'ether')
+  }
+}
 
 /**
  * Creates a lock on behalf of the user, using version v10
@@ -14,6 +36,9 @@ export default async function(lock, owner) {
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
+
+  const decimalKeyPrice = _getKeyPrice(lock, this.provider)
+
   let currencyContractAddress = lock.currencyContractAddress || ZERO
 
   let transactionPromise
@@ -24,7 +49,7 @@ export default async function(lock, owner) {
     ](
       lock.expirationDuration,
       currencyContractAddress, // ERC20 address, 0 is for eth
-      ethersUtils.toWei(lock.keyPrice, 'ether'),
+      decimalKeyPrice, // FIX ME!
       maxNumberOfKeys,
       lockName,
       {

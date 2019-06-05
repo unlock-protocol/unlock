@@ -1,6 +1,6 @@
 import utils from '../utils'
 import { UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
-import { getErc20BalanceForAddress } from '../erc20'
+import { getErc20BalanceForAddress, getErc20Decimals } from '../erc20'
 
 /**
  * Refresh the lock's data.
@@ -10,7 +10,7 @@ import { getErc20BalanceForAddress } from '../erc20'
 export default async function(address) {
   const contract = await this.getLockContract(address)
   const attributes = {
-    keyPrice: x => utils.fromWei(x, 'ether'),
+    keyPrice: x => x,
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {
       if (utils.isInfiniteKeys(value)) {
@@ -41,13 +41,22 @@ export default async function(address) {
   await Promise.all(constantPromises)
 
   if (update.tokenAddress === ZERO) {
+    // If ether, the price is stored as Wei.
+    update.keyPrice = utils.fromWei(update.keyPrice, 'ether')
     update.balance = await this.getAddressBalance(address)
   } else {
-    update.balance = await getErc20BalanceForAddress(
+    // Otherwise need to get the erc20's decimal and convert from there
+    const erc20Decimals = await getErc20Decimals(
+      update.tokenAddress,
+      this.provider
+    )
+    const erc20Balance = await getErc20BalanceForAddress(
       update.tokenAddress,
       address,
       this.provider
     )
+    update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
+    update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility

@@ -22,6 +22,7 @@ const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 jest.mock('../../erc20.js', () => {
   return {
     getErc20BalanceForAddress: jest.fn(() => Promise.resolve(0)),
+    getErc20Decimals: jest.fn(() => Promise.resolve(18)), // 18 is the most frequent default for ERC20
   }
 })
 
@@ -169,11 +170,16 @@ describe('v10', () => {
       erc20.getErc20BalanceForAddress = jest.fn(() => {
         return Promise.resolve(balance)
       })
+      const decimals = 3
+      erc20.getErc20Decimals = jest.fn(() => {
+        return Promise.resolve(decimals)
+      })
+
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
-          balance,
-          keyPrice: utils.fromWei('10000000000000000', 'ether'),
+          balance: '1.929',
+          keyPrice: utils.fromDecimal('10000000000000000', decimals),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
           owner,
