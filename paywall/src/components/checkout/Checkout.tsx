@@ -111,6 +111,9 @@ const Wrapper = styled.section`
 
 const UnlockedText = styled.span`
   padding-left: 10px;
+  ${Media.phone`
+    padding-left: 0;
+  `}
 `
 
 const Header = styled.header`
