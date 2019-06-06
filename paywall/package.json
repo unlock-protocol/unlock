@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/core": "7.4.5",
-    "@storybook/addon-actions": "5.1.1",
+    "@storybook/addon-actions": "5.1.3",
     "@storybook/addon-knobs": "5.1.1",
     "@storybook/addon-storyshots": "5.1.1",
     "@storybook/addon-viewport": "5.1.1",
