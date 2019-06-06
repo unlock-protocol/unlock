@@ -9,6 +9,9 @@ storiesOf('Buttons/Layout Buttons', module)
   .add('About', () => {
     return <LayoutButtons.About />
   })
+  .add('Blog', () => {
+    return <LayoutButtons.Blog />
+  })
   .add('Bars', () => {
     return <LayoutButtons.Bars />
   })
