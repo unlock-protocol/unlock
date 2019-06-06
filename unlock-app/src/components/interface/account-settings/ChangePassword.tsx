@@ -92,6 +92,7 @@ export class ChangePassword extends React.Component<
   handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     const { currentPassword, newPassword, confirmNewPassword } = this.state
+    const { changePassword } = this.props
     const errors = validatePassword(newPassword, confirmNewPassword)
 
     // Last sanity check to make sure nobody messed with the DOM attr
