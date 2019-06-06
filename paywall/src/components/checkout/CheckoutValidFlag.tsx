@@ -4,18 +4,8 @@ import styled from 'styled-components'
 import Media from '../../theme/media'
 import { Key } from '../../unlockTypes'
 //import Svg from '../interface/svg'
-import { RoundedLogo } from '../interface/Logo'
-import {
-  OptimisticFlag,
-  OptimisticLogo,
-  PoweredByUnlock,
-  ConfirmedKeyWrapper,
-} from './FlagStyles'
-import ConfirmedKey, {
-  Checkmark,
-  Arrow,
-  ConfirmedKeyButton,
-} from '../interface/buttons/overlay/ConfirmedKey'
+import { WordMarkLogo } from '../interface/Logo'
+import { OptimisticFlag, OptimisticLogo, PoweredByUnlock } from './FlagStyles'
 import { expirationAsDate } from '../../utils/durations'
 
 interface Props {
@@ -27,22 +17,20 @@ export default function ConfirmedFlag({ unlockKey, showModal }: Props) {
   const expirationDate = new Date(unlockKey.expiration)
   return (
     <ClickableFlag onClick={() => showModal()}>
-      <OptimisticLogo>
-        <RoundedLogo />
-      </OptimisticLogo>
-      <p>Subscribed with Unlock</p>
+      <p>
+        <span>You&apos;re&nbsp;</span>
+        <span>Subscribed</span>
+      </p>
       <ClickableDate onClick={showModal}>
         Valid until {expirationAsDate(expirationDate.getTime())}
       </ClickableDate>
-      <ConfirmedKeyWrapper>
-        <ConfirmedKey height="24px" width="24px" onClick={() => showModal()} />
-      </ConfirmedKeyWrapper>
       <PoweredByUnlock>
         <p>Powered by</p>
-        <OptimisticLogo>
-          <RoundedLogo />
-        </OptimisticLogo>
-        <a href="/">Unlock</a>
+        <a href="/">
+          <OptimisticLogo>
+            <WordMarkLogo alt="Unlock" />
+          </OptimisticLogo>
+        </a>
       </PoweredByUnlock>
     </ClickableFlag>
   )
@@ -51,7 +39,8 @@ export default function ConfirmedFlag({ unlockKey, showModal }: Props) {
 const ClickableDate = styled.button`
   grid-column: 1;
   grid-row: 2;
-  font-family: Roboto, Sans Serif;
+  font-family: IBM Plex Sans, Sans Serif;
+  font-size: 12px;
   color: var(--link);
   background: none;
   border: none;
@@ -63,43 +52,47 @@ const ClickableDate = styled.button`
 `
 
 const ClickableFlag = styled(OptimisticFlag)`
-  & p {
-    font-family: Roboto, Sans Serif;
+  width: 305px;
+  justify-content: space-between;
+  & > p {
+    font-size: 12px;
     margin: 0;
-  }
-  & ${ConfirmedKeyWrapper} {
-    display: none;
-  }
-  &:hover {
-    cursor: pointer;
-    ${ConfirmedKeyButton} {
-      background-color: var(--green);
-      & svg {
-        fill: var(--white);
-      }
-    }
-    ${Arrow} {
-      display: block;
-    }
-    ${Checkmark} {
+    color: var(--darkgrey);
+    & span:first-child {
       display: none;
     }
   }
   ${Media.phone`
-    grid-template-rows: 1fr 1fr;
-    grid-template-columns: 1fr 36px 1fr;
+    padding: 0 10px 0 10px;
+    background-color: var(--lightgrey);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 30px;
     & > p {
-      text-align: right;
-      margin-right: 0;
+      display: flex;
+      flex-direction: row;
+      font-weight: bold;
+      grid-column: 1;
+      grid-row: 1;
+      text-align: left;
       align-self: end;
-      justify-self: start;
+      & span:first-child {
+        display: block;
+      }
     }
-    & ${ConfirmedKeyWrapper} {
-      display:block;
-    }
-    & ${ConfirmedKeyWrapper},& ${PoweredByUnlock} {
+    & ${ClickableDate} {
+      grid-column: 1;
       grid-row: 2;
       align-self: start;
+      text-align: left;
+    }
+    & ${PoweredByUnlock} {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: start;
+      justify-self: end;
+      & ${OptimisticLogo} {
+        margin: 0 0 -3px 2px;
+      }
     }
   `}
 `
