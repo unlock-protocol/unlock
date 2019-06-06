@@ -1,5 +1,13 @@
 import React from 'react'
-import { Section, SectionHeader, Item, Column } from './styles'
+import {
+  Section,
+  SectionHeader,
+  Item,
+  Column,
+  Input,
+  SubmitButton,
+  DisabledButton,
+} from './styles'
 
 // TODO: add dispatch, current account data
 interface PasswordProps {}
@@ -8,6 +16,7 @@ interface PasswordState {
   currentPassword: string
   newPassword: string
   confirmNewPassword: string
+  submitted: boolean
 }
 
 export class ChangePassword extends React.Component<
@@ -16,27 +25,68 @@ export class ChangePassword extends React.Component<
 > {
   constructor(props: PasswordProps) {
     super(props)
-    /* this.state = {
-     *   currentPassword: '',
-     *   newPassword: '',
-     *   confirmNewPassword: '',
-     * } */
+    this.state = {
+      currentPassword: '',
+      newPassword: '',
+      confirmNewPassword: '',
+      submitted: false,
+    }
   }
 
-  noop() {}
+  handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target
+
+    this.setState(prevState => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
+
+  handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    this.setState({ submitted: true })
+  }
 
   render() {
+    const { submitted } = this.state
     return (
       <React.Fragment>
         <SectionHeader>Change Password</SectionHeader>
         <Section>
           <Column>
-            {/* text inputs go here */}
-            <Item title="Old Password">old password input</Item>
-            <Item title="New Password">new password input</Item>
-            <Item title="Confirm New Password">confirm new password input</Item>
+            <Item title="Old Password">
+              <Input
+                name="currentPassword"
+                id="currentPassword"
+                type="password"
+                placeholder="Enter your current password"
+              />
+            </Item>
+            <Item title="New Password">
+              <Input
+                name="newPassword"
+                id="newPassword"
+                type="password"
+                placeholder="Enter your desired new password"
+              />
+            </Item>
+            <Item title="Confirm New Password">
+              <Input
+                name="confirmNewPassword"
+                id="confirmNewPassword"
+                type="password"
+                placeholder="Confirm your desired new password"
+              />
+            </Item>
           </Column>
-          <Column>{/* button goes here */}</Column>
+          <Column>
+            {!submitted && (
+              <SubmitButton onClick={this.handleClick}>
+                Update Password
+              </SubmitButton>
+            )}
+            {submitted && <DisabledButton>Submitted</DisabledButton>}
+          </Column>
         </Section>
       </React.Fragment>
     )

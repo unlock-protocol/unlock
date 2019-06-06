@@ -38,7 +38,40 @@ export const ItemLabel = styled.span`
 // Meant for "small" data -- generally a single line of text
 export const ItemValue = styled.span`
   margin: 1rem 0.5rem;
+  height: 21px;
   display: flex;
+`
+
+export const Input = styled.input`
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 1rem;
+`
+
+export const SubmitButton = styled.button`
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin-top: auto;
+  margin-bottom: 1rem;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  color: var(--darkgrey);
+`
+
+export const DisabledButton = styled(SubmitButton)`
+  cursor: disabled;
+  background-color: var(--grey);
 `
 
 interface ItemProps {
