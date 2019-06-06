@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "config:base",
+    "rangeStrategy:pin",
+    "updateLockFiles:true",
+    "schedule:monthly",
+    ":maintainLockFilesMonthly"
+  ]
+}
