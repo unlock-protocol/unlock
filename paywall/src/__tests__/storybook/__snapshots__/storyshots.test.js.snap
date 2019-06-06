@@ -6376,6 +6376,10 @@ Object {
   .c9 {
     padding-top: 24px;
   }
+
+  .c9 div {
+    padding-bottom: 0;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -8001,7 +8005,7 @@ Object {
           class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -8109,7 +8113,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -8160,7 +8164,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -9800,6 +9804,10 @@ Object {
   .c9 {
     padding-top: 24px;
   }
+
+  .c9 div {
+    padding-bottom: 0;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -11425,7 +11433,7 @@ Object {
           class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -11533,7 +11541,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -11584,7 +11592,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -13224,6 +13232,10 @@ Object {
   .c9 {
     padding-top: 24px;
   }
+
+  .c9 div {
+    padding-bottom: 0;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -14849,7 +14861,7 @@ Object {
           class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -14957,7 +14969,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -15008,7 +15020,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-jTzLTM gQUiOC"
+            class="sc-jTzLTM dRFFCq"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"

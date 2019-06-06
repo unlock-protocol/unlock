@@ -117,6 +117,9 @@ const WalletDescription = styled.a`
   }
   ${Media.phone`
     padding-top: 24px;
+    & div {
+      padding-bottom: 0;
+    }
   `}
 `
 
