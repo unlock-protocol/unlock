@@ -16,6 +16,12 @@ export const Section = styled.div`
   grid-gap: 1rem;
 `
 
+export const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+`
+
 export const ItemLabel = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -41,9 +47,11 @@ interface ItemProps {
 }
 export const Item = ({ title, children }: ItemProps) => {
   return (
-    <div>
+    <Column>
       <ItemLabel>{title}</ItemLabel>
       {children}
-    </div>
+    </Column>
   )
 }
+
+// TODO: steal input/button elements from other parts of app and integrate here

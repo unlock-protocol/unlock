@@ -4,6 +4,7 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
 import AccountInfo from '../interface/account-settings/AccountInfo'
+import ChangePassword from '../interface/account-settings/ChangePassword'
 
 export const SettingsContent = () => {
   return (
@@ -13,6 +14,7 @@ export const SettingsContent = () => {
       </Head>
       <Errors />
       <AccountInfo />
+      <ChangePassword />
     </Layout>
   )
 }
