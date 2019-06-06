@@ -222,3 +222,53 @@ storiesOf('Checkout page', module)
     })
     return <CheckoutContent />
   })
+  .add('Checkout page, no wallet', () => {
+    // set the data needed to display the checkout
+    useEffect(() => {
+      const messageTemplate = {
+        type: 'message',
+        source: fakeWindow.parent,
+        origin: 'origin',
+      }
+      fakeWindow.handlers.message.forEach(postedMessage => {
+        postedMessage({
+          ...messageTemplate,
+          data: {
+            type: POST_MESSAGE_CONFIG,
+            payload: paywallConfig,
+          },
+        })
+        setTimeout(() => {
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT,
+              payload: null,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+              payload: '0',
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_LOCKS,
+              payload: locks,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_NETWORK,
+              payload: 1,
+            },
+          })
+        })
+      })
+    })
+    return <CheckoutContent />
+  })

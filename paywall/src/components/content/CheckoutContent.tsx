@@ -3,6 +3,7 @@ import Head from 'next/head'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import Checkout, { CheckoutWrapper } from '../checkout/Checkout'
+import NoWallet from '../checkout/NoWallet'
 import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
@@ -68,6 +69,15 @@ export default function CheckoutContent() {
           currentNetwork={currentNetwork}
           requiredNetworkId={requiredNetworkId}
         />
+      </Fragment>
+    )
+  } else if (!account) {
+    child = (
+      <Fragment>
+        <Head>
+          <title>{pageTitle('Checkout')}</title>
+        </Head>
+        <NoWallet config={paywallConfig} />
       </Fragment>
     )
   } else {
