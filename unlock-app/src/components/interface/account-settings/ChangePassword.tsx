@@ -1,22 +1,59 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import {
+  Column,
+  DisabledButton,
+  Error,
+  Input,
+  Item,
   Section,
   SectionHeader,
-  Item,
-  Column,
-  Input,
   SubmitButton,
-  DisabledButton,
 } from './styles'
+import { changePassword } from '../../../actions/user'
 
 // TODO: add dispatch, current account data
-interface PasswordProps {}
+interface PasswordProps {
+  changePassword: (oldPassword: string, newPassword: string) => any
+}
 
 interface PasswordState {
   currentPassword: string
   newPassword: string
   confirmNewPassword: string
   submitted: boolean
+  errors: string[]
+}
+
+export const passwordErrors = {
+  EMPTY: 'Password must not be empty.',
+  NO_MATCH: 'Password and confirmation must match.',
+  MID_LENGTH:
+    'We recommend using a more complex password (8 characters at the absolute minimum).',
+}
+
+export const validatePassword = (
+  password: string,
+  passwordConfirmation: string
+) => {
+  let errors: string[] = []
+
+  if (password.length < 1) {
+    errors.push(passwordErrors.EMPTY)
+  }
+
+  if (password.length < 8) {
+    errors.push(passwordErrors.MID_LENGTH)
+  }
+
+  // TODO: better calculation of best-case password complexity.
+  // TODO: augment complexity calculation with calls to HaveIBeenPwned API.
+
+  if (password !== passwordConfirmation) {
+    errors.push(passwordErrors.NO_MATCH)
+  }
+
+  return errors
 }
 
 export class ChangePassword extends React.Component<
@@ -30,25 +67,45 @@ export class ChangePassword extends React.Component<
       newPassword: '',
       confirmNewPassword: '',
       submitted: false,
+      errors: [],
     }
   }
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
 
-    this.setState(prevState => ({
-      ...prevState,
-      [name]: value,
-    }))
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        [name]: value,
+      }
+      const { newPassword, confirmNewPassword } = newState
+      const errors = validatePassword(newPassword, confirmNewPassword)
+
+      return {
+        ...newState,
+        errors,
+      }
+    })
   }
 
   handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
-    this.setState({ submitted: true })
+    const { currentPassword, newPassword, confirmNewPassword } = this.state
+    const errors = validatePassword(newPassword, confirmNewPassword)
+
+    // Last sanity check to make sure nobody messed with the DOM attr
+    const isValid = !errors.length
+    if (isValid) {
+      changePassword(currentPassword, newPassword)
+      this.setState({ submitted: true })
+    } else {
+      // TODO: set an error here
+    }
   }
 
   render() {
-    const { submitted } = this.state
+    const { submitted, errors } = this.state
     return (
       <React.Fragment>
         <SectionHeader>Change Password</SectionHeader>
@@ -60,6 +117,7 @@ export class ChangePassword extends React.Component<
                 id="currentPassword"
                 type="password"
                 placeholder="Enter your current password"
+                onChange={this.handleInputChange}
               />
             </Item>
             <Item title="New Password">
@@ -68,6 +126,7 @@ export class ChangePassword extends React.Component<
                 id="newPassword"
                 type="password"
                 placeholder="Enter your desired new password"
+                onChange={this.handleInputChange}
               />
             </Item>
             <Item title="Confirm New Password">
@@ -76,10 +135,12 @@ export class ChangePassword extends React.Component<
                 id="confirmNewPassword"
                 type="password"
                 placeholder="Confirm your desired new password"
+                onChange={this.handleInputChange}
               />
             </Item>
           </Column>
           <Column>
+            <Error>{errors.length ? errors[0] : ''}</Error>
             {!submitted && (
               <SubmitButton onClick={this.handleClick}>
                 Update Password
@@ -93,5 +154,13 @@ export class ChangePassword extends React.Component<
   }
 }
 
+export const mapDispatchToProps = (dispatch: any) => ({
+  changePassword: (oldPassword: string, newPassword: string) =>
+    dispatch(changePassword(oldPassword, newPassword)),
+})
+
 // TODO: connect to state and dispatch
-export default ChangePassword
+export default connect(
+  null,
+  mapDispatchToProps
+)(ChangePassword)

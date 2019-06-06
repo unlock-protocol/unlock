@@ -20,6 +20,9 @@ export const Column = styled.div`
   display: flex;
   flex-direction: column;
   align-content: flex-end;
+  & > :first-child {
+    margin-top: auto;
+  }
 `
 
 export const ItemLabel = styled.span`
@@ -52,14 +55,23 @@ export const Input = styled.input`
   margin-bottom: 1rem;
 `
 
+export const Error = styled.span`
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 1rem;
+  margin-top: 13px;
+`
+
 export const SubmitButton = styled.button`
   height: 60px;
   width: 385px;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: auto;
   margin-bottom: 1rem;
+  margin-top: 13px;
   font-size: 16px;
   cursor: pointer;
   display: flex;
