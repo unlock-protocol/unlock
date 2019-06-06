@@ -18,7 +18,7 @@ const privateKeyReducer = (
   if (action.type === SET_ENCRYPTED_PRIVATE_KEY) {
     return {
       key: action.key,
-      email: action.email,
+      email: action.emailAddress,
     }
   }
 

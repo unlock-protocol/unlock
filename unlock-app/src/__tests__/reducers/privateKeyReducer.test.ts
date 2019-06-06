@@ -71,7 +71,7 @@ describe('privateKeyReducer', () => {
     const action = {
       type: SET_ENCRYPTED_PRIVATE_KEY,
       key: newKeyState.key,
-      email: 'angrybees@BZZZZZZZZZZZZZ.STING',
+      emailAddress: 'angrybees@BZZZZZZZZZZZZZ.STING',
     }
     expect(reducer(initialState, action)).toEqual(newKeyState)
     expect(reducer(oldKeyState, action)).toEqual(newKeyState)
