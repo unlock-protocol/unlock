@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import { RoundedLogo } from '../interface/Logo'
+import { WordMarkLogo } from '../interface/Logo'
 
 import { PaywallConfig } from '../../unlockTypes'
 import Media from '../../theme/media'
@@ -19,7 +19,7 @@ export const NoWallet = ({ config }: Props) => {
           <UnlockedText>Unlocked</UnlockedText>
         </Title>
         <p>
-          To enjoy Forbes Online without any ads you&apos;ll need to use a
+          To enjoy content without any ads you&apos;ll need to use a
           crypto-enabled browser that has a wallet. Here are a few options
         </p>
       </Header>
@@ -32,6 +32,7 @@ export const NoWallet = ({ config }: Props) => {
           <span>Desktop Chrome &amp; Firefox</span>
           <div>
             <Metamask />
+            <Caption>Metamask</Caption>
           </div>
         </WalletDescription>
         <WalletDescription
@@ -42,6 +43,7 @@ export const NoWallet = ({ config }: Props) => {
           <span>Mobile iOS &amp; Android</span>
           <div>
             <CoinbaseWallet />
+            <Caption>Coinbase Wallet</Caption>
           </div>
         </WalletDescription>
         <WalletDescription
@@ -52,12 +54,13 @@ export const NoWallet = ({ config }: Props) => {
           <span>Mobile Android</span>
           <div>
             <Opera />
+            <Caption>Opera</Caption>
           </div>
         </WalletDescription>
       </WalletOptions>
       <Footer>
-        <RoundedLogo />
-        Powered by Unlock
+        <span>Powered by</span>
+        <NoWalletWordMark alt="Unlock" />
       </Footer>
     </React.Fragment>
   )
@@ -65,13 +68,20 @@ export const NoWallet = ({ config }: Props) => {
 
 export default NoWallet
 
+const NoWalletWordMark = styled(WordMarkLogo)`
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+`
+
+const Caption = styled.span``
+
 const WalletDescription = styled.a`
   display: flex;
   flex-direction: column;
   height: 210px;
 
   & span {
-    color: var(--mediumgrey)
     font-family: IBM Plex Sans;
     font-style: normal;
     font-weight: normal;
@@ -86,14 +96,24 @@ const WalletDescription = styled.a`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     width: 160px;
     height: 192px;
     background-color: var(--white);
     border-radius: 4px;
+    padding-bottom: 13px;
     & svg {
       padding-top: 20px;
     }
+  }
+  & div ${Caption} {
+    text-transform: none;
+    font-family: IBM Plex Sans, sans serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 0;
+    color: var(--link);
   }
   ${Media.phone`
     padding-top: 24px;
@@ -160,4 +180,8 @@ const WalletOptions = styled.ul`
   justify-content: space-around;
   grid-template-columns: repeat(auto-fit, 186px);
   padding-top: 24px;
+  & a,
+  & a:visited {
+    color: var(--mediumgrey);
+  }
 `

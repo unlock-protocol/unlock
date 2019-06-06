@@ -6155,18 +6155,7 @@ exports[`Storyshots Checkout page Checkout page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c14 > svg {
-  fill: white;
-}
-
-.c3 {
+    .c3 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -6208,6 +6197,13 @@ Object {
   position: relative;
 }
 
+.c15 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
 .c9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -6220,7 +6216,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--mediumgrey) font-family:IBM Plex Sans;
+  font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -6246,29 +6242,43 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   width: 160px;
   height: 192px;
   background-color: var(--white);
   border-radius: 4px;
+  padding-bottom: 13px;
 }
 
 .c9 div svg {
   padding-top: 20px;
 }
 
+.c9 div .c11 {
+  text-transform: none;
+  font-family: IBM Plex Sans,sans serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  color: var(--link);
+}
+
 .c10 {
   width: 120px;
 }
 
-.c11 {
+.c12 {
   width: 120px;
 }
 
-.c12 {
+.c13 {
   width: 120px;
 }
 
@@ -6294,13 +6304,13 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c14 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 div {
+.c14 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6325,6 +6335,11 @@ Object {
   justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
   padding-top: 24px;
+}
+
+.c8 a,
+.c8 a:visited {
+  color: var(--mediumgrey);
 }
 
 .c0 {
@@ -6355,13 +6370,6 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
-    height: 16px;
-    width: 16px;
-  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -6421,7 +6429,7 @@ Object {
               </span>
             </h1>
             <p>
-              To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+              To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
             </p>
           </header>
           <ul
@@ -6528,6 +6536,11 @@ Object {
                     stroke-linejoin="round"
                   />
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Metamask
+                </span>
               </div>
             </a>
             <a
@@ -6541,7 +6554,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -6574,6 +6587,11 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Coinbase Wallet
+                </span>
               </div>
             </a>
             <a
@@ -6587,7 +6605,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c13"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -7902,25 +7920,30 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Opera
+                </span>
               </div>
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c14"
           >
-            <div
-              class="c14"
+            <span>
+              Powered by
+            </span>
+            <svg
+              alt="Unlock"
+              class="c15"
+              viewBox="0 0 1200 256"
             >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            Powered by Unlock
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
           </footer>
         </section>
       </div>
@@ -7932,7 +7955,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kpOJdX cHhtpe"
+      class="sc-ckVGcZ bgAPTP"
     >
       <section
         class="sc-EHOje jdBqVt"
@@ -7955,30 +7978,30 @@ Object {
           
         </a>
         <header
-          class="sc-cSHVUG fQlMin"
+          class="sc-chPdSV gXQfPJ"
         >
           <h1
-            class="sc-kAzzGY iFcHIa"
+            class="sc-kgoBCf kzAQcu"
           >
             <img
-              class="sc-chPdSV iraSCv"
+              class="sc-kGXeez jURavi"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-jzJRlG ifjdnr"
+              class="sc-kAzzGY bKIUtC"
             >
               Unlocked
             </span>
           </h1>
           <p>
-            To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+            To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
           </p>
         </header>
         <ul
-          class="sc-kGXeez jwjAkc"
+          class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -7988,7 +8011,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-VigVT eYUsVe"
+                class="sc-fjdhpX WXZbp"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -8078,10 +8101,15 @@ Object {
                   stroke-linejoin="round"
                 />
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Metamask
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -8091,7 +8119,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jTzLTM dXYhWV"
+                class="sc-jzJRlG iDkPTO"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -8124,10 +8152,15 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Coinbase Wallet
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -8137,7 +8170,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-fjdhpX WXZbp"
+                class="sc-cSHVUG bxTfGG"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -9452,25 +9485,30 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Opera
+              </span>
             </div>
           </a>
         </ul>
         <footer
-          class="sc-kgoBCf fVYvYr"
+          class="sc-kpOJdX cJHYxl"
         >
-          <div
-            class="sth0f3-0 cVKfiB"
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="sth0f3-1 sc-gqjmRU koIBRT"
+            viewBox="0 0 1200 256"
           >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-          Powered by Unlock
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
         </footer>
       </section>
     </div>
@@ -9541,18 +9579,7 @@ exports[`Storyshots Checkout page Checkout page, no wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c14 > svg {
-  fill: white;
-}
-
-.c3 {
+    .c3 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -9594,6 +9621,13 @@ Object {
   position: relative;
 }
 
+.c15 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
 .c9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -9606,7 +9640,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--mediumgrey) font-family:IBM Plex Sans;
+  font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -9632,29 +9666,43 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   width: 160px;
   height: 192px;
   background-color: var(--white);
   border-radius: 4px;
+  padding-bottom: 13px;
 }
 
 .c9 div svg {
   padding-top: 20px;
 }
 
+.c9 div .c11 {
+  text-transform: none;
+  font-family: IBM Plex Sans,sans serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  color: var(--link);
+}
+
 .c10 {
   width: 120px;
 }
 
-.c11 {
+.c12 {
   width: 120px;
 }
 
-.c12 {
+.c13 {
   width: 120px;
 }
 
@@ -9680,13 +9728,13 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c14 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 div {
+.c14 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -9711,6 +9759,11 @@ Object {
   justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
   padding-top: 24px;
+}
+
+.c8 a,
+.c8 a:visited {
+  color: var(--mediumgrey);
 }
 
 .c0 {
@@ -9741,13 +9794,6 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
-    height: 16px;
-    width: 16px;
-  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -9807,7 +9853,7 @@ Object {
               </span>
             </h1>
             <p>
-              To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+              To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
             </p>
           </header>
           <ul
@@ -9914,6 +9960,11 @@ Object {
                     stroke-linejoin="round"
                   />
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Metamask
+                </span>
               </div>
             </a>
             <a
@@ -9927,7 +9978,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -9960,6 +10011,11 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Coinbase Wallet
+                </span>
               </div>
             </a>
             <a
@@ -9973,7 +10029,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c13"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -11288,25 +11344,30 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Opera
+                </span>
               </div>
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c14"
           >
-            <div
-              class="c14"
+            <span>
+              Powered by
+            </span>
+            <svg
+              alt="Unlock"
+              class="c15"
+              viewBox="0 0 1200 256"
             >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            Powered by Unlock
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
           </footer>
         </section>
       </div>
@@ -11318,7 +11379,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kpOJdX cHhtpe"
+      class="sc-ckVGcZ bgAPTP"
     >
       <section
         class="sc-EHOje jdBqVt"
@@ -11341,30 +11402,30 @@ Object {
           
         </a>
         <header
-          class="sc-cSHVUG fQlMin"
+          class="sc-chPdSV gXQfPJ"
         >
           <h1
-            class="sc-kAzzGY iFcHIa"
+            class="sc-kgoBCf kzAQcu"
           >
             <img
-              class="sc-chPdSV iraSCv"
+              class="sc-kGXeez jURavi"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-jzJRlG ifjdnr"
+              class="sc-kAzzGY bKIUtC"
             >
               Unlocked
             </span>
           </h1>
           <p>
-            To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+            To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
           </p>
         </header>
         <ul
-          class="sc-kGXeez jwjAkc"
+          class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -11374,7 +11435,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-VigVT eYUsVe"
+                class="sc-fjdhpX WXZbp"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -11464,10 +11525,15 @@ Object {
                   stroke-linejoin="round"
                 />
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Metamask
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -11477,7 +11543,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jTzLTM dXYhWV"
+                class="sc-jzJRlG iDkPTO"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -11510,10 +11576,15 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Coinbase Wallet
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -11523,7 +11594,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-fjdhpX WXZbp"
+                class="sc-cSHVUG bxTfGG"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -12838,25 +12909,30 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Opera
+              </span>
             </div>
           </a>
         </ul>
         <footer
-          class="sc-kgoBCf fVYvYr"
+          class="sc-kpOJdX cJHYxl"
         >
-          <div
-            class="sth0f3-0 cVKfiB"
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="sth0f3-1 sc-gqjmRU koIBRT"
+            viewBox="0 0 1200 256"
           >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-          Powered by Unlock
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
         </footer>
       </section>
     </div>
@@ -12927,18 +13003,7 @@ exports[`Storyshots Checkout page Checkout page, wrong network 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c14 > svg {
-  fill: white;
-}
-
-.c3 {
+    .c3 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -12980,6 +13045,13 @@ Object {
   position: relative;
 }
 
+.c15 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
 .c9 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -12992,7 +13064,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--mediumgrey) font-family:IBM Plex Sans;
+  font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -13018,29 +13090,43 @@ Object {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   width: 160px;
   height: 192px;
   background-color: var(--white);
   border-radius: 4px;
+  padding-bottom: 13px;
 }
 
 .c9 div svg {
   padding-top: 20px;
 }
 
+.c9 div .c11 {
+  text-transform: none;
+  font-family: IBM Plex Sans,sans serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  -webkit-letter-spacing: 0;
+  -moz-letter-spacing: 0;
+  -ms-letter-spacing: 0;
+  letter-spacing: 0;
+  color: var(--link);
+}
+
 .c10 {
   width: 120px;
 }
 
-.c11 {
+.c12 {
   width: 120px;
 }
 
-.c12 {
+.c13 {
   width: 120px;
 }
 
@@ -13066,13 +13152,13 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c14 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 div {
+.c14 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -13097,6 +13183,11 @@ Object {
   justify-content: space-around;
   grid-template-columns: repeat(auto-fit,186px);
   padding-top: 24px;
+}
+
+.c8 a,
+.c8 a:visited {
+  color: var(--mediumgrey);
 }
 
 .c0 {
@@ -13127,13 +13218,6 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
-}
-
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
-    height: 16px;
-    width: 16px;
-  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -13193,7 +13277,7 @@ Object {
               </span>
             </h1>
             <p>
-              To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+              To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
             </p>
           </header>
           <ul
@@ -13300,6 +13384,11 @@ Object {
                     stroke-linejoin="round"
                   />
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Metamask
+                </span>
               </div>
             </a>
             <a
@@ -13313,7 +13402,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -13346,6 +13435,11 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Coinbase Wallet
+                </span>
               </div>
             </a>
             <a
@@ -13359,7 +13453,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c13"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -14674,25 +14768,30 @@ Object {
                     </lineargradient>
                   </defs>
                 </svg>
+                <span
+                  class="c11 "
+                >
+                  Opera
+                </span>
               </div>
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c14"
           >
-            <div
-              class="c14"
+            <span>
+              Powered by
+            </span>
+            <svg
+              alt="Unlock"
+              class="c15"
+              viewBox="0 0 1200 256"
             >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-            Powered by Unlock
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
           </footer>
         </section>
       </div>
@@ -14704,7 +14803,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kpOJdX cHhtpe"
+      class="sc-ckVGcZ bgAPTP"
     >
       <section
         class="sc-EHOje jdBqVt"
@@ -14727,30 +14826,30 @@ Object {
           
         </a>
         <header
-          class="sc-cSHVUG fQlMin"
+          class="sc-chPdSV gXQfPJ"
         >
           <h1
-            class="sc-kAzzGY iFcHIa"
+            class="sc-kgoBCf kzAQcu"
           >
             <img
-              class="sc-chPdSV iraSCv"
+              class="sc-kGXeez jURavi"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-jzJRlG ifjdnr"
+              class="sc-kAzzGY bKIUtC"
             >
               Unlocked
             </span>
           </h1>
           <p>
-            To enjoy Forbes Online without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
+            To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options
           </p>
         </header>
         <ul
-          class="sc-kGXeez jwjAkc"
+          class="sc-dxgOiQ fnYLGm"
         >
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -14760,7 +14859,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-VigVT eYUsVe"
+                class="sc-fjdhpX WXZbp"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14850,10 +14949,15 @@ Object {
                   stroke-linejoin="round"
                 />
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Metamask
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -14863,7 +14967,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jTzLTM dXYhWV"
+                class="sc-jzJRlG iDkPTO"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14896,10 +15000,15 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Coinbase Wallet
+              </span>
             </div>
           </a>
           <a
-            class="sc-gqjmRU eKjYpo"
+            class="sc-jTzLTM gQUiOC"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -14909,7 +15018,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-fjdhpX WXZbp"
+                class="sc-cSHVUG bxTfGG"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -16224,25 +16333,30 @@ Object {
                   </lineargradient>
                 </defs>
               </svg>
+              <span
+                class="sc-VigVT fIhGog"
+              >
+                Opera
+              </span>
             </div>
           </a>
         </ul>
         <footer
-          class="sc-kgoBCf fVYvYr"
+          class="sc-kpOJdX cJHYxl"
         >
-          <div
-            class="sth0f3-0 cVKfiB"
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="sth0f3-1 sc-gqjmRU koIBRT"
+            viewBox="0 0 1200 256"
           >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-          Powered by Unlock
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
         </footer>
       </section>
     </div>
