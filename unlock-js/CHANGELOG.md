@@ -1,6 +1,11 @@
 # Changes
 
+## 0.2.3
+
+- Adding support for v11 of the smart contracts.
+
 ## 0.2.2
+
 - `unlock-provider` gains a property `isUnlock` that will allow Unlock-specific
   provider configuration.
 
