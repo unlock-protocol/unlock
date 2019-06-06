@@ -71,7 +71,7 @@ const WalletDescription = styled.a`
   height: 210px;
 
   & span {
-    color: var(--offblack)
+    color: var(--mediumgrey)
     font-family: IBM Plex Sans;
     font-style: normal;
     font-weight: normal;
