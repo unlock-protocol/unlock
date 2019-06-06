@@ -16447,7 +16447,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Checkout/Optimistic Unlocking Checkoug confirming flag 1`] = `
+exports[`Storyshots Checkout/Optimistic Unlocking Checkout confirming flag 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>

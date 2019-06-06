@@ -19,7 +19,7 @@ storiesOf('Checkout/Optimistic Unlocking', module)
     </div>
   ))
   .addDecorator(withKnobs)
-  .add('Checkoug confirming flag', () => {
+  .add('Checkout confirming flag', () => {
     return (
       <CheckoutConfirmingFlag
         unlockKey={{
