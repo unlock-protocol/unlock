@@ -1,5 +1,6 @@
 import React from 'react'
 import About from './About'
+import Blog from './Blog'
 import Arrow from './Arrow'
 import Checkmark from './Checkmark'
 import Close from './Close'
@@ -36,6 +37,7 @@ function wrapViewBox(WrappedComponent, viewBox) {
 
 export default {
   About: wrapViewBox(About, '0 0 24 24'),
+  Blog: wrapViewBox(Blog, '0 0 24 24'),
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),

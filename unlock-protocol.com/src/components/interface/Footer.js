@@ -5,9 +5,11 @@ import Buttons from './buttons/layout'
 const Footer = () => (
   <Container>
     <Buttons.About />
+    <Buttons.Blog />
     <Buttons.Jobs />
     <Buttons.Github />
     <Buttons.Telegram />
+    <Buttons.Twitter />
     <Colophon>Made with passion in New York</Colophon>
   </Container>
 )
@@ -19,7 +21,7 @@ const Container = styled.footer`
   margin-bottom: 24px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(3, 24px) 1fr;
+  grid-template-columns: repeat(6, 24px) 1fr;
   grid-auto-flow: column;
   align-items: center;
 `
