@@ -6310,6 +6310,10 @@ Object {
   text-align: center;
 }
 
+.c14 span {
+  padding-right: 1px;
+}
+
 .c14 div {
   margin: 8px;
   vertical-align: middle;
@@ -9498,7 +9502,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kpOJdX cJHYxl"
+          class="sc-kpOJdX fyYZrr"
         >
           <span>
             Powered by
@@ -9738,6 +9742,10 @@ Object {
   text-align: center;
 }
 
+.c14 span {
+  padding-right: 1px;
+}
+
 .c14 div {
   margin: 8px;
   vertical-align: middle;
@@ -12926,7 +12934,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kpOJdX cJHYxl"
+          class="sc-kpOJdX fyYZrr"
         >
           <span>
             Powered by
@@ -13166,6 +13174,10 @@ Object {
   text-align: center;
 }
 
+.c14 span {
+  padding-right: 1px;
+}
+
 .c14 div {
   margin: 8px;
   vertical-align: middle;
@@ -16354,7 +16366,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kpOJdX cJHYxl"
+          class="sc-kpOJdX fyYZrr"
         >
           <span>
             Powered by

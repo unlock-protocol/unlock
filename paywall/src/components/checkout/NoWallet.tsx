@@ -165,6 +165,9 @@ const Footer = styled.footer`
   font-size: 12px;
   text-align: center;
 
+  span {
+    padding-right: 1px;
+  }
   div {
     margin: 8px;
     vertical-align: middle;
