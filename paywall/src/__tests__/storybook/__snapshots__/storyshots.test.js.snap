@@ -16447,7 +16447,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Checkout/Optimistic Unlocking Optimistic unlocking flag 1`] = `
+exports[`Storyshots Checkout/Optimistic Unlocking Checkoug confirming flag 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -16598,7 +16598,7 @@ Object {
     display: grid;
     height: 60px;
     width: 100%;
-    grid-template-columns: 1fr 0.5fr 24px 1fr;
+    grid-template-columns: 0.75fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -16736,7 +16736,7 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-jzJRlG eIdmvH"
+        class="sc-jzJRlG dNpasv"
       >
         <p>
           Confirming Purchase

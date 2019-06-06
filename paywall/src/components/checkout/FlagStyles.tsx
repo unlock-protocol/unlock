@@ -100,7 +100,7 @@ export const OptimisticFlag = styled.div`
     display: grid;
     height: 60px;
     width: 100%;
-    grid-template-columns: 1fr 0.5fr 24px 1fr;
+    grid-template-columns: 0.75fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     align-items: center;
 

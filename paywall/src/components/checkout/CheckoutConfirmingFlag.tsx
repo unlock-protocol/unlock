@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Key } from '../../unlockTypes'
 import Svg from '../interface/svg'
-import useConfig from '../../hooks/utils/useConfig'
 import {
   ProgressBar,
   Progress,
@@ -15,10 +14,13 @@ import { WordMarkLogo } from '../interface/Logo'
 
 interface Props {
   unlockKey: Key
+  requiredConfirmations: number
 }
 
-export default function CheckoutFlag({ unlockKey }: Props) {
-  const { requiredConfirmations } = useConfig()
+export default function CheckoutConfirmingFlag({
+  unlockKey,
+  requiredConfirmations,
+}: Props) {
   return (
     <OptimisticFlag>
       <p>Confirming Purchase</p>

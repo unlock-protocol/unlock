@@ -2,13 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, number } from '@storybook/addon-knobs'
 
-import { ConfigContext } from '../../utils/withConfig'
-import configure from '../../config'
-import CheckoutFlag from '../../components/checkout/CheckoutConfirmingFlag'
-
-const ConfigProvider = ConfigContext.Provider
-
-const config = configure()
+import CheckoutConfirmingFlag from '../../components/checkout/CheckoutConfirmingFlag'
 
 storiesOf('Checkout/Optimistic Unlocking', module)
   .addDecorator(getStory => (
@@ -21,12 +15,17 @@ storiesOf('Checkout/Optimistic Unlocking', module)
         display: 'flex',
       }}
     >
-      <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+      {getStory()}
     </div>
   ))
   .addDecorator(withKnobs)
-  .add('Optimistic unlocking flag', () => {
+  .add('Checkoug confirming flag', () => {
     return (
-      <CheckoutFlag unlockKey={{ confirmations: number('confirmations', 2) }} />
+      <CheckoutConfirmingFlag
+        unlockKey={{
+          confirmations: number('confirmations', 2),
+        }}
+        requiredConfirmations={12}
+      />
     )
   })
