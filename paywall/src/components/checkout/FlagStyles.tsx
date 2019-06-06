@@ -81,7 +81,7 @@ export const OptimisticFlag = styled.div`
 
   & > p {
     font-size: 12px;
-    margin: -2px 0 0 0;
+    margin: 0;
     color: var(--darkgrey);
   }
 
@@ -96,11 +96,11 @@ export const OptimisticFlag = styled.div`
 
   ${Media.phone`
     margin: auto;
-    font-size: 10px;
+    font-size: 12px;
     display: grid;
     height: 60px;
     width: 100%;
-    grid-template-columns: 0.75fr 0.5fr 24px 1fr;
+    grid-template-columns: 1fr 0.4fr 24px 1fr;
     grid-template-rows: 60px;
     align-items: center;
 
@@ -109,7 +109,7 @@ export const OptimisticFlag = styled.div`
     }
 
     & > p {
-      font-size: 10px;
+      font-size: 12px;
       margin: 0 0 2px;
       text-align: right;
     }
