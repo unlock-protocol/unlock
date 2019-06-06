@@ -16451,33 +16451,20 @@ exports[`Storyshots Checkout/Optimistic Unlocking Optimistic unlocking flag 1`] 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
-  background-color: var(--brand);
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.c3 > svg {
-  fill: white;
-}
-
-.c2 {
-  width: 20px;
-  height: 20px;
-}
-
-.c2 > div {
-  width: 20px;
-  height: 20px;
+    .c9 {
+  fill: var(--brand);
 }
 
 .c8 {
+  width: 44px;
+}
+
+.c5 {
   width: 18px;
   height: 18px;
 }
 
-.c5 {
+.c2 {
   width: 74px;
   height: 8px;
   background: var(--lightgrey);
@@ -16485,7 +16472,7 @@ Object {
   grid-column: 2;
 }
 
-.c7 {
+.c4 {
   width: 74px;
   height: 8px;
   background: var(--lightgrey);
@@ -16498,7 +16485,7 @@ Object {
 
 .c0 {
   height: 20px;
-  width: 274px;
+  width: 338px;
   background: var(--white);
   display: -webkit-box;
   display: -webkit-flex;
@@ -16515,11 +16502,13 @@ Object {
   -webkit-justify-content: space-evenly;
   -ms-flex-pack: space-evenly;
   justify-content: space-evenly;
+  font-size: 12px;
 }
 
 .c0 > p {
   font-size: 12px;
   margin: -2px 0 0 0;
+  color: var(--darkgrey);
 }
 
 .c0 > a {
@@ -16532,31 +16521,37 @@ Object {
   width: 16px;
 }
 
-.c9 {
-  display: none;
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c3 {
-    height: 16px;
-    width: 16px;
-  }
+.c6 > p {
+  margin: 0;
 }
 
-@media only screen and (min-width:257px) and (max-width:736px) {
-  .c2 {
-    width: 16px;
-    height: 16px;
-  }
-
-  .c2 > div {
-    width: 16px;
-    height: 16px;
-  }
+.c6 .c7 {
+  margin: 0 0 0 2px;
+  padding: 2px 0 0;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
   .c8 {
+    width: 47px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c5 {
     grid-row: 1;
     grid-column: 3;
     margin-right: 0;
@@ -16567,7 +16562,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c5 {
+  .c2 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
@@ -16577,7 +16572,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c7 {
+  .c4 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
@@ -16587,7 +16582,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c7 {
+  .c4 {
     -webkit-align-self: start;
     -ms-flex-item-align: start;
     align-self: start;
@@ -16603,7 +16598,7 @@ Object {
     display: grid;
     height: 60px;
     width: 100%;
-    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
+    grid-template-columns: 1fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     -webkit-align-items: center;
     -webkit-box-align: center;
@@ -16611,34 +16606,22 @@ Object {
     align-items: center;
   }
 
+  .c0 > .c3,
   .c0 > .c1 {
-    display: none;
-  }
-
-  .c0 > .c6,
-  .c0 > .c4 {
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
   }
 
   .c0 > p {
+    font-size: 10px;
     margin: 0 0 2px;
     text-align: right;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c9 {
-    font-size: 10px;
-    width: 170px;
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    grid-template-rows: 1fr;
-    font-size: 12px;
-  }
-
-  .c9 > div {
+  .c6 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -16647,20 +16630,19 @@ Object {
     align-self: center;
   }
 
-  .c9 > p {
-    width: 100%;
+  .c6 > p {
+    font-size: 12px;
     color: var(--slate);
     grid-row: 1;
     grid-column: 1;
-    text-align: right;
     margin: 0;
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
-    padding-right: 2px;
+    padding: 0 0 0 2px;
   }
 
-  .c9 > a {
+  .c6 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -16682,34 +16664,18 @@ Object {
         <div
           class="c0"
         >
-          <div
-            class="c1 c2"
-          >
-            <div
-              class="c3"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
           <p>
             Confirming Purchase
           </p>
           <div
-            class="c4 c5"
+            class="c1 c2"
           >
             <div
-              class="c4 c6 c7"
+              class="c1 c3 c4"
             />
           </div>
           <a
-            class="c8"
+            class="c5"
             href="https://github.com/unlock-protocol/unlock/wiki/Frequently-Asked-Questions#what-is-optimistic-unlocking"
             target="_blank"
           >
@@ -16733,31 +16699,28 @@ Object {
             </svg>
           </a>
           <div
-            class="c9"
+            class="c6"
           >
             <p>
               Powered by
             </p>
-            <div
-              class="c1 c2"
-            >
-              <div
-                class="c3"
-              >
-                <svg
-                  viewBox="0 0 56 56"
-                >
-                  <title />
-                  <path
-                    d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                  />
-                </svg>
-              </div>
-            </div>
             <a
               href="/"
             >
-              Unlock
+              <div
+                class="c7 c8"
+              >
+                <svg
+                  alt="Unlock"
+                  class="c9"
+                  viewBox="0 0 1200 256"
+                >
+                  <title />
+                  <path
+                    d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                  />
+                </svg>
+              </div>
             </a>
           </div>
         </div>
@@ -16773,24 +16736,8 @@ Object {
       style="width: 100vw; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-jzJRlG knSnbR"
+        class="sc-jzJRlG eIdmvH"
       >
-        <div
-          class="sc-gqjmRU kvpmPA"
-        >
-          <div
-            class="sth0f3-0 cVKfiB"
-          >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <title />
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-        </div>
         <p>
           Confirming Purchase
         </p>
@@ -16826,31 +16773,28 @@ Object {
           </svg>
         </a>
         <div
-          class="sc-cSHVUG cwUkvc"
+          class="sc-cSHVUG jzvlop"
         >
           <p>
             Powered by
           </p>
-          <div
-            class="sc-gqjmRU kvpmPA"
-          >
-            <div
-              class="sth0f3-0 cVKfiB"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <title />
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </div>
           <a
             href="/"
           >
-            Unlock
+            <div
+              class="sc-gqjmRU ewbLmJ"
+            >
+              <svg
+                alt="Unlock"
+                class="sth0f3-1 iRirFt"
+                viewBox="0 0 1200 256"
+              >
+                <title />
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </div>
           </a>
         </div>
       </div>

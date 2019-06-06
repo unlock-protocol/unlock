@@ -2,19 +2,9 @@ import styled from 'styled-components'
 import Media from '../../theme/media'
 
 export const OptimisticLogo = styled.div`
-  width: 20px;
-  height: 20px;
-  & > div {
-    width: 20px;
-    height: 20px;
-  }
+  width: 44px;
   ${Media.phone`
-    width: 16px;
-    height: 16px;
-    & > div {
-      width: 16px;
-      height: 16px;
-    }
+    width: 47px;
   `}
 `
 
@@ -81,16 +71,18 @@ export const Progress = styled(ProgressBar)<Props>`
 
 export const OptimisticFlag = styled.div`
   height: 20px;
-  width: 274px;
+  width: 338px;
   background: var(--white);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+  font-size: 12px;
 
   & > p {
     font-size: 12px;
     margin: -2px 0 0 0;
+    color: var(--darkgrey);
   }
 
   & > a {
@@ -108,19 +100,16 @@ export const OptimisticFlag = styled.div`
     display: grid;
     height: 60px;
     width: 100%;
-    grid-template-columns: 1.6fr 0.5fr 24px 1fr;
+    grid-template-columns: 1fr 0.5fr 24px 1fr;
     grid-template-rows: 60px;
     align-items: center;
-
-    & > ${OptimisticLogo} {
-      display: none;
-    }
 
     & > ${Progress}, & > ${ProgressBar} {
       align-self: center;
     }
 
     & > p {
+      font-size: 10px;
       margin: 0 0 2px;
       text-align: right;
     }
@@ -128,17 +117,17 @@ export const OptimisticFlag = styled.div`
 `
 
 export const PoweredByUnlock = styled.div`
-  display: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  & > p {
+    margin: 0;
+  }
+  & ${OptimisticLogo} {
+    margin: 0 0 0 2px;
+    padding: 2px 0 0;
+  }
   ${Media.phone`
-    font-size: 10px;
-    width: 170px;
-    display: grid;
-    grid-template-columns: 1fr 18px 1fr;
-    grid-template-rows: 1fr;
-
-    font-size: 12px;
-
-
     & > div {
       grid-row: 1;
       grid-column: 2;
@@ -147,14 +136,13 @@ export const PoweredByUnlock = styled.div`
     }
 
     & > p {
-      width: 100%;
+      font-size: 12px;
       color: var(--slate);
       grid-row: 1;
       grid-column: 1;
-      text-align: right;
       margin: 0;
       align-self: center;
-      padding-right: 2px;
+      padding: 0 0 0 2px;
     }
 
     & > a {

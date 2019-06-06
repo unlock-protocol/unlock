@@ -11,7 +11,7 @@ import {
   Info,
   PoweredByUnlock,
 } from './FlagStyles'
-import { RoundedLogo } from '../interface/Logo'
+import { WordMarkLogo } from '../interface/Logo'
 
 interface Props {
   unlockKey: Key
@@ -21,9 +21,6 @@ export default function CheckoutFlag({ unlockKey }: Props) {
   const { requiredConfirmations } = useConfig()
   return (
     <OptimisticFlag>
-      <OptimisticLogo>
-        <RoundedLogo />
-      </OptimisticLogo>
       <p>Confirming Purchase</p>
       <ProgressBar>
         <Progress
@@ -39,10 +36,11 @@ export default function CheckoutFlag({ unlockKey }: Props) {
       </Info>
       <PoweredByUnlock>
         <p>Powered by</p>
-        <OptimisticLogo>
-          <RoundedLogo />
-        </OptimisticLogo>
-        <a href="/">Unlock</a>
+        <a href="/">
+          <OptimisticLogo>
+            <WordMarkLogo alt="Unlock" />
+          </OptimisticLogo>
+        </a>
       </PoweredByUnlock>
     </OptimisticFlag>
   )
