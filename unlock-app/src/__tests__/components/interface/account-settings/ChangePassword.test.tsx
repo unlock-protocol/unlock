@@ -44,19 +44,22 @@ describe('ChangePassword component', () => {
     let newPasswordInput: HTMLElement
     let confirmNewPasswordInput: HTMLElement
     let submitButton: HTMLElement
+    let wrapper: any
     beforeEach(() => {
       changePassword = jest.fn()
 
-      const { getByPlaceholderText, getByText } = rtl.render(
-        <ChangePassword changePassword={changePassword} />
-      )
+      wrapper = rtl.render(<ChangePassword changePassword={changePassword} />)
 
-      currentPasswordInput = getByPlaceholderText('Enter your current password')
-      newPasswordInput = getByPlaceholderText('Enter your desired new password')
-      confirmNewPasswordInput = getByPlaceholderText(
+      currentPasswordInput = wrapper.getByPlaceholderText(
+        'Enter your current password'
+      )
+      newPasswordInput = wrapper.getByPlaceholderText(
+        'Enter your desired new password'
+      )
+      confirmNewPasswordInput = wrapper.getByPlaceholderText(
         'Confirm your desired new password'
       )
-      submitButton = getByText('Update Password')
+      submitButton = wrapper.getByText('Update Password')
     })
     it('should dispatch an event when submit is clicked (valid form)', () => {
       expect.assertions(1)
@@ -77,6 +80,7 @@ describe('ChangePassword component', () => {
         'a valid password',
         'a new valid password'
       )
+      wrapper.getByText('Submitted')
     })
 
     it('should not dispatch an event when submit is clicked (invalid form)', () => {
@@ -91,6 +95,7 @@ describe('ChangePassword component', () => {
       rtl.fireEvent.click(submitButton)
 
       expect(changePassword).not.toHaveBeenCalled()
+      wrapper.getByText(passwordErrors.MID_LENGTH)
     })
   })
 })
