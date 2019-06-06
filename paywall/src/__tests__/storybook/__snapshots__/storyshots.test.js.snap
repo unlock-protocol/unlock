@@ -6220,7 +6220,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--offblack) font-family:IBM Plex Sans;
+  color: var(--mediumgrey) font-family:IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -7978,7 +7978,7 @@ Object {
           class="sc-kGXeez jwjAkc"
         >
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -8081,7 +8081,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -8127,7 +8127,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -9606,7 +9606,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--offblack) font-family:IBM Plex Sans;
+  color: var(--mediumgrey) font-family:IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -11364,7 +11364,7 @@ Object {
           class="sc-kGXeez jwjAkc"
         >
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -11467,7 +11467,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -11513,7 +11513,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -12992,7 +12992,7 @@ Object {
 }
 
 .c9 span {
-  color: var(--offblack) font-family:IBM Plex Sans;
+  color: var(--mediumgrey) font-family:IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
   font-size: 8px;
@@ -14750,7 +14750,7 @@ Object {
           class="sc-kGXeez jwjAkc"
         >
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -14853,7 +14853,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -14899,7 +14899,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-gqjmRU eADfsF"
+            class="sc-gqjmRU eKjYpo"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
