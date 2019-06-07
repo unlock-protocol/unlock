@@ -36,6 +36,10 @@ export default class UnlockProvider {
     return true
   }
 
+  async getNetwork() {
+    return await this.fallbackProvider.getNetwork()
+  }
+
   async eth_accounts() {
     // Must always return an array of addresses
     if (this.wallet) {

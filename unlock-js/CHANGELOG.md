@@ -1,5 +1,8 @@
 # Changes
 
+## 0.2.5
+- Allow `walletService` to properly connect to `UnlockProvider`
+
 ## 0.2.4
 
 - Increased gas limit to deploy Unlock contract
