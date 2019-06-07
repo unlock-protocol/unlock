@@ -2,6 +2,7 @@ import Web3Utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'
+import { approveTransfer } from '../erc20'
 
 /**
  * Purchase a key to a lock by account.
@@ -15,8 +16,19 @@ import Errors from '../errors'
  * @param {string} data
  * @param {string} account
  */
-export default async function(lockAddress, owner, keyPrice) {
+export default async function(
+  lockAddress,
+  owner,
+  keyPrice,
+  account,
+  data,
+  erc20Address
+) {
   const lockContract = await this.getLockContract(lockAddress)
+  if (erc20Address) {
+    await approveTransfer(erc20Address, lockAddress, keyPrice, this.provider)
+  }
+
   let transactionPromise
   try {
     transactionPromise = lockContract['purchaseFor(address)'](owner, {

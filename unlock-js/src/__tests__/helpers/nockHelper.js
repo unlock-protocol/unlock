@@ -252,6 +252,20 @@ export class NockHelper {
     )
   }
 
+  ethEstimateGas(from, to, data, result) {
+    return this._jsonRpcRequest(
+      'eth_estimateGas',
+      [
+        {
+          from,
+          to,
+          data,
+        },
+      ],
+      result
+    )
+  }
+
   getTransactionCount(address, count) {
     return this._jsonRpcRequest(
       'eth_getTransactionCount',
