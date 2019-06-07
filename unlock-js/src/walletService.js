@@ -39,6 +39,16 @@ export default class WalletService extends UnlockService {
     if (typeof provider === 'string') {
       this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
+    } else if (provider.isUnlock) {
+      // TODO: This is very temporary! Immediate priority is to refactor away
+      // various special cases for provider instantiation, since having 3
+      // distinct kinds of provider isn't the Right Thing.
+      this.provider = provider
+      // TODO: In particular, we want to avoid caring about whether a provider
+      // is MetaMask or any other specific one. We want to support a single
+      // common kernel of capability, even if that means MetaMask experience
+      // will be somewhat degraded.
+      this.web3Provider = false
     } else {
       this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
@@ -142,21 +152,31 @@ export default class WalletService extends UnlockService {
    * @param {string} keyPrice
    * @param {string} data
    * @param {string} account
+   * @param {string} erc20Address
    */
-  async purchaseKey(lock, owner, keyPrice, account, data = '') {
+  async purchaseKey(lock, owner, keyPrice, account, data = '', erc20Address) {
     const version = await this.lockContractAbiVersion(lock)
-    return version.purchaseKey.bind(this)(lock, owner, keyPrice, account, data)
+    return version.purchaseKey.bind(this)(
+      lock,
+      owner,
+      keyPrice,
+      account,
+      data,
+      erc20Address
+    )
   }
 
   /**
    * Triggers a transaction to withdraw some funds from the lock and assign them
    * to the owner.
+   * TODO: REMOVE ME AS withdraw supports this
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
    * @param {string} ethAmount
    * @param {Function} callback
    */
   async partialWithdrawFromLock(lock, account, ethAmount, callback) {
+    // DEPRECATED ! [note I do not think we every used it anway...]
     const version = await this.lockContractAbiVersion(lock)
     return version.partialWithdrawFromLock.bind(this)(
       lock,
@@ -168,6 +188,7 @@ export default class WalletService extends UnlockService {
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * TODO: remove the unused account and add support for amount (which will be ignored for old locks)
    * @param {PropTypes.address} lock
    * @param {PropTypes.address} account
    * @param {Function} callback TODO: implement...

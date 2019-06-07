@@ -10,9 +10,11 @@ import Media from '../../theme/media'
 // add new navigation buttons here, layout will reflow appropriately
 const navigationButtons = [
   Buttons.About,
-  Buttons.Jobs,
+  Buttons.Blog,
   Buttons.Github,
+  Buttons.Jobs,
   Buttons.Telegram,
+  Buttons.Twitter,
 ]
 
 export class Header extends React.PureComponent {
@@ -200,6 +202,7 @@ const MobilePopover = styled.div`
       top: 5px;
       width: 100%;
       text-align: center;
+      line-height: 0;
     }
   }
 

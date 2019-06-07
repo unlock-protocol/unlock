@@ -1,4 +1,4 @@
-import { ethers } from 'ethers'
+import { providers } from 'ethers'
 import sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
@@ -6,12 +6,9 @@ import { getAccountFromPrivateKey } from './accounts'
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class UnlockProvider {
+export default class UnlockProvider extends providers.JsonRpcProvider {
   constructor({ readOnlyProvider }) {
-    this.fallbackProvider = new ethers.providers.JsonRpcProvider(
-      readOnlyProvider
-    )
-    this.ready = false
+    super(readOnlyProvider)
     this.wallet = null
     this.isUnlock = true
   }
@@ -21,8 +18,7 @@ export default class UnlockProvider {
   async connect({ key, password }) {
     try {
       this.wallet = await getAccountFromPrivateKey(key, password)
-      this.wallet.connect(this.fallbackProvider)
-      this.ready = true
+      this.wallet.connect(this)
 
       return true
     } catch (err) {
@@ -30,10 +26,6 @@ export default class UnlockProvider {
       // Possible also that wallet couldn't connect with provider?
       throw err
     }
-  }
-
-  disconnect() {
-    return true
   }
 
   async eth_accounts() {
@@ -56,7 +48,7 @@ export default class UnlockProvider {
     if (typeof this[method] === 'undefined') {
       // We haven't implemented this method, defer to the fallback provider.
       // TODO: Catch methods we don't want to dispatch and throw an error
-      return this.fallbackProvider.send(method, params)
+      return await super.send(method, params)
     }
 
     return this[method](params)

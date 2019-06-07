@@ -50,4 +50,25 @@ describe('LogIn', () => {
       })
     )
   })
+
+  it('should show SignupSuccess when there is an account in state', () => {
+    expect.assertions(0)
+
+    const toggleSignup = jest.fn()
+    const loginCredentials = jest.fn()
+    const account = {
+      address: '0x123abc',
+      balance: '0',
+    }
+
+    const { getByText } = rtl.render(
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        account={account}
+      />
+    )
+
+    getByText('Sign Up')
+  })
 })

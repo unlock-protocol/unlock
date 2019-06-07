@@ -70,6 +70,23 @@ export default function postOffice(window, requiredConfirmations) {
     },
   }
 
+  const lockHandler = cachedData => {
+    actions.locks(cachedData.locks)
+    const unlockedLocks = Object.values(cachedData.locks)
+      .filter(lock =>
+        ['submitted', 'pending', 'valid', 'confirming'].includes(
+          lock.key.status
+        )
+      )
+      .map(lock => lock.address)
+
+    if (unlockedLocks.length) {
+      actions.unlocked(unlockedLocks)
+    } else {
+      actions.locked()
+    }
+  }
+
   return {
     blockChainUpdater: async (update, content) => {
       const cachedData = await getFormattedCacheValues(
@@ -81,26 +98,13 @@ export default function postOffice(window, requiredConfirmations) {
           actions.ready()
           break
         case 'locks':
-          {
-            actions.locks(cachedData.locks)
-            const unlockedLocks = Object.values(cachedData.locks)
-              .filter(lock =>
-                ['submitted', 'pending', 'valid', 'confirming'].includes(
-                  lock.key.status
-                )
-              )
-              .map(lock => lock.address)
-
-            if (unlockedLocks.length) {
-              actions.unlocked(unlockedLocks)
-            } else {
-              actions.locked()
-            }
-          }
+          lockHandler(cachedData)
           break
         case 'account':
         case 'balance':
           actions[update](cachedData[update])
+          // when account changes, so does the keys on locks
+          lockHandler(cachedData)
           break
         case 'network':
           if (cachedData.networkId === null) return
