@@ -140,7 +140,11 @@ export async function merge({
  */
 export async function getAccount(window) {
   ensureLocalStorageAvailable(window, 'get account from cache')
-  return window.localStorage.getItem('__unlockProtocol.account') || null
+  try {
+    return JSON.parse(window.localStorage.getItem('__unlockProtocol.account'))
+  } catch (e) {
+    return null
+  }
 }
 
 /**
@@ -151,7 +155,10 @@ export async function getAccount(window) {
  */
 export async function setAccount(window, account) {
   ensureLocalStorageAvailable(window, 'save account in cache')
-  window.localStorage.setItem('__unlockProtocol.account', account)
+  window.localStorage.setItem(
+    '__unlockProtocol.account',
+    JSON.stringify(account)
+  )
 }
 
 /**
