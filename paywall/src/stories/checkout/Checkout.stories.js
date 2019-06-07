@@ -1,7 +1,9 @@
 import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { action } from '@storybook/addon-actions'
 import Checkout from '../../components/checkout/Checkout'
+import CheckoutWrapper from '../../components/checkout/CheckoutWrapper'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
@@ -41,6 +43,11 @@ const account = {
 const store = createUnlockStore()
 
 storiesOf('Checkout', module)
+  .addDecorator(getStory => (
+    <CheckoutWrapper hideCheckout={() => action('hideCheckout')}>
+      {getStory()}
+    </CheckoutWrapper>
+  ))
   .addDecorator(getStory => (
     <ConfigProvider value={config}>
       <Provider store={store}>{getStory()}</Provider>
