@@ -35,11 +35,13 @@ export async function pollForAccountChange(
     async newAccount => {
       // only called when account has changed
       /* changeListener */
-      setAccount(newAccount)
-      setAccountBalance(
-        newAccount ? await web3Service.getAddressBalance(newAccount) : 0
-      )
-      onAccountChange(account, accountBalance)
+      const account = newAccount ? newAccount : null
+      const balance = newAccount
+        ? await web3Service.getAddressBalance(newAccount)
+        : '0'
+      setAccount(account)
+      setAccountBalance(balance)
+      onAccountChange(account, balance)
     } /*changeListener */,
     POLLING_INTERVAL /* delay */
   )
