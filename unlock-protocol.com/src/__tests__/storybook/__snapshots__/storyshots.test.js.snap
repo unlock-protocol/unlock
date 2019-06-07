@@ -104,7 +104,7 @@ Object {
 .c5 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -189,6 +189,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c23 {
@@ -196,7 +197,7 @@ Object {
   margin-bottom: 24px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(3,24px) 1fr;
+  grid-template-columns: repeat(6,24px) 1fr;
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -453,24 +454,25 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="/jobs"
-                title="Join us"
+                href="/blog"
+                title="Blog"
               >
                 <svg
-                  name="Jobs"
                   viewBox="0 0 24 24"
                 >
-                  <title />
+                  <title>
+                    Blog
+                  </title>
                   <path
                     clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                     fill-rule="evenodd"
                   />
                 </svg>
                 <small
                   class="c8"
                 >
-                  Join us
+                  Blog
                 </small>
               </a>
               <a
@@ -495,6 +497,28 @@ Object {
               </a>
               <a
                 class="c6 c7"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -513,6 +537,28 @@ Object {
                   class="c8"
                 >
                   Telegram
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://twitter.com/UnlockProtocol"
+                title="Twitter"
+              >
+                <svg
+                  name="Twitter"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Twitter
                 </small>
               </a>
             </div>
@@ -734,6 +780,29 @@ Look at us! We're posting on our very own blog! How exciting!
             </a>
             <a
               class="c6 c7"
+              href="/blog"
+              title="Blog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Blog
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Blog
+              </small>
+            </a>
+            <a
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -794,6 +863,28 @@ Look at us! We're posting on our very own blog! How exciting!
                 class="c8"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Twitter
               </small>
             </a>
             <span
@@ -842,7 +933,7 @@ Look at us! We're posting on our very own blog! How exciting!
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 ggHfUO"
+            class="sc-1glv5oz-2 dZTdSX"
           >
             <a
               class="sc-850ddk-0 KJKSu"
@@ -869,24 +960,25 @@ Look at us! We're posting on our very own blog! How exciting!
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
-              href="/jobs"
-              title="Join us"
+              href="/blog"
+              title="Blog"
             >
               <svg
-                name="Jobs"
                 viewBox="0 0 24 24"
               >
-                <title />
+                <title>
+                  Blog
+                </title>
                 <path
                   clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                   fill-rule="evenodd"
                 />
               </svg>
               <small
                 class="sc-850ddk-1 fnqGzL"
               >
-                Join us
+                Blog
               </small>
             </a>
             <a
@@ -911,6 +1003,28 @@ Look at us! We're posting on our very own blog! How exciting!
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -929,6 +1043,28 @@ Look at us! We're posting on our very own blog! How exciting!
                 class="sc-850ddk-1 fnqGzL"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Twitter
               </small>
             </a>
           </div>
@@ -969,7 +1105,7 @@ Look at us! We're posting on our very own blog! How exciting!
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 AAfz"
+            class="sc-1glv5oz-4 bTaeiR"
           />
         </header>
         <h1
@@ -1123,7 +1259,7 @@ Look at us! We're posting on our very own blog! How exciting!
           </div>
         </div>
         <footer
-          class="sc-2ix2yp-0 clvjsX"
+          class="sc-2ix2yp-0 fmIKjS"
         >
           <a
             class="sc-850ddk-0 KJKSu"
@@ -1146,6 +1282,29 @@ Look at us! We're posting on our very own blog! How exciting!
               class="sc-850ddk-1 fnqGzL"
             >
               About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/blog"
+            title="Blog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Blog
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Blog
             </small>
           </a>
           <a
@@ -1210,6 +1369,28 @@ Look at us! We're posting on our very own blog! How exciting!
               class="sc-850ddk-1 fnqGzL"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Twitter
             </small>
           </a>
           <span
@@ -1389,7 +1570,7 @@ Object {
 .c5 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1474,6 +1655,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c19 {
@@ -1481,7 +1663,7 @@ Object {
   margin-bottom: 24px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(3,24px) 1fr;
+  grid-template-columns: repeat(6,24px) 1fr;
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -1722,24 +1904,25 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="/jobs"
-                title="Join us"
+                href="/blog"
+                title="Blog"
               >
                 <svg
-                  name="Jobs"
                   viewBox="0 0 24 24"
                 >
-                  <title />
+                  <title>
+                    Blog
+                  </title>
                   <path
                     clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                     fill-rule="evenodd"
                   />
                 </svg>
                 <small
                   class="c8"
                 >
-                  Join us
+                  Blog
                 </small>
               </a>
               <a
@@ -1764,6 +1947,28 @@ Object {
               </a>
               <a
                 class="c6 c7"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -1782,6 +1987,28 @@ Object {
                   class="c8"
                 >
                   Telegram
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://twitter.com/UnlockProtocol"
+                title="Twitter"
+              >
+                <svg
+                  name="Twitter"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Twitter
                 </small>
               </a>
             </div>
@@ -1951,6 +2178,29 @@ are intentionally not generated from this file date, in case we want to override
             </a>
             <a
               class="c6 c7"
+              href="/blog"
+              title="Blog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Blog
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Blog
+              </small>
+            </a>
+            <a
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -2011,6 +2261,28 @@ are intentionally not generated from this file date, in case we want to override
                 class="c8"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Twitter
               </small>
             </a>
             <span
@@ -2059,7 +2331,7 @@ are intentionally not generated from this file date, in case we want to override
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 ggHfUO"
+            class="sc-1glv5oz-2 dZTdSX"
           >
             <a
               class="sc-850ddk-0 KJKSu"
@@ -2086,24 +2358,25 @@ are intentionally not generated from this file date, in case we want to override
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
-              href="/jobs"
-              title="Join us"
+              href="/blog"
+              title="Blog"
             >
               <svg
-                name="Jobs"
                 viewBox="0 0 24 24"
               >
-                <title />
+                <title>
+                  Blog
+                </title>
                 <path
                   clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                   fill-rule="evenodd"
                 />
               </svg>
               <small
                 class="sc-850ddk-1 fnqGzL"
               >
-                Join us
+                Blog
               </small>
             </a>
             <a
@@ -2128,6 +2401,28 @@ are intentionally not generated from this file date, in case we want to override
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -2146,6 +2441,28 @@ are intentionally not generated from this file date, in case we want to override
                 class="sc-850ddk-1 fnqGzL"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Twitter
               </small>
             </a>
           </div>
@@ -2186,7 +2503,7 @@ are intentionally not generated from this file date, in case we want to override
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 AAfz"
+            class="sc-1glv5oz-4 bTaeiR"
           />
         </header>
         <div
@@ -2288,7 +2605,7 @@ are intentionally not generated from this file date, in case we want to override
           </div>
         </div>
         <footer
-          class="sc-2ix2yp-0 clvjsX"
+          class="sc-2ix2yp-0 fmIKjS"
         >
           <a
             class="sc-850ddk-0 KJKSu"
@@ -2311,6 +2628,29 @@ are intentionally not generated from this file date, in case we want to override
               class="sc-850ddk-1 fnqGzL"
             >
               About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/blog"
+            title="Blog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Blog
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Blog
             </small>
           </a>
           <a
@@ -2375,6 +2715,28 @@ are intentionally not generated from this file date, in case we want to override
               class="sc-850ddk-1 fnqGzL"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Twitter
             </small>
           </a>
           <span
@@ -5701,6 +6063,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -5901,6 +6264,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -5944,6 +6308,222 @@ Object {
         />
       </svg>
       
+    </a>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Buttons/Layout Buttons Blog 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c1 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c1:hover {
+  background-color: var(--link);
+}
+
+.c1:hover > svg {
+  fill: white;
+}
+
+.c1:focus {
+  outline: none;
+}
+
+.c2 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c0:hover .c2 {
+  display: inline-block;
+}
+
+.c3 .c0 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c3 .c0:nth-child(1) {
+  pointer-events: none;
+}
+
+.c3 .c0:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c3 .c0 > svg {
+  fill: var(--grey);
+}
+
+.c3 .c0:hover > svg {
+  fill: var(--grey);
+}
+
+.c4 .c0 {
+  margin: 24px;
+}
+
+.c4 .c0 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+  line-height: 0;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <a
+        class="c0 c1"
+        href="/blog"
+        title="Blog"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Blog
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="c2"
+        >
+          Blog
+        </small>
+      </a>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <a
+      class="sc-850ddk-0 KJKSu"
+      href="/blog"
+      title="Blog"
+    >
+      <svg
+        viewBox="0 0 24 24"
+      >
+        <title>
+          Blog
+        </title>
+        <path
+          clip-rule="evenodd"
+          d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <small
+        class="sc-850ddk-1 fnqGzL"
+      >
+        Blog
+      </small>
     </a>
   </div>,
   "debug": [Function],
@@ -6085,6 +6665,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -6273,6 +6854,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -6461,6 +7043,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -6664,6 +7247,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -6873,6 +7457,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -7086,6 +7671,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -7299,6 +7885,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -7512,6 +8099,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 <div>
@@ -7521,7 +8109,7 @@ Object {
       />
       <a
         class="c0 c1"
-        href="/twitter"
+        href="https://twitter.com/UnlockProtocol"
         title="Twitter"
       >
         <svg
@@ -7550,7 +8138,7 @@ Object {
     />
     <a
       class="sc-850ddk-0 KJKSu"
-      href="/twitter"
+      href="https://twitter.com/UnlockProtocol"
       title="Twitter"
     >
       <svg
@@ -7725,6 +8313,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c0 {
@@ -7732,7 +8321,7 @@ Object {
   margin-bottom: 24px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(3,24px) 1fr;
+  grid-template-columns: repeat(6,24px) 1fr;
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -7777,6 +8366,29 @@ Object {
             class="c3"
           >
             About
+          </small>
+        </a>
+        <a
+          class="c1 c2"
+          href="/blog"
+          title="Blog"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Blog
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="c3"
+          >
+            Blog
           </small>
         </a>
         <a
@@ -7843,6 +8455,28 @@ Object {
             Telegram
           </small>
         </a>
+        <a
+          class="c1 c2"
+          href="https://twitter.com/UnlockProtocol"
+          title="Twitter"
+        >
+          <svg
+            name="Twitter"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="c3"
+          >
+            Twitter
+          </small>
+        </a>
         <span
           class="c4"
         >
@@ -7857,7 +8491,7 @@ Object {
       rel="stylesheet"
     />
     <footer
-      class="sc-2ix2yp-0 clvjsX"
+      class="sc-2ix2yp-0 fmIKjS"
     >
       <a
         class="sc-850ddk-0 KJKSu"
@@ -7880,6 +8514,29 @@ Object {
           class="sc-850ddk-1 fnqGzL"
         >
           About
+        </small>
+      </a>
+      <a
+        class="sc-850ddk-0 KJKSu"
+        href="/blog"
+        title="Blog"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Blog
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="sc-850ddk-1 fnqGzL"
+        >
+          Blog
         </small>
       </a>
       <a
@@ -7944,6 +8601,28 @@ Object {
           class="sc-850ddk-1 fnqGzL"
         >
           Telegram
+        </small>
+      </a>
+      <a
+        class="sc-850ddk-0 KJKSu"
+        href="https://twitter.com/UnlockProtocol"
+        title="Twitter"
+      >
+        <svg
+          name="Twitter"
+          viewBox="0 0 24 24"
+        >
+          <title />
+          <path
+            clip-rule="evenodd"
+            d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+            fill-rule="evenodd"
+          />
+        </svg>
+        <small
+          class="sc-850ddk-1 fnqGzL"
+        >
+          Twitter
         </small>
       </a>
       <span
@@ -8119,7 +8798,7 @@ Object {
 .c2 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -8204,6 +8883,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -8295,24 +8975,25 @@ Object {
           </a>
           <a
             class="c3 c4"
-            href="/jobs"
-            title="Join us"
+            href="/blog"
+            title="Blog"
           >
             <svg
-              name="Jobs"
               viewBox="0 0 24 24"
             >
-              <title />
+              <title>
+                Blog
+              </title>
               <path
                 clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                 fill-rule="evenodd"
               />
             </svg>
             <small
               class="c5"
             >
-              Join us
+              Blog
             </small>
           </a>
           <a
@@ -8337,6 +9018,28 @@ Object {
           </a>
           <a
             class="c3 c4"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c5"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="c3 c4"
             href="https://t.me/unlockprotocol"
             title="Telegram"
           >
@@ -8355,6 +9058,28 @@ Object {
               class="c5"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="c3 c4"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c5"
+            >
+              Twitter
             </small>
           </a>
         </div>
@@ -8424,7 +9149,7 @@ Object {
         </svg>
       </a>
       <div
-        class="sc-1glv5oz-2 ggHfUO"
+        class="sc-1glv5oz-2 dZTdSX"
       >
         <a
           class="sc-850ddk-0 KJKSu"
@@ -8451,24 +9176,25 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
-          href="/jobs"
-          title="Join us"
+          href="/blog"
+          title="Blog"
         >
           <svg
-            name="Jobs"
             viewBox="0 0 24 24"
           >
-            <title />
+            <title>
+              Blog
+            </title>
             <path
               clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
               fill-rule="evenodd"
             />
           </svg>
           <small
             class="sc-850ddk-1 fnqGzL"
           >
-            Join us
+            Blog
           </small>
         </a>
         <a
@@ -8493,6 +9219,28 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
+          href="/jobs"
+          title="Join us"
+        >
+          <svg
+            name="Jobs"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Join us
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
           href="https://t.me/unlockprotocol"
           title="Telegram"
         >
@@ -8511,6 +9259,28 @@ Object {
             class="sc-850ddk-1 fnqGzL"
           >
             Telegram
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
+          href="https://twitter.com/UnlockProtocol"
+          title="Twitter"
+        >
+          <svg
+            name="Twitter"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Twitter
           </small>
         </a>
       </div>
@@ -8551,7 +9321,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 AAfz"
+        class="sc-1glv5oz-4 bTaeiR"
       />
     </header>
   </div>,
@@ -8732,7 +9502,7 @@ Object {
 .c4 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -8817,6 +9587,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c2 {
@@ -8936,24 +9707,25 @@ Object {
           </a>
           <a
             class="c5 c6"
-            href="/jobs"
-            title="Join us"
+            href="/blog"
+            title="Blog"
           >
             <svg
-              name="Jobs"
               viewBox="0 0 24 24"
             >
-              <title />
+              <title>
+                Blog
+              </title>
               <path
                 clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                 fill-rule="evenodd"
               />
             </svg>
             <small
               class="c7"
             >
-              Join us
+              Blog
             </small>
           </a>
           <a
@@ -8978,6 +9750,28 @@ Object {
           </a>
           <a
             class="c5 c6"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c7"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="c5 c6"
             href="https://t.me/unlockprotocol"
             title="Telegram"
           >
@@ -8996,6 +9790,28 @@ Object {
               class="c7"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="c5 c6"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c7"
+            >
+              Twitter
             </small>
           </a>
         </div>
@@ -9075,7 +9891,7 @@ Object {
         Roses are red
       </h1>
       <div
-        class="sc-1glv5oz-2 ggHfUO"
+        class="sc-1glv5oz-2 dZTdSX"
       >
         <a
           class="sc-850ddk-0 KJKSu"
@@ -9102,24 +9918,25 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
-          href="/jobs"
-          title="Join us"
+          href="/blog"
+          title="Blog"
         >
           <svg
-            name="Jobs"
             viewBox="0 0 24 24"
           >
-            <title />
+            <title>
+              Blog
+            </title>
             <path
               clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
               fill-rule="evenodd"
             />
           </svg>
           <small
             class="sc-850ddk-1 fnqGzL"
           >
-            Join us
+            Blog
           </small>
         </a>
         <a
@@ -9144,6 +9961,28 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
+          href="/jobs"
+          title="Join us"
+        >
+          <svg
+            name="Jobs"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Join us
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
           href="https://t.me/unlockprotocol"
           title="Telegram"
         >
@@ -9162,6 +10001,28 @@ Object {
             class="sc-850ddk-1 fnqGzL"
           >
             Telegram
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
+          href="https://twitter.com/UnlockProtocol"
+          title="Twitter"
+        >
+          <svg
+            name="Twitter"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Twitter
           </small>
         </a>
       </div>
@@ -9202,7 +10063,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 AAfz"
+        class="sc-1glv5oz-4 bTaeiR"
       />
     </header>
   </div>,
@@ -9383,7 +10244,7 @@ Object {
 .c4 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -9468,6 +10329,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c2 {
@@ -9587,24 +10449,25 @@ Object {
           </a>
           <a
             class="c5 c6"
-            href="/jobs"
-            title="Join us"
+            href="/blog"
+            title="Blog"
           >
             <svg
-              name="Jobs"
               viewBox="0 0 24 24"
             >
-              <title />
+              <title>
+                Blog
+              </title>
               <path
                 clip-rule="evenodd"
-                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                 fill-rule="evenodd"
               />
             </svg>
             <small
               class="c7"
             >
-              Join us
+              Blog
             </small>
           </a>
           <a
@@ -9629,6 +10492,28 @@ Object {
           </a>
           <a
             class="c5 c6"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c7"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="c5 c6"
             href="https://t.me/unlockprotocol"
             title="Telegram"
           >
@@ -9647,6 +10532,28 @@ Object {
               class="c7"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="c5 c6"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="c7"
+            >
+              Twitter
             </small>
           </a>
         </div>
@@ -9726,7 +10633,7 @@ Object {
         Unlock
       </h1>
       <div
-        class="sc-1glv5oz-2 ggHfUO"
+        class="sc-1glv5oz-2 dZTdSX"
       >
         <a
           class="sc-850ddk-0 KJKSu"
@@ -9753,24 +10660,25 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
-          href="/jobs"
-          title="Join us"
+          href="/blog"
+          title="Blog"
         >
           <svg
-            name="Jobs"
             viewBox="0 0 24 24"
           >
-            <title />
+            <title>
+              Blog
+            </title>
             <path
               clip-rule="evenodd"
-              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
               fill-rule="evenodd"
             />
           </svg>
           <small
             class="sc-850ddk-1 fnqGzL"
           >
-            Join us
+            Blog
           </small>
         </a>
         <a
@@ -9795,6 +10703,28 @@ Object {
         </a>
         <a
           class="sc-850ddk-0 KJKSu"
+          href="/jobs"
+          title="Join us"
+        >
+          <svg
+            name="Jobs"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Join us
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
           href="https://t.me/unlockprotocol"
           title="Telegram"
         >
@@ -9813,6 +10743,28 @@ Object {
             class="sc-850ddk-1 fnqGzL"
           >
             Telegram
+          </small>
+        </a>
+        <a
+          class="sc-850ddk-0 KJKSu"
+          href="https://twitter.com/UnlockProtocol"
+          title="Twitter"
+        >
+          <svg
+            name="Twitter"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <small
+            class="sc-850ddk-1 fnqGzL"
+          >
+            Twitter
           </small>
         </a>
       </div>
@@ -9853,7 +10805,7 @@ Object {
         </a>
       </div>
       <div
-        class="sc-1glv5oz-4 AAfz"
+        class="sc-1glv5oz-4 bTaeiR"
       />
     </header>
   </div>,
@@ -10336,7 +11288,7 @@ Object {
 .c5 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(6,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -10421,6 +11373,7 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+  line-height: 0;
 }
 
 .c12 {
@@ -10428,7 +11381,7 @@ Object {
   margin-bottom: 24px;
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(3,24px) 1fr;
+  grid-template-columns: repeat(6,24px) 1fr;
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -10586,24 +11539,25 @@ Object {
               </a>
               <a
                 class="c6 c7"
-                href="/jobs"
-                title="Join us"
+                href="/blog"
+                title="Blog"
               >
                 <svg
-                  name="Jobs"
                   viewBox="0 0 24 24"
                 >
-                  <title />
+                  <title>
+                    Blog
+                  </title>
                   <path
                     clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                     fill-rule="evenodd"
                   />
                 </svg>
                 <small
                   class="c8"
                 >
-                  Join us
+                  Blog
                 </small>
               </a>
               <a
@@ -10628,6 +11582,28 @@ Object {
               </a>
               <a
                 class="c6 c7"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -10646,6 +11622,28 @@ Object {
                   class="c8"
                 >
                   Telegram
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://twitter.com/UnlockProtocol"
+                title="Twitter"
+              >
+                <svg
+                  name="Twitter"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Twitter
                 </small>
               </a>
             </div>
@@ -10717,6 +11715,29 @@ Object {
             </a>
             <a
               class="c6 c7"
+              href="/blog"
+              title="Blog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Blog
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Blog
+              </small>
+            </a>
+            <a
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -10777,6 +11798,28 @@ Object {
                 class="c8"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Twitter
               </small>
             </a>
             <span
@@ -10825,7 +11868,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 ggHfUO"
+            class="sc-1glv5oz-2 dZTdSX"
           >
             <a
               class="sc-850ddk-0 KJKSu"
@@ -10852,24 +11895,25 @@ Object {
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
-              href="/jobs"
-              title="Join us"
+              href="/blog"
+              title="Blog"
             >
               <svg
-                name="Jobs"
                 viewBox="0 0 24 24"
               >
-                <title />
+                <title>
+                  Blog
+                </title>
                 <path
                   clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
                   fill-rule="evenodd"
                 />
               </svg>
               <small
                 class="sc-850ddk-1 fnqGzL"
               >
-                Join us
+                Blog
               </small>
             </a>
             <a
@@ -10894,6 +11938,28 @@ Object {
             </a>
             <a
               class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -10912,6 +11978,28 @@ Object {
                 class="sc-850ddk-1 fnqGzL"
               >
                 Telegram
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Twitter
               </small>
             </a>
           </div>
@@ -10952,11 +12040,11 @@ Object {
             </a>
           </div>
           <div
-            class="sc-1glv5oz-4 AAfz"
+            class="sc-1glv5oz-4 bTaeiR"
           />
         </header>
         <footer
-          class="sc-2ix2yp-0 clvjsX"
+          class="sc-2ix2yp-0 fmIKjS"
         >
           <a
             class="sc-850ddk-0 KJKSu"
@@ -10979,6 +12067,29 @@ Object {
               class="sc-850ddk-1 fnqGzL"
             >
               About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/blog"
+            title="Blog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Blog
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Blog
             </small>
           </a>
           <a
@@ -11043,6 +12154,28 @@ Object {
               class="sc-850ddk-1 fnqGzL"
             >
               Telegram
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Twitter
             </small>
           </a>
           <span
@@ -11508,7 +12641,7 @@ Object {
 }
 
 .c2:hover:before {
-  content: 'Arrow';
+  content: 'Blog';
   position: absolute;
 }
 
@@ -11524,7 +12657,7 @@ Object {
 }
 
 .c3:hover:before {
-  content: 'Checkmark';
+  content: 'Arrow';
   position: absolute;
 }
 
@@ -11540,7 +12673,7 @@ Object {
 }
 
 .c4:hover:before {
-  content: 'Close';
+  content: 'Checkmark';
   position: absolute;
 }
 
@@ -11556,7 +12689,7 @@ Object {
 }
 
 .c5:hover:before {
-  content: 'Code';
+  content: 'Close';
   position: absolute;
 }
 
@@ -11572,7 +12705,7 @@ Object {
 }
 
 .c6:hover:before {
-  content: 'Copy';
+  content: 'Code';
   position: absolute;
 }
 
@@ -11588,7 +12721,7 @@ Object {
 }
 
 .c7:hover:before {
-  content: 'Download';
+  content: 'Copy';
   position: absolute;
 }
 
@@ -11604,7 +12737,7 @@ Object {
 }
 
 .c8:hover:before {
-  content: 'Edit';
+  content: 'Download';
   position: absolute;
 }
 
@@ -11620,7 +12753,7 @@ Object {
 }
 
 .c9:hover:before {
-  content: 'Eth';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -11636,7 +12769,7 @@ Object {
 }
 
 .c10:hover:before {
-  content: 'Etherscan';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -11652,7 +12785,7 @@ Object {
 }
 
 .c11:hover:before {
-  content: 'EthSub';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -11668,7 +12801,7 @@ Object {
 }
 
 .c12:hover:before {
-  content: 'Export';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -11684,7 +12817,7 @@ Object {
 }
 
 .c13:hover:before {
-  content: 'Github';
+  content: 'Export';
   position: absolute;
 }
 
@@ -11700,7 +12833,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'Lemniscate';
+  content: 'Github';
   position: absolute;
 }
 
@@ -11716,7 +12849,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'Loading';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -11732,7 +12865,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'LockClosed';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -11748,7 +12881,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Log';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -11764,7 +12897,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Preview';
+  content: 'Log';
   position: absolute;
 }
 
@@ -11780,7 +12913,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -11796,7 +12929,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -11812,7 +12945,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -11828,7 +12961,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -11844,7 +12977,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -11860,7 +12993,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -11876,7 +13009,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Telegram';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -11892,7 +13025,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Twitter';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -11908,7 +13041,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -11924,7 +13057,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -11940,6 +13073,22 @@ Object {
 }
 
 .c29:hover:before {
+  content: 'ChevronUp';
+  position: absolute;
+}
+
+.c30 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c30:hover {
+  background-color: var(--offwhite);
+}
+
+.c30:hover:before {
   content: 'Home';
   position: absolute;
 }
@@ -11973,6 +13122,21 @@ Object {
           </div>
           <div
             class="c2"
+            name="Blog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c3"
             name="Arrow"
           >
             <svg
@@ -11987,7 +13151,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c3"
+            class="c4"
             name="Checkmark"
           >
             <svg
@@ -12002,7 +13166,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c4"
+            class="c5"
             name="Close"
           >
             <svg
@@ -12017,7 +13181,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c5"
+            class="c6"
             name="Code"
           >
             <svg
@@ -12032,7 +13196,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c6"
+            class="c7"
             name="Copy"
           >
             <svg
@@ -12047,7 +13211,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c7"
+            class="c8"
             name="Download"
           >
             <svg
@@ -12062,7 +13226,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c8"
+            class="c9"
             name="Edit"
           >
             <svg
@@ -12080,7 +13244,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c9"
+            class="c10"
             name="Eth"
           >
             <svg
@@ -12095,7 +13259,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c11"
             name="Etherscan"
           >
             <svg
@@ -12110,7 +13274,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c11"
+            class="c12"
             name="EthSub"
           >
             <svg
@@ -12124,7 +13288,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c12"
+            class="c13"
             name="Export"
           >
             <svg
@@ -12139,7 +13303,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c13"
+            class="c14"
             name="Github"
           >
             <svg
@@ -12152,7 +13316,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c14"
+            class="c15"
             name="Lemniscate"
           >
             <svg
@@ -12168,7 +13332,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c16"
             name="Loading"
           >
             <svg
@@ -12321,7 +13485,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="LockClosed"
           >
             <svg
@@ -12336,7 +13500,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
             name="Log"
           >
             <svg
@@ -12351,7 +13515,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c19"
             name="Preview"
           >
             <svg
@@ -12372,7 +13536,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Jobs"
           >
             <svg
@@ -12387,7 +13551,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="Unlock"
           >
             <svg
@@ -12400,7 +13564,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="UnlockWordMark"
           >
             <svg
@@ -12413,7 +13577,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="Upload"
           >
             <svg
@@ -12428,7 +13592,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="Withdraw"
           >
             <svg
@@ -12443,7 +13607,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="Newsletter"
           >
             <svg
@@ -12458,7 +13622,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Telegram"
           >
             <svg
@@ -12473,7 +13637,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Twitter"
           >
             <svg
@@ -12488,7 +13652,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="Bars"
           >
             <svg
@@ -12501,7 +13665,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="ChevronUp"
           >
             <svg
@@ -12516,7 +13680,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="Home"
           >
             <svg
@@ -12555,6 +13719,21 @@ Object {
             <path
               clip-rule="evenodd"
               d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 gOonsu"
+          name="Blog"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
               fill-rule="evenodd"
             />
           </svg>

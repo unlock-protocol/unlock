@@ -10,7 +10,8 @@
       "test": "jest",
       "build": "tsc",
       "start": "ts-node src/index.ts",
-      "backfill": "ts-node src/backfill.ts"
+      "backfill": "ts-node src/backfill.ts",
+      "lint": "eslint --ext .tsx,.ts,.js src/"
    },
    "author": "",
    "license": "ISC",
@@ -24,6 +25,14 @@
       "tsc": "^1.20150623.0",
       "typeorm": "0.2.17"
    },
+   "lint-staged": {
+      "linters": {
+        "*.{js,ts,tsx}": [
+          "eslint --fix",
+          "git add"
+        ]
+      }
+    },
    "devDependencies": {
       "@types/node": "^8.0.29",
       "jest": "^24.8.0",

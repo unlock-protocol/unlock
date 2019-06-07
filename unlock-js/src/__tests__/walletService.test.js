@@ -6,10 +6,14 @@ import v0 from '../v0'
 import v01 from '../v01'
 import v02 from '../v02'
 import v10 from '../v10'
+import v11 from '../v11'
 
 import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
+import UnlockProvider from '../unlockProvider'
+
+const supportedVersions = [v0, v01, v02, v10, v11]
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -56,6 +60,14 @@ describe('WalletService (ethers)', () => {
       expect(walletService.provider).toBeInstanceOf(
         ethers.providers.JsonRpcProvider
       )
+    })
+
+    it('properly connects to the unlock provider', async () => {
+      expect.assertions(1)
+      await resetTestsAndConnect(
+        new UnlockProvider({ readOnlyProvider: endpoint })
+      )
+      expect(walletService.provider.isUnlock).toBeTruthy()
     })
 
     it('properly connects to the ethers Web3Provider', async () => {
@@ -445,7 +457,6 @@ describe('WalletService (ethers)', () => {
     )
 
     // for each supported version, let's make sure it implements all methods
-    const supportedVersions = [v0, v01, v02, v10]
     it.each(supportedVersions)(
       'should implement all the required methods',
       version => {
