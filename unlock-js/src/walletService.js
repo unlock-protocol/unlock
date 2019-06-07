@@ -40,7 +40,14 @@ export default class WalletService extends UnlockService {
       this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
     } else if (provider.isUnlock) {
+      // TODO: This is very temporary! Immediate priority is to refactor away
+      // various special cases for provider instantiation, since having 3
+      // distinct kinds of provider isn't the Right Thing.
       this.provider = provider
+      // TODO: In particular, we want to avoid caring about whether a provider
+      // is MetaMask or any other specific one. We want to support a single
+      // common kernel of capability, even if that means MetaMask experience
+      // will be somewhat degraded.
       this.web3Provider = false
     } else {
       this.provider = new ethers.providers.Web3Provider(provider)
