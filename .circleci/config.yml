@@ -63,6 +63,19 @@ jobs:
           name: unlock-js tests
           command: scripts/tests.sh unlock-js
 
+  rover-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          name: Build rover Image
+          command: scripts/build-image.sh rover
+      - run:
+          name: rover tests
+          command: scripts/tests.sh rover          
+
   smart-contracts-tests:
     machine: true
     environment:
@@ -304,6 +317,7 @@ workflows:
       - wedlocks-tests
       - unlock-app-tests
       - unlock-js-tests
+      - rover-tests
       - unlock-app-chromatic:
           filters:
             branches:
