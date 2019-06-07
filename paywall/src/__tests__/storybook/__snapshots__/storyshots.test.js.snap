@@ -16958,7 +16958,6 @@ Object {
 
 .c0 > p {
   font-size: 12px;
-  margin: 0;
   color: var(--darkgrey);
 }
 
@@ -17149,7 +17148,7 @@ Object {
       style="width: 100%; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-jzJRlG sc-kgoBCf uEgdc"
+        class="sc-jzJRlG sc-kgoBCf ensfFp"
       >
         <p>
           <span>

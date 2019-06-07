@@ -56,7 +56,6 @@ const ClickableFlag = styled(OptimisticFlag)`
   justify-content: space-between;
   & > p {
     font-size: 12px;
-    margin: 0;
     color: var(--darkgrey);
     & span:first-child {
       display: none;
