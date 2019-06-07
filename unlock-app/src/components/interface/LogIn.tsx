@@ -106,8 +106,16 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(loginCredentials({ emailAddress, password })),
 })
 
+interface ReduxState {
+  account?: Account
+}
+
+const mapStateToProps = ({ account }: ReduxState) => ({
+  account,
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(LogIn)
 
