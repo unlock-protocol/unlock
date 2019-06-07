@@ -52,7 +52,7 @@ const ClickableDate = styled.button`
 `
 
 const ClickableFlag = styled(OptimisticFlag)`
-  width: 305px;
+  width: 315px;
   justify-content: space-between;
   & > p {
     font-size: 12px;
@@ -91,7 +91,7 @@ const ClickableFlag = styled(OptimisticFlag)`
       align-self: start;
       justify-self: end;
       & ${OptimisticLogo} {
-        margin: 0 0 -3px 2px;
+        margin: 0 0 -2px 2px;
       }
     }
   `}
