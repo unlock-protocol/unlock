@@ -6,6 +6,7 @@
 
 ## 0.2.5
 - Allow `walletService` to properly connect to `UnlockProvider`
+- Provides pre-purchase approval for the purchase of ERC20 keys
 
 ## 0.2.4
 
