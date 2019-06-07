@@ -1037,6 +1037,8 @@ describe('Form field validators', () => {
             outstandingKeys: 0,
             balance: '0',
             owner: '0x1234567890123456789012345678901234567890',
+            currencyContractAddress:
+              '0x9876543210987654321098765432109876543210',
           })
         ).toBe(true)
       })
