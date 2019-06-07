@@ -11,7 +11,8 @@
       "build": "tsc",
       "start": "ts-node src/index.ts",
       "backfill": "ts-node src/backfill.ts",
-      "lint": "eslint --ext .tsx,.ts,.js src/"
+      "lint": "eslint --ext .tsx,.ts,.js src/",
+      "ci": "npm run test"
    },
    "author": "",
    "license": "ISC",
