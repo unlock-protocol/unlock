@@ -198,7 +198,15 @@ export const isValidLock = lock => {
     !isValidObject(
       lock,
       ['address', 'keyPrice', 'expirationDuration', 'key'],
-      ['name', 'asOf', 'maxNumberOfKeys', 'outstandingKeys', 'balance', 'owner']
+      [
+        'name',
+        'asOf',
+        'maxNumberOfKeys',
+        'outstandingKeys',
+        'balance',
+        'owner',
+        'currencyContractAddress',
+      ]
     )
   ) {
     return false
