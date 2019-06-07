@@ -12,7 +12,7 @@ export const ActionButton = styled.button`
   outline: none;
   transition: background-color 200ms ease;
   & :hover {
-    background-color: var(--activegreen);
+    ${props => (props.disabled ? 'var(--grey)' : 'var(--activegreen)')};
   }
 `
 export default ActionButton
