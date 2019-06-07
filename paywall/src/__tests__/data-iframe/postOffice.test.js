@@ -156,41 +156,109 @@ describe('data iframe postOffice', () => {
         blockChainUpdater('error', 'fail')
       })
 
-      it('account passes account address to the main window', async done => {
+      it('account passes account address to the main window', async () => {
         expect.assertions(1)
 
         await setAccount(fakeWindow, 'account')
 
-        fakeTarget.postMessage = (...args) => {
-          expect(args).toEqual([
-            {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: 'account',
-            },
-            'http://fun.times',
-          ])
-          done()
-        }
-        blockChainUpdater('account')
+        fakeTarget.postMessage = jest.fn()
+        await blockChainUpdater('account')
+        expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: POST_MESSAGE_UPDATE_ACCOUNT,
+            payload: 'account',
+          }),
+          'http://fun.times'
+        )
       })
 
-      it('balance passes account balance to the main window', async done => {
+      it('should pass locks to the main window on account change', async () => {
+        expect.assertions(3)
+
+        await setAccount(fakeWindow, 'account')
+        await setNetwork(fakeWindow, 2)
+        await setLocks(fakeWindow, {
+          '0x123': {
+            address: '0x123',
+          },
+          '0x456': {
+            address: '0x456',
+          },
+        })
+        await setKeys(fakeWindow, {
+          '0x123': {
+            id: '0x123-account',
+            owner: 'account',
+            lock: '0x123',
+            expiration: 0,
+          },
+          '0x456': {
+            id: '0x456-account',
+            owner: 'account',
+            lock: '0x456',
+            expiration: 0,
+          },
+        })
+
+        fakeTarget.postMessage = jest.fn()
+        await blockChainUpdater('account')
+        expect(fakeTarget.postMessage).toHaveBeenCalledTimes(3)
+        expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: POST_MESSAGE_UPDATE_LOCKS,
+            payload: {
+              '0x123': {
+                address: '0x123',
+                key: {
+                  id: '0x123-account',
+                  owner: 'account',
+                  lock: '0x123',
+                  expiration: 0,
+                  status: 'none',
+                  confirmations: 0,
+                  transactions: [],
+                },
+              },
+              '0x456': {
+                address: '0x456',
+                key: {
+                  id: '0x456-account',
+                  owner: 'account',
+                  lock: '0x456',
+                  expiration: 0,
+                  status: 'none',
+                  confirmations: 0,
+                  transactions: [],
+                },
+              },
+            },
+          }),
+          'http://fun.times'
+        )
+        expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: POST_MESSAGE_LOCKED,
+            payload: undefined,
+          }),
+          'http://fun.times'
+        )
+      })
+
+      it('balance passes account balance to the main window', async () => {
         expect.assertions(1)
 
         await setAccount(fakeWindow, 'account')
         await setAccountBalance(fakeWindow, '123')
 
-        fakeTarget.postMessage = (...args) => {
-          expect(args).toEqual([
-            {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '123',
-            },
-            'http://fun.times',
-          ])
-          done()
-        }
-        blockChainUpdater('balance')
+        fakeTarget.postMessage = jest.fn()
+        await blockChainUpdater('balance')
+        expect(fakeTarget.postMessage).toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+            payload: '123',
+          }),
+          'http://fun.times'
+        )
       })
 
       it('network passes the network id to the main window', async done => {

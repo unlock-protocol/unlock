@@ -1,34 +1,34 @@
-import { Entity, PrimaryColumn, Column } from "typeorm";
+import { Entity, PrimaryColumn, Column } from 'typeorm'
 
 @Entity()
 export class Block {
   @PrimaryColumn({ unique: true })
-  hash: string;
+  hash: string
 
   @Column()
-  parentHash: string;
+  parentHash: string
 
   @Column()
-  number: number;
+  number: number
 
   @Column()
-  timestamp: number;
+  timestamp: number
 
   @Column()
-  nonce: string;
+  nonce: string
 
-  @Column("bigint")
-  difficulty: number;
-
-  @Column()
-  gasLimit: string;
+  @Column('bigint')
+  difficulty: number
 
   @Column()
-  gasUsed: string;
+  gasLimit: string
 
   @Column()
-  miner: string;
+  gasUsed: string
 
   @Column()
-  extraData: string;
+  miner: string
+
+  @Column()
+  extraData: string
 }

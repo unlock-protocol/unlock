@@ -88,22 +88,55 @@ describe('blockchainHandler account handling', () => {
       ).toBeTruthy()
     })
 
-    it('changeListener retrieves account balance and sends account and balance to the callback', async done => {
-      expect.assertions(4)
-      onAccountChange = (account, balance) => {
-        expect(account).toBe('new account')
-        expect(balance).toBe('123')
-        expect(getAccount()).toBe('new account')
-        expect(getAccountBalance()).toBe('123')
-        done()
-      }
-      await pollForAccountChange(
-        fakeWalletService,
-        fakeWeb3Service,
-        onAccountChange
-      )
+    describe('changeListener', () => {
+      beforeEach(() => {
+        pollForChanges.mockReset()
+        fakeWalletService = {
+          getAccount: jest.fn(() => 'account'),
+        }
+        fakeWeb3Service = {
+          getAddressBalance: jest.fn(() => '123'),
+        }
+      })
 
-      await pollForChanges.mock.calls[0][3]('new account')
+      it('should retrieve account balance and send account and balance to the callback', async done => {
+        expect.assertions(4)
+        onAccountChange = (account, balance) => {
+          expect(account).toBe('new account')
+          expect(balance).toBe('123')
+          expect(getAccount()).toBe('new account')
+          expect(getAccountBalance()).toBe('123')
+          done()
+        }
+        await pollForAccountChange(
+          fakeWalletService,
+          fakeWeb3Service,
+          onAccountChange
+        )
+
+        await pollForChanges.mock.calls[0][3]('new account')
+      })
+
+      it('should handle no account correctly', async done => {
+        expect.assertions(4)
+        fakeWeb3Service = {
+          getAddressBalance: jest.fn(() => null),
+        }
+        onAccountChange = (account, balance) => {
+          expect(account).toBe(null)
+          expect(balance).toBe('0')
+          expect(getAccount()).toBe(null)
+          expect(getAccountBalance()).toBe('0')
+          done()
+        }
+        await pollForAccountChange(
+          fakeWalletService,
+          fakeWeb3Service,
+          onAccountChange
+        )
+
+        await pollForChanges.mock.calls[0][3](false)
+      })
     })
   })
 })

@@ -43,7 +43,7 @@ let deployedLockAddress
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v02', newContractInstance => {
+    return deploy(host, port, 'v11', newContractInstance => {
       // Once unlock has been deployed, we need to deploy a lock too!
 
       const provider = getWeb3Provider(`http://${host}:${port}/`)

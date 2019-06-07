@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import React from 'react'
 import { RoundedLogo } from '../interface/Logo'
-import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
+import Media from '../../theme/media'
 
 interface Props {
   locks: Locks
@@ -27,16 +27,11 @@ export const Checkout = ({
   )
 
   return (
-    <Wrapper>
+    <React.Fragment>
       <Header>
         <Title>
           {config.icon && <Logo src={config.icon} />}
-          Unlocked
-          <CloseButton
-            backgroundColor="var(--lightgrey)"
-            fillColor="var(--grey)"
-            onClick={hideCheckout}
-          />
+          <UnlockedText>Unlocked</UnlockedText>
         </Title>
         <p>{config.callToAction.default}</p>
       </Header>
@@ -60,23 +55,17 @@ export const Checkout = ({
         <RoundedLogo />
         Powered by Unlock
       </Footer>
-    </Wrapper>
+    </React.Fragment>
   )
 }
 
 export default Checkout
 
-const CloseButton = styled(Close)`
-  display: inline-flex;
-  float: right;
-`
-
-const Wrapper = styled.section`
-  max-width: 1000px;
-  padding: 10px 40px;
-  display: grid;
-  background-color: var(--offwhite);
-  color: var(--darkgrey);
+const UnlockedText = styled.span`
+  padding-left: 10px;
+  ${Media.phone`
+    padding-left: 0;
+  `}
 `
 
 const Header = styled.header`
