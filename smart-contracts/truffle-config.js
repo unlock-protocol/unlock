@@ -80,7 +80,7 @@ module.exports = {
     rinkeby: {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
-      gas: 6000000,
+      gas: 6400000,
       gasPrice: 5000000000, // 5GWEI
     },
     ropsten: {
