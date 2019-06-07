@@ -6,7 +6,7 @@ export const GAS_AMOUNTS = {
   purchaseFor: 300000, // purchaseKey in walletService
   withdraw: 100000, // withdrawFromLock in walletService
   partialWithdraw: 100000, // partialWithdrawFromLock in walletService
-  deployContract: 6000000,
+  deployContract: 6400000,
 }
 
 export const MAX_UINT =

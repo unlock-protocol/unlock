@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.4
+
+- Increased gas limit to deploy Unlock contract
+
 ## 0.2.3
 
 - Adding support for v11 of the smart contracts.
