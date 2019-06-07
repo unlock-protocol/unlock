@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
 import { RoundedLogo } from '../interface/Logo'
-import Close from '../interface/buttons/layout/Close'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
@@ -13,35 +12,6 @@ interface Props {
   account: Account | null
   purchase: (...args: any[]) => any
   hideCheckout: (...args: any[]) => any
-}
-
-interface WrapperProps {
-  children: any
-  hideCheckout: (...args: any[]) => any
-  bgColor: string
-  onClick: (event: any) => void
-}
-
-interface WrapperStyleProps {
-  bgColor: string
-}
-
-export const CheckoutWrapper = ({
-  children,
-  hideCheckout,
-  bgColor = 'var(--offwhite)',
-  onClick = () => {},
-}: WrapperProps) => {
-  return (
-    <Wrapper bgColor={bgColor} onClick={onClick}>
-      <CloseButton
-        backgroundColor="var(--lightgrey)"
-        fillColor="var(--grey)"
-        onClick={hideCheckout}
-      />
-      {children}
-    </Wrapper>
-  )
 }
 
 export const Checkout = ({
@@ -90,22 +60,6 @@ export const Checkout = ({
 }
 
 export default Checkout
-
-const CloseButton = styled(Close)`
-  position: absolute;
-  top: 24px;
-  right: 24px;
-`
-
-const Wrapper = styled.section`
-  max-width: 800px;
-  padding: 10px 40px;
-  display: grid;
-  background-color: ${(props: WrapperStyleProps) => props.bgColor};
-  color: var(--darkgrey);
-  border-radius: 4px;
-  position: relative;
-`
 
 const UnlockedText = styled.span`
   padding-left: 10px;
