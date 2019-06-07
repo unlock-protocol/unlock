@@ -64,8 +64,9 @@ describe('WalletService (ethers)', () => {
 
     it('properly connects to the unlock provider', async () => {
       expect.assertions(1)
-
-      await resetTestsAndConnect(new UnlockProvider(endpoint))
+      await resetTestsAndConnect(
+        new UnlockProvider({ readOnlyProvider: endpoint })
+      )
       expect(walletService.provider.isUnlock).toBeTruthy()
     })
 
