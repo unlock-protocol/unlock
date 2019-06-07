@@ -39,6 +39,9 @@ export default class WalletService extends UnlockService {
     if (typeof provider === 'string') {
       this.provider = new FetchJsonProvider(provider)
       this.web3Provider = false
+    } else if (provider.isUnlock) {
+      this.provider = provider
+      this.web3Provider = false
     } else {
       this.provider = new ethers.providers.Web3Provider(provider)
       this.web3Provider = provider
