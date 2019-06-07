@@ -562,12 +562,17 @@ describe('localStorage cache', () => {
     })
 
     it('getAccount', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       await setAccount(fakeWindow, 'hi')
 
       const account = await getAccount(fakeWindow)
       expect(account).toBe('hi')
+
+      await setAccount(fakeWindow, null)
+
+      const account2 = await getAccount(fakeWindow)
+      expect(account2).toBe(null)
     })
 
     it('getNetwork', async () => {
@@ -596,7 +601,7 @@ describe('localStorage cache', () => {
       await setAccount(fakeWindow, 'hi')
 
       expect(fakeWindow.storage).toEqual({
-        '__unlockProtocol.account': 'hi',
+        '__unlockProtocol.account': JSON.stringify('hi'),
       })
     })
   })
