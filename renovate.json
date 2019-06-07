@@ -4,6 +4,13 @@
     "rangeStrategy:pin",
     "updateLockFiles:true",
     "schedule:monthly",
-    ":maintainLockFilesMonthly"
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone"
+  ],
+  "packageRules": [
+    {
+      "packageNames": ["unlock-js"],
+      ":updateNotScheduled"
+    }
   ]
 }
