@@ -46,7 +46,7 @@
     "react-dom": "^16.8.6",
     "react-jazzicon": "^0.1.2",
     "react-redux": "^7.0.2",
-    "react-select": "^3.0.4",
+    "react-stripe-elements": "^3.0.0",
     "react-test-renderer": "^16.8.6",
     "react-testing-library": "6.1.2",
     "redux": "^4.0.1",
