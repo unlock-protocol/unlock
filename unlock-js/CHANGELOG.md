@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.6
+- `UnlockProvider` now inherits from `ethers.providers.JsonRpcProvider` instead
+  of storing one as a property.
+
 ## 0.2.5
 - Allow `walletService` to properly connect to `UnlockProvider`
 

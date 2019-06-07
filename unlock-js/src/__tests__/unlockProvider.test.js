@@ -1,17 +1,6 @@
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
 
-const ethers = require.requireActual('ethers')
-
-function provider() {
-  return {
-    send: jest.fn(),
-    _ethersType: 'Provider',
-  }
-}
-
-ethers.providers.JsonRpcProvider = provider
-
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
   address: '88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290',
@@ -100,11 +89,5 @@ describe('Unlock Provider', () => {
         publicKey.toLowerCase()
       )
     })
-  })
-
-  it('should call the fallback provider for any method it does not implement', async () => {
-    expect.assertions(1)
-    await provider.send('not_a_real_method')
-    expect(provider.fallbackProvider.send).toHaveBeenCalled()
   })
 })
