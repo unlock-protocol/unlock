@@ -31,7 +31,26 @@ export async function getErc20Decimals(erc20ContractAddress, provider) {
   return utils.toNumber(decimals)
 }
 
+export async function approveTransfer(
+  erc20ContractAddress,
+  lockContractAddress,
+  value,
+  provider
+) {
+  const contract = new ethers.Contract(
+    erc20ContractAddress,
+    ['function approve(address spender, uint256 value) returns (bool value)'],
+    provider.getSigner()
+  )
+  return contract.approve(lockContractAddress, approvalValue(value))
+}
+
+function approvalValue(value) {
+  return Math.ceil(value)
+}
+
 export default {
+  approveTransfer,
   getErc20BalanceForAddress,
   getErc20Decimals,
 }
