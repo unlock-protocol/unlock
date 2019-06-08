@@ -10,7 +10,7 @@
   "packageRules": [
     {
       "packageNames": ["unlock-js"],
-      ":updateNotScheduled"
+      "schedule": ["at any time"]
     }
   ]
 }
