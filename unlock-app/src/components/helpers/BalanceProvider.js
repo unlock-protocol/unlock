@@ -2,20 +2,28 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import UnlockPropTypes from '../../propTypes'
-import { formatEth, formatCurrency } from '../../selectors/currency'
+import { formatCurrency } from '../../selectors/currency'
 
 /**
  * Render props component which computes the data required to display balance.
  * This is useful to display balance in different ways.
  * amount is always in eth
  */
-export const BalanceProvider = ({ amount, conversion, render }) => {
+export const BalanceProvider = ({
+  amount,
+  conversion,
+  convertCurrency,
+  render,
+}) => {
   if (typeof amount === 'undefined' || amount === null) {
     return render(' - ', ' - ') || null
   }
   let currency = parseFloat(amount)
-  const ethWithPresentation = formatEth(currency)
+  const ethWithPresentation = formatCurrency(currency)
   let convertedUSDValue
+  if (!convertCurrency) {
+    return render(ethWithPresentation) || null
+  }
   if (!conversion.USD) {
     convertedUSDValue = '---'
   } else {
