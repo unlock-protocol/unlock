@@ -10,13 +10,15 @@ import BalanceProvider from './BalanceProvider'
  * @param {*} amount: the amount to convert to Eth
  * @param {boolean} convertCurrency: show the converted value
  */
-export const Balance = ({ amount, convertCurrency }) => (
+export const Balance = ({ amount, currency, convertCurrency }) => (
   <BalanceProvider
+    convertCurrency={convertCurrency}
     amount={amount}
     render={(ethWithPresentation, convertedUSDValue) => (
       <BalanceWithConversion>
         <Currency>
-          <Eth />
+          {!currency && <Eth />}
+          {!!currency && <ERC20 name={currency} />}
           <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
         </Currency>
         {convertCurrency ? (
@@ -37,11 +39,13 @@ export const Balance = ({ amount, convertCurrency }) => (
 Balance.propTypes = {
   amount: PropTypes.string,
   convertCurrency: PropTypes.bool,
+  currency: PropTypes.string,
 }
 
 Balance.defaultProps = {
   amount: null,
   convertCurrency: true,
+  currency: '',
 }
 
 export const BalanceWithConversion = styled.div`
@@ -58,14 +62,20 @@ export const Currency = styled.span.attrs({
 `
 
 export const CurrencySymbol = styled.span`
-  width: 1.3em;
+  min-width: 15px;
   text-align: right;
-  padding-right: 0.5em;
+  padding-right: 0.3em;
+  display: inline-block;
 `
 
 export const Eth = styled(CurrencySymbol)`
   &:before {
     content: '三';
+  }
+`
+export const ERC20 = styled(CurrencySymbol)`
+  &:before {
+    content: '${props => props.name}';
   }
 `
 
@@ -77,7 +87,6 @@ export const USD = styled(CurrencySymbol)`
 
 export const BalanceWithUnit = styled.span`
   white-space: nowrap;
-  text-transform: uppercase;
 `
 
 const SubBalance = styled.div`
