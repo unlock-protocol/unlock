@@ -92,11 +92,6 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
-    // SIGNED_DATA
-    storageService.on(failure.storeLockDetails, () => {
-      dispatch(setError(Storage.Warning('Could not store some lock metadata.')))
-    })
-
     // SIGNUP_CREDENTIALS
     storageService.on(success.createUser, publicKey => {
       // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
@@ -157,10 +152,7 @@ const storageMiddleware = config => {
 
         if (action.type === SIGNED_DATA) {
           const { message } = action.data
-          if (message && message.lock) {
-            // Once signed, let's save it!
-            storageService.storeLockDetails(action.data, action.signature)
-          } else if (message && message.user) {
+          if (message && message.user) {
             const {
               userDetails: { email },
             } = getState()

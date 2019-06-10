@@ -227,36 +227,14 @@ describe('Storage middleware', () => {
   })
 
   describe('handling SIGNED_DATA', () => {
-    it('should not do anything if the signed message is not for a lock or user', () => {
-      expect.assertions(2)
+    it('should not do anything if the signed message is not for a user', () => {
+      expect.assertions(1)
       const data = 'data'
       const signature = 'signature'
       const { next, invoke } = create()
       const action = { type: SIGNED_DATA, data, signature }
-      mockStorageService.storeLockDetails = jest.fn()
 
       invoke(action)
-      expect(mockStorageService.storeLockDetails).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-
-    it('should call storageService for lock details', () => {
-      expect.assertions(2)
-      const data = {
-        message: {
-          lock: {},
-        },
-      }
-      const signature = 'signature'
-      const { next, invoke } = create()
-      const action = { type: SIGNED_DATA, data, signature }
-      mockStorageService.storeLockDetails = jest.fn()
-
-      invoke(action)
-      expect(mockStorageService.storeLockDetails).toHaveBeenCalledWith(
-        data,
-        signature
-      )
       expect(next).toHaveBeenCalledTimes(1)
     })
 
@@ -279,20 +257,6 @@ describe('Storage middleware', () => {
         signature
       )
       expect(next).toHaveBeenCalledTimes(1)
-    })
-
-    it('should handle failure events', () => {
-      expect.assertions(1)
-      const { store } = create()
-
-      mockStorageService.emit(failure.storeLockDetails, {
-        address: '0x123',
-        error: 'Not enough vespene gas.',
-      })
-
-      expect(store.dispatch).toHaveBeenCalledWith(
-        setError(Storage.Warning('Could not store some lock metadata.'))
-      )
     })
   })
 
