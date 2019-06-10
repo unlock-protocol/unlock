@@ -9,6 +9,7 @@ import { setConfig } from 'next/config'
 setConfig({
   publicRuntimeConfig: {
     unlockEnv: 'test',
+    intercomAppId: '0',
   },
 })
 
