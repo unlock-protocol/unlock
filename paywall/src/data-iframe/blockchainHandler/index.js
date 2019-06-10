@@ -53,10 +53,10 @@ export function setupWeb3Service({
  * @param {array} locksToRetrieve an array of lock ethereum addresses to retrieve
  * @param {seb3Service} web3Service used to retrieve locks, and keys
  * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
+ * @param {window} window the global context (window, self, global)
  * @param {string} locksmithHost the endpoint for locksmith
  * @param {Function} onChange the change callback, which is used by the data iframe to cache data and pass it to the
  *                            main window
- * @param {number} requiredConfirmations the minimum number of confirmations needed to consider a key purchased
  */
 export async function retrieveChainData({
   locksToRetrieve,
@@ -68,9 +68,35 @@ export async function retrieveChainData({
 }) {
   onChange({ locks: await getLocks({ locksToRetrieve, web3Service }) })
 
+  return await getKeysAndTransactions({
+    walletService,
+    locks: locksToRetrieve,
+    web3Service,
+    window,
+    locksmithHost,
+  })
+}
+
+/**
+ * Retrieve the locks and transactions for the current user
+ * @param {walletService} walletService used to ensure the user account is known prior to key/transaction retrieval
+ * @param {seb3Service} web3Service used to retrieve locks, and keys
+ * @param {array} locks an array of lock ethereum addresses to retrieve
+ * @param {window} window the global context (window, self, global)
+ * @param {string} locksmithHost the endpoint for locksmith
+ */
+async function getKeysAndTransactions({
+  walletService,
+  web3Service,
+  locks,
+  window,
+  locksmithHost,
+}) {
   ensureWalletReady(walletService)
   const [keys] = await Promise.all([
-    getKeys({ walletService, locks: locksToRetrieve, web3Service }),
+    getKeys({ walletService, locks, web3Service }),
+    // trigger retrieval of transactions. web3ServiceHub will do the actual
+    // propagation of transactions to the cache
     locksmithTransactions({
       window,
       locksmithHost,
@@ -88,12 +114,26 @@ export async function retrieveChainData({
  *                            main window
  */
 export async function listenForAccountNetworkChanges({
+  locksToRetrieve,
   walletService,
   web3Service,
+  locksmithHost,
   onChange,
+  window,
 }) {
-  walletService.on('account.changed', address => {
+  walletService.on('account.changed', async address => {
     setAccount(address)
+    // account has changed, it is time to update transactions and keys
+    // keys will be returned and passed to the cache
+    onChange(
+      await getKeysAndTransactions({
+        walletService,
+        locks: locksToRetrieve,
+        web3Service,
+        window,
+        locksmithHost,
+      })
+    )
   })
   walletService.on('network.changed', id => {
     setNetwork(id)

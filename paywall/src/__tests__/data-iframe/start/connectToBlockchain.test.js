@@ -139,9 +139,12 @@ describe('connectToBlockchain', () => {
 
       expect(listenForAccountNetworkChanges).toHaveBeenCalledWith(
         expect.objectContaining({
+          window,
+          locksmithHost,
           walletService,
           web3Service,
           onChange,
+          locksToRetrieve: Object.keys(config.locks),
         })
       )
     })

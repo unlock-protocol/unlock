@@ -74,7 +74,14 @@ export default async function connectToBlockchain({
     })
   )
 
-  listenForAccountNetworkChanges({ walletService, web3Service, onChange })
+  listenForAccountNetworkChanges({
+    locksToRetrieve,
+    walletService,
+    web3Service,
+    locksmithHost,
+    onChange,
+    window,
+  })
   // at this point the blockchain handler is live!
   return retrieveChainData({
     locksToRetrieve,
