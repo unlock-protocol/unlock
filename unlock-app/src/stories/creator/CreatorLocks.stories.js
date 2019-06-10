@@ -5,6 +5,7 @@ import { CreatorLocks } from '../../components/creator/CreatorLocks'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import doNothing from '../../utils/doNothing'
+import configure from '../../config'
 
 const lock = {
   name: 'First Lock',
@@ -35,7 +36,7 @@ const store = createUnlockStore({
   locks: [lock],
 })
 
-const config = {}
+const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
 
