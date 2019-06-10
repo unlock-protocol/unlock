@@ -1,4 +1,4 @@
-import Web3Utils from '../utils'
+import utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'
@@ -25,15 +25,23 @@ export default async function(
   erc20Address
 ) {
   const lockContract = await this.getLockContract(lockAddress)
+  // TODO, use the actual decimals from the contract. We assume 18 here because it is the most frequent default.
+
+  const actualAmount = utils.toDecimal(keyPrice, 18)
   if (erc20Address) {
-    await approveTransfer(erc20Address, lockAddress, keyPrice, this.provider)
+    await approveTransfer(
+      erc20Address,
+      lockAddress,
+      actualAmount,
+      this.provider
+    )
   }
 
   let transactionPromise
   try {
     transactionPromise = lockContract['purchaseFor(address)'](owner, {
       gasLimit: GAS_AMOUNTS.purchaseFor, // overrides default value for transaction gas price
-      value: Web3Utils.toWei(keyPrice, 'ether'), // overrides default value
+      value: actualAmount,
     })
     const ret = await this._handleMethodCall(
       transactionPromise,

@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.8
+
+- Approving the right amount when using an ERC20 lock
+
 ## 0.2.7
 
 - Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic

@@ -4,6 +4,7 @@ import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import erc20 from '../../erc20'
+import Web3Utils from '../../utils'
 
 const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -108,6 +109,8 @@ describe('v10', () => {
         }
       )
 
+      const amountToApprove = Web3Utils.toDecimal(keyPrice, 18)
+
       await walletService.purchaseKey(
         lockAddress,
         owner,
@@ -120,7 +123,7 @@ describe('v10', () => {
       expect(erc20.approveTransfer).toHaveBeenCalledWith(
         erc20Address,
         lockAddress,
-        keyPrice,
+        amountToApprove,
         walletService.provider
       )
       await nock.resolveWhenAllNocksUsed()
