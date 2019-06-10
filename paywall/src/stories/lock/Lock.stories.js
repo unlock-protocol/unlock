@@ -7,6 +7,7 @@ import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { WindowContext } from '../../hooks/browser/useWindow'
+import configure from '../../config'
 
 // lock, account, keys, purchaseKey
 const lockActions = actions({
@@ -50,11 +51,7 @@ const store = createUnlockStore({
 const ConfigProvider = ConfigContext.Provider
 const WindowProvider = WindowContext.Provider
 
-const storyConfig = {
-  requiredConfirmations: 12,
-  isInIframe: false,
-  isServer: false,
-}
+const storyConfig = configure()
 
 storiesOf('Lock', module)
   .addDecorator(getStory => (
@@ -64,6 +61,44 @@ storiesOf('Lock', module)
       </WindowProvider>
     </ConfigProvider>
   ))
+  .add('with no key, ERC20 Lock, known currency', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '10.0',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
+  .add('with no key, ERC20 Lock, unknown currency', () => {
+    const erc20Lock = {
+      currencyContractAddress: '0x123ERC20',
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
   .add('with no key, for a short duration (check hover state too)', () => {
     const shortLock = {
       address: '0x123',
@@ -80,7 +115,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -93,7 +127,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -107,7 +140,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -120,7 +152,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -137,7 +168,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -157,7 +187,31 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="submitted"
-        requiredConfirmations={3}
+      />
+    )
+  })
+  .add('with a pending key (not yet mined) for an know ERC20 Lock', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    const k = {
+      lock: erc20Lock.address,
+    }
+    const t = {
+      status: 'submitted',
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={t}
+        lockKey={k}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="submitted"
       />
     )
   })
@@ -178,10 +232,38 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="confirming"
-        requiredConfirmations={3}
       />
     )
   })
+  .add(
+    'with a mined key which was not confirmed for an know ERC20 Lock',
+    () => {
+      const erc20Lock = {
+        currencyContractAddress: storyConfig.erc20Contract.address,
+        address: '0x123',
+        name: 'Monthly',
+        keyPrice: '66',
+        expirationDuration: 5 * 60, // 5 minutes
+      }
+      const k = {
+        lock: erc20Lock.address,
+      }
+      const t = {
+        status: 'mined',
+        confirmations: config.requiredConfirmations - 1,
+      }
+      return (
+        <Lock
+          lock={erc20Lock}
+          transaction={t}
+          lockKey={k}
+          {...lockActions}
+          openInNewWindow={false}
+          keyStatus="confirming"
+        />
+      )
+    }
+  )
   .add('with a mined key.', () => {
     const k = {
       lock: lock.address,
@@ -199,7 +281,32 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="valid"
-        requiredConfirmations={3}
+      />
+    )
+  })
+  .add('with a mined key for an know ERC20 Lock', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    const k = {
+      lock: erc20Lock.address,
+    }
+    const t = {
+      status: 'mined',
+      confirmations: config.requiredConfirmations + 1,
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={t}
+        lockKey={k}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="valid"
       />
     )
   })
@@ -221,7 +328,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -239,7 +345,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
