@@ -10,6 +10,7 @@ import { getErc20BalanceForAddress, getErc20Decimals } from '../erc20'
 export default async function(address) {
   const contract = await this.getLockContract(address)
   const attributes = {
+    name: x => x,
     keyPrice: x => x,
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {

@@ -1,8 +1,9 @@
 # Changes
 
-## Next version (replace when this next version ships!)
+## 0.2.7
 
 - Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic
+- `getLock` yields the lock name from the on chain data.
 
 ## 0.2.6
 
