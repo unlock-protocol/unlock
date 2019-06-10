@@ -20,6 +20,8 @@ let requiredConfigVariables = {
   wedlocksUri: process.env.WEDLOCKS_URI,
   unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
   base64WedlocksPublicKey: process.env.BASE64_WEDLOCKS_PUBLIC_KEY,
+  erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
+  erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
 }
 
 let optionalConfigVariables = {
