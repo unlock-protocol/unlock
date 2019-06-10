@@ -230,16 +230,35 @@ describe('blockchain handler index', () => {
   describe('listenForAccountNetworkChanges', () => {
     let fakeWalletService
     let fakeWeb3Service
+    let fakeWindow
+    let fakeTransactions
+    let fakeTransactionResults
 
     beforeEach(() => {
+      getAccount.mockImplementation(() => 'account')
+      fakeWeb3Service = {
+        on: jest.fn(),
+        getLock: jest.fn(address => ({ address })),
+        getKeyByLockForOwner: jest.fn((lock, owner) => ({
+          id: `${lock}-${owner}`,
+          lock,
+          owner,
+          expiration: new Date().getTime() / 1000 + 1000,
+        })),
+        getAddressBalance: jest.fn(() => '123'),
+        getTransaction: jest.fn(hash => fakeTransactionResults[hash]),
+      }
+      fakeWindow = {
+        fetch: jest.fn(() => ({
+          json: () => fakeTransactions,
+        })),
+      }
+      fakeTransactions = {}
+      fakeTransactionResults = {}
       fakeWalletService = {
         on: jest.fn(),
         ready: true,
         getAccount: jest.fn(() => 'account'),
-      }
-      fakeWeb3Service = {
-        on: jest.fn(),
-        getAddressBalance: jest.fn(() => '123'),
       }
       pollForAccountChange.mockReset()
     })
@@ -271,6 +290,49 @@ describe('blockchain handler index', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         onChange: () => {},
+      })
+    })
+
+    it('should set account on getting account.changed event', async done => {
+      expect.assertions(1)
+
+      const locksToRetrieve = ['locks']
+      fakeWalletService.on = async (type, listener) => {
+        if (type !== 'account.changed') return
+        await listener('new account')
+        expect(setAccount).toHaveBeenCalledWith('new account')
+        done()
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+        window: fakeWindow,
+        locksmithHost: 'locksmith',
+        locksToRetrieve,
+      })
+    })
+
+    it('should retrieve new keys ands locks on getting account.changed event', async done => {
+      expect.assertions(2)
+
+      const locksToRetrieve = ['locks']
+      fakeWalletService.on = async (type, listener) => {
+        if (type !== 'account.changed') return
+        await listener('new account')
+        expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenCalled()
+        expect(fakeWindow.fetch).toHaveBeenCalled()
+        done()
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+        window: fakeWindow,
+        locksmithHost: 'locksmith',
+        locksToRetrieve,
       })
     })
 
