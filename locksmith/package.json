@@ -54,7 +54,7 @@
     "dotenv": "^8.0.0",
     "eth-sig-util": "^2.1.1",
     "ethereumjs-util": "^6.0.0",
-    "ethers": "^4.0.26",
+    "ethers": "^4.0.30",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "jest": "^24.8.0",
