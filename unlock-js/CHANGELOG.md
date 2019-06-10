@@ -1,10 +1,16 @@
 # Changes
 
+## Next version (replace when this next version ships!)
+
+- Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic
+
 ## 0.2.6
+
 - `UnlockProvider` now inherits from `ethers.providers.JsonRpcProvider` instead
   of storing one as a property.
 
 ## 0.2.5
+
 - Allow `walletService` to properly connect to `UnlockProvider`
 - Provides pre-purchase approval for the purchase of ERC20 keys
 

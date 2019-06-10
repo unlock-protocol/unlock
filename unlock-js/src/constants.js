@@ -5,7 +5,6 @@ export const GAS_AMOUNTS = {
   updateKeyPrice: 100000,
   purchaseFor: 300000, // purchaseKey in walletService
   withdraw: 100000, // withdrawFromLock in walletService
-  partialWithdraw: 100000, // partialWithdrawFromLock in walletService
   deployContract: 6400000,
 }
 
