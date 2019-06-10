@@ -34444,6 +34444,526 @@ Object {
 }
 `;
 
+exports[`Storyshots Grid system GridFull span 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-gap: 16px;
+}
+
+.c1 {
+  grid-column: span 12;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-eHgmQL gFsvjq"
+    >
+      <div
+        class="sc-cvbbAY kSGzsh"
+        style="height: 100px;"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Grid system GridHalf span 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-gap: 16px;
+}
+
+.c1 {
+  grid-column: span 6;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    grid-column: span 12;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-eHgmQL gFsvjq"
+    >
+      <div
+        class="sc-jWBwVP hpaXSB"
+        style="height: 100px;"
+      />
+      <div
+        class="sc-jWBwVP hpaXSB"
+        style="height: 100px;"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Grid system GridThird span 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-gap: 16px;
+}
+
+.c1 {
+  grid-column: span 4;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    grid-column: span 12;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+        <div
+          class="c1"
+          style="height: 100px;"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-eHgmQL gFsvjq"
+    >
+      <div
+        class="sc-brqgnP cDvYkf"
+        style="height: 100px;"
+      />
+      <div
+        class="sc-brqgnP cDvYkf"
+        style="height: 100px;"
+      />
+      <div
+        class="sc-brqgnP cDvYkf"
+        style="height: 100px;"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Grid system The base grid 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12,1fr);
+  grid-gap: 16px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+        <div
+          style="height: 100px;"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-eHgmQL gFsvjq"
+    >
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+      <div
+        style="height: 100px;"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Header the header for a content page 1`] = `
 Object {
   "asFragment": [Function],
@@ -39364,22 +39884,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-fBuWsC eCBQJe"
+            class="sc-fAjcbJ byHdTb"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-fMiknA cPlLfs"
+            class="sc-caSCKo jayzUY"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-dVhcbM krHIUf"
+            class="sc-gisBJw dVukhR"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-dVhcbM krHIUf"
+            class="sc-gisBJw dVukhR"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -39389,26 +39909,26 @@ Object {
             .
           </p>
           <form
-            class="sc-eqIVtm knnhPw"
+            class="sc-kjoXOD gAKkYg"
           >
             <input
-              class="sc-fAjcbJ gQioQF"
+              class="sc-cHGsZl klycBd"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-caSCKo beOAsB"
+              class="sc-TOsTZ gYcdfi"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-dVhcbM krHIUf"
+              class="sc-gisBJw dVukhR"
             >
               Already have an account?
                
               <a
-                class="sc-kjoXOD itbIbn"
+                class="sc-cJSrbW gAaEqt"
               >
                 Log in here.
               </a>
@@ -48053,19 +48573,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-jWBwVP jxrhEF"
+        class="sc-jDwBTQ fertdr"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-jDwBTQ ewBJjx"
+          class="sc-gipzik keTEZY"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-cMljjf bnsXNv"
+          class="sc-iRbamj kLdkyx"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48073,13 +48593,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jDwBTQ ewBJjx"
+          class="sc-gipzik keTEZY"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-cMljjf bnsXNv"
+          class="sc-iRbamj kLdkyx"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48087,18 +48607,18 @@ Object {
         />
         <br />
         <input
-          class="sc-jAaTju Aanxf"
+          class="sc-jlyJG ipPBdU"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-brqgnP kLeLPN"
+        class="sc-gPEVay idhqHf"
       >
         Don't have an account?
          
         <a
-          class="sc-gPEVay eKpZDv"
+          class="sc-csuQGl iGtWVw"
         >
           Sign up here.
         </a>
@@ -48290,22 +48810,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fBuWsC eCBQJe"
+        class="sc-fAjcbJ byHdTb"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-fMiknA cPlLfs"
+        class="sc-caSCKo jayzUY"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -48315,26 +48835,26 @@ Object {
         .
       </p>
       <form
-        class="sc-eqIVtm knnhPw"
+        class="sc-kjoXOD gAKkYg"
       >
         <input
-          class="sc-fAjcbJ gQioQF"
+          class="sc-cHGsZl klycBd"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-caSCKo beOAsB"
+          class="sc-TOsTZ gYcdfi"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dVhcbM krHIUf"
+          class="sc-gisBJw dVukhR"
         >
           Already have an account?
            
           <a
-            class="sc-kjoXOD itbIbn"
+            class="sc-cJSrbW gAaEqt"
           >
             Log in here.
           </a>
@@ -48544,24 +49064,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-gipzik diTcPO"
+        class="sc-hzDkRC fjiSpZ"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-csuQGl beoCie"
+        class="sc-jhAzac bMtRyA"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -48570,13 +49090,13 @@ Object {
         />
         <br />
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -48584,13 +49104,13 @@ Object {
         />
         <br />
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -48598,11 +49118,11 @@ Object {
         />
         <br />
         <span
-          class="sc-jhAzac dsaGAq"
+          class="sc-eqIVtm dGOqmC"
         />
         <br />
         <input
-          class="sc-hzDkRC fzsnvD"
+          class="sc-dVhcbM bfSKdI"
           disabled=""
           type="submit"
           value="Submit"
@@ -48724,12 +49244,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-iRbamj dRHgwJ"
+        class="sc-Rmtcm wiFKz"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-bRBYWo eVPHVS"
       >
         The link you used is invalid. Please try again.
          
@@ -48924,19 +49444,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-jWBwVP jxrhEF"
+        class="sc-jDwBTQ fertdr"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-jDwBTQ ewBJjx"
+          class="sc-gipzik keTEZY"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-cMljjf bnsXNv"
+          class="sc-iRbamj kLdkyx"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48944,13 +49464,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jDwBTQ ewBJjx"
+          class="sc-gipzik keTEZY"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-cMljjf bnsXNv"
+          class="sc-iRbamj kLdkyx"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48958,18 +49478,18 @@ Object {
         />
         <br />
         <input
-          class="sc-jAaTju Aanxf"
+          class="sc-jlyJG ipPBdU"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-brqgnP kLeLPN"
+        class="sc-gPEVay idhqHf"
       >
         Don't have an account?
          
         <a
-          class="sc-gPEVay eKpZDv"
+          class="sc-csuQGl iGtWVw"
         >
           Sign up here.
         </a>
@@ -49161,22 +49681,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fBuWsC eCBQJe"
+        class="sc-fAjcbJ byHdTb"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-fMiknA cPlLfs"
+        class="sc-caSCKo jayzUY"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -49186,26 +49706,26 @@ Object {
         .
       </p>
       <form
-        class="sc-eqIVtm knnhPw"
+        class="sc-kjoXOD gAKkYg"
       >
         <input
-          class="sc-fAjcbJ gQioQF"
+          class="sc-cHGsZl klycBd"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-caSCKo beOAsB"
+          class="sc-TOsTZ gYcdfi"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dVhcbM krHIUf"
+          class="sc-gisBJw dVukhR"
         >
           Already have an account?
            
           <a
-            class="sc-kjoXOD itbIbn"
+            class="sc-cJSrbW gAaEqt"
           >
             Log in here.
           </a>
@@ -49327,12 +49847,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-eHgmQL ethFFU"
+        class="sc-cMljjf cktufh"
       >
         Sign Up
       </h1>
       <p
-        class="sc-cvbbAY dbdRQm"
+        class="sc-jAaTju dxEWMk"
       >
         You are now signed in! Go to
          
@@ -53718,24 +54238,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-gipzik diTcPO"
+        class="sc-hzDkRC fjiSpZ"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-csuQGl beoCie"
+        class="sc-jhAzac bMtRyA"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -53744,13 +54264,13 @@ Object {
         />
         <br />
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -53758,13 +54278,13 @@ Object {
         />
         <br />
         <label
-          class="sc-Rmtcm izkUGa"
+          class="sc-fBuWsC bGPUuH"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-bRBYWo ezumZF"
+          class="sc-fMiknA kWfmOb"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -53772,11 +54292,11 @@ Object {
         />
         <br />
         <span
-          class="sc-jhAzac dsaGAq"
+          class="sc-eqIVtm dGOqmC"
         />
         <br />
         <input
-          class="sc-hzDkRC fzsnvD"
+          class="sc-dVhcbM bfSKdI"
           disabled=""
           type="submit"
           value="Submit"
@@ -53898,12 +54418,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-iRbamj dRHgwJ"
+        class="sc-Rmtcm wiFKz"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jlyJG haszTb"
+        class="sc-bRBYWo eVPHVS"
       >
         The link you used is invalid. Please try again.
          
@@ -54101,22 +54621,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fBuWsC eCBQJe"
+        class="sc-fAjcbJ byHdTb"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-fMiknA cPlLfs"
+        class="sc-caSCKo jayzUY"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dVhcbM krHIUf"
+        class="sc-gisBJw dVukhR"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -54126,26 +54646,26 @@ Object {
         .
       </p>
       <form
-        class="sc-eqIVtm knnhPw"
+        class="sc-kjoXOD gAKkYg"
       >
         <input
-          class="sc-fAjcbJ gQioQF"
+          class="sc-cHGsZl klycBd"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-caSCKo beOAsB"
+          class="sc-TOsTZ gYcdfi"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dVhcbM krHIUf"
+          class="sc-gisBJw dVukhR"
         >
           Already have an account?
            
           <a
-            class="sc-kjoXOD itbIbn"
+            class="sc-cJSrbW gAaEqt"
           >
             Log in here.
           </a>
@@ -54267,12 +54787,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-eHgmQL ethFFU"
+        class="sc-cMljjf cktufh"
       >
         Sign Up
       </h1>
       <p
-        class="sc-cvbbAY dbdRQm"
+        class="sc-jAaTju dxEWMk"
       >
         You are now signed in! Go to
          
