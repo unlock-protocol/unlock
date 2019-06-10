@@ -314,14 +314,16 @@ describe('blockchain handler index', () => {
       })
     })
 
-    it('should retrieve new keys ands locks on getting account.changed event', async done => {
+    it('should retrieve new keys ands transactions on getting account.changed event', async done => {
       expect.assertions(2)
 
       const locksToRetrieve = ['locks']
       fakeWalletService.on = async (type, listener) => {
         if (type !== 'account.changed') return
         await listener('new account')
+        // this is called when we retrieve new keys
         expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenCalled()
+        // this is called when we retrieve transactions from locksmith
         expect(fakeWindow.fetch).toHaveBeenCalled()
         done()
       }
