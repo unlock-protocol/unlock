@@ -39,6 +39,12 @@ export default function configure(
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
   let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+  let ERC20Contract = {
+    name: runtimeConfig.erc20ContractSymbol || 'DEV',
+    address:
+      runtimeConfig.erc20ContractAddress ||
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+  }
   let services = {}
   let supportedProviders = []
   let base64WedlocksPublicKey = runtimeConfig.base64WedlocksPublicKey
@@ -135,6 +141,12 @@ export default function configure(
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
+    // The stable coin to use on ERC20 locks
+    ERC20Contract = {
+      name: '',
+      address: '',
+    }
+
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
   }
@@ -151,6 +163,7 @@ export default function configure(
   return {
     base64WedlocksPublicKey,
     blockTime,
+    ERC20Contract,
     isServer,
     isInIframe,
     env,
