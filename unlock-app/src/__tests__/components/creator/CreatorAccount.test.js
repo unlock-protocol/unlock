@@ -33,12 +33,4 @@ describe('Account', () => {
     expect.assertions(1)
     expect(wrapper.queryByText('Rinkeby')).not.toBeNull()
   })
-
-  it('should show the balance of the creator account', () => {
-    expect.assertions(2)
-    // eth value
-    expect(wrapper.queryByText('0.2')).not.toBeNull()
-    // usd value
-    expect(wrapper.queryByText('39.20')).toBeNull()
-  })
 })
