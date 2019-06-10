@@ -4,43 +4,7 @@ exports[`Storyshots Account With balance 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c8 {
-  min-width: 15px;
-  text-align: right;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c8:before {
-  content: '三';
-}
-
-.c9 {
-  white-space: nowrap;
-}
-
-.c3 {
+    .c3 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -88,12 +52,6 @@ Object {
   font-weight: 300;
   word-wrap: break-word;
   word-break: break-all;
-}
-
-.c5 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -190,10 +148,8 @@ Object {
             </span>
           </div>
           <div
-            class="c2"
-          >
-            Balance
-          </div>
+            class="c1"
+          />
           <div
             class="c1"
           />
@@ -214,28 +170,6 @@ Object {
             id="UserAddress"
           >
             0x3ca206264762caf81a8f0a843bbb850987b41e16
-          </div>
-          <div
-            class="c5"
-            id="AccountBalance"
-          >
-            <div
-              class="c6"
-            >
-              <span
-                class="currency c7"
-              >
-                <span
-                  class="c8"
-                />
-                <span
-                  class="c9"
-                >
-                  200.00
-                </span>
-              </span>
-              
-            </div>
           </div>
         </div>
       </section>
@@ -321,10 +255,8 @@ Object {
           </span>
         </div>
         <div
-          class="sc-jTzLTM UaSJD"
-        >
-          Balance
-        </div>
+          class="sc-VigVT epVMIs"
+        />
         <div
           class="sc-VigVT epVMIs"
         />
@@ -345,28 +277,6 @@ Object {
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
-        </div>
-        <div
-          class="sc-jzJRlG bPkiML"
-          id="AccountBalance"
-        >
-          <div
-            class="buwkmd-0 bYclZI"
-          >
-            <span
-              class="buwkmd-1 currency jZYwNd"
-            >
-              <span
-                class="buwkmd-2 buwkmd-3 itlNMk"
-              />
-              <span
-                class="buwkmd-6 ivkyIk"
-              >
-                200.00
-              </span>
-            </span>
-            
-          </div>
         </div>
       </div>
     </section>
@@ -437,43 +347,7 @@ exports[`Storyshots Account With no key purchased 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c7 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c8 {
-  min-width: 15px;
-  text-align: right;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c8:before {
-  content: '三';
-}
-
-.c9 {
-  white-space: nowrap;
-}
-
-.c3 {
+    .c3 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -521,12 +395,6 @@ Object {
   font-weight: 300;
   word-wrap: break-word;
   word-break: break-all;
-}
-
-.c5 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -623,10 +491,8 @@ Object {
             </span>
           </div>
           <div
-            class="c2"
-          >
-            Balance
-          </div>
+            class="c1"
+          />
           <div
             class="c1"
           />
@@ -647,28 +513,6 @@ Object {
             id="UserAddress"
           >
             0x3ca206264762caf81a8f0a843bbb850987b41e16
-          </div>
-          <div
-            class="c5"
-            id="AccountBalance"
-          >
-            <div
-              class="c6"
-            >
-              <span
-                class="currency c7"
-              >
-                <span
-                  class="c8"
-                />
-                <span
-                  class="c9"
-                >
-                   - 
-                </span>
-              </span>
-              
-            </div>
           </div>
         </div>
       </section>
@@ -754,10 +598,8 @@ Object {
           </span>
         </div>
         <div
-          class="sc-jTzLTM UaSJD"
-        >
-          Balance
-        </div>
+          class="sc-VigVT epVMIs"
+        />
         <div
           class="sc-VigVT epVMIs"
         />
@@ -778,28 +620,6 @@ Object {
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
-        </div>
-        <div
-          class="sc-jzJRlG bPkiML"
-          id="AccountBalance"
-        >
-          <div
-            class="buwkmd-0 bYclZI"
-          >
-            <span
-              class="buwkmd-1 currency jZYwNd"
-            >
-              <span
-                class="buwkmd-2 buwkmd-3 itlNMk"
-              />
-              <span
-                class="buwkmd-6 ivkyIk"
-              >
-                 - 
-              </span>
-            </span>
-            
-          </div>
         </div>
       </div>
     </section>
@@ -7107,7 +6927,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="sc-cSHVUG sc-9upljg-0 cTMzWy"
+            class="sc-jzJRlG sc-9upljg-0 cTMzWy"
           >
             Go to Your Dashboard
           </button>
@@ -23827,7 +23647,7 @@ Object {
   outline: none;
 }
 
-.c45 {
+.c44 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -23839,21 +23659,21 @@ Object {
   line-height: 15px;
 }
 
-.c45 > svg {
+.c44 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c45:hover {
+.c44:hover {
   background-color: white;
 }
 
-.c45:hover > svg {
+.c44:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c45:focus {
+.c44:focus {
   outline: none;
 }
 
@@ -23966,19 +23786,19 @@ Object {
   display: inline-block;
 }
 
-.c43 {
+.c42 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c44 {
+.c43 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c46 {
+.c45 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -23988,7 +23808,7 @@ Object {
   padding-right: 24px;
 }
 
-.c25 {
+.c36 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -23998,7 +23818,7 @@ Object {
   flex-direction: column;
 }
 
-.c26 {
+.c37 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -24009,39 +23829,39 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c27 {
+.c38 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c27:before {
+.c38:before {
   content: '三';
 }
 
-.c42 {
+.c41 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c42:before {
+.c41:before {
   content: '$';
 }
 
-.c28 {
+.c39 {
   white-space: nowrap;
 }
 
-.c41 {
+.c40 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c37 {
+.c32 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -24061,28 +23881,28 @@ Object {
   cursor: pointer;
 }
 
-.c37 > * {
+.c32 > * {
   padding-top: 16px;
 }
 
-.c37:hover {
+.c32:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c38 {
+.c33 {
   grid-row: span 2;
 }
 
-.c39 {
+.c34 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c40 {
+.c35 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -24091,12 +23911,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c30 {
+.c25 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c31 {
+.c26 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -24110,7 +23930,7 @@ Object {
   align-items: center;
 }
 
-.c32 {
+.c27 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -24124,7 +23944,7 @@ Object {
   color: var(--grey);
 }
 
-.c33 {
+.c28 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -24139,7 +23959,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c34 {
+.c29 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -24369,12 +24189,6 @@ Object {
 }
 
 .c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c29 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -24392,7 +24206,7 @@ Object {
   height: 48px;
 }
 
-.c29 :hover {
+.c24 :hover {
   background-color: var(--activegreen);
 }
 
@@ -24406,25 +24220,25 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
+  .c30 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c36 {
+  .c31 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c43 {
+  .c42 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c37 {
+  .c32 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -24432,7 +24246,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c37 {
+  .c32 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -24440,13 +24254,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c39 {
+  .c34 {
     grid-column: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c31 {
+  .c26 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -24458,13 +24272,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c27 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
+  .c29 {
     grid-row: span 2;
   }
 }
@@ -24545,7 +24359,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c47 {
+  .c46 {
     display: none;
   }
 }
@@ -24565,7 +24379,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
+  .c24 {
     display: none;
   }
 }
@@ -24886,10 +24700,8 @@ Object {
                   </span>
                 </div>
                 <div
-                  class="c21"
-                >
-                  Balance
-                </div>
+                  class="c20"
+                />
                 <div
                   class="c20"
                 />
@@ -24911,89 +24723,67 @@ Object {
                 >
                   0x3ca206264762caf81a8f0a843bbb850987b41e16
                 </div>
-                <div
-                  class="c24"
-                  id="AccountBalance"
-                >
-                  <div
-                    class="c25"
-                  >
-                    <span
-                      class="currency c26"
-                    >
-                      <span
-                        class="c27"
-                      />
-                      <span
-                        class="c28"
-                      >
-                        5.00
-                      </span>
-                    </span>
-                    
-                  </div>
-                </div>
               </div>
             </section>
             <button
-              class="c29"
+              class="c24"
               id="CreateLockButton"
             >
               Create Lock
             </button>
           </div>
           <section
-            class="c30"
+            class="c25"
           >
             <div
-              class="c31"
+              class="c26"
             >
               <div
-                class="c32"
+                class="c27"
               >
                 Locks
               </div>
               <div
-                class="c33"
+                class="c28"
               >
                 Name / Address
               </div>
               <div
-                class="c33"
+                class="c28"
               >
                 Key Duration
               </div>
               <div
-                class="c34"
+                class="c29"
               >
                 Key Quantity
               </div>
               <div
-                class="c33"
+                class="c28"
               >
                 Price
               </div>
               <div
-                class="c33"
+                class="c28"
               >
                 <div
-                  class="c35"
+                  class="c30"
                 >
                   Balance
                 </div>
                 <div
-                  class="c36"
+                  class="c31"
                 >
                   Balance
                 </div>
               </div>
             </div>
             <div
-              class="lock c37"
+              class="lock c32"
               data-address="0x9abcdef0"
             >
               <div
-                class="c38"
+                class="c33"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -25069,11 +24859,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c39"
+                class="name c34"
               >
                 Infinite Lock
                 <div
-                  class="address c40"
+                  class="address c35"
                 >
                   0x9abcdef0
                 </div>
@@ -25091,31 +24881,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c25"
+                class="c36"
               >
                 <span
-                  class="currency c26"
+                  class="currency c37"
                 >
                   <span
-                    class="c27"
+                    class="c38"
                   />
                   <span
-                    class="c28"
+                    class="c39"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c40"
                 >
                   <span
-                    class="currency c26"
+                    class="currency c37"
                   >
                     <span
-                      class="c42"
+                      class="c41"
                     />
                     <span
-                      class="c28"
+                      class="c39"
                     >
                       5.29
                     </span>
@@ -25126,34 +24916,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c35"
+                  class="c30"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c40"
                     >
                       <span
-                        class="currency c26"
+                        class="currency c37"
                       >
                         <span
-                          class="c42"
+                          class="c41"
                         />
                         <span
-                          class="c28"
+                          class="c39"
                         >
                            - 
                         </span>
@@ -25162,19 +24952,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c36"
+                  class="c31"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
@@ -25187,13 +24977,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c42"
                 >
                   <div
-                    class="c44"
+                    class="c43"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c44"
                     >
                       <svg
                         name="Withdraw"
@@ -25256,16 +25046,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c45"
                 />
               </div>
             </div>
             <div
-              class="lock c37"
+              class="lock c32"
               data-address="0x56781234a"
             >
               <div
-                class="c38"
+                class="c33"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -25341,11 +25131,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c39"
+                class="name c34"
               >
                 New Lock
                 <div
-                  class="address c40"
+                  class="address c35"
                 >
                   0x56781234a
                 </div>
@@ -25363,31 +25153,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c25"
+                class="c36"
               >
                 <span
-                  class="currency c26"
+                  class="currency c37"
                 >
                   <span
-                    class="c27"
+                    class="c38"
                   />
                   <span
-                    class="c28"
+                    class="c39"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c40"
                 >
                   <span
-                    class="currency c26"
+                    class="currency c37"
                   >
                     <span
-                      class="c42"
+                      class="c41"
                     />
                     <span
-                      class="c28"
+                      class="c39"
                     >
                       1.96
                     </span>
@@ -25398,34 +25188,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c35"
+                  class="c30"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c40"
                     >
                       <span
-                        class="currency c26"
+                        class="currency c37"
                       >
                         <span
-                          class="c42"
+                          class="c41"
                         />
                         <span
-                          class="c28"
+                          class="c39"
                         >
                            - 
                         </span>
@@ -25434,19 +25224,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c36"
+                  class="c31"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
@@ -25459,13 +25249,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c42"
                 >
                   <div
-                    class="c44"
+                    class="c43"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c44"
                     >
                       <svg
                         name="Withdraw"
@@ -25528,16 +25318,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c45"
                 />
               </div>
             </div>
             <div
-              class="lock c37"
+              class="lock c32"
               data-address="0x12345678a"
             >
               <div
-                class="c38"
+                class="c33"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -25613,11 +25403,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c39"
+                class="name c34"
               >
                 My Blog
                 <div
-                  class="address c40"
+                  class="address c35"
                 >
                   0x12345678a
                 </div>
@@ -25635,31 +25425,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c25"
+                class="c36"
               >
                 <span
-                  class="currency c26"
+                  class="currency c37"
                 >
                   <span
-                    class="c27"
+                    class="c38"
                   />
                   <span
-                    class="c28"
+                    class="c39"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c40"
                 >
                   <span
-                    class="currency c26"
+                    class="currency c37"
                   >
                     <span
-                      class="c42"
+                      class="c41"
                     />
                     <span
-                      class="c28"
+                      class="c39"
                     >
                       5.29
                     </span>
@@ -25670,34 +25460,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c35"
+                  class="c30"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c40"
                     >
                       <span
-                        class="currency c26"
+                        class="currency c37"
                       >
                         <span
-                          class="c42"
+                          class="c41"
                         />
                         <span
-                          class="c28"
+                          class="c39"
                         >
                            - 
                         </span>
@@ -25706,19 +25496,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c36"
+                  class="c31"
                 >
                   <div
-                    class="c25"
+                    class="c36"
                   >
                     <span
-                      class="currency c26"
+                      class="currency c37"
                     >
                       <span
-                        class="c27"
+                        class="c38"
                       />
                       <span
-                        class="c28"
+                        class="c39"
                       >
                          - 
                       </span>
@@ -25731,13 +25521,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c42"
                 >
                   <div
-                    class="c44"
+                    class="c43"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c44"
                     >
                       <svg
                         name="Withdraw"
@@ -25800,14 +25590,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c45"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c47"
+          class="c46"
         />
       </div>
     </div>
@@ -26051,7 +25841,7 @@ Object {
           />
         </header>
         <div
-          class="sc-chPdSV eQpfRm"
+          class="sc-kAzzGY jIZgyB"
         >
           <section
             class="sc-iwsKbI jQhHGA"
@@ -26128,10 +25918,8 @@ Object {
                 </span>
               </div>
               <div
-                class="sc-jTzLTM UaSJD"
-              >
-                Balance
-              </div>
+                class="sc-VigVT epVMIs"
+              />
               <div
                 class="sc-VigVT epVMIs"
               />
@@ -26153,32 +25941,10 @@ Object {
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
-              <div
-                class="sc-jzJRlG bPkiML"
-                id="AccountBalance"
-              >
-                <div
-                  class="buwkmd-0 bYclZI"
-                >
-                  <span
-                    class="buwkmd-1 currency jZYwNd"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-3 itlNMk"
-                    />
-                    <span
-                      class="buwkmd-6 ivkyIk"
-                    >
-                      5.00
-                    </span>
-                  </span>
-                  
-                </div>
-              </div>
             </div>
           </section>
           <button
-            class="sc-cSHVUG sc-kAzzGY kxYgdS"
+            class="sc-jzJRlG sc-cSHVUG cXcJas"
             id="CreateLockButton"
           >
             Create Lock
@@ -27149,7 +26915,7 @@ Object {
   outline: none;
 }
 
-.c48 {
+.c47 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -27161,21 +26927,21 @@ Object {
   line-height: 15px;
 }
 
-.c48 > svg {
+.c47 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c48:hover {
+.c47:hover {
   background-color: white;
 }
 
-.c48:hover > svg {
+.c47:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c48:focus {
+.c47:focus {
   outline: none;
 }
 
@@ -27288,19 +27054,19 @@ Object {
   display: inline-block;
 }
 
-.c46 {
+.c45 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c47 {
+.c46 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(3,24px);
 }
 
-.c49 {
+.c48 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -27310,7 +27076,7 @@ Object {
   padding-right: 24px;
 }
 
-.c28 {
+.c39 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -27320,7 +27086,7 @@ Object {
   flex-direction: column;
 }
 
-.c29 {
+.c40 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -27331,39 +27097,39 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c30 {
+.c41 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c30:before {
+.c41:before {
   content: '三';
 }
 
-.c45 {
+.c44 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c45:before {
+.c44:before {
   content: '$';
 }
 
-.c31 {
+.c42 {
   white-space: nowrap;
 }
 
-.c44 {
+.c43 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
 }
 
-.c40 {
+.c35 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -27383,28 +27149,28 @@ Object {
   cursor: pointer;
 }
 
-.c40 > * {
+.c35 > * {
   padding-top: 16px;
 }
 
-.c40:hover {
+.c35:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c41 {
+.c36 {
   grid-row: span 2;
 }
 
-.c42 {
+.c37 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c43 {
+.c38 {
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
@@ -27413,12 +27179,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c33 {
+.c28 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c34 {
+.c29 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -27432,7 +27198,7 @@ Object {
   align-items: center;
 }
 
-.c35 {
+.c30 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -27446,7 +27212,7 @@ Object {
   color: var(--grey);
 }
 
-.c36 {
+.c31 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -27461,7 +27227,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c37 {
+.c32 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -27691,12 +27457,6 @@ Object {
 }
 
 .c27 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c32 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -27714,7 +27474,7 @@ Object {
   height: 48px;
 }
 
-.c32 :hover {
+.c27 :hover {
   background-color: var(--activegreen);
 }
 
@@ -27792,25 +27552,25 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c38 {
+  .c33 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c39 {
+  .c34 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c46 {
+  .c45 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c40 {
+  .c35 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -27818,7 +27578,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c40 {
+  .c35 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -27826,13 +27586,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c42 {
+  .c37 {
     grid-column: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
+  .c29 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -27844,13 +27604,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
+  .c30 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c37 {
+  .c32 {
     grid-row: span 2;
   }
 }
@@ -27931,7 +27691,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c50 {
+  .c49 {
     display: none;
   }
 }
@@ -27951,7 +27711,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c27 {
     display: none;
   }
 }
@@ -28288,10 +28048,8 @@ Object {
                   </span>
                 </div>
                 <div
-                  class="c24"
-                >
-                  Balance
-                </div>
+                  class="c23"
+                />
                 <div
                   class="c23"
                 />
@@ -28313,89 +28071,67 @@ Object {
                 >
                   0x3ca206264762caf81a8f0a843bbb850987b41e16
                 </div>
-                <div
-                  class="c27"
-                  id="AccountBalance"
-                >
-                  <div
-                    class="c28"
-                  >
-                    <span
-                      class="currency c29"
-                    >
-                      <span
-                        class="c30"
-                      />
-                      <span
-                        class="c31"
-                      >
-                        5.00
-                      </span>
-                    </span>
-                    
-                  </div>
-                </div>
               </div>
             </section>
             <button
-              class="c32"
+              class="c27"
               id="CreateLockButton"
             >
               Create Lock
             </button>
           </div>
           <section
-            class="c33"
+            class="c28"
           >
             <div
-              class="c34"
+              class="c29"
             >
               <div
-                class="c35"
+                class="c30"
               >
                 Locks
               </div>
               <div
-                class="c36"
+                class="c31"
               >
                 Name / Address
               </div>
               <div
-                class="c36"
+                class="c31"
               >
                 Key Duration
               </div>
               <div
-                class="c37"
+                class="c32"
               >
                 Key Quantity
               </div>
               <div
-                class="c36"
+                class="c31"
               >
                 Price
               </div>
               <div
-                class="c36"
+                class="c31"
               >
                 <div
-                  class="c38"
+                  class="c33"
                 >
                   Balance
                 </div>
                 <div
-                  class="c39"
+                  class="c34"
                 >
                   Balance
                 </div>
               </div>
             </div>
             <div
-              class="lock c40"
+              class="lock c35"
               data-address="0x9abcdef0"
             >
               <div
-                class="c41"
+                class="c36"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -28471,11 +28207,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c42"
+                class="name c37"
               >
                 Infinite Lock
                 <div
-                  class="address c43"
+                  class="address c38"
                 >
                   0x9abcdef0
                 </div>
@@ -28493,31 +28229,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c28"
+                class="c39"
               >
                 <span
-                  class="currency c29"
+                  class="currency c40"
                 >
                   <span
-                    class="c30"
+                    class="c41"
                   />
                   <span
-                    class="c31"
+                    class="c42"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c43"
                 >
                   <span
-                    class="currency c29"
+                    class="currency c40"
                   >
                     <span
-                      class="c45"
+                      class="c44"
                     />
                     <span
-                      class="c31"
+                      class="c42"
                     >
                       5.29
                     </span>
@@ -28528,34 +28264,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c38"
+                  class="c33"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c43"
                     >
                       <span
-                        class="currency c29"
+                        class="currency c40"
                       >
                         <span
-                          class="c45"
+                          class="c44"
                         />
                         <span
-                          class="c31"
+                          class="c42"
                         >
                            - 
                         </span>
@@ -28564,19 +28300,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c39"
+                  class="c34"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
@@ -28589,13 +28325,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c45"
                 >
                   <div
-                    class="c47"
+                    class="c46"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c47"
                     >
                       <svg
                         name="Withdraw"
@@ -28658,16 +28394,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c48"
                 />
               </div>
             </div>
             <div
-              class="lock c40"
+              class="lock c35"
               data-address="0x56781234a"
             >
               <div
-                class="c41"
+                class="c36"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -28743,11 +28479,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c42"
+                class="name c37"
               >
                 New Lock
                 <div
-                  class="address c43"
+                  class="address c38"
                 >
                   0x56781234a
                 </div>
@@ -28765,31 +28501,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c28"
+                class="c39"
               >
                 <span
-                  class="currency c29"
+                  class="currency c40"
                 >
                   <span
-                    class="c30"
+                    class="c41"
                   />
                   <span
-                    class="c31"
+                    class="c42"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c43"
                 >
                   <span
-                    class="currency c29"
+                    class="currency c40"
                   >
                     <span
-                      class="c45"
+                      class="c44"
                     />
                     <span
-                      class="c31"
+                      class="c42"
                     >
                       1.96
                     </span>
@@ -28800,34 +28536,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c38"
+                  class="c33"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c43"
                     >
                       <span
-                        class="currency c29"
+                        class="currency c40"
                       >
                         <span
-                          class="c45"
+                          class="c44"
                         />
                         <span
-                          class="c31"
+                          class="c42"
                         >
                            - 
                         </span>
@@ -28836,19 +28572,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c39"
+                  class="c34"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
@@ -28861,13 +28597,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c45"
                 >
                   <div
-                    class="c47"
+                    class="c46"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c47"
                     >
                       <svg
                         name="Withdraw"
@@ -28930,16 +28666,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c48"
                 />
               </div>
             </div>
             <div
-              class="lock c40"
+              class="lock c35"
               data-address="0x12345678a"
             >
               <div
-                class="c41"
+                class="c36"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -29015,11 +28751,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c42"
+                class="name c37"
               >
                 My Blog
                 <div
-                  class="address c43"
+                  class="address c38"
                 >
                   0x12345678a
                 </div>
@@ -29037,31 +28773,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c28"
+                class="c39"
               >
                 <span
-                  class="currency c29"
+                  class="currency c40"
                 >
                   <span
-                    class="c30"
+                    class="c41"
                   />
                   <span
-                    class="c31"
+                    class="c42"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c43"
                 >
                   <span
-                    class="currency c29"
+                    class="currency c40"
                   >
                     <span
-                      class="c45"
+                      class="c44"
                     />
                     <span
-                      class="c31"
+                      class="c42"
                     >
                       5.29
                     </span>
@@ -29072,34 +28808,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c38"
+                  class="c33"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c43"
                     >
                       <span
-                        class="currency c29"
+                        class="currency c40"
                       >
                         <span
-                          class="c45"
+                          class="c44"
                         />
                         <span
-                          class="c31"
+                          class="c42"
                         >
                            - 
                         </span>
@@ -29108,19 +28844,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c39"
+                  class="c34"
                 >
                   <div
-                    class="c28"
+                    class="c39"
                   >
                     <span
-                      class="currency c29"
+                      class="currency c40"
                     >
                       <span
-                        class="c30"
+                        class="c41"
                       />
                       <span
-                        class="c31"
+                        class="c42"
                       >
                          - 
                       </span>
@@ -29133,13 +28869,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c45"
                 >
                   <div
-                    class="c47"
+                    class="c46"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c47"
                     >
                       <svg
                         name="Withdraw"
@@ -29202,14 +28938,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c48"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c50"
+          class="c49"
         />
       </div>
     </div>
@@ -29220,16 +28956,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ckVGcZ YvEJP"
+      class="sc-dxgOiQ fOlohu"
     >
       <div
-        class="sc-dxgOiQ fgtuRs"
+        class="sc-kpOJdX jxNWIf"
       >
         <p>
           Please check your browser wallet to complete the transaction.
         </p>
         <button
-          class="sc-kgoBCf hqnPJA"
+          class="sc-chPdSV fuiKAO"
         >
           Dismiss
         </button>
@@ -29469,7 +29205,7 @@ Object {
           />
         </header>
         <div
-          class="sc-chPdSV eQpfRm"
+          class="sc-kAzzGY jIZgyB"
         >
           <section
             class="sc-iwsKbI jQhHGA"
@@ -29546,10 +29282,8 @@ Object {
                 </span>
               </div>
               <div
-                class="sc-jTzLTM UaSJD"
-              >
-                Balance
-              </div>
+                class="sc-VigVT epVMIs"
+              />
               <div
                 class="sc-VigVT epVMIs"
               />
@@ -29571,32 +29305,10 @@ Object {
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
-              <div
-                class="sc-jzJRlG bPkiML"
-                id="AccountBalance"
-              >
-                <div
-                  class="buwkmd-0 bYclZI"
-                >
-                  <span
-                    class="buwkmd-1 currency jZYwNd"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-3 itlNMk"
-                    />
-                    <span
-                      class="buwkmd-6 ivkyIk"
-                    >
-                      5.00
-                    </span>
-                  </span>
-                  
-                </div>
-              </div>
             </div>
           </section>
           <button
-            class="sc-cSHVUG sc-kAzzGY kxYgdS"
+            class="sc-jzJRlG sc-cSHVUG cXcJas"
             id="CreateLockButton"
           >
             Create Lock
@@ -33065,28 +32777,28 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ckVGcZ YvEJP"
+      class="sc-dxgOiQ fOlohu"
     >
       <div
-        class="sc-dxgOiQ fgtuRs"
+        class="sc-kpOJdX jxNWIf"
       >
         <p>
           Please enter your password to complete the transaction.
         </p>
         <input
-          class="sc-jKJlTe hwXLDh"
+          class="sc-ckVGcZ dmpgmf"
           placeholder="Password"
           type="password"
           value=""
         />
         <div>
           <button
-            class="sc-kgoBCf sc-kGXeez fBUTVB"
+            class="sc-chPdSV sc-kgoBCf izTqFH"
           >
             Cancel
           </button>
           <button
-            class="sc-kgoBCf sc-kpOJdX ceCcEU"
+            class="sc-chPdSV sc-kGXeez kusZSZ"
           >
             Submit
           </button>
@@ -33403,37 +33115,37 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ckVGcZ YvEJP"
+      class="sc-dxgOiQ fOlohu"
     >
       <div
-        class="sc-dxgOiQ fgtuRs"
+        class="sc-kpOJdX jxNWIf"
       >
         <p>
           To change your password, please enter your current password and the desired new password.
         </p>
         <input
-          class="sc-jKJlTe hwXLDh"
+          class="sc-ckVGcZ dmpgmf"
           disabled=""
           placeholder="Password"
           type="email"
           value="geoff@bitconnect.gov"
         />
         <input
-          class="sc-jKJlTe hwXLDh"
+          class="sc-ckVGcZ dmpgmf"
           name="currentPassword"
           placeholder="Current Password"
           type="password"
           value=""
         />
         <input
-          class="sc-jKJlTe hwXLDh"
+          class="sc-ckVGcZ dmpgmf"
           name="newPassword"
           placeholder="New Password"
           type="password"
           value=""
         />
         <input
-          class="sc-jKJlTe hwXLDh"
+          class="sc-ckVGcZ dmpgmf"
           name="confirmNewPassword"
           placeholder="Confirm New Password"
           type="password"
@@ -33441,12 +33153,12 @@ Object {
         />
         <div>
           <button
-            class="sc-kgoBCf sc-kGXeez fBUTVB"
+            class="sc-chPdSV sc-kgoBCf izTqFH"
           >
             Cancel
           </button>
           <button
-            class="sc-kgoBCf sc-kpOJdX ceCcEU"
+            class="sc-chPdSV sc-kGXeez kusZSZ"
             disabled=""
           >
             Submit
@@ -33693,16 +33405,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-ckVGcZ YvEJP"
+      class="sc-dxgOiQ fOlohu"
     >
       <div
-        class="sc-dxgOiQ fgtuRs"
+        class="sc-kpOJdX jxNWIf"
       >
         <p>
           Please check your browser wallet to complete the transaction.
         </p>
         <button
-          class="sc-kgoBCf hqnPJA"
+          class="sc-chPdSV fuiKAO"
         >
           Dismiss
         </button>
@@ -33966,25 +33678,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-dxgOiQ fgtuRs"
+      class="sc-kpOJdX jxNWIf"
     >
       <p>
         Please enter your password to complete the transaction.
       </p>
       <input
-        class="sc-jKJlTe hwXLDh"
+        class="sc-ckVGcZ dmpgmf"
         placeholder="Password"
         type="password"
         value=""
       />
       <div>
         <button
-          class="sc-kgoBCf sc-kGXeez fBUTVB"
+          class="sc-chPdSV sc-kgoBCf izTqFH"
         >
           Cancel
         </button>
         <button
-          class="sc-kgoBCf sc-kpOJdX ceCcEU"
+          class="sc-chPdSV sc-kGXeez kusZSZ"
         >
           Submit
         </button>
@@ -34192,34 +33904,34 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-dxgOiQ fgtuRs"
+      class="sc-kpOJdX jxNWIf"
     >
       <p>
         To change your password, please enter your current password and the desired new password.
       </p>
       <input
-        class="sc-jKJlTe hwXLDh"
+        class="sc-ckVGcZ dmpgmf"
         disabled=""
         placeholder="Password"
         type="email"
         value="geoff@bitconnect.gov"
       />
       <input
-        class="sc-jKJlTe hwXLDh"
+        class="sc-ckVGcZ dmpgmf"
         name="currentPassword"
         placeholder="Current Password"
         type="password"
         value=""
       />
       <input
-        class="sc-jKJlTe hwXLDh"
+        class="sc-ckVGcZ dmpgmf"
         name="newPassword"
         placeholder="New Password"
         type="password"
         value=""
       />
       <input
-        class="sc-jKJlTe hwXLDh"
+        class="sc-ckVGcZ dmpgmf"
         name="confirmNewPassword"
         placeholder="Confirm New Password"
         type="password"
@@ -34227,12 +33939,12 @@ Object {
       />
       <div>
         <button
-          class="sc-kgoBCf sc-kGXeez fBUTVB"
+          class="sc-chPdSV sc-kgoBCf izTqFH"
         >
           Cancel
         </button>
         <button
-          class="sc-kgoBCf sc-kpOJdX ceCcEU"
+          class="sc-chPdSV sc-kGXeez kusZSZ"
           disabled=""
         >
           Submit
@@ -34370,13 +34082,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-dxgOiQ fgtuRs"
+      class="sc-kpOJdX jxNWIf"
     >
       <p>
         Please check your browser wallet to complete the transaction.
       </p>
       <button
-        class="sc-kgoBCf hqnPJA"
+        class="sc-chPdSV fuiKAO"
       >
         Dismiss
       </button>
@@ -34480,10 +34192,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-eHgmQL gFsvjq"
+      class="sc-hSdWYo kLZMHg"
     >
       <div
-        class="sc-cvbbAY kSGzsh"
+        class="sc-eHgmQL likzrP"
         style="height: 100px;"
       />
     </div>
@@ -34596,14 +34308,14 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-eHgmQL gFsvjq"
+      class="sc-hSdWYo kLZMHg"
     >
       <div
-        class="sc-jWBwVP hpaXSB"
+        class="sc-cvbbAY iIdbJv"
         style="height: 100px;"
       />
       <div
-        class="sc-jWBwVP hpaXSB"
+        class="sc-cvbbAY iIdbJv"
         style="height: 100px;"
       />
     </div>
@@ -34720,18 +34432,18 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-eHgmQL gFsvjq"
+      class="sc-hSdWYo kLZMHg"
     >
       <div
-        class="sc-brqgnP cDvYkf"
+        class="sc-jWBwVP hMyNjb"
         style="height: 100px;"
       />
       <div
-        class="sc-brqgnP cDvYkf"
+        class="sc-jWBwVP hMyNjb"
         style="height: 100px;"
       />
       <div
-        class="sc-brqgnP cDvYkf"
+        class="sc-jWBwVP hMyNjb"
         style="height: 100px;"
       />
     </div>
@@ -34862,7 +34574,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-eHgmQL gFsvjq"
+      class="sc-hSdWYo kLZMHg"
     >
       <div
         style="height: 100px;"
@@ -37028,7 +36740,7 @@ Object {
         href="/dashboard"
       >
         <button
-          class="sc-cSHVUG sc-9upljg-1 cKpQTs"
+          class="sc-jzJRlG sc-9upljg-1 cKpQTs"
         >
           I Agree
         </button>
@@ -37171,7 +36883,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="sc-cSHVUG sc-9upljg-0 cTMzWy"
+        class="sc-jzJRlG sc-9upljg-0 cTMzWy"
       >
         Go to Your Dashboard
       </button>
@@ -37996,42 +37708,6 @@ Object {
   display: inline-block;
 }
 
-.c22 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c23 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c24 {
-  min-width: 15px;
-  text-align: right;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c24:before {
-  content: '三';
-}
-
-.c25 {
-  white-space: nowrap;
-}
-
 .c2 {
   background-color: var(--brand);
   height: 56px;
@@ -38246,12 +37922,6 @@ Object {
   word-break: break-all;
 }
 
-.c21 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
@@ -38328,7 +37998,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c26 {
+  .c21 {
     display: none;
   }
 }
@@ -38615,10 +38285,8 @@ Object {
                 </span>
               </div>
               <div
-                class="c18"
-              >
-                Balance
-              </div>
+                class="c17"
+              />
               <div
                 class="c17"
               />
@@ -38640,33 +38308,11 @@ Object {
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
-              <div
-                class="c21"
-                id="AccountBalance"
-              >
-                <div
-                  class="c22"
-                >
-                  <span
-                    class="currency c23"
-                  >
-                    <span
-                      class="c24"
-                    />
-                    <span
-                      class="c25"
-                    >
-                       - 
-                    </span>
-                  </span>
-                  
-                </div>
-              </div>
             </div>
           </section>
         </div>
         <div
-          class="c26"
+          class="c21"
         />
       </div>
     </div>
@@ -38939,10 +38585,8 @@ Object {
               </span>
             </div>
             <div
-              class="sc-jTzLTM UaSJD"
-            >
-              Balance
-            </div>
+              class="sc-VigVT epVMIs"
+            />
             <div
               class="sc-VigVT epVMIs"
             />
@@ -38963,28 +38607,6 @@ Object {
               id="UserAddress"
             >
               0x3ca206264762caf81a8f0a843bbb850987b41e16
-            </div>
-            <div
-              class="sc-jzJRlG bPkiML"
-              id="AccountBalance"
-            >
-              <div
-                class="buwkmd-0 bYclZI"
-              >
-                <span
-                  class="buwkmd-1 currency jZYwNd"
-                >
-                  <span
-                    class="buwkmd-2 buwkmd-3 itlNMk"
-                  />
-                  <span
-                    class="buwkmd-6 ivkyIk"
-                  >
-                     - 
-                  </span>
-                </span>
-                
-              </div>
             </div>
           </div>
         </section>
@@ -39884,22 +39506,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-fAjcbJ byHdTb"
+            class="sc-eqIVtm hHuKKY"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-caSCKo jayzUY"
+            class="sc-fAjcbJ ljdRPo"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-gisBJw dVukhR"
+            class="sc-caSCKo fJxmtV"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-gisBJw dVukhR"
+            class="sc-caSCKo fJxmtV"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out our
              
@@ -39909,26 +39531,26 @@ Object {
             .
           </p>
           <form
-            class="sc-kjoXOD gAKkYg"
+            class="sc-gisBJw cFmvIg"
           >
             <input
-              class="sc-cHGsZl klycBd"
+              class="sc-kjoXOD gtiqaJ"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-TOsTZ gYcdfi"
+              class="sc-cHGsZl cZymhb"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-gisBJw dVukhR"
+              class="sc-caSCKo fJxmtV"
             >
               Already have an account?
                
               <a
-                class="sc-cJSrbW gAaEqt"
+                class="sc-kgAjT dPlnoI"
               >
                 Log in here.
               </a>
@@ -48573,19 +48195,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-jDwBTQ fertdr"
+        class="sc-jAaTju kNpzMJ"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-gipzik keTEZY"
+          class="sc-jlyJG irDrTO"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-iRbamj kLdkyx"
+          class="sc-gPEVay QdZBy"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -48593,13 +48215,13 @@ Object {
         />
         <br />
         <label
-          class="sc-gipzik keTEZY"
+          class="sc-jlyJG irDrTO"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-iRbamj kLdkyx"
+          class="sc-gPEVay QdZBy"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -48607,18 +48229,18 @@ Object {
         />
         <br />
         <input
-          class="sc-jlyJG ipPBdU"
+          class="sc-iRbamj tiZxU"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-gPEVay idhqHf"
+        class="sc-jDwBTQ ibxTuB"
       >
         Don't have an account?
          
         <a
-          class="sc-csuQGl iGtWVw"
+          class="sc-gipzik CqOgR"
         >
           Sign up here.
         </a>
@@ -48810,22 +48432,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fAjcbJ byHdTb"
+        class="sc-eqIVtm hHuKKY"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-caSCKo jayzUY"
+        class="sc-fAjcbJ ljdRPo"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -48835,26 +48457,26 @@ Object {
         .
       </p>
       <form
-        class="sc-kjoXOD gAKkYg"
+        class="sc-gisBJw cFmvIg"
       >
         <input
-          class="sc-cHGsZl klycBd"
+          class="sc-kjoXOD gtiqaJ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-TOsTZ gYcdfi"
+          class="sc-cHGsZl cZymhb"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-gisBJw dVukhR"
+          class="sc-caSCKo fJxmtV"
         >
           Already have an account?
            
           <a
-            class="sc-cJSrbW gAaEqt"
+            class="sc-kgAjT dPlnoI"
           >
             Log in here.
           </a>
@@ -49064,24 +48686,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-hzDkRC fjiSpZ"
+        class="sc-bRBYWo jFFDZJ"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-jhAzac bMtRyA"
+        class="sc-hzDkRC kPJLle"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -49090,13 +48712,13 @@ Object {
         />
         <br />
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -49104,13 +48726,13 @@ Object {
         />
         <br />
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -49118,11 +48740,11 @@ Object {
         />
         <br />
         <span
-          class="sc-eqIVtm dGOqmC"
+          class="sc-dVhcbM dtkvLy"
         />
         <br />
         <input
-          class="sc-dVhcbM bfSKdI"
+          class="sc-fMiknA jyxYJz"
           disabled=""
           type="submit"
           value="Submit"
@@ -49244,12 +48866,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-Rmtcm wiFKz"
+        class="sc-csuQGl MknIL"
       >
         Sign Up
       </h1>
       <p
-        class="sc-bRBYWo eVPHVS"
+        class="sc-Rmtcm cIYrkL"
       >
         The link you used is invalid. Please try again.
          
@@ -49444,19 +49066,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-jDwBTQ fertdr"
+        class="sc-jAaTju kNpzMJ"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-gipzik keTEZY"
+          class="sc-jlyJG irDrTO"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-iRbamj kLdkyx"
+          class="sc-gPEVay QdZBy"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -49464,13 +49086,13 @@ Object {
         />
         <br />
         <label
-          class="sc-gipzik keTEZY"
+          class="sc-jlyJG irDrTO"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-iRbamj kLdkyx"
+          class="sc-gPEVay QdZBy"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -49478,18 +49100,18 @@ Object {
         />
         <br />
         <input
-          class="sc-jlyJG ipPBdU"
+          class="sc-iRbamj tiZxU"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-gPEVay idhqHf"
+        class="sc-jDwBTQ ibxTuB"
       >
         Don't have an account?
          
         <a
-          class="sc-csuQGl iGtWVw"
+          class="sc-gipzik CqOgR"
         >
           Sign up here.
         </a>
@@ -49681,22 +49303,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fAjcbJ byHdTb"
+        class="sc-eqIVtm hHuKKY"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-caSCKo jayzUY"
+        class="sc-fAjcbJ ljdRPo"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -49706,26 +49328,26 @@ Object {
         .
       </p>
       <form
-        class="sc-kjoXOD gAKkYg"
+        class="sc-gisBJw cFmvIg"
       >
         <input
-          class="sc-cHGsZl klycBd"
+          class="sc-kjoXOD gtiqaJ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-TOsTZ gYcdfi"
+          class="sc-cHGsZl cZymhb"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-gisBJw dVukhR"
+          class="sc-caSCKo fJxmtV"
         >
           Already have an account?
            
           <a
-            class="sc-cJSrbW gAaEqt"
+            class="sc-kgAjT dPlnoI"
           >
             Log in here.
           </a>
@@ -49847,12 +49469,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-cMljjf cktufh"
+        class="sc-brqgnP jQLsHI"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jAaTju dxEWMk"
+        class="sc-cMljjf CJCHJ"
       >
         You are now signed in! Go to
          
@@ -54238,24 +53860,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-hzDkRC fjiSpZ"
+        class="sc-bRBYWo jFFDZJ"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-jhAzac bMtRyA"
+        class="sc-hzDkRC kPJLle"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -54264,13 +53886,13 @@ Object {
         />
         <br />
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -54278,13 +53900,13 @@ Object {
         />
         <br />
         <label
-          class="sc-fBuWsC bGPUuH"
+          class="sc-jhAzac dhkuJg"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-fMiknA kWfmOb"
+          class="sc-fBuWsC jWbkBm"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -54292,11 +53914,11 @@ Object {
         />
         <br />
         <span
-          class="sc-eqIVtm dGOqmC"
+          class="sc-dVhcbM dtkvLy"
         />
         <br />
         <input
-          class="sc-dVhcbM bfSKdI"
+          class="sc-fMiknA jyxYJz"
           disabled=""
           type="submit"
           value="Submit"
@@ -54418,12 +54040,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-Rmtcm wiFKz"
+        class="sc-csuQGl MknIL"
       >
         Sign Up
       </h1>
       <p
-        class="sc-bRBYWo eVPHVS"
+        class="sc-Rmtcm cIYrkL"
       >
         The link you used is invalid. Please try again.
          
@@ -54621,22 +54243,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-fAjcbJ byHdTb"
+        class="sc-eqIVtm hHuKKY"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-caSCKo jayzUY"
+        class="sc-fAjcbJ ljdRPo"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-gisBJw dVukhR"
+        class="sc-caSCKo fJxmtV"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out our
          
@@ -54646,26 +54268,26 @@ Object {
         .
       </p>
       <form
-        class="sc-kjoXOD gAKkYg"
+        class="sc-gisBJw cFmvIg"
       >
         <input
-          class="sc-cHGsZl klycBd"
+          class="sc-kjoXOD gtiqaJ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-TOsTZ gYcdfi"
+          class="sc-cHGsZl cZymhb"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-gisBJw dVukhR"
+          class="sc-caSCKo fJxmtV"
         >
           Already have an account?
            
           <a
-            class="sc-cJSrbW gAaEqt"
+            class="sc-kgAjT dPlnoI"
           >
             Log in here.
           </a>
@@ -54787,12 +54409,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-cMljjf cktufh"
+        class="sc-brqgnP jQLsHI"
       >
         Sign Up
       </h1>
       <p
-        class="sc-jAaTju dxEWMk"
+        class="sc-cMljjf CJCHJ"
       >
         You are now signed in! Go to
          
@@ -55010,42 +54632,6 @@ Object {
   display: inline-block;
 }
 
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c26 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding-bottom: 0.5em;
-}
-
-.c27 {
-  min-width: 15px;
-  text-align: right;
-  padding-right: 0.3em;
-  display: inline-block;
-}
-
-.c27:before {
-  content: '三';
-}
-
-.c28 {
-  white-space: nowrap;
-}
-
 .c2 {
   background-color: var(--brand);
   height: 56px;
@@ -55261,12 +54847,6 @@ Object {
 }
 
 .c24 {
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
-}
-
-.c29 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -55284,7 +54864,7 @@ Object {
   height: 48px;
 }
 
-.c29 :hover {
+.c24 :hover {
   background-color: var(--activegreen);
 }
 
@@ -55297,14 +54877,14 @@ Object {
   align-items: center;
 }
 
-.c30 {
+.c25 {
   display: grid;
   grid-template-columns: 125px 2fr 1fr;
   grid-auto-rows: 32px;
   grid-column-gap: 20px;
 }
 
-.c31 {
+.c26 {
   font-size: 10px;
   font-weight: normal;
   text-transform: uppercase;
@@ -55312,7 +54892,7 @@ Object {
   white-space: nowrap;
 }
 
-.c32 {
+.c27 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -55320,13 +54900,13 @@ Object {
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
-.c33 {
+.c28 {
   font-size: 14px;
   font-weight: 300;
   font-family: 'IBM Plex Mono',Courier,monospace;
 }
 
-.c34 {
+.c29 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -55336,7 +54916,7 @@ Object {
   white-space: nowrap;
 }
 
-.c35 {
+.c30 {
   font-size: 14px;
   line-height: 14px;
   color: var(--darkgrey);
@@ -55422,7 +55002,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c36 {
+  .c31 {
     display: none;
   }
 }
@@ -55442,7 +55022,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
+  .c24 {
     display: none;
   }
 }
@@ -55763,10 +55343,8 @@ Object {
                   </span>
                 </div>
                 <div
-                  class="c21"
-                >
-                  Balance
-                </div>
+                  class="c20"
+                />
                 <div
                   class="c20"
                 />
@@ -55788,105 +55366,83 @@ Object {
                 >
                   0x3ca206264762caf81a8f0a843bbb850987b41e16
                 </div>
-                <div
-                  class="c24"
-                  id="AccountBalance"
-                >
-                  <div
-                    class="c25"
-                  >
-                    <span
-                      class="currency c26"
-                    >
-                      <span
-                        class="c27"
-                      />
-                      <span
-                        class="c28"
-                      >
-                         - 
-                      </span>
-                    </span>
-                    
-                  </div>
-                </div>
               </div>
             </section>
             <button
-              class="c29"
+              class="c24"
               id="CreateLockButton"
             >
               Create Lock
             </button>
           </div>
           <div
-            class="c30"
+            class="c25"
           >
             <div
-              class="c31"
+              class="c26"
             >
               Block Number
             </div>
             <div
-              class="c31"
+              class="c26"
             >
               Lock Name/Address
             </div>
             <div
-              class="c31"
+              class="c26"
             >
               Type
             </div>
             <div
-              class="c32"
+              class="c27"
             >
               3
             </div>
             <a
-              class="c33"
+              class="c28"
               href=""
               target="_blank"
             >
               0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
             </a>
             <div
-              class="c34"
+              class="c29"
               type="Lock Creation"
             >
               Lock Creation
             </div>
             <div
-              class="c32"
+              class="c27"
             >
               2
             </div>
             <a
-              class="c33"
+              class="c28"
               href=""
               target="_blank"
             >
               0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
             </a>
             <div
-              class="c35"
+              class="c30"
               type="Update Key Price"
             >
               Update Key Price
             </div>
             <div
-              class="c32"
+              class="c27"
             >
               1
             </div>
             <a
-              class="c33"
+              class="c28"
               href=""
               target="_blank"
             >
               0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
             </a>
             <div
-              class="c34"
+              class="c29"
               type="Lock Creation"
             >
               Lock Creation
@@ -55894,7 +55450,7 @@ Object {
           </div>
         </div>
         <div
-          class="c36"
+          class="c31"
         />
       </div>
     </div>
@@ -56138,7 +55694,7 @@ Object {
           />
         </header>
         <div
-          class="sc-chPdSV eQpfRm"
+          class="sc-kAzzGY jIZgyB"
         >
           <section
             class="sc-iwsKbI jQhHGA"
@@ -56215,10 +55771,8 @@ Object {
                 </span>
               </div>
               <div
-                class="sc-jTzLTM UaSJD"
-              >
-                Balance
-              </div>
+                class="sc-VigVT epVMIs"
+              />
               <div
                 class="sc-VigVT epVMIs"
               />
@@ -56240,105 +55794,83 @@ Object {
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
               </div>
-              <div
-                class="sc-jzJRlG bPkiML"
-                id="AccountBalance"
-              >
-                <div
-                  class="buwkmd-0 bYclZI"
-                >
-                  <span
-                    class="buwkmd-1 currency jZYwNd"
-                  >
-                    <span
-                      class="buwkmd-2 buwkmd-3 itlNMk"
-                    />
-                    <span
-                      class="buwkmd-6 ivkyIk"
-                    >
-                       - 
-                    </span>
-                  </span>
-                  
-                </div>
-              </div>
             </div>
           </section>
           <button
-            class="sc-cSHVUG sc-kAzzGY kxYgdS"
+            class="sc-jzJRlG sc-cSHVUG cXcJas"
             id="CreateLockButton"
           >
             Create Lock
           </button>
         </div>
         <div
-          class="sc-eNQAEJ fGkGLJ"
+          class="sc-jKJlTe hHZdhi"
         >
           <div
-            class="sc-hMqMXs fWVoFA"
+            class="sc-eNQAEJ bcWJbW"
           >
             Block Number
           </div>
           <div
-            class="sc-hMqMXs fWVoFA"
+            class="sc-eNQAEJ bcWJbW"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-hMqMXs fWVoFA"
+            class="sc-eNQAEJ bcWJbW"
           >
             Type
           </div>
           <div
-            class="sc-kEYyzF sc-kkGfuU kSIwTp"
+            class="sc-hMqMXs sc-kEYyzF laTkyl"
           >
             3
           </div>
           <a
-            class="sc-iAyFgw hLPbAu"
+            class="sc-kkGfuU cGBheG"
             href=""
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-kEYyzF sc-hSdWYo elqREF"
+            class="sc-hMqMXs sc-iAyFgw eIFStU"
             type="Lock Creation"
           >
             Lock Creation
           </div>
           <div
-            class="sc-kEYyzF sc-kkGfuU kSIwTp"
+            class="sc-hMqMXs sc-kEYyzF laTkyl"
           >
             2
           </div>
           <a
-            class="sc-iAyFgw hLPbAu"
+            class="sc-kkGfuU cGBheG"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-kEYyzF sc-hSdWYo gnwcYz"
+            class="sc-hMqMXs sc-iAyFgw kSiaiL"
             type="Update Key Price"
           >
             Update Key Price
           </div>
           <div
-            class="sc-kEYyzF sc-kkGfuU kSIwTp"
+            class="sc-hMqMXs sc-kEYyzF laTkyl"
           >
             1
           </div>
           <a
-            class="sc-iAyFgw hLPbAu"
+            class="sc-kkGfuU cGBheG"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-kEYyzF sc-hSdWYo elqREF"
+            class="sc-hMqMXs sc-iAyFgw eIFStU"
             type="Lock Creation"
           >
             Lock Creation
