@@ -72,7 +72,7 @@ export default function postOffice(window, requiredConfirmations) {
 
   const lockHandler = cachedData => {
     actions.locks(cachedData.locks)
-    const unlockedLocks = Object.values(cachedData.locks)
+    const unlockedLockAddresses = Object.values(cachedData.locks)
       .filter(lock =>
         ['submitted', 'pending', 'valid', 'confirming'].includes(
           lock.key.status
@@ -80,8 +80,8 @@ export default function postOffice(window, requiredConfirmations) {
       )
       .map(lock => lock.address)
 
-    if (unlockedLocks.length) {
-      actions.unlocked(unlockedLocks)
+    if (unlockedLockAddresses.length) {
+      actions.unlocked(unlockedLockAddresses)
     } else {
       actions.locked()
     }
