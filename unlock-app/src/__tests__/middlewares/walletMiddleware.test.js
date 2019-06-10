@@ -232,7 +232,7 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle lock.updated events triggered by the walletService', () => {
-    expect.assertions(3)
+    expect.assertions(2)
     const { store } = create()
     const update = {
       transaction: '0x123',
