@@ -20,7 +20,7 @@
   "dependencies": {
     "eth-sig-util": "^2.2.0",
     "ethereumjs-utils": "^5.2.5",
-    "ethers": "4.0.27"
+    "ethers": "4.0.30"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
