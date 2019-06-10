@@ -32,6 +32,7 @@
     "raw-loader": "^3.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-intercom": "^1.0.15",
     "react-redux": "^7.0.2",
     "react-showdown": "^1.6.0",
     "react-test-renderer": "^16.8.6",

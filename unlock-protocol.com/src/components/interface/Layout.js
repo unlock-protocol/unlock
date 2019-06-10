@@ -2,10 +2,14 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
+import Intercom from 'react-intercom'
+import getConfig from 'next/config'
 import Header from './Header'
 import Footer from './Footer'
 import { RoundedLogo } from './Logo'
 import Media from '../../theme/media'
+
+const config = getConfig().publicRuntimeConfig
 
 export default function Layout({ forContent, title, children }) {
   return (
@@ -22,6 +26,7 @@ export default function Layout({ forContent, title, children }) {
       <Content>
         <Header forContent={forContent} title={title} />
         {children}
+        <Intercom appID={config.intercomAppId} />
         {forContent && <Footer />}
       </Content>
       <Right />

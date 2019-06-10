@@ -18,6 +18,7 @@ dotenv.config({
 let requiredConfigVariables = {
   unlockEnv,
   dashboardUrl: process.env.DASHBOARD_URL,
+  intercomAppId: 'f99d98d3', // Hardcoded for now
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
