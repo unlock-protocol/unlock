@@ -35,6 +35,9 @@ export default {
     const num = ethers.utils.hexlify(ethers.utils.bigNumberify(number))
     return ethers.utils.hexZeroPad(num, 32)
   },
+  toRpcResultString: string => {
+    return string
+  },
   utf8ToHex: str =>
     ethers.utils.hexlify(str.length ? ethers.utils.toUtf8Bytes(str) : 0),
   sha3: ethers.utils.keccak256,

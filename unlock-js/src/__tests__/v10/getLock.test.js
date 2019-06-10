@@ -91,6 +91,12 @@ describe('v10', () => {
       )
 
       nock.ethCallAndYield(
+        contractMethods.name.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
+      )
+
+      nock.ethCallAndYield(
         contractMethods.expirationDuration.encode([]),
         checksumLockAddress,
         resultEncoder.encode(['uint256'], [utils.toRpcResultNumber(2592000)])
@@ -147,6 +153,7 @@ describe('v10', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
+          name: 'My Lock',
           balance: utils.fromWei('3735944941', 'ether'),
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
@@ -178,6 +185,7 @@ describe('v10', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
+          name: 'My Lock',
           balance: '1.929',
           keyPrice: utils.fromDecimal('10000000000000000', decimals),
           expirationDuration: 2592000,
@@ -215,6 +223,7 @@ describe('v10', () => {
 
       const lock = await web3Service.getLock(lockAddress)
       expect(lock).toEqual({
+        name: 'My Lock',
         asOf: 1337,
         balance: '0.000000003735944941',
         expirationDuration: 2592000,

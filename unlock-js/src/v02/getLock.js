@@ -9,6 +9,7 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
 export default async function(address) {
   const contract = await this.getLockContract(address)
   const attributes = {
+    name: x => x,
     keyPrice: x => utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {
