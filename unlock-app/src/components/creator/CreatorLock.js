@@ -11,6 +11,7 @@ import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
+import withConfig from '../../utils/withConfig'
 
 import {
   LockPanel,
@@ -27,12 +28,32 @@ import { updateKeyPrice, updateLockName, updateLock } from '../../actions/lock'
 
 import { INFINITY } from '../../constants'
 
-const KeyPrice = ({ lock }) => (
-  <Balance className="price" amount={lock.keyPrice} />
+const BalanceOnLock = withConfig(
+  ({ lock, attribute, skipConversion, config }) => {
+    let currency = ''
+    if (lock.currencyContractAddress === config.ERC20Contract.address) {
+      currency = config.ERC20Contract.name
+    } else if (lock.currencyContractAddress) {
+      currency = 'ERC20' // Default
+    }
+    return (
+      <Balance
+        amount={lock[attribute]}
+        currency={currency}
+        convertCurrency={!skipConversion && !currency}
+      />
+    )
+  }
 )
 
-KeyPrice.propTypes = {
+BalanceOnLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  attribute: PropTypes.string.isRequired,
+  skipConversion: PropTypes.bool,
+}
+
+BalanceOnLock.defaultProps = {
+  skipConversion: false,
 }
 
 const LockKeysNumbers = ({ lock }) => (
@@ -94,6 +115,7 @@ export class CreatorLock extends React.Component {
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
+
     return (
       <LockRow
         className="lock" // Used by integration tests
@@ -111,13 +133,13 @@ export class CreatorLock extends React.Component {
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeysNumbers lock={lock} />
-        <KeyPrice lock={lock} />
+        <BalanceOnLock lock={lock} attribute="keyPrice" />
         <BalanceContainer>
           <NoPhone>
-            <Balance amount={lock.balance} />
+            <BalanceOnLock lock={lock} attribute="balance" />
           </NoPhone>
           <Phone>
-            <Balance amount={lock.balance} convertCurrency={false} />
+            <BalanceOnLock lock={lock} attribute="balance" skipConversion />
           </Phone>
         </BalanceContainer>
         <LockIconBar
