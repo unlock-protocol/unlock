@@ -15125,6 +15125,7 @@ Object {
         >
           <input
             data-valid="true"
+            disabled=""
             name="name"
             type="text"
             value="Existing Lock"
@@ -15278,6 +15279,7 @@ Object {
       >
         <input
           data-valid="true"
+          disabled=""
           name="name"
           type="text"
           value="Existing Lock"

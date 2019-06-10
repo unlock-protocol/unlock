@@ -262,6 +262,7 @@ export class CreatorLockForm extends React.Component {
             defaultValue={name}
             data-valid={valid.name}
             required={isNew}
+            disabled={!isNew}
           />
         </FormLockName>
         <FormLockDuration>

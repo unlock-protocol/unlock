@@ -11,8 +11,6 @@ import {
   UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
-  updateLockName,
-  UPDATE_LOCK_NAME,
 } from '../../actions/lock'
 
 describe('lock actions', () => {
@@ -81,18 +79,5 @@ describe('lock actions', () => {
     }
 
     expect(updateKeyPrice(address, price)).toEqual(expectedAction)
-  })
-
-  it('should create an action to update the lock name', () => {
-    expect.assertions(1)
-    const address = '0x123'
-    const name = 'The Lock'
-    const expectedAction = {
-      type: UPDATE_LOCK_NAME,
-      address,
-      name,
-    }
-
-    expect(updateLockName(address, name)).toEqual(expectedAction)
   })
 })

@@ -3,11 +3,10 @@ import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import storageMiddleware, {
   changePassword,
 } from '../../middlewares/storageMiddleware'
-import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../../actions/lock'
+import { UPDATE_LOCK, updateLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
 import { SIGNED_DATA, SIGN_DATA } from '../../actions/signature'
-import UnlockLock from '../../structured_data/unlockLock'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import {
@@ -294,44 +293,6 @@ describe('Storage middleware', () => {
       expect(store.dispatch).toHaveBeenCalledWith(
         setError(Storage.Warning('Could not store some lock metadata.'))
       )
-    })
-  })
-
-  describe('UPDATE_LOCK_NAME', () => {
-    it('should dispatch an action to sign message to update the name of a lock', () => {
-      expect.assertions(3)
-      const lock = {
-        address: '0x123',
-        name: 'my lock',
-        owner: '0xabc',
-      }
-      const data = {
-        message: {
-          lock: {},
-        },
-      }
-      const newName = 'a new name'
-      const { next, invoke, store } = create()
-      state.locks[lock.address] = lock
-
-      const action = {
-        type: UPDATE_LOCK_NAME,
-        address: lock.address,
-        name: newName,
-      }
-      UnlockLock.build = jest.fn(() => data)
-      invoke(action)
-      expect(UnlockLock.build).toHaveBeenCalledWith({
-        name: action.name,
-        owner: lock.owner,
-        address: lock.address,
-      })
-
-      expect(next).toHaveBeenCalledTimes(1)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        data,
-        type: 'signature/SIGN_DATA',
-      })
     })
   })
 

@@ -6,7 +6,6 @@ import {
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
-  UPDATE_LOCK_NAME,
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
@@ -233,21 +232,13 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle lock.updated events triggered by the walletService', () => {
-    expect.assertions(3)
+    expect.assertions(2)
     const { store } = create()
     const update = {
       transaction: '0x123',
     }
 
     mockWalletService.emit('lock.updated', lock.address, update)
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: UPDATE_LOCK_NAME,
-        address: lock.address,
-        name: lock.name,
-      })
-    )
 
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
