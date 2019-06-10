@@ -10,11 +10,7 @@ import configure from '../../../config'
 import createUnlockStore from '../../../createUnlockStore'
 import { UNLIMITED_KEYS_COUNT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
-import {
-  UPDATE_LOCK_KEY_PRICE,
-  UPDATE_LOCK,
-  UPDATE_LOCK_NAME,
-} from '../../../actions/lock'
+import { UPDATE_LOCK_KEY_PRICE, UPDATE_LOCK } from '../../../actions/lock'
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -179,21 +175,6 @@ describe('CreatorLock', () => {
         address: lock.address,
         price: '6.66',
         type: UPDATE_LOCK_KEY_PRICE,
-      })
-    })
-
-    it('should dispatch updateLockName if the lock name has been changed', () => {
-      expect.assertions(1)
-      const newLock = Object.assign({}, unlimitedlock)
-      newLock.name = 'A New name'
-      const dispatch = jest.fn()
-      const { updateLock } = mapDispatchToProps(dispatch, { lock })
-      updateLock(newLock)
-
-      expect(dispatch).toHaveBeenCalledWith({
-        address: lock.address,
-        name: newLock.name,
-        type: UPDATE_LOCK_NAME,
       })
     })
 

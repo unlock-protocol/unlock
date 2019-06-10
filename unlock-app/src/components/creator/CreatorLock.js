@@ -24,7 +24,7 @@ import {
   DoubleHeightCell,
   BalanceContainer,
 } from './LockStyles'
-import { updateKeyPrice, updateLockName, updateLock } from '../../actions/lock'
+import { updateKeyPrice, updateLock } from '../../actions/lock'
 
 import { INFINITY } from '../../constants'
 
@@ -181,11 +181,6 @@ export const mapDispatchToProps = (dispatch, { lock }) => {
       // If the price has changed
       if (lock.keyPrice !== newLock.keyPrice) {
         dispatch(updateKeyPrice(lock.address, newLock.keyPrice))
-      }
-
-      // If the name has changed
-      if (lock.name !== newLock.name) {
-        dispatch(updateLockName(lock.address, newLock.name))
       }
 
       // Reflect all changes
