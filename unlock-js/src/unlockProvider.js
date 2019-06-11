@@ -60,7 +60,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   // on the provider?
   signData(data) {
     const privateKey = toBuffer(this.wallet.privateKey)
-    return sigUtil.signTypedData(privateKey, data)
+    return sigUtil.signTypedData(privateKey, { data })
   }
 
   // input conforms to unlockUser structured_data; missing properties default to
@@ -72,6 +72,11 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     user.passwordEncryptedPrivateKey =
       user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
 
-    return this.signData(UnlockUser.build(user))
+    const data = UnlockUser.build(user)
+    const sig = this.signData(data)
+    return {
+      data,
+      sig,
+    }
   }
 }
