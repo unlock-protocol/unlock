@@ -9,18 +9,30 @@ import { formatCurrency } from '../../selectors/currency'
  * This is useful to display balance in different ways.
  * amount is always in eth
  */
-export const BalanceProvider = ({ amount, conversion, render }) => {
+export const BalanceProvider = ({
+  amount,
+  conversion,
+  convertCurrency,
+  render,
+}) => {
   if (typeof amount === 'undefined' || amount === null) {
     return render(' - ', ' - ') || null
   }
+
   let currency = parseFloat(amount)
   const ethWithPresentation = formatCurrency(currency)
   let convertedUSDValue
+
+  if (!convertCurrency) {
+    return render(ethWithPresentation) || null
+  }
+
   if (!conversion.USD) {
     convertedUSDValue = '---'
   } else {
     convertedUSDValue = formatCurrency(currency * conversion.USD)
   }
+
   return render(ethWithPresentation, convertedUSDValue) || null
 }
 
