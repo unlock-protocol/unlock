@@ -2,6 +2,7 @@ import { providers } from 'ethers'
 import sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
+import UnlockUser from './structured_data/unlockUser'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
@@ -44,14 +45,6 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     return []
   }
 
-  async eth_signTypedData(params) {
-    // params is [ account, data ]
-    // we don't need account
-    const data = params[1]
-    const privateKey = toBuffer(this.wallet.privateKey)
-    return sigUtil.signTypedData(privateKey, data)
-  }
-
   async send(method, params) {
     if (typeof this[method] === 'undefined') {
       // We haven't implemented this method, defer to the fallback provider.
@@ -60,5 +53,30 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     }
 
     return this[method](params)
+  }
+
+  // Signature methods
+  // TODO: move these into their own module so they aren't directly accessible
+  // on the provider?
+  signData(data) {
+    const privateKey = toBuffer(this.wallet.privateKey)
+    return sigUtil.signTypedData(privateKey, { data })
+  }
+
+  // input conforms to unlockUser structured_data; missing properties default to
+  // those stored on provider
+  signUserData(input) {
+    const user = Object.assign({}, input)
+    user.emailAddress = user.emailAddress || this.emailAddress
+    user.publicKey = user.publicKey || this.wallet.address
+    user.passwordEncryptedPrivateKey =
+      user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
+
+    const data = UnlockUser.build(user)
+    const sig = this.signData(data)
+    return {
+      data,
+      sig,
+    }
   }
 }
