@@ -21,12 +21,15 @@ export const NoKeyLock = ({
     lock.outstandingKeys >= lock.maxNumberOfKeys &&
     lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
 
+  // TODO: add support for balances of ERC20 which could be too low (the wallet actually should show that, so not a huge deal, but good to have!)
+  const tooExpensive =
+    account &&
+    !lock.currencyContractAddress &&
+    parseFloat(account.balance) <= parseFloat(lock.keyPrice)
+
   // When the lock is not disabled for other reasons (pending key on
   // other lock...), we need to ensure that the lock is disabled
   // when the lock is sold out or too expensive for the current account
-  const tooExpensive =
-    account && parseFloat(account.balance) <= parseFloat(lock.keyPrice)
-
   const disableClick = disabled || tooExpensive || soldOut
 
   let footerMessage = 'Purchase'
