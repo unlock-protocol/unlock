@@ -14,6 +14,7 @@ export const SET_ENCRYPTED_PRIVATE_KEY =
 export const GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD =
   'userCredentials/GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD'
 export const SIGN_USER_DATA = 'userCredentials/SIGN_USER_DATA'
+export const SIGNED_USER_DATA = 'userCredentials/SIGNED_USER_DATA'
 
 export interface Credentials {
   emailAddress: string
@@ -103,4 +104,20 @@ interface UserData {
 export const signUserData = (data: UserData) => ({
   type: SIGN_USER_DATA,
   data,
+})
+
+interface SignedUserData {
+  data: {
+    message: {
+      emailAddress: string
+      publicKey: string
+      passwordEncryptedPrivateKey: EncryptedPrivateKey
+    }
+  }
+  sig: any
+}
+export const signedUserData = ({ data, sig }: SignedUserData) => ({
+  type: SIGNED_USER_DATA,
+  data,
+  sig,
 })

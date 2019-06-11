@@ -6,7 +6,6 @@ import storageMiddleware, {
 import { UPDATE_LOCK, updateLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
-import { SIGNED_DATA, SIGN_DATA } from '../../actions/signature'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import {
@@ -14,6 +13,8 @@ import {
   SIGNUP_CREDENTIALS,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   setEncryptedPrivateKey,
+  SIGN_USER_DATA,
+  SIGNED_USER_DATA,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -226,35 +227,25 @@ describe('Storage middleware', () => {
     })
   })
 
-  describe('handling SIGNED_DATA', () => {
-    it('should not do anything if the signed message is not for a user', () => {
-      expect.assertions(1)
-      const data = 'data'
-      const signature = 'signature'
-      const { next, invoke } = create()
-      const action = { type: SIGNED_DATA, data, signature }
-
-      invoke(action)
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-
+  describe('handling SIGNED_USER_DATA', () => {
     it('should call storageService for user updates', () => {
       expect.assertions(2)
+      const emailAddress = 'geoff@bitconnect.gov'
       const data = {
         message: {
-          user: {},
+          emailAddress,
         },
       }
-      const signature = 'signature'
+      const sig = {}
       const { next, invoke } = create()
-      const action = { type: SIGNED_DATA, data, signature }
+      const action = { type: SIGNED_USER_DATA, data, sig }
       mockStorageService.updateUser = jest.fn()
 
       invoke(action)
       expect(mockStorageService.updateUser).toHaveBeenCalledWith(
-        expect.any(String),
+        emailAddress,
         data,
-        signature
+        sig
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
@@ -372,12 +363,9 @@ describe('Storage middleware', () => {
 
   describe('CHANGE_PASSWORD', () => {
     let passwordEncryptedPrivateKey
-    let publicKey
     const oldPassword = 'guest'
-    const emailAddress = 'guest@temp.com'
     beforeEach(async () => {
       const info = await createAccountAndPasswordEncryptKey(oldPassword)
-      publicKey = info.address
       passwordEncryptedPrivateKey = info.passwordEncryptedPrivateKey
     })
 
@@ -389,14 +377,12 @@ describe('Storage middleware', () => {
         oldPassword,
         newPassword: 'visitor',
         passwordEncryptedPrivateKey,
-        publicKey,
-        emailAddress,
         dispatch,
       })
 
       expect(dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: SIGN_DATA,
+          type: SIGN_USER_DATA,
         })
       )
     })

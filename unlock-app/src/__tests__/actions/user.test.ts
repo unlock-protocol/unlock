@@ -23,6 +23,8 @@ import {
   gotEncryptedPrivateKeyPayload,
   SIGN_USER_DATA,
   signUserData,
+  SIGNED_USER_DATA,
+  signedUserData,
 } from '../../actions/user'
 
 const key = {
@@ -183,6 +185,20 @@ describe('user account actions', () => {
       }
 
       expect(signUserData(data)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a user structure', () => {
+      expect.assertions(1)
+      const data = {}
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_USER_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedUserData({ data, sig })).toEqual(expectedAction)
     })
   })
 
