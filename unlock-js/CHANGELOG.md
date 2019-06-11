@@ -1,8 +1,11 @@
 # Changes
 
-## NEXT VERSION
+## 0.3.0
 
 - erc20 transfer approval returns immediately
+- UnlockProvider now stores user email address and encrypted private key
+- UnlockProvider gains new methods for signing typed data, replacing the old
+  strategy of intercepting JSON-RPC calls
 
 ## 0.2.9
 
