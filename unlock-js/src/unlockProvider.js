@@ -10,7 +10,12 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   constructor({ readOnlyProvider }) {
     super(readOnlyProvider)
     this.wallet = null
+
+    // These properties are retained so that we can use them when generating
+    // signed typed data for the user account
     this.emailAddress = null
+    this.passwordEncryptedPrivateKey = null
+
     this.isUnlock = true
   }
 
@@ -21,6 +26,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
       this.wallet = await getAccountFromPrivateKey(key, password)
       this.wallet.connect(this)
       this.emailAddress = emailAddress
+      this.passwordEncryptedPrivateKey = key
 
       return true
     } catch (err) {
