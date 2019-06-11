@@ -7,30 +7,36 @@ import { storeTransaction } from './locksmithTransactions'
 /**
  * Purchase a key on a lock for the current user
  *
- * @param {walletService} walletService the walletService instance to use for purchasing the key
- *                                      It needs to implement EventEmitter, and have purchaseKey
+ * @param {walletService} walletService the walletService instance to use for purchasing the key. It needs to implement EventEmitter, and have purchaseKey
  * @param {string} lockAddress The address of the lock to purchase a key on
- * @param {string|BigNumber} amountToSend the key price and any optional extra funds to send to the lock
- *                                        (allows tipping)
+ * @param {string|BigNumber} amountToSend the key price and any optional extra funds to send to the lock (allows tipping)
+ * @param {string} erc20Address address of the ERC20 contract for that lock, if applicable
  */
 export async function purchaseKey({
   walletService,
   lockAddress,
   amountToSend,
+  erc20Address,
 }) {
   await ensureWalletReady(walletService)
   const account = getAccount()
 
-  return walletService.purchaseKey(lockAddress, account, amountToSend)
+  // Support the currency!
+  return walletService.purchaseKey(
+    lockAddress,
+    account,
+    amountToSend,
+    null /* account */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+    null /* data */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+    erc20Address
+  )
 }
 
 /**
  * This function is re-entrant, thus can be called at any stage of the transaction life cycle (on page refresh, for example)
  *
- * @param {walletService} walletService the walletService instance to use for monitoring key purchase initiation.
- *                                      Should implement emitting 'transaction.new', 'transaction.pending', 'error'
- * @param {web3Service} web3Service the web3Service instance to use for monitoring the transaction cycle after transaction
- *                                  hash is available. Should implement emitting 'transaction.updated', 'error'
+ * @param {walletService} walletService the walletService instance to use for monitoring key purchase initiation. Should implement emitting 'transaction.new', 'transaction.pending', 'error'
+ * @param {web3Service} web3Service the web3Service instance to use for monitoring the transaction cycle after transaction hash is available. Should implement emitting 'transaction.updated', 'error'
  * @param {object} startingTransactions transactions, indexed by transaction hash that were initiated by the current user
  * @param {object} startingKey the current key object
  * @param {string} lockAddress the address of the lock on which we are purchasing a key

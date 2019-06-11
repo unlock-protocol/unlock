@@ -147,17 +147,18 @@ const walletMiddleware = config => ({ getState, dispatch }) => {
         walletService.connect(config.providers[getState().provider])
       } else if (action.type === PURCHASE_KEY) {
         ensureReadyBefore(() => {
-          const account = getState().account
-          // find the lock to get its keyPrice
+          // find the lock to get its keyPrice and currencyContractAddress
           const lock = Object.values(getState().locks).find(
             lock => lock.address === action.key.lock
           )
+          // support the currency!
           walletService.purchaseKey(
             action.key.lock,
             action.key.owner,
             lock.keyPrice,
-            account.address,
-            action.key.data
+            null /* account */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+            null /* data */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+            lock.currencyContractAddress
           )
         })
       }

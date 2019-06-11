@@ -38,11 +38,13 @@ const makePurchaseCallback = ({
     const startingKey = keys[lockAddress]
 
     try {
+      const lock = locks[lockAddress]
       await Promise.all([
         purchaseKey({
           walletService,
           lockAddress,
-          amountToSend: locks[lockAddress].keyPrice,
+          amountToSend: lock.keyPrice,
+          erc20Address: lock.currencyContractAddress,
         }),
         processKeyPurchaseTransactions({
           walletService,

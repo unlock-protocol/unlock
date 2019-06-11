@@ -33,7 +33,7 @@ describe('blockchainHandler purchaseKey', () => {
       expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
     })
 
-    it('calls purchaseKey with the lock, account, and the amount of eth to send', async () => {
+    it('calls purchaseKey with the lock, account, the amount of eth to send, and the ERC20 token address', async () => {
       expect.assertions(1)
 
       setAccount('account')
@@ -42,11 +42,15 @@ describe('blockchainHandler purchaseKey', () => {
         window,
         lockAddress: 'lock',
         amountToSend: '1000',
+        erc20Address: '0xErc20',
       })
       expect(fakeWalletService.purchaseKey).toHaveBeenCalledWith(
         'lock',
         'account',
-        '1000'
+        '1000',
+        null, // Deprecated field
+        null, // Deprecated field
+        '0xErc20'
       )
     })
   })

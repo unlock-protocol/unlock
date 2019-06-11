@@ -30,6 +30,7 @@ let lock = {
   address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
   keyPrice: '100',
   owner: account,
+  currencyContractAddress: '0xerc20',
 }
 let state = {}
 
@@ -372,8 +373,9 @@ describe('Wallet middleware', () => {
         key.lock,
         key.owner,
         lock.keyPrice,
-        account.address,
-        key.data
+        null,
+        null,
+        lock.currencyContractAddress
       )
       expect(next).toHaveBeenCalledWith(action)
     })
