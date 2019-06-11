@@ -156,12 +156,13 @@ storiesOf('Lock', module)
     )
   })
   .add('disabled - too expensive for current user', () => {
-    const account = {
+    const accountWithNotEnoughEth = {
       balance: '0',
+      name: 'julien',
     }
     return (
       <Lock
-        account={account}
+        account={accountWithNotEnoughEth}
         lock={lock}
         transaction={null}
         lockKey={null}
@@ -171,6 +172,33 @@ storiesOf('Lock', module)
       />
     )
   })
+  .add(
+    'not disabled - even if the price in eth is too expensive for current user',
+    () => {
+      const erc20Lock = {
+        currencyContractAddress: storyConfig.erc20Contract.address,
+        address: '0x123',
+        name: 'Monthly',
+        keyPrice: '66',
+        expirationDuration: 5 * 60, // 5 minutes
+      }
+      const accountWithNotEnoughEth = {
+        balance: '0',
+        name: 'julien',
+      }
+      return (
+        <Lock
+          account={accountWithNotEnoughEth}
+          lock={erc20Lock}
+          transaction={null}
+          lockKey={null}
+          {...lockActions}
+          openInNewWindow={false}
+          keyStatus="none"
+        />
+      )
+    }
+  )
   .add('with a pending key (not yet mined)', () => {
     const k = {
       lock: lock.address,
