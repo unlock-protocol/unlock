@@ -42,11 +42,7 @@ export async function approveTransfer(
     ['function approve(address spender, uint256 value) returns (bool value)'],
     provider.getSigner()
   )
-  return contract.approve(lockContractAddress, approvalValue(value))
-}
-
-function approvalValue(value) {
-  return Math.ceil(value)
+  return contract.approve(lockContractAddress, value)
 }
 
 export default {
