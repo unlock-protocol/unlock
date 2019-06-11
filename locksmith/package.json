@@ -33,8 +33,8 @@
   "license": "ISC",
   "dependencies": {
     "@opencensus/core": "0.0.12",
-    "@opencensus/exporter-jaeger": "0.0.12",
-    "@opencensus/nodejs": "0.0.13",
+    "@opencensus/exporter-jaeger": "0.0.14",
+    "@opencensus/nodejs": "0.0.14",
     "@types/cors": "^2.8.5",
     "@types/eth-sig-util": "^2.1.0",
     "@types/ethereumjs-util": "^5.2.0",
