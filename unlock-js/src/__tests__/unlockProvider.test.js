@@ -61,6 +61,11 @@ describe('Unlock Provider', () => {
       expect.assertions(1)
       expect(provider.emailAddress).toEqual(emailAddress)
     })
+
+    it('should have a property `passwordEncryptedPrivateKey` that is set to the provided key', () => {
+      expect.assertions(1)
+      expect(provider.passwordEncryptedPrivateKey).toEqual(key)
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {
