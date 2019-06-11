@@ -21,6 +21,8 @@ import {
   setEncryptedPrivateKey,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   gotEncryptedPrivateKeyPayload,
+  SIGN_USER_DATA,
+  signUserData,
 } from '../../actions/user'
 
 const key = {
@@ -167,6 +169,20 @@ describe('user account actions', () => {
       }
 
       expect(changePassword(oldPassword, newPassword)).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting the signature for a user structure', () => {
+      expect.assertions(1)
+      const data = {
+        emailAddress: 'geoff@bitconnect.gov',
+      }
+
+      const expectedAction = {
+        type: SIGN_USER_DATA,
+        data,
+      }
+
+      expect(signUserData(data)).toEqual(expectedAction)
     })
   })
 
