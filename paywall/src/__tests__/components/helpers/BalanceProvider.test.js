@@ -20,7 +20,7 @@ describe('BalanceProvider Component', () => {
     )
   }
 
-  it('does not convert is convertCurrency is false', () => {
+  it('does not convert if convertCurrency is false', () => {
     expect.assertions(2)
     renderIt({
       amount: null,
