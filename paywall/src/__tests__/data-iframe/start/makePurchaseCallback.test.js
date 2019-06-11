@@ -74,6 +74,7 @@ describe('makePurchaseCallback', () => {
         lock: {
           address: 'lock',
           keyPrice: '123',
+          currencyContractAddress: '0xerc20',
         },
       })
       await setKeys(fakeWindow, {
@@ -100,7 +101,10 @@ describe('makePurchaseCallback', () => {
       expect(walletService.purchaseKey).toHaveBeenCalledWith(
         'lock',
         'account',
-        '123'
+        '123',
+        null,
+        null,
+        '0xerc20'
       )
     })
 
