@@ -6,11 +6,7 @@ import {
 } from '../errors'
 import { Application, LogIn } from '../utils/Error'
 import { Action } from '../unlockTypes' // eslint-disable-line
-import {
-  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
-} from '../actions/user'
-import { setAccount } from '../actions/accounts'
+import { GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD } from '../actions/user'
 
 interface Provider {
   enable?: () => any
@@ -47,13 +43,9 @@ export async function initializeUnlockProvider(
   unlockProvider: any,
   dispatch: any
 ) {
-  const { key, emailAddress, password } = action
   try {
-    await unlockProvider.connect({ key, password })
+    await unlockProvider.connect(action)
 
-    const address = unlockProvider.wallet.address
-    dispatch(setAccount({ address }))
-    dispatch(setEncryptedPrivateKey(key, emailAddress))
     dispatch(providerReady())
   } catch (e) {
     // eslint-disable-next-line no-console

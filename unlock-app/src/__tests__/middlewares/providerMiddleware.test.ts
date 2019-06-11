@@ -6,11 +6,7 @@ import { SET_PROVIDER, providerReady } from '../../actions/provider'
 import { setError } from '../../actions/error'
 import { FATAL_MISSING_PROVIDER } from '../../errors'
 import { Application, LogIn } from '../../utils/Error'
-import {
-  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
-} from '../../actions/user'
-import { setAccount } from '../../actions/accounts'
+import { GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD } from '../../actions/user'
 
 const config = {
   providers: {
@@ -79,31 +75,6 @@ describe('provider middleware', () => {
       const info = await createAccountAndPasswordEncryptKey(password)
       key = info.passwordEncryptedPrivateKey
       address = info.address
-    })
-
-    it('should set the account and encrypted key in state', async () => {
-      expect.assertions(3)
-      const action = {
-        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-        key,
-        emailAddress,
-        password,
-      }
-      const unlockProvider = {
-        connect: async () => true,
-        wallet: {
-          address,
-        },
-      }
-      const dispatch = jest.fn()
-
-      await initializeUnlockProvider(action, unlockProvider, dispatch)
-      expect(dispatch).toHaveBeenNthCalledWith(1, setAccount({ address }))
-      expect(dispatch).toHaveBeenNthCalledWith(
-        2,
-        setEncryptedPrivateKey(key, emailAddress)
-      )
-      expect(dispatch).toHaveBeenNthCalledWith(3, providerReady())
     })
 
     it('should dispatch an error if it cannot decrypt', async () => {
