@@ -20,18 +20,29 @@ export default class FastJsonRpcSigner extends ethers.Signer {
 
   async sendTransaction(transaction) {
     const hash = await this.signer.sendUncheckedTransaction(transaction)
+
+    let gasLimit
+    if (transaction.gasLimit) {
+      gasLimit = utils.bigNumberify(
+        utils.hexStripZeros(utils.hexlify(transaction.gasLimit))
+      )
+    }
+
+    let gasPrice
+    if (transaction.gasPrice) {
+      gasPrice = utils.bigNumberify(
+        utils.hexStripZeros(utils.hexlify(transaction.gasLimit))
+      )
+    }
+
     const ret = {
       ...transaction,
       hash: hash,
       blockHash: null,
       blockNumber: null,
       creates: null,
-      gasLimit: utils.bigNumberify(
-        utils.hexStripZeros(utils.hexlify(transaction.gasLimit))
-      ),
-      gasPrice: utils.bigNumberify(
-        utils.hexStripZeros(utils.hexlify(transaction.gasLimit))
-      ),
+      gasLimit,
+      gasPrice,
       value: utils.bigNumberify(transaction.value || 0),
       networkId: 0,
       nonce: 0,
