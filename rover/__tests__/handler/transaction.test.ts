@@ -1,9 +1,3 @@
-// import {
-//   filterTransaction,
-//   getTransactionData,
-//   transactionHandler,
-// } from '../../src/handler/transaction'
-
 import Transaction from '../../src/handler/transaction'
 import { Registry } from '../../src/registry'
 
