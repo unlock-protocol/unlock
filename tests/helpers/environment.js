@@ -10,7 +10,7 @@ const ci = process.env.CI
 
 const unlockHost = ci ? 'unlock-app' : '127.0.0.1'
 const locksmithHost = ci ? 'locksmith' : '127.0.0.1'
-const paywallHost = ci ? 'paywall' : '127.0.0.1'
+const paywallHost = ci ? 'paywall-integration' : '127.0.0.1'
 
 class UnlockEnvironment extends PuppeteerEnvironment {
   async setup() {

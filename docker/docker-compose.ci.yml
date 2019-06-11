@@ -73,6 +73,22 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     command: ['npm', 'run', 'start']
+  paywall-integration:
+    image: paywall
+    ports:
+      - 3001:3001
+    expose:
+      - 3001
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
+    command: ['npm', 'run', 'integration-tests-start']
   tickets:
     image: tickets
     ports:
@@ -113,7 +129,7 @@ services:
     depends_on:
       - ganache-integration
       - unlock-app
-      - paywall
+      - paywall-integration
       - locksmith
       - unlock-protocol-com
   locksmith:
