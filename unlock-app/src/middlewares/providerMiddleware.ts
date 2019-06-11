@@ -6,7 +6,11 @@ import {
 } from '../errors'
 import { Application, LogIn } from '../utils/Error'
 import { Action } from '../unlockTypes' // eslint-disable-line
-import { GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD } from '../actions/user'
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  SIGN_USER_DATA,
+  signedUserData,
+} from '../actions/user'
 
 interface Provider {
   enable?: () => any
@@ -71,15 +75,19 @@ export const providerMiddleware = (config: any) => {
       }, 0)
 
       return function(action: Action) {
+        const providerName = getState().provider
+        const provider = config.providers[providerName]
         if (action.type === SET_PROVIDER) {
           // Only initialize the provider if we haven't already done so.
-          if (action.provider !== getState().provider) {
-            const provider = config.providers[action.provider]
-            initializeProvider(provider, dispatch)
+          if (action.provider !== providerName) {
+            const newProvider = config.providers[action.provider]
+            initializeProvider(newProvider, dispatch)
           }
         } else if (action.type === GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD) {
-          const provider = config.providers[getState().provider]
           initializeUnlockProvider(action, provider, dispatch)
+        } else if (action.type === SIGN_USER_DATA) {
+          const payload = provider.signUserData(action.data)
+          dispatch(signedUserData(payload))
         }
 
         next(action)

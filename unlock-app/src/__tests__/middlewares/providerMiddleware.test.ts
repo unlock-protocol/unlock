@@ -6,12 +6,16 @@ import { SET_PROVIDER, providerReady } from '../../actions/provider'
 import { setError } from '../../actions/error'
 import { FATAL_MISSING_PROVIDER } from '../../errors'
 import { Application, LogIn } from '../../utils/Error'
-import { GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD } from '../../actions/user'
+import {
+  GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+  SIGN_USER_DATA,
+} from '../../actions/user'
 
 const config = {
   providers: {
     UNLOCK: {
       isUnlock: true,
+      signUserData: jest.fn(() => ({ data: {}, sig: {} })),
     },
     NUNLOCK: {
       enable: jest.fn(() => new Promise(resolve => resolve(true))),
@@ -178,6 +182,23 @@ describe('provider middleware', () => {
       }
 
       providerMiddleware(config)({ getState, dispatch })(next)(noEnableAction)
+    })
+  })
+
+  describe('SIGN_USER_DATA', () => {
+    it('should call UnlockProvider', () => {
+      expect.assertions(1)
+      const next = () => {
+        expect(config.providers['UNLOCK'].signUserData).toHaveBeenCalled()
+      }
+
+      providerMiddleware(config)({
+        getState: () => ({ provider: 'UNLOCK' }),
+        dispatch,
+      })(next)({
+        type: SIGN_USER_DATA,
+        data: {},
+      })
     })
   })
 })
