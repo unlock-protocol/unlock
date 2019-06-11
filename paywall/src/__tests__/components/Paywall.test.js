@@ -12,6 +12,7 @@ import {
 } from '../../paywall-builder/constants'
 import { TRANSACTION_TYPES } from '../../constants'
 import useOptimism from '../../hooks/useOptimism'
+import configure from '../../config'
 
 jest.useFakeTimers()
 jest.mock('../../hooks/useOptimism', () => {
@@ -115,7 +116,8 @@ describe('Paywall', () => {
       transactions,
     }
     store = createUnlockStore(state)
-    config = { providers: [], isInIframe: true, requiredConfirmations: 12 }
+    config = configure()
+    config.isInIframe = true
     fakeWindow = {
       location: {
         pathname: `/${lock.address}`,

@@ -91,7 +91,7 @@ export const Overlay = ({
       postMessage(POST_MESSAGE_GET_PESSIMISTIC)
       bigBody()
     }
-  }, [optimism.current, keyStatus])
+  }, [keyStatus, optimism, postMessage, smallBody, bigBody])
   if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
     return null
   }

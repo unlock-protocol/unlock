@@ -1,13 +1,17 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
-
+import configure from '../../../config'
+import { ConfigContext } from '../../../utils/withConfig'
 import { mapDispatchToProps, Lock } from '../../../components/lock/Lock'
 import { purchaseKey } from '../../../actions/key'
 import usePurchaseKey from '../../../hooks/usePurchaseKey'
 import createUnlockStore from '../../../createUnlockStore'
 
 jest.mock('../../../hooks/usePurchaseKey')
+
+const ConfigProvider = ConfigContext.Provider
+
 describe('Lock', () => {
   describe('mapDispatchToProps', () => {
     it('should return a purchaseKey function which when invoked dispatches purchaseKey and invokes showModal', () => {
@@ -28,11 +32,6 @@ describe('Lock', () => {
 
   describe('usePurchaseKey is called for purchases', () => {
     let purchase
-    const config = {
-      isInIframe: true,
-      isServer: false,
-      requiredConfirmations: 12,
-    }
 
     const lock = {
       address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
@@ -49,23 +48,27 @@ describe('Lock', () => {
           address: '0x123',
         },
       }
-      const store = createUnlockStore(state)
+      const config = configure()
+      config.isInIframe = true
 
+      const store = createUnlockStore(state)
       usePurchaseKey.mockImplementation(() => purchase)
       return rtl.render(
         <Provider store={store}>
-          <Lock
-            lock={lock}
-            transaction={null}
-            lockKey={null}
-            purchaseKey={purchaseKey}
-            config={config}
-            hideModal={() => {}}
-            showModal={() => {}}
-            openInNewWindow={openInNewWindow}
-            requiredConfirmations={12}
-            keyStatus="none"
-          />
+          <ConfigProvider value={config}>
+            <Lock
+              lock={lock}
+              transaction={null}
+              lockKey={null}
+              purchaseKey={purchaseKey}
+              config={config}
+              hideModal={() => {}}
+              showModal={() => {}}
+              openInNewWindow={openInNewWindow}
+              requiredConfirmations={12}
+              keyStatus="none"
+            />
+          </ConfigProvider>
         </Provider>
       )
     }

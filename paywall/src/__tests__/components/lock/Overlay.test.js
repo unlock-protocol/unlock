@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
-
+import configure from '../../../config'
 import { SHOW_MODAL, HIDE_MODAL } from '../../../actions/modal'
 
 import Overlay, {
@@ -190,11 +190,11 @@ describe('Overlay', () => {
 
     it('displays lock when there is no error', () => {
       expect.assertions(3)
+      let config = configure()
+      config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: false, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -223,11 +223,11 @@ describe('Overlay', () => {
 
     it('displays error, headline, and flag when there is an error', () => {
       expect.assertions(3)
+      let config = configure()
+      config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: 'foobar', errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -256,14 +256,14 @@ describe('Overlay', () => {
 
     it('displays lock when the error is missing account', () => {
       expect.assertions(3)
+      let config = configure()
+      config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
           <ErrorProvider
             value={{ error: FATAL_NO_USER_ACCOUNT, errorMetadata: {} }}
           >
-            <ConfigProvider
-              value={{ requiredConfirmations: 12, isInIframe: true }}
-            >
+            <ConfigProvider value={config}>
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
@@ -333,11 +333,12 @@ describe('Overlay', () => {
       expect.assertions(1)
 
       const store = createUnlockStore(state)
+      let config = configure()
+      config.isInIframe = true
+
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: null, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -364,11 +365,12 @@ describe('Overlay', () => {
 
       state.transactions.transaction.confirmations = 13
       const store = createUnlockStore(state)
+      let config = configure()
+      config.isInIframe = true
+
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: null, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -405,17 +407,15 @@ describe('Overlay', () => {
           postMessage: jest.fn(),
         },
       }
+      let config = configure()
+      config.isInIframe = true
+      config.isServer = false
+
       rtl.act(() => {
         rtl.render(
           <Provider store={store}>
             <WindowContext.Provider value={fakeWindow}>
-              <ConfigProvider
-                value={{
-                  requiredConfirmations: 12,
-                  isInIframe: true,
-                  isServer: false,
-                }}
-              >
+              <ConfigProvider value={config}>
                 <ErrorProvider value={{ error: null, errorMetadata: {} }}>
                   <Overlay
                     scrollPosition={0}
@@ -458,13 +458,15 @@ describe('Overlay', () => {
           postMessage: jest.fn(),
         },
       }
+
+      let config = configure()
+      config.isInIframe = true
+
       rtl.act(() => {
         rtl.render(
           <WindowContext.Provider value={fakeWindow}>
             <Provider store={store}>
-              <ConfigProvider
-                value={{ requiredConfirmations: 12, isInIframe: true }}
-              >
+              <ConfigProvider value={config}>
                 <ErrorProvider value={{ error: null, errorMetadata: {} }}>
                   <Overlay
                     scrollPosition={0}
@@ -538,11 +540,12 @@ describe('Overlay', () => {
       expect.assertions(2)
 
       const store = createUnlockStore()
+      let config = configure()
+      config.isInIframe = true
+
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: null, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -573,11 +576,12 @@ describe('Overlay', () => {
       expect.assertions(2)
 
       const store = createUnlockStore(state)
+      let config = configure()
+      config.isInIframe = true
+
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: null, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -596,7 +600,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100k ETH')).not.toBeNull()
+      expect(wrapper.getByText('100k Eth')).not.toBeNull()
       expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
     })
 
@@ -605,11 +609,12 @@ describe('Overlay', () => {
 
       state.transactions.transaction.confirmations = 123
       const store = createUnlockStore(state)
+      let config = configure()
+      config.isInIframe = true
+
       const wrapper = rtl.render(
         <Provider store={store}>
-          <ConfigProvider
-            value={{ requiredConfirmations: 12, isInIframe: true }}
-          >
+          <ConfigProvider value={config}>
             <ErrorProvider value={{ error: null, errorMetadata: {} }}>
               <Overlay
                 scrollPosition={0}
@@ -628,7 +633,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100k ETH')).not.toBeNull()
+      expect(wrapper.getByText('100k Eth')).not.toBeNull()
       expect(
         wrapper.getByText('Purchase confirmed, content unlocked!')
       ).not.toBeNull()

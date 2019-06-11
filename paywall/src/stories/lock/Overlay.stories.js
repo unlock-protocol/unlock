@@ -7,6 +7,7 @@ import { GlobalErrorContext } from '../../utils/GlobalErrorProvider'
 import { FATAL_WRONG_NETWORK, FATAL_NO_USER_ACCOUNT } from '../../errors'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
+import configure from '../../config'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
@@ -22,10 +23,7 @@ const fakeWindow = {
   document: { body: { style: {} } },
 }
 
-const config = {
-  isInIframe: true,
-  requiredConfirmations: 12,
-}
+const config = configure()
 
 const store = createUnlockStore({
   currency: {
