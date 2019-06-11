@@ -4,15 +4,35 @@ import * as rtl from 'react-testing-library'
 import { BalanceProvider } from '../../../components/helpers/BalanceProvider'
 
 describe('BalanceProvider Component', () => {
-  function renderIt({ amount, conversion = { USD: 195.99 }, render }) {
+  function renderIt({
+    amount,
+    conversion = { USD: 195.99 },
+    convertCurrency = true,
+    render,
+  }) {
     return rtl.render(
       <BalanceProvider
         amount={amount}
         conversion={conversion}
         render={render}
+        convertCurrency={convertCurrency}
       />
     )
   }
+
+  it('does not convert is convertCurrency is false', () => {
+    expect.assertions(2)
+    renderIt({
+      amount: null,
+      conversion: {},
+      convertCurrency: false,
+      render: (ethValue, fiatValue) => {
+        expect(ethValue).toEqual(' - ')
+        expect(fiatValue).toEqual(' - ')
+      },
+    })
+  })
+
   it('renders with - when amount is null (probably unset)', () => {
     expect.assertions(2)
     renderIt({
