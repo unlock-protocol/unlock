@@ -212,7 +212,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100k Eth')).not.toBeNull()
       expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
         wrapper.queryByText(
@@ -245,7 +245,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.queryByText('100000.00 Eth')).toBeNull()
+      expect(wrapper.queryByText('100k Eth')).toBeNull()
       expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
         wrapper.queryByText(
@@ -281,7 +281,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100k Eth')).not.toBeNull()
       expect(wrapper.getByText('Powered by')).not.toBeNull()
       expect(
         wrapper.getByText(
@@ -561,7 +561,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100000.00 Eth')).not.toBeNull()
+      expect(wrapper.getByText('100k Eth')).not.toBeNull()
       expect(
         wrapper.getByText(
           'You have reached your limit of free articles. Please purchase access'
@@ -596,7 +596,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
+      expect(wrapper.getByText('100k ETH')).not.toBeNull()
       expect(wrapper.getByText('Purchase pending...')).not.toBeNull()
     })
 
@@ -628,7 +628,7 @@ describe('Overlay', () => {
         </Provider>
       )
 
-      expect(wrapper.getByText('100000.00 ETH')).not.toBeNull()
+      expect(wrapper.getByText('100k ETH')).not.toBeNull()
       expect(
         wrapper.getByText('Purchase confirmed, content unlocked!')
       ).not.toBeNull()
