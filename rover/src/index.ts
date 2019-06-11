@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+import { config } from 'dotenv'
 import { ethers } from 'ethers'
 import { createConnection } from 'typeorm'
 import RoverEmitter from './roverEmitter'
 import { Storage } from './storage'
 import transaction from './handler/transaction'
 import { blockHandler } from './handler/block'
-const config = require('../config/config')
+import * as path from 'path'
 
-async function main(provider, emitter) {
-  let connection = await createConnection(config)
+async function main(provider, emitter, configuration) {
+  let connection = await createConnection(configuration)
   let storage = new Storage(connection.manager)
 
   provider.on('block', async blockNumber => {
@@ -28,7 +29,9 @@ async function main(provider, emitter) {
   emitter.on('registration', () => {})
 }
 
-let emitter = new RoverEmitter()
-let provider = new ethers.providers.JsonRpcProvider(config.provider_uri)
+config({ path: path.resolve(process.cwd(), '.env') })
+let configuration = require('../config/config')
 
-main(provider, emitter)
+let emitter = new RoverEmitter()
+let provider = new ethers.providers.JsonRpcProvider(configuration.provider_uri)
+main(provider, emitter, configuration)
