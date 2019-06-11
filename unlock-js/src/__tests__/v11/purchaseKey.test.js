@@ -26,7 +26,7 @@ describe('v11', () => {
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
 
-    async function nockBeforeEach() {
+    async function nockBeforeEach(purchaseForOptions = {}) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV11.PublicLock,
@@ -44,7 +44,7 @@ describe('v11', () => {
         functionName: 'purchaseFor',
         signature: 'address',
         nock,
-        value: keyPrice,
+        ...purchaseForOptions,
       })
 
       const {
@@ -63,7 +63,7 @@ describe('v11', () => {
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(2)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupSuccess()
 
       walletService._handleMethodCall = jest.fn(() =>
@@ -90,7 +90,7 @@ describe('v11', () => {
     it('should call approveTransfer when the lock is an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: 0 })
       setupSuccess()
 
       const erc20Address = '0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c'
@@ -132,7 +132,7 @@ describe('v11', () => {
     it('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupSuccess()
 
       // This is very confusing!
@@ -159,7 +159,7 @@ describe('v11', () => {
       expect.assertions(1)
 
       const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupFail(error)
 
       walletService.on('error', error => {
