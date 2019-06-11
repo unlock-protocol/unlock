@@ -1,5 +1,9 @@
 # Changes
 
+## NEXT VERSION
+
+- erc20 transfer approval returns immediately
+
 ## 0.2.9
 
 - Fixing approvals
