@@ -1,6 +1,5 @@
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
-import UnlockUser from '../structured_data/unlockUser'
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -27,12 +26,6 @@ const key = {
 const publicKey = '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
 const password = 'foo'
 const emailAddress = 'geoff@bitconnect.gov'
-
-const userData = UnlockUser.build({
-  emailAddress,
-  publicKey,
-  passwordEncryptedPrivateKey: key,
-})
 
 describe('Unlock Provider', () => {
   let provider
@@ -68,24 +61,42 @@ describe('Unlock Provider', () => {
     })
   })
 
+  describe('signing data', () => {
+    describe('signUserData', () => {
+      it('should sign an object with all fields passed', () => {
+        expect.assertions(1)
+        const input = {
+          emailAddress,
+          publicKey,
+          passwordEncryptedPrivateKey: key,
+        }
+
+        const output = provider.signUserData(input)
+        // sigutil seems to downcase things
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+
+      it('should also sign an object with default values when not everything is passed', () => {
+        expect.assertions(1)
+        const input = {}
+
+        const output = provider.signUserData(input)
+        // sigutil seems to downcase things
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
+  })
+
   describe('implemented JSON-RPC calls', () => {
     it('should respond to eth_accounts with an array containing only `this.wallet.address` after being initialized', async () => {
       expect.assertions(2)
       const accounts = await provider.send('eth_accounts')
       expect(accounts).toHaveLength(1)
       expect(accounts[0]).toEqual(publicKey)
-    })
-
-    it('should respond to eth_signTypedData with a valid signature', async () => {
-      expect.assertions(1)
-      const sig = await provider.send('eth_signTypedData', [
-        'account',
-        { data: userData },
-      ])
-      // sigutil seems to downcase things
-      expect(sigUtil.recoverTypedSignature({ data: userData, sig })).toEqual(
-        publicKey.toLowerCase()
-      )
     })
   })
 })
