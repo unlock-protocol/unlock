@@ -22,10 +22,11 @@ export default function withConfig(Component) {
     )
   }
 
-  function mapStateToProps(state) {
+  // We do not overwite existing props if any!
+  function mapStateToProps(state, props) {
     return {
-      network: state.network,
-      account: state.account,
+      network: props.network || state.network,
+      account: props.account || state.account,
     }
   }
 

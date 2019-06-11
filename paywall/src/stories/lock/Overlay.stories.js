@@ -31,6 +31,11 @@ const store = createUnlockStore({
   },
 })
 
+const account = {
+  address: '0x123',
+  balance: '123',
+}
+
 const render = (
   locks,
   errors = { error: false, errorMetadata: {} },
@@ -97,7 +102,7 @@ const render = (
               expiration:
                 new Date('January 30, 3000, 00:00:00').getTime() / 1000,
             }}
-            account="account"
+            account={account}
           />
         </ErrorProvider>
       </WindowProvider>
