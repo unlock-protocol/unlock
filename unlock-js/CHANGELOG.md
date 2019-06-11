@@ -1,5 +1,9 @@
 # Changes
 
+## 0.2.9
+
+- Fixing approvals
+
 ## 0.2.8
 
 - Approving the right amount when using an ERC20 lock
