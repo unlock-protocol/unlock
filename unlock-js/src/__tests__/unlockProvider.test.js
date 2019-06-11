@@ -1,5 +1,6 @@
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+import UnlockUser from '../structured_data/unlockUser'
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -25,48 +26,40 @@ const key = {
 }
 const publicKey = '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
 const password = 'foo'
+const emailAddress = 'geoff@bitconnect.gov'
 
-const userData = {
-  types: {
-    EIP712Domain: [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-      { name: 'salt', type: 'bytes32' },
-    ],
-    User: [
-      { name: 'emailAddress', type: 'string' },
-      { name: 'publicKey', type: 'address' },
-      { name: 'passwordEncryptedPrivateKey', type: 'string' },
-    ],
-  },
-  domain: {
-    name: 'Unlock',
-    version: '1',
-  },
-  primaryType: 'User',
-  message: {
-    user: {
-      emailAddress: 'geoff@bitconnect.gov',
-      publicKey: publicKey,
-      passwordEncryptedPrivateKey: key,
-    },
-  },
-}
+const userData = UnlockUser.build({
+  emailAddress,
+  publicKey,
+  passwordEncryptedPrivateKey: key,
+})
 
 describe('Unlock Provider', () => {
   let provider
   beforeEach(async () => {
     const readOnlyProvider = 'http://localhost:8545'
     provider = new UnlockProvider({ readOnlyProvider })
-    await provider.connect({ key, password })
+    await provider.connect({ key, password, emailAddress })
   })
 
   describe('object properties', () => {
     it('should have a property `isUnlock` that is set to `true`', () => {
       expect.assertions(1)
       expect(provider.isUnlock).toBeTruthy()
+    })
+
+    it('should have a property `wallet` that is set to an ethers wallet', () => {
+      expect.assertions(1)
+      expect(provider.wallet).toEqual(
+        expect.objectContaining({
+          address: publicKey,
+        })
+      )
+    })
+
+    it('should have a property `emailAddress` that is set to the provided email address', () => {
+      expect.assertions(1)
+      expect(provider.emailAddress).toEqual(emailAddress)
     })
   })
 
