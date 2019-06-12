@@ -139,7 +139,6 @@ contract('reports / gas', accounts => {
     const grantKeys = await getGasFor(
       lock.grantKeys([accounts[5], accounts[6]], 9999999999)
     )
-    const grantKey = await getGasFor(lock.grantKey(accounts[8], 9999999999))
 
     // Put some more money back in
     await lock.purchaseFor(accounts[1], {
@@ -194,7 +193,6 @@ contract('reports / gas', accounts => {
     expireKeyFor: ${expireKeyFor.toFormat()}
     destroyLock: ${destroyLockEth.toFormat()} ETH / ${destroyLockErc20.toFormat()} ERC20
     disableLock: ${disableLock.toFormat()}
-    grantKey: ${grantKey.toFormat()}
     grantKeys: ${grantKeys.toFormat()}
     renounceOwnership: ${renounceOwnership.toFormat()}
     transferOwnership: ${transferOwnership.toFormat()}
