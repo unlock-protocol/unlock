@@ -1,5 +1,6 @@
 {
   "timezone": "America/Los_Angeles",
+  "schedule": ["before 3am"],
   "extends": [
     "config:base",
     ":prHourlyLimitNone",
@@ -7,10 +8,6 @@
     ":pinVersions"
   ],
   "packageRules": [
-    {
-      "packagePatterns": ["*"],
-      "schedule": ["before 3am"]
-    },
     {
       "packageNames": ["unlock-js"],
       "schedule": ["at any time"]
