@@ -137,7 +137,7 @@ contract('reports / gas', accounts => {
     const updateKeyPrice = await getGasFor(lock.updateKeyPrice(12))
 
     const grantKeys = await getGasFor(
-      lock.grantKeys([accounts[5], accounts[6]], 9999999999)
+      lock.grantKeys([accounts[5], accounts[6]], [9999999999])
     )
 
     // Put some more money back in
