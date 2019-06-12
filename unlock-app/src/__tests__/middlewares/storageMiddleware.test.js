@@ -362,21 +362,44 @@ describe('Storage middleware', () => {
   })
 
   describe('CHANGE_PASSWORD', () => {
-    let passwordEncryptedPrivateKey
+    const encryptedPrivateKey = {
+      version: 3,
+      id: 'edbe0942-593b-4027-8688-07b7d3ec56c5',
+      address: '0272742cbe9b4d4c81cffe8dfc0c33b5fb8893e5',
+      crypto: {
+        ciphertext:
+          '6f2a3ed499a2962cc48e6f7f0a90a0c817c83024cc4878f624ad251fccd0b706',
+        cipherparams: { iv: '69f031944591eed34c4d4f5841d283b0' },
+        cipher: 'aes-128-ctr',
+        kdf: 'scrypt',
+        kdfparams: {
+          dklen: 32,
+          salt:
+            '5ac866336768f9613a505acd18dab463f4d10152ffefba5772125f5807539c36',
+          n: 8192,
+          r: 8,
+          p: 1,
+        },
+        mac: 'cc8efad3b534336ecffc0dbf6f51fd558301873d322edc6cbc1c9398ee0953ec',
+      },
+    }
     const oldPassword = 'guest'
-    beforeEach(async () => {
-      const info = await createAccountAndPasswordEncryptKey(oldPassword)
-      passwordEncryptedPrivateKey = info.passwordEncryptedPrivateKey
-    })
 
     it('should dispatch a new user object to be signed', async () => {
       expect.assertions(1)
       const dispatch = jest.fn()
+      const emailAddress = 'zapp@brannigan.io'
+      const storageService = {
+        getUserPrivateKey: async () => {
+          return encryptedPrivateKey
+        },
+      }
 
       await changePassword({
         oldPassword,
         newPassword: 'visitor',
-        passwordEncryptedPrivateKey,
+        emailAddress,
+        storageService,
         dispatch,
       })
 

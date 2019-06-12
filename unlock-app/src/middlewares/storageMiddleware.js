@@ -28,9 +28,21 @@ import { setError } from '../actions/error'
 export async function changePassword({
   oldPassword,
   newPassword,
-  passwordEncryptedPrivateKey,
+  emailAddress,
+  storageService,
   dispatch,
 }) {
+  let passwordEncryptedPrivateKey
+  try {
+    passwordEncryptedPrivateKey = await storageService.getUserPrivateKey(
+      emailAddress
+    )
+  } catch (e) {
+    dispatch(
+      setError(Storage.Warning('Could not retrieve encrypted private key.'))
+    )
+    return
+  }
   try {
     const newEncryptedKey = await reEncryptPrivateKey(
       passwordEncryptedPrivateKey,
@@ -173,16 +185,14 @@ const storageMiddleware = config => {
         if (action.type === CHANGE_PASSWORD) {
           const { oldPassword, newPassword } = action
           const {
-            userDetails: { key, email },
-            account: { address },
+            account: { emailAddress },
           } = getState()
 
           changePassword({
             oldPassword,
             newPassword,
-            passwordEncryptedPrivateKey: key,
-            publicKey: address,
-            emailAddress: email,
+            emailAddress,
+            storageService,
             dispatch,
           })
         }
