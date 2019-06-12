@@ -22,53 +22,22 @@ contract MixinPurchase is
   using SafeMath for uint;
 
   /**
-  * @dev Purchase function, public version, with no referrer.
-  * @param _recipient address of the recipient of the purchased key
-  */
-  function purchaseFor(
-    address _recipient
-  )
-    external
-    payable
-    onlyIfAlive
-  {
-    return _purchaseFor(_recipient, address(0));
-  }
-
-  /**
-  * @dev Purchase function, public version, with referrer.
+  * @dev Purchase function
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
-  */
-  function purchaseForFrom(
-    address _recipient,
-    address _referrer
-  )
-    external
-    payable
-    onlyIfAlive
-    hasValidKey(_referrer)
-  {
-    return _purchaseFor(_recipient, _referrer);
-  }
-
-  /**
-  * @dev Purchase function: this lets a user purchase a key from the lock for another user
-  * @param _recipient address of the recipient of the purchased key
   * This will fail if
   *  - the keyReleaseMechanism is private
   *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
   *  - the amount value is smaller than the price
   *  - the recipient already owns a key
-  * TODO: next version of solidity will allow for message to be added to require.
   */
-  function _purchaseFor(
+  function purchase(
     address _recipient,
     address _referrer
-  )
-    private
-    notSoldOut()
-  { // solhint-disable-line function-max-lines
+  ) external payable
+    onlyIfAlive
+    notSoldOut
+  {
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
     // Let's get the actual price for the key from the Unlock smart contract
@@ -106,7 +75,7 @@ contract MixinPurchase is
       unlockProtocol.recordConsumedDiscount(discount, tokens);
     }
 
-    unlockProtocol.recordKeyPurchase(netPrice, _referrer);
+    unlockProtocol.recordKeyPurchase(netPrice, getHasValidKey(_referrer) ? _referrer : address(0));
 
     // trigger event
     emit Transfer(
