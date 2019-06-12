@@ -22,7 +22,7 @@ contract('Lock / grantKeys', accounts => {
   describe('can grant key(s)', () => {
     describe('can grant a key for a new user', () => {
       before(async () => {
-        tx = await lock.grantKey(keyOwner, validExpirationTimestamp, {
+        tx = await lock.grantKeys([keyOwner], [validExpirationTimestamp], {
           from: lockOwner,
         })
       })
@@ -46,7 +46,7 @@ contract('Lock / grantKeys', accounts => {
       const extendedExpiration = validExpirationTimestamp + 100
 
       before(async () => {
-        tx = await lock.grantKey(keyOwner, extendedExpiration, {
+        tx = await lock.grantKeys([keyOwner], [extendedExpiration], {
           from: lockOwner,
         })
       })
@@ -66,25 +66,16 @@ contract('Lock / grantKeys', accounts => {
       })
     })
 
-    describe('can bulk grant keys using the same expiration date', () => {
+    describe('bulk grant keys', () => {
       const keyOwnerList = [accounts[3], accounts[4], accounts[5]]
 
-      before(async () => {
-        tx = await lock.grantKeys(keyOwnerList, validExpirationTimestamp, {
-          from: lockOwner,
-        })
-      })
-
-      it('should acknowledge that user owns key', async () => {
-        for (var i = 0; i < keyOwnerList.length; i++) {
-          assert.notEqual(await lock.getTokenIdFor.call(keyOwnerList[i]), 0)
-        }
-      })
-
-      it('getHasValidKey is true', async () => {
-        for (var i = 0; i < keyOwnerList.length; i++) {
-          assert.equal(await lock.getHasValidKey.call(keyOwnerList[i]), true)
-        }
+      it('should fail to grant keys when expiration dates are missing', async () => {
+        await shouldFail(
+          lock.grantKeys(keyOwnerList, [validExpirationTimestamp], {
+            from: lockOwner,
+          }),
+          'invalid opcode'
+        )
       })
     })
 
@@ -120,14 +111,14 @@ contract('Lock / grantKeys', accounts => {
   describe('should fail', () => {
     it('should fail to revoke a key', async () => {
       await shouldFail(
-        lock.grantKey(keyOwner, 42, { from: lockOwner }),
+        lock.grantKeys([keyOwner], [42], { from: lockOwner }),
         'ALREADY_OWNS_KEY'
       )
     })
 
     it('should fail to grant key to the 0 address', async () => {
       await shouldFail(
-        lock.grantKey(Web3Utils.padLeft(0, 40), validExpirationTimestamp, {
+        lock.grantKeys([Web3Utils.padLeft(0, 40)], [validExpirationTimestamp], {
           from: lockOwner,
         }),
         'INVALID_ADDRESS'
@@ -136,7 +127,7 @@ contract('Lock / grantKeys', accounts => {
 
     it('should fail to reduce the time remaining on a key', async () => {
       await shouldFail(
-        lock.grantKey(keyOwner, validExpirationTimestamp - 1, {
+        lock.grantKeys([keyOwner], [validExpirationTimestamp - 1], {
           from: lockOwner,
         }),
         'ALREADY_OWNS_KEY'
@@ -145,7 +136,9 @@ contract('Lock / grantKeys', accounts => {
 
     it('should fail if called by someone other than the owner', async () => {
       await shouldFail(
-        lock.grantKey(keyOwner, validExpirationTimestamp, { from: accounts[0] })
+        lock.grantKeys([keyOwner], [validExpirationTimestamp], {
+          from: accounts[0],
+        })
       )
     })
   })

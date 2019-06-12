@@ -46,7 +46,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
-    await lock.grantKey(accounts[5], 999999999999, { from: accounts[0] })
+    await lock.grantKeys([accounts[5]], [999999999999], { from: accounts[0] })
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValueFor.call(accounts[5])
     )
@@ -54,7 +54,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    await locks['FREE'].grantKey(accounts[5], 999999999999, {
+    await locks['FREE'].grantKeys([accounts[5]], [999999999999], {
       from: accounts[0],
     })
     const estimatedRefund = new BigNumber(
@@ -131,7 +131,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('can cancel a free key', async () => {
-    await locks['FREE'].grantKey(accounts[1], 999999999999, {
+    await locks['FREE'].grantKeys([accounts[1]], [999999999999], {
       from: accounts[0],
     })
     const txObj = await locks['FREE'].cancelAndRefund({
