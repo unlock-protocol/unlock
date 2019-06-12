@@ -6,6 +6,8 @@ const models = require('../../src/models')
 
 const { User } = models
 
+let mockCreateSource = jest.fn()
+
 jest.mock('stripe', () => {
   return jest.fn().mockImplementation(() => {
     return {
@@ -14,6 +16,7 @@ jest.mock('stripe', () => {
           .fn()
           .mockResolvedValueOnce({ id: 'a valid customer id' })
           .mockRejectedValueOnce(new Error('unknown token')),
+        createSource: mockCreateSource,
       },
       charges: {
         create: jest
@@ -90,12 +93,27 @@ describe('PaymentProcessor', () => {
       })
     })
 
+    describe('when the user already has an existing stripe customer id', () => {
+      it("adds the card to the user's acceptable card", async () => {
+        expect.assertions(2)
+        let user = await paymentProcessor.updateUserPaymentDetails(
+          'tok_visa_2',
+          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
+        )
+
+        expect(mockCreateSource).toHaveBeenCalledWith('a valid customer id', {
+          source: 'tok_visa_2',
+        })
+        expect(user).toBe(true)
+      })
+    })
+
     describe('when the user can not be created', () => {
       it('returns false', async () => {
         expect.assertions(1)
         let user = await paymentProcessor.updateUserPaymentDetails(
           'tok_unknown',
-          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
+          '0xb76ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
         expect(user).toBe(false)
