@@ -70,8 +70,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     await shouldFail(
       lock.safeTransferFrom(accounts[5], nonCompliantContract, ID, {
         from: accounts[5],
-      }),
-      'NO_FALLBACK'
+      })
     )
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf.call(ID)

@@ -11,7 +11,6 @@ import './mixins/MixinGrantKeys.sol';
 import './mixins/MixinKeys.sol';
 import './mixins/MixinLockCore.sol';
 import './mixins/MixinLockMetadata.sol';
-import './mixins/MixinNoFallback.sol';
 import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
@@ -27,7 +26,6 @@ import './mixins/MixinTransfer.sol';
  */
 contract PublicLock is
   IERC721,
-  MixinNoFallback,
   ERC165,
   Ownable,
   ERC721Holder,
