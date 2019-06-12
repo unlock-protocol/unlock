@@ -42,6 +42,8 @@ contract('reports / gas', accounts => {
   })
 
   it('gas usage report', async () => {
+    const deployUnlock = await getGasFor(Unlock.new())
+
     const approve = await getGasFor(
       lock.approve(accounts[5], await lock.getTokenIdFor(accounts[0]))
     )
@@ -204,6 +206,7 @@ contract('reports / gas', accounts => {
     updateTransferFee: ${updateTransferFee.toFormat()}
     withdraw: ${withdrawEth.toFormat()} ETH / ${withdrawErc20.toFormat()} ERC20
   Unlock functions
+    deployUnlock: ${deployUnlock.toFormat()}
     createLock: ${createLock.toFormat()}
     setGlobalTokenSymbol: ${setGlobalTokenSymbol.toFormat()}
     setGlobalBaseURI: ${setGlobalBaseTokenURI.toFormat()}`)
@@ -211,7 +214,10 @@ contract('reports / gas', accounts => {
 })
 
 async function getGasFor(tx) {
-  const result = await tx
+  let result = await tx
+  if (result.transactionHash) {
+    result = await web3.eth.getTransactionReceipt(result.transactionHash)
+  }
   const receipt = result.receipt || result
   return new BigNumber(receipt.gasUsed)
 }
