@@ -5,6 +5,11 @@
     <title>Lorem Ipsum Daily</title>
     <script src="./hookupGanache.js"></script>
     <script>
+      // we use 3 parameters from query:
+      // logindelay - how many seconds to delay being logged in
+      // provider - the ganache URI
+      // paywall - the paywall URI
+      // locks - an array of locks, format described below
       var us = new URL(document.location)
       const loginafter = +us.searchParams.get('logindelay') || 0
       if (!loginafter) {
@@ -23,12 +28,12 @@
     <script>
       var us = new URL(document.location)
       // this is for integration testing only, so we do not do any validation
-      // format is an object like:
-      // {
-      //   '0x....': { name: '...' },
-      //   '0x....': { name: '...' },
-      //   '0x....': { name: '...' },
-      // }
+      // format is an array like:
+      // [
+      //   { name: '...', address: '0x....'},
+      //   { name: '...', address: '0x....'},
+      //   { name: '...', address: '0x....'},
+      // ]
       var locks = JSON.parse(us.searchParams.get('locks'))
 
       var unlockProtocolConfig = {
