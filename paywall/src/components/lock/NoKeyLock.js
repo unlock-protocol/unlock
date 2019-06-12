@@ -9,6 +9,10 @@ import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
 
+// WARNING: if you use any new fields of a lock here
+// it *must* be added to validation in isValidLock
+// src/utils/validators.js or it opens a potential
+// security hole
 export const NoKeyLock = ({
   account,
   lock,

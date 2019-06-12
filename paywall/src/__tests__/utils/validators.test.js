@@ -1017,6 +1017,35 @@ describe('Form field validators', () => {
           })
         ).toBe(false)
       })
+
+      it('should fail on invalid lock currencyContractAddress', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: 9,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: undefined,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: {},
+          })
+        ).toBe(false)
+      })
     })
 
     describe('valid locks', () => {
@@ -1037,8 +1066,29 @@ describe('Form field validators', () => {
             outstandingKeys: 0,
             balance: '0',
             owner: '0x1234567890123456789012345678901234567890',
+            publicLockVersion: 4,
             currencyContractAddress:
               '0x9876543210987654321098765432109876543210',
+            some: 'random',
+            fields: 'we do not know about',
+          })
+        ).toBe(true)
+      })
+
+      it('should accept valid currency contract address', () => {
+        expect.assertions(2)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress:
+              '0x9876543210987654321098765432109876543210',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: null,
           })
         ).toBe(true)
       })
@@ -1102,12 +1152,18 @@ describe('Form field validators', () => {
     })
 
     it('should fail on any invalid locks', () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       expect(
         validators.isValidLocks({
           [validLock.address]: validLock,
           invalidLock,
+        })
+      ).toBe(false)
+      expect(
+        validators.isValidLocks({
+          [validLock.address]: invalidLock,
+          [validLock.address.replace('1', '2')]: invalidLock,
         })
       ).toBe(false)
     })
