@@ -1,13 +1,15 @@
 {
   "extends": [
     "config:base",
-    "rangeStrategy:pin",
-    "updateLockFiles:true",
-    "schedule:monthly",
     ":prHourlyLimitNone",
-    ":prConcurrentLimitNone"
+    ":prConcurrentLimitNone",
+    ":pinVersions"
   ],
   "packageRules": [
+    {
+      "packagePatterns": ["*"],
+      "schedule": ["before 3am on the first day of the month"]
+    },
     {
       "packageNames": ["unlock-js"],
       "schedule": ["at any time"]
