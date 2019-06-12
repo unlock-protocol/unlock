@@ -20,11 +20,11 @@ export const isPositiveNumber = val => {
 }
 
 export const isAccountOrNull = val => {
-  return val === null || val.match(ACCOUNT_REGEXP)
+  return val === null || (typeof val === 'string' && val.match(ACCOUNT_REGEXP))
 }
 
 export const isAccount = val => {
-  return val && val.match(ACCOUNT_REGEXP)
+  return val && typeof val === 'string' && val.match(ACCOUNT_REGEXP)
 }
 
 /**
@@ -114,14 +114,12 @@ export const isValidPaywallConfig = config => {
  *
  * No assertion on the types of the values is done here
  */
-function isValidObject(obj, validKeys, optionalKeys = []) {
+function isValidObject(obj, validKeys) {
   if (!obj || typeof obj !== 'object') return false
   const keys = Object.keys(obj)
 
-  if (keys.length > validKeys.length + optionalKeys.length) return false
-  if (keys.filter(key => !validKeys.includes(key)).length) {
-    if (optionalKeys.filter(key => !key.includes(key)).length) return false
-  }
+  if (keys.length < validKeys.length) return false
+  if (validKeys.filter(key => !keys.includes(key)).length) return false
   return true
 }
 
@@ -130,18 +128,14 @@ function isValidObject(obj, validKeys, optionalKeys = []) {
  */
 export const isValidKey = key => {
   if (
-    !isValidObject(
-      key,
-      [
-        'expiration',
-        'transactions',
-        'status',
-        'confirmations',
-        'owner',
-        'lock',
-      ],
-      ['id']
-    )
+    !isValidObject(key, [
+      'expiration',
+      'transactions',
+      'status',
+      'confirmations',
+      'owner',
+      'lock',
+    ])
   ) {
     return false
   }
@@ -195,24 +189,18 @@ export const isValidKey = key => {
  */
 export const isValidLock = lock => {
   if (
-    !isValidObject(
-      lock,
-      ['address', 'keyPrice', 'expirationDuration', 'key'],
-      [
-        'name',
-        'asOf',
-        'maxNumberOfKeys',
-        'outstandingKeys',
-        'balance',
-        'owner',
-        'currencyContractAddress',
-      ]
-    )
+    !isValidObject(lock, ['address', 'keyPrice', 'expirationDuration', 'key'])
   ) {
     return false
   }
 
   if (lock.hasOwnProperty('name') && typeof lock.name !== 'string') return false
+  if (
+    lock.hasOwnProperty('currencyContractAddress') &&
+    !isAccountOrNull(lock.currencyContractAddress)
+  ) {
+    return false
+  }
   if (typeof lock.address !== 'string' || !isAccount(lock.address)) return false
   if (typeof lock.keyPrice !== 'string' || !isDecimal(lock.keyPrice)) {
     return false

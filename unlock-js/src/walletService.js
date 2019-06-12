@@ -90,6 +90,9 @@ export default class WalletService extends UnlockService {
     let address = accounts[0]
 
     this.emit('account.changed', address)
+    if (this.provider.emailAddress) {
+      this.emit('account.updated', { emailAddress: this.provider.emailAddress })
+    }
     this.emit('ready')
     return Promise.resolve(address)
   }
@@ -163,26 +166,6 @@ export default class WalletService extends UnlockService {
       account,
       data,
       erc20Address
-    )
-  }
-
-  /**
-   * Triggers a transaction to withdraw some funds from the lock and assign them
-   * to the owner.
-   * TODO: REMOVE ME AS withdraw supports this
-   * @param {PropTypes.address} lock
-   * @param {PropTypes.address} account
-   * @param {string} ethAmount
-   * @param {Function} callback
-   */
-  async partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    // DEPRECATED ! [note I do not think we every used it anway...]
-    const version = await this.lockContractAbiVersion(lock)
-    return version.partialWithdrawFromLock.bind(this)(
-      lock,
-      account,
-      ethAmount,
-      callback
     )
   }
 

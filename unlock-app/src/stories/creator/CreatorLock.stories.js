@@ -6,6 +6,7 @@ import CreatorLock from '../../components/creator/CreatorLock'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionType } from '../../unlockTypes'
+import configure from '../../config'
 
 const lockWith = params => {
   const standardLock = {
@@ -76,9 +77,7 @@ const store = createUnlockStore({
   },
 })
 
-const config = {
-  requiredConfirmations: 12,
-}
+const config = configure()
 
 const ConfigProvider = ConfigContext.Provider
 
@@ -108,6 +107,18 @@ storiesOf('CreatorLock', module)
     const lock = lockWith({
       address: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
       transaction: 'deployedid',
+    })
+    return <CreatorLock lock={lock} edit={action('edit')} />
+  })
+  .add('Unknown ERC20 Lock', () => {
+    const lock = lockWith({
+      currencyContractAddress: '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
+    })
+    return <CreatorLock lock={lock} edit={action('edit')} />
+  })
+  .add('Known ERC20 Lock', () => {
+    const lock = lockWith({
+      currencyContractAddress: config.ERC20Contract.address,
     })
     return <CreatorLock lock={lock} edit={action('edit')} />
   })

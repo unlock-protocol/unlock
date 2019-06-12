@@ -45,7 +45,7 @@ export function Paywall({
   const window = useWindow()
   useEffect(() => {
     postMessage(POST_MESSAGE_READY)
-  }, []) // only send this once, on startup
+  }, [postMessage]) // only send this once, on startup
   const scrollPosition = useListenForPostMessage({
     type: POST_MESSAGE_SCROLL_POSITION,
     defaultValue: 0,
@@ -75,7 +75,7 @@ export function Paywall({
         }
       }
     }
-  }, [fullAccount, mainWindowAccount])
+  }, [fullAccount, mainWindowAccount, setAccount])
   useEffect(() => {
     if (locked) {
       postMessage(POST_MESSAGE_LOCKED)
@@ -87,13 +87,20 @@ export function Paywall({
       }
       smallBody(window.document.body)
     }
-  }, [locked])
+  }, [
+    account,
+    locked,
+    postMessage,
+    redirect,
+    window.document.body,
+    window.location.href,
+  ])
   useEffect(() => {
     if (!locked || !transaction) return
     if (transaction.status === 'pending' && redirect) {
       window.location.href = redirect + '#' + transaction.hash
     }
-  }, [transaction, locked, redirect])
+  }, [transaction, locked, redirect, window.location.href])
 
   return (
     <GlobalErrorProvider>

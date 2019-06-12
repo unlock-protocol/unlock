@@ -133,7 +133,6 @@ export const prepContract = ({
       networkId: 0,
       nonce: 0,
       value: utils.bigNumberify(encodedValue),
-      gasPrice: utils.bigNumberify(testParams.gas),
       gasLimit: utils.bigNumberify(testParams.gas),
       hash: transactionHash,
       wait: expect.any(Function),

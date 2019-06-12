@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import utils from './utils'
+import FastJsonRpcSigner from './FastJsonRpcSigner'
 
 // This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
@@ -37,16 +38,17 @@ export async function approveTransfer(
   value,
   provider
 ) {
+  // Using the FastJsonRpcSigner so that we immediately return and not have the user wait for the approval transaction
+  // to succeed.
+  // TODO: add test to ensure that this is actually retuning instantly?
+  const signer = new FastJsonRpcSigner(provider.getSigner())
+
   const contract = new ethers.Contract(
     erc20ContractAddress,
     ['function approve(address spender, uint256 value) returns (bool value)'],
-    provider.getSigner()
+    signer
   )
-  return contract.approve(lockContractAddress, approvalValue(value))
-}
-
-function approvalValue(value) {
-  return Math.ceil(value)
+  return contract.approve(lockContractAddress, value)
 }
 
 export default {

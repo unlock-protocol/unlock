@@ -6,24 +6,34 @@ import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
+import withConfig from '../../utils/withConfig'
+import { currencySymbolForLock } from '../../utils/locks'
 
+// WARNING: if you use any new fields of a lock here
+// it *must* be added to validation in isValidLock
+// src/utils/validators.js or it opens a potential
+// security hole
 export const NoKeyLock = ({
   account,
   lock,
   disabled,
   purchaseKey,
   lockKey,
+  config,
 }) => {
   const soldOut =
     lock.outstandingKeys >= lock.maxNumberOfKeys &&
     lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
 
+  // TODO: add support for balances of ERC20 which could be too low (the wallet actually should show that, so not a huge deal, but good to have!)
+  const tooExpensive =
+    account &&
+    !lock.currencyContractAddress &&
+    parseFloat(account.balance) <= parseFloat(lock.keyPrice)
+
   // When the lock is not disabled for other reasons (pending key on
   // other lock...), we need to ensure that the lock is disabled
   // when the lock is sold out or too expensive for the current account
-  const tooExpensive =
-    account && parseFloat(account.balance) <= parseFloat(lock.keyPrice)
-
   const disableClick = disabled || tooExpensive || soldOut
 
   let footerMessage = 'Purchase'
@@ -32,6 +42,10 @@ export const NoKeyLock = ({
   } else if (tooExpensive) {
     footerMessage = 'Insufficient funds'
   }
+
+  const convertCurrency = !lock.currencyContractAddress
+
+  let currency = currencySymbolForLock(lock, config)
 
   return (
     <Wrapper
@@ -43,21 +57,21 @@ export const NoKeyLock = ({
     >
       <LockHeader>{lock.name}</LockHeader>
       <BalanceProvider
+        convertCurrency={convertCurrency}
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <div>
-            <Body disabled={disabled}>
-              <EthPrice>{ethPrice} Eth</EthPrice>
-              <div>
-                <FiatPrice>${fiatPrice}</FiatPrice>
-                <Separator> | </Separator>
-                <ExpirationDuration>
-                  <Duration seconds={lock.expirationDuration} round />
-                </ExpirationDuration>
-              </div>
-              <Footer>{footerMessage}</Footer>
-            </Body>
-          </div>
+          <Body disabled={disabled}>
+            <EthPrice>
+              {ethPrice} {currency}
+            </EthPrice>
+            <div>
+              {convertCurrency && <FiatPrice>${fiatPrice}</FiatPrice>}
+              <ExpirationDuration>
+                <Duration seconds={lock.expirationDuration} round />
+              </ExpirationDuration>
+            </div>
+            <Footer>{footerMessage}</Footer>
+          </Body>
         )}
       />
     </Wrapper>
@@ -70,6 +84,7 @@ NoKeyLock.propTypes = {
   purchaseKey: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   lockKey: UnlockPropTypes.key,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 NoKeyLock.defaultProps = {
@@ -78,7 +93,7 @@ NoKeyLock.defaultProps = {
   lockKey: null,
 }
 
-export default NoKeyLock
+export default withConfig(NoKeyLock)
 
 const Wrapper = styled(LockWrapper)`
   cursor: ${props => (props.disabled ? 'not-allowed ' : 'pointer')};
@@ -111,14 +126,17 @@ const EthPrice = styled.div.attrs({
   font-weight: bold;
 `
 
-const FiatPrice = styled.span`
+const LockDetails = styled.span`
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 `
 
-const ExpirationDuration = styled(FiatPrice)``
-
-const Separator = styled.span`
-  color: var(--lightgrey);
+const FiatPrice = styled(LockDetails)`
+  ::after {
+    color: var(--lightgrey);
+    content: ' | ';
+  }
 `
+
+const ExpirationDuration = styled(LockDetails)``

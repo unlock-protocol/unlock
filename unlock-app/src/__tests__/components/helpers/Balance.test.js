@@ -79,7 +79,7 @@ describe('Balance Component', () => {
     it('shows the balance in thousands of dollars postfixed with k', () => {
       expect.assertions(2)
       const wrapper = renderIt(amount)
-      expect(wrapper.queryByText('2000.00')).not.toBeNull()
+      expect(wrapper.queryByText('2,000')).not.toBeNull()
       expect(wrapper.queryByText('392k')).not.toBeNull()
     })
   })
@@ -90,7 +90,7 @@ describe('Balance Component', () => {
     it('shows the balance in millions of dollars postfixed with m', () => {
       expect.assertions(2)
       const wrapper = renderIt(amount)
-      expect(wrapper.queryByText('20000.00')).not.toBeNull()
+      expect(wrapper.queryByText('20,000')).not.toBeNull()
       expect(wrapper.queryByText('3.9m')).not.toBeNull()
     })
   })
@@ -101,7 +101,7 @@ describe('Balance Component', () => {
     it('shows the balance in billions of dollars postfixed with b', () => {
       expect.assertions(2)
       const wrapper = renderIt(amount)
-      expect(wrapper.queryByText('20000000.00')).not.toBeNull()
+      expect(wrapper.queryByText('20m')).not.toBeNull()
       expect(wrapper.queryByText('3.9b')).not.toBeNull()
     })
   })
