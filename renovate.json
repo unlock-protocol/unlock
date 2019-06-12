@@ -8,7 +8,7 @@
   "packageRules": [
     {
       "packagePatterns": ["*"],
-      "schedule": ["monthly"]
+      "schedule": ["before 3am on the first day of the month"]
     },
     {
       "packageNames": ["unlock-js"],
