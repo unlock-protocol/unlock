@@ -19,6 +19,15 @@ export class PaymentProcessor {
     this.keyPricer = new KeyPricer()
   }
 
+  async findUserByPublicKey(publicKey: ethereumAddress) {
+    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+
+    return UserReference.findOne({
+      where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
+      include: [{ model: User, attributes: ['publicKey'] }],
+    })
+  }
+
   /**
    *  Updates the user associated with a given email address with the
    *  appropriate stripe customer id based on the provided token.
@@ -30,15 +39,16 @@ export class PaymentProcessor {
     token: string,
     publicKey: ethereumAddress
   ): Promise<boolean> {
-    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
-
     try {
-      let user = await UserReference.findOne({
-        where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
-        include: [{ model: User, attributes: ['publicKey'] }],
-      })
+      let user = await this.findUserByPublicKey(publicKey)
 
-      if (user) {
+      if (user && user.stripe_customer_id) {
+        await this.stripe.customers.createSource(user.stripe_customer_id, {
+          source: token,
+        })
+
+        return true
+      } else if (user && !user.stripe_customer_id) {
         let customer = await this.stripe.customers.create({
           email: user.emailAddress,
           source: token,
@@ -63,12 +73,7 @@ export class PaymentProcessor {
    */
   async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
     try {
-      let normalizedPublicKey = Normalizer.ethereumAddress(publicKey)
-
-      let user = await UserReference.findOne({
-        where: { publicKey: normalizedPublicKey },
-        include: [{ model: User, attributes: ['publicKey'] }],
-      })
+      let user = await this.findUserByPublicKey(publicKey)
 
       if (user && user.stripe_customer_id) {
         let charge = await this.stripe.charges.create({
