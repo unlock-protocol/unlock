@@ -1,5 +1,9 @@
 # Changes
 
+## 0.3.1
+- walletService now emits an `account.updated` event with an account's email
+  address if available
+
 ## 0.3.0
 
 - erc20 transfer approval returns immediately

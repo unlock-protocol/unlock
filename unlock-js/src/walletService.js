@@ -90,6 +90,9 @@ export default class WalletService extends UnlockService {
     let address = accounts[0]
 
     this.emit('account.changed', address)
+    if (this.provider.emailAddress) {
+      this.emit('account.updated', { emailAddress: this.provider.emailAddress })
+    }
     this.emit('ready')
     return Promise.resolve(address)
   }
