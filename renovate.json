@@ -1,4 +1,5 @@
 {
+  "timezone": "America/Los_Angeles",
   "extends": [
     "config:base",
     ":prHourlyLimitNone",
