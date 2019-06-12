@@ -21,11 +21,6 @@ import {
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
 } from '../../errors'
-import {
-  SIGN_DATA,
-  SIGNED_DATA,
-  SIGNATURE_ERROR,
-} from '../../actions/signature'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
 
 let mockConfig
@@ -614,63 +609,6 @@ describe('Wallet middleware', () => {
         '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
-  describe('SIGN_DATA', () => {
-    it('should invoke the walletService to sign the data and dispatch an event with the signature', () => {
-      expect.assertions(3)
-
-      const data = 'data to sign'
-      const signature = 'signature'
-
-      const { next, invoke, store } = create()
-      const action = {
-        type: SIGN_DATA,
-        data,
-      }
-      mockWalletService.signData = jest.fn((signer, data, callback) => {
-        return callback(null, signature)
-      })
-      invoke(action)
-      expect(mockWalletService.signData).toHaveBeenCalledWith(
-        store.getState().account.address,
-        data,
-        expect.any(Function)
-      )
-      expect(next).toHaveBeenCalledWith(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SIGNED_DATA,
-        data,
-        signature,
-      })
-    })
-
-    it('should invoke the walletService to sign the data and handle failures to sign', () => {
-      expect.assertions(3)
-
-      const data = 'data to sign'
-      const error = new Error('error')
-
-      const { next, invoke, store } = create()
-      const action = {
-        type: SIGN_DATA,
-        data,
-      }
-      mockWalletService.signData = jest.fn((signer, data, callback) => {
-        return callback(error)
-      })
-      invoke(action)
-      expect(mockWalletService.signData).toHaveBeenCalledWith(
-        store.getState().account.address,
-        data,
-        expect.any(Function)
-      )
-      expect(next).toHaveBeenCalledWith(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SIGNATURE_ERROR,
-        error,
-      })
     })
   })
 })

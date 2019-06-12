@@ -8,14 +8,14 @@ import { FATAL_MISSING_PROVIDER } from '../../errors'
 import { Application, LogIn } from '../../utils/Error'
 import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
+  SIGN_USER_DATA,
 } from '../../actions/user'
-import { setAccount } from '../../actions/accounts'
 
 const config = {
   providers: {
     UNLOCK: {
       isUnlock: true,
+      signUserData: jest.fn(() => ({ data: {}, sig: {} })),
     },
     NUNLOCK: {
       enable: jest.fn(() => new Promise(resolve => resolve(true))),
@@ -79,31 +79,6 @@ describe('provider middleware', () => {
       const info = await createAccountAndPasswordEncryptKey(password)
       key = info.passwordEncryptedPrivateKey
       address = info.address
-    })
-
-    it('should set the account and encrypted key in state', async () => {
-      expect.assertions(3)
-      const action = {
-        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-        key,
-        emailAddress,
-        password,
-      }
-      const unlockProvider = {
-        connect: async () => true,
-        wallet: {
-          address,
-        },
-      }
-      const dispatch = jest.fn()
-
-      await initializeUnlockProvider(action, unlockProvider, dispatch)
-      expect(dispatch).toHaveBeenNthCalledWith(1, setAccount({ address }))
-      expect(dispatch).toHaveBeenNthCalledWith(
-        2,
-        setEncryptedPrivateKey(key, emailAddress)
-      )
-      expect(dispatch).toHaveBeenNthCalledWith(3, providerReady())
     })
 
     it('should dispatch an error if it cannot decrypt', async () => {
@@ -207,6 +182,23 @@ describe('provider middleware', () => {
       }
 
       providerMiddleware(config)({ getState, dispatch })(next)(noEnableAction)
+    })
+  })
+
+  describe('SIGN_USER_DATA', () => {
+    it('should call UnlockProvider', () => {
+      expect.assertions(1)
+      const next = () => {
+        expect(config.providers['UNLOCK'].signUserData).toHaveBeenCalled()
+      }
+
+      providerMiddleware(config)({
+        getState: () => ({ provider: 'UNLOCK' }),
+        dispatch,
+      })(next)({
+        type: SIGN_USER_DATA,
+        data: {},
+      })
     })
   })
 })
