@@ -9,7 +9,7 @@ import {
   updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
-import { setAccount } from '../actions/accounts'
+import { setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
@@ -46,6 +46,10 @@ const walletMiddleware = config => {
       }
       return callback()
     }
+
+    walletService.on('account.updated', update => {
+      dispatch(updateAccount(update))
+    })
 
     /**
      * When an account was changed, we dispatch the corresponding action

@@ -9,7 +9,7 @@ import {
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
@@ -125,6 +125,25 @@ beforeEach(() => {
 })
 
 describe('Wallet middleware', () => {
+  it('should handle account.updated events triggered by the walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    const emailAddress = 'geoff@bitconnect.gov'
+    const update = {
+      emailAddress,
+    }
+
+    mockWalletService.emit('account.updated', update)
+
+    expect(store.dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: UPDATE_ACCOUNT,
+        update: {
+          emailAddress,
+        },
+      })
+    )
+  })
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
