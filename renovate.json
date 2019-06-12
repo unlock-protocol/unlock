@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "config:base",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+    ":pinVersions"
+  ],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 3am"],
+  "packageRules": [
+    {
+      "packageNames": ["unlock-js"],
+      "schedule": ["at any time"]
+    }
+  ]
+}

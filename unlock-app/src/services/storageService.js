@@ -9,7 +9,6 @@ export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   lockLookUp: 'lockLookUp.success',
-  storeLockDetails: 'storeLockDetails.success',
   updateLockDetails: 'updateLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
@@ -21,7 +20,6 @@ export const failure = {
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   lockLookUp: 'lockLookUp.failure',
-  storeLockDetails: 'storeLockDetails.failure',
   updateLockDetails: 'updateLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
@@ -110,30 +108,6 @@ export class StorageService extends EventEmitter {
       }
     } catch (error) {
       this.emit(failure.lockLookUp, error)
-    }
-  }
-
-  /**
-   * Store the details of the provide Lock. In the case of failure a rejected promise is
-   * returned to the caller.
-   *
-   * @param {*} lockDetails
-   * @param {*} token
-   */
-  async storeLockDetails(lockDetails, token) {
-    const opts = {}
-    if (token) {
-      // TODO: Token is no longer necessary here. Update this function and callsites.
-      opts.headers = this.genAuthorizationHeader(token)
-    }
-    try {
-      await axios.post(`${this.host}/lock`, lockDetails, opts)
-      this.emit(success.storeLockDetails, lockDetails.message.lock.address)
-    } catch (error) {
-      this.emit(failure.storeLockDetails, {
-        address: lockDetails.message.lock.address,
-        error,
-      })
     }
   }
 

@@ -4,6 +4,7 @@ import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import erc20 from '../../erc20'
+import Web3Utils from '../../utils'
 
 const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
@@ -25,7 +26,7 @@ describe('v10', () => {
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
 
-    async function nockBeforeEach() {
+    async function nockBeforeEach(purchaseForOptions = {}) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV10.PublicLock,
@@ -43,7 +44,7 @@ describe('v10', () => {
         functionName: 'purchaseFor',
         signature: 'address',
         nock,
-        value: keyPrice,
+        ...purchaseForOptions,
       })
 
       const {
@@ -62,7 +63,7 @@ describe('v10', () => {
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(2)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupSuccess()
 
       walletService._handleMethodCall = jest.fn(() =>
@@ -89,7 +90,7 @@ describe('v10', () => {
     it('should call approveTransfer when the lock is an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: 0 })
       setupSuccess()
 
       const erc20Address = '0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c'
@@ -108,6 +109,8 @@ describe('v10', () => {
         }
       )
 
+      const amountToApprove = Web3Utils.toDecimal(keyPrice, 18)
+
       await walletService.purchaseKey(
         lockAddress,
         owner,
@@ -120,7 +123,7 @@ describe('v10', () => {
       expect(erc20.approveTransfer).toHaveBeenCalledWith(
         erc20Address,
         lockAddress,
-        keyPrice,
+        amountToApprove,
         walletService.provider
       )
       await nock.resolveWhenAllNocksUsed()
@@ -129,7 +132,7 @@ describe('v10', () => {
     it('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupSuccess()
 
       // This is very confusing!
@@ -156,7 +159,7 @@ describe('v10', () => {
       expect.assertions(1)
 
       const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
+      await nockBeforeEach({ value: keyPrice })
       setupFail(error)
 
       walletService.on('error', error => {

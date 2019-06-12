@@ -42,6 +42,8 @@ contract('reports / gas', accounts => {
   })
 
   it('gas usage report', async () => {
+    const deployUnlock = await getGasFor(Unlock.new())
+
     const approve = await getGasFor(
       lock.approve(accounts[5], await lock.getTokenIdFor(accounts[0]))
     )
@@ -137,9 +139,8 @@ contract('reports / gas', accounts => {
     const updateKeyPrice = await getGasFor(lock.updateKeyPrice(12))
 
     const grantKeys = await getGasFor(
-      lock.grantKeys([accounts[5], accounts[6]], 9999999999)
+      lock.grantKeys([accounts[5], accounts[6]], [9999999999, 9999999999])
     )
-    const grantKey = await getGasFor(lock.grantKey(accounts[8], 9999999999))
 
     // Put some more money back in
     await lock.purchaseFor(accounts[1], {
@@ -194,7 +195,6 @@ contract('reports / gas', accounts => {
     expireKeyFor: ${expireKeyFor.toFormat()}
     destroyLock: ${destroyLockEth.toFormat()} ETH / ${destroyLockErc20.toFormat()} ERC20
     disableLock: ${disableLock.toFormat()}
-    grantKey: ${grantKey.toFormat()}
     grantKeys: ${grantKeys.toFormat()}
     renounceOwnership: ${renounceOwnership.toFormat()}
     transferOwnership: ${transferOwnership.toFormat()}
@@ -204,6 +204,7 @@ contract('reports / gas', accounts => {
     updateTransferFee: ${updateTransferFee.toFormat()}
     withdraw: ${withdrawEth.toFormat()} ETH / ${withdrawErc20.toFormat()} ERC20
   Unlock functions
+    deployUnlock: ${deployUnlock.toFormat()}
     createLock: ${createLock.toFormat()}
     setGlobalTokenSymbol: ${setGlobalTokenSymbol.toFormat()}
     setGlobalBaseURI: ${setGlobalBaseTokenURI.toFormat()}`)
@@ -211,7 +212,10 @@ contract('reports / gas', accounts => {
 })
 
 async function getGasFor(tx) {
-  const result = await tx
+  let result = await tx
+  if (result.transactionHash) {
+    result = await web3.eth.getTransactionReceipt(result.transactionHash)
+  }
   const receipt = result.receipt || result
   return new BigNumber(receipt.gasUsed)
 }

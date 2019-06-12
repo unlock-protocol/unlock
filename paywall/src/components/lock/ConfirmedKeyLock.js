@@ -16,37 +16,48 @@ import ConfirmedKey, {
 } from '../interface/buttons/overlay/ConfirmedKey'
 import { HoverFooter, NotHoverFooter } from './HoverFooters'
 import BalanceProvider from '../helpers/BalanceProvider'
+import withConfig from '../../utils/withConfig'
+import { currencySymbolForLock } from '../../utils/locks'
 
-const ConfirmedKeyLock = ({ lock, onClick }) => (
-  <LockWrapper lock={lock}>
-    <LockHeader>{lock.name}</LockHeader>
-    <Body onClick={onClick}>
-      <BalanceProvider
-        amount={lock.keyPrice}
-        render={(ethPrice, fiatPrice) => (
-          <React.Fragment>
-            <LockDetails>
-              <LockDetail bold>{ethPrice} ETH</LockDetail>
-              <LockDetail>${fiatPrice}</LockDetail>
-            </LockDetails>
-          </React.Fragment>
-        )}
-      />
-      <ConfirmedKey size="50px" onClick={onClick} />
-      <NotHoverFooter backgroundColor="var(--green)">
-        Payment Confirmed
-      </NotHoverFooter>
-      <HoverFooter backgroundColor="var(--green)">Go to Content</HoverFooter>
-    </Body>
-  </LockWrapper>
-)
+const ConfirmedKeyLock = ({ lock, onClick, config }) => {
+  const convertCurrency = !lock.currencyContractAddress
+  let currency = currencySymbolForLock(lock, config)
+
+  return (
+    <LockWrapper lock={lock}>
+      <LockHeader>{lock.name}</LockHeader>
+      <Body onClick={onClick}>
+        <BalanceProvider
+          convertCurrency={convertCurrency}
+          amount={lock.keyPrice}
+          render={(ethPrice, fiatPrice) => (
+            <React.Fragment>
+              <LockDetails>
+                <LockDetail bold>
+                  {ethPrice} {currency}
+                </LockDetail>
+                {convertCurrency && <LockDetail>${fiatPrice}</LockDetail>}
+              </LockDetails>
+            </React.Fragment>
+          )}
+        />
+        <ConfirmedKey size="50px" onClick={onClick} />
+        <NotHoverFooter backgroundColor="var(--green)">
+          Payment Confirmed
+        </NotHoverFooter>
+        <HoverFooter backgroundColor="var(--green)">Go to Content</HoverFooter>
+      </Body>
+    </LockWrapper>
+  )
+}
 
 ConfirmedKeyLock.propTypes = {
   onClick: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
-export default ConfirmedKeyLock
+export default withConfig(ConfirmedKeyLock)
 
 const Body = styled(LockBody)`
   border: 1px solid var(--green);

@@ -19,6 +19,8 @@ const requiredConfigVariables = {
   unlockEnv,
   readOnlyProvider: process.env.READ_ONLY_PROVIDER,
   locksmithUri: process.env.LOCKSMITH_URI,
+  erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
+  erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
 }
 
 const optionalConfigVariables = {

@@ -127,7 +127,6 @@ describe('erc20', () => {
         approvalAmount,
         provider
       )
-
       expect(result).toHaveProperty('hash', transactionHash)
       expect(result).toHaveProperty('data', transactionData)
     })

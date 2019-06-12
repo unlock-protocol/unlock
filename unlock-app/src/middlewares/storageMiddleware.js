@@ -4,7 +4,7 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
+import { UPDATE_LOCK, updateLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -12,7 +12,6 @@ import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
-import UnlockLock from '../structured_data/unlockLock'
 import { SIGNED_DATA, signData } from '../actions/signature'
 import {
   LOGIN_CREDENTIALS,
@@ -93,11 +92,6 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
-    // SIGNED_DATA
-    storageService.on(failure.storeLockDetails, () => {
-      dispatch(setError(Storage.Warning('Could not store some lock metadata.')))
-    })
-
     // SIGNUP_CREDENTIALS
     storageService.on(success.createUser, publicKey => {
       // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
@@ -158,28 +152,13 @@ const storageMiddleware = config => {
 
         if (action.type === SIGNED_DATA) {
           const { message } = action.data
-          if (message && message.lock) {
-            // Once signed, let's save it!
-            storageService.storeLockDetails(action.data, action.signature)
-          } else if (message && message.user) {
+          if (message && message.user) {
             const {
               userDetails: { email },
             } = getState()
             // Once signed, let's save it!
             storageService.updateUser(email, action.data, action.signature)
           }
-        }
-
-        if (action.type === UPDATE_LOCK_NAME) {
-          const lock = getState().locks[action.address]
-          // Build the data to sign
-          let data = UnlockLock.build({
-            name: action.name,
-            owner: lock.owner,
-            address: lock.address,
-          })
-          // Ask someone to sign it!
-          dispatch(signData(data))
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {

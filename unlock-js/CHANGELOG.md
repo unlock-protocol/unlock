@@ -1,11 +1,38 @@
 # Changes
 
+## 0.3.1
+- walletService now emits an `account.updated` event with an account's email
+  address if available
+
+## 0.3.0
+
+- erc20 transfer approval returns immediately
+- UnlockProvider now stores user email address and encrypted private key
+- UnlockProvider gains new methods for signing typed data, replacing the old
+  strategy of intercepting JSON-RPC calls
+
+## 0.2.9
+
+- Fixing approvals
+
+## 0.2.8
+
+- Approving the right amount when using an ERC20 lock
+
+## 0.2.7
+
+- Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic
+- `getLock` yields the lock name from the on chain data.
+
 ## 0.2.6
+
 - `UnlockProvider` now inherits from `ethers.providers.JsonRpcProvider` instead
   of storing one as a property.
 
 ## 0.2.5
+
 - Allow `walletService` to properly connect to `UnlockProvider`
+- Provides pre-purchase approval for the purchase of ERC20 keys
 
 ## 0.2.4
 

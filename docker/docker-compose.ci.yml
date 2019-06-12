@@ -90,6 +90,10 @@ services:
     image: unlock-js
     environment:
       CI: '${CI}'
+  rover:
+    image: rover 
+    environment:
+      CI: '${CI}'       
   wedlocks:
     image: wedlocks
     environment:

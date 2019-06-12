@@ -2202,14 +2202,14 @@ exports[`Storyshots Checkout Checkout with 1 lock and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -2272,7 +2272,7 @@ Object {
   cursor: pointer;
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2320,7 +2320,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c10:hover .c15 {
+.c10:hover .c14 {
   background-color: var(--activegreen);
 }
 
@@ -2337,14 +2337,15 @@ Object {
   color: var(--grey);
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c12::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c13 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -2369,13 +2370,13 @@ Object {
   height: 30px;
 }
 
-.c17 {
+.c16 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c17 div {
+.c16 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2418,7 +2419,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -2487,50 +2488,44 @@ Object {
             >
               Weekly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  0.1
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      7 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                0.1
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    7 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c17"
+          class="c16"
         >
           <div
-            class="c18"
+            class="c17"
           >
             <svg
               viewBox="0 0 56 56"
@@ -2603,42 +2598,36 @@ Object {
           >
             Weekly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.1
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    7 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.1
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  7 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -2727,14 +2716,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -2797,7 +2786,7 @@ Object {
   cursor: pointer;
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2845,7 +2834,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c10:hover .c15 {
+.c10:hover .c14 {
   background-color: var(--activegreen);
 }
 
@@ -2862,14 +2851,15 @@ Object {
   color: var(--grey);
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c12::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c13 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -2894,13 +2884,13 @@ Object {
   height: 30px;
 }
 
-.c17 {
+.c16 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c17 div {
+.c16 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2943,7 +2933,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -3012,42 +3002,36 @@ Object {
             >
               Weekly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  0.1
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      7 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                0.1
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    7 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
@@ -3059,42 +3043,36 @@ Object {
             >
               Monthly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  0.3
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      30 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                0.3
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    30 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
@@ -3106,50 +3084,44 @@ Object {
             >
               Yearly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  3.00
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      365 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                3.00
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    365 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c17"
+          class="c16"
         >
           <div
-            class="c18"
+            class="c17"
           >
             <svg
               viewBox="0 0 56 56"
@@ -3222,42 +3194,36 @@ Object {
           >
             Weekly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.1
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    7 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.1
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  7 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -3269,42 +3235,36 @@ Object {
           >
             Monthly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.3
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    30 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.3
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -3316,42 +3276,36 @@ Object {
           >
             Yearly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                3.00
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    365 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              3.00
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  365 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -3440,14 +3394,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one confirming key purcha
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c25 > svg {
+.c24 > svg {
   fill: white;
 }
 
@@ -3631,7 +3585,7 @@ Object {
   cursor: pointer;
 }
 
-.c23 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3679,7 +3633,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c17:hover .c22 {
+.c17:hover .c21 {
   background-color: var(--activegreen);
 }
 
@@ -3696,14 +3650,15 @@ Object {
   color: var(--grey);
 }
 
-.c21 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c19::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c20 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -3728,13 +3683,13 @@ Object {
   height: 30px;
 }
 
-.c24 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c24 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -3777,7 +3732,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c25 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -3856,7 +3811,8 @@ Object {
                   class="c12"
                 >
                   0.1
-                   ETH
+                   
+                  Eth
                 </div>
                 <div
                   class="c13"
@@ -3890,42 +3846,36 @@ Object {
             >
               Monthly
             </header>
-            <div>
+            <div
+              class="c17"
+            >
               <div
-                class="c17"
+                class="price c18"
               >
-                <div
-                  class="price c18"
-                >
-                  0.3
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c19"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c20"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c21"
-                  >
-                    <span>
-                      30 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c22 c23"
-                >
-                  Purchase
-                </footer>
+                0.3
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c19"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c20"
+                >
+                  <span>
+                    30 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c21 c22"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
@@ -3937,50 +3887,44 @@ Object {
             >
               Yearly
             </header>
-            <div>
+            <div
+              class="c17"
+            >
               <div
-                class="c17"
+                class="price c18"
               >
-                <div
-                  class="price c18"
-                >
-                  3.00
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c19"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c20"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c21"
-                  >
-                    <span>
-                      365 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c22 c23"
-                >
-                  Purchase
-                </footer>
+                3.00
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c19"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c20"
+                >
+                  <span>
+                    365 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c21 c22"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c24"
+          class="c23"
         >
           <div
-            class="c25"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -4063,7 +4007,8 @@ Object {
                 class="sc-1549ebs-4 cXGnbO"
               >
                 0.1
-                 ETH
+                 
+                Eth
               </div>
               <div
                 class="sc-1549ebs-4 kUlrFA"
@@ -4097,42 +4042,36 @@ Object {
           >
             Monthly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.3
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    30 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.3
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -4144,42 +4083,36 @@ Object {
           >
             Yearly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                3.00
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    365 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              3.00
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  365 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -4268,14 +4201,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one pending key purchase 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c25 > svg {
+.c24 > svg {
   fill: white;
 }
 
@@ -4459,7 +4392,7 @@ Object {
   cursor: pointer;
 }
 
-.c23 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4507,7 +4440,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c17:hover .c22 {
+.c17:hover .c21 {
   background-color: var(--activegreen);
 }
 
@@ -4524,14 +4457,15 @@ Object {
   color: var(--grey);
 }
 
-.c21 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c19::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c20 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -4556,13 +4490,13 @@ Object {
   height: 30px;
 }
 
-.c24 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c24 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -4605,7 +4539,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c25 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -4684,7 +4618,8 @@ Object {
                   class="c12"
                 >
                   0.1
-                   ETH
+                   
+                  Eth
                 </div>
                 <div
                   class="c13"
@@ -4714,42 +4649,36 @@ Object {
             >
               Monthly
             </header>
-            <div>
+            <div
+              class="c17"
+            >
               <div
-                class="c17"
+                class="price c18"
               >
-                <div
-                  class="price c18"
-                >
-                  0.3
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c19"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c20"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c21"
-                  >
-                    <span>
-                      30 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c22 c23"
-                >
-                  Purchase
-                </footer>
+                0.3
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c19"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c20"
+                >
+                  <span>
+                    30 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c21 c22"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
@@ -4761,50 +4690,44 @@ Object {
             >
               Yearly
             </header>
-            <div>
+            <div
+              class="c17"
+            >
               <div
-                class="c17"
+                class="price c18"
               >
-                <div
-                  class="price c18"
-                >
-                  3.00
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c19"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c20"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c21"
-                  >
-                    <span>
-                      365 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c22 c23"
-                >
-                  Purchase
-                </footer>
+                3.00
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c19"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c20"
+                >
+                  <span>
+                    365 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c21 c22"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c24"
+          class="c23"
         >
           <div
-            class="c25"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -4887,7 +4810,8 @@ Object {
                 class="sc-1549ebs-4 cXGnbO"
               >
                 0.1
-                 ETH
+                 
+                Eth
               </div>
               <div
                 class="sc-1549ebs-4 kUlrFA"
@@ -4917,42 +4841,36 @@ Object {
           >
             Monthly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.3
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    30 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.3
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -4964,42 +4882,36 @@ Object {
           >
             Yearly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                3.00
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    365 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              3.00
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  365 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -5088,14 +5000,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one submitted key purchas
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c25 {
+    .c24 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c25 > svg {
+.c24 > svg {
   fill: white;
 }
 
@@ -5125,7 +5037,7 @@ Object {
   fill: white;
 }
 
-.c17 {
+.c16 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -5157,7 +5069,7 @@ Object {
   color: var(--grey);
 }
 
-.c20 {
+.c19 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -5172,7 +5084,7 @@ Object {
   align-self: center;
 }
 
-.c21 {
+.c20 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -5186,7 +5098,7 @@ Object {
   align-self: center;
 }
 
-.c22 {
+.c21 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -5202,7 +5114,7 @@ Object {
   padding: 0px;
 }
 
-.c19 {
+.c18 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -5219,7 +5131,7 @@ Object {
   align-content: center;
 }
 
-.c23 {
+.c22 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5240,7 +5152,7 @@ Object {
   margin-top: 13px;
 }
 
-.c18 {
+.c17 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -5279,7 +5191,7 @@ Object {
   cursor: pointer;
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5327,7 +5239,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c10:hover .c15 {
+.c10:hover .c14 {
   background-color: var(--activegreen);
 }
 
@@ -5344,14 +5256,15 @@ Object {
   color: var(--grey);
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c12::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c13 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -5376,13 +5289,13 @@ Object {
   height: 30px;
 }
 
-.c24 {
+.c23 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c24 div {
+.c23 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -5425,7 +5338,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c25 {
+  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -5494,46 +5407,40 @@ Object {
             >
               Weekly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  0.1
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      7 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                0.1
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    7 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
-            class="lock c17"
+            class="lock c16"
             data-address="0x456"
           >
             <header
@@ -5542,31 +5449,32 @@ Object {
               Monthly
             </header>
             <div
-              class="c18"
+              class="c17"
             >
               <div
-                class="c19"
+                class="c18"
               >
                 <div
-                  class="c20"
+                  class="c19"
                 >
                   0.3
-                   ETH
+                   
+                  Eth
                 </div>
                 <div
-                  class="c21"
+                  class="c20"
                 >
                   $
                   ---
                 </div>
               </div>
               <div
-                class="c22"
+                class="c21"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c23"
+                class="c22"
               >
                 Payment Sent
               </footer>
@@ -5581,50 +5489,44 @@ Object {
             >
               Yearly
             </header>
-            <div>
+            <div
+              class="c10"
+            >
               <div
-                class="c10"
+                class="price c11"
               >
-                <div
-                  class="price c11"
-                >
-                  3.00
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c12"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c13"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c14"
-                  >
-                    <span>
-                      365 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c15 c16"
-                >
-                  Purchase
-                </footer>
+                3.00
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c12"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c13"
+                >
+                  <span>
+                    365 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c14 c15"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c24"
+          class="c23"
         >
           <div
-            class="c25"
+            class="c24"
           >
             <svg
               viewBox="0 0 56 56"
@@ -5697,42 +5599,36 @@ Object {
           >
             Weekly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.1
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    7 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.1
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  7 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -5754,7 +5650,8 @@ Object {
                 class="sc-1549ebs-4 cXGnbO"
               >
                 0.3
-                 ETH
+                 
+                Eth
               </div>
               <div
                 class="sc-1549ebs-4 kUlrFA"
@@ -5784,42 +5681,36 @@ Object {
           >
             Yearly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                3.00
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    365 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              3.00
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  365 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -5908,14 +5799,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one valid key purchase 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c33 {
+    .c32 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c33 > svg {
+.c32 > svg {
   fill: white;
 }
 
@@ -6186,7 +6077,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c31 {
+.c30 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -6206,7 +6097,7 @@ Object {
   color: var(--white);
 }
 
-.c34:hover .c30 {
+.c33:hover .c29 {
   background-color: var(--activegreen);
 }
 
@@ -6247,14 +6138,15 @@ Object {
   color: var(--grey);
 }
 
-.c29 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c27::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c28 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c6 {
@@ -6279,13 +6171,13 @@ Object {
   height: 30px;
 }
 
-.c32 {
+.c31 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c32 div {
+.c31 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6328,7 +6220,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c33 {
+  .c32 {
     height: 16px;
     width: 16px;
   }
@@ -6407,7 +6299,8 @@ Object {
                   class="c12"
                 >
                   0.1
-                   ETH
+                   
+                  Eth
                 </div>
                 <div
                   class="c13"
@@ -6465,43 +6358,37 @@ Object {
             >
               Monthly
             </header>
-            <div>
+            <div
+              class="c25"
+              disabled=""
+            >
               <div
-                class="c25"
-                disabled=""
+                class="price c26"
               >
-                <div
-                  class="price c26"
-                >
-                  0.3
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c27"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c28"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c29"
-                  >
-                    <span>
-                      30 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c30 c31"
-                >
-                  Purchase
-                </footer>
+                0.3
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c27"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c28"
+                >
+                  <span>
+                    30 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c29 c30"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
           <li
@@ -6514,51 +6401,45 @@ Object {
             >
               Yearly
             </header>
-            <div>
+            <div
+              class="c25"
+              disabled=""
+            >
               <div
-                class="c25"
-                disabled=""
+                class="price c26"
               >
-                <div
-                  class="price c26"
-                >
-                  3.00
-                   Eth
-                </div>
-                <div>
-                  <span
-                    class="c27"
-                  >
-                    $
-                    ---
-                  </span>
-                  <span
-                    class="c28"
-                  >
-                     | 
-                  </span>
-                  <span
-                    class="c29"
-                  >
-                    <span>
-                      365 days
-                    </span>
-                  </span>
-                </div>
-                <footer
-                  class="c30 c31"
-                >
-                  Purchase
-                </footer>
+                3.00
+                 
+                Eth
               </div>
+              <div>
+                <span
+                  class="c27"
+                >
+                  $
+                  ---
+                </span>
+                <span
+                  class="c28"
+                >
+                  <span>
+                    365 days
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c29 c30"
+              >
+                Purchase
+              </footer>
             </div>
           </li>
         </ul>
         <footer
-          class="c32"
+          class="c31"
         >
           <div
-            class="c33"
+            class="c32"
           >
             <svg
               viewBox="0 0 56 56"
@@ -6641,7 +6522,8 @@ Object {
                 class="sc-1549ebs-4 cXGnbO"
               >
                 0.1
-                 ETH
+                 
+                Eth
               </div>
               <div
                 class="sc-1549ebs-4 kUlrFA"
@@ -6699,43 +6581,37 @@ Object {
           >
             Monthly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+            disabled=""
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-              disabled=""
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                0.3
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    30 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              0.3
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
         <li
@@ -6748,43 +6624,37 @@ Object {
           >
             Yearly
           </header>
-          <div>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+            disabled=""
+          >
             <div
-              class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-              disabled=""
+              class="sc-5sgq84-3 price bIZSQm"
             >
-              <div
-                class="sc-5sgq84-3 price bIZSQm"
-              >
-                3.00
-                 Eth
-              </div>
-              <div>
-                <span
-                  class="sc-5sgq84-4 gAXKCT"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="sc-5sgq84-6 evsHkc"
-                >
-                   | 
-                </span>
-                <span
-                  class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                >
-                  <span>
-                    365 days
-                  </span>
-                </span>
-              </div>
-              <footer
-                class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-              >
-                Purchase
-              </footer>
+              3.00
+               
+              Eth
             </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+              >
+                $
+                ---
+              </span>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  365 days
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            >
+              Purchase
+            </footer>
           </div>
         </li>
       </ul>
@@ -21239,7 +21109,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -21259,7 +21129,7 @@ Object {
   color: var(--white);
 }
 
-.c9:hover .c7 {
+.c8:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -21300,14 +21170,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -21325,43 +21196,37 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+          disabled=""
+        >
           <div
-            class="c2"
-            disabled=""
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Purchase
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Purchase
+          </footer>
         </div>
       </li>
     </div>
@@ -21381,43 +21246,37 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+        disabled=""
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-          disabled=""
+          class="sc-5sgq84-3 price bIZSQm"
         >
-          <div
-            class="sc-5sgq84-3 price bIZSQm"
-          >
-            0.23
-             Eth
-          </div>
-          <div>
-            <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-            >
-              <span>
-                30 days
-              </span>
-            </span>
-          </div>
-          <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-          >
-            Purchase
-          </footer>
+          0.23
+           
+          Eth
         </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -21520,7 +21379,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -21568,7 +21427,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -21585,14 +21444,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -21610,42 +21470,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Sold Out
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Sold Out
+          </footer>
         </div>
       </li>
     </div>
@@ -21665,42 +21519,36 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
         >
-          <div
-            class="sc-5sgq84-3 price bIZSQm"
-          >
-            0.23
-             Eth
-          </div>
-          <div>
-            <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-            >
-              <span>
-                30 days
-              </span>
-            </span>
-          </div>
-          <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-          >
-            Sold Out
-          </footer>
+          0.23
+           
+          Eth
         </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Sold Out
+        </footer>
       </div>
     </li>
   </div>,
@@ -21803,7 +21651,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -21851,7 +21699,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -21868,14 +21716,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -21893,42 +21742,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Insufficient funds
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Insufficient funds
+          </footer>
         </div>
       </li>
     </div>
@@ -21948,42 +21791,283 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
+        >
+          0.23
+           
+          Eth
+        </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Insufficient funds
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock not disabled - even if the price in eth is too expensive for current user 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c6 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c5 {
+  background-color: var(--activegreen);
+}
+
+.c3 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c4 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
         >
           <div
-            class="sc-5sgq84-3 price bIZSQm"
+            class="price c3"
           >
-            0.23
-             Eth
+            66.00
+             
+            DEV
           </div>
           <div>
             <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+              class="c4"
             >
               <span>
-                30 days
+                5 minutes
               </span>
             </span>
           </div>
           <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            class="c5 c6"
           >
-            Insufficient funds
+            Purchase
           </footer>
         </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
+        <div
+          class="sc-5sgq84-3 price bIZSQm"
+        >
+          66.00
+           
+          DEV
+        </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              5 minutes
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -22086,7 +22170,7 @@ Object {
   cursor: pointer;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -22134,7 +22218,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -22151,14 +22235,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -22175,42 +22260,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Purchase
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Purchase
+          </footer>
         </div>
       </li>
     </div>
@@ -22229,42 +22308,36 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
         >
-          <div
-            class="sc-5sgq84-3 price bIZSQm"
-          >
-            0.23
-             Eth
-          </div>
-          <div>
-            <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-            >
-              <span>
-                30 days
-              </span>
-            </span>
-          </div>
-          <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-          >
-            Purchase
-          </footer>
+          0.23
+           
+          Eth
         </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -22497,7 +22570,8 @@ Object {
               class="c4"
             >
               0.23
-               ETH
+               
+              Eth
             </div>
             <div
               class="c5"
@@ -22548,13 +22622,756 @@ Object {
             class="sc-1549ebs-4 cXGnbO"
           >
             0.23
-             ETH
+             
+            Eth
           </div>
           <div
             class="sc-1549ebs-4 kUlrFA"
           >
             $
             45.08
+          </div>
+        </div>
+        <div
+          class="sc-1549ebs-5 eUmWhY"
+        >
+          Waiting for confirmations
+          <br />
+          2
+          /
+          12
+        </div>
+        <footer
+          class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
+        >
+          Payment Pending
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock with a mined key for an know ERC20 Lock 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c8 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 50px;
+}
+
+.c8 > svg {
+  fill: var(--grey);
+  height: 50px;
+  width: 50px;
+}
+
+.c8:hover {
+  background-color: var(--green);
+}
+
+.c8:hover > svg {
+  fill: white;
+}
+
+.c7:hover .c16 {
+  display: inline-block;
+}
+
+.c17 .c7 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c17 .c7:nth-child(1) {
+  pointer-events: none;
+}
+
+.c17 .c7:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c17 .c7 > svg {
+  fill: var(--grey);
+}
+
+.c17 .c7:hover > svg {
+  fill: var(--grey);
+}
+
+.c18 .c7 {
+  margin: 24px;
+}
+
+.c18 .c7 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c11 {
+  display: none;
+}
+
+.c6 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6:hover .c10 {
+  display: block;
+}
+
+.c6:hover .c9 {
+  display: none;
+}
+
+.c15 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
+}
+
+.c13 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--green);
+  cursor: pointer;
+}
+
+.c2 .c14 {
+  display: none;
+}
+
+.c2 .c12 {
+  display: grid;
+}
+
+.c2:hover .c5 {
+  background-color: var(--green);
+}
+
+.c2:hover .c5 svg {
+  fill: var(--white);
+}
+
+.c2:hover .c10 {
+  display: block;
+}
+
+.c2:hover .c9 {
+  display: none;
+}
+
+.c2:hover .c14 {
+  display: grid;
+}
+
+.c2:hover .c12 {
+  display: none;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <div
+              class="c4"
+            >
+              66.00
+               
+              DEV
+            </div>
+          </div>
+          <a
+            class="c5 c6 c7 c8"
+          >
+            <svg
+              class="c9 "
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <svg
+              class="c10 c11"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+          <footer
+            class="c12 c13"
+          >
+            Payment Confirmed
+          </footer>
+          <footer
+            class="c14 c15"
+          >
+            Go to Content
+          </footer>
+        </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 ynhyps-0 dMttvX"
+      >
+        <div
+          class="sc-1549ebs-6 hGyOOg"
+        >
+          <div
+            class="sc-1549ebs-4 cXGnbO"
+          >
+            66.00
+             
+            DEV
+          </div>
+        </div>
+        <a
+          class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+        >
+          <svg
+            class="sc-1hzn3pu-0 dozNUb"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <svg
+            class="sc-1hzn3pu-1 gckVYZ"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <footer
+          class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+        >
+          Payment Confirmed
+        </footer>
+        <footer
+          class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+        >
+          Go to Content
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock with a mined key which was not confirmed for an know ERC20 Lock 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--yellow);
+}
+
+.c6 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <div
+              class="c4"
+            >
+              66.00
+               
+              DEV
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            Waiting for confirmations
+            <br />
+            2
+            /
+            12
+          </div>
+          <footer
+            class="c6"
+          >
+            Payment Pending
+          </footer>
+        </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+      >
+        <div
+          class="sc-1549ebs-6 hGyOOg"
+        >
+          <div
+            class="sc-1549ebs-4 cXGnbO"
+          >
+            66.00
+             
+            DEV
           </div>
         </div>
         <div
@@ -22935,7 +23752,8 @@ Object {
               class="c4"
             >
               0.23
-               ETH
+               
+              Eth
             </div>
             <div
               class="c5"
@@ -23009,7 +23827,8 @@ Object {
             class="sc-1549ebs-4 cXGnbO"
           >
             0.23
-             ETH
+             
+            Eth
           </div>
           <div
             class="sc-1549ebs-4 kUlrFA"
@@ -23287,7 +24106,8 @@ Object {
               class="c4"
             >
               0.23
-               ETH
+               
+              Eth
             </div>
             <div
               class="c5"
@@ -23334,13 +24154,288 @@ Object {
             class="sc-1549ebs-4 cXGnbO"
           >
             0.23
-             ETH
+             
+            Eth
           </div>
           <div
             class="sc-1549ebs-4 kUlrFA"
           >
             $
             45.08
+          </div>
+        </div>
+        <div
+          class="sc-1549ebs-5 eUmWhY"
+        >
+          Waiting for mining confirmation.
+        </div>
+        <footer
+          class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+        >
+          Payment Sent
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock with a pending key (not yet mined) for an know ERC20 Lock 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+}
+
+.c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c4 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c5 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c3 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c6 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--link);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
+        >
+          <div
+            class="c3"
+          >
+            <div
+              class="c4"
+            >
+              66.00
+               
+              DEV
+            </div>
+          </div>
+          <div
+            class="c5"
+          >
+            Waiting for mining confirmation.
+          </div>
+          <footer
+            class="c6"
+          >
+            Payment Sent
+          </footer>
+        </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 lock NDRQz"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+      >
+        <div
+          class="sc-1549ebs-6 hGyOOg"
+        >
+          <div
+            class="sc-1549ebs-4 cXGnbO"
+          >
+            66.00
+             
+            DEV
           </div>
         </div>
         <div
@@ -23455,7 +24550,7 @@ Object {
   cursor: pointer;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -23503,7 +24598,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -23520,14 +24615,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -23544,42 +24640,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Purchase
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Purchase
+          </footer>
         </div>
       </li>
     </div>
@@ -23598,42 +24688,36 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
         >
-          <div
-            class="sc-5sgq84-3 price bIZSQm"
-          >
-            0.23
-             Eth
-          </div>
-          <div>
-            <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-            >
-              <span>
-                30 days
-              </span>
-            </span>
-          </div>
-          <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-          >
-            Purchase
-          </footer>
+          0.23
+           
+          Eth
         </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -23736,7 +24820,7 @@ Object {
   cursor: pointer;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -23784,7 +24868,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -23801,14 +24885,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -23825,42 +24910,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  30 days
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Purchase
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                30 days
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Purchase
+          </footer>
         </div>
       </li>
     </div>
@@ -23879,42 +24958,530 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
+        >
+          0.23
+           
+          Eth
+        </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              30 days
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock with no key, ERC20 Lock, known currency 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c6 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c5 {
+  background-color: var(--activegreen);
+}
+
+.c3 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c4 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
         >
           <div
-            class="sc-5sgq84-3 price bIZSQm"
+            class="price c3"
           >
-            0.23
-             Eth
+            10.00
+             
+            DEV
           </div>
           <div>
             <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+              class="c4"
             >
               <span>
-                30 days
+                5 minutes
               </span>
             </span>
           </div>
           <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+            class="c5 c6"
           >
             Purchase
           </footer>
         </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
+        <div
+          class="sc-5sgq84-3 price bIZSQm"
+        >
+          10.00
+           
+          DEV
+        </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              5 minutes
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
+      </div>
+    </li>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock with no key, ERC20 Lock, unknown currency 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c1 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c0 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  height: 180px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 40px 140px;
+  opacity: 1;
+  cursor: pointer;
+}
+
+.c6 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+}
+
+.c2 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c2:hover {
+  border: 1px solid var(--activegreen);
+}
+
+.c2:hover .c5 {
+  background-color: var(--activegreen);
+}
+
+.c3 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c4 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <li
+        class="lock c0"
+        data-address="0x123"
+      >
+        <header
+          class="c1"
+        >
+          Monthly
+        </header>
+        <div
+          class="c2"
+        >
+          <div
+            class="price c3"
+          >
+            66.00
+             
+            ERC20
+          </div>
+          <div>
+            <span
+              class="c4"
+            >
+              <span>
+                5 minutes
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c5 c6"
+          >
+            Purchase
+          </footer>
+        </div>
+      </li>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <li
+      class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+      data-address="0x123"
+    >
+      <header
+        class="sc-1549ebs-1 cWinrG"
+      >
+        Monthly
+      </header>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
+        <div
+          class="sc-5sgq84-3 price bIZSQm"
+        >
+          66.00
+           
+          ERC20
+        </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              5 minutes
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -24017,7 +25584,7 @@ Object {
   cursor: pointer;
 }
 
-.c8 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -24065,7 +25632,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c7 {
+.c2:hover .c6 {
   background-color: var(--activegreen);
 }
 
@@ -24082,14 +25649,15 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c4::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c5 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 <div>
@@ -24106,42 +25674,36 @@ Object {
         >
           Monthly
         </header>
-        <div>
+        <div
+          class="c2"
+        >
           <div
-            class="c2"
+            class="price c3"
           >
-            <div
-              class="price c3"
-            >
-              0.23
-               Eth
-            </div>
-            <div>
-              <span
-                class="c4"
-              >
-                $
-                45.08
-              </span>
-              <span
-                class="c5"
-              >
-                 | 
-              </span>
-              <span
-                class="c6"
-              >
-                <span>
-                  5 minutes
-                </span>
-              </span>
-            </div>
-            <footer
-              class="c7 c8"
-            >
-              Purchase
-            </footer>
+            0.23
+             
+            Eth
           </div>
+          <div>
+            <span
+              class="c4"
+            >
+              $
+              45.08
+            </span>
+            <span
+              class="c5"
+            >
+              <span>
+                5 minutes
+              </span>
+            </span>
+          </div>
+          <footer
+            class="c6 c7"
+          >
+            Purchase
+          </footer>
         </div>
       </li>
     </div>
@@ -24160,42 +25722,36 @@ Object {
       >
         Monthly
       </header>
-      <div>
+      <div
+        class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+      >
         <div
-          class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+          class="sc-5sgq84-3 price bIZSQm"
         >
-          <div
-            class="sc-5sgq84-3 price bIZSQm"
-          >
-            0.23
-             Eth
-          </div>
-          <div>
-            <span
-              class="sc-5sgq84-4 gAXKCT"
-            >
-              $
-              45.08
-            </span>
-            <span
-              class="sc-5sgq84-6 evsHkc"
-            >
-               | 
-            </span>
-            <span
-              class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-            >
-              <span>
-                5 minutes
-              </span>
-            </span>
-          </div>
-          <footer
-            class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-          >
-            Purchase
-          </footer>
+          0.23
+           
+          Eth
         </div>
+        <div>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+          >
+            $
+            45.08
+          </span>
+          <span
+            class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+          >
+            <span>
+              5 minutes
+            </span>
+          </span>
+        </div>
+        <footer
+          class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+        >
+          Purchase
+        </footer>
       </div>
     </li>
   </div>,
@@ -28172,36 +29728,18 @@ exports[`Storyshots Overlay iframe, account error is ignored 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c8 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c8 > svg {
   fill: white;
 }
 
-.c5 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 4px 4px 0px 0px;
-  padding: 0px;
-  color: var(--grey);
-}
-
-.c13 {
+.c7 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -28221,7 +29759,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c7 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -28230,7 +29768,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c7 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -28240,8 +29778,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c7 > p,
+.c7 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -28249,7 +29787,7 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c7 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -28260,92 +29798,43 @@ Object {
 
 .c4 {
   display: grid;
-  justify-items: stretch;
-  margin: 0px;
-  padding: 0px;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  width: 200px;
-  height: 180px;
-  grid-gap: 0px;
-  background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: 1;
-  cursor: pointer;
+  row-gap: 16px;
+  -webkit-column-gap: 32px;
+  column-gap: 32px;
+  border: solid 1px var(--lightgrey);
+  background-color: var(--lightgrey);
+  grid-template-columns: 72px;
+  grid-auto-flow: column;
+  border-radius: 4px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 32px;
+  padding-bottom: 40px;
 }
 
-.c12 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
+.c5 {
+  width: 72px;
 }
 
 .c6 {
   display: grid;
-  height: 140px;
-  width: 200px;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  justify-items: center;
-  text-align: center;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  padding: 0px;
-  grid-template-rows: 40px 30px;
-  grid-gap: 8px;
-  padding-top: 0px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  background-color: var(--white);
-  padding-top: 13px;
+  grid-gap: 16px;
 }
 
-.c6:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c6:hover .c11 {
-  background-color: var(--activegreen);
-}
-
-.c7 {
-  font-size: 30px;
-  text-transform: uppercase;
-  color: var(--slate);
+.c6 > h1 {
   font-weight: bold;
+  color: var(--red);
+  margin: 0px;
+  padding: 0px;
 }
 
-.c8 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c9 {
-  color: var(--lightgrey);
+.c6 > p {
+  margin: 0px;
+  padding: 0px;
+  font-size: 16px;
+  color: var(--dimgrey);
 }
 
 .c0 {
@@ -28396,14 +29885,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c8 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c7 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -28413,7 +29902,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c7 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -28422,7 +29911,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c7 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -28435,13 +29924,21 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c7 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
     -webkit-align-self: center;
     -ms-flex-item-align: center;
     align-self: center;
+  }
+}
+
+@media (max-width:500px) {
+  .c4 {
+    grid-template-columns: 1fr;
+    grid-auto-flow: row;
+    padding: 16px;
   }
 }
 
@@ -28529,61 +30026,33 @@ Object {
             <ul
               class="c3"
             >
-              <li
-                class="lock c4"
+              <section
+                class="c4"
               >
-                <header
+                <img
                   class="c5"
+                  src="/static/images/illustrations/error.svg"
+                />
+                <div
+                  class="c6"
                 >
-                  One Month
-                </header>
-                <div>
-                  <div
-                    class="c6"
-                  >
-                    <div
-                      class="price c7"
-                    >
-                      0.12
-                       Eth
-                    </div>
-                    <div>
-                      <span
-                        class="c8"
-                      >
-                        $
-                        24.19
-                      </span>
-                      <span
-                        class="c9"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="c10"
-                      >
-                        <span>
-                           - 
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="c11 c12"
-                    >
-                      Purchase
-                    </footer>
-                  </div>
+                  <h1>
+                    Need account
+                  </h1>
+                  <p>
+                    In order to display this content, you need to connect a crypto-wallet to your browser.
+                  </p>
                 </div>
-              </li>
+              </section>
             </ul>
             <footer
-              class="c13"
+              class="c7"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="c14"
+                class="c8"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -28678,52 +30147,24 @@ Object {
           <ul
             class="sc-7wmxqm-3 jZRqqJ"
           >
-            <li
-              class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
+            <section
+              class="iopfkf-0 gTiKkN"
             >
-              <header
-                class="sc-1549ebs-1 cWinrG"
+              <img
+                class="iopfkf-1 fTikWN"
+                src="/static/images/illustrations/error.svg"
+              />
+              <div
+                class="iopfkf-2 beHtrM"
               >
-                One Month
-              </header>
-              <div>
-                <div
-                  class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
-                >
-                  <div
-                    class="sc-5sgq84-3 price bIZSQm"
-                  >
-                    0.12
-                     Eth
-                  </div>
-                  <div>
-                    <span
-                      class="sc-5sgq84-4 gAXKCT"
-                    >
-                      $
-                      24.19
-                    </span>
-                    <span
-                      class="sc-5sgq84-6 evsHkc"
-                    >
-                       | 
-                    </span>
-                    <span
-                      class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                    >
-                      <span>
-                         - 
-                      </span>
-                    </span>
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-                  >
-                    Purchase
-                  </footer>
-                </div>
+                <h1>
+                  Need account
+                </h1>
+                <p>
+                  In order to display this content, you need to connect a crypto-wallet to your browser.
+                </p>
               </div>
-            </li>
+            </section>
           </ul>
           <footer
             class="sc-1549ebs-8 gkwKFG"
@@ -29353,14 +30794,14 @@ exports[`Storyshots Overlay with a single Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c13 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c13 > svg {
   fill: white;
 }
 
@@ -29382,7 +30823,7 @@ Object {
   color: var(--grey);
 }
 
-.c13 {
+.c12 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -29402,7 +30843,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c12 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -29411,7 +30852,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c12 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -29421,8 +30862,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c12 > p,
+.c12 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -29430,7 +30871,7 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c12 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -29454,7 +30895,7 @@ Object {
   cursor: pointer;
 }
 
-.c12 {
+.c11 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -29502,7 +30943,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c6:hover .c11 {
+.c6:hover .c10 {
   background-color: var(--activegreen);
 }
 
@@ -29519,14 +30960,15 @@ Object {
   color: var(--grey);
 }
 
-.c10 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c8::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c9 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c0 {
@@ -29577,14 +31019,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -29594,7 +31036,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c12 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -29603,7 +31045,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c12 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -29616,7 +31058,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c12 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -29718,53 +31160,47 @@ Object {
                 >
                   One Month
                 </header>
-                <div>
+                <div
+                  class="c6"
+                >
                   <div
-                    class="c6"
+                    class="price c7"
                   >
-                    <div
-                      class="price c7"
-                    >
-                      0.12
-                       Eth
-                    </div>
-                    <div>
-                      <span
-                        class="c8"
-                      >
-                        $
-                        24.11
-                      </span>
-                      <span
-                        class="c9"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="c10"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="c11 c12"
-                    >
-                      Purchase
-                    </footer>
+                    0.12
+                     
+                    Eth
                   </div>
+                  <div>
+                    <span
+                      class="c8"
+                    >
+                      $
+                      24.11
+                    </span>
+                    <span
+                      class="c9"
+                    >
+                      <span>
+                        142 days
+                      </span>
+                    </span>
+                  </div>
+                  <footer
+                    class="c10 c11"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </li>
             </ul>
             <footer
-              class="c13"
+              class="c12"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="c14"
+                class="c13"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -29867,42 +31303,36 @@ Object {
               >
                 One Month
               </header>
-              <div>
+              <div
+                class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              >
                 <div
-                  class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                  class="sc-5sgq84-3 price bIZSQm"
                 >
-                  <div
-                    class="sc-5sgq84-3 price bIZSQm"
-                  >
-                    0.12
-                     Eth
-                  </div>
-                  <div>
-                    <span
-                      class="sc-5sgq84-4 gAXKCT"
-                    >
-                      $
-                      24.11
-                    </span>
-                    <span
-                      class="sc-5sgq84-6 evsHkc"
-                    >
-                       | 
-                    </span>
-                    <span
-                      class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                    >
-                      <span>
-                        142 days
-                      </span>
-                    </span>
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-                  >
-                    Purchase
-                  </footer>
+                  0.12
+                   
+                  Eth
                 </div>
+                <div>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+                  >
+                    $
+                    24.11
+                  </span>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                  >
+                    <span>
+                      142 days
+                    </span>
+                  </span>
+                </div>
+                <footer
+                  class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                >
+                  Purchase
+                </footer>
               </div>
             </li>
           </ul>
@@ -30534,14 +31964,14 @@ exports[`Storyshots Overlay with multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c13 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c14 > svg {
+.c13 > svg {
   fill: white;
 }
 
@@ -30563,7 +31993,7 @@ Object {
   color: var(--grey);
 }
 
-.c13 {
+.c12 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -30583,7 +32013,7 @@ Object {
   margin-right: -33px;
 }
 
-.c13 > a {
+.c12 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -30592,7 +32022,7 @@ Object {
   align-self: start;
 }
 
-.c13 > p {
+.c12 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -30602,8 +32032,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c13 > p,
-.c13 > a {
+.c12 > p,
+.c12 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -30611,7 +32041,7 @@ Object {
   font-size: 12px;
 }
 
-.c13 > div {
+.c12 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -30635,7 +32065,7 @@ Object {
   cursor: pointer;
 }
 
-.c12 {
+.c11 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30683,7 +32113,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c6:hover .c11 {
+.c6:hover .c10 {
   background-color: var(--activegreen);
 }
 
@@ -30700,14 +32130,15 @@ Object {
   color: var(--grey);
 }
 
-.c10 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
+.c8::after {
+  color: var(--lightgrey);
+  content: ' | ';
 }
 
 .c9 {
-  color: var(--lightgrey);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c0 {
@@ -30758,14 +32189,14 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c14 {
+  .c13 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c12 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -30775,7 +32206,7 @@ Object {
     grid-row: 3;
   }
 
-  .c13 > div {
+  .c12 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -30784,7 +32215,7 @@ Object {
     align-self: center;
   }
 
-  .c13 > p {
+  .c12 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -30797,7 +32228,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c13 > a {
+  .c12 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -30899,42 +32330,36 @@ Object {
                 >
                   One Month
                 </header>
-                <div>
+                <div
+                  class="c6"
+                >
                   <div
-                    class="c6"
+                    class="price c7"
                   >
-                    <div
-                      class="price c7"
-                    >
-                      0.01
-                       Eth
-                    </div>
-                    <div>
-                      <span
-                        class="c8"
-                      >
-                        $
-                        1.96
-                      </span>
-                      <span
-                        class="c9"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="c10"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="c11 c12"
-                    >
-                      Purchase
-                    </footer>
+                    0.01
+                     
+                    Eth
                   </div>
+                  <div>
+                    <span
+                      class="c8"
+                    >
+                      $
+                      1.96
+                    </span>
+                    <span
+                      class="c9"
+                    >
+                      <span>
+                        142 days
+                      </span>
+                    </span>
+                  </div>
+                  <footer
+                    class="c10 c11"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </li>
               <li
@@ -30945,53 +32370,47 @@ Object {
                 >
                   One Year
                 </header>
-                <div>
+                <div
+                  class="c6"
+                >
                   <div
-                    class="c6"
+                    class="price c7"
                   >
-                    <div
-                      class="price c7"
-                    >
-                      0.01
-                       Eth
-                    </div>
-                    <div>
-                      <span
-                        class="c8"
-                      >
-                        $
-                        1.96
-                      </span>
-                      <span
-                        class="c9"
-                      >
-                         | 
-                      </span>
-                      <span
-                        class="c10"
-                      >
-                        <span>
-                          142 days
-                        </span>
-                      </span>
-                    </div>
-                    <footer
-                      class="c11 c12"
-                    >
-                      Purchase
-                    </footer>
+                    0.01
+                     
+                    Eth
                   </div>
+                  <div>
+                    <span
+                      class="c8"
+                    >
+                      $
+                      1.96
+                    </span>
+                    <span
+                      class="c9"
+                    >
+                      <span>
+                        142 days
+                      </span>
+                    </span>
+                  </div>
+                  <footer
+                    class="c10 c11"
+                  >
+                    Purchase
+                  </footer>
                 </div>
               </li>
             </ul>
             <footer
-              class="c13"
+              class="c12"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="c14"
+                class="c13"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -31094,42 +32513,36 @@ Object {
               >
                 One Month
               </header>
-              <div>
+              <div
+                class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              >
                 <div
-                  class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                  class="sc-5sgq84-3 price bIZSQm"
                 >
-                  <div
-                    class="sc-5sgq84-3 price bIZSQm"
-                  >
-                    0.01
-                     Eth
-                  </div>
-                  <div>
-                    <span
-                      class="sc-5sgq84-4 gAXKCT"
-                    >
-                      $
-                      1.96
-                    </span>
-                    <span
-                      class="sc-5sgq84-6 evsHkc"
-                    >
-                       | 
-                    </span>
-                    <span
-                      class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                    >
-                      <span>
-                        142 days
-                      </span>
-                    </span>
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-                  >
-                    Purchase
-                  </footer>
+                  0.01
+                   
+                  Eth
                 </div>
+                <div>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+                  >
+                    $
+                    1.96
+                  </span>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                  >
+                    <span>
+                      142 days
+                    </span>
+                  </span>
+                </div>
+                <footer
+                  class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                >
+                  Purchase
+                </footer>
               </div>
             </li>
             <li
@@ -31140,42 +32553,36 @@ Object {
               >
                 One Year
               </header>
-              <div>
+              <div
+                class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+              >
                 <div
-                  class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+                  class="sc-5sgq84-3 price bIZSQm"
                 >
-                  <div
-                    class="sc-5sgq84-3 price bIZSQm"
-                  >
-                    0.01
-                     Eth
-                  </div>
-                  <div>
-                    <span
-                      class="sc-5sgq84-4 gAXKCT"
-                    >
-                      $
-                      1.96
-                    </span>
-                    <span
-                      class="sc-5sgq84-6 evsHkc"
-                    >
-                       | 
-                    </span>
-                    <span
-                      class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
-                    >
-                      <span>
-                        142 days
-                      </span>
-                    </span>
-                  </div>
-                  <footer
-                    class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
-                  >
-                    Purchase
-                  </footer>
+                  0.01
+                   
+                  Eth
                 </div>
+                <div>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+                  >
+                    $
+                    1.96
+                  </span>
+                  <span
+                    class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                  >
+                    <span>
+                      142 days
+                    </span>
+                  </span>
+                </div>
+                <footer
+                  class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+                >
+                  Purchase
+                </footer>
               </div>
             </li>
           </ul>
