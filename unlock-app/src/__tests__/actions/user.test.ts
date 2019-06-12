@@ -189,7 +189,13 @@ describe('user account actions', () => {
 
     it('should create an action returning the signature for a user structure', () => {
       expect.assertions(1)
-      const data = {}
+      const data = {
+        message: {
+          emailAddress,
+          publicKey: '0x123abc',
+          passwordEncryptedPrivateKey: key,
+        },
+      }
       const sig = {}
 
       const expectedAction = {
