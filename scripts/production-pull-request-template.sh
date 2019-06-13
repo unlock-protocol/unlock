@@ -1,4 +1,4 @@
-export MESSAGE="Production Automated Deploy $BRANCH
+export MESSAGE="Production $PROD_DEPLOY_TYPE Deploy $BRANCH
 
 This is a production deployment. Please treat with great caution!
 This deploys the code from master as of commit $COMMIT_TO_DEPLOY.
