@@ -2411,7 +2411,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -2547,7 +2553,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -2925,7 +2931,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -3143,7 +3155,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -3724,7 +3736,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -3946,7 +3964,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -4531,7 +4549,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -4749,7 +4773,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -5330,7 +5354,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -5548,7 +5578,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -6212,7 +6242,13 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -6461,7 +6497,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi iGruSu"
+      class="sc-gZMcBi hbowKy"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -6778,7 +6814,13 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -8554,7 +8596,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi iGruSu"
+        class="sc-gZMcBi hbowKy"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -10210,7 +10252,13 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -11986,7 +12034,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi iGruSu"
+        class="sc-gZMcBi hbowKy"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -13642,7 +13690,13 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -15418,7 +15472,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi iGruSu"
+        class="sc-gZMcBi hbowKy"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"

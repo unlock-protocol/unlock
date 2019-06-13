@@ -14,6 +14,7 @@ import {
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_UPDATE_NETWORK,
 } from '../../paywall-builder/constants'
+import configure from '../../config'
 
 const lockAddress1 = '0x1234567890123456789012345678901234567890'
 const lockAddress2 = '0x4567890123456789012345678901234567890123'
@@ -84,6 +85,7 @@ const locks = {
 }
 
 const config = {
+  ...configure(),
   requiredNetworkId: 1,
   isServer: false,
   isInIframe: true,
