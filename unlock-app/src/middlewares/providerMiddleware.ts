@@ -43,7 +43,7 @@ export function initializeProvider(provider: Provider, dispatch: any) {
 }
 
 export async function initializeUnlockProvider(
-  action: Action,
+  action: Action, // action: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
   unlockProvider: any,
   dispatch: any
 ) {
