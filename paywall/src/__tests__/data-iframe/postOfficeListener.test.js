@@ -97,7 +97,7 @@ describe('postOffice listener', () => {
         default:
           'You have reached your limit of free articles. Please purchase access',
         expired:
-          'Your subscription has expired, please purchase a new key to continue',
+          'Your access has expired. please purchase a new key to continue',
         pending: 'Purchase pending...',
         confirmed: 'Purchase confirmed, content unlocked!',
       },
