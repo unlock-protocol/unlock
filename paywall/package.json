@@ -52,7 +52,7 @@
     "fork-ts-checker-webpack-plugin": "1.0.3",
     "history": "4.9.0",
     "jest-dom": "3.5.0",
-    "jest-mock-axios": "2.4.0",
+    "jest-mock-axios": "3.0.0",
     "jest-styled-components": "6.3.1",
     "next": "8.1.0",
     "path-match": "1.2.4",
