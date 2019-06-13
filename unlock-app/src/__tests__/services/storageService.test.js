@@ -311,7 +311,11 @@ describe('StorageService', () => {
       it('emits a success', done => {
         expect.assertions(2)
         axios.put.mockReturnValue()
-        storageService.updateUser('hello@unlock-protocol.com', user, null)
+        storageService.updateUserEncryptedPrivateKey(
+          'hello@unlock-protocol.com',
+          user,
+          null
+        )
 
         storageService.on(success.updateUser, ({ emailAddress }) => {
           expect(emailAddress).toBe('hello@unlock-protocol.com')
@@ -321,7 +325,7 @@ describe('StorageService', () => {
         expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
             'hello@unlock-protocol.com'
-          )}`,
+          )}/passwordEncryptedPrivateKey`,
           user,
           {}
         )
@@ -332,7 +336,11 @@ describe('StorageService', () => {
       it('emits a failure', done => {
         expect.assertions(3)
         axios.put.mockRejectedValue('Egads! An Error')
-        storageService.updateUser('hello@unlock-protocol.com', user, null)
+        storageService.updateUserEncryptedPrivateKey(
+          'hello@unlock-protocol.com',
+          user,
+          null
+        )
 
         storageService.on(failure.updateUser, ({ emailAddress, error }) => {
           expect(emailAddress).toBe('hello@unlock-protocol.com')
@@ -343,7 +351,7 @@ describe('StorageService', () => {
         expect(axios.put).toHaveBeenCalledWith(
           `${serviceHost}/users/${encodeURIComponent(
             'hello@unlock-protocol.com'
-          )}`,
+          )}/passwordEncryptedPrivateKey`,
           user,
           {}
         )
