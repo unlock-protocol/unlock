@@ -4,15 +4,15 @@ import { Item, Section, SectionHeader, ItemValue } from './styles'
 
 interface Props {
   address: string
-  email: string
+  emailAddress: string
 }
 
-export const AccountInfo = ({ address, email }: Props) => (
+export const AccountInfo = ({ address, emailAddress }: Props) => (
   <React.Fragment>
     <SectionHeader>Account</SectionHeader>
     <Section>
       <Item title="Email">
-        <ItemValue>{email}</ItemValue>
+        <ItemValue>{emailAddress}</ItemValue>
       </Item>
       <Item title="Wallet Address">
         <ItemValue>{address}</ItemValue>
@@ -22,20 +22,17 @@ export const AccountInfo = ({ address, email }: Props) => (
 )
 
 interface ReduxState {
-  account?: {
+  account: {
     address: string
-  }
-  userDetails?: {
-    email: string
+    emailAddress: string
   }
 }
 
-export const mapStateToProps = (state: ReduxState) => {
-  const address = state.account ? state.account.address : ''
-  const email = state.userDetails ? state.userDetails.email : ''
+export const mapStateToProps = ({ account }: ReduxState) => {
+  const { address, emailAddress } = account
   return {
     address,
-    email,
+    emailAddress,
   }
 }
 
