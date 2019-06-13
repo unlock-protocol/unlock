@@ -52,33 +52,23 @@ export default function useBlockchainData(window, paywallConfig) {
   // construct the object format expected by the checkout UI
   const account = address ? { address, balance } : null
 
-  try {
-    // populate locks with the lock names, either from the chain
-    // or from the paywall config
-    const locks = Object.keys(blockChainLocks).reduce(
-      (newLocks, lockAddress) => ({
-        ...newLocks,
-        [lockAddress]: {
-          ...blockChainLocks[lockAddress],
-          // we always use the configuration name to provide flexibility
-          // even if the lock has a name set on the contract
-          name: paywallConfig.locks[lockAddress].name,
-        },
-      }),
-      {}
-    )
+  // sanity check
+  // the paywall configuration has a list of locks that should
+  // be present in the checkout. This is used to
+  // filter the list of locks returned from the data iframe.
+  // if the data iframe returns different locks then it
+  // is invalid
 
-    return {
-      account,
-      network,
-      locks,
-    }
-  } catch (e) {
-    // sanity check
+  if (
+    Object.keys(blockChainLocks).filter(
+      lockAddress => !paywallConfig.locks[lockAddress]
+    ).length
+  ) {
     // eslint-disable-next-line no-console
-    console.error(
-      'Internal error: blockchain data out of sync with paywall config',
-      e.message
+    window.console.error(
+      'Internal error: blockchain data out of sync with paywall config. Paywall config locks %o, actual %o',
+      Object.keys(paywallConfig.locks),
+      Object.keys(blockChainLocks)
     )
 
     return {
@@ -86,5 +76,25 @@ export default function useBlockchainData(window, paywallConfig) {
       network,
       locks: {},
     }
+  }
+  // populate locks with the lock names, either from the chain
+  // or from the paywall config
+  const locks = Object.keys(blockChainLocks).reduce(
+    (newLocks, lockAddress) => ({
+      ...newLocks,
+      [lockAddress]: {
+        ...blockChainLocks[lockAddress],
+        // we always use the configuration name to provide flexibility
+        // even if the lock has a name set on the contract
+        name: paywallConfig.locks[lockAddress].name,
+      },
+    }),
+    {}
+  )
+
+  return {
+    account,
+    network,
+    locks,
   }
 }

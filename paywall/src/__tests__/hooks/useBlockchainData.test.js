@@ -14,6 +14,7 @@ import {
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
   const address = '0x1234567890123456789012345678901234567890'
+  const address2 = '0xa234567890123456789012345678901234567890'
 
   let fakeWindow
   let config
@@ -79,6 +80,9 @@ describe('useBlockchainData hook', () => {
         pathname: '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         search: '?origin=origin',
         hash: '',
+      },
+      console: {
+        error: jest.fn(),
       },
     }
     paywallConfig = {
@@ -175,13 +179,6 @@ describe('useBlockchainData hook', () => {
     expect.assertions(1)
 
     const component = rtl.render(<Wrapper />)
-    paywallConfig = {
-      locks: {
-        [address]: {
-          name: 'hi there!',
-        },
-      },
-    }
     const locks = {
       [address]: {
         address,
@@ -211,6 +208,53 @@ describe('useBlockchainData hook', () => {
           name: 'hi there!',
         },
       })
+    )
+  })
+
+  it('should error if the locks sent do not match the paywall config locks', () => {
+    expect.assertions(2)
+
+    const component = rtl.render(<Wrapper />)
+    const locks = {
+      [address]: {
+        address,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+      [address2]: {
+        address: address2,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+    }
+
+    const locksUpdater = getLocksListener()
+
+    rtl.act(() => {
+      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+    })
+
+    expect(component.getByTitle('locks')).toHaveTextContent(JSON.stringify({}))
+    expect(fakeWindow.console.error).toHaveBeenCalledWith(
+      `Internal error: blockchain data out of sync with paywall config. Paywall config locks %o, actual %o`,
+      expect.arrayContaining([address]),
+      expect.arrayContaining([address, address2])
     )
   })
 })
