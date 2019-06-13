@@ -4,6 +4,12 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import CreatorLockForm from '../../components/creator/CreatorLockForm'
 import createUnlockStore from '../../createUnlockStore'
+import configure from '../../config'
+import { ConfigContext } from '../../utils/withConfig'
+
+const config = configure()
+
+const ConfigProvider = ConfigContext.Provider
 
 const store = createUnlockStore({
   currency: {
@@ -16,6 +22,9 @@ const store = createUnlockStore({
 
 storiesOf('CreatorLockForm/invalid', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .add('missing name', () => {
     const lock = {
       name: '',

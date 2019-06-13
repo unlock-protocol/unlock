@@ -12,13 +12,14 @@ import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, setAccount } from '../actions/accounts'
-import { SIGNED_DATA, signData } from '../actions/signature'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
   CHANGE_PASSWORD,
   gotEncryptedPrivateKeyPayload,
   setEncryptedPrivateKey,
+  signUserData,
+  SIGNED_USER_DATA,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -27,11 +28,21 @@ import { setError } from '../actions/error'
 export async function changePassword({
   oldPassword,
   newPassword,
-  passwordEncryptedPrivateKey,
-  publicKey,
   emailAddress,
+  storageService,
   dispatch,
 }) {
+  let passwordEncryptedPrivateKey
+  try {
+    passwordEncryptedPrivateKey = await storageService.getUserPrivateKey(
+      emailAddress
+    )
+  } catch (e) {
+    dispatch(
+      setError(Storage.Warning('Could not retrieve encrypted private key.'))
+    )
+    return
+  }
   try {
     const newEncryptedKey = await reEncryptPrivateKey(
       passwordEncryptedPrivateKey,
@@ -39,13 +50,7 @@ export async function changePassword({
       newPassword
     )
 
-    const payload = UnlockUser.build({
-      emailAddress,
-      publicKey,
-      passwordEncryptedPrivateKey: newEncryptedKey,
-    })
-
-    dispatch(signData(payload))
+    dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
   } catch (e) {
     dispatch(
       setError(
@@ -150,15 +155,13 @@ const storageMiddleware = config => {
           }
         }
 
-        if (action.type === SIGNED_DATA) {
-          const { message } = action.data
-          if (message && message.user) {
-            const {
-              userDetails: { email },
-            } = getState()
-            // Once signed, let's save it!
-            storageService.updateUser(email, action.data, action.signature)
-          }
+        if (action.type === SIGNED_USER_DATA) {
+          const { data, sig } = action
+          storageService.updateUserEncryptedPrivateKey(
+            data.message.user.emailAddress,
+            data,
+            sig
+          )
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
@@ -186,16 +189,14 @@ const storageMiddleware = config => {
         if (action.type === CHANGE_PASSWORD) {
           const { oldPassword, newPassword } = action
           const {
-            userDetails: { key, email },
-            account: { address },
+            account: { emailAddress },
           } = getState()
 
           changePassword({
             oldPassword,
             newPassword,
-            passwordEncryptedPrivateKey: key,
-            publicKey: address,
-            emailAddress: email,
+            emailAddress,
+            storageService,
             dispatch,
           })
         }
