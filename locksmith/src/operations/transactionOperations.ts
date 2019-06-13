@@ -28,11 +28,28 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
  * get all the transactions sent by a given address
  * @param {*} _sender
  */
-export const getTransactionsBySender = async (_sender: string) => {
-  const sender = ethJsUtil.toChecksumAddress(_sender)
+// export const getTransactionsBySender = async (_sender: string, filter: any) => {
+export const getTransactionsBySender = async (filter: any) => {
   return await Transaction.findAll({
-    where: {
-      sender: { [Op.eq]: sender },
-    },
+    where: queryFilter(filter),
   })
+}
+
+const queryFilter = (filter: any) => {
+  const sender = ethJsUtil.toChecksumAddress(filter.sender)
+
+  if (filter.recipient) {
+    return {
+      sender: { [Op.eq]: sender },
+      recipient: {
+        [Op.in]: filter.recipient.map((recipient: string) =>
+          ethJsUtil.toChecksumAddress(recipient)
+        ),
+      },
+    }
+  } else {
+    return {
+      sender: { [Op.eq]: sender },
+    }
+  }
 }
