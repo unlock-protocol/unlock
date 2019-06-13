@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Lorem Ipsum Daily</title>
+    <script src="adRemoverUtils.js"></script>
     <script>
       ;(function(d, s) {
         var js = d.createElement(s),
@@ -30,49 +31,8 @@
         },
       }
     </script>
+    <link rel="stylesheet" href="adremover.css" type="text/css" />
   </head>
-  <style>
-    body {
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-gap: 1em;
-    }
-
-    header {
-      grid-column: 1 / span 5;
-    }
-
-    main {
-      grid-column: 1 / span 3;
-    }
-
-    aside {
-      grid-column: span 2;
-    }
-
-    @media (max-width: 700px) {
-      main,
-      aside {
-        grid-column: 1 / span 5;
-      }
-    }
-
-    body {
-      margin: 0 auto;
-      max-width: 56em;
-      padding: 1em 0;
-    }
-
-    header,
-    main,
-    aside {
-    }
-
-    header {
-      height: 10vw;
-    }
-  </style>
 
   <script>
     let unlocked = false
