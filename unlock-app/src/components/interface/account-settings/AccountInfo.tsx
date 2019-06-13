@@ -29,10 +29,13 @@ interface ReduxState {
 }
 
 export const mapStateToProps = ({ account }: ReduxState) => {
-  let { address, emailAddress } = account
+  let address = ''
+  let emailAddress = ''
   // Default values for server-side rendering
-  address = address || ''
-  emailAddress = emailAddress || ''
+  if (account) {
+    address = account.address || address
+    emailAddress = account.emailAddress || emailAddress
+  }
   return {
     address,
     emailAddress,
