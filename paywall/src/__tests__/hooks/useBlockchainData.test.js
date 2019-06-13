@@ -82,7 +82,7 @@ describe('useBlockchainData hook', () => {
         hash: '',
       },
       console: {
-        error: jest.fn(),
+        warn: jest.fn(),
       },
     }
     paywallConfig = {
@@ -211,7 +211,7 @@ describe('useBlockchainData hook', () => {
     )
   })
 
-  it('should error if the locks sent do not match the paywall config locks', () => {
+  it('should ignore unknown locks and warn about them', () => {
     expect.assertions(2)
 
     const component = rtl.render(<Wrapper />)
@@ -250,11 +250,16 @@ describe('useBlockchainData hook', () => {
       locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
     })
 
-    expect(component.getByTitle('locks')).toHaveTextContent(JSON.stringify({}))
-    expect(fakeWindow.console.error).toHaveBeenCalledWith(
-      `Internal error: blockchain data out of sync with paywall config. Paywall config locks %o, actual %o`,
-      expect.arrayContaining([address]),
-      expect.arrayContaining([address, address2])
+    expect(component.getByTitle('locks')).toHaveTextContent(
+      JSON.stringify({
+        [address]: {
+          ...locks[address],
+          name: 'hi there!',
+        },
+      })
+    )
+    expect(fakeWindow.console.warn).toHaveBeenCalledWith(
+      'internal error: data iframe returned locks not known to the paywall'
     )
   })
 })

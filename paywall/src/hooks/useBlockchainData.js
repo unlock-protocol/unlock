@@ -52,34 +52,23 @@ export default function useBlockchainData(window, paywallConfig) {
   // construct the object format expected by the checkout UI
   const account = address ? { address, balance } : null
 
-  // sanity check
-  // the paywall configuration has a list of locks that should
-  // be present in the checkout. This is used to
-  // filter the list of locks returned from the data iframe.
-  // if the data iframe returns different locks then it
-  // is invalid
+  const paywallLockAddresses = Object.keys(paywallConfig.locks)
+  const blockChainLockAddresses = Object.keys(blockChainLocks)
 
-  if (
-    Object.keys(blockChainLocks).filter(
-      lockAddress => !paywallConfig.locks[lockAddress]
-    ).length
-  ) {
-    // eslint-disable-next-line no-console
-    window.console.error(
-      'Internal error: blockchain data out of sync with paywall config. Paywall config locks %o, actual %o',
-      Object.keys(paywallConfig.locks),
-      Object.keys(blockChainLocks)
+  // filter out any locks that are not on this paywall
+  const filteredLockAddresses = blockChainLockAddresses.filter(address =>
+    paywallLockAddresses.includes(address)
+  )
+  if (filteredLockAddresses.length !== blockChainLockAddresses.length) {
+    // eslint-disable-next-line
+    window.console.warn(
+      'internal error: data iframe returned locks not known to the paywall'
     )
-
-    return {
-      account,
-      network,
-      locks: {},
-    }
   }
+
   // populate locks with the lock names, either from the chain
   // or from the paywall config
-  const locks = Object.keys(blockChainLocks).reduce(
+  const locks = filteredLockAddresses.reduce(
     (newLocks, lockAddress) => ({
       ...newLocks,
       [lockAddress]: {
