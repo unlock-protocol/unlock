@@ -52112,7 +52112,7 @@ Object {
           You are now signed in! Go to
            
           <a
-            href="/settings"
+            href="/keychain"
           >
             your key chain
           </a>
@@ -52138,7 +52138,7 @@ Object {
         You are now signed in! Go to
          
         <a
-          href="/settings"
+          href="/keychain"
         >
           your key chain
         </a>
@@ -57052,7 +57052,7 @@ Object {
           You are now signed in! Go to
            
           <a
-            href="/settings"
+            href="/keychain"
           >
             your key chain
           </a>
@@ -57078,7 +57078,7 @@ Object {
         You are now signed in! Go to
          
         <a
-          href="/settings"
+          href="/keychain"
         >
           your key chain
         </a>

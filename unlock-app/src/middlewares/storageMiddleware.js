@@ -115,11 +115,13 @@ const storageMiddleware = config => {
     // When updating a user
     // TODO: May have to separately handle different kinds of user updates
     storageService.on(success.updateUser, ({ user, emailAddress }) => {
+      // TODO: this is vestigial, replace with a new action (dismiss loading state?)
       dispatch(
         setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
       )
     })
-    storageService.on(failure.updateUser, () => {
+    storageService.on(failure.updateUser, ({ error }) => {
+      dispatch(setError(Storage.Diagnostic(error)))
       dispatch(
         setError(
           Storage.Warning(
