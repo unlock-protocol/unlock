@@ -7,10 +7,17 @@
   ],
   "timezone": "America/Los_Angeles",
   "schedule": ["before 3am"],
+  "rebaseStalePrs": false,
   "packageRules": [
     {
-      "packageNames": ["unlock-js"],
+      "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"]
+    },
+    {
+      "packagePatterns": ["^truffle", "^zos"],
+      "reviewers": [
+        "hardlydifficult"
+      ]
     }
   ]
 }
