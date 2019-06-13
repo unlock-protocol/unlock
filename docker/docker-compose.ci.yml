@@ -91,9 +91,9 @@ services:
     environment:
       CI: '${CI}'
   rover:
-    image: rover 
+    image: rover
     environment:
-      CI: '${CI}'       
+      CI: '${CI}'
   wedlocks:
     image: wedlocks
     environment:
@@ -109,6 +109,7 @@ services:
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     depends_on:
       - ganache-integration
