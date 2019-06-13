@@ -66,6 +66,7 @@ echo "Push new production branch"
 git push origin $BRANCH --no-verify
 
 echo "Open pull request"
+PROD_DEPLOY_TYPE="automated"
 source "${BASH_SOURCE%/*}/production-pull-request-template.sh"
 
 DOY=$(date +%j)
