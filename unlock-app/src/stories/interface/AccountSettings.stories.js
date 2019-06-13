@@ -11,7 +11,7 @@ storiesOf('Account Settings/Components/AccountInfo', module)
   .add('info provided', () => {
     return (
       <AccountInfo
-        email="gordon@lonsdale.me"
+        emailAddress="gordon@lonsdale.me"
         address="0x09438E46Ea66647EA65E4b104C125c82076FDcE5"
       />
     )
