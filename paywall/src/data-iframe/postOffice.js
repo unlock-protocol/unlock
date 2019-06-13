@@ -75,6 +75,11 @@ export default function postOffice(window, requiredConfirmations) {
     const relevantLocks = getRelevantLocks()
     if (!relevantLocks) {
       // this should not happen
+      // this is a boundary check. If POST_MESSAGE_SEND_UPDATES with 'locks'
+      // is sent prior to receiving POST_MESSAGE_CONFIG then this will trigger.
+      // This can only happen if a bug is introduced in unlock.min.js,
+      // but it will be exceedingly difficult to debug in that case.
+      // This is here to make it easier to debug.
       console.error('internal error - locks requested before config') // eslint-disable-line
       return
     }
