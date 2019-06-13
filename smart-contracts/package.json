@@ -23,7 +23,7 @@
     "truffle": "5.0.22",
     "truffle-hdwallet-provider": "1.0.10",
     "unlock-abi-0": "1.0.4",
-    "web3-eth-abi": "1.0.0-beta.52",
+    "web3-eth-abi": "1.0.0-beta.55",
     "web3-utils": "1.0.0-beta.37",
     "zos": "2.3.1",
     "zos-lib": "2.3.1"
