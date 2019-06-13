@@ -32,8 +32,7 @@ export const defaultValue = {
   callToAction: {
     default:
       'You have reached your limit of free articles. Please purchase access',
-    expired:
-      'Your subscription has expired, please purchase a new key to continue',
+    expired: 'Your access has expired. Please purchase a new key to continue',
     pending: 'Purchase pending...',
     confirmed: 'Purchase confirmed, content unlocked!',
   },

@@ -74,8 +74,7 @@ export const Overlay = ({
       message = 'Purchase confirmed, content unlocked!'
       break
     case 'expired':
-      message =
-        'Your subscription has expired, please purchase a new key to continue'
+      message = 'Your access has expired. Please purchase a new key to continue'
       break
     default:
       message =
