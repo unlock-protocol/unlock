@@ -1,5 +1,6 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
+import configure from '../../../config'
 
 import {
   CreatorLockForm,
@@ -18,6 +19,8 @@ import {
   UNLIMITED_KEYS_COUNT,
   ONE_HUNDRED_YEARS_IN_DAYS,
 } from '../../../constants'
+
+const config = configure()
 
 describe('lockToFormValues', () => {
   it('should return an object with the expirationDuration in the right unit', () => {
@@ -113,6 +116,7 @@ describe('CreatorLockForm', () => {
     }
     const ret = rtl.render(
       <CreatorLockForm
+        config={config}
         account={{ address: 'hi' }}
         saveLock={saveLock}
         hideAction={hideAction}
@@ -156,6 +160,55 @@ describe('CreatorLockForm', () => {
       // The error most likely to occur in this instance is
       // FORM_MAX_KEYS_INVALID.
       expectErrors([])
+    })
+  })
+
+  describe('currency', () => {
+    it('should default to Ether', () => {
+      expect.assertions(1)
+      const wrapper = makeLockForm()
+      // Link to change to ERC20 token
+      expect(
+        wrapper.getByText(`Use ${config.ERC20Contract.name}`)
+      ).not.toBeNull()
+    })
+
+    it('should handle toggling of the currency', () => {
+      expect.assertions(2)
+      const wrapper = makeLockForm()
+
+      const switchToErc20Link = wrapper.getByText(
+        `Use ${config.ERC20Contract.name}`
+      )
+      rtl.fireEvent.click(switchToErc20Link)
+
+      const switchToEther = wrapper.getByText('Use Ether')
+      expect(switchToEther).not.toBeNull()
+
+      rtl.fireEvent.click(switchToEther)
+      expect(
+        wrapper.getByText(`Use ${config.ERC20Contract.name}`)
+      ).not.toBeNull()
+    })
+
+    it('should create a lock with the chosen currency', () => {
+      expect.assertions(2)
+      const wrapper = makeLockForm()
+
+      const switchToErc20Link = wrapper.getByText(
+        `Use ${config.ERC20Contract.name}`
+      )
+      rtl.fireEvent.click(switchToErc20Link)
+
+      const submit = wrapper.getByText('Submit')
+      expect(submit).not.toBeNull()
+
+      rtl.fireEvent.click(submit)
+      expect(actions.saveLock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          currencyContractAddress: config.ERC20Contract.address,
+        })
+      )
     })
   })
 
@@ -448,6 +501,7 @@ describe('CreatorLockForm', () => {
       rtl.fireEvent.click(submit)
       expect(saveLock).toHaveBeenCalledWith(
         expect.objectContaining({
+          currencyContractAddress: null,
           keyPrice: '0.01',
           maxNumberOfKeys: 10,
           name: 'New Lock',

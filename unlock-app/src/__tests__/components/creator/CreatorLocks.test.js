@@ -7,6 +7,12 @@ import {
   mapStateToProps,
 } from '../../../components/creator/CreatorLocks'
 import createUnlockStore from '../../../createUnlockStore'
+import configure from '../../../config'
+import { ConfigContext } from '../../../utils/withConfig'
+
+const config = configure()
+
+const ConfigProvider = ConfigContext.Provider
 
 jest.mock('next/link', () => {
   return ({ children }) => children
@@ -133,13 +139,15 @@ describe('CreatorLocks', () => {
     })
 
     const wrapper = rtl.render(
-      <Provider store={store}>
-        <CreatorLocks
-          createLock={createLock}
-          formIsVisible
-          hideForm={() => {}}
-        />
-      </Provider>
+      <ConfigProvider value={config}>
+        <Provider store={store}>
+          <CreatorLocks
+            createLock={createLock}
+            formIsVisible
+            hideForm={() => {}}
+          />
+        </Provider>
+      </ConfigProvider>
     )
 
     const submitButton = wrapper.getByText('Submit')

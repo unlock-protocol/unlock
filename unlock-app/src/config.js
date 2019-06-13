@@ -141,12 +141,6 @@ export default function configure(
     // Address for the Unlock smart contract
     unlockAddress = '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13'
 
-    // The stable coin to use on ERC20 locks
-    ERC20Contract = {
-      name: '',
-      address: '',
-    }
-
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
   }
