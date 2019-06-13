@@ -11,6 +11,7 @@ import {
   POST_MESSAGE_READY,
 } from '../paywall-builder/constants'
 import { getFormattedCacheValues } from './cacheHandler'
+import { getRelevantLocks } from './paywallConfig'
 
 /**
  * Communicate from the data iframe to the main window when an update occurs
@@ -71,8 +72,24 @@ export default function postOffice(window, requiredConfirmations) {
   }
 
   const lockHandler = cachedData => {
-    actions.locks(cachedData.locks)
-    const unlockedLockAddresses = Object.values(cachedData.locks)
+    const relevantLocks = getRelevantLocks()
+    if (!relevantLocks) {
+      // this should not happen
+      console.error('internal error - locks requested before config') // eslint-disable-line
+      return
+    }
+    // we can only return the locks that are specifically requested
+    const filteredLocks = Object.keys(cachedData.locks).reduce(
+      (locks, lockAddress) => {
+        if (relevantLocks.includes(lockAddress)) {
+          locks[lockAddress] = cachedData.locks[lockAddress]
+        }
+        return locks
+      },
+      {}
+    )
+    actions.locks(filteredLocks)
+    const unlockedLockAddresses = Object.values(filteredLocks)
       .filter(lock =>
         ['submitted', 'pending', 'valid', 'confirming'].includes(
           lock.key.status

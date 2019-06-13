@@ -13,6 +13,7 @@ import {
 
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
+  const address = '0x1234567890123456789012345678901234567890'
 
   let fakeWindow
   let config
@@ -80,6 +81,13 @@ describe('useBlockchainData hook', () => {
         hash: '',
       },
     }
+    paywallConfig = {
+      locks: {
+        [address]: {
+          name: 'hi there!',
+        },
+      },
+    }
     config = { isServer: false, isInIframe: true, requiredNetworkId: 3 }
   })
 
@@ -107,7 +115,7 @@ describe('useBlockchainData hook', () => {
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
+      address,
       balance: '0',
     }
 
@@ -144,7 +152,7 @@ describe('useBlockchainData hook', () => {
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
+      address,
       balance: '5.3',
     }
 
@@ -167,7 +175,6 @@ describe('useBlockchainData hook', () => {
     expect.assertions(1)
 
     const component = rtl.render(<Wrapper />)
-    const address = '0x1234567890123456789012345678901234567890'
     paywallConfig = {
       locks: {
         [address]: {

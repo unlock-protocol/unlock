@@ -52,24 +52,39 @@ export default function useBlockchainData(window, paywallConfig) {
   // construct the object format expected by the checkout UI
   const account = address ? { address, balance } : null
 
-  // populate lcoks with the lock names, either from the chain
-  // or from the paywall config
-  const locks = Object.keys(blockChainLocks).reduce(
-    (newLocks, lockAddress) => ({
-      ...newLocks,
-      [lockAddress]: {
-        ...blockChainLocks[lockAddress],
-        // we always use the configuration name to provide flexibility
-        // even if the lock has a name set on the contract
-        name: paywallConfig.locks[lockAddress].name,
-      },
-    }),
-    {}
-  )
+  try {
+    // populate locks with the lock names, either from the chain
+    // or from the paywall config
+    const locks = Object.keys(blockChainLocks).reduce(
+      (newLocks, lockAddress) => ({
+        ...newLocks,
+        [lockAddress]: {
+          ...blockChainLocks[lockAddress],
+          // we always use the configuration name to provide flexibility
+          // even if the lock has a name set on the contract
+          name: paywallConfig.locks[lockAddress].name,
+        },
+      }),
+      {}
+    )
 
-  return {
-    account,
-    network,
-    locks,
+    return {
+      account,
+      network,
+      locks,
+    }
+  } catch (e) {
+    // sanity check
+    // eslint-disable-next-line no-console
+    console.error(
+      'Internal error: blockchain data out of sync with paywall config',
+      e.message
+    )
+
+    return {
+      account,
+      network,
+      locks: {},
+    }
   }
 }

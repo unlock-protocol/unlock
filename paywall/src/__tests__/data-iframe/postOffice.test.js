@@ -20,6 +20,7 @@ import {
   getKeys,
   getTransactions,
 } from '../../data-iframe/cacheHandler'
+import { setPaywallConfig } from '../../data-iframe/paywallConfig'
 
 describe('data iframe postOffice', () => {
   let fakeWindow
@@ -90,6 +91,19 @@ describe('data iframe postOffice', () => {
 
         const info = postOffice(fakeWindow, 12)
         blockChainUpdater = info.blockChainUpdater
+        setPaywallConfig({
+          locks: {
+            '0x123': {
+              name: 'hi',
+            },
+            '0x456': {
+              name: 'there',
+            },
+          },
+          callToAction: {
+            default: 'hi',
+          },
+        })
       })
 
       it('should send POST_MESSAGE_READY on ready', done => {
@@ -401,6 +415,19 @@ describe('data iframe postOffice', () => {
           })
           const info = postOffice(fakeWindow, 12)
           blockChainUpdater = info.blockChainUpdater
+          setPaywallConfig({
+            locks: {
+              '0x123': {
+                name: 'hi',
+              },
+              '0x456': {
+                name: 'there',
+              },
+            },
+            callToAction: {
+              default: 'hi',
+            },
+          })
         })
 
         it('sends locked if no locks have valid keys', done => {
@@ -521,6 +548,75 @@ describe('data iframe postOffice', () => {
 
           blockChainUpdater('locks')
         })
+      })
+
+      it('filters returned locks based on the paywall config', async done => {
+        expect.assertions(1)
+
+        setPaywallConfig({
+          locks: {
+            '0x123': {
+              name: 'hi',
+            },
+            // no 0x456 lock
+          },
+          callToAction: {
+            default: 'hi',
+          },
+        })
+
+        await setAccount(fakeWindow, 'account')
+        await setNetwork(fakeWindow, 2)
+        await setLocks(fakeWindow, {
+          '0x123': {
+            address: '0x123',
+          },
+          '0x456': {
+            address: '0x456',
+          },
+        })
+        await setKeys(fakeWindow, {
+          '0x123': {
+            id: '0x123-account',
+            owner: 'account',
+            lock: '0x123',
+            expiration: 0,
+          },
+          '0x456': {
+            id: '0x456-account',
+            owner: 'account',
+            lock: '0x456',
+            expiration: 0,
+          },
+        })
+
+        fakeTarget.postMessage = (...args) => {
+          if (args[0].type !== POST_MESSAGE_UPDATE_LOCKS) return
+          expect(args).toEqual([
+            {
+              type: POST_MESSAGE_UPDATE_LOCKS,
+              payload: {
+                '0x123': {
+                  address: '0x123',
+                  key: {
+                    id: '0x123-account',
+                    owner: 'account',
+                    lock: '0x123',
+                    expiration: 0,
+                    status: 'none',
+                    confirmations: 0,
+                    transactions: [],
+                  },
+                },
+                // no 0x456 lock is returned
+              },
+            },
+            'http://fun.times',
+          ])
+          done()
+        }
+
+        blockChainUpdater('locks')
       })
 
       describe('no cache present', () => {
