@@ -4,6 +4,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta charset="utf-8" />
     <title>Lorem Ipsum Daily</title>
+    <script src="adRemoverUtils.js"></script>
     <script>
       ;(function(d, s) {
         var js = d.createElement(s),
@@ -74,54 +75,20 @@
       }
     </style>
     <script>
-      /**
-       * Shows the ads on the page!
-       */
-      function loadAds() {
-        // Let's look for all ad elements
-        document.querySelectorAll('.ad').forEach(adElement => {
-          adElement.style.height = `${
-            adElement.attributes['data-height'].value
-          }px`
-          adElement.style.width = `${
-            adElement.attributes['data-width'].value
-          }px`
-          adElement.style['background-color'] = 'red'
-          adElement.style.content = 'ad'
-          adElement.style.display = 'block'
-        })
-      }
-
-      /**
-       * Hides the ads on the page!
-       */
-      function hideAds() {
-        document.querySelectorAll('.ad').forEach(adElement => {
-          adElement.style.display = 'none'
-        })
-      }
-
-      /**
-       * Shows the Unlock checkout page
-       */
-      function loadCheckout() {
-        window.unlockProtocol && unlockProtocol.loadCheckoutModal()
-      }
-
       let unlocked = false
       // Once the doc has been loaded
       window.addEventListener('DOMContentLoaded', event => {
         //loadAds()
-        setTimeout(() => !unlocked && loadAds(), 100)
+        setTimeout(() => !unlocked && loadAds(document), 100)
       })
 
       window.addEventListener('unlockProtocol', function(e) {
         var state = e.detail
         if (state === 'locked') {
-          loadAds()
+          loadAds(document)
         } else if (state === 'unlocked') {
           unlocked = true
-          hideAds()
+          hideAds(document)
         }
       })
     </script>
@@ -130,7 +97,9 @@
   <body>
     <header>
       <h1>Lorem Ipsum Daily</h1>
-      <button onclick="loadCheckout()">Unlock the ads free experience!</button>
+      <button onclick="loadCheckout(window)">
+        Unlock the ads free experience!
+      </button>
     </header>
     <main>
       <p>
