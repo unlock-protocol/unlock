@@ -19,6 +19,7 @@ let requiredConfigVariables = {
   unlockEnv,
   dashboardUrl: process.env.DASHBOARD_URL,
   intercomAppId: 'f99d98d3', // Hardcoded for now
+  googleAnalyticsId: 'UA-142114767-1', // Hardcoded for now - TODO move to an env variable
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {

@@ -11,4 +11,5 @@ import config from './next.config'
 setConfig({
   publicRuntimeConfig: config.publicRuntimeConfig,
   intercomAppId: '0',
+  googleAnalyticsId: '0',
 })
