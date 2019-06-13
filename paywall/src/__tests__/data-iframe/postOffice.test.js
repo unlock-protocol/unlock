@@ -1,4 +1,4 @@
-import postOffice from '../../data-iframe/postOffice'
+import postOffice, { lockHandler } from '../../data-iframe/postOffice'
 import {
   POST_MESSAGE_UPDATE_WALLET,
   POST_MESSAGE_UPDATE_ACCOUNT,
@@ -635,6 +635,170 @@ describe('data iframe postOffice', () => {
 
           expect(fakeTarget.postMessage).not.toHaveBeenCalled()
         })
+      })
+    })
+  })
+
+  describe('lockHandler', () => {
+    let actions
+
+    beforeEach(() => {
+      actions = {
+        unlocked: jest.fn(),
+        locked: jest.fn(),
+        locks: jest.fn(),
+        account: jest.fn(),
+        balance: jest.fn(),
+        network: jest.fn(),
+        walletModal: jest.fn(),
+        ready: jest.fn(),
+        error: jest.fn(),
+      }
+
+      fakeWindow = {
+        console: {
+          error: jest.fn(),
+        },
+        parent: fakeTarget,
+        location: {
+          href: 'http://example.com?origin=http%3A%2F%2Ffun.times',
+        },
+        handlers: {},
+        addEventListener(type, handler) {
+          fakeWindow.handlers[type] = handler
+        },
+        storage: {},
+        localStorage: {
+          getItem: jest.fn(key => fakeWindow.storage[key]),
+          setItem: jest.fn((key, value) => {
+            if (typeof value !== 'string') {
+              throw new Error('localStorage only supports strings')
+            }
+            fakeWindow.storage[key] = value
+          }),
+          removeItem: jest.fn(key => {
+            delete fakeWindow.storage[key]
+          }),
+        },
+      }
+      setPaywallConfig() // reset it to startup state
+    })
+
+    it('should error if there are no relevant locks set', () => {
+      expect.assertions(4)
+
+      lockHandler(fakeWindow, { locks: {} }, actions)
+
+      expect(fakeWindow.console.error).toHaveBeenCalledWith(
+        'internal error - locks requested before config'
+      )
+      expect(actions.locks).not.toHaveBeenCalled()
+      expect(actions.unlocked).not.toHaveBeenCalled()
+      expect(actions.locked).not.toHaveBeenCalled()
+    })
+
+    describe('normal behavior', () => {
+      const cachedData = {
+        locks: {
+          '0x123': { address: '0x123', key: { status: 'none' } },
+          '0x456': { address: '0x456', key: { status: 'valid' } },
+          '0x789': { address: '0x789', key: { status: 'confirming' } },
+        },
+      }
+
+      beforeEach(() => {
+        actions = {
+          unlocked: jest.fn(),
+          locked: jest.fn(),
+          locks: jest.fn(),
+          account: jest.fn(),
+          balance: jest.fn(),
+          network: jest.fn(),
+          walletModal: jest.fn(),
+          ready: jest.fn(),
+          error: jest.fn(),
+        }
+
+        fakeWindow = {
+          console: {
+            error: jest.fn(),
+          },
+          parent: fakeTarget,
+          location: {
+            href: 'http://example.com?origin=http%3A%2F%2Ffun.times',
+          },
+          handlers: {},
+          addEventListener(type, handler) {
+            fakeWindow.handlers[type] = handler
+          },
+          storage: {},
+          localStorage: {
+            getItem: jest.fn(key => fakeWindow.storage[key]),
+            setItem: jest.fn((key, value) => {
+              if (typeof value !== 'string') {
+                throw new Error('localStorage only supports strings')
+              }
+              fakeWindow.storage[key] = value
+            }),
+            removeItem: jest.fn(key => {
+              delete fakeWindow.storage[key]
+            }),
+          },
+        }
+        setPaywallConfig({
+          locks: {
+            '0x123': {
+              name: 'hi',
+            },
+            '0x456': {
+              name: 'there',
+            },
+          },
+          callToAction: {
+            default: 'hi',
+          },
+        })
+      })
+
+      it('should filter the list of cached locks to only include relevant locks', () => {
+        expect.assertions(1)
+
+        lockHandler(fakeWindow, cachedData, actions)
+
+        expect(actions.locks).toHaveBeenCalledWith(
+          expect.objectContaining({
+            '0x123': cachedData.locks['0x123'],
+            '0x456': cachedData.locks['0x456'],
+          })
+        )
+      })
+
+      it('should call actions.unlocked if any locks have valid keys', () => {
+        expect.assertions(2)
+
+        lockHandler(fakeWindow, cachedData, actions)
+
+        expect(actions.unlocked).toHaveBeenCalledWith(
+          expect.arrayContaining(['0x456'])
+        )
+        expect(actions.locked).not.toHaveBeenCalled()
+      })
+
+      it('should call actions.locked if no locks have valid keys', () => {
+        expect.assertions(2)
+
+        const lockedCachedData = {
+          ...cachedData,
+          locks: {
+            ...cachedData.locks,
+            '0x456': { address: '0x456', key: { status: 'expired' } },
+          },
+        }
+
+        lockHandler(fakeWindow, lockedCachedData, actions)
+
+        expect(actions.unlocked).not.toHaveBeenCalled()
+        expect(actions.locked).toHaveBeenCalled()
       })
     })
   })

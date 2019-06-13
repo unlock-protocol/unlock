@@ -4,7 +4,11 @@ let paywallConfigLocks
 // these are used by the postOffice to filter the locks
 export function setPaywallConfig(newConfig) {
   paywallConfig = newConfig
-  paywallConfigLocks = Object.keys(newConfig.locks)
+  if (newConfig) {
+    paywallConfigLocks = Object.keys(newConfig.locks)
+  } else {
+    paywallConfigLocks = undefined
+  }
 }
 
 export function getPaywallConfig() {
