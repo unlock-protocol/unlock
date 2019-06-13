@@ -2437,6 +2437,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -2553,7 +2559,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -2957,6 +2963,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -3155,7 +3167,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -3762,6 +3774,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -3964,7 +3982,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -4575,6 +4593,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -4773,7 +4797,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -5380,6 +5404,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -5578,7 +5608,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -6268,6 +6298,12 @@ Object {
   }
 }
 
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    display: grid;
+  }
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -6497,7 +6533,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi jzvTWC"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -7004,6 +7040,12 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    display: grid;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -8596,7 +8638,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi jzvTWC"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -10445,6 +10487,12 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c9 {
     padding-top: 24px;
   }
@@ -12034,7 +12082,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi jzvTWC"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -13883,6 +13931,12 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
   .c9 {
     padding-top: 24px;
   }
@@ -15472,7 +15526,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi jzvTWC"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"

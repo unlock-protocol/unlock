@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Media from '../../theme/media'
 import Close from '../interface/buttons/layout/Close'
 
 interface WrapperProps {
@@ -54,4 +55,8 @@ const Wrapper = styled.section`
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+
+  ${Media.phone`
+    display: grid;
+  `}
 `
