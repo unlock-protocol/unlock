@@ -13,6 +13,8 @@ import {
 
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
+  const address = '0x1234567890123456789012345678901234567890'
+  const address2 = '0xa234567890123456789012345678901234567890'
 
   let fakeWindow
   let config
@@ -79,6 +81,16 @@ describe('useBlockchainData hook', () => {
         search: '?origin=origin',
         hash: '',
       },
+      console: {
+        warn: jest.fn(),
+      },
+    }
+    paywallConfig = {
+      locks: {
+        [address]: {
+          name: 'hi there!',
+        },
+      },
     }
     config = { isServer: false, isInIframe: true, requiredNetworkId: 3 }
   })
@@ -107,7 +119,7 @@ describe('useBlockchainData hook', () => {
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
+      address,
       balance: '0',
     }
 
@@ -144,7 +156,7 @@ describe('useBlockchainData hook', () => {
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
+      address,
       balance: '5.3',
     }
 
@@ -167,14 +179,6 @@ describe('useBlockchainData hook', () => {
     expect.assertions(1)
 
     const component = rtl.render(<Wrapper />)
-    const address = '0x1234567890123456789012345678901234567890'
-    paywallConfig = {
-      locks: {
-        [address]: {
-          name: 'hi there!',
-        },
-      },
-    }
     const locks = {
       [address]: {
         address,
@@ -204,6 +208,58 @@ describe('useBlockchainData hook', () => {
           name: 'hi there!',
         },
       })
+    )
+  })
+
+  it('should ignore unknown locks and warn about them', () => {
+    expect.assertions(2)
+
+    const component = rtl.render(<Wrapper />)
+    const locks = {
+      [address]: {
+        address,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+      [address2]: {
+        address: address2,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+    }
+
+    const locksUpdater = getLocksListener()
+
+    rtl.act(() => {
+      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+    })
+
+    expect(component.getByTitle('locks')).toHaveTextContent(
+      JSON.stringify({
+        [address]: {
+          ...locks[address],
+          name: 'hi there!',
+        },
+      })
+    )
+    expect(fakeWindow.console.warn).toHaveBeenCalledWith(
+      'internal error: data iframe returned locks not known to the paywall'
     )
   })
 })

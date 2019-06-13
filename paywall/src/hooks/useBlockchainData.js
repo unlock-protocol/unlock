@@ -52,9 +52,23 @@ export default function useBlockchainData(window, paywallConfig) {
   // construct the object format expected by the checkout UI
   const account = address ? { address, balance } : null
 
-  // populate lcoks with the lock names, either from the chain
+  const paywallLockAddresses = Object.keys(paywallConfig.locks)
+  const blockChainLockAddresses = Object.keys(blockChainLocks)
+
+  // filter out any locks that are not on this paywall
+  const filteredLockAddresses = blockChainLockAddresses.filter(address =>
+    paywallLockAddresses.includes(address)
+  )
+  if (filteredLockAddresses.length !== blockChainLockAddresses.length) {
+    // eslint-disable-next-line
+    window.console.warn(
+      'internal error: data iframe returned locks not known to the paywall'
+    )
+  }
+
+  // populate locks with the lock names, either from the chain
   // or from the paywall config
-  const locks = Object.keys(blockChainLocks).reduce(
+  const locks = filteredLockAddresses.reduce(
     (newLocks, lockAddress) => ({
       ...newLocks,
       [lockAddress]: {
