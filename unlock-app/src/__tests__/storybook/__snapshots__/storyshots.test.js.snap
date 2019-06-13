@@ -507,7 +507,7 @@ Object {
 
 .c6 {
   height: 60px;
-  width: 385px;
+  max-width: 385px;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
@@ -682,7 +682,7 @@ Object {
           class="sc-jlyJG cgbVTE"
         />
         <button
-          class="sc-gipzik fNSzSv"
+          class="sc-gipzik kctLeB"
         >
           Update Password
         </button>
