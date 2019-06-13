@@ -9,7 +9,7 @@ import {
   updateLock,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
-import { setAccount } from '../actions/accounts'
+import { setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
@@ -24,7 +24,6 @@ import {
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
 } from '../errors'
-import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
@@ -47,6 +46,10 @@ const walletMiddleware = config => {
       }
       return callback()
     }
+
+    walletService.on('account.updated', update => {
+      dispatch(updateAccount(update))
+    })
 
     /**
      * When an account was changed, we dispatch the corresponding action
@@ -199,18 +202,6 @@ const walletMiddleware = config => {
               action.price
             )
           })
-        } else if (action.type === SIGN_DATA) {
-          const account = getState().account
-          walletService.signData(
-            account.address,
-            action.data,
-            (error, signature) => {
-              if (error) {
-                dispatch(signatureError(error))
-              }
-              dispatch(signedData(action.data, signature))
-            }
-          )
         }
 
         next(action)
