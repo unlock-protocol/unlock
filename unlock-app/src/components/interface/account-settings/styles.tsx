@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 
+// TODO: redefine these in terms of the grid system in src/components/helpers
+
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -66,7 +68,7 @@ export const Error = styled.span`
 
 export const SubmitButton = styled.button`
   height: 60px;
-  width: 385px;
+  max-width: 385px;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
