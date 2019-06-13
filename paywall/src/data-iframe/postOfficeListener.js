@@ -7,6 +7,7 @@ import {
 import { isValidPaywallConfig } from '../utils/validators'
 import { ACCOUNT_REGEXP } from '../constants'
 import { setAccount } from './cacheHandler'
+import { setPaywallConfig } from './paywallConfig'
 
 /**
  * Create the listener to respond to the configuration, which lists all locks on the page
@@ -16,6 +17,7 @@ import { setAccount } from './cacheHandler'
 export const makeConfigListener = (logger, setConfig) =>
   function configPostOfficeListener(config) {
     if (isValidPaywallConfig(config)) {
+      setPaywallConfig(config)
       setConfig(config)
     } else {
       logger('ignoring malformed paywall config')
