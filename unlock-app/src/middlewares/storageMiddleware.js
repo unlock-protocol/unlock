@@ -157,7 +157,11 @@ const storageMiddleware = config => {
 
         if (action.type === SIGNED_USER_DATA) {
           const { data, sig } = action
-          storageService.updateUser(data.message.emailAddress, data, sig)
+          storageService.updateUserEncryptedPrivateKey(
+            data.message.user.emailAddress,
+            data,
+            sig
+          )
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
