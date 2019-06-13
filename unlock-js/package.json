@@ -18,8 +18,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "eth-sig-util": "^2.2.0",
-    "ethereumjs-utils": "^5.2.5",
+    "eth-sig-util": "2.2.0",
+    "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.27"
   },
   "browserslist": "> 0.25%, not dead",
@@ -32,16 +32,16 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
-    "babel-jest": "^24.7.1",
-    "jest": "^24.1.0",
-    "nock": "^10.0.5",
-    "unlock-abi-0": "^1.0.4",
-    "unlock-abi-0-1": "^1.0.0",
-    "unlock-abi-0-2": "^1.0.0",
-    "unlock-abi-1-0": "^1.0.0",
-    "unlock-abi-1-1": "^1.0.0"
+    "@babel/cli": "7.4.4",
+    "@babel/core": "7.4.5",
+    "@babel/preset-env": "7.4.5",
+    "babel-jest": "24.7.1",
+    "jest": "24.5.0",
+    "nock": "10.0.6",
+    "unlock-abi-0": "1.0.4",
+    "unlock-abi-0-1": "1.0.0",
+    "unlock-abi-0-2": "1.0.0",
+    "unlock-abi-1-0": "1.0.0",
+    "unlock-abi-1-1": "1.0.0"
   }
 }

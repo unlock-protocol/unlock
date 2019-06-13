@@ -18,13 +18,13 @@
    "license": "ISC",
    "dependencies": {
       "@types/jest": "24.0.14",
-      "@types/node": "^8.0.29",
-      "dotenv": "^8.0.0",
-      "ethers": "^4.0.27",
-      "express": "^4.17.0",
-      "pg": "^7.3.0",
-      "reflect-metadata": "^0.1.10",
-      "tsc": "^1.20150623.0",
+      "@types/node": "8.10.49",
+      "dotenv": "8.0.0",
+      "ethers": "4.0.27",
+      "express": "4.17.0",
+      "pg": "7.11.0",
+      "reflect-metadata": "0.1.13",
+      "tsc": "1.20150623.0",
       "typeorm": "0.2.17"
    },
    "lint-staged": {
@@ -36,9 +36,9 @@
       }
    },
    "devDependencies": {
-      "jest": "^24.8.0",
-      "ts-jest": "^24.0.2",
-      "ts-node": "^3.3.0",
+      "jest": "24.8.0",
+      "ts-jest": "24.0.2",
+      "ts-node": "3.3.0",
       "typescript": "3.5.1"
    }
 }
