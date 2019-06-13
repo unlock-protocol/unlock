@@ -233,20 +233,20 @@ describe('Storage middleware', () => {
       const emailAddress = 'geoff@bitconnect.gov'
       const data = {
         message: {
-          emailAddress,
+          user: {
+            emailAddress,
+          },
         },
       }
       const sig = {}
       const { next, invoke } = create()
       const action = { type: SIGNED_USER_DATA, data, sig }
-      mockStorageService.updateUser = jest.fn()
+      mockStorageService.updateUserEncryptedPrivateKey = jest.fn()
 
       invoke(action)
-      expect(mockStorageService.updateUser).toHaveBeenCalledWith(
-        emailAddress,
-        data,
-        sig
-      )
+      expect(
+        mockStorageService.updateUserEncryptedPrivateKey
+      ).toHaveBeenCalledWith(emailAddress, data, sig)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

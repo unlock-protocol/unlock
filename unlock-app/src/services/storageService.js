@@ -150,15 +150,15 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Updates a user, using their email address as key. In the case of failure a rejected promise
-   * is returned to the caller.
+   * Updates a user's private key, using their email address as key. In the case
+   * of failure a rejected promise is returned to the caller.
    *
    * @param {*} email
    * @param {*} user
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async updateUser(emailAddress, user, token) {
+  async updateUserEncryptedPrivateKey(emailAddress, user, token) {
     const opts = {}
     if (token) {
       // TODO: tokens aren't optional
@@ -166,7 +166,9 @@ export class StorageService extends EventEmitter {
     }
     try {
       await axios.put(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}`,
+        `${this.host}/users/${encodeURIComponent(
+          emailAddress
+        )}/passwordEncryptedPrivateKey`,
         user,
         opts
       )
