@@ -19,7 +19,7 @@ describe("Backfiller", () => {
         expect.assertions(1)
       var emitter = new EventEmitter;
 
-      let backfiller = new Backfiller(emitter);
+      let backfiller = new Backfiller('network_id', emitter);
       backfiller.backfill("0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2");
 
       emitter.on('transaction', hash => {
