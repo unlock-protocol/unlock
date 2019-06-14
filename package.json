@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "ganache-cli": "6.4.1",
-    "husky": "2.0.0"
+    "husky": "2.4.1"
   },
   "scripts": {
     "link-parent-bin": "link-parent-bin -c . -s true",
