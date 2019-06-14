@@ -89,6 +89,18 @@ describe('Unlock Provider', () => {
         )
       })
     })
+
+    describe('signPaymentData', () => {
+      it('should sign a stripe card token', () => {
+        expect.assertions(1)
+        const token = 'tok_1EPsocIsiZS2oQBMRXzw21xh'
+        const output = provider.signPaymentData(token)
+
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {
