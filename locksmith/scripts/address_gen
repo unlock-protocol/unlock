@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+const ethers = require('ethers')
+
+let wallet = ethers.Wallet.createRandom({
+  extraEntroy: Math.random(),
+})
+
+console.log(wallet)
