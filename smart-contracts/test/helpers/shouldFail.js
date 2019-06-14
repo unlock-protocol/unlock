@@ -45,9 +45,7 @@ module.exports = async function shouldFail(promise, expectedRevertReason) {
     }
 
     throw new Error(
-      `shouldFail reason for revert does not match. Got "${
-        error.message
-      }"; expected "${expectedRevertReason}"`
+      `shouldFail reason for revert does not match. Got "${error.message}"; expected "${expectedRevertReason}"`
     )
   }
 
