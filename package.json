@@ -35,7 +35,7 @@
     "typescript": "3.5.1"
   },
   "devDependencies": {
-    "ganache-cli": "6.4.1",
+    "ganache-cli": "6.4.4",
     "husky": "2.0.0"
   },
   "scripts": {
