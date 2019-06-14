@@ -82,11 +82,11 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   }
 
   // takes and signs a stripe card token
-  signPaymentData(token) {
+  signPaymentData(stripeTokenId) {
     const data = UnlockPaymentDetails.build({
       emailAddress: this.emailAddress,
       publicKey: this.wallet.address,
-      token,
+      stripeTokenId,
     })
     return this.signData(data)
   }

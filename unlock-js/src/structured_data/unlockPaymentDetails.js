@@ -11,7 +11,7 @@ export default class UnlockPaymentDetails {
     let user = [
       { name: 'emailAddress', type: 'string' },
       { name: 'publicKey', type: 'address' },
-      { name: 'token', type: 'string' },
+      { name: 'stripeTokenId', type: 'string' },
     ]
 
     let domainData = {
@@ -23,7 +23,7 @@ export default class UnlockPaymentDetails {
       user: {
         emailAddress: input.emailAddress,
         publicKey: input.publicKey,
-        token: input.token,
+        stripeTokenId: input.stripeTokenId,
       },
     }
 
