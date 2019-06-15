@@ -25,6 +25,10 @@ import {
   signUserData,
   SIGNED_USER_DATA,
   signedUserData,
+  SIGN_PAYMENT_DATA,
+  signPaymentData,
+  SIGNED_PAYMENT_DATA,
+  signedPaymentData,
 } from '../../actions/user'
 
 const key = {
@@ -205,6 +209,38 @@ describe('user account actions', () => {
       }
 
       expect(signedUserData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting the signature for a stripe token', () => {
+      expect.assertions(1)
+      const stripeTokenId = 'tok_1EPsocIsiZS2oQBMRXzw21xh'
+
+      const expectedAction = {
+        type: SIGN_PAYMENT_DATA,
+        stripeTokenId,
+      }
+
+      expect(signPaymentData(stripeTokenId)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a stripe token', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          emailAddress,
+          publicKey: '0x123abc',
+          stripeTokenId: 'tok_1EPsocIsiZS2oQBMRXzw21xh',
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_PAYMENT_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedPaymentData({ data, sig })).toEqual(expectedAction)
     })
   })
 
