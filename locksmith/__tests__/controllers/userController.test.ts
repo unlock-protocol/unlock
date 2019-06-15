@@ -323,7 +323,12 @@ describe('User Controller', () => {
           .put('/users/user@example.com/paymentdetails')
           .set('Accept', /json/)
           .send({
-            token: 'a_valid_token',
+            message: {
+              user: {
+                publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+                stripeTokenId: 'tok_visa',
+              },
+            },
           })
 
         expect(response.statusCode).toBe(202)
@@ -336,7 +341,12 @@ describe('User Controller', () => {
           .put('/users/user@example.com/paymentdetails')
           .set('Accept', /json/)
           .send({
-            token: 'an_invalid_token',
+            message: {
+              user: {
+                publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+                stripeTokenId: 'tok_INVALID',
+              },
+            },
           })
         expect(response.statusCode).toBe(400)
       })

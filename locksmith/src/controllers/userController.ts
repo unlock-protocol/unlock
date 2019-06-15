@@ -89,10 +89,9 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let emailAddress = req.params.emailAddress
-    let token = req.body.token
-
-    let result = await UserOperations.updatePaymentDetails(token, emailAddress)
+    let publicKey = req.body.message.user.publicKey
+    let token = req.body.message.user.stripeTokenId
+    let result = await UserOperations.updatePaymentDetails(token, publicKey)
 
     if (result) {
       return res.sendStatus(202)

@@ -15,6 +15,7 @@ import {
   setEncryptedPrivateKey,
   SIGN_USER_DATA,
   SIGNED_USER_DATA,
+  SIGNED_PAYMENT_DATA,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -247,6 +248,32 @@ describe('Storage middleware', () => {
       expect(
         mockStorageService.updateUserEncryptedPrivateKey
       ).toHaveBeenCalledWith(emailAddress, data, sig)
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handling SIGNED_PAYMENT_DATA', () => {
+    it('should call storageService for payment method updates', () => {
+      expect.assertions(2)
+      const emailAddress = 'leif.erikson@vinland.saga'
+      const data = {
+        message: {
+          user: {
+            emailAddress,
+          },
+        },
+      }
+      const sig = {}
+      const { next, invoke } = create()
+      const action = { type: SIGNED_PAYMENT_DATA, data, sig }
+      mockStorageService.addPaymentMethod = jest.fn()
+
+      invoke(action)
+      expect(mockStorageService.addPaymentMethod).toHaveBeenCalledWith(
+        emailAddress,
+        data,
+        sig
+      )
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

@@ -10,6 +10,8 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
   signedUserData,
+  SIGN_PAYMENT_DATA,
+  signedPaymentData,
 } from '../actions/user'
 
 interface Provider {
@@ -88,6 +90,9 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_USER_DATA) {
           const payload = provider.signUserData(action.data)
           dispatch(signedUserData(payload))
+        } else if (action.type === SIGN_PAYMENT_DATA) {
+          const payload = provider.signPaymentData(action.stripeTokenId)
+          dispatch(signedPaymentData(payload))
         }
 
         next(action)

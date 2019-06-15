@@ -359,6 +359,49 @@ describe('StorageService', () => {
     })
   })
 
+  describe('Add payment method', () => {
+    describe('When a payment method is successfully added', () => {
+      it('emits a success', done => {
+        expect.assertions(2)
+        axios.put.mockReturnValue()
+        storageService.addPaymentMethod(
+          'geoff@bitconnect.gov',
+          'signed token data',
+          null
+        )
+
+        storageService.on(success.addPaymentMethod, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+
+        expect(axios.put).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(
+            'geoff@bitconnect.gov'
+          )}/paymentdetails`,
+          'signed token data',
+          {}
+        )
+      })
+    })
+
+    describe('when a payment method cannot be successfully added', () => {
+      it('emits a failure', done => {
+        expect.assertions(1)
+        axios.put.mockRejectedValue()
+        storageService.addPaymentMethod(
+          'geoff@bitconnect.gov',
+          'signed token data',
+          null
+        )
+        storageService.on(failure.addPaymentMethod, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+      })
+    })
+  })
+
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
       it('emits a success', done => {

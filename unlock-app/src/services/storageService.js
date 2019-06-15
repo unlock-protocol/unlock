@@ -6,6 +6,7 @@ import { EventEmitter } from 'events'
 // these objects, and nothing that isn't emitted should be in one of these
 // objects.
 export const success = {
+  addPaymentMethod: 'addPaymentMethod.success',
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   lockLookUp: 'lockLookUp.success',
@@ -17,6 +18,7 @@ export const success = {
 }
 
 export const failure = {
+  addPaymentMethod: 'addPaymentMethod.failure',
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   lockLookUp: 'lockLookUp.failure',
@@ -175,6 +177,31 @@ export class StorageService extends EventEmitter {
       this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
       this.emit(failure.updateUser, { emailAddress, error })
+    }
+  }
+
+  /**
+   * Adds a payment method to a user's account, using their email address as key.
+   *
+   * @param {*} emailAddress
+   * @param {*} paymentDetails structured_data used to generate signature
+   * @param {*} token
+   */
+  async addPaymentMethod(emailAddress, stripeTokenId, token) {
+    const opts = {}
+    if (token) {
+      // TODO: tokens aren't optional
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      await axios.put(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/paymentdetails`,
+        stripeTokenId,
+        opts
+      )
+      this.emit(success.addPaymentMethod, { emailAddress, stripeTokenId })
+    } catch (error) {
+      this.emit(failure.addPaymentMethod, { emailAddress, error })
     }
   }
 

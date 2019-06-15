@@ -15,6 +15,8 @@ export const GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD =
   'userCredentials/GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD'
 export const SIGN_USER_DATA = 'userCredentials/SIGN_USER_DATA'
 export const SIGNED_USER_DATA = 'userCredentials/SIGNED_USER_DATA'
+export const SIGN_PAYMENT_DATA = 'userCredentials/SIGN_PAYMENT_DATA'
+export const SIGNED_PAYMENT_DATA = 'userCredentials/SIGNED_PAYMENT_DATA'
 
 export interface Credentials {
   emailAddress: string
@@ -118,6 +120,27 @@ interface SignedUserData {
 }
 export const signedUserData = ({ data, sig }: SignedUserData) => ({
   type: SIGNED_USER_DATA,
+  data,
+  sig,
+})
+
+export const signPaymentData = (stripeTokenId: string) => ({
+  type: SIGN_PAYMENT_DATA,
+  stripeTokenId,
+})
+
+interface SignedPaymentData {
+  data: {
+    message: {
+      emailAddress: string
+      publicKey: string
+      stripeTokenId: string
+    }
+  }
+  sig: any
+}
+export const signedPaymentData = ({ data, sig }: SignedPaymentData) => ({
+  type: SIGNED_PAYMENT_DATA,
   data,
   sig,
 })

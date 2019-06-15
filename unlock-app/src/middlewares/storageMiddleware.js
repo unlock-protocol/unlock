@@ -20,6 +20,7 @@ import {
   setEncryptedPrivateKey,
   signUserData,
   SIGNED_USER_DATA,
+  SIGNED_PAYMENT_DATA,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -160,6 +161,15 @@ const storageMiddleware = config => {
         if (action.type === SIGNED_USER_DATA) {
           const { data, sig } = action
           storageService.updateUserEncryptedPrivateKey(
+            data.message.user.emailAddress,
+            data,
+            sig
+          )
+        }
+
+        if (action.type === SIGNED_PAYMENT_DATA) {
+          const { data, sig } = action
+          storageService.addPaymentMethod(
             data.message.user.emailAddress,
             data,
             sig
