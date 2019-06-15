@@ -4,8 +4,10 @@ subTitle: Creators can chose any Ethereum based token when they sell keys to the
 authorName: Julien Genestoux
 publishDate: June 13, 2019
 description: 'A lot of the creators that we spoke with were concerned by the volatile nature of Ether when using it to price their keys: we needed to support stable coins. The ERC20 standard is a way to create tokens which are all compatible, even though they may have different implementations.'
-image: /static/images/blog/multiuselocks/hero.jpg
+image: /static/images/blog/erc20-locks/hero.jpg
 ---
+
+![Dashboard Lock](/static/images/blog/erc20-locks/use-dai.jpg)
 
 When creators deploy their locks using our dashboard, they can chose the following:
 
