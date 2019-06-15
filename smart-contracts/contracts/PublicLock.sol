@@ -3,7 +3,6 @@ pragma solidity 0.5.9;
 import './interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
-import 'openzeppelin-solidity/contracts/token/ERC721/ERC721Holder.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinFunds.sol';
@@ -19,7 +18,6 @@ import './mixins/MixinTransfer.sol';
 /**
  * @title The Lock contract
  * @author Julien Genestoux (unlock-protocol.com)
- * Eventually: implement ERC721.
  * @dev ERC165 allows our contract to be queried to determine whether it implements a given interface.
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://eips.ethereum.org/EIPS/eip-721
@@ -28,7 +26,6 @@ contract PublicLock is
   IERC721,
   ERC165,
   Ownable,
-  ERC721Holder,
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
