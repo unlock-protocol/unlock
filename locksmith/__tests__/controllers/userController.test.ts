@@ -344,7 +344,7 @@ describe('User Controller', () => {
             message: {
               user: {
                 publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-                stripeTokenId: 'tok_visa',
+                stripeTokenId: 'tok_INVALID',
               },
             },
           })
