@@ -94,6 +94,7 @@ export interface Lock {
   keyPrice: string
   expirationDuration: number
   key: Key
+  currencyContractAddress: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number
