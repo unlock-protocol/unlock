@@ -48,7 +48,7 @@
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@unlock-protocol/unlock-js": "0.3.2",
     "aws-sdk": "2.463.0",
-    "body-parser": "1.18.3",
+    "body-parser": "1.19.0",
     "cors": "2.8.5",
     "cross-env": "5.2.0",
     "dotenv": "8.0.0",
