@@ -75,7 +75,8 @@
     "truffle-hdwallet-provider": "1.0.10",
     "ts-jest": "24.0.2",
     "typescript": "3.5.2",
-    "winston": "3.2.1"
+    "winston": "3.2.1",
+    "yargs": "^13.2.4"
   },
   "devDependencies": {
     "nodemon": "1.19.1",
