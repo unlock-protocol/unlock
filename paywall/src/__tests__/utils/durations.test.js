@@ -1,6 +1,7 @@
 import {
   durationsAsTextFromSeconds,
   durationsAsArrayFromSeconds,
+  expirationAsText,
 } from '../../utils/durations'
 
 describe('duration utilities', () => {
@@ -29,6 +30,49 @@ describe('duration utilities', () => {
       expect(
         durationsAsArrayFromSeconds(60 * 60 * 24 * 3 + 60 * 60 * 12 + 60 * 30)
       ).toEqual(['3 days', '12 hours', '30 minutes'])
+    })
+
+    it('should round down', () => {
+      expect.assertions(3)
+      expect(durationsAsArrayFromSeconds(60.45)).toEqual(['1 minute'])
+      expect(durationsAsArrayFromSeconds(61.45)).toEqual([
+        '1 minute',
+        '1 second',
+      ])
+      expect(durationsAsArrayFromSeconds(62.88)).toEqual([
+        '1 minute',
+        '2 seconds',
+      ])
+    })
+  })
+
+  describe('expirationAsText', () => {
+    it('should return "Expires in ..." for small values', () => {
+      expect.assertions(2)
+
+      expect(
+        expirationAsText(new Date().getTime() / 1000 + 60 * 60 * 12)
+      ).toEqual('Expires in 12 hours')
+      expect(
+        expirationAsText(new Date().getTime() / 1000 + 60 * 60 * 12 + 60)
+      ).toEqual('Expires in 12 hours and 1 minute')
+    })
+
+    it('should return "Expires ..." for large values', () => {
+      expect.assertions(1)
+
+      const now = new Date()
+      const then = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0,
+        0,
+        0
+      )
+      const seconds = (now.getTime() - then.getTime()) / 1000
+      const future = new Date('2100-01-01 00:00:00').getTime() / 1000 + seconds
+      expect(expirationAsText(future)).toEqual('Expires Jan 1, 2100')
     })
   })
 })
