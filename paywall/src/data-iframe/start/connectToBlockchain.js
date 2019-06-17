@@ -83,13 +83,15 @@ export default async function connectToBlockchain({
     window,
   })
   // at this point the blockchain handler is live!
-  return retrieveChainData({
-    locksToRetrieve,
-    web3Service,
-    walletService,
-    window,
-    locksmithHost,
-    onChange,
-    requiredConfirmations,
-  })
+  return async () => {
+    return retrieveChainData({
+      locksToRetrieve,
+      web3Service,
+      walletService,
+      window,
+      locksmithHost,
+      onChange,
+      requiredConfirmations,
+    })
+  }
 }
