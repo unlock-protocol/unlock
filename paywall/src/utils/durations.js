@@ -61,18 +61,19 @@ export function durationsAsTextFromSeconds(seconds) {
  */
 export function durationsAsArrayFromSeconds(seconds) {
   const d = durations(seconds, {})
-  const asArrayOfValues = Object.keys(d).map(duration => {
+  // remove all values that would map to "0"
+  const filteredValues = Object.keys(d).filter(duration =>
+    Math.floor(d[duration])
+  )
+  const asArrayOfValues = filteredValues.map(duration => {
     const durationFloor = Math.floor(d[duration])
-    // map to an empty string to avoid "0 seconds"
-    if (durationFloor === 0) return ''
     if (durationFloor !== 1) {
       // Singular should only be used when there is exactly 1; otherwise plural is needed
       return `${durationFloor} ${duration}`
     }
     return `${durationFloor} ${duration.slice(0, -1)}` // remove the s!
   })
-  // remove the "0 seconds" etc. entries that mapped to ""
-  return asArrayOfValues.filter(a => a) // remove empty entries
+  return asArrayOfValues
 }
 
 /**
