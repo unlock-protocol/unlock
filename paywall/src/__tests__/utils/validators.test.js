@@ -371,6 +371,34 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
+      it('should fail when type is not a string', () => {
+        expect.assertions(2)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            type: 1,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            type: [],
+          })
+        ).toBe(false)
+      })
+
+      it('should fail when type is not a valid paywall type', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            type: 'qio347tyao8g43aouygto*&#Y$@*',
+          })
+        ).toBe(false)
+      })
+
       it('locks is not an object', () => {
         expect.assertions(3)
 
@@ -562,7 +590,7 @@ describe('Form field validators', () => {
 
     describe('valid cases', () => {
       it('is valid config', () => {
-        expect.assertions(8)
+        expect.assertions(10)
 
         expect(validators.isValidPaywallConfig(validConfig)).toBe(true)
         expect(
@@ -614,6 +642,18 @@ describe('Form field validators', () => {
           validators.isValidPaywallConfig({
             ...validConfig,
             icon: 'ftp://example.com/img.png',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            type: 'adblock',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            type: 'paywall',
           })
         ).toBe(true)
       })
