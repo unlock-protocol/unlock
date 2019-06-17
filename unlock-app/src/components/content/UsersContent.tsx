@@ -9,6 +9,7 @@ export const UsersContent = () => {
     <Layout title="Users">
       <Head>
         <title>{pageTitle('Users')}</title>
+        <script src="https://js.stripe.com/v3/" />
       </Head>
       <Errors />
     </Layout>
