@@ -14,7 +14,11 @@ const config = getConfig().publicRuntimeConfig
 
 export default function Layout({ forContent, title, children }) {
   // Register pageview with Google Analytics on the client side only
-  if (process.browser) {
+  if (
+    process.browser &&
+    config.googleAnalyticsId &&
+    config.googleAnalyticsId !== '0'
+  ) {
     ReactGA.initialize(config.googleAnalyticsId)
     ReactGA.pageview(window.location.pathname + window.location.search)
   }
