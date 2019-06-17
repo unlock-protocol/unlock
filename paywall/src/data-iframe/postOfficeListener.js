@@ -2,9 +2,11 @@ import {
   POST_MESSAGE_SEND_UPDATES,
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_PURCHASE_KEY,
+  POST_MESSAGE_WALLET_INFO,
 } from '../paywall-builder/constants'
 import { isValidPaywallConfig } from '../utils/validators'
 import { ACCOUNT_REGEXP } from '../constants'
+import { setAccount } from './cacheHandler'
 
 /**
  * Create the listener to respond to the configuration, which lists all locks on the page
@@ -64,6 +66,21 @@ export const makePurchaseKeyListener = (logger, purchase) =>
     purchase(lock, extraTip)
   }
 
+export const makeWalletInfoListener = window =>
+  async function walletInfoListener(walletInfo) {
+    if (
+      !walletInfo ||
+      typeof walletInfo !== 'object' ||
+      Array.isArray(walletInfo)
+    ) {
+      return
+    }
+    if (walletInfo.noWallet) {
+      // we have no wallet, so reset the cached account
+      // also resets the locks, keys, and transactions
+      await setAccount(window, null)
+    }
+  }
 /**
  * Set up listening for POST_MESSAGE_READY and POST_MESSAGE_DATA_REQUEST from the main window
  * @param {window} window the global context (window, self, global)
@@ -83,6 +100,8 @@ export default function setupPostOfficeListener(
     window.console.error,
     purchase
   )
+  const walletInfoListener = makeWalletInfoListener(window)
+  addHandler(POST_MESSAGE_WALLET_INFO, walletInfoListener)
   addHandler(POST_MESSAGE_CONFIG, configListener)
   addHandler(POST_MESSAGE_SEND_UPDATES, requestListener)
   addHandler(POST_MESSAGE_PURCHASE_KEY, purchaseListener)

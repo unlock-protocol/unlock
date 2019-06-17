@@ -4,7 +4,13 @@ import {
   POST_MESSAGE_SEND_UPDATES,
   POST_MESSAGE_CONFIG,
   POST_MESSAGE_PURCHASE_KEY,
+  POST_MESSAGE_WALLET_INFO,
 } from '../../paywall-builder/constants'
+import {
+  clearListeners,
+  addListener,
+  getAccount,
+} from '../../data-iframe/cacheHandler'
 
 describe('postOffice listener', () => {
   let fakeWindow
@@ -46,6 +52,18 @@ describe('postOffice listener', () => {
     fakePurchase = jest.fn()
 
     fakeWindow = {
+      storage: {},
+      localStorage: {
+        setItem(key, item) {
+          fakeWindow.storage[key] = item
+        },
+        getItem(key) {
+          return fakeWindow.storage[key]
+        },
+        removeItem(key) {
+          delete fakeWindow.storage[key]
+        },
+      },
       console: {
         error: jest.fn(),
       },
@@ -58,6 +76,7 @@ describe('postOffice listener', () => {
         fakeWindow.handlers[type] = handler
       },
     }
+    clearListeners()
   })
 
   it('responds to config message by calling setConfig when the config is valid', () => {
@@ -78,7 +97,7 @@ describe('postOffice listener', () => {
         default:
           'You have reached your limit of free articles. Please purchase access',
         expired:
-          'Your subscription has expired, please purchase a new key to continue',
+          'Your access has expired. please purchase a new key to continue',
         pending: 'Purchase pending...',
         confirmed: 'Purchase confirmed, content unlocked!',
       },
@@ -135,6 +154,47 @@ describe('postOffice listener', () => {
 
     expect(fakeUpdater).toHaveBeenCalledTimes(1)
     expect(fakeUpdater).toHaveBeenCalledWith('network')
+  })
+
+  it('responds to wallet info with missing wallet by resetting account', async () => {
+    expect.assertions(3)
+
+    makePostOffice()
+    addListener(fakeUpdater)
+
+    callListener(POST_MESSAGE_WALLET_INFO, { noWallet: true })
+
+    expect(await getAccount(fakeWindow)).toBe(null)
+    expect(fakeUpdater).toHaveBeenCalledTimes(1)
+    expect(fakeUpdater).toHaveBeenCalledWith('account')
+  })
+
+  it('responds to wallet info with existing wallet by ignoring the payload', async () => {
+    expect.assertions(1)
+
+    makePostOffice()
+    addListener(fakeUpdater)
+
+    callListener(POST_MESSAGE_WALLET_INFO, { noWallet: false })
+
+    expect(fakeUpdater).not.toHaveBeenCalled()
+  })
+
+  it('responds to wallet info with malformed payload by ignoring the payload', () => {
+    expect.assertions(3)
+
+    makePostOffice()
+
+    addListener(fakeUpdater)
+
+    callListener(POST_MESSAGE_WALLET_INFO, [])
+    expect(fakeUpdater).not.toHaveBeenCalled()
+
+    callListener(POST_MESSAGE_WALLET_INFO, false)
+    expect(fakeUpdater).not.toHaveBeenCalled()
+
+    callListener(POST_MESSAGE_WALLET_INFO, 'hi')
+    expect(fakeUpdater).not.toHaveBeenCalled()
   })
 
   it('responds to a malicious data request by logging and bailing', () => {
