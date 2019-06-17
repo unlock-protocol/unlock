@@ -13,10 +13,13 @@ import { Key } from '../../unlockTypes'
 import {
   POST_MESSAGE_PURCHASE_KEY,
   POST_MESSAGE_DISMISS_CHECKOUT,
+  POST_MESSAGE_LOCKED,
+  POST_MESSAGE_UNLOCKED,
 } from '../../paywall-builder/constants'
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
+import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 
 interface networkNames {
   [key: number]: string[]
@@ -46,6 +49,24 @@ export default function CheckoutContent() {
         extraTip: '0',
       },
     })
+  }
+  const isLocked = useListenForPostMessage({
+    type: POST_MESSAGE_LOCKED,
+    defaultValue: false,
+    getValue: () => true,
+  })
+  const isUnlocked = useListenForPostMessage({
+    type: POST_MESSAGE_UNLOCKED,
+    defaultValue: false,
+    getValue: (val: any) => !!val,
+  })
+  const locked = !isUnlocked && isLocked
+  let allowClosingCheckout: boolean
+  if (paywallConfig.type === 'paywall') {
+    // for the paywall, the checkout cannot be closed unless the user explicitly closes it
+    allowClosingCheckout = !locked
+  } else {
+    allowClosingCheckout = true
   }
   // hide the checkout iframe
   const hideCheckout = () => {
@@ -102,6 +123,7 @@ export default function CheckoutContent() {
     <CheckoutWrapper
       hideCheckout={hideCheckout}
       bgColor={bgColor}
+      allowClose={allowClosingCheckout}
       onClick={e => {
         e.stopPropagation()
       }}
@@ -111,7 +133,7 @@ export default function CheckoutContent() {
   )
 
   return (
-    <Greyout onClick={hideCheckout}>
+    <Greyout onClick={allowClosingCheckout ? hideCheckout : () => {}}>
       <Wrapper />
     </Greyout>
   )
