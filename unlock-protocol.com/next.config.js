@@ -10,6 +10,7 @@ const { addBlogPagesToPageObject } = require('./src/utils/blog')
 const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
 
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
@@ -17,9 +18,9 @@ dotenv.config({
 
 let requiredConfigVariables = {
   unlockEnv,
+  googleAnalyticsId,
   dashboardUrl: process.env.DASHBOARD_URL,
   intercomAppId: 'f99d98d3', // Hardcoded for now
-  googleAnalyticsId: 'UA-142114767-1', // Hardcoded for now - TODO move to an env variable
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
