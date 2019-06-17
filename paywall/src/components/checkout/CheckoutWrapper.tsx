@@ -5,9 +5,9 @@ import Close from '../interface/buttons/layout/Close'
 interface WrapperProps {
   children: any
   hideCheckout: (...args: any[]) => any
+  allowClose: boolean
   bgColor?: string
   onClick?: (event: any) => void
-  showCheckout?: boolean
 }
 
 interface WrapperStyleProps {
@@ -19,11 +19,11 @@ const CheckoutWrapper = ({
   hideCheckout,
   bgColor = 'var(--offwhite)',
   onClick = () => {},
-  showCheckout = true,
+  allowClose = true,
 }: WrapperProps) => {
   return (
-    <Wrapper bgColor={bgColor} onClick={onClick}>
-      {showCheckout ? (
+    <Wrapper bgColor={bgColor} onClick={allowClose ? onClick : () => {}}>
+      {allowClose ? (
         <CloseButton
           backgroundColor="var(--lightgrey)"
           fillColor="var(--grey)"
