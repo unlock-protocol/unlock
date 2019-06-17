@@ -58,6 +58,9 @@ export default function configure(
   let chainExplorerUrlBuilders = {
     etherScan: () => '',
   }
+  // Publishable key from Stripe dashboard, make sure to use the test key when
+  // developing.
+  let stripeApiKey = runtimeConfig.stripeApiKey
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -174,5 +177,6 @@ export default function configure(
     supportedProviders,
     unlockStaticUrl,
     chainExplorerUrlBuilders,
+    stripeApiKey,
   }
 }
