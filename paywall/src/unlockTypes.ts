@@ -67,12 +67,12 @@ export interface PaywallConfigLock {
   name: string
 }
 
-export type PaywallTypes = 'adblock' | 'paywall'
+export type PaywallAppKind = 'adblock' | 'paywall'
 
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
   icon: string
-  type: PaywallTypes
+  type: PaywallAppKind
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
 }
