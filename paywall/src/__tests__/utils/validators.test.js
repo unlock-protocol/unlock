@@ -371,7 +371,7 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
-      it('should fail when type is not an string', () => {
+      it('should fail when type is not a string', () => {
         expect.assertions(2)
 
         expect(
