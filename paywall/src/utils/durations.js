@@ -62,13 +62,15 @@ export function durationsAsTextFromSeconds(seconds) {
 export function durationsAsArrayFromSeconds(seconds) {
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map(duration => {
-    if (d[duration] !== 1) {
+    const durationFloor = Math.floor(d[duration])
+    if (durationFloor === 0) return ''
+    if (durationFloor !== 1) {
       // Singular should only be used when there is exactly 1; otherwise plural is needed
-      return `${d[duration]} ${duration}`
+      return `${durationFloor} ${duration}`
     }
-    return `${d[duration]} ${duration.slice(0, -1)}` // remove the s!
+    return `${durationFloor} ${duration.slice(0, -1)}` // remove the s!
   })
-  return asArrayOfValues
+  return asArrayOfValues.filter(a => a) // remove empty entries
 }
 
 /**
@@ -108,4 +110,12 @@ export function expirationAsDate(timestamp) {
   let year = expirationDate.getFullYear()
 
   return MONTH_NAMES[month] + ' ' + day + ', ' + year
+}
+
+export function expirationAsText(timestamp) {
+  const text = expirationAsDate(timestamp)
+  if (timestamp - new Date().getTime() / 1000 < 86400) {
+    return `Expires in ${text}`
+  }
+  return `Expires ${text}`
 }
