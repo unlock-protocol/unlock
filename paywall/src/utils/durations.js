@@ -63,6 +63,7 @@ export function durationsAsArrayFromSeconds(seconds) {
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map(duration => {
     const durationFloor = Math.floor(d[duration])
+    // map to an empty string to avoid "0 seconds"
     if (durationFloor === 0) return ''
     if (durationFloor !== 1) {
       // Singular should only be used when there is exactly 1; otherwise plural is needed
@@ -70,6 +71,7 @@ export function durationsAsArrayFromSeconds(seconds) {
     }
     return `${durationFloor} ${duration.slice(0, -1)}` // remove the s!
   })
+  // remove the "0 seconds" etc. entries that mapped to ""
   return asArrayOfValues.filter(a => a) // remove empty entries
 }
 
@@ -80,6 +82,10 @@ export function durationsAsArrayFromSeconds(seconds) {
  */
 export function secondsAsDays(seconds) {
   return Math.ceil(seconds / 86400).toString()
+}
+
+function isLessThanADay(timestamp) {
+  return timestamp - new Date().getTime() / 1000 < 86400
 }
 
 /**
@@ -97,7 +103,7 @@ export function expirationAsDate(timestamp) {
     return 'Expired'
   }
 
-  if (timestamp - new Date().getTime() / 1000 < 86400) {
+  if (isLessThanADay(timestamp)) {
     // If it is less than a day from now we provide more granular details, from now
     const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
     return durationsAsTextFromSeconds(secondsFromNow)
@@ -114,7 +120,7 @@ export function expirationAsDate(timestamp) {
 
 export function expirationAsText(timestamp) {
   const text = expirationAsDate(timestamp)
-  if (timestamp - new Date().getTime() / 1000 < 86400) {
+  if (isLessThanADay(timestamp)) {
     return `Expires in ${text}`
   }
   return `Expires ${text}`

@@ -61,9 +61,18 @@ describe('duration utilities', () => {
     it('should return "Expires ..." for large values', () => {
       expect.assertions(1)
 
-      expect(expirationAsText(new Date('2100-01-01').getTime() / 1000)).toEqual(
-        'Expires Dec 31, 2099'
+      const now = new Date()
+      const then = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0,
+        0,
+        0
       )
+      const seconds = (now.getTime() - then.getTime()) / 1000
+      const future = new Date('2100-01-01 00:00:00').getTime() / 1000 + seconds
+      expect(expirationAsText(future)).toEqual('Expires Jan 1, 2100')
     })
   })
 })
