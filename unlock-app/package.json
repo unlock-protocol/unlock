@@ -59,7 +59,6 @@
   },
   "devDependencies": {
     "@svgr/cli": "4.3.0",
-    "depcheck": "0.8.0",
     "nodemon": "1.19.1",
     "npm-check": "5.9.0"
   },
@@ -85,7 +84,6 @@
     "chromatic": "chromatic test --exit-zero-on-changes",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "ci": "npm run lint && npm test",
-    "depcheck": "depcheck --parsers=\"*.js:react,*.js:es6\"",
     "npm-check": "npm-check -u",
     "tsc": "tsc"
   },
