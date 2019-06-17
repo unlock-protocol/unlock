@@ -22,3 +22,4 @@ export const POST_MESSAGE_SEND_UPDATES = 'send/updates'
 
 export const POST_MESSAGE_PURCHASE_KEY = 'purchaseKey'
 export const POST_MESSAGE_DISMISS_CHECKOUT = 'dismiss/checkout'
+export const POST_MESSAGE_INITIATED_TRANSACTION = 'initiated/transaction'

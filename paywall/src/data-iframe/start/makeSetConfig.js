@@ -19,7 +19,12 @@ import syncToCache from './syncToCache'
  *                           - requiredConfirmations
  *                           - locksmithHost
  */
-const makeSetConfig = (window, updater, constants) =>
+const makeSetConfig = (
+  window,
+  updater,
+  constants,
+  addTransactionInitiatedListener
+) =>
   async function setConfig(configValue) {
     // now we can retrieve the cached data
     updater('network')
@@ -45,14 +50,16 @@ const makeSetConfig = (window, updater, constants) =>
       syncToCache(window, updates)
     }
     try {
-      onChange(
-        await connectToBlockchain({
-          ...constants,
-          config: configValue,
-          window,
-          onChange,
-        })
-      )
+      const retrieveChainData = await connectToBlockchain({
+        ...constants,
+        config: configValue,
+        window,
+        onChange,
+      })
+      // get the initial set of blockchain data
+      onChange(await retrieveChainData())
+      // set up the listener for future retrievals
+      addTransactionInitiatedListener(retrieveChainData)
     } catch (error) {
       onChange({ error })
     }

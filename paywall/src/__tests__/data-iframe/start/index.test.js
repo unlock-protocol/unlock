@@ -4,6 +4,7 @@ import { addListener } from '../../../data-iframe/cacheHandler'
 import setupPostOfficeListener from '../../../data-iframe/postOfficeListener'
 import makeSetConfig from '../../../data-iframe/start/makeSetConfig'
 import { purchaseKey } from '../../../data-iframe/start/purchaseKeySetup'
+import { POST_MESSAGE_INITIATED_TRANSACTION } from '../../../paywall-builder/constants'
 
 jest.mock('../../../data-iframe/postOffice')
 jest.mock('../../../data-iframe/cacheHandler')
@@ -31,6 +32,7 @@ describe('data iframe startup index', () => {
       blockChainUpdater,
       addHandler,
     }))
+    makeSetConfig.mockReset()
     makeSetConfig.mockImplementationOnce(() => setConfig)
   })
 
@@ -65,6 +67,49 @@ describe('data iframe startup index', () => {
       purchaseKey,
       addHandler
     )
+  })
+
+  it('should call makeSetConfig with the expected parameters', async () => {
+    expect.assertions(1)
+
+    await start(window, constants)
+
+    expect(makeSetConfig).toHaveBeenCalledWith(
+      window,
+      blockChainUpdater,
+      constants,
+      expect.any(Function)
+    )
+  })
+
+  it('should pass a callback that initiates the POST_MESSAGE_INITIATED_TRANSACTION handler', async () => {
+    expect.assertions(1)
+
+    const fakeRetrieveChainData = jest.fn()
+    await start(window, constants)
+
+    makeSetConfig.mock.calls[0][3](fakeRetrieveChainData)
+
+    expect(addHandler).toHaveBeenCalledWith(
+      POST_MESSAGE_INITIATED_TRANSACTION,
+      expect.any(Function)
+    )
+  })
+
+  it('should handle POST_MESSAGE_INITIATED_TRANSACTION by retrieving chain data', async () => {
+    expect.assertions(1)
+
+    const fakeRetrieveChainData = jest.fn()
+    await start(window, constants)
+
+    makeSetConfig.mock.calls[0][3](fakeRetrieveChainData)
+    // simulate how it will be called
+    // the "action" will be:
+    // { type: POST_MESSAGE_INITIATED_TRANSACTION, payload: undefined }
+    // and the post office passes the payload in
+    addHandler.mock.calls[0][1](undefined)
+
+    expect(fakeRetrieveChainData).toHaveBeenCalled()
   })
 
   it('should send "ready" to the updater to start the entire process', async () => {

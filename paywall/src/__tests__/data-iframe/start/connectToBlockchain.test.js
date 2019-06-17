@@ -149,15 +149,15 @@ describe('connectToBlockchain', () => {
       )
     })
 
-    it('should retrieve chain data', async () => {
-      expect.assertions(1)
+    it('should return a function to retrieve chain data', async () => {
+      expect.assertions(2)
 
       const walletService = 'walletService'
       const web3Service = 'web3Service'
       setupWalletService.mockImplementationOnce(() => walletService)
       setupWeb3Service.mockImplementationOnce(() => web3Service)
 
-      await connectToBlockchain({
+      const retrieveData = await connectToBlockchain({
         unlockAddress,
         config,
         window,
@@ -168,6 +168,9 @@ describe('connectToBlockchain', () => {
         onChange,
       })
 
+      expect(retrieveData).toBeInstanceOf(Function)
+
+      await retrieveData()
       expect(retrieveChainData).toHaveBeenCalledWith(
         expect.objectContaining({
           locksToRetrieve: ['0x123', '0x456'],
@@ -192,7 +195,7 @@ describe('connectToBlockchain', () => {
         Promise.resolve('chain data')
       )
 
-      const result = await connectToBlockchain({
+      const retrieveData = await connectToBlockchain({
         unlockAddress,
         config,
         window,
@@ -202,6 +205,7 @@ describe('connectToBlockchain', () => {
         locksmithHost,
         onChange,
       })
+      const result = await retrieveData()
 
       expect(result).toBe('chain data')
     })

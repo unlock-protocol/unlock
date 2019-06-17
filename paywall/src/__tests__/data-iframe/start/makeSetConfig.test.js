@@ -14,6 +14,10 @@ describe('makeSetConfig', () => {
   const transactions = {
     hash: { hash: 'hash' },
   }
+  const fakeRetrieveData = () => ({
+    keys,
+    transactions,
+  })
 
   const constants = {
     hi: 'there',
@@ -24,7 +28,7 @@ describe('makeSetConfig', () => {
   it('should return a callback function which is used to receive paywall config', () => {
     expect.assertions(1)
 
-    const setConfig = makeSetConfig(window, updater, constants)
+    const setConfig = makeSetConfig(window, updater, constants, () => {})
 
     expect(setConfig).toBeInstanceOf(Function)
   })
@@ -32,8 +36,10 @@ describe('makeSetConfig', () => {
   describe('setConfig callback', () => {
     let setConfig
     let fakeWindow
+    let fakeAddTransactionHandler
 
     beforeEach(() => {
+      fakeAddTransactionHandler = jest.fn()
       fakeWindow = {
         storage: {},
         localStorage: {
@@ -49,8 +55,13 @@ describe('makeSetConfig', () => {
         },
       }
       updater = jest.fn()
-      setConfig = makeSetConfig(fakeWindow, updater, constants)
-      connectToBlockchain.mockImplementationOnce(() => ({ keys, transactions }))
+      setConfig = makeSetConfig(
+        fakeWindow,
+        updater,
+        constants,
+        fakeAddTransactionHandler
+      )
+      connectToBlockchain.mockImplementationOnce(() => fakeRetrieveData)
     })
 
     it('should immediately trigger sends of cached blockchain data', async () => {
@@ -79,6 +90,15 @@ describe('makeSetConfig', () => {
           onChange: expect.any(Function),
         })
       )
+    })
+
+    it('should pass a function to retrieve chain data to the transaction listener', async () => {
+      expect.assertions(1)
+
+      const config = {}
+      await setConfig(config)
+
+      expect(fakeAddTransactionHandler).toHaveBeenCalledWith(fakeRetrieveData)
     })
 
     describe('onChange callback behavior', () => {
