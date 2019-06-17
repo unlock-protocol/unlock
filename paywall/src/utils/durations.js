@@ -73,8 +73,7 @@ export function durationsAsArrayFromSeconds(seconds) {
     }
     return `${durationFloor} ${duration.slice(0, -1)}` // remove the s!
   })
-  // remove the "0 seconds" etc. entries that mapped to ""
-  return asArrayOfValues.filter(a => a) // remove empty entries
+  return asArrayOfValues
 }
 
 /**
