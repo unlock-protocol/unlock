@@ -39,7 +39,9 @@ const CheckoutWrapper = ({
 
 export default CheckoutWrapper
 
-const CloseButton = styled(Close)`
+const CloseButton = styled(Close).attrs(() => ({
+  className: 'closeButton',
+}))`
   position: absolute;
   top: 24px;
   right: 24px;
