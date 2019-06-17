@@ -11,6 +11,7 @@ export const SettingsContent = () => {
     <Layout title="Account Settings">
       <Head>
         <title>{pageTitle('Account Settings')}</title>
+        <script src="https://js.stripe.com/v3/"></script>
       </Head>
       <Errors />
       <AccountInfo />
