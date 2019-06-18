@@ -181,20 +181,11 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   })
 
   it('should hide the iframe when purchase is confirmed, ads still hidden', async () => {
-    expect.assertions(2)
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
-    await checkoutIframe.waitForFunction(
-      lock1 => {
-        const lock = document.body.querySelector(lock1)
-        return lock && lock.innerText === 'Payment Confirmed'
-      },
-      {},
-      lockSelectors[0]('footer')
-    )
-    // "show" is the classname that shows the checkout UI
-    const visibleIframes = await page.$$('iframe[class="unlock start show"]')
-    expect(visibleIframes).toEqual([])
+    expect.assertions(1)
+    // wait for 2 iframes to be loaded, the data and checkout iframes
+    await wait.forIframe(2)
+    // wait for the key purchase to be confirmed, and then the modal will dismiss
+    await wait.untilIsGone('iframe[class="unlock start show"]')
     const adDisplay = await page.$$eval('.ad', ads => {
       return ads.map(ad => ad.style.display)
     })
