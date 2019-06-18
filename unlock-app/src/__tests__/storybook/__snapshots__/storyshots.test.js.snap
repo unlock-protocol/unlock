@@ -57867,7 +57867,7 @@ Object {
 
 .c1 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-gap: 1rem;
 }
 
@@ -57975,7 +57975,7 @@ Object {
       Account
     </span>
     <div
-      class="sc-ksYbfQ oCMbs"
+      class="sc-ksYbfQ kbQfTz"
     >
       <div
         class="sc-hmzhuo fjMQYY"
@@ -58084,7 +58084,7 @@ Object {
 
 .c1 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-gap: 1rem;
 }
 
@@ -58188,7 +58188,7 @@ Object {
       Account
     </span>
     <div
-      class="sc-ksYbfQ oCMbs"
+      class="sc-ksYbfQ kbQfTz"
     >
       <div
         class="sc-hmzhuo fjMQYY"
@@ -58293,7 +58293,7 @@ Object {
 
 .c1 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-gap: 1rem;
 }
 
@@ -58479,7 +58479,7 @@ Object {
       Change Password
     </span>
     <div
-      class="sc-ksYbfQ oCMbs"
+      class="sc-ksYbfQ kbQfTz"
     >
       <div
         class="sc-hmzhuo fjMQYY"
@@ -58624,7 +58624,7 @@ Object {
 
 .c1 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-gap: 1rem;
 }
 
@@ -58812,7 +58812,7 @@ Object {
       Confirm Purchase
     </span>
     <div
-      class="sc-ksYbfQ oCMbs"
+      class="sc-ksYbfQ kbQfTz"
     >
       <div
         class="sc-hmzhuo fjMQYY"
