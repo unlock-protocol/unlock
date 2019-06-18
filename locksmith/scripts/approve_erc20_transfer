@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 
+/**
+ * Approval Script - This script provides Locks approval to
+ * withdraw tokens from an ERC20 contract on behalf of a given
+ * address
+ * 
+ * approve_erc20_transfer --value <approval amount> --provider <provider uri>
+ *                        --lockContractAddress <address of lock contract>
+ *                        --erc20ContractAddress <address of erc20 contract>
+ *                        --privateKey <privateKey of address approving transfer>
+ */
+
 const ethers = require('ethers')
 const args = require('yargs').argv
 
