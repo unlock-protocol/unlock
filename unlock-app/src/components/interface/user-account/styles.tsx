@@ -83,6 +83,47 @@ export const SubmitButton = styled.button`
   color: var(--darkgrey);
 `
 
+export const FullWidthButton = styled(SubmitButton)`
+  max-width: 100%;
+  width: 100%;
+  border-radius: 0 0 4px 4px;
+`
+
+export const Price = styled.span`
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 39px;
+  color: var(--slate);
+`
+
+export const TimeRemaining = styled.span`
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--grey);
+`
+
+export const CenterRow = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+`
+
+interface LockInfoProps {
+  price: string
+  timeRemaining: string
+}
+export const LockInfo = ({ price, timeRemaining }: LockInfoProps) => (
+  <CenterRow>
+    <Price>{price}</Price>
+    <TimeRemaining>{timeRemaining}</TimeRemaining>
+  </CenterRow>
+)
+
 export const DisabledButton = styled(SubmitButton)`
   cursor: disabled;
   background-color: var(--grey);

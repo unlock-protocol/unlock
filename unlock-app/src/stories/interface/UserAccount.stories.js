@@ -2,9 +2,10 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { AccountInfo } from '../../components/interface/user-account/AccountInfo'
 import { ChangePassword } from '../../components/interface/user-account/ChangePassword'
-import { changePassword } from '../../actions/user'
+import { KeyPurchaseConfirmation } from '../../components/interface/user-account/KeyPurchaseConfirmation'
+import { changePassword, confirmKeyPurchase } from '../../actions/user'
 
-storiesOf('Account Settings/Components/AccountInfo', module)
+storiesOf('User Account/Components/AccountInfo', module)
   .add('no info', () => {
     return <AccountInfo email="" address="" />
   })
@@ -17,9 +18,21 @@ storiesOf('Account Settings/Components/AccountInfo', module)
     )
   })
 
-storiesOf('Account Settings/Components/ChangePassword', module).add(
+storiesOf('User Account/Components/ChangePassword', module).add(
   'default',
   () => {
     return <ChangePassword changePassword={changePassword} />
+  }
+)
+
+storiesOf('User Account/Components/KeyPurchaseConfirmation', module).add(
+  'default',
+  () => {
+    return (
+      <KeyPurchaseConfirmation
+        emailAddress="jenny@googlemail.com"
+        confirmKeyPurchase={confirmKeyPurchase}
+      />
+    )
   }
 )
