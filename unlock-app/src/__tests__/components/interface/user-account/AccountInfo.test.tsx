@@ -3,7 +3,7 @@ import * as rtl from 'react-testing-library'
 import {
   AccountInfo,
   mapStateToProps,
-} from '../../../../components/interface/account-settings/AccountInfo'
+} from '../../../../components/interface/user-account/AccountInfo'
 
 const emailAddress = 'geoff@bitconnect.gov'
 const address = '0x123abc'
