@@ -180,11 +180,10 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     expect(adDisplay).toEqual(['none', 'none'])
   })
 
-  it('should hide the iframe when purchase is confirmed and user clicks to dismiss, ads still hidden', async () => {
+  it('should hide the iframe when purchase is confirmed, ads still hidden', async () => {
     expect.assertions(2)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     const checkoutIframe = page.mainFrame().childFrames()[1]
-    const checkoutBody = await checkoutIframe.$('body')
     await checkoutIframe.waitForFunction(
       lock1 => {
         const lock = document.body.querySelector(lock1)
@@ -193,10 +192,9 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
       {},
       lockSelectors[0]('footer')
     )
-    // dismiss the modal
-    await expect(checkoutBody).toClick('.closeButton')
     // "show" is the classname that shows the checkout UI
-    await wait.untilIsGone('iframe[class="unlock start show"]')
+    const visibleIframes = await page.$$('iframe[class="unlock start show"]')
+    expect(visibleIframes).toEqual([])
     const adDisplay = await page.$$eval('.ad', ads => {
       return ads.map(ad => ad.style.display)
     })
