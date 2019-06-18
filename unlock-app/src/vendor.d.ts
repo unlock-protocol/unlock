@@ -2,6 +2,8 @@
 // packages available. Defining them here will unblock us, though doing that the
 // most convenient way will not buy us any type safety.
 import 'react-stripe-elements'
+import 'react-jazzicon'
+import '@unlock-protocol/unlock-js'
 
 declare module 'react-jazzicon'
 
