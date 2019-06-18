@@ -1,4 +1,4 @@
-import { EncryptedPrivateKey } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { EncryptedPrivateKey } from '../unlockTypes'
 
 export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'

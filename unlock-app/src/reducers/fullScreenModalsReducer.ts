@@ -1,6 +1,6 @@
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../actions/fullScreenModals'
 
-import { KindOfModal, Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { KindOfModal, Action } from '../unlockTypes'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
 import { SET_ACCOUNT } from '../actions/accounts'

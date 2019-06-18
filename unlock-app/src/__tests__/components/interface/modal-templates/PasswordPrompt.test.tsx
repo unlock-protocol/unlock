@@ -8,7 +8,7 @@ let dispatch: (_: any) => boolean
 
 describe('Password Prompt', () => {
   beforeEach(() => {
-    dispatch = jest.fn((_: any) => true) // eslint-disable-line no-unused-vars
+    dispatch = jest.fn((_: any) => true)
   })
 
   it('should dismiss when the cancel button is clicked', () => {

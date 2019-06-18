@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 
-import * as UnlockTypes from '../../unlockTypes' // eslint-disable-line no-unused-vars
+import * as UnlockTypes from '../../unlockTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 import Media from '../../theme/media'
