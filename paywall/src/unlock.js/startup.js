@@ -33,6 +33,11 @@ export default function startup(window) {
     process.env.PAYWALL_URL + '/checkout' + origin
   )
   addIframeToDocument(window, checkoutIframe)
+  const userAccountsIframe = makeIframe(
+    window,
+    process.env.USER_IFRAME_URL + '/account' + origin
+  )
+  addIframeToDocument(window, userAccountsIframe)
 
   setupPostOffices(window, dataIframe, checkoutIframe)
 }
