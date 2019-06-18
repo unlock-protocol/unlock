@@ -21,6 +21,8 @@ function _server(port, dev) {
           if (pathname.match(/^\/0x/)) {
             const params = route('/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/paywall', Object.assign(params, query))
+          } else if (pathname.match('/newdemo')) {
+            app.render(req, res, '/newdemo', Object.assign({}, query))
           } else if (pathname.match('/demo')) {
             const params = route('demo/:lockAddress')(pathname)
             app.render(req, res, '/demo', Object.assign(params, query))
