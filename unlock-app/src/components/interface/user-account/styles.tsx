@@ -2,7 +2,15 @@ import React from 'react'
 import styled from 'styled-components'
 import Media from '../../../theme/media'
 
-// TODO: redefine these in terms of the grid system in src/components/helpers
+export const Grid = styled.div`
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12, [col-start] 1fr);
+  grid-gap: 16px;
+  & > * {
+    grid-column: col-start / span 12;
+  }
+`
 
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
@@ -13,12 +21,15 @@ export const SectionHeader = styled.span`
   color: var(--slate);
 `
 
-export const Section = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-gap: 1rem;
-`
-
+const columnSpans = {
+  full: 12,
+  half: 6,
+  third: 4,
+}
+type ColumnSize = 'full' | 'half' | 'third'
+interface ColumnProps {
+  size: ColumnSize
+}
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,13 +37,16 @@ export const Column = styled.div`
   & > :first-child {
     margin-top: auto;
   }
+  @media (min-width: 500px) {
+    grid-column: span ${(props: ColumnProps) => columnSpans[props.size]};
+  }
 `
 
 export const Container = styled.div`
     display: grid,
     grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
     ${Media.phone`
-      display: flex;
+display: flex;
       padding-left: 6px;
       padding-right: 6px;
     `};
@@ -78,12 +92,15 @@ export const Error = styled.span`
   margin-top: 13px;
 `
 
+interface SubmitButtonProps {
+  roundBottomOnly?: boolean
+}
 export const SubmitButton = styled.button`
   height: 60px;
-  max-width: 385px;
   border: none;
   background-color: var(--green);
-  border-radius: 4px;
+  border-radius: ${(props: SubmitButtonProps) =>
+    props.roundBottomOnly ? '0 0 4px 4px' : '4px'};
   margin-bottom: 1rem;
   margin-top: 13px;
   font-size: 16px;
@@ -96,8 +113,6 @@ export const SubmitButton = styled.button`
 `
 
 export const FullWidthButton = styled(SubmitButton)`
-  max-width: 100%;
-  width: 100%;
   border-radius: 0 0 4px 4px;
 `
 
@@ -144,10 +159,12 @@ export const DisabledButton = styled(SubmitButton)`
 interface ItemProps {
   title: string
   children: React.ReactNode
+  size?: ColumnSize
 }
-export const Item = ({ title, children }: ItemProps) => {
+export const Item = ({ title, children, size }: ItemProps) => {
+  size = size || 'half'
   return (
-    <Column>
+    <Column size={size}>
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
