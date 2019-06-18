@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import {
+  Grid,
   Column,
   DisabledButton,
   Error,
   Input,
   Item,
-  Section,
   SectionHeader,
   SubmitButton,
 } from './styles'
@@ -108,49 +108,47 @@ export class ChangePassword extends React.Component<
   render() {
     const { submitted, errors } = this.state
     return (
-      <React.Fragment>
+      <Grid>
         <SectionHeader>Change Password</SectionHeader>
-        <Section>
-          <Column>
-            <Item title="Old Password">
-              <Input
-                name="currentPassword"
-                id="currentPassword"
-                type="password"
-                placeholder="Enter your current password"
-                onChange={this.handleInputChange}
-              />
-            </Item>
-            <Item title="New Password">
-              <Input
-                name="newPassword"
-                id="newPassword"
-                type="password"
-                placeholder="Enter your desired new password"
-                onChange={this.handleInputChange}
-              />
-            </Item>
-            <Item title="Confirm New Password">
-              <Input
-                name="confirmNewPassword"
-                id="confirmNewPassword"
-                type="password"
-                placeholder="Confirm your desired new password"
-                onChange={this.handleInputChange}
-              />
-            </Item>
-          </Column>
-          <Column>
-            <Error>{errors.length ? errors[0] : ''}</Error>
-            {!submitted && (
-              <SubmitButton onClick={this.handleClick}>
-                Update Password
-              </SubmitButton>
-            )}
-            {submitted && <DisabledButton>Submitted</DisabledButton>}
-          </Column>
-        </Section>
-      </React.Fragment>
+        <Column size="half">
+          <Item title="Old Password">
+            <Input
+              name="currentPassword"
+              id="currentPassword"
+              type="password"
+              placeholder="Enter your current password"
+              onChange={this.handleInputChange}
+            />
+          </Item>
+          <Item title="New Password">
+            <Input
+              name="newPassword"
+              id="newPassword"
+              type="password"
+              placeholder="Enter your desired new password"
+              onChange={this.handleInputChange}
+            />
+          </Item>
+          <Item title="Confirm New Password">
+            <Input
+              name="confirmNewPassword"
+              id="confirmNewPassword"
+              type="password"
+              placeholder="Confirm your desired new password"
+              onChange={this.handleInputChange}
+            />
+          </Item>
+        </Column>
+        <Column size="half">
+          <Error>{errors.length ? errors[0] : ''}</Error>
+          {!submitted && (
+            <SubmitButton onClick={this.handleClick}>
+              Update Password
+            </SubmitButton>
+          )}
+          {submitted && <DisabledButton>Submitted</DisabledButton>}
+        </Column>
+      </Grid>
     )
   }
 }
