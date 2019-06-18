@@ -4,11 +4,11 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
 
-export const UsersContent = () => {
+export const AccountContent = () => {
   return (
-    <Layout title="Users">
+    <Layout title="Account">
       <Head>
-        <title>{pageTitle('Users')}</title>
+        <title>{pageTitle('Account')}</title>
         <script src="https://js.stripe.com/v3/" />
       </Head>
       <Errors />
@@ -16,4 +16,4 @@ export const UsersContent = () => {
   )
 }
 
-export default UsersContent
+export default AccountContent
