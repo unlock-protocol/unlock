@@ -38,7 +38,6 @@ module.exports = () => {
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'unlock.1.0.min.js',
-      globalObject: 'self',
     },
     module: {
       rules: [
@@ -46,7 +45,15 @@ module.exports = () => {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
         },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
       ],
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
     },
     plugins: [
       new webpack.DefinePlugin({
