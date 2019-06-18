@@ -70,7 +70,7 @@ export const NoKeyLock = ({
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer>{footerMessage}</Footer>
+            <Footer disabled={disabled}>{footerMessage}</Footer>
           </Body>
         )}
       />
@@ -100,7 +100,8 @@ const Wrapper = styled(LockWrapper)`
 `
 
 const Footer = styled(LockFooter)`
-  background-color: var(--green);
+  background-color: ${props =>
+    props.disabled ? 'var(--lightgrey)' : 'var(--green)'};
   color: var(--white);
 `
 
