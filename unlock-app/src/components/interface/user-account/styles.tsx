@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Media from '../../../theme/media'
 
 export const Grid = styled.div`
   max-width: 896px;
@@ -26,10 +25,12 @@ const columnSpans = {
   half: 6,
   third: 4,
 }
+
 type ColumnSize = 'full' | 'half' | 'third'
 interface ColumnProps {
   size: ColumnSize
 }
+
 export const Column = styled.div`
   display: flex;
   flex-direction: column;
@@ -40,16 +41,6 @@ export const Column = styled.div`
   @media (min-width: 500px) {
     grid-column: span ${(props: ColumnProps) => columnSpans[props.size]};
   }
-`
-
-export const Container = styled.div`
-    display: grid,
-    grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
-    ${Media.phone`
-display: flex;
-      padding-left: 6px;
-      padding-right: 6px;
-    `};
 `
 
 export const ItemLabel = styled.span`
