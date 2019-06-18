@@ -18,10 +18,15 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
       transactionHash: transaction.transactionHash,
       sender: ethJsUtil.toChecksumAddress(transaction.sender),
       recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
+      for: transactionForPackaging(transaction.for),
       chain: transaction.chain,
       data: transaction.data,
     },
   })
+}
+
+const transactionForPackaging = (transactionFor: string) => {
+  return transactionFor ? ethJsUtil.toChecksumAddress(transactionFor) : null
 }
 
 /**
