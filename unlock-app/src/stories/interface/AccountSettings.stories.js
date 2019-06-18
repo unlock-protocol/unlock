@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { AccountInfo } from '../../components/interface/account-settings/AccountInfo'
-import { ChangePassword } from '../../components/interface/account-settings/ChangePassword'
+import { AccountInfo } from '../../components/interface/user-account/AccountInfo'
+import { ChangePassword } from '../../components/interface/user-account/ChangePassword'
 import { changePassword } from '../../actions/user'
 
 storiesOf('Account Settings/Components/AccountInfo', module)
