@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Media from '../../../theme/media'
 
 // TODO: redefine these in terms of the grid system in src/components/helpers
 
@@ -25,6 +26,16 @@ export const Column = styled.div`
   & > :first-child {
     margin-top: auto;
   }
+`
+
+export const Container = styled.div`
+    display: grid,
+    grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
+    ${Media.phone`
+      display: flex;
+      padding-left: 6px;
+      padding-right: 6px;
+    `};
 `
 
 export const ItemLabel = styled.span`
