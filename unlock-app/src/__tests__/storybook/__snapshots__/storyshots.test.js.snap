@@ -57862,7 +57862,7 @@ Object {
   font-weight: bold;
   font-size: 15px;
   line-height: 19px;
-  color: var(--grey);
+  color: var(--slate);
 }
 
 .c1 {
@@ -57917,6 +57917,7 @@ Object {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: var(--slate);
 }
 
 <div>
@@ -57969,37 +57970,37 @@ Object {
       rel="stylesheet"
     />
     <span
-      class="sc-cJSrbW inyEzK"
+      class="sc-cJSrbW kpmDGS"
     >
       Account
     </span>
     <div
-      class="sc-ksYbfQ dKQCnF"
+      class="sc-ksYbfQ oCMbs"
     >
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <span
-          class="sc-frDJqD dcXYwx"
+          class="sc-frDJqD fjbQuD"
         >
           Email
         </span>
         <span
-          class="sc-kvZOFW kPDIJH"
+          class="sc-kvZOFW iHStTI"
         >
           gordon@lonsdale.me
         </span>
       </div>
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <span
-          class="sc-frDJqD dcXYwx"
+          class="sc-frDJqD fjbQuD"
         >
           Wallet Address
         </span>
         <span
-          class="sc-kvZOFW kPDIJH"
+          class="sc-kvZOFW iHStTI"
         >
           0x09438E46Ea66647EA65E4b104C125c82076FDcE5
         </span>
@@ -58078,7 +58079,7 @@ Object {
   font-weight: bold;
   font-size: 15px;
   line-height: 19px;
-  color: var(--grey);
+  color: var(--slate);
 }
 
 .c1 {
@@ -58133,6 +58134,7 @@ Object {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: var(--slate);
 }
 
 <div>
@@ -58181,35 +58183,35 @@ Object {
       rel="stylesheet"
     />
     <span
-      class="sc-cJSrbW inyEzK"
+      class="sc-cJSrbW kpmDGS"
     >
       Account
     </span>
     <div
-      class="sc-ksYbfQ dKQCnF"
+      class="sc-ksYbfQ oCMbs"
     >
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <span
-          class="sc-frDJqD dcXYwx"
+          class="sc-frDJqD fjbQuD"
         >
           Email
         </span>
         <span
-          class="sc-kvZOFW kPDIJH"
+          class="sc-kvZOFW iHStTI"
         />
       </div>
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <span
-          class="sc-frDJqD dcXYwx"
+          class="sc-frDJqD fjbQuD"
         >
           Wallet Address
         </span>
         <span
-          class="sc-kvZOFW kPDIJH"
+          class="sc-kvZOFW iHStTI"
         />
       </div>
     </div>
@@ -58286,7 +58288,7 @@ Object {
   font-weight: bold;
   font-size: 15px;
   line-height: 19px;
-  color: var(--grey);
+  color: var(--slate);
 }
 
 .c1 {
@@ -58472,26 +58474,26 @@ Object {
       rel="stylesheet"
     />
     <span
-      class="sc-cJSrbW inyEzK"
+      class="sc-cJSrbW kpmDGS"
     >
       Change Password
     </span>
     <div
-      class="sc-ksYbfQ dKQCnF"
+      class="sc-ksYbfQ oCMbs"
     >
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <div
-          class="sc-hmzhuo jFECOW"
+          class="sc-hmzhuo fjMQYY"
         >
           <span
-            class="sc-frDJqD dcXYwx"
+            class="sc-frDJqD fjbQuD"
           >
             Old Password
           </span>
           <input
-            class="sc-hqyNC fSSilp"
+            class="sc-hqyNC iYVxGJ"
             id="currentPassword"
             name="currentPassword"
             placeholder="Enter your current password"
@@ -58499,15 +58501,15 @@ Object {
           />
         </div>
         <div
-          class="sc-hmzhuo jFECOW"
+          class="sc-hmzhuo fjMQYY"
         >
           <span
-            class="sc-frDJqD dcXYwx"
+            class="sc-frDJqD fjbQuD"
           >
             New Password
           </span>
           <input
-            class="sc-hqyNC fSSilp"
+            class="sc-hqyNC iYVxGJ"
             id="newPassword"
             name="newPassword"
             placeholder="Enter your desired new password"
@@ -58515,15 +58517,15 @@ Object {
           />
         </div>
         <div
-          class="sc-hmzhuo jFECOW"
+          class="sc-hmzhuo fjMQYY"
         >
           <span
-            class="sc-frDJqD dcXYwx"
+            class="sc-frDJqD fjbQuD"
           >
             Confirm New Password
           </span>
           <input
-            class="sc-hqyNC fSSilp"
+            class="sc-hqyNC iYVxGJ"
             id="confirmNewPassword"
             name="confirmNewPassword"
             placeholder="Confirm your desired new password"
@@ -58532,13 +58534,13 @@ Object {
         </div>
       </div>
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <span
-          class="sc-jbKcbu etuyVb"
+          class="sc-jbKcbu iVtOOX"
         />
         <button
-          class="sc-dNLxif keXbsf"
+          class="sc-dNLxif gtdqvX"
         >
           Update Password
         </button>
@@ -58617,7 +58619,7 @@ Object {
   font-weight: bold;
   font-size: 15px;
   line-height: 19px;
-  color: var(--grey);
+  color: var(--slate);
 }
 
 .c1 {
@@ -58672,6 +58674,7 @@ Object {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  color: var(--slate);
 }
 
 .c8 {
@@ -58804,60 +58807,60 @@ Object {
       rel="stylesheet"
     />
     <span
-      class="sc-cJSrbW inyEzK"
+      class="sc-cJSrbW kpmDGS"
     >
       Confirm Purchase
     </span>
     <div
-      class="sc-ksYbfQ dKQCnF"
+      class="sc-ksYbfQ oCMbs"
     >
       <div
-        class="sc-hmzhuo jFECOW"
+        class="sc-hmzhuo fjMQYY"
       >
         <div
-          class="sc-hmzhuo jFECOW"
+          class="sc-hmzhuo fjMQYY"
         >
           <span
-            class="sc-frDJqD dcXYwx"
+            class="sc-frDJqD fjbQuD"
           >
             Account
           </span>
           <span
-            class="sc-kvZOFW kPDIJH"
+            class="sc-kvZOFW iHStTI"
           >
             jenny@googlemail.com
           </span>
         </div>
         <div
-          class="sc-hmzhuo jFECOW"
+          class="sc-hmzhuo fjMQYY"
         >
           <span
-            class="sc-frDJqD dcXYwx"
+            class="sc-frDJqD fjbQuD"
           >
             Credit Card
           </span>
           <span
-            class="sc-kvZOFW kPDIJH"
+            class="sc-kvZOFW iHStTI"
           >
             Visa ending in 5869
           </span>
         </div>
         <div
-          class="sc-gGBfsJ JIklj"
+          class="sc-gGBfsJ fVbrjh"
         >
           <span
-            class="sc-uJMKN dgEgnX"
+            class="sc-uJMKN eomWTw"
           >
             $17.19
           </span>
           <span
-            class="sc-bbmXgH cNujPw"
+            class="sc-bbmXgH foNiO"
           >
             30 Days
           </span>
         </div>
         <button
-          class="sc-dNLxif sc-jqCOkK iYnavZ"
+          class="sc-dNLxif sc-jqCOkK bBooKO"
         >
           Confirm Purchase
         </button>

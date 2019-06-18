@@ -9,12 +9,12 @@ export const SectionHeader = styled.span`
   font-weight: bold;
   font-size: 15px;
   line-height: 19px;
-  color: var(--grey);
+  color: var(--slate);
 `
 
 export const Section = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto auto;
   grid-gap: 1rem;
 `
 
@@ -45,6 +45,7 @@ export const ItemValue = styled.span`
   margin: 1rem 0.5rem;
   height: 21px;
   display: flex;
+  color: var(--slate);
 `
 
 export const Input = styled.input`
