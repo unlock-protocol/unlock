@@ -178,6 +178,18 @@ describe('setupPostOffice', () => {
     )
   })
 
+  it('responds to POST_MESSAGE_READY by showing the checkout UI if the paywall type is "paywall"', () => {
+    expect.assertions(1)
+
+    fakeWindow.unlockProtocolConfig = {
+      type: 'paywall',
+    }
+
+    sendMessage(fakeUIIframe, POST_MESSAGE_READY)
+
+    expect(fakeUIIframe.className).toBe('unlock start show')
+  })
+
   it('responds to POST_MESSAGE_UNLOCKED by sending unlocked to the UI iframe', () => {
     expect.assertions(1)
 
@@ -223,23 +235,6 @@ describe('setupPostOffice', () => {
     sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
 
     expect(fakeUIIframe.className).toBe('unlock start show')
-  })
-
-  it('responds to POST_MESSAGE_UNLOCKED by hiding the checkout UI if the key is confirmed', () => {
-    expect.assertions(1)
-
-    fakeUIIframe.className = 'unlock start show'
-
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_LOCKS, {
-      lock: {
-        key: {
-          status: 'valid',
-        },
-      },
-    })
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
-
-    expect(fakeUIIframe.className).toBe('unlock start')
   })
 
   it('responds to POST_MESSAGE_LOCKED by sending locked to the UI iframe', () => {
