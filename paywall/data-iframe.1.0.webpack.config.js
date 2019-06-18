@@ -39,9 +39,19 @@ module.exports = () => {
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'data-iframe.1.0.min.js',
-      globalObject: 'self',
     },
-
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.UNLOCK_ENV': "'" + unlockEnv + "'",
