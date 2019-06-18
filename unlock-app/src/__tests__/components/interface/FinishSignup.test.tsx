@@ -5,7 +5,7 @@ import {
   mapDispatchToProps,
   validatePassword,
   FinishSignup,
-  Credentials, // eslint-disable-line no-unused-vars
+  Credentials,
 } from '../../../components/interface/FinishSignup'
 
 let signupCredentials = jest.fn((credentials: Credentials) => credentials)
