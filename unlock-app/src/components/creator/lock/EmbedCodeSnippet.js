@@ -8,8 +8,18 @@ import { ConfigContext } from '../../../utils/withConfig'
 export function EmbedCodeSnippet({ lock }) {
   function embedCode(lock, paywallScriptUrl, paywallUrl) {
     return `<!-- Include this script in the <head> section of your page -->
-<script src="${paywallScriptUrl}" data-unlock-url="${paywallUrl}"></script>
-<meta name="lock" content="${lock.address}" />
+<script type="text/javascript">
+window.unlockProtocolConfig = {
+  type: "paywall",
+  locks: {
+    "${lock.address}": { name: "${lock.name}" }
+  }
+  callToAction: {
+    default: "You have reached your limit of free articles. Please purchase access"
+  }
+}
+</script>
+<script src="${paywallUrl}/static/unlock.1.0.min.js"></script>
 `
   }
 
@@ -80,5 +90,5 @@ const CodeSnippet = styled.textarea`
   font-size: 14px;
   font-weight: 300;
   color: var(--darkgrey);
-  min-height: 170px;
+  min-height: 270px;
 `

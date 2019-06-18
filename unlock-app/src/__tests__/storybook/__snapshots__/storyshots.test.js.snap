@@ -3872,7 +3872,7 @@ Object {
       />
       <a
         class="c0 c1"
-        href="http://localhost:3001/demo/0xabc"
+        href="http://localhost:3001/newdemo?lock=0xabc&name=undefined&type=paywall"
         title="Preview"
       >
         <svg
@@ -3907,7 +3907,7 @@ Object {
     />
     <a
       class="sc-850ddk-0 eZjxtV"
-      href="http://localhost:3001/demo/0xabc"
+      href="http://localhost:3001/newdemo?lock=0xabc&name=undefined&type=paywall"
       title="Preview"
     >
       <svg
@@ -46163,7 +46163,7 @@ Object {
   font-size: 14px;
   font-weight: 300;
   color: var(--darkgrey);
-  min-height: 170px;
+  min-height: 270px;
 }
 
 .c7 .c4 {
@@ -46225,8 +46225,18 @@ Object {
           readonly=""
         >
           &lt;!-- Include this script in the &lt;head&gt; section of your page --&gt;
-&lt;script src="http://localhost/static/paywall.min.js" data-unlock-url="http://localhost"&gt;&lt;/script&gt;
-&lt;meta name="lock" content="0xa62142888aba8370742be823c1782d17a0389da1" /&gt;
+&lt;script type="text/javascript"&gt;
+window.unlockProtocolConfig = {
+  type: "paywall",
+  locks: {
+    "0xa62142888aba8370742be823c1782d17a0389da1": { name: "undefined" }
+  }
+  callToAction: {
+    default: "You have reached your limit of free articles. Please purchase access"
+  }
+}
+&lt;/script&gt;
+&lt;script src="http://localhost/static/unlock.1.0.min.js"&gt;&lt;/script&gt;
 
         </textarea>
         <div
@@ -46255,7 +46265,7 @@ Object {
           </button>
           <a
             class="c4 c5"
-            href="http://localhost/demo/0xa62142888aba8370742be823c1782d17a0389da1"
+            href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined&type=paywall"
             target="_blank"
             title="Preview"
           >
@@ -46300,12 +46310,22 @@ Object {
         Code snippet
       </span>
       <textarea
-        class="sc-1uq8tkh-3 cUjtox"
+        class="sc-1uq8tkh-3 NeEcC"
         readonly=""
       >
         &lt;!-- Include this script in the &lt;head&gt; section of your page --&gt;
-&lt;script src="http://localhost/static/paywall.min.js" data-unlock-url="http://localhost"&gt;&lt;/script&gt;
-&lt;meta name="lock" content="0xa62142888aba8370742be823c1782d17a0389da1" /&gt;
+&lt;script type="text/javascript"&gt;
+window.unlockProtocolConfig = {
+  type: "paywall",
+  locks: {
+    "0xa62142888aba8370742be823c1782d17a0389da1": { name: "undefined" }
+  }
+  callToAction: {
+    default: "You have reached your limit of free articles. Please purchase access"
+  }
+}
+&lt;/script&gt;
+&lt;script src="http://localhost/static/unlock.1.0.min.js"&gt;&lt;/script&gt;
 
       </textarea>
       <div
@@ -46334,7 +46354,7 @@ Object {
         </button>
         <a
           class="sc-850ddk-0 eZjxtV"
-          href="http://localhost/demo/0xa62142888aba8370742be823c1782d17a0389da1"
+          href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined&type=paywall"
           target="_blank"
           title="Preview"
         >
