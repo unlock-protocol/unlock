@@ -2,18 +2,25 @@ import {
   setupPostOffice,
   iframePostOffice,
   mainWindowPostOffice,
+  PostOfficeWindow,
+  PostMessageTarget,
+  PostMessageListener,
+  IframePostOfficeWindow,
+  Iframe,
 } from '../../utils/postOffice'
 
 describe('postOffice', () => {
+  const fakeResponder = () => {}
   describe('setupPostOffice', () => {
-    let fakeWindow
-    let fakeTarget
+    let fakeWindow: PostOfficeWindow
+    let fakeTarget: PostMessageTarget
+    let handlers: { [key: string]: PostMessageListener }
 
     beforeEach(() => {
+      handlers = {}
       fakeWindow = {
-        handlers: {},
         addEventListener(type, handler) {
-          fakeWindow.handlers[type] = handler
+          handlers[type] = handler
         },
       }
       fakeTarget = {
@@ -25,7 +32,7 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       expect(() => {
-        setupPostOffice(fakeWindow, fakeTarget)
+        setupPostOffice(fakeWindow, fakeTarget, '', '', '')
       }).toThrow('cannot safely postMessage without knowing the target origin')
     })
 
@@ -33,21 +40,33 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       expect(() => {
-        setupPostOffice(fakeWindow, undefined, 'hi')
+        setupPostOffice(
+          fakeWindow,
+          (undefined as unknown) as PostMessageTarget,
+          'hi',
+          '',
+          ''
+        )
       }).toThrow('cannot safely postMessage without knowing the target origin')
     })
 
     it('adds a message event listener', () => {
       expect.assertions(1)
 
-      setupPostOffice(fakeWindow, fakeTarget, 'hi')
-      expect(fakeWindow.handlers.message).toEqual(expect.any(Function))
+      setupPostOffice(fakeWindow, fakeTarget, 'hi', '', '')
+      expect(handlers.message).toEqual(expect.any(Function))
     })
 
     it('returns a function that posts a message', () => {
       expect.assertions(2)
 
-      const { postMessage } = setupPostOffice(fakeWindow, fakeTarget, 'hi')
+      const { postMessage } = setupPostOffice(
+        fakeWindow,
+        fakeTarget,
+        'hi',
+        '',
+        ''
+      )
 
       expect(postMessage).toBeInstanceOf(Function)
       postMessage('hi', 'there')
@@ -68,30 +87,35 @@ describe('postOffice', () => {
       const { addHandler } = setupPostOffice(
         fakeWindow,
         fakeTarget,
-        'http://fun.times'
+        'http://fun.times',
+        '',
+        ''
       )
 
       expect(addHandler).toBeInstanceOf(Function)
       addHandler('hi', listener)
 
-      fakeWindow.handlers.message({
-        source: fakeTarget,
-        origin: 'http://fun.times',
-        data: {
-          type: 'hi',
-          payload: 'it worked!',
+      handlers.message(
+        {
+          source: fakeTarget,
+          origin: 'http://fun.times',
+          data: {
+            type: 'hi',
+            payload: 'it worked!',
+          },
         },
-      })
+        fakeResponder
+      )
 
       expect(listener).toHaveBeenCalledWith('it worked!', expect.any(Function))
     })
 
     describe('message listener', () => {
       beforeEach(() => {
+        handlers = {}
         fakeWindow = {
-          handlers: {},
           addEventListener(type, handler) {
-            fakeWindow.handlers[type] = handler
+            handlers[type] = handler
           },
         }
         fakeTarget = {
@@ -103,28 +127,40 @@ describe('postOffice', () => {
         expect.assertions(2)
 
         const listener = jest.fn()
-        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(
+          fakeWindow,
+          fakeTarget,
+          'origin',
+          '',
+          ''
+        )
         addHandler('hi', listener)
 
-        fakeWindow.handlers.message({
-          source: 'not from us',
-          origin: 'origin',
-          data: {
-            type: 'hi',
-            payload: 'hi again',
+        handlers.message(
+          {
+            source: 'not from us',
+            origin: 'origin',
+            data: {
+              type: 'hi',
+              payload: 'hi again',
+            },
           },
-        })
+          fakeResponder
+        )
 
         expect(listener).toHaveBeenCalledTimes(0)
 
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'not our origin',
-          data: {
-            type: 'hi',
-            payload: 'hi again',
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'not our origin',
+            data: {
+              type: 'hi',
+              payload: 'hi again',
+            },
           },
-        })
+          fakeResponder
+        )
 
         expect(listener).toHaveBeenCalledTimes(0)
       })
@@ -133,42 +169,60 @@ describe('postOffice', () => {
         expect.assertions(4)
 
         const listener = jest.fn()
-        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(
+          fakeWindow,
+          fakeTarget,
+          'origin',
+          '',
+          ''
+        )
         addHandler('hi', listener)
 
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-        })
-
-        expect(listener).toHaveBeenCalledTimes(0)
-
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-          data: {},
-        })
-
-        expect(listener).toHaveBeenCalledTimes(0)
-
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-          data: {
-            type: 'oops',
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
           },
-        })
+          fakeResponder
+        )
 
         expect(listener).toHaveBeenCalledTimes(0)
 
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-          data: {
-            type: 1,
-            payload: 'oops',
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
+            data: {},
           },
-        })
+          fakeResponder
+        )
+
+        expect(listener).toHaveBeenCalledTimes(0)
+
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
+            data: {
+              type: 'oops',
+            },
+          },
+          fakeResponder
+        )
+
+        expect(listener).toHaveBeenCalledTimes(0)
+
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
+            data: {
+              type: 1,
+              payload: 'oops',
+            },
+          },
+          fakeResponder
+        )
 
         expect(listener).toHaveBeenCalledTimes(0)
       })
@@ -177,17 +231,26 @@ describe('postOffice', () => {
         expect.assertions(1)
 
         const listener = jest.fn()
-        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(
+          fakeWindow,
+          fakeTarget,
+          'origin',
+          '',
+          ''
+        )
         addHandler('hi', listener)
 
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-          data: {
-            type: 'hi',
-            payload: 'it worked!',
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
+            data: {
+              type: 'hi',
+              payload: 'it worked!',
+            },
           },
-        })
+          fakeResponder
+        )
 
         expect(listener).toHaveBeenCalledWith(
           'it worked!',
@@ -199,38 +262,53 @@ describe('postOffice', () => {
         expect.assertions(1)
 
         const listener = jest.fn()
-        const { addHandler } = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+        const { addHandler } = setupPostOffice(
+          fakeWindow,
+          fakeTarget,
+          'origin',
+          '',
+          ''
+        )
         addHandler('hi', listener)
 
-        fakeWindow.handlers.message({
-          source: fakeTarget,
-          origin: 'origin',
-          data: {
-            type: 'not hi',
-            payload: 'it worked!',
+        handlers.message(
+          {
+            source: fakeTarget,
+            origin: 'origin',
+            data: {
+              type: 'not hi',
+              payload: 'it worked!',
+            },
           },
-        })
+          fakeResponder
+        )
 
         expect(listener).not.toHaveBeenCalled()
       })
 
       describe('message handler', () => {
-        let listener
-        let addHandler
+        interface JestMockListener extends PostMessageListener {
+          mock: any
+        }
+        let listener: JestMockListener
+        let addHandler: (type: string, listener: PostMessageListener) => void
         beforeEach(() => {
           listener = jest.fn()
-          const info = setupPostOffice(fakeWindow, fakeTarget, 'origin')
+          const info = setupPostOffice(fakeWindow, fakeTarget, 'origin', '', '')
           addHandler = info.addHandler
           addHandler('hi', listener)
 
-          fakeWindow.handlers.message({
-            source: fakeTarget,
-            origin: 'origin',
-            data: {
-              type: 'hi',
-              payload: 'it worked!',
+          handlers.message(
+            {
+              source: fakeTarget,
+              origin: 'origin',
+              data: {
+                type: 'hi',
+                payload: 'it worked!',
+              },
             },
-          })
+            fakeResponder
+          )
         })
 
         it('calls the handler with a response callback', () => {
@@ -255,14 +333,17 @@ describe('postOffice', () => {
           addHandler('hi', listener)
           addHandler('hi', listener2)
 
-          fakeWindow.handlers.message({
-            source: fakeTarget,
-            origin: 'origin',
-            data: {
-              type: 'hi',
-              payload: 'it worked!',
+          handlers.message(
+            {
+              source: fakeTarget,
+              origin: 'origin',
+              data: {
+                type: 'hi',
+                payload: 'it worked!',
+              },
             },
-          })
+            fakeResponder
+          )
 
           expect(listener).toHaveBeenCalledWith(
             'it worked!',
@@ -278,22 +359,23 @@ describe('postOffice', () => {
   })
 
   describe('iframePostOffice', () => {
-    let fakeWindow
-    let fakeTarget
+    let fakeWindow: IframePostOfficeWindow
+    let fakeTarget: PostMessageTarget
+    let handlers: { [key: string]: PostMessageListener }
 
     beforeEach(() => {
       fakeTarget = {
         postMessage: jest.fn(),
       }
+      handlers = {}
 
       fakeWindow = {
         parent: fakeTarget,
         location: {
           href: 'http://example.com?origin=http%3A%2F%2Ffun.times',
         },
-        handlers: {},
         addEventListener(type, handler) {
-          fakeWindow.handlers[type] = handler
+          handlers[type] = handler
         },
       }
     })
@@ -302,17 +384,20 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      const { addHandler } = iframePostOffice(fakeWindow)
+      const { addHandler } = iframePostOffice(fakeWindow, '', '')
       addHandler('hi', listener)
 
-      fakeWindow.handlers.message({
-        source: fakeTarget,
-        origin: 'http://fun.times',
-        data: {
-          type: 'hi',
-          payload: 'it worked!',
+      handlers.message(
+        {
+          source: fakeTarget,
+          origin: 'http://fun.times',
+          data: {
+            type: 'hi',
+            payload: 'it worked!',
+          },
         },
-      })
+        fakeResponder
+      )
 
       const response = listener.mock.calls[0][1]
 
@@ -328,7 +413,7 @@ describe('postOffice', () => {
       expect.assertions(1)
 
       const listener = jest.fn()
-      const { addHandler, postMessage } = iframePostOffice(fakeWindow)
+      const { addHandler, postMessage } = iframePostOffice(fakeWindow, '', '')
       addHandler('hi', listener)
 
       postMessage('type', 'response')
@@ -341,8 +426,9 @@ describe('postOffice', () => {
   })
 
   describe('mainWindowPostOffice', () => {
-    let fakeWindow
-    let iframe
+    let fakeWindow: PostOfficeWindow
+    let handlers: { [key: string]: PostMessageListener }
+    let iframe: Iframe
 
     beforeEach(() => {
       iframe = {
@@ -351,13 +437,10 @@ describe('postOffice', () => {
         },
       }
 
+      handlers = {}
       fakeWindow = {
-        location: {
-          href: 'http://example.com?origin=http%3A%2F%2Ffun.times',
-        },
-        handlers: {},
         addEventListener(type, handler) {
-          fakeWindow.handlers[type] = handler
+          handlers[type] = handler
         },
       }
     })
@@ -369,18 +452,23 @@ describe('postOffice', () => {
       const { addHandler } = mainWindowPostOffice(
         fakeWindow,
         iframe,
-        'http://fun.times'
+        'http://fun.times',
+        '',
+        ''
       )
       addHandler('hi', listener)
 
-      fakeWindow.handlers.message({
-        source: iframe.contentWindow,
-        origin: 'http://fun.times',
-        data: {
-          type: 'hi',
-          payload: 'it worked!',
+      handlers.message(
+        {
+          source: iframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: 'hi',
+            payload: 'it worked!',
+          },
         },
-      })
+        fakeResponder
+      )
 
       const response = listener.mock.calls[0][1]
 
