@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { confirmKeyPurchase } from '../../../actions/user'
 import {
-  Column,
+  Grid,
   Item,
   ItemValue,
-  Section,
   SectionHeader,
-  FullWidthButton,
+  SubmitButton,
   LockInfo,
 } from './styles'
 
@@ -22,23 +21,19 @@ export const KeyPurchaseConfirmation = ({
   emailAddress,
   confirmKeyPurchase,
 }: KeyPurchaseConfirmationProps) => (
-  <React.Fragment>
+  <Grid>
     <SectionHeader>Confirm Purchase</SectionHeader>
-    <Section>
-      <Column>
-        <Item title="Account">
-          <ItemValue>{emailAddress}</ItemValue>
-        </Item>
-        <Item title="Credit Card">
-          <ItemValue>Visa ending in 5869</ItemValue>
-        </Item>
-        <LockInfo price="$17.19" timeRemaining="30 Days" />
-        <FullWidthButton onClick={confirmKeyPurchase}>
-          Confirm Purchase
-        </FullWidthButton>
-      </Column>
-    </Section>
-  </React.Fragment>
+    <Item title="Account" size="full">
+      <ItemValue>{emailAddress}</ItemValue>
+    </Item>
+    <Item title="Credit Card" size="full">
+      <ItemValue>Visa ending in 5869</ItemValue>
+    </Item>
+    <LockInfo price="$17.19" timeRemaining="30 Days" />
+    <SubmitButton onClick={confirmKeyPurchase} roundBottomOnly>
+      Confirm Purchase
+    </SubmitButton>
+  </Grid>
 )
 
 export const mapDispatchToProps = (dispatch: any) => ({

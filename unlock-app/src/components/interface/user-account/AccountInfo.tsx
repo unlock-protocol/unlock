@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Item, Section, SectionHeader, ItemValue } from './styles'
+import { Item, SectionHeader, ItemValue, Grid } from './styles'
 
 interface Props {
   address: string
@@ -8,17 +8,15 @@ interface Props {
 }
 
 export const AccountInfo = ({ address, emailAddress }: Props) => (
-  <React.Fragment>
+  <Grid>
     <SectionHeader>Account</SectionHeader>
-    <Section>
-      <Item title="Email">
-        <ItemValue>{emailAddress}</ItemValue>
-      </Item>
-      <Item title="Wallet Address">
-        <ItemValue>{address}</ItemValue>
-      </Item>
-    </Section>
-  </React.Fragment>
+    <Item title="Email" size="half">
+      <ItemValue>{emailAddress}</ItemValue>
+    </Item>
+    <Item title="Wallet Address" size="half">
+      <ItemValue>{address}</ItemValue>
+    </Item>
+  </Grid>
 )
 
 interface ReduxState {
