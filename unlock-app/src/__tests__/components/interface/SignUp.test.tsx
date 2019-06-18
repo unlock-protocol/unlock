@@ -63,8 +63,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
@@ -94,8 +94,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
@@ -124,8 +124,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
@@ -156,8 +156,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
@@ -196,8 +196,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
@@ -239,8 +239,8 @@ describe('Sign Up Page', () => {
             replace: () => {},
             ancestorOrigins: {
               length: 0,
-              contains: (_: string) => false, // eslint-disable-line no-unused-vars
-              item: (_: number) => null, // eslint-disable-line no-unused-vars
+              contains: (_: string) => false,
+              item: (_: number) => null,
             },
           },
         },
