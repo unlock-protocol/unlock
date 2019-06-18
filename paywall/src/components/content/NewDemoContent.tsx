@@ -5,6 +5,7 @@ import DemoComponent from '../interface/Demo'
 import { pageTitle } from '../../constants'
 import useWindow from '../../hooks/browser/useWindow'
 import useConfig from '../../hooks/utils/useConfig'
+import ActionButton from '../interface/buttons/ActionButton'
 
 /**
  * This is the actual demo page with JS which injects a paywall'ed iframe.
@@ -39,13 +40,21 @@ export default function NewDemoContent() {
         'You have reached your limit of free articles. Please purchase access to continue reading',
     },
   }
+  let ShowCheckout = null
+  if (type !== 'paywall') {
+    ShowCheckout = (
+      <ActionButton onClick={() => window.unlockProtocol.loadCheckoutModal()}>
+        Show Checkout
+      </ActionButton>
+    )
+  }
   return (
     <Fragment>
       <Head>
         <title>{pageTitle('Demo')}</title>
         <script src="/static/unlock.1.0.min.js" />
       </Head>
-      <DemoComponent />
+      <DemoComponent paywall={ShowCheckout} />
     </Fragment>
   )
 }
