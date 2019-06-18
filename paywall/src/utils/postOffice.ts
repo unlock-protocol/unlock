@@ -1,3 +1,45 @@
+export interface MessageEvent {
+  source: any
+  origin: string
+  data: any
+}
+
+export type MessageHandler = (event: MessageEvent) => void
+
+interface location {
+  href: string
+}
+
+export interface PostOfficeWindow {
+  addEventListener: (type: 'message', handler: MessageHandler) => void
+}
+
+export interface IframePostOfficeWindow extends PostOfficeWindow {
+  parent: PostMessageTarget
+  location: location
+}
+
+export interface PostMessageTarget {
+  postMessage: (data: any, origin: string) => void
+}
+
+export interface Iframe {
+  contentWindow: PostMessageTarget
+}
+
+// TODO: stricter type, use a union of all allowed postmessage types
+export type PostMessageResponder = (type: string, payload: any) => void
+
+export type PostMessageListener = (
+  payload: any,
+  respond: PostMessageResponder
+) => void
+
+export interface PostMessageHandlers {
+  // TODO: stricter type, use a union of all allowed postmessage types
+  [key: string]: Map<PostMessageListener, PostMessageListener>
+}
+
 /**
  * postMessage manager
  *
@@ -16,14 +58,20 @@
  * @param {string} targetOrigin the origin of the target (in CORS settings
  *                              this cannot be retrieved from the target)
  */
-export function setupPostOffice(window, target, targetOrigin, local, remote) {
+export function setupPostOffice(
+  window: PostOfficeWindow,
+  target: PostMessageTarget,
+  targetOrigin: string,
+  local: string,
+  remote: string
+) {
   const debug = process.env.DEBUG
   if (!targetOrigin || !target) {
     throw new Error(
       'cannot safely postMessage without knowing the target origin'
     )
   }
-  let handlers = {}
+  let handlers: PostMessageHandlers = {}
   window.addEventListener('message', event => {
     // **SECURITY CHECKS**
     // ignore messages that do not come from our target window
@@ -63,13 +111,15 @@ export function setupPostOffice(window, target, targetOrigin, local, remote) {
     }
   })
   return {
-    addHandler: (type, listener) => {
+    // TODO: stricter type, use a union of all allowed postmessage types
+    addHandler: (type: string, listener: PostMessageListener) => {
       if (!handlers[type]) {
         handlers[type] = new Map()
       }
       handlers[type].set(listener, listener)
     },
-    postMessage: (type, payload) => {
+    // TODO: stricter type, use a union of all allowed postmessage types
+    postMessage: (type: string, payload: any) => {
       if (debug) {
         // eslint-disable-next-line no-console
         console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
@@ -89,12 +139,12 @@ export function setupPostOffice(window, target, targetOrigin, local, remote) {
  * @param {window} the iframe's window object
  */
 export function iframePostOffice(
-  window,
+  window: IframePostOfficeWindow,
   local = 'iframe',
   remote = 'main window'
 ) {
   const url = new URL(window.location.href)
-  const origin = url.searchParams.get('origin')
+  const origin: string = url.searchParams.get('origin') || ''
   return setupPostOffice(window, window.parent, origin, local, remote)
 }
 
@@ -106,9 +156,9 @@ export function iframePostOffice(
  * @param {string} iframeOrigin the origin of the created iframe
  */
 export function mainWindowPostOffice(
-  window,
-  iframe,
-  iframeOrigin,
+  window: PostOfficeWindow,
+  iframe: Iframe,
+  iframeOrigin: string,
   local = 'main window',
   remote = 'iframe'
 ) {
