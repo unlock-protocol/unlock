@@ -35,7 +35,8 @@ export default function NewDemoContent() {
       {}
     ),
     callToAction: {
-      default: 'Purchase access to this content',
+      default:
+        'You have reached your limit of free articles. Please purchase access to continue reading',
     },
   }
   return (
