@@ -123,13 +123,16 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
       dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'account')
       dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'balance')
       dataPostOffice(POST_MESSAGE_SEND_UPDATES, 'locks')
+      if (window.unlockProtocolConfig.type === 'paywall') {
+        // always show the checkout modal on start for the paywall app
+        showIframe(window, CheckoutUIIframe)
+      }
     }
   })
 
   // set up the main window side of Web3ProxyProvider
   web3Proxy(window, dataIframe, process.env.PAYWALL_URL)
 
-  let savedLocks = {}
   // relay the unlocked event both to the main window
   // and to the checkout UI
   addDataMessageHandler(POST_MESSAGE_UNLOCKED, locks => {
@@ -148,17 +151,6 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
       // ignore
     }
     CheckoutUIPostOffice(POST_MESSAGE_UNLOCKED, locks)
-    if (
-      locks.filter(address => {
-        return (
-          savedLocks[address] &&
-          savedLocks[address].key &&
-          savedLocks[address].key.status === 'valid'
-        )
-      }).length
-    ) {
-      hideCheckoutModal()
-    }
   })
 
   // if the user chooses to close the checkout modal, we hide the iframe
@@ -212,7 +204,6 @@ export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
 
   // relay the most current lock objects to the checkout UI
   addDataMessageHandler(POST_MESSAGE_UPDATE_LOCKS, locks => {
-    savedLocks = locks // to use for determining when to hide the checkout iframe
     CheckoutUIPostOffice(POST_MESSAGE_UPDATE_LOCKS, locks)
   })
 
