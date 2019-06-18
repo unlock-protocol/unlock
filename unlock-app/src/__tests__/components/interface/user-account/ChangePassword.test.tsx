@@ -5,7 +5,7 @@ import {
   validatePassword,
   passwordErrors,
   mapDispatchToProps,
-} from '../../../../components/interface/account-settings/ChangePassword'
+} from '../../../../components/interface/user-account/ChangePassword'
 
 describe('ChangePassword component', () => {
   describe('Password validation', () => {
