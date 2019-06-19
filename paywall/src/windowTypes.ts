@@ -2,6 +2,23 @@ import { PaywallConfig } from './unlockTypes'
 
 // window sub-types
 
+export interface EventDocument {
+  createEvent: (type: string) => CustomEvent
+}
+
+export interface IframeManagingDocument {
+  createElement: (type: 'iframe') => IframeType
+  querySelector: (selector: string) => any
+  body: {
+    insertAdjacentElement: (where: 'afterbegin', iframe: IframeType) => void
+    style: {
+      overflow: string
+    }
+  }
+}
+
+export interface FullDocument extends EventDocument, IframeManagingDocument {}
+
 // used in unlock.js/dispatchEvent.ts
 export interface EventWindow {
   CustomEvent: {
@@ -14,9 +31,7 @@ export interface EventWindow {
     prototype: CustomEvent
     new <T>(typeArg: string, eventInitDict?: CustomEventInit<T>): CustomEvent<T>
   }
-  document: {
-    createEvent: (type: string) => CustomEvent
-  }
+  document: EventDocument
   dispatchEvent: (event: CustomEvent) => void
 }
 
@@ -82,16 +97,7 @@ export interface IframeType {
 
 // used in unlock.js/iframeManager.ts
 export interface IframeManagingWindow {
-  document: {
-    createElement: (type: 'iframe') => IframeType
-    querySelector: (selector: string) => any
-    body: {
-      insertAdjacentElement: (where: 'afterbegin', iframe: IframeType) => void
-      style: {
-        overflow: string
-      }
-    }
-  }
+  document: IframeManagingDocument
   setInterval: (cb: Function, interval?: number) => number
 }
 
@@ -109,6 +115,9 @@ export interface UnlockWindow
   extends PostOfficeWindow,
     EventWindow,
     UnlockProtocolWindow,
-    LocalStorageWindow {
+    LocalStorageWindow,
+    IframeManagingWindow {
   unlockProtocolConfig?: PaywallConfig
+  document: FullDocument
+  origin: string
 }
