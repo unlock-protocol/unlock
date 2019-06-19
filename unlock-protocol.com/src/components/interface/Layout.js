@@ -7,6 +7,7 @@ import getConfig from 'next/config'
 import ReactGA from 'react-ga'
 import Header from './Header'
 import Footer from './Footer'
+import Membership from './Membership'
 import { RoundedLogo } from './Logo'
 import Media from '../../theme/media'
 
@@ -34,6 +35,7 @@ export default function Layout({ forContent, title, children }) {
           </Link>
         )}
       </Left>
+      <Membership />
       <Content>
         <Header forContent={forContent} title={title} />
         {children}
