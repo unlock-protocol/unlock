@@ -15,7 +15,7 @@ import {
   POST_MESSAGE_SEND_UPDATES,
 } from '../paywall-builder/constants'
 import dispatchEvent from './dispatchEvent'
-import web3Proxy from '../paywall-builder/web3Proxy'
+import web3Proxy from './web3Proxy'
 import { showIframe, hideIframe } from './iframeManager'
 
 let loadCheckoutModal
