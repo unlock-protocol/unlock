@@ -21,7 +21,7 @@ describe('filterTransaction', () => {
       expect.assertions(1)
       Registry.get = jest.fn().mockResolvedValue(['0xabc'])
 
-      let transaction = { to: '0xabc' }
+      let transaction = { to: '0xabc', from: '0xfff' }
       let connection
 
       expect(await Transaction.filterTransaction(transaction, connection)).toBe(
@@ -35,7 +35,7 @@ describe('filterTransaction', () => {
       expect.assertions(1)
       Registry.get = jest.fn().mockResolvedValue(['0xabc'])
 
-      let transaction = { from: '0xabc' }
+      let transaction = { from: '0xabc', to: '0xdef' }
       let connection
 
       expect(await Transaction.filterTransaction(transaction, connection)).toBe(
@@ -48,7 +48,7 @@ describe('filterTransaction', () => {
     it('returns false', async () => {
       expect.assertions(1)
       Registry.get = jest.fn().mockResolvedValue(['0xabc'])
-      let transaction = { to: '0xbbb' }
+      let transaction = { from: '0xfff', to: '0xbbb' }
       let connection
 
       expect(await Transaction.filterTransaction(transaction, connection)).toBe(
@@ -65,7 +65,7 @@ describe('transactionHandler', () => {
         expect.assertions(1)
         Transaction.getTransactionData = jest
           .fn()
-          .mockResolvedValue({ to: '0xabc' })
+          .mockResolvedValue({ to: '0xabc', from: '0xfff' })
         Registry.get = jest.fn().mockResolvedValue(['0xabc'])
 
         let storage = {
@@ -95,7 +95,7 @@ describe('transactionHandler', () => {
         expect.assertions(1)
         Transaction.getTransactionData = jest
           .fn()
-          .mockResolvedValue({ to: '0xabc' })
+          .mockResolvedValue({ to: '0xabc', from: '0xfff' })
         Registry.get = jest.fn().mockResolvedValue(['0xcdef'])
 
         let storage = {
