@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets wedlocks unlock-js unlock-protocol.com)
+  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets wedlocks unlock-js unlock-protocol.com docker/development )
 
   for i in "${SERVICES[@]}"
   do
