@@ -8,9 +8,14 @@ export default function startup(window: UnlockWindow) {
   // of the data iframe. The data iframe will then send down the current
   // value, overriding this. A bit later, the blockchain handler will update
   // with the actual value, so this is only used for a few milliseconds
-  const locked = JSON.parse(
-    window.localStorage.getItem('__unlockProtocol.locked') || '"ignore"'
-  )
+  let locked
+  try {
+    locked = JSON.parse(
+      window.localStorage.getItem('__unlockProtocol.locked') || '"ignore"'
+    )
+  } catch (_) {
+    locked = 'ignore'
+  }
   if (locked === true) {
     dispatchEvent(window, 'locked')
   }
