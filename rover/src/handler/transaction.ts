@@ -27,7 +27,7 @@ async function transactionHandler(
       transactionHash
     )
 
-    if (await filterTransaction(transaction, connection)) {
+    if (transaction && await filterTransaction(transaction, connection)) {
       storage.storeTransaction(transaction)
     }
   } catch (e) {
