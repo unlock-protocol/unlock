@@ -73,4 +73,40 @@ export interface PostMessageTarget {
 
 export interface IframeType {
   contentWindow: PostMessageTarget
+  className: string
+  src: string
+  setAttribute: (attr: 'src', value: string) => void
+}
+
+// used in unlock.js/iframeManager.ts
+export interface IframeManagingWindow {
+  document: {
+    createElement: (type: 'iframe') => IframeType
+    querySelector: (selector: string) => any
+    body: {
+      insertAdjacentElement: (where: 'afterbegin', iframe: IframeType) => void
+      style: {
+        overflow: string
+      }
+    }
+  }
+  setInterval: (cb: Function, interval?: number) => number
+}
+
+// used in unlock.js/startup.ts and setupPostOffices.ts
+
+export interface UnlockProtocolObject {
+  loadCheckoutModal: () => void
+}
+
+export interface UnlockProtocolWindow {
+  unlockProtocol: UnlockProtocolObject
+}
+
+export interface UnlockWindow
+  extends PostOfficeWindow,
+    EventWindow,
+    UnlockProtocolWindow,
+    LocalStorageWindow {
+  unlockProtocolConfig?: PaywallConfig
 }
