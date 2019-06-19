@@ -4,11 +4,11 @@ exports[`Storyshots Blog pages Blog index page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
+    .c6 {
   fill: var(--brand);
 }
 
-.c7 {
+.c9 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -20,25 +20,25 @@ Object {
   line-height: 15px;
 }
 
-.c7 > svg {
+.c9 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c7:hover {
+.c9:hover {
   background-color: var(--link);
 }
 
-.c7:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c7:focus {
+.c9:focus {
   outline: none;
 }
 
-.c10 {
+.c12 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -50,25 +50,25 @@ Object {
   line-height: 48px;
 }
 
-.c10 > svg {
+.c12 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c10:hover {
+.c12:hover {
   background-color: var(--link);
 }
 
-.c10:hover > svg {
+.c12:hover > svg {
   fill: white;
 }
 
-.c10:focus {
+.c12:focus {
   outline: none;
 }
 
-.c8 {
+.c10 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -83,11 +83,11 @@ Object {
   color: var(--link);
 }
 
-.c6:hover .c8 {
+.c8:hover .c10 {
   display: inline-block;
 }
 
-.c3 {
+.c5 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -101,7 +101,7 @@ Object {
   height: 70px;
 }
 
-.c5 {
+.c7 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -117,13 +117,13 @@ Object {
   height: 100%;
 }
 
-.c9 {
+.c11 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c9 .c6 {
+.c11 .c8 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -134,24 +134,24 @@ Object {
   align-self: center;
 }
 
-.c9 .c6:nth-child(1) {
+.c11 .c8:nth-child(1) {
   pointer-events: none;
 }
 
-.c9 .c6:nth-child(2) {
+.c11 .c8:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c9 .c6 > svg {
+.c11 .c8 > svg {
   fill: var(--grey);
 }
 
-.c9 .c6:hover > svg {
+.c11 .c8:hover > svg {
   fill: var(--grey);
 }
 
-.c11 {
+.c13 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -178,11 +178,11 @@ Object {
   top: 50px;
 }
 
-.c11 .c6 {
+.c13 .c8 {
   margin: 24px;
 }
 
-.c11 .c6 small {
+.c13 .c8 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -192,7 +192,7 @@ Object {
   line-height: 0;
 }
 
-.c23 {
+.c25 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -205,12 +205,37 @@ Object {
   align-items: center;
 }
 
-.c24 {
+.c26 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+.c3 {
+  cursor: pointer;
+  padding: 10px;
 }
 
 .c0 {
@@ -227,14 +252,14 @@ Object {
   height: 24px;
 }
 
-.c2 {
+.c4 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
   width: 100%;
 }
 
-.c21 {
+.c23 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -244,7 +269,7 @@ Object {
   padding: 0;
 }
 
-.c22 {
+.c24 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -254,25 +279,25 @@ Object {
   padding: 0;
 }
 
-.c13 {
+.c15 {
   margin: auto;
   width: 100%;
   max-with: 750px;
 }
 
-.c18 {
+.c20 {
   margin-bottom: 0;
 }
 
-.c18 a,
-.c18 a:visited {
+.c20 a,
+.c20 a:visited {
   color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   font-size: 36px;
 }
 
-.c20 {
+.c22 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -285,7 +310,7 @@ Object {
   margin-bottom: 0;
 }
 
-.c19 {
+.c21 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
@@ -293,12 +318,12 @@ Object {
   font-family: 'IBM Plex Serif';
 }
 
-.c15 {
+.c17 {
   margin-bottom: 20px;
   margin-bottom: 64px;
 }
 
-.c14 {
+.c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 24px;
@@ -307,11 +332,11 @@ Object {
   max-width: 424px;
 }
 
-.c17 {
+.c19 {
   max-width: 100%;
 }
 
-.c12 {
+.c14 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -320,13 +345,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c3 {
+  .c5 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -334,19 +359,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c9 {
+  .c7 {
     display: none;
   }
 }
@@ -359,6 +372,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
     display: none;
   }
 }
@@ -381,13 +406,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c25 {
+  .c27 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c15 {
+  .c17 {
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 32px;
@@ -408,14 +433,30 @@ Object {
         <div
           class="c2"
         >
-          <header
+          <div
             class="c3"
+          >
+            Try Unlock, become a member!
+             
+            <span
+              aria-label="click"
+              role="img"
+            >
+              ↗️
+            </span>
+          </div>
+        </div>
+        <div
+          class="c4"
+        >
+          <header
+            class="c5"
           >
             <a
               href="/"
             >
               <svg
-                class="c4"
+                class="c6"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -427,10 +468,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c5"
+              class="c7"
             >
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/about"
                 title="About"
               >
@@ -447,13 +488,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/blog"
                 title="Blog"
               >
@@ -470,13 +511,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -490,13 +531,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/jobs"
                 title="Join us"
               >
@@ -512,13 +553,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -534,13 +575,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -556,17 +597,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c9"
+              class="c11"
             >
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -581,7 +622,7 @@ Object {
                 
               </a>
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -599,37 +640,37 @@ Object {
               </a>
             </div>
             <div
-              class="c11"
+              class="c13"
             />
           </header>
           <h1
-            class="c12"
+            class="c14"
           >
             Unlock Blog
           </h1>
           <div
-            class="c13"
+            class="c15"
           >
             <div
-              class="c14"
+              class="c16"
             >
               We’re building the new business model for the web that will empower creators and consumers.
             </div>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <img
-                  class="c17"
+                  class="c19"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c18"
+                  class="c20"
                 >
                   <a
                     href="/blog/post3"
@@ -638,22 +679,22 @@ Object {
                   </a>
                 </div>
                 <div
-                  class="c19"
+                  class="c21"
                 >
                   
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
                 </div>
                 <div
-                  class="c20"
+                  class="c22"
                 >
                   <h3
-                    class="c21"
+                    class="c23"
                   >
                     Unlock team
                   </h3>
                   <div
-                    class="c22"
+                    class="c24"
                   >
                     On 
                     Tuesday, March 5, 2019
@@ -662,20 +703,20 @@ should pay great attention.
               </div>
             </div>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <img
-                  class="c17"
+                  class="c19"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c18"
+                  class="c20"
                 >
                   <a
                     href="/blog/post2"
@@ -684,21 +725,21 @@ should pay great attention.
                   </a>
                 </div>
                 <div
-                  class="c19"
+                  class="c21"
                 >
                   
 Short description.
                 </div>
                 <div
-                  class="c20"
+                  class="c22"
                 >
                   <h3
-                    class="c21"
+                    class="c23"
                   >
                     Julien Genestoux
                   </h3>
                   <div
-                    class="c22"
+                    class="c24"
                   >
                     On 
                     Friday, March 1, 2019
@@ -707,20 +748,20 @@ Short description.
               </div>
             </div>
             <div
-              class="c15"
+              class="c17"
             >
               <div
-                class="c16"
+                class="c18"
               >
                 <img
-                  class="c17"
+                  class="c19"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c18"
+                  class="c20"
                 >
                   <a
                     href="/blog/post1"
@@ -729,21 +770,21 @@ Short description.
                   </a>
                 </div>
                 <div
-                  class="c19"
+                  class="c21"
                 >
                   
 Look at us! We're posting on our very own blog! How exciting!
                 </div>
                 <div
-                  class="c20"
+                  class="c22"
                 >
                   <h3
-                    class="c21"
+                    class="c23"
                   >
                     Unlock team
                   </h3>
                   <div
-                    class="c22"
+                    class="c24"
                   >
                     On 
                     Monday, August 20, 2018
@@ -753,10 +794,10 @@ Look at us! We're posting on our very own blog! How exciting!
             </div>
           </div>
           <footer
-            class="c23"
+            class="c25"
           >
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/about"
               title="About"
             >
@@ -773,13 +814,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 About
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/blog"
               title="Blog"
             >
@@ -796,13 +837,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/jobs"
               title="Join us"
             >
@@ -818,13 +859,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -838,13 +879,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -860,13 +901,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -882,20 +923,20 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c24"
+              class="c26"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c25"
+          class="c27"
         />
       </div>
     </div>
@@ -911,6 +952,22 @@ Look at us! We're posting on our very own blog! How exciting!
       <div
         class="hm3mhg-1 hHesyi"
       />
+      <div
+        class="sc-1mlffph-0 gCKCvE"
+      >
+        <div
+          class="sc-1mlffph-1 gPpkGc"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -1470,11 +1527,11 @@ Look at us! We're posting on our very own blog! How exciting!
 exports[`Storyshots Blog pages Blog post page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c4 {
+  "baseElement": .c6 {
   fill: var(--brand);
 }
 
-.c7 {
+.c9 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -1486,25 +1543,25 @@ Object {
   line-height: 15px;
 }
 
-.c7 > svg {
+.c9 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c7:hover {
+.c9:hover {
   background-color: var(--link);
 }
 
-.c7:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c7:focus {
+.c9:focus {
   outline: none;
 }
 
-.c10 {
+.c12 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -1516,25 +1573,25 @@ Object {
   line-height: 48px;
 }
 
-.c10 > svg {
+.c12 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c10:hover {
+.c12:hover {
   background-color: var(--link);
 }
 
-.c10:hover > svg {
+.c12:hover > svg {
   fill: white;
 }
 
-.c10:focus {
+.c12:focus {
   outline: none;
 }
 
-.c8 {
+.c10 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -1549,11 +1606,11 @@ Object {
   color: var(--link);
 }
 
-.c6:hover .c8 {
+.c8:hover .c10 {
   display: inline-block;
 }
 
-.c3 {
+.c5 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -1567,7 +1624,7 @@ Object {
   height: 70px;
 }
 
-.c5 {
+.c7 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -1583,13 +1640,13 @@ Object {
   height: 100%;
 }
 
-.c9 {
+.c11 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c9 .c6 {
+.c11 .c8 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -1600,24 +1657,24 @@ Object {
   align-self: center;
 }
 
-.c9 .c6:nth-child(1) {
+.c11 .c8:nth-child(1) {
   pointer-events: none;
 }
 
-.c9 .c6:nth-child(2) {
+.c11 .c8:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c9 .c6 > svg {
+.c11 .c8 > svg {
   fill: var(--grey);
 }
 
-.c9 .c6:hover > svg {
+.c11 .c8:hover > svg {
   fill: var(--grey);
 }
 
-.c11 {
+.c13 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -1644,11 +1701,11 @@ Object {
   top: 50px;
 }
 
-.c11 .c6 {
+.c13 .c8 {
   margin: 24px;
 }
 
-.c11 .c6 small {
+.c13 .c8 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -1658,7 +1715,7 @@ Object {
   line-height: 0;
 }
 
-.c19 {
+.c21 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -1671,12 +1728,37 @@ Object {
   align-items: center;
 }
 
-.c20 {
+.c22 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+.c3 {
+  cursor: pointer;
+  padding: 10px;
 }
 
 .c0 {
@@ -1693,21 +1775,21 @@ Object {
   height: 24px;
 }
 
-.c2 {
+.c4 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
   width: 100%;
 }
 
-.c12 {
+.c14 {
   width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
-.c13 {
+.c15 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -1715,7 +1797,7 @@ Object {
   font-size: 36px;
 }
 
-.c15 {
+.c17 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -1726,7 +1808,7 @@ Object {
   margin-bottom: 35px;
 }
 
-.c14 {
+.c16 {
   margin-top: 10px;
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -1735,22 +1817,22 @@ Object {
   color: var(--dimgrey);
 }
 
-.c18 {
+.c20 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c18 strong {
+.c20 strong {
   font-weight: 800;
 }
 
-.c18 p {
+.c20 p {
   margin-top: 0;
 }
 
-.c18 h2 {
+.c20 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -1758,11 +1840,11 @@ Object {
   font-size: 18px;
 }
 
-.c18 img {
+.c20 img {
   max-width: 100%;
 }
 
-.c16 {
+.c18 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -1772,7 +1854,7 @@ Object {
   padding: 0;
 }
 
-.c17 {
+.c19 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -1783,7 +1865,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c3 {
+  .c5 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -1791,19 +1873,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c9 {
+  .c7 {
     display: none;
   }
 }
@@ -1816,6 +1886,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
     display: none;
   }
 }
@@ -1838,7 +1920,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c23 {
     display: none;
   }
 }
@@ -1858,14 +1940,30 @@ Object {
         <div
           class="c2"
         >
-          <header
+          <div
             class="c3"
+          >
+            Try Unlock, become a member!
+             
+            <span
+              aria-label="click"
+              role="img"
+            >
+              ↗️
+            </span>
+          </div>
+        </div>
+        <div
+          class="c4"
+        >
+          <header
+            class="c5"
           >
             <a
               href="/"
             >
               <svg
-                class="c4"
+                class="c6"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -1877,10 +1975,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c5"
+              class="c7"
             >
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/about"
                 title="About"
               >
@@ -1897,13 +1995,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/blog"
                 title="Blog"
               >
@@ -1920,13 +2018,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -1940,13 +2038,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/jobs"
                 title="Join us"
               >
@@ -1962,13 +2060,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -1984,13 +2082,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -2006,17 +2104,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c9"
+              class="c11"
             >
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -2031,7 +2129,7 @@ Object {
                 
               </a>
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -2049,39 +2147,39 @@ Object {
               </a>
             </div>
             <div
-              class="c11"
+              class="c13"
             />
           </header>
           <div
-            class="c12"
+            class="c14"
           >
             <h1
-              class="c13"
+              class="c15"
             >
               Sample title
             </h1>
             <h2
-              class="c14"
+              class="c16"
             >
               Some advice from the field
             </h2>
             <div
-              class="c15"
+              class="c17"
             >
               <h3
-                class="c16"
+                class="c18"
               >
                 Alice "Storybook" Bob
               </h3>
               <div
-                class="c17"
+                class="c19"
               >
                 On 
                 August 20, 2018
               </div>
             </div>
             <div
-              class="c18"
+              class="c20"
             >
               <div>
                 <p>
@@ -2151,10 +2249,10 @@ are intentionally not generated from this file date, in case we want to override
             </div>
           </div>
           <footer
-            class="c19"
+            class="c21"
           >
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/about"
               title="About"
             >
@@ -2171,13 +2269,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 About
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/blog"
               title="Blog"
             >
@@ -2194,13 +2292,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/jobs"
               title="Join us"
             >
@@ -2216,13 +2314,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -2236,13 +2334,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -2258,13 +2356,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -2280,20 +2378,20 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c20"
+              class="c22"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c21"
+          class="c23"
         />
       </div>
     </div>
@@ -2309,6 +2407,22 @@ are intentionally not generated from this file date, in case we want to override
       <div
         class="hm3mhg-1 hHesyi"
       />
+      <div
+        class="sc-1mlffph-0 gCKCvE"
+      >
+        <div
+          class="sc-1mlffph-1 gPpkGc"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -11188,11 +11302,11 @@ exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
+    .c6 {
   fill: var(--brand);
 }
 
-.c7 {
+.c9 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -11204,25 +11318,25 @@ Object {
   line-height: 15px;
 }
 
-.c7 > svg {
+.c9 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c7:hover {
+.c9:hover {
   background-color: var(--link);
 }
 
-.c7:hover > svg {
+.c9:hover > svg {
   fill: white;
 }
 
-.c7:focus {
+.c9:focus {
   outline: none;
 }
 
-.c10 {
+.c12 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -11234,25 +11348,25 @@ Object {
   line-height: 48px;
 }
 
-.c10 > svg {
+.c12 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c10:hover {
+.c12:hover {
   background-color: var(--link);
 }
 
-.c10:hover > svg {
+.c12:hover > svg {
   fill: white;
 }
 
-.c10:focus {
+.c12:focus {
   outline: none;
 }
 
-.c8 {
+.c10 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -11267,11 +11381,11 @@ Object {
   color: var(--link);
 }
 
-.c6:hover .c8 {
+.c8:hover .c10 {
   display: inline-block;
 }
 
-.c3 {
+.c5 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -11285,7 +11399,7 @@ Object {
   height: 70px;
 }
 
-.c5 {
+.c7 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -11301,13 +11415,13 @@ Object {
   height: 100%;
 }
 
-.c9 {
+.c11 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c9 .c6 {
+.c11 .c8 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -11318,24 +11432,24 @@ Object {
   align-self: center;
 }
 
-.c9 .c6:nth-child(1) {
+.c11 .c8:nth-child(1) {
   pointer-events: none;
 }
 
-.c9 .c6:nth-child(2) {
+.c11 .c8:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c9 .c6 > svg {
+.c11 .c8 > svg {
   fill: var(--grey);
 }
 
-.c9 .c6:hover > svg {
+.c11 .c8:hover > svg {
   fill: var(--grey);
 }
 
-.c11 {
+.c13 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -11362,11 +11476,11 @@ Object {
   top: 50px;
 }
 
-.c11 .c6 {
+.c13 .c8 {
   margin: 24px;
 }
 
-.c11 .c6 small {
+.c13 .c8 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -11376,7 +11490,7 @@ Object {
   line-height: 0;
 }
 
-.c12 {
+.c14 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -11389,12 +11503,37 @@ Object {
   align-items: center;
 }
 
-.c13 {
+.c15 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+.c3 {
+  cursor: pointer;
+  padding: 10px;
 }
 
 .c0 {
@@ -11411,7 +11550,7 @@ Object {
   height: 24px;
 }
 
-.c2 {
+.c4 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
@@ -11419,7 +11558,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c3 {
+  .c5 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -11427,19 +11566,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c9 {
+  .c7 {
     display: none;
   }
 }
@@ -11452,6 +11579,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
     display: none;
   }
 }
@@ -11474,7 +11613,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 {
+  .c16 {
     display: none;
   }
 }
@@ -11493,14 +11632,30 @@ Object {
         <div
           class="c2"
         >
-          <header
+          <div
             class="c3"
+          >
+            Try Unlock, become a member!
+             
+            <span
+              aria-label="click"
+              role="img"
+            >
+              ↗️
+            </span>
+          </div>
+        </div>
+        <div
+          class="c4"
+        >
+          <header
+            class="c5"
           >
             <a
               href="/"
             >
               <svg
-                class="c4"
+                class="c6"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -11512,10 +11667,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c5"
+              class="c7"
             >
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/about"
                 title="About"
               >
@@ -11532,13 +11687,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/blog"
                 title="Blog"
               >
@@ -11555,13 +11710,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -11575,13 +11730,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="/jobs"
                 title="Join us"
               >
@@ -11597,13 +11752,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -11619,13 +11774,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c6 c7"
+                class="c8 c9"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -11641,17 +11796,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c8"
+                  class="c10"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c9"
+              class="c11"
             >
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -11666,7 +11821,7 @@ Object {
                 
               </a>
               <a
-                class="c6 c10"
+                class="c8 c12"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -11684,14 +11839,14 @@ Object {
               </a>
             </div>
             <div
-              class="c11"
+              class="c13"
             />
           </header>
           <footer
-            class="c12"
+            class="c14"
           >
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/about"
               title="About"
             >
@@ -11708,13 +11863,13 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 About
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/blog"
               title="Blog"
             >
@@ -11731,13 +11886,13 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="/jobs"
               title="Join us"
             >
@@ -11753,13 +11908,13 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -11773,13 +11928,13 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -11795,13 +11950,13 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c6 c7"
+              class="c8 c9"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -11817,20 +11972,20 @@ Object {
                 />
               </svg>
               <small
-                class="c8"
+                class="c10"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c13"
+              class="c15"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c14"
+          class="c16"
         />
       </div>
     </div>
@@ -11846,6 +12001,22 @@ Object {
       <div
         class="hm3mhg-1 hHesyi"
       />
+      <div
+        class="sc-1mlffph-0 gCKCvE"
+      >
+        <div
+          class="sc-1mlffph-1 gPpkGc"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -12530,6 +12701,401 @@ Object {
           d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
         />
       </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership locked state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+.c1 {
+  cursor: pointer;
+  padding: 10px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1mlffph-0 gCKCvE"
+    >
+      <div
+        class="sc-1mlffph-1 gPpkGc"
+      >
+        Try Unlock, become a member!
+         
+        <span
+          aria-label="click"
+          role="img"
+        >
+          ↗️
+        </span>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership unknown state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+.c1 {
+  cursor: pointer;
+  padding: 10px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1mlffph-0 gCKCvE"
+    >
+      <div
+        class="sc-1mlffph-1 gPpkGc"
+      >
+        Try Unlock, become a member!
+         
+        <span
+          aria-label="click"
+          role="img"
+        >
+          ↗️
+        </span>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership unlocked state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        Thanks for being a member! Did you know? Your key is an Ethereum non fungible token!
+         
+        <span
+          aria-label="click"
+          role="img"
+        >
+          🔑
+        </span>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1mlffph-0 gCKCvE"
+    >
+      Thanks for being a member! Did you know? Your key is an Ethereum non fungible token!
+       
+      <span
+        aria-label="click"
+        role="img"
+      >
+        🔑
+      </span>
     </div>
   </div>,
   "debug": [Function],
