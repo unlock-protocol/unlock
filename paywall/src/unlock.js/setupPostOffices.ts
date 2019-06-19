@@ -17,10 +17,33 @@ import {
 import dispatchEvent from './dispatchEvent'
 import web3Proxy from './web3Proxy'
 import { showIframe, hideIframe } from './iframeManager'
+import {
+  IframeType,
+  UnlockProtocolWindow,
+  UnlockWindow,
+  IframeManagingWindow,
+} from '../windowTypes'
 
-let loadCheckoutModal
+let loadCheckoutModal: () => void
 
-export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
+interface hasPrototype {
+  prototype?: any
+}
+
+interface process {
+  env: any
+}
+
+declare const process: process
+
+interface UnlockAndIframeManagerWindow
+  extends IframeManagingWindow,
+    UnlockProtocolWindow {}
+
+export function setupUnlockProtocolVariable(
+  window: UnlockAndIframeManagerWindow,
+  CheckoutUIIframe: any
+) {
   if (!loadCheckoutModal) {
     loadCheckoutModal = () => {
       showIframe(window, CheckoutUIIframe)
@@ -30,7 +53,7 @@ export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
     hideIframe(window, CheckoutUIIframe)
   }
 
-  const unlockProtocol = {}
+  const unlockProtocol: hasPrototype = {}
 
   Object.defineProperties(unlockProtocol, {
     loadCheckoutModal: {
@@ -41,18 +64,21 @@ export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
     },
   })
 
-  const freeze = Object.freeze || Object
+  const freeze: (obj: any) => void = Object.freeze || Object
 
   // if freeze is available, prevents adding or
   // removing the object prototype properties
   // (value, get, set, enumerable, writable, configurable)
-  freeze(unlockProtocol.protoType)
+  freeze(unlockProtocol.prototype)
   freeze(unlockProtocol)
 
   // set up the unlockProtocol object on the main window
   // it will be 100% read-only, unchangeable and un-deleteable
   try {
-    if (!window.unlockProtocol || window.unlockProtocol !== loadCheckoutModal) {
+    if (
+      !window.unlockProtocol ||
+      window.unlockProtocol.loadCheckoutModal !== loadCheckoutModal
+    ) {
       Object.defineProperties(window, {
         unlockProtocol: {
           writable: false, // prevent removing unlockProtocol from window via `window.unlockProtocol = {...}`
@@ -72,6 +98,7 @@ export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
 
   return hideCheckoutModal
 }
+
 /**
  * set up the main window post office, relaying messages between the iframes
  *
@@ -80,7 +107,11 @@ export function setupUnlockProtocolVariable(window, CheckoutUIIframe) {
  * @param {iframe} CheckoutUIIframe the Checkout UI iframe element
  *                                  (created by document.createElement)
  */
-export default function setupPostOffices(window, dataIframe, CheckoutUIIframe) {
+export default function setupPostOffices(
+  window: UnlockWindow,
+  dataIframe: IframeType,
+  CheckoutUIIframe: IframeType
+) {
   const {
     postMessage: dataPostOffice,
     addHandler: addDataMessageHandler,
