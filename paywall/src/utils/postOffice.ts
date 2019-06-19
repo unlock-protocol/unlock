@@ -28,7 +28,7 @@ export interface Iframe {
 }
 
 // TODO: stricter type, use a union of all allowed postmessage types
-export type PostMessageResponder = (type: string, payload: any) => void
+export type PostMessageResponder = (type: string, payload?: any) => void
 
 export type PostMessageListener = (
   payload: any,
@@ -119,7 +119,7 @@ export function setupPostOffice(
       handlers[type].set(listener, listener)
     },
     // TODO: stricter type, use a union of all allowed postmessage types
-    postMessage: (type: string, payload: any) => {
+    postMessage: (type: string, payload?: any) => {
       if (debug) {
         // eslint-disable-next-line no-console
         console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
