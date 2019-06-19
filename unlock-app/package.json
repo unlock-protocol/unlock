@@ -61,7 +61,8 @@
   "devDependencies": {
     "@svgr/cli": "4.3.0",
     "nodemon": "1.19.1",
-    "npm-check": "5.9.0"
+    "npm-check": "5.9.0",
+    "stripe": "7.2.0"
   },
   "engines": {
     "node": "=8.11.4"
