@@ -68,7 +68,7 @@
     "reflect-metadata": "0.1.13",
     "run-script-os": "1.0.5",
     "sequelize": "5.7.0",
-    "sequelize-cli": "5.4.0",
+    "sequelize-cli": "5.5.0",
     "sequelize-typescript": "0.6.10",
     "stripe": "7.1.0",
     "supertest": "4.0.2",
