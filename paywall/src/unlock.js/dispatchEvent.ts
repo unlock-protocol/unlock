@@ -1,9 +1,11 @@
+import { EventWindow } from '../windowTypes'
+
 /**
  * create and dispatch an 'unlockProtocol' event with the given detail
  * @param {window} window the current global context (window, self)
  * @param {*} detail the custom data to pass along with the event
  */
-export default function dispatchEvent(window, detail) {
+export default function dispatchEvent(window: EventWindow, detail: any) {
   let event
   try {
     event = new window.CustomEvent('unlockProtocol', { detail })
