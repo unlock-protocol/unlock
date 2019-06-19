@@ -7,7 +7,7 @@ export interface EventDocument {
 }
 
 export interface IframeManagingDocument {
-  createElement: (type: 'iframe') => IframeType
+  createElement: (type: 'iframe') => IframeType // should only create iframes
   querySelector: (selector: string) => any
   body: {
     insertAdjacentElement: (where: 'afterbegin', iframe: IframeType) => void
@@ -59,7 +59,7 @@ export interface Web3Window extends PostOfficeWindow {
     currentProvider: {
       sendAsync?: web3Send
       send?: web3Send
-      isMetamask?: true
+      isMetamask?: true // is only ever true or undefined
     }
   }
 }
@@ -73,8 +73,12 @@ export interface MessageEvent {
 
 export type MessageHandler = (event: MessageEvent) => void
 
+export type PostOfficeEventTypes = 'message' // augment later if needed
 export interface PostOfficeWindow {
-  addEventListener: (type: 'message', handler: MessageHandler) => void
+  addEventListener: (
+    type: PostOfficeEventTypes,
+    handler: MessageHandler
+  ) => void
 }
 
 export interface IframePostOfficeWindow extends PostOfficeWindow {
@@ -88,11 +92,13 @@ export interface PostMessageTarget {
   postMessage: (data: any, origin: string) => void
 }
 
+// the attributes we expect will be modified by setAttribute
+export type IframeAttributeNames = 'src'
 export interface IframeType {
   contentWindow: PostMessageTarget
   className: string
   src: string
-  setAttribute: (attr: 'src', value: string) => void
+  setAttribute: (attr: IframeAttributeNames, value: string) => void
 }
 
 // used in unlock.js/iframeManager.ts
