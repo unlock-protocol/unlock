@@ -1,6 +1,6 @@
 {
    "name": "@unlock-protocol/rover",
-   "version": "0.1.0",
+   "version": "0.1.4",
    "description": "Rover persists relevant ethereum transactions to a datastore",
    "bin": {
       "rover": "./build/server.js"
