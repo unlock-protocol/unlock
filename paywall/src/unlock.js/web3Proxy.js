@@ -1,10 +1,10 @@
-import { enable } from './config'
+import { enable } from '../paywall-builder/config'
 import { mainWindowPostOffice } from '../utils/postOffice'
 import {
   POST_MESSAGE_WEB3,
   POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
-} from './constants'
+} from '../paywall-builder/constants'
 
 let hasWeb3 = true
 
