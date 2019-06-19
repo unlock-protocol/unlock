@@ -48,7 +48,8 @@ const CloseButton = styled(Close)`
 const Wrapper = styled.section`
   max-width: 800px;
   padding: 10px 40px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   background-color: ${(props: WrapperStyleProps) => props.bgColor};
   color: var(--darkgrey);
   border-radius: 4px;

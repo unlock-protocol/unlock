@@ -9,13 +9,13 @@
     "@babel/node": "7.4.5",
     "@babel/preset-env": "7.4.5",
     "aws-sdk": "2.437.0",
-    "babel-loader": "8.0.5",
+    "babel-loader": "8.0.6",
     "dotenv": "8.0.0",
-    "node-forge": "0.8.2",
-    "nodemailer": "6.1.0",
+    "node-forge": "0.8.4",
+    "nodemailer": "6.2.1",
     "nodemon": "1.19.1",
     "webpack": "4.29.6",
-    "webpack-cli": "3.3.0",
+    "webpack-cli": "3.3.4",
     "winston": "3.2.1"
   },
   "lint-staged": {
