@@ -5,6 +5,7 @@ import {
   POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
 } from '../paywall-builder/constants'
+import { Web3Window, IframeType, web3MethodCall } from '../windowTypes'
 
 let hasWeb3 = true
 
@@ -15,7 +16,11 @@ let hasWeb3 = true
  * @param {element} iframe the iframe element, created by document.createElement('iframe')
  * @param {string} origin the iframe element's URL origin
  */
-export default function web3Proxy(window, iframe, origin) {
+export default function web3Proxy(
+  window: Web3Window,
+  iframe: IframeType,
+  origin: string
+) {
   const { addHandler } = mainWindowPostOffice(
     window,
     iframe,
@@ -31,9 +36,9 @@ export default function web3Proxy(window, iframe, origin) {
 
   // handler for the actual web3 calls
   addHandler(POST_MESSAGE_WEB3, (payload, respond) => {
-    if (!hasWeb3) {
+    if (!hasWeb3 || !window.web3) {
       return respond(POST_MESSAGE_WEB3, {
-        id,
+        id: payload.id,
         error: 'No web3 wallet is available',
         result: null,
       })
@@ -53,20 +58,21 @@ export default function web3Proxy(window, iframe, origin) {
       return
     }
 
-    const { method, params, id } = payload
+    const { method, params, id }: web3MethodCall = payload
     // we use call to bind the call to the current provider
-    send.call(
-      window.web3.currentProvider,
-      {
-        method,
-        params,
-        jsonrpc: '2.0',
-        id,
-      },
-      (error, result) => {
-        respond(POST_MESSAGE_WEB3, { id, error, result })
-      }
-    )
+    send &&
+      send.call(
+        window.web3.currentProvider,
+        {
+          method,
+          params,
+          jsonrpc: '2.0',
+          id,
+        },
+        (error, result) => {
+          respond(POST_MESSAGE_WEB3, { id, error, result })
+        }
+      )
   })
 
   // initialize, we do this once the iframe is ready to receive information on the wallet

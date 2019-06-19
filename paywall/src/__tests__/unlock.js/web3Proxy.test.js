@@ -142,6 +142,7 @@ describe('web3Proxy', () => {
         origin: 'http://fun.times',
         data: {
           type: POST_MESSAGE_READY_WEB3,
+          id: 1,
           payload: 'it worked!',
         },
       })
@@ -173,6 +174,7 @@ describe('web3Proxy', () => {
         origin: 'http://fun.times',
         data: {
           type: POST_MESSAGE_READY_WEB3,
+          id: 1,
           payload: 'it worked!',
         },
       })
@@ -197,6 +199,7 @@ describe('web3Proxy', () => {
           origin: 'http://fun.times',
           data: {
             type: POST_MESSAGE_READY_WEB3,
+            id: 1,
             payload: 'it worked!',
           },
         })
@@ -211,6 +214,7 @@ describe('web3Proxy', () => {
             type: POST_MESSAGE_WEB3,
             payload: {
               error: 'No web3 wallet is available',
+              id: 1,
               result: null,
             },
           })
