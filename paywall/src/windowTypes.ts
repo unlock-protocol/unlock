@@ -1,3 +1,5 @@
+import { PaywallConfig } from './unlockTypes'
+
 // window sub-types
 
 // used in unlock.js/dispatchEvent.ts
