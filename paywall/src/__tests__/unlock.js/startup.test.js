@@ -5,6 +5,7 @@ describe('unlock.js startup', () => {
   let call
   let fakeDataIframe
   let fakeCheckoutIframe
+  let fakeUserAccountsIframe
 
   beforeEach(() => {
     call = 0
@@ -24,7 +25,16 @@ describe('unlock.js startup', () => {
         postMessage: jest.fn(),
       },
     }
+    fakeUserAccountsIframe = {
+      name: 'user accounts iframe',
+      origin: 'http://unlock-app',
+      setAttribute: jest.fn(),
+      contentWindow: {
+        postMessage: jest.fn(),
+      },
+    }
     process.env.PAYWALL_URL = 'http://paywall'
+    process.env.USER_IFRAME_URL = 'http://unlock-app'
     fakeWindow = {
       setInterval: jest.fn(),
       document: {
@@ -34,10 +44,14 @@ describe('unlock.js startup', () => {
           insertAdjacentElement: jest.fn(),
         },
         createElement: jest.fn(() => {
-          if (call++) {
-            return fakeCheckoutIframe
+          switch (call++) {
+            case 0:
+              return fakeDataIframe
+            case 1:
+              return fakeCheckoutIframe
+            case 2:
+              return fakeUserAccountsIframe
           }
-          return fakeDataIframe
         }),
       },
       origin: 'http://fun.times',
@@ -129,6 +143,20 @@ describe('unlock.js startup', () => {
       expect(fakeCheckoutIframe.setAttribute).toHaveBeenCalledWith(
         'src',
         'http://paywall/checkout?origin=http%3A%2F%2Ffun.times'
+      )
+      expect(
+        fakeWindow.document.body.insertAdjacentElement
+      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+    })
+
+    it('should create a User Accounts UI iframe with the correct URL', () => {
+      expect.assertions(2)
+
+      startup(fakeWindow)
+
+      expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
+        'src',
+        'http://unlock-app/account?origin=http%3A%2F%2Ffun.times'
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
