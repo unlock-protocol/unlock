@@ -154,8 +154,8 @@ export const AboutContent = ({ posts }) => (
           incentives are not aligned between consumers and creators.
           <br />
           <br />
-          For this, we&#39;re building a protocol which lets anyone restrict
-          access to their work and for consumers to earn points when they
+          For this, we&#39;re building a protocol which lets anyone sell
+          memberships to their work and for consumers to earn points when they
           discover and promote the best creations.
         </Column>
         <Column>
