@@ -1,4 +1,4 @@
-/* eslint react/prop-types: 0 */
+/* eslint react/prop-types: 0, react/display-name: 0 */
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
