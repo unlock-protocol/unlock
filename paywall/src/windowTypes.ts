@@ -59,7 +59,7 @@ export interface Web3Window extends PostOfficeWindow {
     currentProvider: {
       sendAsync?: web3Send
       send?: web3Send
-      isMetamask: true | undefined
+      isMetamask?: true
     }
   }
 }
