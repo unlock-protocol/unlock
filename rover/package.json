@@ -2,15 +2,13 @@
    "name": "rover",
    "version": "1.0.0",
    "description": "",
-   "main": "index.js",
    "bin": {
-      "rover": "./build/index.js"
+      "rover": "./build/server.js"
    },
    "scripts": {
       "test": "jest",
       "build": "tsc",
-      "start": "ts-node src/index.ts",
-      "backfill": "ts-node src/backfill.ts",
+      "start": "node ./build/server.js",
       "lint": "eslint --ext .tsx,.ts,.js src/",
       "ci": "npm run test"
    },
