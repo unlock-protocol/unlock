@@ -1,5 +1,5 @@
 import * as config from '../../paywall-builder/config'
-import web3Proxy from '../../paywall-builder/web3Proxy'
+import web3Proxy from '../../unlock.js/web3Proxy'
 import {
   POST_MESSAGE_READY_WEB3,
   POST_MESSAGE_WALLET_INFO,
