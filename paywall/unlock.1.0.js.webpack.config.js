@@ -34,7 +34,7 @@ module.exports = () => {
     cache: false,
     mode: 'production',
     devtool: 'source-map',
-    entry: path.resolve(__dirname, 'src', 'unlock.js', 'index.js'),
+    entry: path.resolve(__dirname, 'src', 'unlock.js', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'unlock.1.0.min.js',

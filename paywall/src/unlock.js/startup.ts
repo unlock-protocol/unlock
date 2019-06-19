@@ -1,24 +1,26 @@
 import { makeIframe, addIframeToDocument } from './iframeManager'
 import setupPostOffices from './setupPostOffices'
 import dispatchEvent from './dispatchEvent'
+import { UnlockWindow } from '../windowTypes'
 
-export default function startup(window) {
+export default function startup(window: UnlockWindow) {
+  // this is a cache for the time between script startup and the full load
+  // of the data iframe. The data iframe will then send down the current
+  // value, overriding this. A bit later, the blockchain handler will update
+  // with the actual value, so this is only used for a few milliseconds
+  let locked
   try {
-    // this is a cache for the time between script startup and the full load
-    // of the data iframe. The data iframe will then send down the current
-    // value, overriding this. A bit later, the blockchain handler will update
-    // with the actual value, so this is only used for a few milliseconds
-    const locked = JSON.parse(
-      window.localStorage.getItem('__unlockProtocol.locked')
+    locked = JSON.parse(
+      window.localStorage.getItem('__unlockProtocol.locked') || '"ignore"'
     )
-    if (locked === true) {
-      dispatchEvent(window, 'locked')
-    }
-    if (locked === false) {
-      dispatchEvent(window, 'unlocked')
-    }
-  } catch (e) {
-    // ignore
+  } catch (_) {
+    locked = 'ignore'
+  }
+  if (locked === true) {
+    dispatchEvent(window, 'locked')
+  }
+  if (locked === false) {
+    dispatchEvent(window, 'unlocked')
   }
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
