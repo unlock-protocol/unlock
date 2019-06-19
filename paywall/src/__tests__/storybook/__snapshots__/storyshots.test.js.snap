@@ -2385,7 +2385,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -2405,13 +2411,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -2547,7 +2547,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -2587,7 +2587,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -2899,7 +2899,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -2919,13 +2925,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -3143,7 +3143,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -3183,7 +3183,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -3698,7 +3698,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -3718,13 +3724,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -3946,7 +3946,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -3986,7 +3986,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -4505,7 +4505,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -4525,13 +4531,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -4749,7 +4749,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -4789,7 +4789,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -5304,7 +5304,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -5324,13 +5330,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -5548,7 +5548,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -5588,7 +5588,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 sc-5sgq84-0 lock bvdsPH"
@@ -6186,7 +6186,13 @@ Object {
 }
 
 .c7 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -6206,13 +6212,7 @@ Object {
 .c0 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -6461,7 +6461,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-gZMcBi hbowKy"
+      class="sc-gZMcBi iGruSu"
     >
       <a
         class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -6501,7 +6501,7 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-dnqmqq clAVqm"
+        class="sc-dnqmqq fINeTX"
       >
         <li
           class="sc-1549ebs-0 lock NDRQz"
@@ -6778,13 +6778,7 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -6917,7 +6911,13 @@ Object {
 }
 
 .c8 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -8554,7 +8554,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi iGruSu"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -8594,7 +8594,7 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-eHgmQL ciLZMU"
         >
           <a
             class="sc-dxgOiQ hMOJfX"
@@ -10210,13 +10210,7 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -10349,7 +10343,13 @@ Object {
 }
 
 .c8 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -11986,7 +11986,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi iGruSu"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -12026,7 +12026,7 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-eHgmQL ciLZMU"
         >
           <a
             class="sc-dxgOiQ hMOJfX"
@@ -13642,13 +13642,7 @@ Object {
 .c1 {
   max-width: 800px;
   padding: 10px 40px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
+  display: grid;
   background-color: var(--offwhite);
   color: var(--darkgrey);
   border-radius: 4px;
@@ -13781,7 +13775,13 @@ Object {
 }
 
 .c8 {
-  display: grid;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;
@@ -15418,7 +15418,7 @@ Object {
       class="sc-cvbbAY eawQXs"
     >
       <section
-        class="sc-gZMcBi hbowKy"
+        class="sc-gZMcBi iGruSu"
       >
         <a
           class="sc-iwsKbI kwnnhM is925m-0 bYsUmJ"
@@ -15458,7 +15458,7 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-eHgmQL ciLZMU"
         >
           <a
             class="sc-dxgOiQ hMOJfX"

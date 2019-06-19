@@ -24,28 +24,10 @@ const transactionCreate = async (req, res) => {
 
 const transactionsGet = async (req, res) => {
   let transactions = []
-
-  let filter = buildFilter(req)
-
-  if (filter.sender || filter.recipients) {
-    transactions = await getTransactionsBySender(filter)
-  }
-
-  res.json({ transactions: transactions })
-}
-
-const buildFilter = req => {
-  let filter = {}
-
   if (req.query.sender) {
-    filter.sender = req.query.sender
+    transactions = await getTransactionsBySender(req.query.sender)
   }
-
-  if (req.query.recipient) {
-    filter.recipient = req.query.recipient
-  }
-
-  return filter
+  res.json({ transactions: transactions })
 }
 
 /**

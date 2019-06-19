@@ -44,18 +44,14 @@ const makeSetConfig = (window, updater, constants) =>
       // cache listeners will transmit it to the script
       syncToCache(window, updates)
     }
-    try {
-      onChange(
-        await connectToBlockchain({
-          ...constants,
-          config: configValue,
-          window,
-          onChange,
-        })
-      )
-    } catch (error) {
-      onChange({ error })
-    }
+    onChange(
+      await connectToBlockchain({
+        ...constants,
+        config: configValue,
+        window,
+        onChange,
+      })
+    )
   }
 
 export default makeSetConfig

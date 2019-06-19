@@ -1,7 +1,6 @@
 import ensureWalletReady from './ensureWalletReady'
 import { getAccount } from './account'
 import { getNetwork } from './network'
-import { getRelevantLocks } from '../paywallConfig'
 
 /**
  * sync a new transaction to locksmith
@@ -63,18 +62,8 @@ export default async function locksmithTransactions({
   await ensureWalletReady(walletService)
   const account = getAccount()
   const network = getNetwork()
-  const lockAddresses = getRelevantLocks()
 
-  // filter the transactions we request to only include the
-  // transactions relevant to locks. In most cases this will be
-  // key purchases
-  const filterLocks = lockAddresses
-    .map(lockAddress => `recipient[]=${encodeURIComponent(lockAddress)}`)
-    .join('&')
-
-  const url = `${locksmithHost}/transactions?sender=${account.toLowerCase()}${
-    filterLocks ? `&${filterLocks}` : ''
-  }`
+  const url = `${locksmithHost}/transactions?sender=${account.toLowerCase()}`
 
   const response = await window.fetch(url)
   const result = await response.json()

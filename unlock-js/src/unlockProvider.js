@@ -3,7 +3,6 @@ import sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
 import UnlockUser from './structured_data/unlockUser'
-import UnlockPaymentDetails from './structured_data/unlockPaymentDetails'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
@@ -61,11 +60,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   // on the provider?
   signData(data) {
     const privateKey = toBuffer(this.wallet.privateKey)
-    const sig = sigUtil.signTypedData(privateKey, { data })
-    return {
-      data,
-      sig,
-    }
+    return sigUtil.signTypedData(privateKey, { data })
   }
 
   // input conforms to unlockUser structured_data; missing properties default to
@@ -78,16 +73,10 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
       user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
 
     const data = UnlockUser.build(user)
-    return this.signData(data)
-  }
-
-  // takes and signs a stripe card token
-  signPaymentData(stripeTokenId) {
-    const data = UnlockPaymentDetails.build({
-      emailAddress: this.emailAddress,
-      publicKey: this.wallet.address,
-      stripeTokenId,
-    })
-    return this.signData(data)
+    const sig = this.signData(data)
+    return {
+      data,
+      sig,
+    }
   }
 }

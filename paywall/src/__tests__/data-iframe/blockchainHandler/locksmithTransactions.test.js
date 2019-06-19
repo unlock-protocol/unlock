@@ -4,7 +4,6 @@ import locksmithTransactions, {
 } from '../../../data-iframe/blockchainHandler/locksmithTransactions'
 import { setAccount } from '../../../data-iframe/blockchainHandler/account'
 import { setNetwork } from '../../../data-iframe/blockchainHandler/network'
-import { setPaywallConfig } from '../../../data-iframe/paywallConfig'
 
 jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady', () =>
   jest.fn().mockResolvedValue()
@@ -78,17 +77,6 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       fakeWeb3Service = {
         getTransaction: jest.fn(hash => Promise.resolve({ hash })),
       }
-
-      setPaywallConfig({
-        locks: {
-          'lock 1': {
-            name: 'lock 1',
-          },
-          'lock 2': {
-            name: 'lock 2',
-          },
-        },
-      })
     })
 
     it('ensures wallet is ready', async () => {
@@ -104,19 +92,8 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
     })
 
-    it('calls fetch with the correct url and filter', async () => {
-      expect.assertions(2)
-
-      setPaywallConfig({
-        locks: {
-          'lock 1': {
-            name: 'lock 1',
-          },
-          'lock 2': {
-            name: 'lock 2',
-          },
-        },
-      })
+    it('calls fetch with the correct url', async () => {
+      expect.assertions(1)
 
       await locksmithTransactions({
         window: fakeWindow,
@@ -126,26 +103,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'host/transactions?sender=account&recipient[]=lock%201&recipient[]=lock%202'
-      )
-
-      setPaywallConfig({
-        locks: {
-          'lock 1': {
-            name: 'lock 1',
-          },
-        },
-      })
-
-      await locksmithTransactions({
-        window: fakeWindow,
-        locksmithHost: 'host',
-        web3Service: fakeWeb3Service,
-        walletService: fakeWalletService,
-      })
-
-      expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'host/transactions?sender=account&recipient[]=lock%201'
+        'host/transactions?sender=account'
       )
     })
 

@@ -121,6 +121,20 @@ export async function listenForAccountNetworkChanges({
   onChange,
   window,
 }) {
+  walletService.on('account.changed', async address => {
+    setAccount(address)
+    // account has changed, it is time to update transactions and keys
+    // keys will be returned and passed to the cache
+    onChange(
+      await getKeysAndTransactions({
+        walletService,
+        locks: locksToRetrieve,
+        web3Service,
+        window,
+        locksmithHost,
+      })
+    )
+  })
   walletService.on('network.changed', id => {
     setNetwork(id)
     onChange({ network: id })
@@ -134,26 +148,10 @@ export async function listenForAccountNetworkChanges({
   setAccountBalance(balance)
   onChange({ balance })
 
-  pollForAccountChange(walletService, web3Service, async (account, balance) => {
+  pollForAccountChange(walletService, web3Service, (account, balance) => {
     setAccount(account)
     onChange({ account })
     setAccountBalance(balance)
     onChange({ balance })
-    // account has changed, it is time to update transactions and keys
-    // keys will be returned and passed to the cache
-    if (account) {
-      onChange(
-        await getKeysAndTransactions({
-          walletService,
-          locks: locksToRetrieve,
-          web3Service,
-          window,
-          locksmithHost,
-        })
-      )
-    } else {
-      // ensure we have no keys or transactions for logged out user
-      onChange({ keys: {}, transactions: {} })
-    }
   })
 }

@@ -85,16 +85,6 @@ export default function useListenForPostMessage({
         if (JSON.stringify(newValue) === JSON.stringify(data)) return
         // this triggers a re-render if and only if the value is different
         setData(newValue)
-      } else {
-        if (debugMode) {
-          //eslint-disable-next-line no-console
-          console.log(
-            `[uLFPM] validation failed!`,
-            type,
-            event.data.payload,
-            origin
-          )
-        }
       }
     }
 

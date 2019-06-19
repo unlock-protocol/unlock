@@ -111,7 +111,7 @@ const Row = styled.div`
   margin-top: 20px;
   margin-left: 48px;
   display: grid;
-  grid-template-columns: 450px 1fr;
+  grid-template-columns: 450px 150px;
   grid-gap: 20px;
 `
 

@@ -48,7 +48,6 @@ const walletMiddleware = config => {
     }
 
     walletService.on('account.updated', update => {
-      // TODO: only  update if there's a difference?
       dispatch(updateAccount(update))
     })
 

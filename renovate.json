@@ -6,7 +6,7 @@
     ":pinVersions"
   ],
   "timezone": "America/Los_Angeles",
-  "schedule": ["before 3am on the first day of the month"],
+  "schedule": ["before 3am"],
   "rebaseStalePrs": false,
   "packageRules": [
     {

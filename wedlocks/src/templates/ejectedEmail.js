@@ -3,7 +3,9 @@ export default {
   text: params =>
     `Hi there!
 
-Because your account has continued to carry a total balance of ${params.balance} ETH on your locks at Unlock, we have disconnected it from our service. This is for your safety, because Unlock isn't designed to store large amounts of funds for a long time.
+Because your account has continued to carry a total balance of ${
+      params.balance
+    } ETH on your locks at Unlock, we have disconnected it from our service. This is for your safety, because Unlock isn't designed to store large amounts of funds for a long time.
 
 Your funds are yours and you can still transfer them via a third-party tool. However, you won't be able to access them from the Unlock service.
 

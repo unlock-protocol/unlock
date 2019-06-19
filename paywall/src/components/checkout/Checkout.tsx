@@ -101,7 +101,8 @@ const Footer = styled.footer`
 `
 
 const CheckoutLocks = styled.ul`
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   list-style: none;
   margin: 0px;
   padding: 0px;

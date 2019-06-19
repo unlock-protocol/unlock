@@ -14,6 +14,15 @@ describe('blockchain handler waitForReady', () => {
     }
   })
 
+  it('fails if walletService is not ready after 10 seconds', done => {
+    expect.assertions(1)
+    ensureWalletReady({ once() {} }).catch(e => {
+      expect(e.message).toBe('connecting to blockchain timed out')
+      done()
+    })
+    jest.runAllTimers()
+  })
+
   it('succeeds immediately if walletService is ready', async () => {
     expect.assertions(0)
     await ensureWalletReady({ ready: true })

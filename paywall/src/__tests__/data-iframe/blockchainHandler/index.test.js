@@ -14,7 +14,6 @@ import {
 import { getNetwork } from '../../../data-iframe/blockchainHandler/network'
 import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
 import web3ServiceHub from '../../../data-iframe/blockchainHandler/web3ServiceHub'
-import { setPaywallConfig } from '../../../data-iframe/paywallConfig'
 
 jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady')
 jest.mock('../../../data-iframe/blockchainHandler/account')
@@ -140,11 +139,6 @@ describe('blockchain handler index', () => {
         })),
       }
       pollForAccountChange.mockReset()
-      setPaywallConfig({
-        locks: {
-          '0x123': { name: 'hi' },
-        },
-      })
     })
 
     it('calls getLocks', async () => {
@@ -228,7 +222,7 @@ describe('blockchain handler index', () => {
       })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'http://locksmith/transactions?sender=account&recipient[]=0x123'
+        'http://locksmith/transactions?sender=account'
       )
     })
   })
@@ -267,11 +261,6 @@ describe('blockchain handler index', () => {
         getAccount: jest.fn(() => 'account'),
       }
       pollForAccountChange.mockReset()
-      setPaywallConfig({
-        locks: {
-          '0x123': { name: 'hi' },
-        },
-      })
     })
 
     it('listens for network.changed', async () => {
@@ -286,6 +275,66 @@ describe('blockchain handler index', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         onChange: () => {},
+      })
+    })
+
+    it('listens for account.changed', async () => {
+      expect.assertions(1)
+
+      fakeWalletService.on = type => {
+        if (type !== 'account.changed') return
+        expect(type).toBe('account.changed')
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+      })
+    })
+
+    it('should set account on getting account.changed event', async done => {
+      expect.assertions(1)
+
+      const locksToRetrieve = ['locks']
+      fakeWalletService.on = async (type, listener) => {
+        if (type !== 'account.changed') return
+        await listener('new account')
+        expect(setAccount).toHaveBeenCalledWith('new account')
+        done()
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+        window: fakeWindow,
+        locksmithHost: 'locksmith',
+        locksToRetrieve,
+      })
+    })
+
+    it('should retrieve new keys ands transactions on getting account.changed event', async done => {
+      expect.assertions(2)
+
+      const locksToRetrieve = ['locks']
+      fakeWalletService.on = async (type, listener) => {
+        if (type !== 'account.changed') return
+        await listener('new account')
+        // this is called when we retrieve new keys
+        expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenCalled()
+        // this is called when we retrieve transactions from locksmith
+        expect(fakeWindow.fetch).toHaveBeenCalled()
+        done()
+      }
+
+      await listenForAccountNetworkChanges({
+        walletService: fakeWalletService,
+        web3Service: fakeWeb3Service,
+        onChange: () => {},
+        window: fakeWindow,
+        locksmithHost: 'locksmith',
+        locksToRetrieve,
       })
     })
 
@@ -332,8 +381,6 @@ describe('blockchain handler index', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         onChange,
-        locksToRetrieve: ['0x123'],
-        window: fakeWindow,
       })
 
       expect(onChange).toHaveBeenNthCalledWith(
@@ -368,8 +415,6 @@ describe('blockchain handler index', () => {
         walletService: fakeWalletService,
         web3Service: fakeWeb3Service,
         onChange,
-        locksToRetrieve: ['0x123'],
-        window: fakeWindow,
       })
 
       expect(pollForAccountChange).toHaveBeenCalledWith(
@@ -395,85 +440,6 @@ describe('blockchain handler index', () => {
         2,
         expect.objectContaining({ balance: '1' })
       )
-    })
-
-    it('should retrieve keys and transactions for changed user account', async () => {
-      expect.assertions(2)
-      const onChange = jest.fn()
-
-      const actualAccount = require.requireActual(
-        '../../../data-iframe/blockchainHandler/account'
-      )
-
-      setAccount.mockImplementationOnce(actualAccount.setAccount)
-      getAccount.mockImplementationOnce(actualAccount.getAccount)
-
-      await listenForAccountNetworkChanges({
-        walletService: fakeWalletService,
-        web3Service: fakeWeb3Service,
-        onChange,
-        window: fakeWindow,
-        locksToRetrieve: ['0x123'],
-      })
-
-      expect(pollForAccountChange).toHaveBeenCalledWith(
-        fakeWalletService,
-        fakeWeb3Service,
-        expect.any(Function)
-      )
-      const accountChanged = pollForAccountChange.mock.calls[0][2]
-
-      onChange.mockReset()
-      setAccount.mockReset()
-      setAccountBalance.mockReset()
-
-      await accountChanged('hi', '1')
-
-      expect(onChange).toHaveBeenNthCalledWith(3, {
-        keys: {
-          '0x123': {
-            expiration: expect.any(Number),
-            id: '0x123-account',
-            lock: '0x123',
-            owner: 'account',
-          },
-        },
-      })
-    })
-
-    it('should reset keys and transactions for user logout', async () => {
-      expect.assertions(2)
-      const onChange = jest.fn()
-
-      const actualAccount = require.requireActual(
-        '../../../data-iframe/blockchainHandler/account'
-      )
-
-      setAccount.mockImplementationOnce(actualAccount.setAccount)
-      getAccount.mockImplementationOnce(actualAccount.getAccount)
-      await listenForAccountNetworkChanges({
-        walletService: fakeWalletService,
-        web3Service: fakeWeb3Service,
-        onChange,
-        window: fakeWindow,
-        locksToRetrieve: ['0x123'],
-      })
-
-      expect(pollForAccountChange).toHaveBeenCalledWith(
-        fakeWalletService,
-        fakeWeb3Service,
-        expect.any(Function)
-      )
-      const accountChanged = pollForAccountChange.mock.calls[0][2]
-
-      onChange.mockReset()
-
-      await accountChanged(null, '0')
-
-      expect(onChange).toHaveBeenNthCalledWith(3, {
-        keys: {},
-        transactions: {},
-      })
     })
   })
 })

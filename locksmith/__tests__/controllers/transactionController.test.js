@@ -8,22 +8,17 @@ describe('transactionController', () => {
       {
         transactionHash: '0x345546565',
         sender: '0xcAFe',
-        recipient: '0xBeeFE',
+        recipient: '0xbeefe',
       },
       {
         transactionHash: '0x445546565',
         sender: '0xcAFe',
-        recipient: '0xBeeFE',
+        recipient: '0xbeefe',
       },
       {
         transactionHash: '0x545546565',
-        sender: '0xcAFe2',
-        recipient: '0xBeeFE',
-      },
-      {
-        transactionHash: '0x645546565',
-        sender: '0xcAFe2',
-        recipient: '0xBeeFB',
+        sender: '0xcafe2',
+        recipient: '0xbeefe',
       },
     ])
   })
@@ -55,20 +50,6 @@ describe('transactionController', () => {
           .set('Accept', /json/)
 
         expect(response.body.transactions.length).toEqual(2)
-      })
-    })
-
-    describe('when the address has transactions to the recipient', () => {
-      it("returns the addresses' transactions", async () => {
-        expect.assertions(1)
-        let sender = '0xcAFe2'
-
-        let response = await request(app)
-          .get('/transactions')
-          .query({ sender: sender, recipient: ['0xBeeFE', '0x4565t'] })
-          .set('Accept', /json/)
-
-        expect(response.body.transactions.length).toEqual(1)
       })
     })
   })
@@ -110,7 +91,7 @@ describe('transactionController', () => {
           .send({
             transactionHash: '0x345546565',
             sender: '0xcAFe',
-            recipient: '0xBeeFE',
+            recipient: '0xbeefe',
           })
 
         expect(response.statusCode).toBe(202)
