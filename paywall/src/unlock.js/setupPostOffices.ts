@@ -16,88 +16,15 @@ import {
 } from '../paywall-builder/constants'
 import dispatchEvent from './dispatchEvent'
 import web3Proxy from './web3Proxy'
-import { showIframe, hideIframe } from './iframeManager'
-import {
-  IframeType,
-  UnlockProtocolWindow,
-  UnlockWindow,
-  IframeManagingWindow,
-} from '../windowTypes'
-
-let loadCheckoutModal: () => void
-
-interface hasPrototype {
-  prototype?: any
-}
+import { showIframe } from './iframeManager'
+import { IframeType, UnlockWindow } from '../windowTypes'
+import setupUnlockProtocolVariable from './setupUnlockProtocolVariable'
 
 interface process {
   env: any
 }
 
 declare const process: process
-
-interface UnlockAndIframeManagerWindow
-  extends IframeManagingWindow,
-    UnlockProtocolWindow {}
-
-export function setupUnlockProtocolVariable(
-  window: UnlockAndIframeManagerWindow,
-  CheckoutUIIframe: any
-) {
-  if (!loadCheckoutModal) {
-    loadCheckoutModal = () => {
-      showIframe(window, CheckoutUIIframe)
-    }
-  }
-  const hideCheckoutModal = () => {
-    hideIframe(window, CheckoutUIIframe)
-  }
-
-  const unlockProtocol: hasPrototype = {}
-
-  Object.defineProperties(unlockProtocol, {
-    loadCheckoutModal: {
-      value: loadCheckoutModal,
-      writable: false, // prevent changing loadCheckoutModal by simple `unlockProtocol.loadCheckoutModal = () => {}`
-      configurable: false, // prevent re-defining the writable property
-      enumerable: false, // prevent finding it exists via `for ... of`
-    },
-  })
-
-  const freeze: (obj: any) => void = Object.freeze || Object
-
-  // if freeze is available, prevents adding or
-  // removing the object prototype properties
-  // (value, get, set, enumerable, writable, configurable)
-  freeze(unlockProtocol.prototype)
-  freeze(unlockProtocol)
-
-  // set up the unlockProtocol object on the main window
-  // it will be 100% read-only, unchangeable and un-deleteable
-  try {
-    if (
-      !window.unlockProtocol ||
-      window.unlockProtocol.loadCheckoutModal !== loadCheckoutModal
-    ) {
-      Object.defineProperties(window, {
-        unlockProtocol: {
-          writable: false, // prevent removing unlockProtocol from window via `window.unlockProtocol = {...}`
-          configurable: false, // prevent re-defining the writable property
-          enumerable: false, // prevent finding it exists via `for ... of`
-          value: unlockProtocol,
-        },
-      })
-    }
-  } catch (e) {
-    // TODO: decide whether to be more nuclear here, for example by
-    // eslint-disable-next-line no-console
-    console.error(
-      'WARNING: unlockProtocol already defined, cannot re-define it'
-    )
-  }
-
-  return hideCheckoutModal
-}
 
 /**
  * set up the main window post office, relaying messages between the iframes
