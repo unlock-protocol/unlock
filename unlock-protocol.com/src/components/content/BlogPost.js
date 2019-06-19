@@ -2,26 +2,63 @@ import React from 'react'
 import { Markdown } from 'react-showdown'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { MembershipContext } from '../../membershipContext'
 
-export const BlogPost = ({
-  title,
-  subTitle,
-  publishDate,
-  body,
-  authorName,
-}) => (
-  <Post>
-    <Title>{title}</Title>
-    {subTitle && <SubTitle>{subTitle}</SubTitle>}
-    <Byline>
-      <AuthorName>{authorName}</AuthorName>
-      <PublishDate>On {publishDate}</PublishDate>
-    </Byline>
-    <Body>
-      <Markdown markup={body} />
-    </Body>
-  </Post>
-)
+export class BlogPost extends React.Component {
+  static contextType = MembershipContext
+
+  constructor(props) {
+    super(props)
+    this.commentScript = null
+    this.loadCommmentsIfMember = this.loadCommmentsIfMember.bind(this)
+  }
+
+  componentDidMount() {
+    this.loadCommmentsIfMember()
+  }
+
+  componentDidUpdate() {
+    this.loadCommmentsIfMember()
+  }
+
+  loadCommmentsIfMember() {
+    const { isMember } = this.context
+
+    if (isMember === 'yes' && !this.commentScript) {
+      this.commentScript = document.createElement('script')
+      this.commentScript.src = 'https://cdn.commento.io/js/commento.js'
+      this.commentScript.async = true
+      this.commentScript.setAttribute('data-no-fonts', false)
+      document.body.appendChild(this.commentScript)
+    }
+  }
+
+  render() {
+    const { isMember, becomeMember } = this.context
+    const { title, subTitle, publishDate, body, authorName } = this.props
+    return (
+      <Post>
+        <Title>{title}</Title>
+        {subTitle && <SubTitle>{subTitle}</SubTitle>}
+        <Byline>
+          <AuthorName>{authorName}</AuthorName>
+          <PublishDate>On {publishDate}</PublishDate>
+        </Byline>
+        <Body>
+          <Markdown markup={body} />
+        </Body>
+        <CommentSeparator />
+        {isMember === 'yes' && <Comments id="commento" />}
+        {isMember === 'no' && (
+          <Comments>
+            Become <Button onClick={becomeMember}>a member</Button> to read or
+            leave comments!
+          </Comments>
+        )}
+      </Post>
+    )
+  }
+}
 
 BlogPost.propTypes = {
   title: PropTypes.string.isRequired,
@@ -37,6 +74,19 @@ BlogPost.defaultProps = {
 }
 
 export default BlogPost
+
+const CommentSeparator = styled.hr`
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+`
+
+const Comments = styled.section`
+  font-weight: 300;
+  line-height: 28px;
+  font-size: 16px;
+`
 
 const Post = styled.div`
   width: 100%;
@@ -118,4 +168,8 @@ export const PublishDate = styled.div`
   color: var(--grey);
   margin: 0;
   padding: 0;
+`
+
+const Button = styled.a`
+  cursor: pointer;
 `
