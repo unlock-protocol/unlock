@@ -13,7 +13,7 @@ dotenv.config({
 const requiredConfigVariables = {
   unlockEnv,
   paywallUrl: process.env.PAYWALL_URL,
-  usersIframeUrl: process.env.USERS_IFRAME_URL,
+  usersIframeUrl: process.env.USER_IFRAME_URL,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
