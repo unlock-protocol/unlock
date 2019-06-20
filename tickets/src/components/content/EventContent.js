@@ -22,6 +22,8 @@ import withConfig from '../../utils/withConfig'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
 import { getTimeString } from '../../utils/dates'
+import { currencySymbolForLock } from '../../utils/locks'
+import Duration from '../../../../paywall/src/components/helpers/Duration'
 
 export const EventContent = ({
   lock,
@@ -31,6 +33,7 @@ export const EventContent = ({
   event,
   keyStatus,
   account,
+  config,
 }) => {
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
 
@@ -55,6 +58,10 @@ export const EventContent = ({
     timeString +=
       ' - ' + getTimeString(new Date(date.getTime() + duration * 1000))
   }
+
+  let currency = currencySymbolForLock(lock, config)
+
+  const convertCurrency = !lock.currencyContractAddress
 
   const externalLinks = links.map(({ href, title }) => {
     return (
@@ -114,8 +121,10 @@ export const EventContent = ({
                 amount={lock.keyPrice}
                 render={(ethWithPresentation, convertedUSDValue) => (
                   <Price>
-                    <Eth>{ethWithPresentation} ETH</Eth>
-                    <Fiat>${convertedUSDValue}</Fiat>
+                    <Eth>
+                      {ethWithPresentation} {currency}
+                    </Eth>
+                    {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
                   </Price>
                 )}
               />
@@ -151,6 +160,7 @@ EventContent.propTypes = {
   event: UnlockPropTypes.ticketedEvent,
   keyStatus: PropTypes.string,
   account: UnlockPropTypes.account,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 EventContent.defaultProps = {
