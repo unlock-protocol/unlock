@@ -41,8 +41,9 @@ export default function LandingPage() {
         </Answer>
         <Question>What about privacy?</Question>
         <Answer>
-          Unlock is built on top of the Ethereum blockchain and therefore offers
-          a number of great privacy and security features....
+          Unlock does not collect any personal information. Like all
+          transactions on the the Ethereum blockchain, details about Unlock
+          transactions are captured in its ledger in an anonymous form.
         </Answer>
       </section>
       <section>
