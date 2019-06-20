@@ -25,8 +25,8 @@ interface SettingsContentState {
 }
 
 export class SettingsContent extends React.Component<
-SettingsContentProps,
-SettingsContentState
+  SettingsContentProps,
+  SettingsContentState
 > {
   interval: number | null
   constructor(props: SettingsContentProps) {
@@ -36,7 +36,7 @@ SettingsContentState
     }
     this.interval = null
   }
-  
+
   componentDidMount() {
     // componentDidMount only runs in the browser; this is necessary to listen
     // for the stripe-js load event which *cannot* be rendered server side
@@ -68,10 +68,7 @@ SettingsContentState
         <Errors />
         <AccountInfo />
         <ChangePassword />
-        <PaymentDetails
-          stripe={stripe}
-          emailAddress="jenny@googlemail.com"
-        />
+        <PaymentDetails stripe={stripe} />
       </Layout>
     )
   }

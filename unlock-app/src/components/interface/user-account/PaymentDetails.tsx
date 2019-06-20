@@ -1,5 +1,6 @@
 /* eslint react/display-name: 0 */
 import React from 'react'
+import { connect } from 'react-redux'
 import {
   ReactStripeElements,
   StripeProvider,
@@ -8,19 +9,20 @@ import {
   injectStripe,
 } from 'react-stripe-elements'
 import { SectionHeader, Column, Grid, SubmitButton } from './styles'
+import { signPaymentData } from '../../../actions/user'
 
 interface PaymentDetailsProps {
   stripe: any
-  emailAddress: string
+  signPaymentData: (stripeTokenId: string) => any
 }
 
 export const PaymentDetails = React.memo(
-  ({ stripe, emailAddress }: PaymentDetailsProps) => {
+  ({ stripe, signPaymentData }: PaymentDetailsProps) => {
     const Form = injectStripe(PaymentForm)
     return (
       <StripeProvider stripe={stripe}>
         <Elements>
-          <Form emailAddress={emailAddress} />
+          <Form signPaymentData={signPaymentData} />
         </Elements>
       </StripeProvider>
     )
@@ -28,7 +30,7 @@ export const PaymentDetails = React.memo(
 )
 
 interface PaymentFormProps {
-  emailAddress: string
+  signPaymentData: (stripeTokenId: string) => any
 }
 
 export class PaymentForm extends React.Component<
@@ -37,16 +39,13 @@ export class PaymentForm extends React.Component<
   handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    const { stripe, emailAddress } = this.props
+    const { stripe, signPaymentData } = this.props
     if (stripe) {
-      const result = await stripe.createToken({
-        name: emailAddress,
-      })
+      const result = await stripe.createToken()
 
-      if (result.error) {
-        console.log(result.error)
-      } else if (result.token) {
-        console.log(result.token)
+      // TODO: handle result.error case here
+      if (result.token) {
+        signPaymentData(result.token.id)
       }
     }
   }
@@ -68,4 +67,12 @@ export class PaymentForm extends React.Component<
   }
 }
 
-export default PaymentDetails
+export const mapDispatchToProps = (dispatch: any) => ({
+  signPaymentData: (stripeTokenId: string) =>
+    dispatch(signPaymentData(stripeTokenId)),
+})
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(PaymentDetails)
