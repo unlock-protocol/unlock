@@ -13,7 +13,7 @@ import { KeyStatus } from '../../../selectors/keys'
 import { transactionTypeMapping } from '../../../utils/types'
 
 const store = createUnlockStore({})
-const config = configure({})
+const config = configure()
 const ConfigProvider = ConfigContext.Provider
 
 const event = {
@@ -35,6 +35,15 @@ const lock = {
   address: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
   transaction: 'deployedid',
 }
+const erc20Lock = {
+  currencyContractAddress: config.erc20Contract.address,
+  keyPrice: '0.01',
+  expirationDuration: 172800,
+  maxNumberOfKeys: 240,
+  outstandingKeys: 3,
+  address: '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e',
+  transaction: 'deployedid',
+}
 
 const account = { address: 'foo' }
 
@@ -52,6 +61,7 @@ describe('EventContent', () => {
             loadEvent={() => {}}
             transaction={null}
             account={account}
+            config={config}
           />
         </ConfigProvider>
       </Provider>
@@ -67,6 +77,28 @@ describe('EventContent', () => {
       event.date.getFullYear()
     expect(wrapper.getByText(dateString)).not.toBeNull()
     expect(wrapper.getByText('6:30pm - 7:30pm')).not.toBeNull()
+  })
+
+  it('should display an event with an ERC20 price when given appropriate properties', () => {
+    expect.assertions(1)
+
+    const wrapper = rtl.render(
+      <Provider store={store}>
+        <ConfigProvider value={config}>
+          <EventContent
+            event={event}
+            lock={erc20Lock}
+            purchaseKey={() => {}}
+            loadEvent={() => {}}
+            transaction={null}
+            account={account}
+            config={config}
+          />
+        </ConfigProvider>
+      </Provider>
+    )
+
+    expect(wrapper.queryByText('0.01 DEV', { exact: false })).not.toBeNull()
   })
 })
 
