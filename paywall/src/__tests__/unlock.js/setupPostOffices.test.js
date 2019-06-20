@@ -1,20 +1,5 @@
 import setupPostOffices from '../../unlock.js/setupPostOffices'
-import {
-  POST_MESSAGE_READY,
-  POST_MESSAGE_CONFIG,
-  POST_MESSAGE_UNLOCKED,
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_PURCHASE_KEY,
-  POST_MESSAGE_UPDATE_NETWORK,
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-  POST_MESSAGE_WALLET_INFO,
-  POST_MESSAGE_ERROR,
-  POST_MESSAGE_UPDATE_WALLET,
-  POST_MESSAGE_READY_WEB3,
-  POST_MESSAGE_SEND_UPDATES,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('setupPostOffice', () => {
   let fakeWindow
@@ -99,17 +84,17 @@ describe('setupPostOffice', () => {
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to POST_MESSAGE_READY_WEB3 by sending POST_MESSAGE_WALLET_INFO', () => {
+  it('responds to PostMessages.READY_WEB3 by sending PostMessages.WALLET_INFO', () => {
     expect.assertions(2)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_READY_WEB3, {
+    sendMessage(fakeDataIframe, PostMessages.READY_WEB3, {
       lock: { address: 'lock' },
     })
 
     expect(fakeUIIframe.contentWindow.postMessage).not.toHaveBeenCalled()
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_WALLET_INFO,
+        type: PostMessages.WALLET_INFO,
         payload: {
           noWallet: false,
           notEnabled: true,
@@ -120,17 +105,17 @@ describe('setupPostOffice', () => {
     )
   })
 
-  it('responds to POST_MESSAGE_READY by sending the config to both iframes', () => {
+  it('responds to PostMessages.READY by sending the config to both iframes', () => {
     expect.assertions(8)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_READY)
-    sendMessage(fakeUIIframe, POST_MESSAGE_READY)
+    sendMessage(fakeDataIframe, PostMessages.READY)
+    sendMessage(fakeUIIframe, PostMessages.READY)
 
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledTimes(5)
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       1,
       {
-        type: POST_MESSAGE_CONFIG,
+        type: PostMessages.CONFIG,
         payload: fakeWindow.unlockProtocolConfig,
       },
       'http://paywall'
@@ -138,7 +123,7 @@ describe('setupPostOffice', () => {
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       2,
       {
-        type: POST_MESSAGE_SEND_UPDATES,
+        type: PostMessages.SEND_UPDATES,
         payload: 'network',
       },
       'http://paywall'
@@ -146,7 +131,7 @@ describe('setupPostOffice', () => {
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       3,
       {
-        type: POST_MESSAGE_SEND_UPDATES,
+        type: PostMessages.SEND_UPDATES,
         payload: 'account',
       },
       'http://paywall'
@@ -154,7 +139,7 @@ describe('setupPostOffice', () => {
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       4,
       {
-        type: POST_MESSAGE_SEND_UPDATES,
+        type: PostMessages.SEND_UPDATES,
         payload: 'balance',
       },
       'http://paywall'
@@ -162,7 +147,7 @@ describe('setupPostOffice', () => {
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
       5,
       {
-        type: POST_MESSAGE_SEND_UPDATES,
+        type: PostMessages.SEND_UPDATES,
         payload: 'locks',
       },
       'http://paywall'
@@ -171,43 +156,43 @@ describe('setupPostOffice', () => {
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledTimes(1)
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_CONFIG,
+        type: PostMessages.CONFIG,
         payload: fakeWindow.unlockProtocolConfig,
       },
       'http://paywall'
     )
   })
 
-  it('responds to POST_MESSAGE_READY by showing the checkout UI if the paywall type is "paywall"', () => {
+  it('responds to PostMessages.READY by showing the checkout UI if the paywall type is "paywall"', () => {
     expect.assertions(1)
 
     fakeWindow.unlockProtocolConfig = {
       type: 'paywall',
     }
 
-    sendMessage(fakeUIIframe, POST_MESSAGE_READY)
+    sendMessage(fakeUIIframe, PostMessages.READY)
 
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to POST_MESSAGE_UNLOCKED by sending unlocked to the UI iframe', () => {
+  it('responds to PostMessages.UNLOCKED by sending unlocked to the UI iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+    sendMessage(fakeDataIframe, PostMessages.UNLOCKED, ['lock'])
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UNLOCKED,
+        type: PostMessages.UNLOCKED,
         payload: ['lock'],
       },
       'http://paywall'
     )
   })
 
-  it('responds to POST_MESSAGE_UNLOCKED by dispatching unlockProtocol event', () => {
+  it('responds to PostMessages.UNLOCKED by dispatching unlockProtocol event', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+    sendMessage(fakeDataIframe, PostMessages.UNLOCKED, ['lock'])
 
     expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -217,44 +202,44 @@ describe('setupPostOffice', () => {
     )
   })
 
-  it('responds to POST_MESSAGE_UNLOCKED by storing in localStorage for quick recovery on next visit', () => {
+  it('responds to PostMessages.UNLOCKED by storing in localStorage for quick recovery on next visit', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+    sendMessage(fakeDataIframe, PostMessages.UNLOCKED, ['lock'])
 
     expect(fakeWindow.storage).toEqual({
       '__unlockProtocol.locked': 'false',
     })
   })
 
-  it('responds to POST_MESSAGE_UNLOCKED by not hiding the checkout UI if the key is not confirmed', () => {
+  it('responds to PostMessages.UNLOCKED by not hiding the checkout UI if the key is not confirmed', () => {
     expect.assertions(1)
 
     fakeUIIframe.className = 'unlock start show'
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UNLOCKED, ['lock'])
+    sendMessage(fakeDataIframe, PostMessages.UNLOCKED, ['lock'])
 
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to POST_MESSAGE_LOCKED by sending locked to the UI iframe', () => {
+  it('responds to PostMessages.LOCKED by sending locked to the UI iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_LOCKED)
+    sendMessage(fakeDataIframe, PostMessages.LOCKED)
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_LOCKED,
+        type: PostMessages.LOCKED,
         payload: undefined,
       },
       'http://paywall'
     )
   })
 
-  it('responds to POST_MESSAGE_LOCKED by dispatching unlockProtocol event', () => {
+  it('responds to PostMessages.LOCKED by dispatching unlockProtocol event', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_LOCKED)
+    sendMessage(fakeDataIframe, PostMessages.LOCKED)
 
     expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -264,113 +249,113 @@ describe('setupPostOffice', () => {
     )
   })
 
-  it('responds to POST_MESSAGE_LOCKED by storing in localStorage for quick recovery on next visit', () => {
+  it('responds to PostMessages.LOCKED by storing in localStorage for quick recovery on next visit', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_LOCKED, ['lock'])
+    sendMessage(fakeDataIframe, PostMessages.LOCKED, ['lock'])
 
     expect(fakeWindow.storage).toEqual({
       '__unlockProtocol.locked': 'true',
     })
   })
 
-  it('responds to POST_MESSAGE_ERROR by sending error messages to the UI iframe', () => {
+  it('responds to PostMessages.ERROR by sending error messages to the UI iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_ERROR, 'fail')
+    sendMessage(fakeDataIframe, PostMessages.ERROR, 'fail')
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_ERROR,
+        type: PostMessages.ERROR,
         payload: 'fail',
       },
       'http://paywall'
     )
   })
 
-  it('responds to POST_MESSAGE_UPDATE_WALLET by sending modal info to the UI iframe', () => {
+  it('responds to PostMessages.UPDATE_WALLET by sending modal info to the UI iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_WALLET, true)
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_WALLET, true)
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UPDATE_WALLET,
+        type: PostMessages.UPDATE_WALLET,
         payload: true,
       },
       'http://paywall'
     )
   })
 
-  it('relays POST_MESSAGE_PURCHASE_KEY to the data iframe', () => {
+  it('relays PostMessages.PURCHASE_KEY to the data iframe', () => {
     expect.assertions(1)
 
-    sendMessage(fakeUIIframe, POST_MESSAGE_PURCHASE_KEY, {
+    sendMessage(fakeUIIframe, PostMessages.PURCHASE_KEY, {
       lock: 'lock',
       extraTip: '0',
     })
 
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_PURCHASE_KEY,
+        type: PostMessages.PURCHASE_KEY,
         payload: { lock: 'lock', extraTip: '0' },
       },
       'http://paywall'
     )
   })
 
-  it('relays POST_MESSAGE_UPDATE_NETWORK to the checkout UI', () => {
+  it('relays PostMessages.UPDATE_NETWORK to the checkout UI', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_NETWORK, 2)
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_NETWORK, 2)
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UPDATE_NETWORK,
+        type: PostMessages.UPDATE_NETWORK,
         payload: 2,
       },
       'http://paywall'
     )
   })
 
-  it('relays POST_MESSAGE_UPDATE_ACCOUNT to the checkout UI', () => {
+  it('relays PostMessages.UPDATE_ACCOUNT to the checkout UI', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_ACCOUNT, 'account')
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_ACCOUNT, 'account')
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UPDATE_ACCOUNT,
+        type: PostMessages.UPDATE_ACCOUNT,
         payload: 'account',
       },
       'http://paywall'
     )
   })
 
-  it('relays POST_MESSAGE_UPDATE_ACCOUNT_BALANCE to the checkout UI', () => {
+  it('relays PostMessages.UPDATE_ACCOUNT_BALANCE to the checkout UI', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, '1')
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_ACCOUNT_BALANCE, '1')
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+        type: PostMessages.UPDATE_ACCOUNT_BALANCE,
         payload: '1',
       },
       'http://paywall'
     )
   })
 
-  it('relays POST_MESSAGE_UPDATE_LOCKS to the checkout UI', () => {
+  it('relays PostMessages.UPDATE_LOCKS to the checkout UI', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, POST_MESSAGE_UPDATE_LOCKS, {
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_LOCKS, {
       lock: { address: 'lock' },
     })
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
-        type: POST_MESSAGE_UPDATE_LOCKS,
+        type: PostMessages.UPDATE_LOCKS,
         payload: {
           lock: { address: 'lock' },
         },
