@@ -23,7 +23,6 @@ import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
 import { getTimeString } from '../../utils/dates'
 import { currencySymbolForLock } from '../../utils/locks'
-import Duration from '../../../../paywall/src/components/helpers/Duration'
 
 export const EventContent = ({
   lock,

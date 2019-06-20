@@ -12,7 +12,7 @@ const store = createUnlockStore({})
 
 const ConfigProvider = ConfigContext.Provider
 
-const config = configure({})
+const config = configure()
 
 const lock = {
   keyPrice: '0.01',
@@ -49,6 +49,9 @@ const account = {
 }
 
 storiesOf('Event RSVP page', module)
+  .addDecorator(getStory => (
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
+  ))
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Event RSVP page with unpurchased key', () => {
     const transaction = null
@@ -72,18 +75,16 @@ storiesOf('Event RSVP page', module)
     const transaction = null
 
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={erc20Lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          transaction={transaction}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={erc20Lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        transaction={transaction}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with submitted key', () => {
@@ -92,18 +93,16 @@ storiesOf('Event RSVP page', module)
     }
 
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          transaction={transaction}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        transaction={transaction}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with confirming key transaction', () => {
@@ -113,18 +112,16 @@ storiesOf('Event RSVP page', module)
     }
 
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          transaction={transaction}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        transaction={transaction}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with confirmed key transaction', () => {
@@ -134,66 +131,58 @@ storiesOf('Event RSVP page', module)
     }
 
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          transaction={transaction}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        transaction={transaction}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with confirming key', () => {
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          keyStatus={KeyStatus.CONFIRMING}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        keyStatus={KeyStatus.CONFIRMING}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with confirmed key', () => {
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          keyStatus={KeyStatus.VALID}
-          account={account}
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        keyStatus={KeyStatus.VALID}
+        account={account}
+      />
     )
   })
   .add('Event RSVP page with confirmed key and QR code', () => {
     return (
-      <ConfigProvider value={config}>
-        <EventContent
-          event={event}
-          lock={lock}
-          config={config}
-          purchaseKey={purchaseKey}
-          loadEvent={dummyFunc}
-          signAddress={dummyFunc}
-          keyStatus={KeyStatus.VALID}
-          account={account}
-          signedEventAddress="foobar"
-        />
-      </ConfigProvider>
+      <EventContent
+        event={event}
+        lock={lock}
+        config={config}
+        purchaseKey={purchaseKey}
+        loadEvent={dummyFunc}
+        signAddress={dummyFunc}
+        keyStatus={KeyStatus.VALID}
+        account={account}
+        signedEventAddress="foobar"
+      />
     )
   })
