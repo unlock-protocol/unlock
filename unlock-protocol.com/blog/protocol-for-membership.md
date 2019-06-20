@@ -27,7 +27,7 @@ Locks themselves can be used for many different things, limiting access to conte
 
 ## Leading by example!
 
-We're putting [our money where our mouth is](/blog/crypto-first/). Starting today, we added a lock to this website. We decided to **limit access to the comments** to the members of the community.
+We're putting [our money where our mouth is](/blog/crypto-first/). Starting today, we've added a lock to this website. We decided to **limit access to the comments** to the members of the community.
 
 You can unlock your membership by clicking on the bar at the bottom below (we actually set a price of 0 Ether, so you only pay for gas fees). Once you have a key, you will be able to read and write comments.
 
