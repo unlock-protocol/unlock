@@ -12,7 +12,7 @@ import { SectionHeader, Column, Grid, SubmitButton } from './styles'
 import { signPaymentData } from '../../../actions/user'
 
 interface PaymentDetailsProps {
-  stripe: any
+  stripe: stripe.Stripe | null
   signPaymentData: (stripeTokenId: string) => any
 }
 
