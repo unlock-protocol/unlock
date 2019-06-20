@@ -16,6 +16,8 @@ interface PaymentDetailsProps {
   signPaymentData: (stripeTokenId: string) => any
 }
 
+// Memoized because it would constantly rerender (which cleared the Stripe form)
+// because it couldn't tell the props were the same
 export const PaymentDetails = React.memo(
   ({ stripe, signPaymentData }: PaymentDetailsProps) => {
     const Form = injectStripe(PaymentForm)
