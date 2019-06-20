@@ -3,7 +3,7 @@ title: A Protocol for Membership
 subTitle: Monetizing creation by leveraging membership to communities
 authorName: Julien Genestoux
 publishDate: June 19, 2019
-description: The unlock protocol provides a way for people to show their support and access exclusive content, features, or even status. It is a web-native way for creators to monetize their work.
+description: The Unlock protocol provides a way for people to show their support and access exclusive content, features, or even status. It is a web-native way for creators to monetize their work.
 image: /static/images/blog/protocol-for-memberships.png
 ---
 
