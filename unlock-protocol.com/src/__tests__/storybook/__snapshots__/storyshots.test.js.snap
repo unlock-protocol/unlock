@@ -4,11 +4,11 @@ exports[`Storyshots Blog pages Blog index page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c4 {
   fill: var(--brand);
 }
 
-.c9 {
+.c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -20,25 +20,25 @@ Object {
   line-height: 15px;
 }
 
-.c9 > svg {
+.c7 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c9:hover {
+.c7:hover {
   background-color: var(--link);
 }
 
-.c9:hover > svg {
+.c7:hover > svg {
   fill: white;
 }
 
-.c9:focus {
+.c7:focus {
   outline: none;
 }
 
-.c12 {
+.c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -50,25 +50,25 @@ Object {
   line-height: 48px;
 }
 
-.c12 > svg {
+.c10 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c12:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c12:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c12:focus {
+.c10:focus {
   outline: none;
 }
 
-.c10 {
+.c8 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -83,11 +83,11 @@ Object {
   color: var(--link);
 }
 
-.c8:hover .c10 {
+.c6:hover .c8 {
   display: inline-block;
 }
 
-.c5 {
+.c3 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -101,7 +101,7 @@ Object {
   height: 70px;
 }
 
-.c7 {
+.c5 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -117,13 +117,13 @@ Object {
   height: 100%;
 }
 
-.c11 {
+.c9 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c11 .c8 {
+.c9 .c6 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -134,24 +134,24 @@ Object {
   align-self: center;
 }
 
-.c11 .c8:nth-child(1) {
+.c9 .c6:nth-child(1) {
   pointer-events: none;
 }
 
-.c11 .c8:nth-child(2) {
+.c9 .c6:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c11 .c8 > svg {
+.c9 .c6 > svg {
   fill: var(--grey);
 }
 
-.c11 .c8:hover > svg {
+.c9 .c6:hover > svg {
   fill: var(--grey);
 }
 
-.c13 {
+.c11 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -178,11 +178,11 @@ Object {
   top: 50px;
 }
 
-.c13 .c8 {
+.c11 .c6 {
   margin: 24px;
 }
 
-.c13 .c8 small {
+.c11 .c6 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -192,7 +192,7 @@ Object {
   line-height: 0;
 }
 
-.c25 {
+.c23 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -205,7 +205,7 @@ Object {
   align-items: center;
 }
 
-.c26 {
+.c24 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -213,33 +213,9 @@ Object {
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
-.c2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  background-color: black;
-  width: 100%;
-  left: 0px;
-  position: fixed;
-  padding: 15px;
-  bottom: 0;
-  text-align: center;
-}
-
-.c3 {
-  cursor: pointer;
-  padding: 10px;
-}
-
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -252,14 +228,14 @@ Object {
   height: 24px;
 }
 
-.c4 {
+.c2 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
   width: 100%;
 }
 
-.c23 {
+.c21 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -269,7 +245,7 @@ Object {
   padding: 0;
 }
 
-.c24 {
+.c22 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -279,25 +255,25 @@ Object {
   padding: 0;
 }
 
-.c15 {
+.c13 {
   margin: auto;
   width: 100%;
   max-with: 750px;
 }
 
-.c20 {
+.c18 {
   margin-bottom: 0;
 }
 
-.c20 a,
-.c20 a:visited {
+.c18 a,
+.c18 a:visited {
   color: var(--brand);
   font-weight: 700;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   font-size: 36px;
 }
 
-.c22 {
+.c20 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -310,7 +286,7 @@ Object {
   margin-bottom: 0;
 }
 
-.c21 {
+.c19 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
@@ -318,12 +294,12 @@ Object {
   font-family: 'IBM Plex Serif';
 }
 
-.c17 {
+.c15 {
   margin-bottom: 20px;
   margin-bottom: 64px;
 }
 
-.c16 {
+.c14 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 24px;
@@ -332,11 +308,11 @@ Object {
   max-width: 424px;
 }
 
-.c19 {
+.c17 {
   max-width: 100%;
 }
 
-.c14 {
+.c12 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -345,13 +321,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c18 {
+  .c16 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -359,7 +335,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c9 {
     display: none;
   }
 }
@@ -372,18 +360,6 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
     display: none;
   }
 }
@@ -406,13 +382,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c27 {
+  .c25 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c17 {
+  .c15 {
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 32px;
@@ -433,30 +409,14 @@ Object {
         <div
           class="c2"
         >
-          <div
-            class="c3"
-          >
-            Try Unlock, become a member!
-             
-            <span
-              aria-label="click"
-              role="img"
-            >
-              ↗️
-            </span>
-          </div>
-        </div>
-        <div
-          class="c4"
-        >
           <header
-            class="c5"
+            class="c3"
           >
             <a
               href="/"
             >
               <svg
-                class="c6"
+                class="c4"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -468,10 +428,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c7"
+              class="c5"
             >
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/about"
                 title="About"
               >
@@ -488,13 +448,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/blog"
                 title="Blog"
               >
@@ -511,13 +471,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -531,13 +491,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/jobs"
                 title="Join us"
               >
@@ -553,13 +513,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -575,13 +535,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -597,17 +557,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c11"
+              class="c9"
             >
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -622,7 +582,7 @@ Object {
                 
               </a>
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -640,37 +600,37 @@ Object {
               </a>
             </div>
             <div
-              class="c13"
+              class="c11"
             />
           </header>
           <h1
-            class="c14"
+            class="c12"
           >
             Unlock Blog
           </h1>
           <div
-            class="c15"
+            class="c13"
           >
             <div
-              class="c16"
+              class="c14"
             >
               We’re building the new business model for the web that will empower creators and consumers.
             </div>
             <div
-              class="c17"
+              class="c15"
             >
               <div
-                class="c18"
+                class="c16"
               >
                 <img
-                  class="c19"
+                  class="c17"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <a
                     href="/blog/post3"
@@ -679,22 +639,22 @@ Object {
                   </a>
                 </div>
                 <div
-                  class="c21"
+                  class="c19"
                 >
                   
 This post was published most recently. It is an important post about a great many things, all of which are vital. You
 should pay great attention.
                 </div>
                 <div
-                  class="c22"
+                  class="c20"
                 >
                   <h3
-                    class="c23"
+                    class="c21"
                   >
                     Unlock team
                   </h3>
                   <div
-                    class="c24"
+                    class="c22"
                   >
                     On 
                     Tuesday, March 5, 2019
@@ -703,20 +663,20 @@ should pay great attention.
               </div>
             </div>
             <div
-              class="c17"
+              class="c15"
             >
               <div
-                class="c18"
+                class="c16"
               >
                 <img
-                  class="c19"
+                  class="c17"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <a
                     href="/blog/post2"
@@ -725,21 +685,21 @@ should pay great attention.
                   </a>
                 </div>
                 <div
-                  class="c21"
+                  class="c19"
                 >
                   
 Short description.
                 </div>
                 <div
-                  class="c22"
+                  class="c20"
                 >
                   <h3
-                    class="c23"
+                    class="c21"
                   >
                     Julien Genestoux
                   </h3>
                   <div
-                    class="c24"
+                    class="c22"
                   >
                     On 
                     Friday, March 1, 2019
@@ -748,20 +708,20 @@ Short description.
               </div>
             </div>
             <div
-              class="c17"
+              class="c15"
             >
               <div
-                class="c18"
+                class="c16"
               >
                 <img
-                  class="c19"
+                  class="c17"
                 />
               </div>
               <div
                 class=""
               >
                 <div
-                  class="c20"
+                  class="c18"
                 >
                   <a
                     href="/blog/post1"
@@ -770,21 +730,21 @@ Short description.
                   </a>
                 </div>
                 <div
-                  class="c21"
+                  class="c19"
                 >
                   
 Look at us! We're posting on our very own blog! How exciting!
                 </div>
                 <div
-                  class="c22"
+                  class="c20"
                 >
                   <h3
-                    class="c23"
+                    class="c21"
                   >
                     Unlock team
                   </h3>
                   <div
-                    class="c24"
+                    class="c22"
                   >
                     On 
                     Monday, August 20, 2018
@@ -794,10 +754,10 @@ Look at us! We're posting on our very own blog! How exciting!
             </div>
           </div>
           <footer
-            class="c25"
+            class="c23"
           >
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/about"
               title="About"
             >
@@ -814,13 +774,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 About
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/blog"
               title="Blog"
             >
@@ -837,13 +797,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -859,13 +819,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -879,13 +839,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -901,13 +861,13 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -923,20 +883,20 @@ Look at us! We're posting on our very own blog! How exciting!
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c26"
+              class="c24"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c27"
+          class="c25"
         />
       </div>
     </div>
@@ -947,27 +907,11 @@ Look at us! We're posting on our very own blog! How exciting!
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
       />
-      <div
-        class="sc-1mlffph-0 gCKCvE"
-      >
-        <div
-          class="sc-1mlffph-1 gPpkGc"
-        >
-          Try Unlock, become a member!
-           
-          <span
-            aria-label="click"
-            role="img"
-          >
-            ↗️
-          </span>
-        </div>
-      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -1208,15 +1152,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Unlock team
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Tuesday, March 5, 2019
@@ -1253,15 +1197,15 @@ should pay great attention.
 Short description.
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Julien Genestoux
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Friday, March 1, 2019
@@ -1298,15 +1242,15 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Unlock team
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Monday, August 20, 2018
@@ -1527,11 +1471,11 @@ Look at us! We're posting on our very own blog! How exciting!
 exports[`Storyshots Blog pages Blog post page 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c6 {
+  "baseElement": .c4 {
   fill: var(--brand);
 }
 
-.c9 {
+.c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -1543,25 +1487,25 @@ Object {
   line-height: 15px;
 }
 
-.c9 > svg {
+.c7 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c9:hover {
+.c7:hover {
   background-color: var(--link);
 }
 
-.c9:hover > svg {
+.c7:hover > svg {
   fill: white;
 }
 
-.c9:focus {
+.c7:focus {
   outline: none;
 }
 
-.c12 {
+.c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -1573,25 +1517,25 @@ Object {
   line-height: 48px;
 }
 
-.c12 > svg {
+.c10 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c12:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c12:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c12:focus {
+.c10:focus {
   outline: none;
 }
 
-.c10 {
+.c8 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -1606,11 +1550,11 @@ Object {
   color: var(--link);
 }
 
-.c8:hover .c10 {
+.c6:hover .c8 {
   display: inline-block;
 }
 
-.c5 {
+.c3 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -1624,7 +1568,7 @@ Object {
   height: 70px;
 }
 
-.c7 {
+.c5 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -1640,13 +1584,13 @@ Object {
   height: 100%;
 }
 
-.c11 {
+.c9 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c11 .c8 {
+.c9 .c6 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -1657,24 +1601,24 @@ Object {
   align-self: center;
 }
 
-.c11 .c8:nth-child(1) {
+.c9 .c6:nth-child(1) {
   pointer-events: none;
 }
 
-.c11 .c8:nth-child(2) {
+.c9 .c6:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c11 .c8 > svg {
+.c9 .c6 > svg {
   fill: var(--grey);
 }
 
-.c11 .c8:hover > svg {
+.c9 .c6:hover > svg {
   fill: var(--grey);
 }
 
-.c13 {
+.c11 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -1701,11 +1645,11 @@ Object {
   top: 50px;
 }
 
-.c13 .c8 {
+.c11 .c6 {
   margin: 24px;
 }
 
-.c13 .c8 small {
+.c11 .c6 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -1715,7 +1659,7 @@ Object {
   line-height: 0;
 }
 
-.c21 {
+.c20 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -1728,7 +1672,7 @@ Object {
   align-items: center;
 }
 
-.c22 {
+.c21 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -1736,33 +1680,9 @@ Object {
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
-.c2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  background-color: black;
-  width: 100%;
-  left: 0px;
-  position: fixed;
-  padding: 15px;
-  bottom: 0;
-  text-align: center;
-}
-
-.c3 {
-  cursor: pointer;
-  padding: 10px;
-}
-
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -1775,21 +1695,28 @@ Object {
   height: 24px;
 }
 
-.c4 {
+.c2 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
   width: 100%;
 }
 
-.c14 {
+.c19 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c12 {
   width: 100%;
   max-width: 730px;
   margin: auto;
   font-family: 'IBM Plex Serif',serif;
 }
 
-.c15 {
+.c13 {
   margin-bottom: 0;
   color: var(--darkgrey);
   font-weight: 700;
@@ -1797,7 +1724,7 @@ Object {
   font-size: 36px;
 }
 
-.c17 {
+.c15 {
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   color: var(--darkgrey);
   font-size: 12px;
@@ -1808,7 +1735,7 @@ Object {
   margin-bottom: 35px;
 }
 
-.c16 {
+.c14 {
   margin-top: 10px;
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -1817,22 +1744,22 @@ Object {
   color: var(--dimgrey);
 }
 
-.c20 {
+.c18 {
   color: var(--darkgrey);
   font-weight: 300;
   line-height: 28px;
   font-size: 16px;
 }
 
-.c20 strong {
+.c18 strong {
   font-weight: 800;
 }
 
-.c20 p {
+.c18 p {
   margin-top: 0;
 }
 
-.c20 h2 {
+.c18 h2 {
   font-weight: 800;
   font-family: 'IBM Plex Sans',Helvetica,sans-serif;
   margin-bottom: 0;
@@ -1840,11 +1767,11 @@ Object {
   font-size: 18px;
 }
 
-.c20 img {
+.c18 img {
   max-width: 100%;
 }
 
-.c18 {
+.c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
@@ -1854,7 +1781,7 @@ Object {
   padding: 0;
 }
 
-.c19 {
+.c17 {
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
@@ -1865,7 +1792,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -1873,7 +1800,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c9 {
     display: none;
   }
 }
@@ -1886,18 +1825,6 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
     display: none;
   }
 }
@@ -1920,7 +1847,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c22 {
     display: none;
   }
 }
@@ -1940,30 +1867,14 @@ Object {
         <div
           class="c2"
         >
-          <div
-            class="c3"
-          >
-            Try Unlock, become a member!
-             
-            <span
-              aria-label="click"
-              role="img"
-            >
-              ↗️
-            </span>
-          </div>
-        </div>
-        <div
-          class="c4"
-        >
           <header
-            class="c5"
+            class="c3"
           >
             <a
               href="/"
             >
               <svg
-                class="c6"
+                class="c4"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -1975,10 +1886,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c7"
+              class="c5"
             >
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/about"
                 title="About"
               >
@@ -1995,13 +1906,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/blog"
                 title="Blog"
               >
@@ -2018,13 +1929,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -2038,13 +1949,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/jobs"
                 title="Join us"
               >
@@ -2060,13 +1971,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -2082,13 +1993,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -2104,17 +2015,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c11"
+              class="c9"
             >
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -2129,7 +2040,7 @@ Object {
                 
               </a>
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -2147,39 +2058,39 @@ Object {
               </a>
             </div>
             <div
-              class="c13"
+              class="c11"
             />
           </header>
           <div
-            class="c14"
+            class="c12"
           >
             <h1
-              class="c15"
+              class="c13"
             >
               Sample title
             </h1>
             <h2
-              class="c16"
+              class="c14"
             >
               Some advice from the field
             </h2>
             <div
-              class="c17"
+              class="c15"
             >
               <h3
-                class="c18"
+                class="c16"
               >
                 Alice "Storybook" Bob
               </h3>
               <div
-                class="c19"
+                class="c17"
               >
                 On 
                 August 20, 2018
               </div>
             </div>
             <div
-              class="c20"
+              class="c18"
             >
               <div>
                 <p>
@@ -2247,12 +2158,15 @@ are intentionally not generated from this file date, in case we want to override
                 </p>
               </div>
             </div>
+            <hr
+              class="c19"
+            />
           </div>
           <footer
-            class="c21"
+            class="c20"
           >
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/about"
               title="About"
             >
@@ -2269,13 +2183,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 About
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/blog"
               title="Blog"
             >
@@ -2292,13 +2206,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -2314,13 +2228,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -2334,13 +2248,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -2356,13 +2270,13 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -2378,20 +2292,20 @@ are intentionally not generated from this file date, in case we want to override
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c22"
+              class="c21"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c23"
+          class="c22"
         />
       </div>
     </div>
@@ -2402,27 +2316,11 @@ are intentionally not generated from this file date, in case we want to override
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
       />
-      <div
-        class="sc-1mlffph-0 gCKCvE"
-      >
-        <div
-          class="sc-1mlffph-1 gPpkGc"
-        >
-          Try Unlock, become a member!
-           
-          <span
-            aria-label="click"
-            role="img"
-          >
-            ↗️
-          </span>
-        </div>
-      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -2621,35 +2519,35 @@ are intentionally not generated from this file date, in case we want to override
           />
         </header>
         <div
-          class="b1qsww-0 hRCMaV"
+          class="b1qsww-2 fjfaRt"
         >
           <h1
-            class="b1qsww-1 dxIltO"
+            class="b1qsww-3 iYpbov"
           >
             Sample title
           </h1>
           <h2
-            class="b1qsww-3 iemLUe"
+            class="b1qsww-5 gvapQS"
           >
             Some advice from the field
           </h2>
           <div
-            class="b1qsww-2 cdMqQS"
+            class="b1qsww-4 hTAVQP"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Alice "Storybook" Bob
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               August 20, 2018
             </div>
           </div>
           <div
-            class="b1qsww-4 dhqFyH"
+            class="b1qsww-6 imLyLP"
           >
             <div>
               <p>
@@ -2717,6 +2615,9 @@ are intentionally not generated from this file date, in case we want to override
               </p>
             </div>
           </div>
+          <hr
+            class="b1qsww-0 zPPJJ"
+          />
         </div>
         <footer
           class="sc-2ix2yp-0 fmIKjS"
@@ -3217,15 +3118,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Tuesday, March 5, 2019
@@ -3262,15 +3163,15 @@ should pay great attention.
 Short description.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Julien Genestoux
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Friday, March 1, 2019
@@ -3307,15 +3208,15 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Monday, August 20, 2018
@@ -3699,15 +3600,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Tuesday, March 5, 2019
@@ -3783,7 +3684,14 @@ exports[`Storyshots BlogPost Blog post from markdown with author and subtitle 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c7 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -4081,6 +3989,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c7"
+        />
       </div>
     </div>
   </body>,
@@ -4090,35 +4001,35 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 iemLUe"
+        class="b1qsww-5 gvapQS"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -4300,6 +4211,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -4368,7 +4282,14 @@ exports[`Storyshots BlogPost Blog post from markdown with author but no subtitle
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c6 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -4653,6 +4574,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c6"
+        />
       </div>
     </div>
   </body>,
@@ -4662,31 +4586,31 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -4868,6 +4792,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -4936,7 +4863,14 @@ exports[`Storyshots BlogPost Blog post from markdown with no subtitle or author 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c6 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -5221,6 +5155,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c6"
+        />
       </div>
     </div>
   </body>,
@@ -5230,31 +5167,31 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -5436,6 +5373,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -5504,7 +5444,14 @@ exports[`Storyshots BlogPost Blog post from markdown with subtitle but no author
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c7 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -5802,6 +5749,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c7"
+        />
       </div>
     </div>
   </body>,
@@ -5811,35 +5761,35 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 iemLUe"
+        class="b1qsww-5 gvapQS"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -6021,6 +5971,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -11302,11 +11255,11 @@ exports[`Storyshots Layout the layout for the content page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c4 {
   fill: var(--brand);
 }
 
-.c9 {
+.c7 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -11318,25 +11271,25 @@ Object {
   line-height: 15px;
 }
 
-.c9 > svg {
+.c7 > svg {
   fill: white;
   height: 24px;
   width: 24px;
 }
 
-.c9:hover {
+.c7:hover {
   background-color: var(--link);
 }
 
-.c9:hover > svg {
+.c7:hover > svg {
   fill: white;
 }
 
-.c9:focus {
+.c7:focus {
   outline: none;
 }
 
-.c12 {
+.c10 {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
@@ -11348,25 +11301,25 @@ Object {
   line-height: 48px;
 }
 
-.c12 > svg {
+.c10 > svg {
   fill: white;
   height: 48px;
   width: 48px;
 }
 
-.c12:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c12:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c12:focus {
+.c10:focus {
   outline: none;
 }
 
-.c10 {
+.c8 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -11381,11 +11334,11 @@ Object {
   color: var(--link);
 }
 
-.c8:hover .c10 {
+.c6:hover .c8 {
   display: inline-block;
 }
 
-.c5 {
+.c3 {
   display: grid;
   grid-gap: 0;
   grid-template-columns: 256px auto;
@@ -11399,7 +11352,7 @@ Object {
   height: 70px;
 }
 
-.c7 {
+.c5 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(6,24px);
@@ -11415,13 +11368,13 @@ Object {
   height: 100%;
 }
 
-.c11 {
+.c9 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c11 .c8 {
+.c9 .c6 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -11432,24 +11385,24 @@ Object {
   align-self: center;
 }
 
-.c11 .c8:nth-child(1) {
+.c9 .c6:nth-child(1) {
   pointer-events: none;
 }
 
-.c11 .c8:nth-child(2) {
+.c9 .c6:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c11 .c8 > svg {
+.c9 .c6 > svg {
   fill: var(--grey);
 }
 
-.c11 .c8:hover > svg {
+.c9 .c6:hover > svg {
   fill: var(--grey);
 }
 
-.c13 {
+.c11 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -11476,11 +11429,11 @@ Object {
   top: 50px;
 }
 
-.c13 .c8 {
+.c11 .c6 {
   margin: 24px;
 }
 
-.c13 .c8 small {
+.c11 .c6 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -11490,7 +11443,7 @@ Object {
   line-height: 0;
 }
 
-.c14 {
+.c12 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -11503,7 +11456,7 @@ Object {
   align-items: center;
 }
 
-.c15 {
+.c13 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -11511,33 +11464,9 @@ Object {
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
-.c2 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  background-color: black;
-  width: 100%;
-  left: 0px;
-  position: fixed;
-  padding: 15px;
-  bottom: 0;
-  text-align: center;
-}
-
-.c3 {
-  cursor: pointer;
-  padding: 10px;
-}
-
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -11550,7 +11479,7 @@ Object {
   height: 24px;
 }
 
-.c4 {
+.c2 {
   color: var(--darkgrey);
   display: grid;
   row-gap: 24px;
@@ -11558,7 +11487,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
+  .c3 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
     height: auto;
@@ -11566,7 +11495,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c7 {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c9 {
     display: none;
   }
 }
@@ -11579,18 +11520,6 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c11 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
     display: none;
   }
 }
@@ -11613,7 +11542,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c14 {
     display: none;
   }
 }
@@ -11632,30 +11561,14 @@ Object {
         <div
           class="c2"
         >
-          <div
-            class="c3"
-          >
-            Try Unlock, become a member!
-             
-            <span
-              aria-label="click"
-              role="img"
-            >
-              ↗️
-            </span>
-          </div>
-        </div>
-        <div
-          class="c4"
-        >
           <header
-            class="c5"
+            class="c3"
           >
             <a
               href="/"
             >
               <svg
-                class="c6"
+                class="c4"
                 height="28px"
                 name="Unlock"
                 viewBox="0 0 1200 256"
@@ -11667,10 +11580,10 @@ Object {
               </svg>
             </a>
             <div
-              class="c7"
+              class="c5"
             >
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/about"
                 title="About"
               >
@@ -11687,13 +11600,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/blog"
                 title="Blog"
               >
@@ -11710,13 +11623,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Blog
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://github.com/unlock-protocol/unlock"
                 title="Source Code"
               >
@@ -11730,13 +11643,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="/jobs"
                 title="Join us"
               >
@@ -11752,13 +11665,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://t.me/unlockprotocol"
                 title="Telegram"
               >
@@ -11774,13 +11687,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Telegram
                 </small>
               </a>
               <a
-                class="c8 c9"
+                class="c6 c7"
                 href="https://twitter.com/UnlockProtocol"
                 title="Twitter"
               >
@@ -11796,17 +11709,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c10"
+                  class="c8"
                 >
                   Twitter
                 </small>
               </a>
             </div>
             <div
-              class="c11"
+              class="c9"
             >
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -11821,7 +11734,7 @@ Object {
                 
               </a>
               <a
-                class="c8 c12"
+                class="c6 c10"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -11839,14 +11752,14 @@ Object {
               </a>
             </div>
             <div
-              class="c13"
+              class="c11"
             />
           </header>
           <footer
-            class="c14"
+            class="c12"
           >
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/about"
               title="About"
             >
@@ -11863,13 +11776,13 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 About
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/blog"
               title="Blog"
             >
@@ -11886,13 +11799,13 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Blog
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="/jobs"
               title="Join us"
             >
@@ -11908,13 +11821,13 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Join us
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://github.com/unlock-protocol/unlock"
               title="Source Code"
             >
@@ -11928,13 +11841,13 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://t.me/unlockprotocol"
               title="Telegram"
             >
@@ -11950,13 +11863,13 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Telegram
               </small>
             </a>
             <a
-              class="c8 c9"
+              class="c6 c7"
               href="https://twitter.com/UnlockProtocol"
               title="Twitter"
             >
@@ -11972,20 +11885,20 @@ Object {
                 />
               </svg>
               <small
-                class="c10"
+                class="c8"
               >
                 Twitter
               </small>
             </a>
             <span
-              class="c15"
+              class="c13"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c16"
+          class="c14"
         />
       </div>
     </div>
@@ -11996,27 +11909,11 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
       />
-      <div
-        class="sc-1mlffph-0 gCKCvE"
-      >
-        <div
-          class="sc-1mlffph-1 gPpkGc"
-        >
-          Try Unlock, become a member!
-           
-          <span
-            aria-label="click"
-            role="img"
-          >
-            ↗️
-          </span>
-        </div>
-      </div>
       <div
         class="hm3mhg-3 yKIjT"
       >
@@ -12770,9 +12667,6 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -12787,6 +12681,7 @@ Object {
   padding: 15px;
   bottom: 0;
   text-align: center;
+  z-index: 1000;
 }
 
 .c1 {
@@ -12823,7 +12718,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-1mlffph-0 gCKCvE"
+      class="sc-1mlffph-0 fyyMen"
     >
       <div
         class="sc-1mlffph-1 gPpkGc"
@@ -12905,52 +12800,11 @@ exports[`Storyshots Membership unknown state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  background-color: black;
-  width: 100%;
-  left: 0px;
-  position: fixed;
-  padding: 15px;
-  bottom: 0;
-  text-align: center;
-}
-
-.c1 {
-  cursor: pointer;
-  padding: 10px;
-}
-
-<div>
+    <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          Try Unlock, become a member!
-           
-          <span
-            aria-label="click"
-            role="img"
-          >
-            ↗️
-          </span>
-        </div>
-      </div>
     </div>
   </body>,
   "container": <div>
@@ -12958,22 +12812,6 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
-    <div
-      class="sc-1mlffph-0 gCKCvE"
-    >
-      <div
-        class="sc-1mlffph-1 gPpkGc"
-      >
-        Try Unlock, become a member!
-         
-        <span
-          aria-label="click"
-          role="img"
-        >
-          ↗️
-        </span>
-      </div>
-    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -13042,9 +12880,6 @@ Object {
   "asFragment": [Function],
   "baseElement": <body>
     .c0 {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -13059,6 +12894,7 @@ Object {
   padding: 15px;
   bottom: 0;
   text-align: center;
+  z-index: 1000;
 }
 
 <div>
@@ -13069,7 +12905,7 @@ Object {
       <div
         class="c0"
       >
-        Thanks for being a member! Did you know? Your key is an Ethereum non fungible token!
+        Thanks for being a member! Did you know? Your key
          
         <span
           aria-label="click"
@@ -13077,6 +12913,9 @@ Object {
         >
           🔑
         </span>
+         
+        is an Ethereum non fungible token!
+         
       </div>
     </div>
   </body>,
@@ -13086,9 +12925,9 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-1mlffph-0 gCKCvE"
+      class="sc-1mlffph-0 fyyMen"
     >
-      Thanks for being a member! Did you know? Your key is an Ethereum non fungible token!
+      Thanks for being a member! Did you know? Your key
        
       <span
         aria-label="click"
@@ -13096,6 +12935,9 @@ Object {
       >
         🔑
       </span>
+       
+      is an Ethereum non fungible token!
+       
     </div>
   </div>,
   "debug": [Function],

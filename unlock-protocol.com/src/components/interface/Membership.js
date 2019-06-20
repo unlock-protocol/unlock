@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import { MembershipContext } from '../../membershipContext'
 
 export const MembershipUnlocked = () => (
   <MembersBar>
-    Thanks for being a member! Did you know? Your key is an Ethereum non
-    fungible token!{' '}
+    Thanks for being a member! Did you know? Your key{' '}
     <span role="img" aria-label="click">
       🔑
-    </span>
+    </span>{' '}
+    is an Ethereum non fungible token!{' '}
   </MembersBar>
 )
 
@@ -28,61 +29,23 @@ MembershipLocked.propTypes = {
 }
 
 export class Membership extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      isMember: props.isMember || 'pending',
-    }
-    this.unlockListener = event => {
-      if (event.detail === 'unlocked') {
-        this.setState(state => ({
-          ...state,
-          isMember: 'yes',
-        }))
-      } else if (event.detail === 'locked') {
-        this.setState(state => ({
-          ...state,
-          isMember: 'no',
-        }))
-      }
-    }
-  }
-
-  componentDidMount() {
-    window.addEventListener('unlockProtocol', this.unlockListener)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('unlockProtocol', this.unlockListener)
-  }
-
-  becomeMember() {
-    window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
-  }
+  static contextType = MembershipContext
 
   render() {
-    const { isMember } = this.state
+    const { isMember, becomeMember } = this.context
     if (isMember === 'yes') {
       return <MembershipUnlocked />
     }
-    return <MembershipLocked becomeMember={this.becomeMember} />
+    if (isMember === 'no') {
+      return <MembershipLocked becomeMember={becomeMember} />
+    }
+    return null
   }
-}
-
-Membership.propTypes = {
-  isMember: PropTypes.string,
-}
-
-Membership.defaultProps = {
-  isMember: 'pending',
 }
 
 export default Membership
 
 const MembersBar = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
   justify-content: center;
   align-content: center;
   background-color: black;
@@ -92,6 +55,7 @@ const MembersBar = styled.div`
   padding: 15px;
   bottom: 0;
   text-align: center;
+  z-index: 1000; /* Commento's comment box would show above */
 `
 
 const Button = styled.div`
