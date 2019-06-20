@@ -41,6 +41,11 @@ export interface LocalStorageWindow {
 }
 
 // used in web3Proxy.ts
+export interface Web3WalletInfo {
+  noWallet: boolean
+  notEnabled: boolean
+  isMetamask: boolean
+}
 export interface web3MethodCall {
   method: string
   params: any[]
