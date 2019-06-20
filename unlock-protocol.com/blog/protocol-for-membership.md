@@ -21,7 +21,7 @@ Up until now, _we monetized the web through attention_. The creators who were ab
 
 Unlock is a protocol for memberships. Creators have locks which define the terms of the membership (price, duration, quantity, or even currency!) and consumers can purchase keys to these locks.
 
-In practice, that means that the protocol empowers creators (or anyone, really!) to create locks for their communities. It's a protocol so that anyone can participate: there is no gatekeeper or middlemen.
+In practice, that means that the protocol empowers creators (or anyone, really!) to create locks for their communities. It's an open protocol, so anyone can participate: there is no gatekeeper or middleman.
 
 Locks themselves can be used for many different things, limiting access to content (paywall...), to features (software licenses...), or even status (patronage...).
 
