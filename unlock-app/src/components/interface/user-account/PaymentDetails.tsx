@@ -1,61 +1,71 @@
+/* eslint react/display-name: 0 */
 import React from 'react'
-import withConfig from '../../../utils/withConfig'
-import { ReactStripeElements, StripeProvider, Elements, CardElement, injectStripe } from 'react-stripe-elements'
+import {
+  ReactStripeElements,
+  StripeProvider,
+  Elements,
+  CardElement,
+  injectStripe,
+} from 'react-stripe-elements'
+import { SectionHeader, Column, Grid, SubmitButton } from './styles'
 
 interface PaymentDetailsProps {
-  config: {
-    stripeApiKey: string
-  }
+  stripe: any
   emailAddress: string
 }
 
-export const PaymentDetails = ({ config, emailAddress }: PaymentDetailsProps) => {
-  const Form = injectStripe(PaymentForm)
-  return (
-    <StripeProvider apiKey={config.stripeApiKey}>
-      <Elements>
-        <Form emailAddress={emailAddress} />
-      </Elements>
-    </StripeProvider>
-  )
-}
+export const PaymentDetails = React.memo(
+  ({ stripe, emailAddress }: PaymentDetailsProps) => {
+    const Form = injectStripe(PaymentForm)
+    return (
+      <StripeProvider stripe={stripe}>
+        <Elements>
+          <Form emailAddress={emailAddress} />
+        </Elements>
+      </StripeProvider>
+    )
+  }
+)
 
 interface PaymentFormProps {
   emailAddress: string
 }
 
 export class PaymentForm extends React.Component<
-PaymentFormProps & ReactStripeElements.InjectedStripeProps
+  PaymentFormProps & ReactStripeElements.InjectedStripeProps
 > {
-  async handleSubmit(event: React.FormEvent) {
+  handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
 
     const { stripe, emailAddress } = this.props
     if (stripe) {
-      const result = await stripe.createPaymentMethod('card', {
-        billing_details: {
-          email: emailAddress,
-        },
+      const result = await stripe.createToken({
+        name: emailAddress,
       })
 
       if (result.error) {
         console.log(result.error)
-      } else if (result.paymentMethod) {
-        console.log(result.paymentMethod)
+      } else if (result.token) {
+        console.log(result.token)
       }
     }
   }
-  
-  render () {
+
+  render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Card details
+      <Grid>
+        <SectionHeader>Card Details</SectionHeader>
+        <Column size="full">
           <CardElement />
-        </label>
-      </form>
+        </Column>
+        <Column size="half">
+          <SubmitButton onClick={this.handleSubmit}>
+            Add Payment Method
+          </SubmitButton>
+        </Column>
+      </Grid>
     )
   }
 }
 
-export default withConfig(PaymentDetails)
+export default PaymentDetails
