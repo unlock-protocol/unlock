@@ -41,5 +41,5 @@ export default function startup(window: UnlockWindow) {
   )
   addIframeToDocument(window, userAccountsIframe)
 
-  setupPostOffices(window, dataIframe, checkoutIframe)
+  setupPostOffices(window, dataIframe, checkoutIframe, userAccountsIframe)
 }

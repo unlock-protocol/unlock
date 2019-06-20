@@ -171,10 +171,11 @@ describe('unlock.js startup', () => {
 
     // this is a simple way to test whether setupPostOffices was called
     // by checking to see if event listeners for postMessage were set up
-    // The 3 are:
+    // The 4 are:
     // - the data iframe post office
     // - the checkout UI post office
+    // - the user accounts UI post office
     // - the Web3ProxyProvider post office
-    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(3)
+    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(4)
   })
 })

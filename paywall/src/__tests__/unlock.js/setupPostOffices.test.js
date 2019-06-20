@@ -5,6 +5,7 @@ describe('setupPostOffice', () => {
   let fakeWindow
   let fakeDataIframe
   let fakeUIIframe
+  let fakeAccountIframe
 
   function sendMessage(source, type, payload) {
     fakeWindow.handlers.message.forEach(handler =>
@@ -19,6 +20,7 @@ describe('setupPostOffice', () => {
 
   beforeEach(() => {
     process.env.PAYWALL_URL = 'http://paywall'
+    process.env.UNLOCK_APP_URL = 'http://unlock-app'
     fakeWindow = {
       document: {
         body: {
@@ -70,7 +72,20 @@ describe('setupPostOffice', () => {
       },
       className: 'unlock start',
     }
-    setupPostOffices(fakeWindow, fakeDataIframe, fakeUIIframe)
+    fakeAccountIframe = {
+      contentWindow: {
+        Iam: 'UI',
+        origin: 'http://unlock-app',
+        postMessage: jest.fn(),
+      },
+      className: 'unlock start',
+    }
+    setupPostOffices(
+      fakeWindow,
+      fakeDataIframe,
+      fakeUIIframe,
+      fakeAccountIframe
+    )
   })
 
   it('should create the unlockProtocol object with "loadCheckoutModal" that shows the iframe', () => {
