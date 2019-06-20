@@ -26,12 +26,42 @@ export type MessageHandlerTemplates<T extends MessageTypes> = {
   [key in T]?: MessageHandlerTemplate<T>
 }
 
+/**
+ * Set up all of the post offices for each iframe.
+ *
+ * Example:
+ *
+ * {
+ *   [PostMessages.READY]: (send, _, checkout) => {
+ *     return () => {
+ *       send('data', PostMessages.SEND_UPDATES, 'network')
+ *       send('data', PostMessages.SEND_UPDATES, 'account')
+ *       send('data', PostMessages.SEND_UPDATES, 'locks')
+ *       send('data', PostMessages.SEND_UPDATES, 'balance')
+ *       if (window.unlockProtocolConfig.type === 'paywall') {
+ *         showIframe(window, checkout)
+ *       }
+ *     }
+ *   },
+ *   [PostMessages.DISMISS_CHECKOUT]: () => {
+ *      hideCheckoutModal()
+ *   }
+ * }
+ *
+ * @returns {Function} this function accepts a map of postMessage
+ * types to handler templates (MessageHandlerTemplate)
+ * defined above. This template will receive a postMessage sender
+ * that can be used to send a message to any iframe. It also
+ * receives all of the iframes so that they can be modified,
+ * for example by showing or hiding the iframe.
+ */
 export default function setupIframeMailbox(
   window: PostOfficeWindow,
   checkoutIframe: IframeType,
   dataIframe: IframeType,
   accountIframe: IframeType
 ) {
+  // first, create the post offices for each iframe
   const {
     postMessage: dataPostOffice,
     addHandler: addDataMessageHandler,
@@ -64,6 +94,7 @@ export default function setupIframeMailbox(
     'Account UI'
   )
 
+  // next, define the dispatcher for adding new postMessage handlers
   const addHandler = (
     forIframe: IframeNames,
     type: string,
@@ -79,6 +110,7 @@ export default function setupIframeMailbox(
     }
   }
 
+  // next, define the dispatcher for sending postMessage messages
   const send = (
     to: IframeNames,
     type: MessageTypes,
@@ -93,6 +125,8 @@ export default function setupIframeMailbox(
         return checkoutUIPostOffice(type, payload)
     }
   }
+
+  // next, define the template handler that will be used to create the postMessage listeners
   const createHandler = (
     forIframe: IframeNames,
     type: string,
@@ -107,6 +141,7 @@ export default function setupIframeMailbox(
     addHandler(forIframe, type, listener)
   }
 
+  // finally, return the mapper that will convert a map of postMessage types to handlers
   return (
     forIframe: IframeNames,
     handlers: MessageHandlerTemplates<MessageTypes>
