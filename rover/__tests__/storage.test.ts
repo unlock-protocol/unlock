@@ -1,36 +1,36 @@
-import { Storage } from "../src/storage";
+import { Storage } from '../src/storage'
 
-describe("Storage", () => {
-  let connectionManager;
-  let storage;
+describe('Storage', () => {
+  let connectionManager
+  let storage
   beforeAll(() => {
     connectionManager = {
-      save: jest.fn()
-    };
-    storage = new Storage(connectionManager);
-  });
+      save: jest.fn(),
+    }
+    storage = new Storage(connectionManager)
+  })
 
-  describe("storeBlock", () => {
-    it("persists the passed block", () => {
-      storage.storeBlock({ miner: "minerid" });
+  describe('storeBlock', () => {
+    it('persists the passed block', () => {
+      storage.storeBlock({ miner: 'minerid' })
       expect(connectionManager.save).toHaveBeenCalledWith({
         difficulty: undefined,
         extraData: undefined,
-        gasLimit: "undefined",
-        gasUsed: "undefined",
+        gasLimit: 'undefined',
+        gasUsed: 'undefined',
         hash: undefined,
-        miner: "minerid",
+        miner: 'minerid',
         nonce: undefined,
         number: undefined,
         parentHash: undefined,
-        timestamp: undefined
-      });
-    });
-  });
+        timestamp: undefined,
+      })
+    })
+  })
 
-  describe("storeTransaction", () => {
-    it("perists the passed transaction", () => {
-      storage.storeTransaction({ r: 37 });
+  describe('storeTransaction', () => {
+    it('perists the passed transaction', () => {
+      storage.storeTransaction({ r: 37 })
       expect(connectionManager.save).toHaveBeenCalledWith({
         blockHash: undefined,
         blockNumber: undefined,
@@ -49,8 +49,17 @@ describe("Storage", () => {
         to: undefined,
         transactionIndex: undefined,
         v: undefined,
-        value: undefined
-      });
-    });
-  });
-});
+        value: undefined,
+      })
+    })
+  })
+
+  describe('storeRegistree', () => {
+    it('persists the passed registree', () => {
+      storage.storeRegistree({address: '0x4ceF00d'})
+      expect(connectionManager.save).toHaveBeenCalledWith({
+        address: '0x4ceF00d',
+      })
+    })
+  })
+})
