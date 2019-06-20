@@ -37,7 +37,7 @@
     "react-redux": "7.1.0",
     "react-showdown": "1.6.0",
     "react-test-renderer": "16.8.6",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "8.0.1",
     "rss": "1.2.2",
     "run-script-os": "1.0.5",
     "storybook-chromatic": "1.3.3",

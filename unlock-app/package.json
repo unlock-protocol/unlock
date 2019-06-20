@@ -50,7 +50,7 @@
     "react-redux": "7.1.0",
     "react-stripe-elements": "3.0.0",
     "react-test-renderer": "16.8.6",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "8.0.1",
     "redux": "4.0.1",
     "rss": "1.2.2",
     "run-script-os": "1.0.5",

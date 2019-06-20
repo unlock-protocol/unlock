@@ -59,7 +59,7 @@
     "react-router": "5.0.1",
     "react-select": "3.0.4",
     "react-test-renderer": "16.8.6",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "8.0.1",
     "redux": "4.0.1",
     "run-script-os": "1.0.5",
     "styled-components": "4.3.1",
