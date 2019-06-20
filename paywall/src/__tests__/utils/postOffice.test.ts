@@ -8,6 +8,7 @@ import {
   IframePostOfficeWindow,
   Iframe,
 } from '../../utils/postOffice'
+import { PostMessages } from '../../messageTypes'
 
 describe('postOffice', () => {
   const fakeResponder = () => {}
@@ -69,11 +70,11 @@ describe('postOffice', () => {
       )
 
       expect(postMessage).toBeInstanceOf(Function)
-      postMessage('hi', 'there')
+      postMessage(PostMessages.ACCOUNT, 'there')
 
       expect(fakeTarget.postMessage).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: 'hi',
+          type: PostMessages.ACCOUNT,
           payload: 'there',
         }),
         'hi'
@@ -416,10 +417,10 @@ describe('postOffice', () => {
       const { addHandler, postMessage } = iframePostOffice(fakeWindow, '', '')
       addHandler('hi', listener)
 
-      postMessage('type', 'response')
+      postMessage(PostMessages.ACCOUNT, 'response')
 
       expect(fakeTarget.postMessage).toHaveBeenCalledWith(
-        { type: 'type', payload: 'response' },
+        { type: PostMessages.ACCOUNT, payload: 'response' },
         'http://fun.times'
       )
     })
@@ -491,10 +492,10 @@ describe('postOffice', () => {
       )
       addHandler('hi', listener)
 
-      postMessage('type', 'response')
+      postMessage(PostMessages.ACCOUNT, 'response')
 
       expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-        { type: 'type', payload: 'response' },
+        { type: PostMessages.ACCOUNT, payload: 'response' },
         'http://fun.times'
       )
     })
