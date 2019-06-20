@@ -41,7 +41,7 @@
     "node-forge": "0.8.4",
     "path-match": "1.2.4",
     "prop-types": "15.7.2",
-    "query-string": "6.5.0",
+    "query-string": "6.8.0",
     "react": "16.8.6",
     "react-copy-to-clipboard": "5.0.1",
     "react-dom": "16.8.6",
