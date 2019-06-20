@@ -10,9 +10,15 @@ import { blockHandler } from './handler/block'
 import * as path from 'path'
 
 import Backfiller from './backfill'
+import { Registry } from './registry'
 
 const express = require('express')
 const app = express()
+config({ path: path.resolve(process.cwd(), '.env') })
+let configuration = require('../config/config')
+let emitter = new RoverEmitter()
+let provider = new ethers.providers.JsonRpcProvider(configuration.provider_uri)
+const port = configuration.serverPort
 
 async function main(provider, emitter, configuration) {
   let connection = await createConnection(configuration)
@@ -32,28 +38,32 @@ async function main(provider, emitter, configuration) {
     )
   })
 
-  emitter.on('registration', registree => {
+  emitter.on('registration', async registree => {
     backfill.backfill(registree)
   })
 }
 
-config({ path: path.resolve(process.cwd(), '.env') })
-let configuration = require('../config/config')
+async function registration(registry, storage, entry){
+  if (!registry.includes(entry)) {
+    await storage.storeRegistree({
+      address: entry,
+    })
 
-let emitter = new RoverEmitter()
-let provider = new ethers.providers.JsonRpcProvider(configuration.provider_uri)
+    emitter.emit('registration', entry)
+  }
+
+}
+
 main(provider, emitter, configuration)
-
-const port = configuration.serverPort
 
 createConnection(configuration).then(async connection => {
   let storage = new Storage(connection.manager)
-  app.post('/register/:registree', (req, res) => {
+
+  app.post('/register/:registree', async (req, res) => {
     let registree = req.params.registree
-    storage.storeRegistree({
-      address: registree,
-    })
-    emitter.emit('registration', registree)
+    let registry = await Registry.get(connection)
+
+    await registration(registry, storage, registree)
     res.sendStatus(200)
   })
 
