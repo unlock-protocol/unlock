@@ -82,7 +82,7 @@
     "nodemon": "1.19.1",
     "sqlite3": "4.0.9",
     "supertest": "4.0.2",
-    "tsc-watch": "2.1.2"
+    "tsc-watch": "2.2.1"
   },
   "jest": {
     "testMatch": [
