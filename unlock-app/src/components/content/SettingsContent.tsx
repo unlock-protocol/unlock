@@ -21,7 +21,7 @@ interface SettingsContentProps {
   }
 }
 interface SettingsContentState {
-  stripe: any
+  stripe: stripe.Stripe | null
 }
 
 export class SettingsContent extends React.Component<
