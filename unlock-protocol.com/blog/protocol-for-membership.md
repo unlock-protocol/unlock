@@ -15,7 +15,7 @@ The difference between the web and native applications is the presence of **link
 
 However, since the beginning, these links have also formed **communities**. Websites which discuss the same topics tend to link to each other, creating de-facto communities of interest. The social web reinforced that trend: people following each other formed more communities. Creators gathered groups of users around their work. Whether they are blogger or journalists, musician or even developers, they formed groups which attracted users because of their values, the content they produce, or even the tools that were offered to the members of the community.
 
-Up until now, _we monetized the web through attention_. The creators who were able to "steal" the most would be paid the most. We're obviously reaching the limits of that model. It is time to start considering that these communities have value for their members... and that these members actually want to contribute to the community as well.
+Up until now, _we monetized the web through attention_. The creators who were able to "steal" the most would be paid the most. We're obviously reaching the limits of that model. It is time to start considering that these communities have value for their members... and that these members actually want to contribute to their communities as well.
 
 ## A protocol for memberships
 
