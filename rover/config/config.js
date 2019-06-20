@@ -17,5 +17,5 @@ module.exports = {
   },
   provider_uri: process.env.WEB3_PROVIDER_HOST,
   network: process.env.NETWORK,
-  serverPort: process.env.SERVER_PORT,
+  serverPort: process.env.SERVER_PORT || 4242,
 }
