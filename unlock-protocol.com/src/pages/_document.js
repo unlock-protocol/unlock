@@ -31,7 +31,7 @@ export default class MyDocument extends Document {
         icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
         callToAction: {
           default:
-            'Unlock lets you easily offer paid memberships to your website or application. On this website, members can leave comments and participate in discussion. It's free to try! Just click "purchase" below.',
+            'Unlock lets you easily offer paid memberships to your website or application. On this website, members can leave comments and participate in discussion. It is free to try! Just click "purchase" below.',
         },
       }`,
     }
