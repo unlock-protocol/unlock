@@ -33,6 +33,10 @@ import {
   confirmKeyPurchase,
   GET_STORED_PAYMENT_DETAILS,
   getStoredPaymentDetails,
+  SIGN_PURCHASE_DATA,
+  signPurchaseData,
+  SIGNED_PURCHASE_DATA,
+  signedPurchaseData,
 } from '../../actions/user'
 
 const key = {
@@ -257,6 +261,43 @@ describe('user account actions', () => {
       }
 
       expect(signedPaymentData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        recipient: '0x123abc',
+        lock: '0x321bca',
+      }
+
+      const expectedAction = {
+        type: SIGN_PURCHASE_DATA,
+        data,
+      }
+
+      expect(signPurchaseData(data)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          purchaseRequest: {
+            recipient: '0x123abc',
+            lock: 'ox321bca',
+            expiry: 60,
+          },
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_PURCHASE_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedPurchaseData({ data, sig })).toEqual(expectedAction)
     })
   })
 
