@@ -1,3 +1,5 @@
+import { MessageTypes, ExtractPayload } from '../messageTypes'
+
 export interface MessageEvent {
   source: any
   origin: string
@@ -27,16 +29,17 @@ export interface Iframe {
   contentWindow: PostMessageTarget
 }
 
-// TODO: stricter type, use a union of all allowed postmessage types
-export type PostMessageResponder = (type: string, payload?: any) => void
+export type PostMessageResponder<T extends MessageTypes> = (
+  type: T,
+  payload: ExtractPayload<T>
+) => void
 
 export type PostMessageListener = (
   payload: any,
-  respond: PostMessageResponder
+  respond: any // TODO fix to make this the same signature as postMessage
 ) => void
 
 export interface PostMessageHandlers {
-  // TODO: stricter type, use a union of all allowed postmessage types
   [key: string]: Map<PostMessageListener, PostMessageListener>
 }
 
@@ -58,7 +61,7 @@ export interface PostMessageHandlers {
  * @param {string} targetOrigin the origin of the target (in CORS settings
  *                              this cannot be retrieved from the target)
  */
-export function setupPostOffice(
+export function setupPostOffice<T extends MessageTypes = MessageTypes>(
   window: PostOfficeWindow,
   target: PostMessageTarget,
   targetOrigin: string,
@@ -92,10 +95,7 @@ export function setupPostOffice(
             targetOrigin
           )
         }
-        listener(event.data.payload, (type, response) => {
-          if (typeof type !== 'string') {
-            throw new Error('internal error: type must be a string')
-          }
+        const responder = (type: T, response: ExtractPayload<T>) => {
           if (debug) {
             // eslint-disable-next-line no-console
             console.log(
@@ -106,20 +106,22 @@ export function setupPostOffice(
             )
           }
           target.postMessage({ type, payload: response }, targetOrigin)
-        })
+        }
+        listener(event.data.payload, responder)
       })
     }
   })
   return {
-    // TODO: stricter type, use a union of all allowed postmessage types
     addHandler: (type: string, listener: PostMessageListener) => {
       if (!handlers[type]) {
         handlers[type] = new Map()
       }
       handlers[type].set(listener, listener)
     },
-    // TODO: stricter type, use a union of all allowed postmessage types
-    postMessage: (type: string, payload?: any) => {
+    postMessage: <T extends MessageTypes>(
+      type: T,
+      payload: ExtractPayload<T>
+    ) => {
       if (debug) {
         // eslint-disable-next-line no-console
         console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
