@@ -5,7 +5,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@unlock-protocol/unlock-js": "0.3.2",
+    "@unlock-protocol/unlock-js": "0.3.3",
     "ethers": "4.0.27"
   }
 }
