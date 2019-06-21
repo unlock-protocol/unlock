@@ -27,14 +27,14 @@ describe('unlock.js startup', () => {
     }
     fakeUserAccountsIframe = {
       name: 'user accounts iframe',
-      origin: 'http://unlock-app',
+      origin: 'http://unlock-app.com',
       setAttribute: jest.fn(),
       contentWindow: {
         postMessage: jest.fn(),
       },
     }
     process.env.PAYWALL_URL = 'http://paywall'
-    process.env.USER_IFRAME_URL = 'http://unlock-app'
+    process.env.USER_IFRAME_URL = 'http://unlock-app.com/account'
     fakeWindow = {
       setInterval: jest.fn(),
       document: {
@@ -156,7 +156,7 @@ describe('unlock.js startup', () => {
 
       expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
         'src',
-        'http://unlock-app/account?origin=http%3A%2F%2Ffun.times'
+        `${process.env.USER_IFRAME_URL}?origin=http%3A%2F%2Ffun.times`
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
@@ -171,10 +171,11 @@ describe('unlock.js startup', () => {
 
     // this is a simple way to test whether setupPostOffices was called
     // by checking to see if event listeners for postMessage were set up
-    // The 3 are:
+    // The 4 are:
     // - the data iframe post office
     // - the checkout UI post office
+    // - the user accounts UI post office
     // - the Web3ProxyProvider post office
-    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(3)
+    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(4)
   })
 })

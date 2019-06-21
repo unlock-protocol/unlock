@@ -83,13 +83,14 @@ export default function setupIframeMailbox(
     'Checkout UI'
   )
 
+  const url = new URL(process.env.USER_IFRAME_URL)
   const {
     postMessage: accountUIPostOffice,
     addHandler: addAccountMessageHandler,
   } = mainWindowPostOffice(
     window,
     accountIframe,
-    process.env.UNLOCK_APP_URL,
+    url.origin,
     'main window',
     'Account UI'
   )
