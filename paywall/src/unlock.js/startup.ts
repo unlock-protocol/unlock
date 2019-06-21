@@ -37,9 +37,9 @@ export default function startup(window: UnlockWindow) {
   addIframeToDocument(window, checkoutIframe)
   const userAccountsIframe = makeIframe(
     window,
-    process.env.USER_IFRAME_URL + '/account' + origin
+    process.env.USER_IFRAME_URL + origin
   )
   addIframeToDocument(window, userAccountsIframe)
 
-  setupPostOffices(window, dataIframe, checkoutIframe)
+  setupPostOffices(window, dataIframe, checkoutIframe, userAccountsIframe)
 }
