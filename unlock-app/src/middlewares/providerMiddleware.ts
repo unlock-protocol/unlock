@@ -12,6 +12,8 @@ import {
   signedUserData,
   SIGN_PAYMENT_DATA,
   signedPaymentData,
+  SIGN_PURCHASE_DATA,
+  signedPurchaseData,
 } from '../actions/user'
 
 interface Provider {
@@ -93,6 +95,9 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_PAYMENT_DATA) {
           const payload = provider.signPaymentData(action.stripeTokenId)
           dispatch(signedPaymentData(payload))
+        } else if (action.type === SIGN_PURCHASE_DATA) {
+          const payload = provider.signKeyPurchaseRequestData(action.data)
+          dispatch(signedPurchaseData(payload))
         }
 
         next(action)

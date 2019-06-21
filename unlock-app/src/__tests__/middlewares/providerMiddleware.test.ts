@@ -10,6 +10,7 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
   SIGN_PAYMENT_DATA,
+  SIGN_PURCHASE_DATA,
 } from '../../actions/user'
 
 const config = {
@@ -18,6 +19,7 @@ const config = {
       isUnlock: true,
       signUserData: jest.fn(() => ({ data: {}, sig: {} })),
       signPaymentData: jest.fn(() => ({ data: {}, sig: {} })),
+      signKeyPurchaseRequestData: jest.fn(() => ({ data: {}, sig: {} })),
     },
     NUNLOCK: {
       enable: jest.fn(() => new Promise(resolve => resolve(true))),
@@ -219,6 +221,29 @@ describe('provider middleware', () => {
       })(next)({
         type: SIGN_PAYMENT_DATA,
         stripeTokenId: 'tok_1EPsocIsiZS2oQBMRXzw21xh',
+      })
+    })
+  })
+
+  describe('SIGN_PURCHASE_DATA', () => {
+    it('should call UnlockProvider', () => {
+      expect.assertions(1)
+      const data = {
+        recipient: '0x123abc',
+        lock: '0x321cba',
+      }
+      const next = () => {
+        expect(
+          config.providers['UNLOCK'].signKeyPurchaseRequestData
+        ).toHaveBeenCalledWith(data)
+      }
+
+      providerMiddleware(config)({
+        getState: () => ({ provider: 'UNLOCK' }),
+        dispatch,
+      })(next)({
+        type: SIGN_PURCHASE_DATA,
+        data,
       })
     })
   })
