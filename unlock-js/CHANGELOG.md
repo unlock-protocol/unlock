@@ -1,6 +1,6 @@
 # Changes
 
-## Next version
+## 0.3.3
 - UnlockProvider gains the capability to sign key purchase requests
 
 ## 0.3.2
