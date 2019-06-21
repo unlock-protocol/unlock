@@ -11,7 +11,8 @@ declare const process: {
 }
 
 process.env.PAYWALL_URL = 'paywall'
-process.env.UNLOCK_APP_URL = 'unlock-app'
+process.env.USER_IFRAME_URL = 'http://unlock-app.com/account'
+const unlockOrigin = 'http://unlock-app.com'
 describe('setupIframeMailbox', () => {
   let fakeCheckoutIframe: IframeType
   let fakeDataIframe: IframeType
@@ -56,7 +57,7 @@ describe('setupIframeMailbox', () => {
       case 'account':
         iframe = fakeAccountIframe
         postMessageIndex = 2
-        origin = process.env.UNLOCK_APP_URL
+        origin = unlockOrigin
         break
       case 'checkout':
         iframe = fakeCheckoutIframe
@@ -291,7 +292,7 @@ describe('setupIframeMailbox', () => {
                 type: PostMessages.SEND_UPDATES,
                 payload: 'account',
               },
-              'unlock-app'
+              'http://unlock-app.com'
             )
           }
         },
