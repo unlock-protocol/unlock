@@ -54,9 +54,9 @@ export interface ChainExplorerURLBuilders {
 
 export interface PaywallCallToAction {
   default: string
-  expired: string
-  pending: string
-  confirmed: string
+  expired?: string
+  pending?: string
+  confirmed?: string
 }
 
 export interface PaywallConfigLocks {
