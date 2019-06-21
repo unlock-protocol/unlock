@@ -65,7 +65,7 @@
     "npm-check": "5.9.0"
   },
   "engines": {
-    "node": "=8.11.4"
+    "node": "8.16.0"
   },
   "engineStrict": true,
   "scripts": {
