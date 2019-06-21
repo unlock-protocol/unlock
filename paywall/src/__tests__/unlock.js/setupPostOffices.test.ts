@@ -226,6 +226,9 @@ describe('setupPostOffice', () => {
       locks: {},
       callToAction: {
         default: '',
+        expired: '',
+        pending: '',
+        confirmed: '',
       },
     }
 
