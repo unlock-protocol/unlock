@@ -1,5 +1,8 @@
 # Changes
 
+## 0.3.4
+- Bugfix: using correctly formatted structured data for key purchase requests
+
 ## 0.3.3
 - UnlockProvider gains the capability to sign key purchase requests
 
