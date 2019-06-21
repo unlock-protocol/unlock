@@ -402,6 +402,50 @@ describe('StorageService', () => {
     })
   })
 
+  describe('Purchase key', () => {
+    describe('When a key purchase succeeds', () => {
+      it('emits a success', done => {
+        expect.assertions(2)
+        const data = {
+          message: {
+            purchaseRequest: {
+              lock: '0x321cba',
+            },
+          },
+        }
+        axios.post.mockReturnValue()
+
+        storageService.on(success.keyPurchase, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+
+        storageService.purchaseKey(data, {})
+
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/purchase`,
+          data,
+          expect.objectContaining({
+            headers: expect.any(Object),
+          })
+        )
+      })
+    })
+
+    describe('when a key purchase fails', () => {
+      it('emits a failure', done => {
+        expect.assertions(1)
+        axios.post.mockRejectedValue()
+        storageService.on(failure.keyPurchase, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+
+        storageService.purchaseKey({}, {})
+      })
+    })
+  })
+
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
       it('emits a success', done => {
