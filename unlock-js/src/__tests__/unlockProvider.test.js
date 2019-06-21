@@ -101,6 +101,21 @@ describe('Unlock Provider', () => {
         )
       })
     })
+
+    describe('signKeyPurchaseRequestData', () => {
+      it('should sign a key purchase request', () => {
+        expect.assertions(1)
+        const input = {
+          recipient: publicKey,
+          lock: '0xaC6b4470B0cba92b823aB96762972e67a1C851d5',
+        }
+        const output = provider.signKeyPurchaseRequestData(input)
+
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {

@@ -1,5 +1,8 @@
 # Changes
 
+## Next version
+- UnlockProvider gains the capability to sign key purchase requests
+
 ## 0.3.2
 - UnlockProvider gains a `signPaymentData` method that will allow it to sign
   payment details in a way that locksmith can verify and associate with the user
