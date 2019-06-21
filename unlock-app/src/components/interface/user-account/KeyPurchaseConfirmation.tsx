@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { confirmKeyPurchase } from '../../../actions/user'
+import { signPurchaseData, PurchaseData } from '../../../actions/user'
 import {
   Grid,
   Item,
@@ -12,32 +12,38 @@ import {
 
 interface KeyPurchaseConfirmationProps {
   emailAddress: string
-  confirmKeyPurchase: () => any
+  signPurchaseData: (data: PurchaseData) => any
 }
 
 // TODO: get credit card in state, pass in here for use
 // TODO: get lock information, use in here
 export const KeyPurchaseConfirmation = ({
   emailAddress,
-  confirmKeyPurchase,
-}: KeyPurchaseConfirmationProps) => (
-  <Grid>
-    <SectionHeader>Confirm Purchase</SectionHeader>
-    <Item title="Account" size="full">
-      <ItemValue>{emailAddress}</ItemValue>
-    </Item>
-    <Item title="Credit Card" size="full">
-      <ItemValue>Visa ending in 5869</ItemValue>
-    </Item>
-    <LockInfo price="$17.19" timeRemaining="30 Days" />
-    <SubmitButton onClick={confirmKeyPurchase} roundBottomOnly>
-      Confirm Purchase
-    </SubmitButton>
-  </Grid>
-)
+  signPurchaseData,
+}: KeyPurchaseConfirmationProps) => {
+  const data: PurchaseData = {
+    recipient: '',
+    lock: '',
+  }
+  return (
+    <Grid>
+      <SectionHeader>Confirm Purchase</SectionHeader>
+      <Item title="Account" size="full">
+        <ItemValue>{emailAddress}</ItemValue>
+      </Item>
+      <Item title="Credit Card" size="full">
+        <ItemValue>Visa ending in 5869</ItemValue>
+      </Item>
+      <LockInfo price="$17.19" timeRemaining="30 Days" />
+      <SubmitButton onClick={() => signPurchaseData(data)} roundBottomOnly>
+        Confirm Purchase
+      </SubmitButton>
+    </Grid>
+  )
+}
 
 export const mapDispatchToProps = (dispatch: any) => ({
-  confirmKeyPurchase: () => dispatch(confirmKeyPurchase()),
+  signPurchaseData: (data: PurchaseData) => dispatch(signPurchaseData(data)),
 })
 
 interface ReduxState {

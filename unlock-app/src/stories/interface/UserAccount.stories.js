@@ -4,7 +4,7 @@ import { AccountInfo } from '../../components/interface/user-account/AccountInfo
 import { ChangePassword } from '../../components/interface/user-account/ChangePassword'
 import { KeyPurchaseConfirmation } from '../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PaymentMethods } from '../../components/interface/user-account/PaymentMethods'
-import { changePassword, confirmKeyPurchase } from '../../actions/user'
+import { changePassword, confirmKeyPurchase, signPurchaseData } from '../../actions/user'
 import { Grid } from '../../components/interface/user-account/styles'
 
 const cards = [
@@ -43,7 +43,7 @@ storiesOf('User Account/Components', module)
     return (
       <KeyPurchaseConfirmation
         emailAddress="jenny@googlemail.com"
-        confirmKeyPurchase={confirmKeyPurchase}
+        signPurchaseData={signPurchaseData}
       />
     )
   })
