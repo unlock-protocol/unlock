@@ -20,7 +20,8 @@ describe('setupPostOffice', () => {
 
   beforeEach(() => {
     process.env.PAYWALL_URL = 'http://paywall'
-    process.env.UNLOCK_APP_URL = 'http://unlock-app'
+    process.env.USER_IFRAME_URL = 'http://unlock-app.com'
+    const unlockOrigin = 'http://unlock-app.com'
     fakeWindow = {
       document: {
         body: {
@@ -75,7 +76,7 @@ describe('setupPostOffice', () => {
     fakeAccountIframe = {
       contentWindow: {
         Iam: 'UI',
-        origin: 'http://unlock-app',
+        origin: unlockOrigin,
         postMessage: jest.fn(),
       },
       className: 'unlock start',
