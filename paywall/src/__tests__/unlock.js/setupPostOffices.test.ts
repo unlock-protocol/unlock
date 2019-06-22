@@ -1,18 +1,38 @@
 import setupPostOffices from '../../unlock.js/setupPostOffices'
-import { PostMessages } from '../../messageTypes'
+import { PostMessages, MessageTypes, ExtractPayload } from '../../messageTypes'
+import { UnlockWindow, IframeType } from '../../windowTypes'
 
 describe('setupPostOffice', () => {
-  let fakeWindow
-  let fakeDataIframe
-  let fakeUIIframe
-  let fakeAccountIframe
+  interface MockUnlockWindow extends UnlockWindow {
+    handlers: {
+      [key: string]: Function[]
+    }
+    storage: {
+      [key: string]: string
+    }
+  }
+  interface MockIframe extends IframeType {
+    origin: string
+    contentWindow: {
+      Iam: string
+      postMessage: (data: any, origin: string) => void
+    }
+  }
+  let fakeWindow: MockUnlockWindow
+  let fakeDataIframe: MockIframe
+  let fakeUIIframe: MockIframe
+  let fakeAccountIframe: MockIframe
 
-  function sendMessage(source, type, payload) {
+  function sendMessage(
+    source: MockIframe,
+    type: MessageTypes,
+    payload?: ExtractPayload<MessageTypes>
+  ) {
     fakeWindow.handlers.message.forEach(handler =>
       handler({
         type: 'message',
         data: { type, payload },
-        origin: 'http://paywall',
+        origin: source.origin,
         source: source.contentWindow,
       })
     )
@@ -23,21 +43,32 @@ describe('setupPostOffice', () => {
     process.env.USER_IFRAME_URL = 'http://unlock-app.com'
     const unlockOrigin = 'http://unlock-app.com'
     fakeWindow = {
+      setInterval: jest.fn(),
+      unlockProtocol: {
+        loadCheckoutModal: jest.fn(),
+      },
       document: {
+        createEvent: jest.fn(),
+        createElement: jest.fn(),
+        querySelector: jest.fn(),
         body: {
-          style: {},
+          insertAdjacentElement: jest.fn(),
+          style: {
+            overflow: '',
+          },
         },
       },
       origin: 'http://fun.times',
-      web3: {
-        currentProvider: {
-          send: jest.fn(),
-        },
-      },
-      CustomEvent: window.CustomEvent,
+      CustomEvent,
       dispatchEvent: jest.fn(),
       unlockProtocolConfig: {
-        config: 'thing',
+        locks: {},
+        callToAction: {
+          default: 'hi',
+          expired: '',
+          pending: '',
+          confirmed: '',
+        },
       },
       handlers: {},
       addEventListener(type, handler) {
@@ -46,6 +77,9 @@ describe('setupPostOffice', () => {
       },
       storage: {},
       localStorage: {
+        length: 1,
+        clear: jest.fn(),
+        key: jest.fn(),
         getItem: jest.fn(key => fakeWindow.storage[key]),
         setItem: jest.fn((key, value) => {
           if (typeof value !== 'string') {
@@ -59,27 +93,34 @@ describe('setupPostOffice', () => {
       },
     }
     fakeDataIframe = {
+      className: '',
+      setAttribute: jest.fn(),
+      src: 'http://paywall/data',
+      origin: 'http://paywall',
       contentWindow: {
         Iam: 'data',
-        origin: 'http://paywall',
         postMessage: jest.fn(),
       },
     }
     fakeUIIframe = {
+      className: 'unlock start',
+      setAttribute: jest.fn(),
+      src: 'http://paywall/checkout',
+      origin: 'http://paywall',
       contentWindow: {
         Iam: 'UI',
-        origin: 'http://paywall',
         postMessage: jest.fn(),
       },
-      className: 'unlock start',
     }
     fakeAccountIframe = {
+      className: 'unlock start',
+      setAttribute: jest.fn(),
+      src: 'http://unlock-app.com/account',
+      origin: unlockOrigin,
       contentWindow: {
-        Iam: 'UI',
-        origin: unlockOrigin,
+        Iam: 'account',
         postMessage: jest.fn(),
       },
-      className: 'unlock start',
     }
     setupPostOffices(
       fakeWindow,
@@ -103,9 +144,7 @@ describe('setupPostOffice', () => {
   it('responds to PostMessages.READY_WEB3 by sending PostMessages.WALLET_INFO', () => {
     expect.assertions(2)
 
-    sendMessage(fakeDataIframe, PostMessages.READY_WEB3, {
-      lock: { address: 'lock' },
-    })
+    sendMessage(fakeDataIframe, PostMessages.READY_WEB3)
 
     expect(fakeUIIframe.contentWindow.postMessage).not.toHaveBeenCalled()
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
@@ -184,6 +223,13 @@ describe('setupPostOffice', () => {
 
     fakeWindow.unlockProtocolConfig = {
       type: 'paywall',
+      locks: {},
+      callToAction: {
+        default: '',
+        expired: '',
+        pending: '',
+        confirmed: '',
+      },
     }
 
     sendMessage(fakeUIIframe, PostMessages.READY)
@@ -365,16 +411,30 @@ describe('setupPostOffice', () => {
   it('relays PostMessages.UPDATE_LOCKS to the checkout UI', () => {
     expect.assertions(1)
 
-    sendMessage(fakeDataIframe, PostMessages.UPDATE_LOCKS, {
-      lock: { address: 'lock' },
-    })
+    const locks = {
+      lock: {
+        address: 'lock',
+        name: 'string',
+        keyPrice: '1',
+        expirationDuration: 1,
+        key: {
+          expiration: 1,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: null,
+          lock: 'lock',
+        },
+        currencyContractAddress: null,
+      },
+    }
+
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_LOCKS, locks)
 
     expect(fakeUIIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: PostMessages.UPDATE_LOCKS,
-        payload: {
-          lock: { address: 'lock' },
-        },
+        payload: locks,
       },
       'http://paywall'
     )
