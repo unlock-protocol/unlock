@@ -98,7 +98,7 @@ export type Message =
     }
   | {
       type: PostMessages.UPDATE_WALLET
-      payload: undefined
+      payload: boolean
     }
   | {
       type: PostMessages.ERROR

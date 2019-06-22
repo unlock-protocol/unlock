@@ -71,8 +71,8 @@ export type PaywallAppKind = 'adblock' | 'paywall'
 
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
-  icon: string
-  type: PaywallAppKind
+  icon?: string
+  type?: PaywallAppKind
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
 }
