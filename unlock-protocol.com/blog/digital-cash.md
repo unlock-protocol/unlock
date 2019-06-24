@@ -2,7 +2,7 @@
 title: Digital Cash. Big Deal.
 subTitle: Wallets and their superpowers for users.
 authorName: Sascha Mombartz
-publishDate: June 23, 2019
+publishDate: June 24, 2019
 description: A quick exploration into blockchain wallets, their applications and why they're so powerful.
 image: /static/images/blog/digital-cash/digitalcash.jpg
 ---
