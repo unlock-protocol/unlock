@@ -29,6 +29,9 @@ export enum PostMessages {
   PURCHASE_KEY = 'purchaseKey',
   DISMISS_CHECKOUT = 'dismiss/checkout',
   INITIATED_TRANSACTION = 'initiated/transaction',
+
+  SHOW_ACCOUNTS_MODAL = 'show/accountsModal',
+  HIDE_ACCOUNTS_MODAL = 'hide/accountsModal',
 }
 // all the possible message types
 export type Message =
@@ -86,7 +89,7 @@ export type Message =
     }
   | {
       type: PostMessages.UPDATE_ACCOUNT
-      payload: string
+      payload: string | null
     }
   | {
       type: PostMessages.UPDATE_ACCOUNT_BALANCE
@@ -118,6 +121,14 @@ export type Message =
     }
   | {
       type: PostMessages.INITIATED_TRANSACTION
+      payload: undefined
+    }
+  | {
+      type: PostMessages.SHOW_ACCOUNTS_MODAL
+      payload: undefined
+    }
+  | {
+      type: PostMessages.HIDE_ACCOUNTS_MODAL
       payload: undefined
     }
 
