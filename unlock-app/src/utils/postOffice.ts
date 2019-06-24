@@ -43,6 +43,11 @@ export interface PostMessageHandlers {
   [key: string]: Map<PostMessageListener, PostMessageListener>
 }
 
+export interface PostOffice<T extends MessageTypes = MessageTypes> {
+  addHandler: (type: string, listener: PostMessageListener) => void
+  postMessage: (type: T, payload: ExtractPayload<T>) => void
+}
+
 /**
  * postMessage manager
  *
