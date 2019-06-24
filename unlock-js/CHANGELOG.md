@@ -1,5 +1,8 @@
 # Changes
 
+## 0.3.5
+- Bugfix: key purchase request signatures are no longer always expired
+
 ## 0.3.4
 - Bugfix: using correctly formatted structured data for key purchase requests
 
