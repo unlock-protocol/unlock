@@ -15,6 +15,7 @@ export const success = {
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
+  getCards: 'getCards.success',
 }
 
 export const failure = {
@@ -27,6 +28,7 @@ export const failure = {
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
+  getCards: 'getCards.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -259,6 +261,22 @@ export class StorageService extends EventEmitter {
       }
     } catch (error) {
       this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
+    }
+  }
+
+  /**
+   * Given a user's email address, retrieves the payment methods associated with
+   * their account. Except in event of error, will always respond with an array
+   * of 0 or more elements.
+   */
+  async getCards(emailAddress) {
+    try {
+      const response = await axios.get(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`
+      )
+      this.emit(success.getCards, response.data)
+    } catch (error) {
+      this.emit(failure.getCards, { error })
     }
   }
 }
