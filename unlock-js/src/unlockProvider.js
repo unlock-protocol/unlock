@@ -95,7 +95,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   // input contains recipient and lock addresses
   signKeyPurchaseRequestData(input) {
     // default signature expiration to now + 60 seconds
-    const expiry = Date.now() / 1000 + 60
+    const expiry = Math.floor(Date.now() / 1000) + 60
     const purchaseRequest = Object.assign(
       {
         expiry,
