@@ -9,7 +9,7 @@ const email = 'geoff@bitconnect.gov'
 
 describe('Reset Password Prompt', () => {
   beforeEach(() => {
-    dispatch = jest.fn((_: any) => true) // eslint-disable-line no-unused-vars
+    dispatch = jest.fn((_: any) => true)
   })
 
   it("should render a form including user's email address", () => {

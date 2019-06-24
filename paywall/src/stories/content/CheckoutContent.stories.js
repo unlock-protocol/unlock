@@ -13,6 +13,8 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_UPDATE_NETWORK,
+  POST_MESSAGE_LOCKED,
+  POST_MESSAGE_UNLOCKED,
 } from '../../paywall-builder/constants'
 import configure from '../../config'
 
@@ -37,6 +39,11 @@ const paywallConfig = {
       name: 'One Year',
     },
   },
+}
+
+const paywallTypePaywallConfig = {
+  ...paywallConfig,
+  type: 'paywall',
 }
 
 const locks = {
@@ -105,6 +112,7 @@ const fakeWindow = {
       action('postMessage')
     },
   },
+  console: window.console,
   addEventListener: (type, cb) => fakeWindow.handlers[type].set(cb, cb),
   removeEventListener: (type, cb) =>
     delete fakeWindow.handlers[type].delete(cb),
@@ -267,6 +275,127 @@ storiesOf('Checkout page', module)
             data: {
               type: POST_MESSAGE_UPDATE_NETWORK,
               payload: 1,
+            },
+          })
+        })
+      })
+    })
+    return <CheckoutContent />
+  })
+  .add('Checkout page, paywall checkout locked', () => {
+    // set the data needed to display the checkout
+    useEffect(() => {
+      const messageTemplate = {
+        type: 'message',
+        source: fakeWindow.parent,
+        origin: 'origin',
+      }
+      fakeWindow.handlers.message.forEach(postedMessage => {
+        postedMessage({
+          ...messageTemplate,
+          data: {
+            type: POST_MESSAGE_CONFIG,
+            payload: paywallTypePaywallConfig,
+          },
+        })
+        setTimeout(() => {
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT,
+              payload: lockAddress1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+              payload: '889',
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_LOCKS,
+              payload: locks,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_NETWORK,
+              payload: 1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_LOCKED,
+              payload: undefined,
+            },
+          })
+        })
+      })
+    })
+    return <CheckoutContent />
+  })
+  .add('Checkout page, paywall checkout unlocked', () => {
+    // set the data needed to display the checkout
+    useEffect(() => {
+      const messageTemplate = {
+        type: 'message',
+        source: fakeWindow.parent,
+        origin: 'origin',
+      }
+      fakeWindow.handlers.message.forEach(postedMessage => {
+        postedMessage({
+          ...messageTemplate,
+          data: {
+            type: POST_MESSAGE_CONFIG,
+            payload: paywallTypePaywallConfig,
+          },
+        })
+        setTimeout(() => {
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT,
+              payload: lockAddress1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+              payload: '889',
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_LOCKS,
+              payload: locks,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_NETWORK,
+              payload: 1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_LOCKED,
+              payload: undefined,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UNLOCKED,
+              payload: [lockAddress1],
             },
           })
         })

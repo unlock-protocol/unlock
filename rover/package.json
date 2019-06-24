@@ -1,16 +1,15 @@
 {
-   "name": "rover",
-   "version": "1.0.0",
-   "description": "",
-   "main": "index.js",
+   "name": "@unlock-protocol/rover",
+   "version": "0.1.4",
+   "description": "Rover persists relevant ethereum transactions to a datastore",
    "bin": {
-      "rover": "./build/index.js"
+      "rover": "./build/server.js"
    },
    "scripts": {
       "test": "jest",
+      "prebuild": "rm -rf ./build",
       "build": "tsc",
-      "start": "ts-node src/index.ts",
-      "backfill": "ts-node src/backfill.ts",
+      "start": "node ./build/server.js",
       "lint": "eslint --ext .tsx,.ts,.js src/",
       "ci": "npm run test"
    },
@@ -21,11 +20,11 @@
       "@types/node": "8.10.49",
       "dotenv": "8.0.0",
       "ethers": "4.0.27",
-      "express": "4.17.0",
+      "express": "4.17.1",
       "pg": "7.11.0",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
-      "typeorm": "0.2.17"
+      "typeorm": "0.2.18"
    },
    "lint-staged": {
       "linters": {

@@ -14,6 +14,7 @@
     "@types/next": "8.0.5",
     "@types/react": "16.8.20",
     "@types/react-redux": "7.1.0",
+    "@types/react-stripe-elements": "^1.1.10",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.1.16",
     "@unlock-protocol/unlock-js": "0.3.2",
@@ -59,7 +60,6 @@
   },
   "devDependencies": {
     "@svgr/cli": "4.3.0",
-    "depcheck": "0.8.0",
     "nodemon": "1.19.1",
     "npm-check": "5.9.0"
   },
@@ -85,7 +85,6 @@
     "chromatic": "chromatic test --exit-zero-on-changes",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "ci": "npm run lint && npm test",
-    "depcheck": "depcheck --parsers=\"*.js:react,*.js:es6\"",
     "npm-check": "npm-check -u",
     "tsc": "tsc"
   },

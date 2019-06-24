@@ -15,7 +15,6 @@ export const LockWrapper = styled.li.attrs(props => ({
   grid-gap: 0px;
   background-clip: padding-box;
   grid-template-rows: 40px 140px;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
 `
 
 export const LockHeader = styled.header`
