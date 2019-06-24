@@ -173,8 +173,8 @@ describe('PaymentProcessor', () => {
     beforeAll(() => {
       paymentProcessor.chargeUser = jest
         .fn()
-        .mockReturnValueOnce({})
-        .mockReturnValueOnce(null)
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(null)
     })
 
     afterEach(() => {
@@ -182,9 +182,9 @@ describe('PaymentProcessor', () => {
     })
 
     describe('when the user was successfully charged', () => {
-      it('dispatches the purchase', () => {
+      it('dispatches the purchase', async () => {
         expect.assertions(1)
-        paymentProcessor.initiatePurchase(
+        await paymentProcessor.initiatePurchase(
           'recipient',
           'lock',
           'credentials',
@@ -200,9 +200,9 @@ describe('PaymentProcessor', () => {
     })
 
     describe('when the user was unsuccessfully charged', () => {
-      it('does not dispatch the purchase', () => {
+      it('does not dispatch the purchase', async () => {
         expect.assertions(1)
-        paymentProcessor.initiatePurchase(
+        await paymentProcessor.initiatePurchase(
           'recipient',
           'lock',
           'credentials',

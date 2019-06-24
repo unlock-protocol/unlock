@@ -102,7 +102,7 @@ export class PaymentProcessor {
     providerHost: string,
     buyer: ethereumAddress
   ) {
-    let successfulCharge = this.chargeUser(recipient, lock)
+    let successfulCharge = await this.chargeUser(recipient, lock)
     if (successfulCharge) {
       let fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',
