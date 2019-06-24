@@ -25,6 +25,10 @@ export type MessageHandlerTemplate<T extends MessageTypes> = (
 export type MessageHandlerTemplates<T extends MessageTypes> = {
   [key in T]?: MessageHandlerTemplate<T>
 }
+export type MapHandlers = (
+  forIframe: IframeNames,
+  handlers: MessageHandlerTemplates<MessageTypes>
+) => void
 
 /**
  * Set up all of the post offices for each iframe.
