@@ -63,7 +63,7 @@ const walletMiddleware = config => {
           // if the update contains an email address, that means a user has
           // successfully logged in. We should fetch any extra information
           // (payment details...) that locksmith has on them.
-          dispatch(getStoredPaymentDetails())
+          dispatch(getStoredPaymentDetails(difference['emailAddress']))
         }
       }
     })

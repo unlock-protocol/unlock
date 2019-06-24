@@ -151,6 +151,7 @@ describe('Wallet middleware', () => {
         2,
         expect.objectContaining({
           type: GET_STORED_PAYMENT_DETAILS,
+          emailAddress,
         })
       )
     })
