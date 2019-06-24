@@ -144,6 +144,19 @@ describe('Wallet middleware', () => {
       })
     )
   })
+
+  it('should not dispatch redundant updates triggered by the walletService', () => {
+    expect.assertions(1)
+    const { store } = create()
+    const update = {
+      address: '0xabc',
+    }
+
+    mockWalletService.emit('account.updated', update)
+
+    expect(store.dispatch).not.toHaveBeenCalled()
+  })
+
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
