@@ -463,7 +463,7 @@ describe('StorageService', () => {
   })
 
   describe('Retrieve user payment details', () => {
-    describe('When a request succeeds', () => {
+    describe('When a request succeeds with at least one card', () => {
       it('emits a success', done => {
         expect.assertions(2)
         const emailAddress = 'geoff@bitconnect.gov'
@@ -473,6 +473,25 @@ describe('StorageService', () => {
 
         storageService.on(success.getCards, cards => {
           expect(cards[0].id).toEqual('a card object')
+          done()
+        })
+
+        expect(axios.get).toHaveBeenCalledWith(
+          `${serviceHost}/users/${encodeURIComponent(emailAddress)}/cards`
+        )
+      })
+    })
+
+    describe('When a request succeeds without a card', () => {
+      it('emits a success', done => {
+        expect.assertions(2)
+        const emailAddress = 'geoff@bitconnect.gov'
+        axios.get.mockReturnValue({ data: [] })
+
+        storageService.getCards(emailAddress)
+
+        storageService.on(success.getCards, cards => {
+          expect(cards).toHaveLength(0)
           done()
         })
 
