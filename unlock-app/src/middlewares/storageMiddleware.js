@@ -11,7 +11,7 @@ import { startLoading, doneLoading } from '../actions/loading'
 import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
-import { SET_ACCOUNT, setAccount } from '../actions/accounts'
+import { SET_ACCOUNT, setAccount, updateAccount } from '../actions/accounts'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
@@ -21,6 +21,7 @@ import {
   signUserData,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
+  GET_STORED_PAYMENT_DETAILS,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -132,6 +133,19 @@ const storageMiddleware = config => {
       )
     })
 
+    storageService.on(success.getCards, cards => {
+      if (cards.length > 0) {
+        dispatch(
+          updateAccount({
+            cards,
+          })
+        )
+      }
+    })
+    storageService.on(failure.getCards, () => {
+      dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
+    })
+
     return next => {
       return action => {
         if (action.type === NEW_TRANSACTION) {
@@ -211,6 +225,11 @@ const storageMiddleware = config => {
             storageService,
             dispatch,
           })
+        }
+
+        if (action.type === GET_STORED_PAYMENT_DETAILS) {
+          const { emailAddress } = action
+          storageService.getCards(emailAddress)
         }
 
         next(action)

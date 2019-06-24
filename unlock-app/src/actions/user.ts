@@ -18,6 +18,7 @@ export const SIGNED_USER_DATA = 'userCredentials/SIGNED_USER_DATA'
 export const SIGN_PAYMENT_DATA = 'userCredentials/SIGN_PAYMENT_DATA'
 export const SIGNED_PAYMENT_DATA = 'userCredentials/SIGNED_PAYMENT_DATA'
 export const CONFIRM_KEY_PURCHASE = 'userAccount/CONFIRM_KEY_PURCHASE'
+export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
 
 export interface Credentials {
   emailAddress: string
@@ -149,4 +150,9 @@ export const signedPaymentData = ({ data, sig }: SignedPaymentData) => ({
 // TODO: determine payload for this action
 export const confirmKeyPurchase = () => ({
   type: CONFIRM_KEY_PURCHASE,
+})
+
+export const getStoredPaymentDetails = (emailAddress: string) => ({
+  type: GET_STORED_PAYMENT_DETAILS,
+  emailAddress,
 })

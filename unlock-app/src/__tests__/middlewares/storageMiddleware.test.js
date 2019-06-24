@@ -5,7 +5,7 @@ import storageMiddleware, {
 } from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT, setAccount } from '../../actions/accounts'
+import { SET_ACCOUNT, setAccount, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import {
@@ -16,6 +16,7 @@ import {
   SIGN_USER_DATA,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
+  GET_STORED_PAYMENT_DETAILS,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -470,6 +471,46 @@ describe('Storage middleware', () => {
           }),
         })
       )
+    })
+  })
+
+  describe('GET_STORED_PAYMENT_DETAILS', () => {
+    it('should call storageService', () => {
+      expect.assertions(1)
+      const { invoke } = create()
+      const action = {
+        type: GET_STORED_PAYMENT_DETAILS,
+        emailAddress: 'name@domain.com',
+      }
+      mockStorageService.getCards = jest.fn()
+      invoke(action)
+
+      expect(mockStorageService.getCards).toHaveBeenCalledWith(
+        'name@domain.com'
+      )
+    })
+
+    it('should handle success.getCards when a user has payment methods', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const cards = [{ id: 'I am a card' }]
+      mockStorageService.emit(success.getCards, cards)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: UPDATE_ACCOUNT,
+        update: {
+          cards,
+        },
+      })
+    })
+
+    it('should do nothing with success.getCards when a user has no payment methods', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const cards = []
+      mockStorageService.emit(success.getCards, cards)
+
+      expect(store.dispatch).not.toHaveBeenCalled()
     })
   })
 })
