@@ -43,6 +43,7 @@ describe('setupPostOffice', () => {
     process.env.USER_IFRAME_URL = 'http://unlock-app.com'
     const unlockOrigin = 'http://unlock-app.com'
     fakeWindow = {
+      Promise,
       setInterval: jest.fn(),
       unlockProtocol: {
         loadCheckoutModal: jest.fn(),
@@ -141,18 +142,20 @@ describe('setupPostOffice', () => {
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to PostMessages.READY_WEB3 by sending PostMessages.WALLET_INFO', () => {
+  it('responds to PostMessages.READY_WEB3 by sending PostMessages.WALLET_INFO', async () => {
     expect.assertions(2)
 
     sendMessage(fakeDataIframe, PostMessages.READY_WEB3)
+
+    await Promise.resolve() // sync the Promise queue
 
     expect(fakeUIIframe.contentWindow.postMessage).not.toHaveBeenCalled()
     expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
       {
         type: PostMessages.WALLET_INFO,
         payload: {
-          noWallet: false,
-          notEnabled: true,
+          noWallet: true,
+          notEnabled: false,
           isMetamask: false,
         },
       },
