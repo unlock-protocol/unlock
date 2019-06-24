@@ -28,6 +28,7 @@ import {
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { getStoredPaymentDetails } from '../actions/user'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -57,6 +58,13 @@ const walletMiddleware = config => {
 
       if (Object.keys(difference).length > 0) {
         dispatch(updateAccount(update))
+
+        if (difference['emailAddress']) {
+          // if the update contains an email address, that means a user has
+          // successfully logged in. We should fetch any extra information
+          // (payment details...) that locksmith has on them.
+          dispatch(getStoredPaymentDetails())
+        }
       }
     })
 

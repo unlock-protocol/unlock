@@ -22,6 +22,7 @@ import {
   FATAL_WRONG_NETWORK,
 } from '../../errors'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
+import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
 
 let mockConfig
 
@@ -125,36 +126,46 @@ beforeEach(() => {
 })
 
 describe('Wallet middleware', () => {
-  it('should handle account.updated events triggered by the walletService', () => {
-    expect.assertions(1)
-    const { store } = create()
-    const emailAddress = 'geoff@bitconnect.gov'
-    const update = {
-      emailAddress,
-    }
+  describe('when receiving account.updated events triggered by the walletService', () => {
+    it('should handle non-redundant account.updated events', () => {
+      expect.assertions(2)
+      const { store } = create()
+      const emailAddress = 'geoff@bitconnect.gov'
+      const update = {
+        emailAddress,
+      }
 
-    mockWalletService.emit('account.updated', update)
+      mockWalletService.emit('account.updated', update)
 
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: UPDATE_ACCOUNT,
-        update: {
-          emailAddress,
-        },
-      })
-    )
-  })
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          type: UPDATE_ACCOUNT,
+          update: {
+            emailAddress,
+          },
+        })
+      )
 
-  it('should not dispatch redundant updates triggered by the walletService', () => {
-    expect.assertions(1)
-    const { store } = create()
-    const update = {
-      address: '0xabc',
-    }
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          type: GET_STORED_PAYMENT_DETAILS,
+        })
+      )
+    })
 
-    mockWalletService.emit('account.updated', update)
+    it('should not dispatch redundant updates triggered by the walletService', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const update = {
+        address: '0xabc',
+      }
 
-    expect(store.dispatch).not.toHaveBeenCalled()
+      mockWalletService.emit('account.updated', update)
+
+      expect(store.dispatch).not.toHaveBeenCalled()
+    })
   })
 
   it('should handle account.changed events triggered by the walletService', () => {
