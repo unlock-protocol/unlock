@@ -30,7 +30,7 @@ const accountRegex = '0x[a-fA-F0-9]{40}'
 /**
  * Matches any valid ethereum account address
  */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex)
+export const ACCOUNT_REGEXP = new RegExp('^' + accountRegex + '$')
 
 // helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
