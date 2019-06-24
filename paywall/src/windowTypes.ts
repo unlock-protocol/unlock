@@ -53,18 +53,25 @@ export interface web3MethodCall {
   id: number
 }
 
-export type web3Callback = (error: Error | string | null, result: any) => void
+export interface web3MethodResult {
+  id: number
+  error: null | string
+  result: any
+}
+export type web3Callback = (error: string | null, result: any) => void
 export type web3Send = (
   methodCall: web3MethodCall,
   callback: web3Callback
 ) => void
 
 export interface Web3Window extends PostOfficeWindow {
+  Promise: PromiseConstructor
   web3?: {
     currentProvider: {
       sendAsync?: web3Send
       send?: web3Send
       isMetamask?: true // is only ever true or undefined
+      enable?: () => Promise<void>
     }
   }
 }
@@ -127,7 +134,8 @@ export interface UnlockWindow
     EventWindow,
     UnlockProtocolWindow,
     LocalStorageWindow,
-    IframeManagingWindow {
+    IframeManagingWindow,
+    Web3Window {
   unlockProtocolConfig?: PaywallConfig
   document: FullDocument
   origin: string
