@@ -1,6 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 import { WalletService } from '@unlock-protocol/unlock-js'
 
+import { diff } from 'deep-object-diff'
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
@@ -27,6 +28,7 @@ import {
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { getStoredPaymentDetails } from '../actions/user'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -48,8 +50,22 @@ const walletMiddleware = config => {
     }
 
     walletService.on('account.updated', update => {
-      // TODO: only  update if there's a difference?
-      dispatch(updateAccount(update))
+      if (!getState().account) return
+
+      const currentAccount = getState().account
+      const updatedAccount = Object.assign({}, currentAccount, update)
+      const difference = diff(currentAccount, updatedAccount)
+
+      if (Object.keys(difference).length > 0) {
+        dispatch(updateAccount(update))
+
+        if (difference['emailAddress']) {
+          // if the update contains an email address, that means a user has
+          // successfully logged in. We should fetch any extra information
+          // (payment details...) that locksmith has on them.
+          dispatch(getStoredPaymentDetails(difference['emailAddress']))
+        }
+      }
     })
 
     /**
