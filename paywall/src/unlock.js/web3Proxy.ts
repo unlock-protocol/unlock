@@ -122,20 +122,23 @@ export default function web3Proxy(
             isMetamask, // this is used for some decisions in signing
           })
         } catch (e) {
-          // we don't have web3, wait for the account iframe, then respond
-          await waitFor(() => accountIframeReady)
-          if (proxyAccount) {
-            // we will use the proxy account!
-            hasWeb3 = true
-            postMessage('data', PostMessages.WALLET_INFO, {
-              noWallet: false,
-              notEnabled: false,
-              isMetamask: false, // this is used for some decisions in signing
-            })
-            return
-          }
+          //console.log('uncomment this line if no wallet tests fail', e)
           hasWeb3 = false
           const noWallet = e instanceof ReferenceError
+          if (noWallet) {
+            // we don't have web3, wait for the account iframe, then respond
+            await waitFor(() => accountIframeReady)
+            if (proxyAccount) {
+              // we will use the proxy account!
+              hasWeb3 = true
+              postMessage('data', PostMessages.WALLET_INFO, {
+                noWallet: false,
+                notEnabled: false,
+                isMetamask: false, // this is used for some decisions in signing
+              })
+              return
+            }
+          }
           const notEnabled = !noWallet
           postMessage('data', PostMessages.WALLET_INFO, {
             noWallet,
@@ -148,28 +151,7 @@ export default function web3Proxy(
     [PostMessages.WEB3]: postMessage => {
       return async payload => {
         // handler for the actual web3 calls
-        if (!hasWeb3 || !window.web3) {
-          if (proxyAccount) {
-            // we are using the user account
-            if (!validateMethodCall(payload)) return
-            const { method, id }: web3MethodCall = payload
-            switch (method) {
-              case 'eth_accounts':
-                postMessage('data', PostMessages.WEB3_RESULT, {
-                  id,
-                  error: null,
-                  result: [proxyAccount],
-                })
-                break
-              case 'net_version':
-                postMessage('data', PostMessages.WEB3_RESULT, {
-                  id,
-                  error: null,
-                  result: proxyNetwork,
-                })
-                break
-            }
-          }
+        if (!hasWeb3) {
           return postMessage('data', PostMessages.WEB3, {
             id: payload.id,
             error: 'No web3 wallet is available',
@@ -180,10 +162,38 @@ export default function web3Proxy(
         if (!validateMethodCall(payload)) return
 
         const { method, params, id }: web3MethodCall = payload
+        if (proxyAccount) {
+          // we are using the user account
+          if (!validateMethodCall(payload)) return
+          const { method, id }: web3MethodCall = payload
+          switch (method) {
+            case 'eth_accounts':
+              postMessage('data', PostMessages.WEB3_RESULT, {
+                id,
+                error: null,
+                result: [proxyAccount],
+              })
+              break
+            case 'net_version':
+              postMessage('data', PostMessages.WEB3_RESULT, {
+                id,
+                error: null,
+                result: proxyNetwork,
+              })
+              break
+            default:
+              postMessage('data', PostMessages.WEB3_RESULT, {
+                id: payload.id,
+                error: `"${method}" is not supported`,
+                result: null,
+              })
+          }
+          return // do not attempt to call send on the current provider
+        }
         // we use call to bind the call to the current provider
         send &&
           send.call(
-            window.web3.currentProvider,
+            window.web3 && window.web3.currentProvider,
             {
               method,
               params,

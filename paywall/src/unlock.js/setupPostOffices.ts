@@ -124,6 +124,8 @@ export default function setupPostOffices(
       return locks => {
         // relay the most current lock objects to the checkout UI
         send('checkout', PostMessages.UPDATE_LOCKS, locks)
+        // relay the most current lock objects to the account UI
+        send('account', PostMessages.UPDATE_LOCKS, locks)
       }
     },
   }

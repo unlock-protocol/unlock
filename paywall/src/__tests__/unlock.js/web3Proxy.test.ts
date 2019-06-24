@@ -1,13 +1,9 @@
 import web3Proxy from '../../unlock.js/web3Proxy'
-import {
-  POST_MESSAGE_READY_WEB3,
-  POST_MESSAGE_WALLET_INFO,
-  POST_MESSAGE_WEB3,
-} from '../../paywall-builder/constants'
 import { IframeType, UnlockWindow, MessageHandler } from '../../windowTypes'
 import setupIframeMailbox, {
   MapHandlers,
 } from '../../unlock.js/setupIframeMailbox'
+import { PostMessages } from '../../messageTypes'
 
 describe('web3Proxy', () => {
   interface MockUnlockWindow extends UnlockWindow {
@@ -24,7 +20,10 @@ describe('web3Proxy', () => {
   let fakeCheckoutIframe: IframeType
   let fakeDataIframe: IframeType
   let fakeAccountIframe: IframeType
-  let postToDataIframe: (message: any) => void
+  let postFromDataIframe: (message: any) => void
+  let postFromAccountIframe: (message: any) => void
+  let postFromCheckoutIframe: (message: any) => void
+  const unlockAccountAddress = '0x12345678901`23456789012345678901234567890'
   interface fakeWindowProps {
     enable: boolean | undefined
   }
@@ -119,8 +118,262 @@ describe('web3Proxy', () => {
       fakeDataIframe,
       fakeAccountIframe
     )
-    postToDataIframe = handlers.message[0]
+    postFromDataIframe = handlers.message[0]
+    postFromCheckoutIframe = handlers.message[1]
+    postFromAccountIframe = handlers.message[2]
   }
+
+  describe('no wallet exists', () => {
+    describe('no Unlock user account', () => {
+      beforeEach(() => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: null,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 3,
+          },
+        })
+      })
+
+      it('should send wallet info with noWallet set if there is no wallet at all', done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        delete fakeWindow.web3
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: true,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+    })
+
+    describe('has Unlock user account', () => {
+      beforeEach(() => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: unlockAccountAddress,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 1,
+          },
+        })
+      })
+
+      it('should send wallet info with wallet enabled', done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: false,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+
+      it('should respond with the unlock account when eth_accounts is called', done => {
+        expect.assertions(2)
+
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WEB3_RESULT,
+            payload: {
+              id: 1,
+              error: null,
+              result: [unlockAccountAddress],
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'eth_accounts',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+      })
+
+      it('should respond with the correct network when net_version is called', done => {
+        expect.assertions(2)
+
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WEB3_RESULT,
+            payload: {
+              id: 1,
+              error: null,
+              result: 1,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'net_version',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+      })
+
+      it('should respond with an error for an unknown method call', done => {
+        // note: unknown methods must be polyfilled. Currently only
+        // net_version and eth_accounts are called by walletService
+        // unless a key purchase is attempted
+        expect.assertions(2)
+
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WEB3_RESULT,
+            payload: {
+              id: 1,
+              error: '"unknown_method" is not supported',
+              result: null,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'unknown_method',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+      })
+
+      it('should redirect key purchase requests to the account iframe', done => {
+        expect.assertions(2)
+
+        fakeDataIframe.contentWindow.postMessage = () => {
+          // ensure we are not called
+          expect(false).toBe(true)
+        }
+        fakeAccountIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.PURCHASE_KEY,
+            payload: {
+              lock: '0x123',
+              extraTip: '0',
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromCheckoutIframe({
+          source: fakeCheckoutIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.PURCHASE_KEY,
+            id: 1,
+            payload: {
+              lock: '0x123',
+              extraTip: '0',
+            },
+          },
+        })
+      })
+    })
+  })
 
   describe('enable succeeds', () => {
     beforeEach(() => {
@@ -128,14 +381,14 @@ describe('web3Proxy', () => {
       makeFakeIframe()
     })
 
-    it('listens for POST_MESSAGE_READY_WEB3 and dispatches the result', done => {
+    it('listens for PostMessages.READY_WEB3 and dispatches the result', done => {
       expect.assertions(2)
 
       web3Proxy(fakeWindow, mapHandlers)
 
       fakeIframe.contentWindow.postMessage = (data, origin) => {
         expect(data).toEqual({
-          type: POST_MESSAGE_WALLET_INFO,
+          type: PostMessages.WALLET_INFO,
           payload: {
             noWallet: false,
             notEnabled: false,
@@ -146,11 +399,11 @@ describe('web3Proxy', () => {
         done()
       }
 
-      postToDataIframe({
+      postFromDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY_WEB3,
+          type: PostMessages.READY_WEB3,
           payload: 'it worked!',
         },
       })
@@ -164,18 +417,18 @@ describe('web3Proxy', () => {
 
       web3Proxy(fakeWindow, mapHandlers)
 
-      postToDataIframe({
+      postFromDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY_WEB3,
+          type: PostMessages.READY_WEB3,
           payload: 'it worked!',
         },
       })
 
       fakeIframe.contentWindow.postMessage = (data, origin) => {
         expect(data).toEqual({
-          type: POST_MESSAGE_WALLET_INFO,
+          type: PostMessages.WALLET_INFO,
           payload: {
             noWallet: false,
             notEnabled: false,
@@ -192,14 +445,17 @@ describe('web3Proxy', () => {
     beforeEach(() => {
       makeFakeWindow({ enable: false })
       makeFakeIframe()
+
+      web3Proxy(fakeWindow, mapHandlers)
     })
 
-    it('sends wallet info with notEnabled set if enable fails', done => {
+    it('should send wallet info with notEnabled set if enable fails', done => {
+      // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
       expect.assertions(2)
 
       fakeIframe.contentWindow.postMessage = (data, origin) => {
         expect(data).toEqual({
-          type: POST_MESSAGE_WALLET_INFO,
+          type: PostMessages.WALLET_INFO,
           payload: {
             noWallet: false,
             notEnabled: true,
@@ -210,43 +466,11 @@ describe('web3Proxy', () => {
         done()
       }
 
-      web3Proxy(fakeWindow, mapHandlers)
-
-      postToDataIframe({
+      postFromDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
-          type: POST_MESSAGE_READY_WEB3,
-          id: 1,
-          payload: 'it worked!',
-        },
-      })
-    })
-
-    it('sends wallet info with noWallet set if there is no wallet at all', done => {
-      expect.assertions(2)
-
-      delete fakeWindow.web3
-      fakeIframe.contentWindow.postMessage = (data, origin) => {
-        expect(data).toEqual({
-          type: POST_MESSAGE_WALLET_INFO,
-          payload: {
-            noWallet: true,
-            notEnabled: false,
-            isMetamask: false,
-          },
-        })
-        expect(origin).toBe('http://fun.times')
-        done()
-      }
-
-      web3Proxy(fakeWindow, mapHandlers)
-
-      postToDataIframe({
-        source: fakeIframe.contentWindow,
-        origin: 'http://fun.times',
-        data: {
-          type: POST_MESSAGE_READY_WEB3,
+          type: PostMessages.READY_WEB3,
           id: 1,
           payload: 'it worked!',
         },
@@ -260,11 +484,11 @@ describe('web3Proxy', () => {
 
         web3Proxy(fakeWindow, mapHandlers)
 
-        postToDataIframe({
+        postFromDataIframe({
           source: fakeIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
-            type: POST_MESSAGE_READY_WEB3,
+            type: PostMessages.READY_WEB3,
             id: 1,
             payload: 'it worked!',
           },
@@ -277,7 +501,7 @@ describe('web3Proxy', () => {
 
         fakeIframe.contentWindow.postMessage = (data, origin) => {
           expect(data).toEqual({
-            type: POST_MESSAGE_WEB3,
+            type: PostMessages.WEB3,
             payload: {
               error: 'No web3 wallet is available',
               id: 1,
@@ -288,11 +512,11 @@ describe('web3Proxy', () => {
           done()
         }
 
-        postToDataIframe({
+        postFromDataIframe({
           source: fakeIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
-            type: POST_MESSAGE_WEB3,
+            type: PostMessages.WEB3,
             payload: {
               method: 'eth_call',
               params: [],
@@ -309,11 +533,11 @@ describe('web3Proxy', () => {
 
           web3Proxy(fakeWindow, mapHandlers)
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY_WEB3,
+              type: PostMessages.READY_WEB3,
               payload: 'it worked!',
             },
           })
@@ -323,20 +547,20 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: false,
             },
           })
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: 'hi',
             },
           })
@@ -350,22 +574,22 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 1,
               },
             },
           })
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: false,
               },
@@ -381,11 +605,11 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: 1,
@@ -393,11 +617,11 @@ describe('web3Proxy', () => {
             },
           })
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: false,
@@ -414,11 +638,11 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: [],
@@ -427,11 +651,11 @@ describe('web3Proxy', () => {
             },
           })
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: [],
@@ -455,11 +679,11 @@ describe('web3Proxy', () => {
 
           web3Proxy(fakeWindow, mapHandlers)
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY_WEB3,
+              type: PostMessages.READY_WEB3,
               payload: 'it worked!',
             },
           })
@@ -467,11 +691,11 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: [],
@@ -507,11 +731,11 @@ describe('web3Proxy', () => {
 
           web3Proxy(fakeWindow, mapHandlers)
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY_WEB3,
+              type: PostMessages.READY_WEB3,
               payload: 'it worked!',
             },
           })
@@ -519,11 +743,11 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: [],
@@ -562,11 +786,11 @@ describe('web3Proxy', () => {
 
           web3Proxy(fakeWindow, mapHandlers)
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_READY_WEB3,
+              type: PostMessages.READY_WEB3,
               payload: 'it worked!',
             },
           })
@@ -574,11 +798,11 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          postToDataIframe({
+          postFromDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
               payload: {
                 method: 'eth_call',
                 params: [],
@@ -598,7 +822,7 @@ describe('web3Proxy', () => {
                 id: 1,
                 result: 'result',
               },
-              type: POST_MESSAGE_WEB3,
+              type: PostMessages.WEB3,
             },
             'http://fun.times'
           )
