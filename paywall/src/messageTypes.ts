@@ -94,7 +94,7 @@ export type Message =
     }
   | {
       type: PostMessages.UPDATE_ACCOUNT
-      payload: string
+      payload: string | null
     }
   | {
       type: PostMessages.UPDATE_ACCOUNT_BALANCE

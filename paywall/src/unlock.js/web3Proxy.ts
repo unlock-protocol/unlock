@@ -1,15 +1,20 @@
-import { Web3Window, web3MethodCall } from '../windowTypes'
-import { MapHandlers, MessageHandlerTemplates } from './setupIframeMailbox'
+import { Web3Window, web3MethodCall, IframeType } from '../windowTypes'
+import {
+  MapHandlers,
+  MessageHandlerTemplates,
+  PostMessageToIframe,
+} from './setupIframeMailbox'
 import { PostMessages, MessageTypes } from '../messageTypes'
 import { waitFor } from '../utils/promises'
 import { hideIframe, showIframe } from './iframeManager'
+import { Locks } from '../unlockTypes'
 
 let hasWeb3 = true
 
 export function enable(window: Web3Window) {
   return new window.Promise((resolve, reject) => {
     if (!window.web3 || !window.web3.currentProvider) {
-      return reject(new ReferenceError('no web3 wallet exists'))
+      return resolve('no web3 wallet')
     }
     if (!window.web3.currentProvider.enable) return resolve()
     window.web3.currentProvider
@@ -42,6 +47,52 @@ export function validateMethodCall(payload: UnvalidatedPayload) {
   return true
 }
 
+export function hasERC20Lock(locks: Locks) {
+  return !!Object.values(locks).filter(lock => lock.currencyContractAddress)
+    .length
+}
+
+/**
+ * This is the fake web3 provider we use for user accounts. It knows only
+ * 2 kinds of method calls, account and network.
+ */
+export function handleWeb3Call({
+  payload,
+  proxyAccount,
+  proxyNetwork,
+  postMessage,
+}: {
+  payload: UnvalidatedPayload
+  proxyAccount: string | null
+  proxyNetwork: string | number
+  postMessage: PostMessageToIframe<MessageTypes>
+}) {
+  if (!validateMethodCall(payload)) return
+  const { method, id } = payload as web3MethodCall
+  switch (method) {
+    case 'eth_accounts':
+      postMessage('data', PostMessages.WEB3_RESULT, {
+        id,
+        error: null,
+        result: { id, jsonrpc: '2.0', result: [proxyAccount] },
+      })
+      break
+    case 'net_version':
+      postMessage('data', PostMessages.WEB3_RESULT, {
+        id,
+        error: null,
+        result: { id, jsonrpc: '2.0', result: proxyNetwork },
+      })
+      break
+    default:
+      postMessage('data', PostMessages.WEB3_RESULT, {
+        id,
+        error: `"${method}" is not supported`,
+        result: null,
+      })
+  }
+}
+
 /**
  * Proxy calls to web3 from postMessage
  *
@@ -61,6 +112,13 @@ export default function web3Proxy(
   let proxyAccount: null | string = null
   let proxyNetwork: string | number
   let accountIframeReady = false
+  let currentLocks: Locks
+  let canUseUserAccounts: boolean = !window.web3
+  let hasNativeWeb3Wallet = !!window.web3
+
+  const useUnlockAccount = () =>
+    !hasNativeWeb3Wallet && proxyAccount && canUseUserAccounts
+
   // we need to listen for the account iframe's READY event, and request the current account and network
   const accountHandlers: MessageHandlerTemplates<MessageTypes> = {
     [PostMessages.READY]: postMessage => {
@@ -80,6 +138,12 @@ export default function web3Proxy(
         proxyNetwork = network
       }
     },
+    [PostMessages.INITIATED_TRANSACTION]: postMessage => {
+      return () => {
+        // prompt the data iframe to refresh transactions
+        postMessage('data', PostMessages.INITIATED_TRANSACTION, undefined)
+      }
+    },
     [PostMessages.SHOW_ACCOUNTS_MODAL]: (
       _postMessage,
       _dataIframe,
@@ -87,7 +151,9 @@ export default function web3Proxy(
       accountIframe
     ) => {
       return () => {
-        showIframe(window, accountIframe)
+        if (canUseUserAccounts) {
+          showIframe(window, accountIframe)
+        }
       }
     },
     [PostMessages.HIDE_ACCOUNT_MODAL]: (
@@ -102,8 +168,51 @@ export default function web3Proxy(
     },
   }
 
+  const checkForUserAccountWallet = async (
+    accountIframe: IframeType,
+    postMessage: PostMessageToIframe<MessageTypes>
+  ) => {
+    // we don't have web3
+    // wait for locks to be retrieved
+    await waitFor(() => currentLocks)
+    // wait for the account iframe, then respond
+    await waitFor(() => accountIframeReady)
+    // we will use the proxy account!
+    if (!canUseUserAccounts) {
+      // if we don't have any locks that can be purchased with a user
+      // account, we have no wallet
+      hasWeb3 = false
+      postMessage('data', PostMessages.WALLET_INFO, {
+        noWallet: true,
+        notEnabled: false,
+        isMetamask: false,
+      })
+      return
+    } else if (canUseUserAccounts && !proxyAccount) {
+      // show the login form if the user is not logged in
+      showIframe(window, accountIframe)
+    }
+    hasWeb3 = true
+    postMessage('data', PostMessages.WALLET_INFO, {
+      noWallet: false,
+      notEnabled: false,
+      isMetamask: false, // this is used for some decisions in signing
+    })
+  }
+
   const handlers: MessageHandlerTemplates<MessageTypes> = {
-    [PostMessages.READY_WEB3]: postMessage => {
+    [PostMessages.UPDATE_LOCKS]: () => {
+      return locks => {
+        canUseUserAccounts = !hasNativeWeb3Wallet && hasERC20Lock(locks)
+        currentLocks = locks
+      }
+    },
+    [PostMessages.READY_WEB3]: (
+      postMessage,
+      _dataIframe,
+      _checkoutIframe,
+      accountIframe
+    ) => {
       return async () => {
         // initialize, we do this once the iframe is ready to receive information on the wallet
         // we need to tell the iframe if the wallet is metamask
@@ -114,7 +223,11 @@ export default function web3Proxy(
           window.web3.currentProvider.isMetamask
         )
         try {
-          await enable(window)
+          const result = await enable(window)
+          if (result === 'no web3 wallet') {
+            checkForUserAccountWallet(accountIframe, postMessage)
+            return
+          }
           hasWeb3 = true
           postMessage('data', PostMessages.WALLET_INFO, {
             noWallet: false,
@@ -122,54 +235,20 @@ export default function web3Proxy(
             isMetamask, // this is used for some decisions in signing
           })
         } catch (e) {
-          // we don't have web3, wait for the account iframe, then respond
-          await waitFor(() => accountIframeReady)
-          if (proxyAccount) {
-            // we will use the proxy account!
-            hasWeb3 = true
-            postMessage('data', PostMessages.WALLET_INFO, {
-              noWallet: false,
-              notEnabled: false,
-              isMetamask: false, // this is used for some decisions in signing
-            })
-            return
-          }
-          hasWeb3 = false
-          const noWallet = e instanceof ReferenceError
-          const notEnabled = !noWallet
+          hasWeb3 = true
           postMessage('data', PostMessages.WALLET_INFO, {
-            noWallet,
-            notEnabled,
-            isMetamask,
+            noWallet: false,
+            notEnabled: true, // user declined to enable the wallet
+            isMetamask: false,
           })
+          return
         }
       }
     },
     [PostMessages.WEB3]: postMessage => {
       return async payload => {
         // handler for the actual web3 calls
-        if (!hasWeb3 || !window.web3) {
-          if (proxyAccount) {
-            // we are using the user account
-            if (!validateMethodCall(payload)) return
-            const { method, id }: web3MethodCall = payload
-            switch (method) {
-              case 'eth_accounts':
-                postMessage('data', PostMessages.WEB3_RESULT, {
-                  id,
-                  error: null,
-                  result: [proxyAccount],
-                })
-                break
-              case 'net_version':
-                postMessage('data', PostMessages.WEB3_RESULT, {
-                  id,
-                  error: null,
-                  result: proxyNetwork,
-                })
-                break
-            }
-          }
+        if (!hasWeb3) {
           return postMessage('data', PostMessages.WEB3, {
             id: payload.id,
             error: 'No web3 wallet is available',
@@ -180,10 +259,20 @@ export default function web3Proxy(
         if (!validateMethodCall(payload)) return
 
         const { method, params, id }: web3MethodCall = payload
+        if (useUnlockAccount()) {
+          // we are using the user account
+          handleWeb3Call({
+            payload,
+            proxyAccount,
+            proxyNetwork,
+            postMessage,
+          })
+          return // do not attempt to call send on the current provider
+        }
         // we use call to bind the call to the current provider
         send &&
           send.call(
-            window.web3.currentProvider,
+            window.web3 && window.web3.currentProvider,
             {
               method,
               params,
@@ -207,7 +296,7 @@ export default function web3Proxy(
       return details => {
         // relay a request to purchase a key to the data iframe
         // as the user has clicked on a key in the checkout UI
-        if (proxyAccount) {
+        if (useUnlockAccount()) {
           // we are using unlock account, so send to the account iframe instead
           postMessage('account', PostMessages.PURCHASE_KEY, details)
         } else {

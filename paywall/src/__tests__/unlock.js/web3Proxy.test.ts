@@ -1,9 +1,11 @@
-import web3Proxy from '../../unlock.js/web3Proxy'
-import { PostMessages } from '../../messageTypes'
+import web3Proxy, { hasERC20Lock } from '../../unlock.js/web3Proxy'
 import { IframeType, UnlockWindow, MessageHandler } from '../../windowTypes'
 import setupIframeMailbox, {
   MapHandlers,
 } from '../../unlock.js/setupIframeMailbox'
+import { PostMessages } from '../../messageTypes'
+import { Locks } from '../../unlockTypes'
+import { waitFor } from '../../utils/promises'
 
 describe('web3Proxy', () => {
   interface MockUnlockWindow extends UnlockWindow {
@@ -21,6 +23,9 @@ describe('web3Proxy', () => {
   let fakeDataIframe: IframeType
   let fakeAccountIframe: IframeType
   let postFromDataIframe: (message: any) => void
+  let postFromAccountIframe: (message: any) => void
+  let postFromCheckoutIframe: (message: any) => void
+  const unlockAccountAddress = '0x1234567890123456789012345678901234567890'
   interface fakeWindowProps {
     enable: boolean | undefined
   }
@@ -116,7 +121,686 @@ describe('web3Proxy', () => {
       fakeAccountIframe
     )
     postFromDataIframe = handlers.message[0]
+    postFromCheckoutIframe = handlers.message[1]
+    postFromAccountIframe = handlers.message[2]
   }
+
+  const YesERC20Locks: Locks = {
+    a: {
+      address: 'a',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: 'hi',
+    },
+    b: {
+      address: 'b',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: null,
+    },
+  }
+
+  const NoERC20Locks: Locks = {
+    a: {
+      address: 'a',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: null,
+    },
+    b: {
+      address: 'b',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: null,
+    },
+  }
+
+  it('hasERC20Lock', () => {
+    expect.assertions(2)
+
+    expect(hasERC20Lock(YesERC20Locks)).toBe(true)
+    expect(hasERC20Lock(NoERC20Locks)).toBe(false)
+  })
+
+  describe('no wallet exists', () => {
+    describe('PostMessages.HIDE_MODAL', () => {
+      beforeEach(() => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: null,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 3,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            payload: YesERC20Locks,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.SHOW_ACCOUNTS_MODAL,
+            payload: undefined,
+          },
+        })
+      })
+
+      it('should hide the accounts iframe', async () => {
+        expect.assertions(1)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.HIDE_ACCOUNT_MODAL,
+            payload: undefined,
+          },
+        })
+
+        expect(fakeAccountIframe.className).toBe('unlock start')
+      })
+    })
+    describe('PostMessages.SHOW_MODAL', () => {
+      beforeEach(() => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: null,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 3,
+          },
+        })
+      })
+
+      it('should show the iframe if there are any erc20 locks', async () => {
+        expect.assertions(1)
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            payload: YesERC20Locks,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.SHOW_ACCOUNTS_MODAL,
+            payload: undefined,
+          },
+        })
+
+        expect(fakeAccountIframe.className).toBe('unlock start show')
+      })
+
+      it('should not show the iframe if there are no erc20 locks', async () => {
+        expect.assertions(1)
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            payload: NoERC20Locks,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.SHOW_ACCOUNTS_MODAL,
+            payload: undefined,
+          },
+        })
+
+        expect(fakeAccountIframe.className).toBe('')
+      })
+    })
+
+    describe('no Unlock user account', () => {
+      beforeEach(() => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: null,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 3,
+          },
+        })
+      })
+
+      it('should send wallet info as if there were a wallet if any ERC20 locks exist', done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        delete fakeWindow.web3
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: false,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: YesERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+
+      it('should show the account iframe if there are erc20 locks', async () => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(1)
+
+        delete fakeWindow.web3
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: YesERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+
+        // wait for the iframe to be shown
+        await waitFor(() => fakeAccountIframe.className)
+        expect(fakeAccountIframe.className).toBe('unlock start show')
+      })
+
+      it('should not show the account iframe if there are no erc20 locks', async done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        delete fakeWindow.web3
+
+        fakeIframe.contentWindow.postMessage = data => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: true,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(fakeAccountIframe.className).toBe('')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: NoERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+
+      it('should send wallet info with noWallet set if there are no ERC20 locks', done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        delete fakeWindow.web3
+        fakeIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: true,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: NoERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+
+      it('should redirect key purchase requests to the data iframe if all locks are ETH locks', async () => {
+        expect.assertions(2)
+
+        let givenData: any
+        let givenOrigin: any
+
+        fakeDataIframe.contentWindow.postMessage = (data, origin) => {
+          givenData = data
+          givenOrigin = origin
+        }
+        fakeAccountIframe.contentWindow.postMessage = () => {
+          // ensure we are not called
+          expect(false).toBe(true)
+        }
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: NoERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+
+        postFromCheckoutIframe({
+          source: fakeCheckoutIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.PURCHASE_KEY,
+            id: 1,
+            payload: {
+              lock: '0x123',
+              extraTip: '0',
+            },
+          },
+        })
+
+        // wait for the message to be posted
+        await waitFor(() => givenData)
+
+        expect(givenData).toEqual({
+          type: PostMessages.PURCHASE_KEY,
+          payload: {
+            lock: '0x123',
+            extraTip: '0',
+          },
+        })
+        expect(givenOrigin).toBe('http://fun.times')
+      })
+    })
+
+    describe('has Unlock user account', () => {
+      let givenEvent: any
+      let givenOrigin: string = ''
+      beforeEach(async () => {
+        makeFakeWindow({ enable: false })
+        makeFakeIframe()
+        delete fakeWindow.web3
+
+        web3Proxy(fakeWindow, mapHandlers)
+
+        // ordering of these posted messages should not matter
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: YesERC20Locks,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_ACCOUNT,
+            id: 1,
+            payload: unlockAccountAddress,
+          },
+        })
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_NETWORK,
+            id: 1,
+            payload: 1,
+          },
+        })
+
+        let gotWalletInfo = false
+
+        fakeDataIframe.contentWindow.postMessage = (event, origin) => {
+          if (event.type && event.type === PostMessages.WALLET_INFO) {
+            gotWalletInfo = true
+          } else {
+            givenEvent = event
+            givenOrigin = origin
+          }
+        }
+
+        // first, wait for the wallet info to be returned
+        await waitFor(() => gotWalletInfo)
+      })
+
+      it('should respond with the unlock account when eth_accounts is called', async () => {
+        expect.assertions(2)
+
+        // post to request the user account
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'eth_accounts',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+
+        expect(givenEvent).toEqual({
+          type: PostMessages.WEB3_RESULT,
+          payload: {
+            id: 1,
+            error: null,
+            result: { id: 1, jsonrpc: '2.0', result: [unlockAccountAddress] },
+          },
+        })
+        expect(givenOrigin).toBe('http://fun.times')
+      })
+
+      it('should respond with the correct network when net_version is called', async () => {
+        expect.assertions(2)
+
+        // post to request the network
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'net_version',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+
+        expect(givenEvent).toEqual({
+          type: PostMessages.WEB3_RESULT,
+          payload: {
+            id: 1,
+            error: null,
+            result: { id: 1, jsonrpc: '2.0', result: 1 },
+          },
+        })
+        expect(givenOrigin).toBe('http://fun.times')
+      })
+
+      it('should respond with an error for an unknown method call', async () => {
+        // note: unknown methods must be polyfilled. Currently only
+        // net_version and eth_accounts are called by walletService
+        // unless a key purchase is attempted
+        expect.assertions(2)
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.WEB3,
+            id: 1,
+            payload: {
+              method: 'unknown_method',
+              params: [],
+              id: 1,
+              jsonrpc: '2.0',
+            },
+          },
+        })
+
+        expect(givenEvent).toEqual({
+          type: PostMessages.WEB3_RESULT,
+          payload: {
+            id: 1,
+            error: '"unknown_method" is not supported',
+            result: null,
+          },
+        })
+        expect(givenOrigin).toBe('http://fun.times')
+      })
+
+      it('should redirect key purchase requests to the account iframe for any ERC20 locks', done => {
+        expect.assertions(2)
+
+        fakeDataIframe.contentWindow.postMessage = () => {
+          // ensure we are not called
+          expect(false).toBe(true)
+        }
+        fakeAccountIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.PURCHASE_KEY,
+            payload: {
+              lock: '0x123',
+              extraTip: '0',
+            },
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromCheckoutIframe({
+          source: fakeCheckoutIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.PURCHASE_KEY,
+            id: 1,
+            payload: {
+              lock: '0x123',
+              extraTip: '0',
+            },
+          },
+        })
+      })
+
+      it('should send INITIATED_TRANSACTION to the data iframe', done => {
+        expect.assertions(2)
+
+        fakeDataIframe.contentWindow.postMessage = () => {
+          // ensure we are not called
+          expect(false).toBe(true)
+        }
+        fakeDataIframe.contentWindow.postMessage = (data, origin) => {
+          expect(data).toEqual({
+            type: PostMessages.INITIATED_TRANSACTION,
+            payload: undefined,
+          })
+          expect(origin).toBe('http://fun.times')
+          done()
+        }
+
+        postFromAccountIframe({
+          source: fakeAccountIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.INITIATED_TRANSACTION,
+            id: 1,
+            payload: undefined,
+          },
+        })
+      })
+    })
+  })
 
   describe('enable succeeds', () => {
     beforeEach(() => {
@@ -182,15 +866,141 @@ describe('web3Proxy', () => {
         done()
       }
     })
+
+    it('should not show the user iframe for ERC20 locks', done => {
+      expect.assertions(2)
+
+      web3Proxy(fakeWindow, mapHandlers)
+
+      fakeIframe.contentWindow.postMessage = data => {
+        expect(data).toEqual({
+          type: PostMessages.WALLET_INFO,
+          payload: {
+            noWallet: false,
+            notEnabled: false,
+            isMetamask: false,
+          },
+        })
+        expect(fakeAccountIframe.className).toBe('')
+        done()
+      }
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.UPDATE_LOCKS,
+          id: 1,
+          payload: YesERC20Locks,
+        },
+      })
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.READY_WEB3,
+          id: 1,
+          payload: undefined,
+        },
+      })
+    })
+
+    it('should not use the user accounts fake web3', done => {
+      expect.assertions(3)
+
+      // get the response we expect from our web3 wallet
+      fakeWindow.web3 = {
+        currentProvider: {
+          send(params, callback) {
+            expect(this).toBe(
+              fakeWindow.web3 && fakeWindow.web3.currentProvider
+            )
+            expect(params).toEqual({
+              method: 'eth_accounts',
+              params: [],
+              jsonrpc: '2.0',
+              id: 1,
+            })
+            callback(null, ['hi'])
+            return
+          },
+        },
+      }
+
+      web3Proxy(fakeWindow, mapHandlers)
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.UPDATE_LOCKS,
+          id: 1,
+          payload: YesERC20Locks,
+        },
+      })
+
+      // pretend we have just received the user account and network
+      // from the account iframe
+      postFromAccountIframe({
+        source: fakeAccountIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.UPDATE_ACCOUNT,
+          id: 1,
+          payload: null,
+        },
+      })
+
+      postFromAccountIframe({
+        source: fakeAccountIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.UPDATE_NETWORK,
+          id: 1,
+          payload: 1,
+        },
+      })
+
+      fakeIframe.contentWindow.postMessage = data => {
+        expect(data).toEqual({
+          type: PostMessages.WEB3_RESULT,
+          payload: {
+            id: 1,
+            error: null,
+            result: ['hi'],
+          },
+        })
+        done()
+      }
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.WEB3,
+          id: 1,
+          payload: {
+            jsonrpc: '2.0',
+            id: 1,
+            method: 'eth_accounts',
+            params: [],
+          },
+        },
+      })
+    })
   })
 
   describe('enable fails', () => {
     beforeEach(() => {
       makeFakeWindow({ enable: false })
       makeFakeIframe()
+
+      web3Proxy(fakeWindow, mapHandlers)
     })
 
-    it('sends wallet info with notEnabled set if enable fails', done => {
+    it('should send wallet info with notEnabled set if enable fails', done => {
+      // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
       expect.assertions(2)
 
       fakeIframe.contentWindow.postMessage = (data, origin) => {
@@ -205,37 +1015,6 @@ describe('web3Proxy', () => {
         expect(origin).toBe('http://fun.times')
         done()
       }
-
-      web3Proxy(fakeWindow, mapHandlers)
-
-      postFromDataIframe({
-        source: fakeIframe.contentWindow,
-        origin: 'http://fun.times',
-        data: {
-          type: PostMessages.READY_WEB3,
-          payload: 'it worked!',
-        },
-      })
-    })
-
-    it('sends wallet info with noWallet set if there is no wallet at all', done => {
-      expect.assertions(2)
-
-      delete fakeWindow.web3
-      fakeIframe.contentWindow.postMessage = (data, origin) => {
-        expect(data).toEqual({
-          type: PostMessages.WALLET_INFO,
-          payload: {
-            noWallet: true,
-            notEnabled: false,
-            isMetamask: false,
-          },
-        })
-        expect(origin).toBe('http://fun.times')
-        done()
-      }
-
-      web3Proxy(fakeWindow, mapHandlers)
 
       postFromDataIframe({
         source: fakeIframe.contentWindow,
@@ -260,37 +1039,6 @@ describe('web3Proxy', () => {
           data: {
             type: PostMessages.READY_WEB3,
             payload: 'it worked!',
-          },
-        })
-      })
-
-      it('fails if there is no web3 wallet', done => {
-        expect.assertions(2)
-        delete fakeWindow.web3
-
-        fakeIframe.contentWindow.postMessage = (data, origin) => {
-          expect(data).toEqual({
-            type: PostMessages.WEB3,
-            payload: {
-              error: 'No web3 wallet is available',
-              id: 1,
-              result: null,
-            },
-          })
-          expect(origin).toBe('http://fun.times')
-          done()
-        }
-
-        postFromDataIframe({
-          source: fakeIframe.contentWindow,
-          origin: 'http://fun.times',
-          data: {
-            type: PostMessages.WEB3,
-            payload: {
-              method: 'eth_call',
-              params: [],
-              id: 1,
-            },
           },
         })
       })
