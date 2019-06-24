@@ -19,6 +19,8 @@ const Post = ({ slug, post }) => {
   let publishDate = post.publishDate || ''
   let paywallLock = post.paywallLock || ''
   let body = post.__content || ''
+  let membersOnly = post.membersOnly || ''
+  let nonMembersOnly = post.nonMembersOnly || ''
   let permalink = '/blog/' + slug
 
   return (
@@ -45,6 +47,8 @@ const Post = ({ slug, post }) => {
         subTitle={subTitle}
         authorName={authorName}
         permalink={permalink}
+        membersOnly={membersOnly}
+        nonMembersOnly={nonMembersOnly}
       />
     </Layout>
   )

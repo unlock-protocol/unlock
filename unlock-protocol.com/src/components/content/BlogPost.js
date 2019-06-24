@@ -35,7 +35,16 @@ export class BlogPost extends React.Component {
 
   render() {
     const { isMember, becomeMember } = this.context
-    const { title, subTitle, publishDate, body, authorName } = this.props
+    const {
+      title,
+      subTitle,
+      publishDate,
+      body,
+      authorName,
+      nonMembersOnly,
+      membersOnly,
+    } = this.props
+
     return (
       <Post>
         <Title>{title}</Title>
@@ -46,6 +55,12 @@ export class BlogPost extends React.Component {
         </Byline>
         <Body>
           <Markdown markup={body} />
+          {isMember === 'yes' && <Markdown markup={membersOnly} />}
+          {isMember === 'no' && (
+            <Button onClick={becomeMember}>
+              <Markdown markup={nonMembersOnly} />
+            </Button>
+          )}
         </Body>
         <CommentSeparator />
         {isMember === 'yes' && <Comments id="commento" />}
@@ -66,11 +81,15 @@ BlogPost.propTypes = {
   body: PropTypes.string.isRequired,
   authorName: PropTypes.string,
   publishDate: PropTypes.string.isRequired,
+  nonMembersOnly: PropTypes.string,
+  membersOnly: PropTypes.string,
 }
 
 BlogPost.defaultProps = {
   authorName: 'Unlock team',
   subTitle: '',
+  nonMembersOnly: '',
+  membersOnly: '',
 }
 
 export default BlogPost
