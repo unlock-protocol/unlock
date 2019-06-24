@@ -175,6 +175,6 @@ describe('unlock.js startup', () => {
     // - the data iframe post office (used for web3Proxy as well)
     // - the checkout UI post office
     // - the user accounts UI post office
-    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(4)
+    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(3)
   })
 })
