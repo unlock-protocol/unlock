@@ -165,5 +165,5 @@ export default function setupPostOffices(
   mapHandlers('checkout', checkoutHandlers)
 
   // set up the main window side of Web3ProxyProvider
-  web3Proxy(window, dataIframe, process.env.PAYWALL_URL)
+  web3Proxy(window, mapHandlers)
 }

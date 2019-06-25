@@ -1,5 +1,5 @@
 import { PaywallConfig, Locks, PurchaseKeyRequest } from './unlockTypes'
-import { web3MethodCall, Web3WalletInfo } from './windowTypes'
+import { web3MethodCall, Web3WalletInfo, web3MethodResult } from './windowTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
@@ -14,6 +14,7 @@ export enum PostMessages {
   CONFIG = 'config',
   ACCOUNT = 'account',
   WEB3 = 'web3',
+  WEB3_RESULT = 'web3', // this is the same as WEB3 because the exchange is 1-way
   READY_WEB3 = 'ready/web3',
   WALLET_INFO = 'walletInfo',
 
@@ -71,6 +72,10 @@ export type Message =
   | {
       type: PostMessages.WEB3
       payload: web3MethodCall
+    }
+  | {
+      type: PostMessages.WEB3_RESULT
+      payload: web3MethodResult
     }
   | {
       type: PostMessages.READY_WEB3

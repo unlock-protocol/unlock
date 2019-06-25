@@ -5,6 +5,9 @@ import {
   POST_MESSAGE_WEB3,
 } from '../../paywall-builder/constants'
 import { IframeType, UnlockWindow, MessageHandler } from '../../windowTypes'
+import setupIframeMailbox, {
+  MapHandlers,
+} from '../../unlock.js/setupIframeMailbox'
 
 describe('web3Proxy', () => {
   interface MockUnlockWindow extends UnlockWindow {
@@ -15,9 +18,13 @@ describe('web3Proxy', () => {
   let fakeWindow: MockUnlockWindow
   let fakeIframe: IframeType
   let handlers: {
-    message: Function
+    message: Array<(message: any) => void>
   }
-
+  let mapHandlers: MapHandlers
+  let fakeCheckoutIframe: IframeType
+  let fakeDataIframe: IframeType
+  let fakeAccountIframe: IframeType
+  let postToDataIframe: (message: any) => void
   interface fakeWindowProps {
     enable: boolean | undefined
   }
@@ -32,8 +39,10 @@ describe('web3Proxy', () => {
         enableFuncOrUndefined = () => Promise.reject(new Error('fail'))
     }
     handlers = {
-      message: () => {},
+      message: [],
     }
+    process.env.PAYWALL_URL = 'http://fun.times'
+    process.env.USER_IFRAME_URL = 'http://fun.times/account'
     fakeWindow = {
       Promise,
       origin: 'http://fun.times',
@@ -74,41 +83,55 @@ describe('web3Proxy', () => {
         },
       },
       addEventListener(type: 'message', handler: MessageHandler) {
-        handlers[type] = handler
+        handlers[type].push(handler)
       },
     }
   }
 
   function makeFakeIframe() {
-    fakeIframe = {
+    fakeCheckoutIframe = {
+      src: 'checkout',
       className: '',
-      src: '',
-      setAttribute: jest.fn(),
       contentWindow: {
         postMessage: jest.fn(),
       },
+      setAttribute: jest.fn(),
     }
+    fakeIframe = fakeDataIframe = {
+      src: 'data',
+      className: '',
+      contentWindow: {
+        postMessage: jest.fn(),
+      },
+      setAttribute: jest.fn(),
+    }
+    fakeAccountIframe = {
+      src: 'account',
+      className: '',
+      contentWindow: {
+        postMessage: jest.fn(),
+      },
+      setAttribute: jest.fn(),
+    }
+    mapHandlers = setupIframeMailbox(
+      fakeWindow,
+      fakeCheckoutIframe,
+      fakeDataIframe,
+      fakeAccountIframe
+    )
+    postToDataIframe = handlers.message[0]
   }
 
   describe('enable succeeds', () => {
     beforeEach(() => {
-      makeFakeIframe()
       makeFakeWindow({ enable: true })
+      makeFakeIframe()
     })
 
     it('listens for POST_MESSAGE_READY_WEB3 and dispatches the result', done => {
       expect.assertions(2)
 
-      web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
-
-      handlers.message({
-        source: fakeIframe.contentWindow,
-        origin: 'http://fun.times',
-        data: {
-          type: POST_MESSAGE_READY_WEB3,
-          payload: 'it worked!',
-        },
-      })
+      web3Proxy(fakeWindow, mapHandlers)
 
       fakeIframe.contentWindow.postMessage = (data, origin) => {
         expect(data).toEqual({
@@ -122,6 +145,15 @@ describe('web3Proxy', () => {
         expect(origin).toBe('http://fun.times')
         done()
       }
+
+      postToDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: POST_MESSAGE_READY_WEB3,
+          payload: 'it worked!',
+        },
+      })
     })
 
     it('sets isMetamask for metamask wallets', done => {
@@ -130,9 +162,9 @@ describe('web3Proxy', () => {
       if (!fakeWindow.web3) return // typescript...
       fakeWindow.web3.currentProvider.isMetamask = true
 
-      web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+      web3Proxy(fakeWindow, mapHandlers)
 
-      handlers.message({
+      postToDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
@@ -158,8 +190,8 @@ describe('web3Proxy', () => {
 
   describe('enable fails', () => {
     beforeEach(() => {
-      makeFakeIframe()
       makeFakeWindow({ enable: false })
+      makeFakeIframe()
     })
 
     it('sends wallet info with notEnabled set if enable fails', done => {
@@ -178,9 +210,9 @@ describe('web3Proxy', () => {
         done()
       }
 
-      web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+      web3Proxy(fakeWindow, mapHandlers)
 
-      handlers.message({
+      postToDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
@@ -208,9 +240,9 @@ describe('web3Proxy', () => {
         done()
       }
 
-      web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+      web3Proxy(fakeWindow, mapHandlers)
 
-      handlers.message({
+      postToDataIframe({
         source: fakeIframe.contentWindow,
         origin: 'http://fun.times',
         data: {
@@ -223,12 +255,12 @@ describe('web3Proxy', () => {
 
     describe('web3 proxy', () => {
       beforeEach(() => {
-        makeFakeIframe()
         makeFakeWindow({ enable: false })
+        makeFakeIframe()
 
-        web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+        web3Proxy(fakeWindow, mapHandlers)
 
-        handlers.message({
+        postToDataIframe({
           source: fakeIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
@@ -256,7 +288,7 @@ describe('web3Proxy', () => {
           done()
         }
 
-        handlers.message({
+        postToDataIframe({
           source: fakeIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
@@ -272,12 +304,12 @@ describe('web3Proxy', () => {
 
       describe('malformed request payload', () => {
         beforeEach(() => {
-          makeFakeIframe()
           makeFakeWindow({ enable: true })
+          makeFakeIframe()
 
-          web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+          web3Proxy(fakeWindow, mapHandlers)
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -291,7 +323,7 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -300,7 +332,7 @@ describe('web3Proxy', () => {
             },
           })
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -318,7 +350,7 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -329,7 +361,7 @@ describe('web3Proxy', () => {
             },
           })
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -349,7 +381,7 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -361,7 +393,7 @@ describe('web3Proxy', () => {
             },
           })
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -382,7 +414,7 @@ describe('web3Proxy', () => {
           expect.assertions(2)
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -395,7 +427,7 @@ describe('web3Proxy', () => {
             },
           })
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -421,9 +453,9 @@ describe('web3Proxy', () => {
           fakeWindow.web3 &&
             (fakeWindow.web3.currentProvider.sendAsync = jest.fn())
 
-          web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+          web3Proxy(fakeWindow, mapHandlers)
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -435,7 +467,7 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -473,9 +505,9 @@ describe('web3Proxy', () => {
         beforeEach(async () => {
           makeFakeWindow({ enable: true })
 
-          web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+          web3Proxy(fakeWindow, mapHandlers)
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -487,7 +519,7 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -520,17 +552,17 @@ describe('web3Proxy', () => {
 
       describe('successful request', () => {
         beforeEach(async () => {
-          makeFakeIframe()
           makeFakeWindow({ enable: true })
+          makeFakeIframe()
           fakeWindow.web3 &&
             (fakeWindow.web3.currentProvider.send = (_, callbackinator) => {
               callbackinator('error', 'result')
             })
           fakeIframe.contentWindow.postMessage = jest.fn()
 
-          web3Proxy(fakeWindow, fakeIframe, 'http://fun.times')
+          web3Proxy(fakeWindow, mapHandlers)
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
@@ -542,7 +574,7 @@ describe('web3Proxy', () => {
           // flush the promise queue so these handler calls happen in order
           await Promise.resolve()
 
-          handlers.message({
+          postToDataIframe({
             source: fakeIframe.contentWindow,
             origin: 'http://fun.times',
             data: {
