@@ -21,6 +21,7 @@ export function getValue(value, defaults) {
     ...value,
     locks: Object.keys(value.locks).reduce(
       (locks, lockAddress) => ({
+        ...locks,
         [lockAddress]: {
           // set a name if none was present
           name: value.locks[lockAddress].name || '',

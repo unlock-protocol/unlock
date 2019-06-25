@@ -171,11 +171,15 @@ describe('usePaywallConfig hook', () => {
   it('includes default values for lock name', () => {
     expect.assertions(1)
     const lockAddress = '0x1234567890123456789012345678901234567890'
+    const lockAddress2 = '0xa234567890123456789012345678901234567890'
 
     const myConfig = {
       ...defaultValue,
       locks: {
         [lockAddress]: {},
+        [lockAddress2]: {
+          name: 'hi',
+        },
       },
       callToAction: {
         expired: 'hi',
@@ -206,6 +210,9 @@ describe('usePaywallConfig hook', () => {
         locks: {
           [lockAddress]: {
             name: '',
+          },
+          [lockAddress2]: {
+            name: 'hi',
           },
         },
         callToAction: {
