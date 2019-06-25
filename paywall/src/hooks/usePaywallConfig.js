@@ -10,7 +10,7 @@ import { isValidPaywallConfig } from '../utils/validators'
 
 /**
  * Merge in the call to action sentences from defaults for any that the
- * paywall configruation did not define
+ * paywall configuration did not define
  *
  * @param {object} value paywall configuration passed in from main window
  * @param {object} defaults default value (defined below)
@@ -19,6 +19,16 @@ export function getValue(value, defaults) {
   if (Object.keys(value.callToAction).length === 4) return value
   return {
     ...value,
+    locks: Object.keys(value.locks).reduce(
+      (locks, lockAddress) => ({
+        ...locks,
+        [lockAddress]: {
+          // set a name if none was present
+          name: value.locks[lockAddress].name || '',
+        },
+      }),
+      {}
+    ),
     callToAction: {
       ...defaults.callToAction,
       ...value.callToAction,
