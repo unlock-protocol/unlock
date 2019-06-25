@@ -9,7 +9,7 @@ import Errors from '../errors'
  * @param {PropTypes.address} amount
  * @param {Function} callback TODO: implement...
  */
-export default async function(lockAddress, amount = 0) {
+export default async function(lockAddress, amount = '0') {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   const weiAmount = utils.toWei(amount) // TODO: fix for ERC20 locks for which the amount to withdraw may be of a different unit!
