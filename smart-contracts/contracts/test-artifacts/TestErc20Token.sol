@@ -1,6 +1,7 @@
 pragma solidity 0.5.9;
 
 import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
+import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol';
 
 
 /**
@@ -10,5 +11,10 @@ import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
  * This contract should not be used in production.
  */
 contract TestErc20Token is
-  ERC20Mintable
-{}
+  ERC20Mintable,
+  ERC20Detailed
+{
+  constructor() public
+    ERC20Detailed('Test Token', 'TT', 18)
+  {}
+}

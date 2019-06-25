@@ -67,9 +67,12 @@ export interface PaywallConfigLock {
   name: string
 }
 
+export type PaywallAppKind = 'adblock' | 'paywall'
+
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
-  icon: string
+  icon?: string
+  type?: PaywallAppKind
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
 }
@@ -91,6 +94,7 @@ export interface Lock {
   keyPrice: string
   expirationDuration: number
   key: Key
+  currencyContractAddress: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number
@@ -109,4 +113,9 @@ export interface Key {
   confirmations: number
   owner: string | null
   lock: string
+}
+
+export interface PurchaseKeyRequest {
+  lock: string // lock address
+  extraTip: string // extra value to add in addition to key price
 }

@@ -101,6 +101,26 @@ describe('Unlock Provider', () => {
         )
       })
     })
+
+    describe('signKeyPurchaseRequestData', () => {
+      it('should sign a key purchase request with a valid expiration time', () => {
+        expect.assertions(2)
+        const input = {
+          recipient: publicKey,
+          lock: '0xaC6b4470B0cba92b823aB96762972e67a1C851d5',
+        }
+        const output = provider.signKeyPurchaseRequestData(input)
+        const currentTime = Math.floor(Date.now() / 1000)
+
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+        // Expiration must be some amount of time after right now
+        expect(
+          output.data.message.purchaseRequest.expiry > currentTime
+        ).toBeTruthy()
+      })
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {

@@ -215,6 +215,7 @@ Object {
 
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -906,7 +907,7 @@ Look at us! We're posting on our very own blog! How exciting!
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -1151,15 +1152,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Unlock team
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Tuesday, March 5, 2019
@@ -1196,15 +1197,15 @@ should pay great attention.
 Short description.
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Julien Genestoux
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Friday, March 1, 2019
@@ -1241,15 +1242,15 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
               </div>
               <div
-                class="b1qsww-2 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 ddbCV"
               >
                 <h3
-                  class="b1qsww-5 bQMHlY"
+                  class="b1qsww-7 fdicQS"
                 >
                   Unlock team
                 </h3>
                 <div
-                  class="b1qsww-6 cYadJQ"
+                  class="b1qsww-8 egiKhD"
                 >
                   On 
                   Monday, August 20, 2018
@@ -1658,7 +1659,7 @@ Object {
   line-height: 0;
 }
 
-.c19 {
+.c20 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -1671,7 +1672,7 @@ Object {
   align-items: center;
 }
 
-.c20 {
+.c21 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -1681,6 +1682,7 @@ Object {
 
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -1698,6 +1700,13 @@ Object {
   display: grid;
   row-gap: 24px;
   width: 100%;
+}
+
+.c19 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
 }
 
 .c12 {
@@ -1838,7 +1847,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c22 {
     display: none;
   }
 }
@@ -2149,9 +2158,12 @@ are intentionally not generated from this file date, in case we want to override
                 </p>
               </div>
             </div>
+            <hr
+              class="c19"
+            />
           </div>
           <footer
-            class="c19"
+            class="c20"
           >
             <a
               class="c6 c7"
@@ -2286,14 +2298,14 @@ are intentionally not generated from this file date, in case we want to override
               </small>
             </a>
             <span
-              class="c20"
+              class="c21"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c21"
+          class="c22"
         />
       </div>
     </div>
@@ -2304,7 +2316,7 @@ are intentionally not generated from this file date, in case we want to override
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -2507,35 +2519,35 @@ are intentionally not generated from this file date, in case we want to override
           />
         </header>
         <div
-          class="b1qsww-0 hRCMaV"
+          class="b1qsww-2 fjfaRt"
         >
           <h1
-            class="b1qsww-1 dxIltO"
+            class="b1qsww-3 iYpbov"
           >
             Sample title
           </h1>
           <h2
-            class="b1qsww-3 iemLUe"
+            class="b1qsww-5 gvapQS"
           >
             Some advice from the field
           </h2>
           <div
-            class="b1qsww-2 cdMqQS"
+            class="b1qsww-4 hTAVQP"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Alice "Storybook" Bob
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               August 20, 2018
             </div>
           </div>
           <div
-            class="b1qsww-4 dhqFyH"
+            class="b1qsww-6 imLyLP"
           >
             <div>
               <p>
@@ -2603,6 +2615,9 @@ are intentionally not generated from this file date, in case we want to override
               </p>
             </div>
           </div>
+          <hr
+            class="b1qsww-0 zPPJJ"
+          />
         </div>
         <footer
           class="sc-2ix2yp-0 fmIKjS"
@@ -3103,15 +3118,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Tuesday, March 5, 2019
@@ -3148,15 +3163,15 @@ should pay great attention.
 Short description.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Julien Genestoux
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Friday, March 1, 2019
@@ -3193,15 +3208,15 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Monday, August 20, 2018
@@ -3585,15 +3600,15 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-2 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 ddbCV"
           >
             <h3
-              class="b1qsww-5 bQMHlY"
+              class="b1qsww-7 fdicQS"
             >
               Unlock team
             </h3>
             <div
-              class="b1qsww-6 cYadJQ"
+              class="b1qsww-8 egiKhD"
             >
               On 
               Tuesday, March 5, 2019
@@ -3669,7 +3684,14 @@ exports[`Storyshots BlogPost Blog post from markdown with author and subtitle 1`
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c7 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -3967,6 +3989,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c7"
+        />
       </div>
     </div>
   </body>,
@@ -3976,35 +4001,35 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 iemLUe"
+        class="b1qsww-5 gvapQS"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -4186,6 +4211,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -4254,7 +4282,14 @@ exports[`Storyshots BlogPost Blog post from markdown with author but no subtitle
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c6 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -4539,6 +4574,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c6"
+        />
       </div>
     </div>
   </body>,
@@ -4548,31 +4586,31 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Reginald Pianoforte
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -4754,6 +4792,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -4822,7 +4863,14 @@ exports[`Storyshots BlogPost Blog post from markdown with no subtitle or author 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c6 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -5107,6 +5155,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c6"
+        />
       </div>
     </div>
   </body>,
@@ -5116,31 +5167,31 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -5322,6 +5373,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -5390,7 +5444,14 @@ exports[`Storyshots BlogPost Blog post from markdown with subtitle but no author
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c7 {
+  margin-top: 50px;
+  border: none;
+  border-top: 1px solid var(--lightgrey);
+  margin-bottom: 20px;
+}
+
+.c0 {
   width: 100%;
   max-width: 730px;
   margin: auto;
@@ -5688,6 +5749,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
             </p>
           </div>
         </div>
+        <hr
+          class="c7"
+        />
       </div>
     </div>
   </body>,
@@ -5697,35 +5761,35 @@ genuinely collaborative ecosystem, where many companies and services can operate
       rel="stylesheet"
     />
     <div
-      class="b1qsww-0 hRCMaV"
+      class="b1qsww-2 fjfaRt"
     >
       <h1
-        class="b1qsww-1 dxIltO"
+        class="b1qsww-3 iYpbov"
       >
         Introduction to Unlock
       </h1>
       <h2
-        class="b1qsww-3 iemLUe"
+        class="b1qsww-5 gvapQS"
       >
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-2 cdMqQS"
+        class="b1qsww-4 hTAVQP"
       >
         <h3
-          class="b1qsww-5 bQMHlY"
+          class="b1qsww-7 fdicQS"
         >
           Unlock team
         </h3>
         <div
-          class="b1qsww-6 cYadJQ"
+          class="b1qsww-8 egiKhD"
         >
           On 
           August 20, 2018
         </div>
       </div>
       <div
-        class="b1qsww-4 dhqFyH"
+        class="b1qsww-6 imLyLP"
       >
         <div>
           <p>
@@ -5907,6 +5971,9 @@ genuinely collaborative ecosystem, where many companies and services can operate
           </p>
         </div>
       </div>
+      <hr
+        class="b1qsww-0 zPPJJ"
+      />
     </div>
   </div>,
   "debug": [Function],
@@ -11399,6 +11466,7 @@ Object {
 
 .c0 {
   display: grid;
+  padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
 }
 
@@ -11841,7 +11909,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 evMwRH"
+      class="hm3mhg-0 hxYMAy"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -12530,6 +12598,346 @@ Object {
           d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 0 1-5.488 5.567 5.583 5.583 0 0 1-5.567-5.567v-5.18h11.054z"
         />
       </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership locked state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+.c1 {
+  cursor: pointer;
+  padding: 10px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          Try Unlock, become a member!
+           
+          <span
+            aria-label="click"
+            role="img"
+          >
+            ↗️
+          </span>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1mlffph-0 fyyMen"
+    >
+      <div
+        class="sc-1mlffph-1 gPpkGc"
+      >
+        Try Unlock, become a member!
+         
+        <span
+          aria-label="click"
+          role="img"
+        >
+          ↗️
+        </span>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership unknown state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Membership unlocked state 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  background-color: black;
+  width: 100%;
+  left: 0px;
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  text-align: center;
+  z-index: 1000;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        Thanks for being a member! Did you know? Your key
+         
+        <span
+          aria-label="click"
+          role="img"
+        >
+          🔑
+        </span>
+         
+        is an Ethereum non fungible token!
+         
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-1mlffph-0 fyyMen"
+    >
+      Thanks for being a member! Did you know? Your key
+       
+      <span
+        aria-label="click"
+        role="img"
+      >
+        🔑
+      </span>
+       
+      is an Ethereum non fungible token!
+       
     </div>
   </div>,
   "debug": [Function],

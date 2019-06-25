@@ -4,6 +4,7 @@ import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
 import UnlockUser from './structured_data/unlockUser'
 import UnlockPaymentDetails from './structured_data/unlockPaymentDetails'
+import UnlockPurchaseRequest from './structured_data/unlockPurchaseRequest'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
@@ -88,6 +89,20 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
       publicKey: this.wallet.address,
       stripeTokenId,
     })
+    return this.signData(data)
+  }
+
+  // input contains recipient and lock addresses
+  signKeyPurchaseRequestData(input) {
+    // default signature expiration to now + 60 seconds
+    const expiry = Math.floor(Date.now() / 1000) + 60
+    const purchaseRequest = Object.assign(
+      {
+        expiry,
+      },
+      input
+    )
+    const data = UnlockPurchaseRequest.build(purchaseRequest)
     return this.signData(data)
   }
 }

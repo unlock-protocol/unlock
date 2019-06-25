@@ -57,12 +57,7 @@ export const isAccount = val => {
  */
 export const isValidPaywallConfig = config => {
   if (!config) return false
-  if (typeof config !== 'object') return false
-  const keys = Object.keys(config)
-  if (keys.length !== 3) return false
-  keys.sort()
-  const testKeys = ['callToAction', 'icon', 'locks']
-  if (keys.filter((key, index) => testKeys[index] !== key).length) return false
+  if (!isValidObject(config, ['callToAction', 'locks'])) return false
   // allow false for icon
   if (config.icon) {
     if (typeof config.icon !== 'string') return false
@@ -77,6 +72,13 @@ export const isValidPaywallConfig = config => {
     ) {
       return false
     }
+  }
+  // allow type to be empty (empty is assumed to be "adblock")
+  if (config.type) {
+    if (typeof config.type !== 'string') return false
+    const allowedTypes = ['adblock', 'paywall']
+
+    if (!allowedTypes.includes(config.type)) return false
   }
   if (!config.callToAction || typeof config.callToAction !== 'object')
     return false
@@ -98,6 +100,7 @@ export const isValidPaywallConfig = config => {
       if (!isAccount(lock)) return false
       const thisLock = config.locks[lock]
       if (!thisLock || typeof thisLock !== 'object') return false
+      if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
       if (!thisLock.name || typeof thisLock.name !== 'string') return false
       return true

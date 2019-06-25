@@ -89,3 +89,71 @@ export interface Error {
     [key: string]: any
   }
 }
+
+export interface PaywallCallToAction {
+  default: string
+  expired: string
+  pending: string
+  confirmed: string
+}
+
+export interface PaywallConfigLocks {
+  [address: string]: PaywallConfigLock
+}
+
+export interface PaywallConfigLock {
+  name: string
+}
+
+export type PaywallAppKind = 'adblock' | 'paywall'
+
+// This interface describes an individual paywall's config
+export interface PaywallConfig {
+  icon: string
+  type: PaywallAppKind
+  callToAction: PaywallCallToAction
+  locks: PaywallConfigLocks
+}
+
+export enum KeyStatus {
+  NONE = 'none',
+  CONFIRMING = 'confirming',
+  CONFIRMED = 'confirmed',
+  EXPIRED = 'expired',
+  VALID = 'valid',
+  SUBMITTED = 'submitted',
+  PENDING = 'pending',
+  FAILED = 'failed',
+}
+
+export interface Lock {
+  name: string
+  address: string
+  keyPrice: string
+  expirationDuration: number
+  key: Key
+  currencyContractAddress: string | null
+  asOf?: number
+  maxNumberOfKeys?: number
+  outstandingKeys?: number
+  balance?: string
+  owner?: string
+}
+
+export interface Locks {
+  [address: string]: Lock
+}
+
+export interface Key {
+  expiration: number
+  transactions: Transaction[]
+  status: string
+  confirmations: number
+  owner: string | null
+  lock: string
+}
+
+export interface PurchaseKeyRequest {
+  lock: string // lock address
+  extraTip: string // extra value to add in addition to key price
+}

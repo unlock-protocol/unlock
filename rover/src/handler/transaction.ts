@@ -7,9 +7,11 @@ function getTransactionData(provider, transactionHash) {
 /** this needs to be adjusted */
 async function filterTransaction(transaction, connection) {
   let registry = await Registry.get(connection)
+  registry = registry.map((entry: string) => entry.toLowerCase())
 
   return (
-    registry.includes(transaction.to) || registry.includes(transaction.from)
+    registry.includes(transaction.to.toLowerCase()) ||
+    registry.includes(transaction.from.toLowerCase())
   )
 }
 
@@ -25,10 +27,12 @@ async function transactionHandler(
       transactionHash
     )
 
-    if (await filterTransaction(transaction, connection)) {
+    if (transaction && await filterTransaction(transaction, connection)) {
       storage.storeTransaction(transaction)
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const exportFunctions = {
