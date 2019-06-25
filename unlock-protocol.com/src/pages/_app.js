@@ -3,6 +3,7 @@ import App, { Container } from 'next/app'
 import React from 'react'
 import Intercom from 'react-intercom'
 import getConfig from 'next/config'
+
 import GlobalStyle from '../theme/globalStyle'
 import Membership from '../components/interface/Membership'
 import { MembershipContext } from '../membershipContext'
@@ -58,17 +59,32 @@ The Unlock team
 
     // Listen to Unlock events
     if (process.browser) {
-      this.state.becomeMember = () =>
-        window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
+      this.state.becomeMember = () => {
+        ReactGA.event({
+          category: 'Membership',
+          action: 'Clicked membership banner',
+        })
+        return (
+          window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
+        )
+      }
 
       window.addEventListener('unlockProtocol', event => {
         if (event.detail === 'unlocked') {
+          ReactGA.event({
+            category: 'Membership',
+            action: 'unlockProtocol unlocked',
+          })
           this.setState(state => ({
             ...state,
             isMember: 'yes',
           }))
         }
         if (event.detail === 'locked') {
+          ReactGA.event({
+            category: 'Membership',
+            action: 'unlockProtocol locked',
+          })
           this.setState(state => ({
             ...state,
             isMember: 'no',
