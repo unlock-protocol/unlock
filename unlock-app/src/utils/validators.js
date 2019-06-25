@@ -53,21 +53,16 @@ function isValidObject(obj, validKeys) {
 
 function isValidKeyStatus(status) {
   if (typeof status !== 'string') return false
-  if (
-    ![
-      'none',
-      'confirming',
-      'confirmed',
-      'expired',
-      'valid',
-      'submitted',
-      'pending',
-      'failed',
-    ].includes(status)
-  ) {
-    return false
-  }
-  return true
+  return [
+    'none',
+    'confirming',
+    'confirmed',
+    'expired',
+    'valid',
+    'submitted',
+    'pending',
+    'failed',
+  ].includes(status)
 }
 
 /**
