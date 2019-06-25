@@ -18,9 +18,8 @@ let setupFail
 describe('v11', () => {
   describe('withdrawFromLock', () => {
     const lock = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const amount = '3'
 
-    async function nockBeforeEach() {
+    async function nockBeforeEach(amount) {
       nock.cleanAll()
       walletService = await prepWalletService(
         UnlockV11.PublicLock,
@@ -48,10 +47,37 @@ describe('v11', () => {
       setupFail = fail
     }
 
-    it('should invoke _handleMethodCall with the right params', async () => {
+    it('should invoke _handleMethodCall with the right params when no amount has been provided', async () => {
       expect.assertions(2)
 
-      await nockBeforeEach()
+      await nockBeforeEach('0')
+      setupSuccess()
+
+      walletService._handleMethodCall = jest.fn(() =>
+        Promise.resolve(transaction.hash)
+      )
+      const mock = walletService._handleMethodCall
+
+      await walletService.withdrawFromLock(lock)
+
+      expect(mock).toHaveBeenCalledWith(
+        expect.any(Promise),
+        TransactionTypes.WITHDRAWAL
+      )
+
+      // verify that the promise passed to _handleMethodCall actually resolves
+      // to the result the chain returns from a sendTransaction call to createLock
+      const result = await mock.mock.calls[0][0]
+      await result.wait()
+      expect(result).toEqual(transactionResult)
+      await nock.resolveWhenAllNocksUsed()
+    })
+
+    it('should invoke _handleMethodCall with the right params', async () => {
+      expect.assertions(2)
+      const amount = '3'
+
+      await nockBeforeEach(amount)
       setupSuccess()
 
       walletService._handleMethodCall = jest.fn(() =>
@@ -76,9 +102,10 @@ describe('v11', () => {
 
     it('should emit an error if the transaction cannot be sent', async () => {
       expect.assertions(1)
+      const amount = '3'
 
       const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
+      await nockBeforeEach(amount)
       setupFail(error)
 
       walletService.on('error', error => {
