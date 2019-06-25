@@ -167,4 +167,59 @@ describe('usePaywallConfig hook', () => {
       })
     )
   })
+
+  it('includes default values for lock name', () => {
+    expect.assertions(1)
+    const lockAddress = '0x1234567890123456789012345678901234567890'
+    const lockAddress2 = '0xa234567890123456789012345678901234567890'
+
+    const myConfig = {
+      ...defaultValue,
+      locks: {
+        [lockAddress]: {},
+        [lockAddress2]: {
+          name: 'hi',
+        },
+      },
+      callToAction: {
+        expired: 'hi',
+      },
+    }
+
+    let wrapper
+    rtl.act(() => {
+      wrapper = rtl.render(<Wrapper />)
+    })
+
+    const listener = getListener()
+
+    rtl.act(() => {
+      listener({
+        source: fakeWindow.parent,
+        origin: 'origin',
+        data: {
+          type: POST_MESSAGE_CONFIG,
+          payload: myConfig,
+        },
+      })
+    })
+
+    expect(wrapper.getByTestId('config')).toHaveTextContent(
+      JSON.stringify({
+        ...myConfig,
+        locks: {
+          [lockAddress]: {
+            name: '',
+          },
+          [lockAddress2]: {
+            name: 'hi',
+          },
+        },
+        callToAction: {
+          ...defaultValue.callToAction,
+          expired: 'hi',
+        },
+      })
+    )
+  })
 })
