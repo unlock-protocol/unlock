@@ -541,14 +541,13 @@ describe('Wallet middleware', () => {
 
     it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
       expect.assertions(2)
-      const { next, invoke, store } = create()
+      const { next, invoke } = create()
       const action = { type: WITHDRAW_FROM_LOCK, lock }
       mockWalletService.withdrawFromLock = jest.fn()
       mockWalletService.ready = true
       invoke(action)
       expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
+        lock.address
       )
       expect(next).toHaveBeenCalledWith(action)
     })
