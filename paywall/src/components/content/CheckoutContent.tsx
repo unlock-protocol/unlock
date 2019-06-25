@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -9,18 +9,33 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import { Key } from '../../unlockTypes'
+import { Key, Locks, PaywallConfig, Account } from '../../unlockTypes'
 import {
   POST_MESSAGE_PURCHASE_KEY,
   POST_MESSAGE_DISMISS_CHECKOUT,
+  POST_MESSAGE_LOCKED,
+  POST_MESSAGE_UNLOCKED,
 } from '../../paywall-builder/constants'
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
+import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 
 interface networkNames {
   [key: number]: string[]
 }
+
+// TODO: move useBlockchainData to ts and remove these defs
+interface blockchainData {
+  account: Account | null
+  network: number
+  locks: Locks
+}
+type useBlockchainDataFunc = (
+  window: any,
+  paywallConfig: PaywallConfig
+) => blockchainData
+
 /**
  * This is the data handler for the Checkout component
  */
@@ -31,14 +46,25 @@ export default function CheckoutContent() {
   // the paywall configuration passed as window.unlockProtocolConfig in the main window
   const paywallConfig = usePaywallConfig()
   // the blockchain data returned from the data iframe
-  const { account, network, locks } = useBlockchainData(window, paywallConfig)
+  const {
+    account,
+    network,
+    locks,
+  }: blockchainData = (useBlockchainData as useBlockchainDataFunc)(
+    window,
+    paywallConfig
+  )
   const currentNetwork: string = (ETHEREUM_NETWORKS_NAMES as networkNames)[
     network
   ][0]
   // for sending purchase requests, hiding the checkout iframe
   const { postMessage } = usePostMessage('Checkout UI')
+  const [userInitiatedPurchase, initiatePurchase] = useState(false)
   // purchase a key with this callback
   const purchaseKey = (key: Key) => {
+    // record the fact that the purchase was initiated in this process
+    // so that we will not automatically dismiss the Checkout UI
+    initiatePurchase(true)
     postMessage({
       type: POST_MESSAGE_PURCHASE_KEY,
       payload: {
@@ -47,13 +73,41 @@ export default function CheckoutContent() {
       },
     })
   }
+  const isLocked = useListenForPostMessage({
+    type: POST_MESSAGE_LOCKED,
+    defaultValue: false,
+    getValue: () => true,
+  })
+  const isUnlocked = useListenForPostMessage({
+    type: POST_MESSAGE_UNLOCKED,
+    defaultValue: false,
+    getValue: (val: any) => !!val,
+  })
+  const locked = !isUnlocked && isLocked
+  let allowClosingCheckout: boolean
+  if (paywallConfig.type === 'paywall') {
+    // for the paywall, the checkout cannot be closed unless the user explicitly closes it
+    allowClosingCheckout = !locked
+  } else {
+    allowClosingCheckout = true
+  }
   // hide the checkout iframe
-  const hideCheckout = () => {
+  const hideCheckout = useCallback(() => {
     postMessage({
       type: POST_MESSAGE_DISMISS_CHECKOUT,
       payload: undefined, // this must be set to trigger a response in unlock.min.js
     })
-  }
+  }, [postMessage])
+
+  // get a list of locks that have valid keys
+  const activeLocks = Object.keys(locks as Locks).filter(
+    (lockAddress: string) => locks[lockAddress].key.status === 'valid'
+  )
+  useEffect(() => {
+    if (activeLocks.length && !userInitiatedPurchase) {
+      hideCheckout()
+    }
+  }, [activeLocks.length, hideCheckout, userInitiatedPurchase])
 
   let child: React.ReactNode
   let bgColor = 'var(--offwhite)'
@@ -102,6 +156,7 @@ export default function CheckoutContent() {
     <CheckoutWrapper
       hideCheckout={hideCheckout}
       bgColor={bgColor}
+      allowClose={allowClosingCheckout}
       onClick={e => {
         e.stopPropagation()
       }}
@@ -111,7 +166,7 @@ export default function CheckoutContent() {
   )
 
   return (
-    <Greyout onClick={hideCheckout}>
+    <Greyout onClick={allowClosingCheckout ? hideCheckout : () => {}}>
       <Wrapper />
     </Greyout>
   )

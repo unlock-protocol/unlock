@@ -35,8 +35,8 @@ export const HomeContent = () => (
         <SubTitle>Simple Integration</SubTitle>
         <ImageWithHover base="code" />
         <Paragraph>
-          Unlock provides a simple snippet of code to integrate easily with your
-          website, as well as with several other integration tools...
+          Unlock integrates with your website or application using just a few
+          lines of code. It&#39;s easy.
         </Paragraph>
       </Column>
       <Column>

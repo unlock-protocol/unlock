@@ -1,6 +1,15 @@
+import ReactGA from 'react-ga'
 import App, { Container } from 'next/app'
 import React from 'react'
+import Intercom from 'react-intercom'
+import getConfig from 'next/config'
+
 import GlobalStyle from '../theme/globalStyle'
+import Membership from '../components/interface/Membership'
+import { MembershipContext } from '../membershipContext'
+import { GA_LABELS, GA_ACTIONS } from '../constants'
+
+const config = getConfig().publicRuntimeConfig
 
 const isServer = typeof window === 'undefined'
 
@@ -44,15 +53,67 @@ The Unlock team
 *********************************************************************`)
       /* eslint-enable no-console */
     }
+
+    this.state = {
+      isMember: 'pending',
+    }
+
+    // Listen to Unlock events
+    if (process.browser) {
+      this.state.becomeMember = () => {
+        ReactGA.event({
+          category: GA_LABELS.MEMBERSHIP,
+          action: GA_ACTIONS.MEMBERSHIP_BANNER_CLICKED,
+        })
+        return (
+          window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
+        )
+      }
+
+      window.addEventListener('unlockProtocol', event => {
+        if (event.detail === 'unlocked') {
+          ReactGA.event({
+            category: GA_LABELS.MEMBERSHIP,
+            action: GA_ACTIONS.UNLOCKED,
+          })
+          this.setState(state => ({
+            ...state,
+            isMember: 'yes',
+          }))
+        }
+        if (event.detail === 'locked') {
+          ReactGA.event({
+            category: GA_LABELS.MEMBERSHIP,
+            action: GA_ACTIONS.LOCKED,
+          })
+          this.setState(state => ({
+            ...state,
+            isMember: 'no',
+          }))
+        }
+      })
+    }
   }
 
   render() {
     const { Component, pageProps } = this.props
+    // Register pageview with Google Analytics on the client side only
+    if (
+      process.browser &&
+      config.googleAnalyticsId &&
+      config.googleAnalyticsId !== '0'
+    ) {
+      ReactGA.initialize(config.googleAnalyticsId)
+    }
 
     return (
       <Container>
-        <GlobalStyle />
-        <Component {...pageProps} />
+        <MembershipContext.Provider value={this.state}>
+          <Membership />
+          <GlobalStyle />
+          <Component {...pageProps} />
+          <Intercom appID={config.intercomAppId} />
+        </MembershipContext.Provider>
       </Container>
     )
   }

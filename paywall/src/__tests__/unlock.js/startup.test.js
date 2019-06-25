@@ -5,6 +5,7 @@ describe('unlock.js startup', () => {
   let call
   let fakeDataIframe
   let fakeCheckoutIframe
+  let fakeUserAccountsIframe
 
   beforeEach(() => {
     call = 0
@@ -24,7 +25,16 @@ describe('unlock.js startup', () => {
         postMessage: jest.fn(),
       },
     }
+    fakeUserAccountsIframe = {
+      name: 'user accounts iframe',
+      origin: 'http://unlock-app.com',
+      setAttribute: jest.fn(),
+      contentWindow: {
+        postMessage: jest.fn(),
+      },
+    }
     process.env.PAYWALL_URL = 'http://paywall'
+    process.env.USER_IFRAME_URL = 'http://unlock-app.com/account'
     fakeWindow = {
       setInterval: jest.fn(),
       document: {
@@ -34,10 +44,14 @@ describe('unlock.js startup', () => {
           insertAdjacentElement: jest.fn(),
         },
         createElement: jest.fn(() => {
-          if (call++) {
-            return fakeCheckoutIframe
+          switch (call++) {
+            case 0:
+              return fakeDataIframe
+            case 1:
+              return fakeCheckoutIframe
+            case 2:
+              return fakeUserAccountsIframe
           }
-          return fakeDataIframe
         }),
       },
       origin: 'http://fun.times',
@@ -134,6 +148,20 @@ describe('unlock.js startup', () => {
         fakeWindow.document.body.insertAdjacentElement
       ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
     })
+
+    it('should create a User Accounts UI iframe with the correct URL', () => {
+      expect.assertions(2)
+
+      startup(fakeWindow)
+
+      expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
+        'src',
+        `${process.env.USER_IFRAME_URL}?origin=http%3A%2F%2Ffun.times`
+      )
+      expect(
+        fakeWindow.document.body.insertAdjacentElement
+      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+    })
   })
 
   it('should set up the post offices', () => {
@@ -144,9 +172,9 @@ describe('unlock.js startup', () => {
     // this is a simple way to test whether setupPostOffices was called
     // by checking to see if event listeners for postMessage were set up
     // The 3 are:
-    // - the data iframe post office
+    // - the data iframe post office (used for web3Proxy as well)
     // - the checkout UI post office
-    // - the Web3ProxyProvider post office
+    // - the user accounts UI post office
     expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(3)
   })
 })

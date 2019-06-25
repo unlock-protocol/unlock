@@ -70,6 +70,7 @@ services:
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      USER_IFRAME_URL: '${USER_IFRAME_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     command: ['npm', 'run', 'start']
@@ -109,6 +110,7 @@ services:
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      USER_IFRAME_URL: '${USER_IFRAME_URL}'
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     depends_on:
@@ -125,6 +127,7 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_HOSTNAME: '${DB_HOSTNAME}'
       NODE_ENV: 'production' # TODO: verify if this is right?
+      WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080

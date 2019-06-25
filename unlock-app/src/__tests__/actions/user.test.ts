@@ -29,6 +29,10 @@ import {
   signPaymentData,
   SIGNED_PAYMENT_DATA,
   signedPaymentData,
+  CONFIRM_KEY_PURCHASE,
+  confirmKeyPurchase,
+  GET_STORED_PAYMENT_DETAILS,
+  getStoredPaymentDetails,
 } from '../../actions/user'
 
 const key = {
@@ -114,6 +118,18 @@ describe('user account actions', () => {
       expect(
         gotEncryptedPrivateKeyPayload(key, emailAddress, password)
       ).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting stored payment details', () => {
+      expect.assertions(1)
+
+      const emailAddress = 'jenny@8675.309'
+      const expectedAction = {
+        type: GET_STORED_PAYMENT_DETAILS,
+        emailAddress,
+      }
+
+      expect(getStoredPaymentDetails(emailAddress)).toEqual(expectedAction)
     })
   })
 
@@ -254,6 +270,17 @@ describe('user account actions', () => {
       }
 
       expect(gotPassword(password)).toEqual(expectedAction)
+    })
+  })
+
+  describe('paywall interaction', () => {
+    it('should create an action to confirm a key purchase request', () => {
+      expect.assertions(1)
+      const expectedAction = {
+        type: CONFIRM_KEY_PURCHASE,
+      }
+
+      expect(confirmKeyPurchase()).toEqual(expectedAction)
     })
   })
 })

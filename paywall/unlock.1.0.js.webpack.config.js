@@ -13,6 +13,7 @@ dotenv.config({
 const requiredConfigVariables = {
   unlockEnv,
   paywallUrl: process.env.PAYWALL_URL,
+  usersIframeUrl: process.env.USER_IFRAME_URL,
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
@@ -33,11 +34,10 @@ module.exports = () => {
     cache: false,
     mode: 'production',
     devtool: 'source-map',
-    entry: path.resolve(__dirname, 'src', 'unlock.js', 'index.js'),
+    entry: path.resolve(__dirname, 'src', 'unlock.js', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'unlock.1.0.min.js',
-      globalObject: 'self',
     },
     module: {
       rules: [
@@ -45,7 +45,15 @@ module.exports = () => {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
         },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
       ],
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -53,6 +61,8 @@ module.exports = () => {
         'process.env.DEBUG': debug,
         'process.env.PAYWALL_URL':
           "'" + requiredConfigVariables.paywallUrl + "'",
+        'process.env.USER_IFRAME_URL':
+          "'" + requiredConfigVariables.usersIframeUrl + "'",
       }),
     ],
   }
