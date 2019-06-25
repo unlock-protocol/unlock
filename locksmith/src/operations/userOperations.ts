@@ -90,7 +90,11 @@ namespace UserOperations {
     token: string,
     publicKey: string
   ): Promise<boolean> => {
-    let paymentProcessor = new PaymentProcessor(config.stripeSecret)
+    let paymentProcessor = new PaymentProcessor(
+      config.stripeSecret,
+      config.web3ProviderHost,
+      config.unlockContractAddress
+    )
     return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
 

@@ -1,0 +1,29 @@
+[
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "net_version",
+            "params": [],
+            "id": 42,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 42,
+            "jsonrpc": "2.0",
+            "result": "1984"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Tue, 25 Jun 2019 03:03:09 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ]
+    }
+]

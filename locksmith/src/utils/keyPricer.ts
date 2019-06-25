@@ -1,9 +1,21 @@
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 
 class KeyPricer {
-  // eslint-disable-next-line no-unused-vars
-  keyPrice(_lockAddress: string): number {
-    return 220
+  readOnlyEthereumService: any
+
+  constructor(providerURL: string, unlockContractAddress: string) {
+    this.readOnlyEthereumService = new Web3Service({
+      readOnlyProvider: providerURL,
+      unlockAddress: unlockContractAddress,
+      blockTime: 0,
+      requiredConfirmations: 0,
+    })
+  }
+
+  async keyPrice(lockAddress: string): Promise<number> {
+    let lock = await this.readOnlyEthereumService.getLock(lockAddress)
+    return Number(lock.keyPrice)
   }
 
   gasFee(): number {
@@ -18,9 +30,9 @@ class KeyPricer {
     return 20
   }
 
-  generate(lockAddress: string): ItemizedKeyPrice {
+  async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
     return {
-      keyPrice: this.keyPrice(lockAddress),
+      keyPrice: await this.keyPrice(lockAddress),
       gasFee: this.gasFee(),
       creditCardProcessing: this.creditCardProcessingFee(),
       unlockServiceFee: this.unlockServiceFee(),
