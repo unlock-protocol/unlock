@@ -21,7 +21,7 @@ export const Withdraw = ({
         label="Withdraw"
         action={() => {
           if (lock.balance > 0) {
-            withdraw(lock, account)
+            withdraw(lock)
           }
         }}
         {...props}
@@ -52,7 +52,7 @@ Withdraw.defaultProps = {
 }
 
 const mapDispatchToProps = dispatch => ({
-  withdraw: (lock, account) => dispatch(withdrawFromLock(lock, account)),
+  withdraw: lock => dispatch(withdrawFromLock(lock)),
 })
 
 export default connect(

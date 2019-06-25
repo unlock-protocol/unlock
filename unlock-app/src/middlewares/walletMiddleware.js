@@ -207,8 +207,7 @@ const walletMiddleware = config => {
           })
         } else if (action.type === WITHDRAW_FROM_LOCK) {
           ensureReadyBefore(() => {
-            const account = getState().account
-            walletService.withdrawFromLock(action.lock.address, account.address)
+            walletService.withdrawFromLock(action.lock.address)
           })
         } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
           ensureReadyBefore(() => {
