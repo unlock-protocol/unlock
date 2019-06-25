@@ -7,6 +7,7 @@ import getConfig from 'next/config'
 import GlobalStyle from '../theme/globalStyle'
 import Membership from '../components/interface/Membership'
 import { MembershipContext } from '../membershipContext'
+import { GA_LABELS, GA_ACTIONS } from '../constants'
 
 const config = getConfig().publicRuntimeConfig
 
@@ -61,8 +62,8 @@ The Unlock team
     if (process.browser) {
       this.state.becomeMember = () => {
         ReactGA.event({
-          category: 'Membership',
-          action: 'Clicked membership banner',
+          category: GA_LABELS.MEMBERSHIP,
+          action: GA_ACTIONS.MEMBERSHIP_BANNER_CLICKED,
         })
         return (
           window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
@@ -72,8 +73,8 @@ The Unlock team
       window.addEventListener('unlockProtocol', event => {
         if (event.detail === 'unlocked') {
           ReactGA.event({
-            category: 'Membership',
-            action: 'unlockProtocol unlocked',
+            category: GA_LABELS.MEMBERSHIP,
+            action: GA_ACTIONS.UNLOCKED,
           })
           this.setState(state => ({
             ...state,
@@ -82,8 +83,8 @@ The Unlock team
         }
         if (event.detail === 'locked') {
           ReactGA.event({
-            category: 'Membership',
-            action: 'unlockProtocol locked',
+            category: GA_LABELS.MEMBERSHIP,
+            action: GA_ACTIONS.LOCKED,
           })
           this.setState(state => ({
             ...state,
