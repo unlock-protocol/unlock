@@ -171,14 +171,13 @@ export default class WalletService extends UnlockService {
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
-   * TODO: remove the unused account and add support for amount (which will be ignored for old locks)
    * @param {PropTypes.address} lock
-   * @param {PropTypes.address} account
+   * @param {string} amount
    * @param {Function} callback TODO: implement...
    */
-  async withdrawFromLock(lock, account) {
+  async withdrawFromLock(lock, amount) {
     const version = await this.lockContractAbiVersion(lock)
-    return version.withdrawFromLock.bind(this)(lock, account)
+    return version.withdrawFromLock.bind(this)(lock, amount)
   }
 
   /**

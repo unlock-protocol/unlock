@@ -6,7 +6,7 @@ import Errors from '../errors'
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
  * @param {PropTypes.address} lock
- * @param {PropTypes.address} amount (unused in ethers)
+ * @param {PropTypes.address} amount
  * @param {Function} callback TODO: implement...
  */
 export default async function(lockAddress, amount = 0) {
