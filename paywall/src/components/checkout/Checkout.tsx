@@ -38,10 +38,14 @@ export const Checkout = ({
       <CheckoutLocks>
         {Object.values(locks).map(lock => {
           if (lock) {
+            const lockWithName = {
+              ...lock,
+              name: config.locks[lock.address].name || lock.name,
+            }
             return (
               <CheckoutLock
                 key={lock.address} // React needs a `key` on each child
-                lock={lock}
+                lock={lockWithName}
                 account={account}
                 disabled={hasValidKey}
                 purchase={purchase}

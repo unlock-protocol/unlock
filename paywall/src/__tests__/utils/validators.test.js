@@ -324,7 +324,7 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
-      it('icon is not an string', () => {
+      it('icon is not a string', () => {
         expect.assertions(2)
 
         expect(
@@ -590,7 +590,7 @@ describe('Form field validators', () => {
 
     describe('valid cases', () => {
       it('is valid config', () => {
-        expect.assertions(10)
+        expect.assertions(11)
 
         expect(validators.isValidPaywallConfig(validConfig)).toBe(true)
         expect(
@@ -654,6 +654,14 @@ describe('Form field validators', () => {
           validators.isValidPaywallConfig({
             ...validConfig,
             type: 'paywall',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            locks: {
+              [lock]: {},
+            },
           })
         ).toBe(true)
       })

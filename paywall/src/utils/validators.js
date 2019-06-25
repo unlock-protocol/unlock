@@ -100,6 +100,7 @@ export const isValidPaywallConfig = config => {
       if (!isAccount(lock)) return false
       const thisLock = config.locks[lock]
       if (!thisLock || typeof thisLock !== 'object') return false
+      if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
       if (!thisLock.name || typeof thisLock.name !== 'string') return false
       return true
