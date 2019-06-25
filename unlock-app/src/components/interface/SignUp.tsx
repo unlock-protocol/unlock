@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { signupEmail } from '../../actions/user'
 import InvalidLink from './InvalidLink'
 import SignupSuccess from './SignupSuccess'
-import { Router, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
+import { Router, Account } from '../../unlockTypes'
 import FinishSignUp from './FinishSignup'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 

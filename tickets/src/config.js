@@ -54,6 +54,14 @@ export default function configure(
       environment.web3.currentProvider
   }
 
+  // ERC20 contract by default
+  let erc20Contract = {
+    name: runtimeConfig.erc20ContractSymbol || 'DEV',
+    address:
+      runtimeConfig.erc20ContractAddress ||
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+  }
+
   if (env === 'test') {
     // In test, we fake the HTTP provider
     providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
@@ -112,6 +120,7 @@ export default function configure(
   }
 
   return {
+    erc20Contract,
     blockTime,
     isServer,
     env,

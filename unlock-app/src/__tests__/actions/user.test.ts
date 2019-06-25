@@ -29,6 +29,8 @@ import {
   signPaymentData,
   SIGNED_PAYMENT_DATA,
   signedPaymentData,
+  CONFIRM_KEY_PURCHASE,
+  confirmKeyPurchase,
 } from '../../actions/user'
 
 const key = {
@@ -254,6 +256,17 @@ describe('user account actions', () => {
       }
 
       expect(gotPassword(password)).toEqual(expectedAction)
+    })
+  })
+
+  describe('paywall interaction', () => {
+    it('should create an action to confirm a key purchase request', () => {
+      expect.assertions(1)
+      const expectedAction = {
+        type: CONFIRM_KEY_PURCHASE,
+      }
+
+      expect(confirmKeyPurchase()).toEqual(expectedAction)
     })
   })
 })

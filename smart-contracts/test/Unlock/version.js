@@ -9,6 +9,6 @@ contract('Unlock / version', () => {
   })
 
   it('getVersion', async () => {
-    assert.equal((await unlock.unlockVersion.call()).toString(), '4')
+    assert.equal((await unlock.unlockVersion.call()).toString(), '5')
   })
 })

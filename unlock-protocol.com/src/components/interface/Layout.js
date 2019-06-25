@@ -2,20 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
-import Intercom from 'react-intercom'
-import getConfig from 'next/config'
 import ReactGA from 'react-ga'
 import Header from './Header'
 import Footer from './Footer'
 import { RoundedLogo } from './Logo'
 import Media from '../../theme/media'
 
-const config = getConfig().publicRuntimeConfig
-
 export default function Layout({ forContent, title, children }) {
   // Register pageview with Google Analytics on the client side only
   if (process.browser) {
-    ReactGA.initialize(config.googleAnalyticsId)
     ReactGA.pageview(window.location.pathname + window.location.search)
   }
 
@@ -33,7 +28,6 @@ export default function Layout({ forContent, title, children }) {
       <Content>
         <Header forContent={forContent} title={title} />
         {children}
-        <Intercom appID={config.intercomAppId} />
         {forContent && <Footer />}
       </Content>
       <Right />
@@ -55,6 +49,7 @@ Layout.defaultProps = {
 
 const Container = styled.div`
   display: grid;
+  padding-bottom: 60px; /* Leaving room for the members bar */
   grid-template-columns: 1fr minmax(280px, 4fr) 1fr;
   ${Media.phone`
     display: flex;

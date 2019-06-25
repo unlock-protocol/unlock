@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { Transaction } from "./entity/Transaction";
 import { Block } from "./entity/Block";
+import { RegistryKey } from "./entity/RegistryKey";
 
 export class Storage {
   connectionManager;
@@ -49,4 +50,11 @@ export class Storage {
 
     this.connectionManager.save(transaction);
   };
+
+  storeRegistree = data => {
+    let registree = new RegistryKey()
+     registree.address = data.address;
+
+     this.connectionManager.save(registree)
+  }
 }

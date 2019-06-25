@@ -93,6 +93,7 @@ describe('usePaywallConfig hook', () => {
 
     const myConfig = {
       ...defaultValue,
+      type: 'paywall',
       locks: {
         '0x1234567890123456789012345678901234567890': {
           name: 'my lock',
