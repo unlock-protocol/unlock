@@ -24,3 +24,13 @@ export const MAX_DEVICE_WIDTHS = {
   TABLET: 1000,
   DESKTOP: false,
 }
+
+export const GA_LABELS = {
+  MEMBERSHIP: 'membership',
+}
+
+export const GA_ACTIONS = {
+  UNLOCKED: 'unlockProtocol unlocked',
+  LOCKED: 'unlockProtocol locked',
+  MEMBERSHIP_BANNER_CLICKED: 'membership banner clicked',
+}
