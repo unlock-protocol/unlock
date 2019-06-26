@@ -4,9 +4,9 @@ export default class TokenTransferApproval {
   provider: ethers.providers.JsonRpcProvider
   privateKey: string
 
-  constructor(provider: string, credentials: string) {
+  constructor(provider: string, privateKey: string) {
     this.provider = new ethers.providers.JsonRpcProvider(provider)
-    this.privateKey = credentials
+    this.privateKey = privateKey
   }
 
   async approve(
