@@ -141,7 +141,11 @@ export async function merge({
     delete container[type][subType]
   } else {
     container[type] = container[type] || {}
-    container[type][subType] = value
+    const oldType = container[type][subType] || {}
+    container[type][subType] = {
+      ...oldType,
+      ...value,
+    }
   }
 
   await driver.saveKeyedItem(networkId, accountAddress, container)
