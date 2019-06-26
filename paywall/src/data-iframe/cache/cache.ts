@@ -141,9 +141,9 @@ export async function merge({
     delete container[type][subType]
   } else {
     container[type] = container[type] || {}
-    const oldType = container[type][subType] || {}
+    const oldValue = container[type][subType] || {}
     container[type][subType] = {
-      ...oldType,
+      ...oldValue,
       ...value,
     }
   }
