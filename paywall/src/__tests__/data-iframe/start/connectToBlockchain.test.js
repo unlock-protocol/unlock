@@ -59,6 +59,7 @@ describe('connectToBlockchain', () => {
         expect.objectContaining({
           unlockAddress,
           provider: mockWeb3ProxyProvider,
+          onChange,
         })
       )
     })

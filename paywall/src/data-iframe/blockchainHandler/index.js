@@ -10,13 +10,19 @@ import web3ServiceHub from './web3ServiceHub'
 /**
  * @param {string} unlockAddress the ethereum address of the current Unlock contract
  * @param {string|provider} provider the address of a JSON-RPC endpoint or a web3 provider
+ * @param {Function} onChange the callback to use when there is no provider
  * @returns {walletService}
  */
-export function setupWalletService({ unlockAddress, provider }) {
+export function setupWalletService({ unlockAddress, provider, onChange }) {
   const walletService = new WalletService({ unlockAddress })
-  walletService.connect(provider).then(() => {
-    walletService.getAccount()
-  })
+  walletService
+    .connect(provider)
+    .then(() => {
+      walletService.getAccount()
+    })
+    .catch(error => {
+      onChange({ error, account: null })
+    })
 
   return walletService
 }

@@ -58,6 +58,33 @@ describe('blockchain handler index', () => {
         provider: fakeProvider,
       })
     })
+
+    it('should reset account if provider is not present or connection fails', done => {
+      expect.assertions(2)
+
+      const error = new Error('fail')
+      const onChange = params => {
+        expect(params).toEqual({
+          error,
+          account: null,
+        })
+        done()
+      }
+
+      const fakeProvider = {
+        send(_, callback) {
+          callback(error)
+        },
+      }
+
+      const walletService = setupWalletService({
+        unlockAddress: '0x1234567890123456789012345678901234567890',
+        provider: fakeProvider,
+        onChange,
+      })
+
+      expect(walletService).toBeInstanceOf(WalletService)
+    })
   })
 
   describe('setupWeb3Service', () => {
