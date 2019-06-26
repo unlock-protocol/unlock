@@ -18,7 +18,7 @@ import {
  * directly relayed to the main window via the `onChange` handler in `makeSetConfig`
  * @param {object} updates updates from the blockchain
  */
-export default function syncToCache(window, updates) {
+export default async function syncToCache(window, updates) {
   const methods = {
     locks: setLocks,
     key: setKey,
@@ -29,12 +29,14 @@ export default function syncToCache(window, updates) {
     balance: setAccountBalance,
     network: setNetwork,
   }
-  return Promise.all(
-    Object.keys(updates).map(type => {
-      if (!methods[type]) {
-        throw new Error(`internal error, no cache handler for "${type}"`)
-      }
-      return methods[type](window, updates[type])
-    })
-  )
+
+  const updateKeys = Object.keys(updates)
+  for (let i = 0; i < updateKeys.length; i++) {
+    const updateType = updateKeys[i]
+    const update = updates[updateType]
+    if (!methods[updateType]) {
+      throw new Error(`internal error, no cache handler for "${updateType}"`)
+    }
+    await methods[updateType](window, update)
+  }
 }
