@@ -308,6 +308,7 @@ describe('Web3Service', () => {
         const EventInfo = new ethers.utils.Interface(
           UnlockVersion.PublicLock.abi
         )
+        const owner = checksumLockAddress
         const receipt = {
           blockNumber: 123,
           logs: [
@@ -327,16 +328,16 @@ describe('Web3Service', () => {
         web3Service.on('transaction.updated', (tHash, transactionUpdate) => {
           expect(tHash).toBe('hash')
           expect(transactionUpdate).toEqual({
-            for: checksumLockAddress,
-            key: KEY_ID(lockAddress, checksumLockAddress),
+            for: owner,
+            key: KEY_ID(lockAddress, owner),
             lock: lockAddress,
           })
         })
         web3Service.on('key.saved', (id, key) => {
-          expect(id).toBe(KEY_ID(lockAddress, checksumLockAddress))
+          expect(id).toBe(KEY_ID(lockAddress, owner))
           expect(key).toEqual({
             lock: lockAddress,
-            owner: checksumLockAddress,
+            owner,
           })
         })
 
