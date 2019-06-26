@@ -34,7 +34,7 @@ const makeSetConfig = (
 
     // bridge from the blockchain to the cache
     // and to the main window for errors/wallet modal
-    const onChange = updates => {
+    const onChange = async updates => {
       // pass errors on directly
       if (updates.error) {
         updater('error', updates.error)
@@ -47,7 +47,7 @@ const makeSetConfig = (
       }
       // for everything else, it stores it in the cache
       // cache listeners will transmit it to the script
-      syncToCache(window, updates)
+      return syncToCache(window, updates)
     }
     try {
       const retrieveChainData = await connectToBlockchain({

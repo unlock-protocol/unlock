@@ -163,7 +163,7 @@ describe('makeSetConfig', () => {
           },
         }
 
-        onChange(update)
+        await onChange(update)
 
         expect(await getLocks(fakeWindow)).toEqual(update.locks)
       })

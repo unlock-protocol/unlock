@@ -264,7 +264,7 @@ describe('localStorage cache', () => {
       )
     })
 
-    it('replaces an existing sub-value', async () => {
+    it('merges an existing sub-value', async () => {
       expect.assertions(1)
 
       const key2 = {
@@ -292,7 +292,10 @@ describe('localStorage cache', () => {
         JSON.stringify({
           keys: {
             key1: keys.key1,
-            key2,
+            key2: {
+              ...keys.key2,
+              ...key2,
+            },
           },
         })
       )
@@ -380,7 +383,7 @@ describe('localStorage cache', () => {
       )
     })
 
-    it('replaces an existing sub-value, non-account-specific', async () => {
+    it('merges an existing sub-value, non-account-specific', async () => {
       expect.assertions(1)
 
       const key2 = {
@@ -406,7 +409,10 @@ describe('localStorage cache', () => {
         JSON.stringify({
           keys: {
             key1: keys.key1,
-            key2,
+            key2: {
+              ...keys.key2,
+              ...key2,
+            },
           },
         })
       )

@@ -127,7 +127,8 @@ export default function postOffice(window, requiredConfirmations) {
           lockHandler(window, cachedData, actions)
           break
         case 'network':
-          if (cachedData.networkId === null) return
+          // all network ids are > 0
+          if (!cachedData.networkId) return
           actions.network(cachedData.networkId)
           break
         case 'walletModal':

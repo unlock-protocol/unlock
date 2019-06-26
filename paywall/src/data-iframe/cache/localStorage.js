@@ -126,7 +126,11 @@ export async function merge({
     delete container[type][subType]
   } else {
     container[type] = container[type] || {}
-    container[type][subType] = value
+    const oldValue = container[type][subType] || {}
+    container[type][subType] = {
+      ...oldValue,
+      ...value,
+    }
   }
 
   window.localStorage.setItem(key, JSON.stringify(container))
