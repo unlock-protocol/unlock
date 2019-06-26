@@ -324,9 +324,10 @@ describe('Web3Service', () => {
           ],
         }
 
-        web3Service.on('transaction.updated', (tHash, lock) => {
+        web3Service.on('transaction.updated', (tHash, transactionUpdate) => {
           expect(tHash).toBe('hash')
-          expect(lock).toEqual({
+          expect(transactionUpdate).toEqual({
+            for: checksumLockAddress,
             key: KEY_ID(lockAddress, checksumLockAddress),
             lock: lockAddress,
           })
