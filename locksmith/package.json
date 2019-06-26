@@ -15,11 +15,14 @@
     "test": "jest --forceExit",
     "lint": "eslint --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize db:migrate",
-    "ci": "npm run lint && npm test",
+    "preci" : "npm run lint",
+    "ci": "npm test",
     "build": "tsc",
     "tsc": "tsc",
     "predist": "npm run build",
-    "dist": "sh ./scripts/dist.sh"
+    "dist": "sh ./scripts/dist.sh",
+    "prefulfillment:prepare": "npm run build",
+    "fulfillment:prepare": "node ./scripts/fulfillment_prepare"
   },
   "lint-staged": {
     "linters": {
