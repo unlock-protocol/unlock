@@ -113,6 +113,7 @@ services:
       USER_IFRAME_URL: '${USER_IFRAME_URL}'
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
     depends_on:
       - ganache-integration
       - unlock-app
