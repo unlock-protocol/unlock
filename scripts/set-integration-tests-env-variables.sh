@@ -2,6 +2,7 @@
 
 # Here we set environment variables which will be used when running docker compose
 # We are setting them globally so that they are used by the whole "cluster"
+# NOTE: Remember to add references in docker-compose-ci.yml when you add a new one
 echo export CI=true
 echo export UNLOCK_ENV='test'
 echo export DB_USERNAME='locksmith_test'
