@@ -10,11 +10,11 @@
  *                        --erc20ContractAddress <address of erc20 contract>
  *                        --privateKey <privateKey of address approving transfer>
  */
-const ethers = require('ethers')
 const args = require('yargs').argv
-const TokenTransferApproval = require('../src/fulfillment/tokenTransferApproval')
+const TokenTransferApproval = require('../build/src/fulfillment/tokenTransferApproval')
+  .default
 
-let provider = new ethers.providers.JsonRpcProvider(args.provider)
+let provider = args.provider
 let value = args.value
 let lockContractAddress = args.lockContractAddress
 let erc20ContractAddress = args.erc20ContractAddress
