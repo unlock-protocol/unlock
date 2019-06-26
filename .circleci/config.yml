@@ -42,6 +42,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: scripts/monorepo.sh unlock-app $CIRCLE_SHA1
+      - run:
           name: Build unlock-app Image
           command: scripts/build-image.sh unlock-app
       - run:
@@ -74,7 +76,7 @@ jobs:
           command: scripts/build-image.sh rover
       - run:
           name: rover tests
-          command: scripts/tests.sh rover          
+          command: scripts/tests.sh rover
 
   smart-contracts-tests:
     machine: true
@@ -169,7 +171,6 @@ jobs:
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
-      # - *images-caches
       - checkout
       - run:
           name: Set ENV_TARGET
