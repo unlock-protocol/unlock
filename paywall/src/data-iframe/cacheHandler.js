@@ -45,7 +45,9 @@ async function _merge(window, key, subType, value) {
 
 export async function createMissingKeys(window, locks, keys) {
   const account = (await getAccount(window)) || nullAccount
-  Object.keys(locks).forEach(async lockAddress => {
+  const lockKeys = Object.keys(locks)
+  for (let i = 0; i < lockKeys.length; i++) {
+    const lockAddress = lockKeys[i]
     if (!keys[lockAddress]) {
       // can't use setKey, triggers an infinite loop because of notifications
       await _merge(window, 'keys', lockAddress, {
@@ -55,7 +57,7 @@ export async function createMissingKeys(window, locks, keys) {
         expiration: 0,
       })
     }
-  })
+  }
 }
 
 export async function getKeys(window) {
