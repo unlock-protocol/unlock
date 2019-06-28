@@ -43,18 +43,20 @@ export const getTransactionsBySender = async (filter: any) => {
 const queryFilter = (filter: any) => {
   const sender = ethJsUtil.toChecksumAddress(filter.sender)
 
+  var target: any = {}
+  target.sender = { [Op.eq]: sender }
+
   if (filter.recipient) {
-    return {
-      sender: { [Op.eq]: sender },
-      recipient: {
-        [Op.in]: filter.recipient.map((recipient: string) =>
-          ethJsUtil.toChecksumAddress(recipient)
-        ),
-      },
-    }
-  } else {
-    return {
-      sender: { [Op.eq]: sender },
+    target.recipient = {
+      [Op.in]: filter.recipient.map((recipient: string) =>
+        ethJsUtil.toChecksumAddress(recipient)
+      ),
     }
   }
+
+  if (filter.for) {
+    target.for = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.for) }
+  }
+
+  return target
 }
