@@ -30,7 +30,7 @@ export const failure = {
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
-  keyPurchase: 'keyPurchase.success',
+  keyPurchase: 'keyPurchase.failure',
 }
 
 export class StorageService extends EventEmitter {
