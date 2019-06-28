@@ -23,12 +23,12 @@ describe('transactionController', () => {
       {
         transactionHash: '0x645546565',
         sender: '0xcAFe2',
-        recipient: '0xBeeFB',
+        recipient: '0xBEefb',
       },
       {
         transactionHash: '0x645546567',
         sender: '0xcAFe2',
-        recipient: '0xBeeFB',
+        recipient: '0xBEefb',
         for: '0xcAFe2',
       },
     ])
@@ -87,6 +87,24 @@ describe('transactionController', () => {
           .get('/transactions')
           .query({
             sender: sender,
+            for: '0xcAFe2',
+          })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(1)
+        expect(response.body.transactions[0].transactionHash).toEqual(
+          '0x645546567'
+        )
+      })
+    })
+
+    describe('when filtering on for -> recipients', () => {
+      it('returns the matching transactions', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/transactions')
+          .query({
+            recipient: ['0xBeeFB', '0xBeeFB'],
             for: '0xcAFe2',
           })
           .set('Accept', /json/)
