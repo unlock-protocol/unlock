@@ -193,7 +193,7 @@ const storageMiddleware = config => {
 
         if (action.type === SIGNED_PURCHASE_DATA) {
           const { data, sig } = action
-          storageService.purchaseKey(data, sig)
+          storageService.purchaseKey(data, btoa(sig))
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
