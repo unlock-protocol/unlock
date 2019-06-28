@@ -284,13 +284,17 @@ describe('Storage middleware', () => {
     it('should call storageService for payment method updates', () => {
       expect.assertions(2)
       const data = {}
-      const sig = {}
+      const sig = 'a signature'
       const { next, invoke } = create()
       const action = { type: SIGNED_PURCHASE_DATA, data, sig }
       mockStorageService.purchaseKey = jest.fn()
 
       invoke(action)
-      expect(mockStorageService.purchaseKey).toHaveBeenCalledWith(data, sig)
+      // At present, signatures sent to the backend are base64'd
+      expect(mockStorageService.purchaseKey).toHaveBeenCalledWith(
+        data,
+        'YSBzaWduYXR1cmU='
+      )
       expect(next).toHaveBeenCalledTimes(1)
     })
   })
