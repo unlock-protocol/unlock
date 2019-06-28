@@ -1,6 +1,5 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
-import AuthorizedLockOperations from '../operations/authorizedLockOperations'
+import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import PaymentProcessor from '../payment/paymentProcessor'
 
 const env = process.env.NODE_ENV || 'development'
@@ -18,8 +17,8 @@ namespace PurchaseController {
 
     if (expired(expiry)) {
       return res.sendStatus(412)
-    } else if (!(await authorizedLock(lock))) {
-      return res.sendStatus(451)
+      // } else if (!(await authorizedLock(lock))) {
+      //   return res.sendStatus(451)
     } else {
       let paymentProcessor = new PaymentProcessor(
         config.stripeSecret,
@@ -44,9 +43,10 @@ namespace PurchaseController {
     return expiry < currentTime
   }
 
-  const authorizedLock = (lock: ethereumAddress): Promise<Boolean> => {
-    return AuthorizedLockOperations.hasAuthorization(lock)
-  }
+  // Awaiting business decision around lock authorization before enabling this.
+  // const authorizedLock = (lock: ethereumAddress): Promise<Boolean> => {
+  //   return AuthorizedLockOperations.hasAuthorization(lock)
+  // }
 }
 
 export = PurchaseController
