@@ -153,7 +153,7 @@ export const getStoredPaymentDetails = (emailAddress: string) => ({
   emailAddress,
 })
 
-interface PurchaseData {
+export interface PurchaseData {
   recipient: string
   lock: string
 }
