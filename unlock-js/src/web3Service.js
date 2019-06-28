@@ -40,6 +40,7 @@ export default class Web3Service extends UnlockService {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
+          for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
         return this.emit('key.saved', KEY_ID(contractAddress, owner), {

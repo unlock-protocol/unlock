@@ -1,5 +1,9 @@
 # Changes
 
+## 0.3.7
+
+- Add "for" field for key purchase transactions to describe who the key was purchased for
+
 ## 0.3.6
 
 - Bugfix: using the right default amount on withdraw when no amount has been provided
