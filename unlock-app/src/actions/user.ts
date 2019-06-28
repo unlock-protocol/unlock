@@ -19,7 +19,6 @@ export const SIGN_PAYMENT_DATA = 'userCredentials/SIGN_PAYMENT_DATA'
 export const SIGNED_PAYMENT_DATA = 'userCredentials/SIGNED_PAYMENT_DATA'
 export const SIGN_PURCHASE_DATA = 'userCredentials/SIGN_PURCHASE_DATA'
 export const SIGNED_PURCHASE_DATA = 'userCredentials/SIGNED_PURCHASE_DATA'
-export const CONFIRM_KEY_PURCHASE = 'userAccount/CONFIRM_KEY_PURCHASE'
 export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
 
 export interface Credentials {
@@ -147,11 +146,6 @@ export const signedPaymentData = ({ data, sig }: SignedPaymentData) => ({
   type: SIGNED_PAYMENT_DATA,
   data,
   sig,
-})
-
-// TODO: replace this with the signature request
-export const confirmKeyPurchase = () => ({
-  type: CONFIRM_KEY_PURCHASE,
 })
 
 export const getStoredPaymentDetails = (emailAddress: string) => ({
