@@ -26,6 +26,9 @@ export async function storeTransaction({
   const payload = {
     transactionHash: transaction.hash,
     sender: account.toLowerCase(),
+    // when purchasing directly, who we purchase the key "for" is
+    // also the "sender" whose wallet the funds came from
+    for: account.toLowerCase(),
     recipient: transaction.to.toLowerCase(),
     data: transaction.input,
     chain: network,
@@ -72,7 +75,7 @@ export default async function locksmithTransactions({
     .map(lockAddress => `recipient[]=${encodeURIComponent(lockAddress)}`)
     .join('&')
 
-  const url = `${locksmithHost}/transactions?sender=${account.toLowerCase()}${
+  const url = `${locksmithHost}/transactions?for=${account.toLowerCase()}${
     filterLocks ? `&${filterLocks}` : ''
   }`
 
@@ -87,6 +90,7 @@ export default async function locksmithTransactions({
           to: t.recipient,
           input: t.data,
           from: t.sender,
+          for: t.for,
         }))
         .filter(transaction => transaction.network === network)
         .map(transaction => {
