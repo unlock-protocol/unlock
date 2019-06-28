@@ -30,7 +30,7 @@ export default class LocalStorageDriver implements CacheDriver {
     return localStorageAvailable(this.window)
   }
 
-  async getUnkeyedItem(key: 'account' | 'network') {
+  async getUnkeyedItem(key: 'account' | 'balance' | 'network') {
     const item = this.window.localStorage.getItem(`__unlockProtocol.${key}`)
     if (!item) return null
     try {
@@ -48,14 +48,16 @@ export default class LocalStorageDriver implements CacheDriver {
     )
   }
 
-  async saveUnkeyedItem(key: 'account' | 'network', value: any) {
-    this.window.localStorage.setItem(
+  async saveUnkeyedItem(key: 'account' | 'balance' | 'network', value: any) {
+    return this.window.localStorage.setItem(
       `__unlockProtocol.${key}`,
       JSON.stringify(value)
     )
   }
 
   async clearKeyedCache(networkId: number, accountAddress: string) {
-    this.window.localStorage.removeItem(storageId(networkId, accountAddress))
+    return this.window.localStorage.removeItem(
+      storageId(networkId, accountAddress)
+    )
   }
 }
