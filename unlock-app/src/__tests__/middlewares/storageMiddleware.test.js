@@ -17,6 +17,7 @@ import {
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
+  SIGNED_PURCHASE_DATA,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -275,6 +276,21 @@ describe('Storage middleware', () => {
         data,
         sig
       )
+      expect(next).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  describe('handling SIGNED_PURCHASE_DATA', () => {
+    it('should call storageService for payment method updates', () => {
+      expect.assertions(2)
+      const data = {}
+      const sig = {}
+      const { next, invoke } = create()
+      const action = { type: SIGNED_PURCHASE_DATA, data, sig }
+      mockStorageService.purchaseKey = jest.fn()
+
+      invoke(action)
+      expect(mockStorageService.purchaseKey).toHaveBeenCalledWith(data, sig)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

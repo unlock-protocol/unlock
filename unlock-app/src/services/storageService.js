@@ -16,6 +16,7 @@ export const success = {
   getUserPrivateKey: 'getUserPrivateKey.success',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
   getCards: 'getCards.success',
+  keyPurchase: 'keyPurchase.success',
 }
 
 export const failure = {
@@ -29,6 +30,7 @@ export const failure = {
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
+  keyPurchase: 'keyPurchase.success',
 }
 
 export class StorageService extends EventEmitter {
@@ -277,6 +279,21 @@ export class StorageService extends EventEmitter {
       this.emit(success.getCards, response.data)
     } catch (error) {
       this.emit(failure.getCards, { error })
+    }
+  }
+
+  async purchaseKey(purchaseRequest, token) {
+    const opts = {
+      headers: this.genAuthorizationHeader(token),
+    }
+    try {
+      await axios.post(`${this.host}/purchase`, purchaseRequest, opts)
+      this.emit(
+        success.keyPurchase,
+        purchaseRequest.message.purchaseRequest.lock
+      )
+    } catch (error) {
+      this.emit(failure.keyPurchase, error)
     }
   }
 }
