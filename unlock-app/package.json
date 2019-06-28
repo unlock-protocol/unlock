@@ -18,7 +18,7 @@
     "@types/storybook__react": "4.0.2",
     "@types/stripe-v3": "3.1.2",
     "@types/styled-components": "4.1.16",
-    "@unlock-protocol/unlock-js": "0.3.6",
+    "@unlock-protocol/unlock-js": "0.3.7",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
     "axios": "0.19.0",
