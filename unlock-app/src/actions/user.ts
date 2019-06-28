@@ -17,6 +17,8 @@ export const SIGN_USER_DATA = 'userCredentials/SIGN_USER_DATA'
 export const SIGNED_USER_DATA = 'userCredentials/SIGNED_USER_DATA'
 export const SIGN_PAYMENT_DATA = 'userCredentials/SIGN_PAYMENT_DATA'
 export const SIGNED_PAYMENT_DATA = 'userCredentials/SIGNED_PAYMENT_DATA'
+export const SIGN_PURCHASE_DATA = 'userCredentials/SIGN_PURCHASE_DATA'
+export const SIGNED_PURCHASE_DATA = 'userCredentials/SIGNED_PURCHASE_DATA'
 export const CONFIRM_KEY_PURCHASE = 'userAccount/CONFIRM_KEY_PURCHASE'
 export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
 
@@ -147,7 +149,7 @@ export const signedPaymentData = ({ data, sig }: SignedPaymentData) => ({
   sig,
 })
 
-// TODO: determine payload for this action
+// TODO: replace this with the signature request
 export const confirmKeyPurchase = () => ({
   type: CONFIRM_KEY_PURCHASE,
 })
@@ -155,4 +157,33 @@ export const confirmKeyPurchase = () => ({
 export const getStoredPaymentDetails = (emailAddress: string) => ({
   type: GET_STORED_PAYMENT_DETAILS,
   emailAddress,
+})
+
+interface PurchaseData {
+  recipient: string
+  lock: string
+}
+
+export const signPurchaseData = (data: PurchaseData) => ({
+  type: SIGN_PURCHASE_DATA,
+  data,
+})
+
+interface SignedPurchaseData {
+  data: {
+    message: {
+      purchaseRequest: {
+        recipient: string
+        lock: string
+        expiry: number
+      }
+    }
+  }
+  sig: any
+}
+
+export const signedPurchaseData = ({ data, sig }: SignedPurchaseData) => ({
+  type: SIGNED_PURCHASE_DATA,
+  data,
+  sig,
 })
