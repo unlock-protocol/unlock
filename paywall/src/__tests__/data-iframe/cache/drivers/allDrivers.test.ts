@@ -97,16 +97,19 @@ describe('common functionality between all drivers', () => {
       })
 
       it('should save/retrieve items', async () => {
-        expect.assertions(2)
+        expect.assertions(3)
 
         await driver.saveUnkeyedItem('account', 'account')
         await driver.saveUnkeyedItem('network', 1)
+        await driver.saveUnkeyedItem('balance', '0')
 
         const account = await driver.getUnkeyedItem('account')
         const network = await driver.getUnkeyedItem('network')
+        const balance = await driver.getUnkeyedItem('balance')
 
         expect(account).toBe('account')
         expect(network).toBe(1)
+        expect(balance).toBe('0')
       })
     })
 
