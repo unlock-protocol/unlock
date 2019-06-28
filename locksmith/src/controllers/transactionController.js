@@ -2,7 +2,7 @@ const transactionOperations = require('../operations/transactionOperations')
 
 const {
   findOrCreateTransaction,
-  getTransactionsBySender,
+  getTransactionsByFilter,
 } = transactionOperations
 
 const transactionCreate = async (req, res) => {
@@ -28,7 +28,7 @@ const transactionsGet = async (req, res) => {
   let filter = buildFilter(req)
 
   if (filter.sender || filter.recipients || filter.for) {
-    transactions = await getTransactionsBySender(filter)
+    transactions = await getTransactionsByFilter(filter)
   }
 
   res.json({ transactions: transactions })

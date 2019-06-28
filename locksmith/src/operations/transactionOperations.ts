@@ -33,18 +33,14 @@ const transactionForPackaging = (transactionFor: string) => {
  * get all the transactions sent by a given address
  * @param {*} _sender
  */
-// export const getTransactionsBySender = async (_sender: string, filter: any) => {
-export const getTransactionsBySender = async (filter: any) => {
+export const getTransactionsByFilter = async (filter: any) => {
   return await Transaction.findAll({
     where: queryFilter(filter),
   })
 }
 
 const queryFilter = (filter: any) => {
-  const sender = ethJsUtil.toChecksumAddress(filter.sender)
-
   var target: any = {}
-  target.sender = { [Op.eq]: sender }
 
   if (filter.recipient) {
     target.recipient = {
@@ -56,6 +52,10 @@ const queryFilter = (filter: any) => {
 
   if (filter.for) {
     target.for = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.for) }
+  }
+
+  if (filter.sender) {
+    target.sender = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.sender) }
   }
 
   return target
