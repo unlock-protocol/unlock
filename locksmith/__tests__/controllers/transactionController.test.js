@@ -25,6 +25,12 @@ describe('transactionController', () => {
         sender: '0xcAFe2',
         recipient: '0xBeeFB',
       },
+      {
+        transactionHash: '0x645546567',
+        sender: '0xcAFe2',
+        recipient: '0xBeeFB',
+        for: '0xcAFe2',
+      },
     ])
   })
 
@@ -69,6 +75,26 @@ describe('transactionController', () => {
           .set('Accept', /json/)
 
         expect(response.body.transactions.length).toEqual(1)
+      })
+    })
+
+    describe('when filtering on for', () => {
+      it("returns the addresses' transactions", async () => {
+        expect.assertions(2)
+        let sender = '0xcAFe2'
+
+        let response = await request(app)
+          .get('/transactions')
+          .query({
+            sender: sender,
+            for: '0xcAFe2',
+          })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(1)
+        expect(response.body.transactions[0].transactionHash).toEqual(
+          '0x645546567'
+        )
       })
     })
   })
