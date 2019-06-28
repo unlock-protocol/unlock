@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
 
 // TODO: re-enable lock authorization pending business decision. See usage prior
-// to #4930.
+// to #4030.
 namespace PurchaseController {
   //eslint-disable-next-line import/prefer-default-export
   export const purchase = async (
