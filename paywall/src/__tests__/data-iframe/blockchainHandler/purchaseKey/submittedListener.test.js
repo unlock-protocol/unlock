@@ -26,6 +26,7 @@ describe('submittedListener', () => {
       hash: {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         key: 'lock-account',
         lock: 'lock',
@@ -61,6 +62,7 @@ describe('submittedListener', () => {
       hash: {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         key: 'lock-account',
         lock: 'lock',
@@ -96,6 +98,7 @@ describe('submittedListener', () => {
       hash: {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         key: 'lock-account',
         lock: 'lock',
@@ -132,6 +135,7 @@ describe('submittedListener', () => {
       hash: {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         key: 'lock-account',
         lock: 'lock',
@@ -186,6 +190,7 @@ describe('submittedListener', () => {
       const hash = {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         status: 'submitted',
         input: 'input',
@@ -219,6 +224,7 @@ describe('submittedListener', () => {
     const old = {
       hash: 'old',
       from: 'account',
+      for: 'account',
       to: 'lock',
       status: 'mined',
       type: TRANSACTION_TYPES.KEY_PURCHASE,
@@ -250,6 +256,7 @@ describe('submittedListener', () => {
       const hash = {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         status: 'submitted',
         input: 'input',
@@ -283,6 +290,7 @@ describe('submittedListener', () => {
     const old = {
       hash: 'old',
       from: 'account',
+      for: 'account',
       to: 'lock',
       status: 'failed',
       type: TRANSACTION_TYPES.KEY_PURCHASE,
@@ -314,6 +322,7 @@ describe('submittedListener', () => {
       const hash = {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: 'lock',
         status: 'submitted',
         input: 'input',
@@ -347,6 +356,7 @@ describe('submittedListener', () => {
     const old = {
       hash: 'old',
       from: 'account',
+      for: 'account',
       to: 'lock',
       status: 'failed',
       type: TRANSACTION_TYPES.KEY_PURCHASE,

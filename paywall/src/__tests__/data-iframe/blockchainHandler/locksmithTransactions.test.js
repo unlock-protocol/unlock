@@ -56,6 +56,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
           body: JSON.stringify({
             transactionHash: 'hi',
             sender: 'account',
+            for: 'account',
             recipient: 'hi',
             data: 'input',
             chain: 1,
@@ -126,7 +127,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'host/transactions?sender=account&recipient[]=lock%201&recipient[]=lock%202'
+        'host/transactions?for=account&recipient[]=lock%201&recipient[]=lock%202'
       )
 
       setPaywallConfig({
@@ -145,7 +146,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'host/transactions?sender=account&recipient[]=lock%201'
+        'host/transactions?for=account&recipient[]=lock%201'
       )
     })
 
@@ -155,17 +156,21 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       fetchedResult = {
         transactions: [
           {
+            // this transaction is skipped because it is for a different chain
             transactionHash: 'hash1',
             chain: 2,
             recipient: 'lock 1',
             sender: 'account',
+            for: 'account',
             data: null,
           },
           {
             transactionHash: 'hash2',
             chain: 1,
             recipient: 'lock 2',
-            sender: 'account',
+            // verify that purchases on behalf of the account holder work too
+            sender: 'another account',
+            for: 'account',
             data: 'data 2',
           },
           {
@@ -173,6 +178,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
             chain: 1,
             recipient: 'lock 3',
             sender: 'account',
+            for: 'account',
             data: null,
           },
         ],
@@ -190,7 +196,8 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
         'hash2',
         expect.objectContaining({
           to: 'lock 2',
-          from: 'account',
+          from: 'another account',
+          for: 'account',
           input: 'data 2',
           network: 1,
           hash: 'hash2',

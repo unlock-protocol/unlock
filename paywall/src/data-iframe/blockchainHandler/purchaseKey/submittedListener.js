@@ -55,7 +55,9 @@ export default async function submittedListener({
   walletService.once(
     'transaction.new',
     (hash, from, to, input, type, status) => {
-      done({ hash, from, to, input, type, status })
+      // when purchasing directly, who we purchase the key "for" is
+      // also whose wallet the funds came "from"
+      done({ hash, from, for: from, to, input, type, status })
     }
   )
   walletService.on('error', kill)
@@ -68,7 +70,7 @@ export default async function submittedListener({
   }
   const transaction = {
     ...newTransaction,
-    key: `${newTransaction.to}-${newTransaction.from}`,
+    key: `${newTransaction.to}-${newTransaction.for}`,
     lock: newTransaction.to,
     confirmations: 0,
     network,
