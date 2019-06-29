@@ -142,6 +142,7 @@ describe('key status manipulation', () => {
           hash: 'transaction3',
           lock: 'lock',
           from: 'account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 120,
@@ -152,6 +153,7 @@ describe('key status manipulation', () => {
           hash: 'transaction',
           lock: 'lock',
           from: 'account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 123,
@@ -161,7 +163,8 @@ describe('key status manipulation', () => {
         transaction2: {
           hash: 'transaction2',
           lock: 'lock',
-          from: 'account',
+          from: 'another account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 0,
@@ -236,6 +239,7 @@ describe('key status manipulation', () => {
         submitted: {
           hash: null,
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: MAX_UINT,
@@ -245,6 +249,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -280,6 +285,7 @@ describe('key status manipulation', () => {
         new: {
           hash: 'new',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: MAX_UINT,
@@ -289,6 +295,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -324,6 +331,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -333,6 +341,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -368,6 +377,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -377,6 +387,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -412,6 +423,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -421,6 +433,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -456,6 +469,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -465,6 +479,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -511,6 +526,7 @@ describe('key status manipulation', () => {
           hash: 'transaction3',
           lock: 'lock',
           from: 'account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 120,
@@ -521,6 +537,7 @@ describe('key status manipulation', () => {
           hash: 'transaction',
           lock: 'lock',
           from: 'account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 123,
@@ -531,6 +548,7 @@ describe('key status manipulation', () => {
           hash: 'transaction2',
           lock: 'lock',
           from: 'account',
+          for: 'account',
           to: 'lock',
           key: 'lock-account',
           confirmations: 0,
@@ -585,7 +603,8 @@ describe('key status manipulation', () => {
       const transactions = {
         notme: {
           hash: 'notme',
-          from: 'another account',
+          from: 'account',
+          for: 'another account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -621,6 +640,7 @@ describe('key status manipulation', () => {
         submitted: {
           hash: null,
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: MAX_UINT,
@@ -630,6 +650,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -672,6 +693,7 @@ describe('key status manipulation', () => {
         new: {
           hash: 'new',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: MAX_UINT,
@@ -681,6 +703,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -723,6 +746,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -732,6 +756,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -774,6 +799,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -783,6 +809,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -825,6 +852,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -834,6 +862,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
@@ -876,6 +905,7 @@ describe('key status manipulation', () => {
         confirming: {
           hash: 'confirming',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 234,
@@ -885,6 +915,7 @@ describe('key status manipulation', () => {
         old: {
           hash: 'old',
           from: 'account',
+          for: 'account',
           to: 'lock',
           type: TRANSACTION_TYPES.KEY_PURCHASE,
           blockNumber: 123,
