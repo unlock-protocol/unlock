@@ -9,7 +9,7 @@ image: /static/images/blog/whatisunlock.jpg
 
 A recipe to go from zero to one cannot exist. Creating a company, a team, a product or a protocol require a lot of work and faith. Our goal is ambitious, but it can only be achieved an incredible amount of small steps (4000 [Pull Requests](https://github.com/unlock-protocol/unlock/pulls) as of Tuesday!).
 
-This week, we took some time to think about our **mission**, which is what we do, our **vision**, which is why we do it and our **values**, which describe how we do it. We got some help and it took us a full day, but this work will help us in each decision and will act as a "scaffold" for the whole team.
+This week, we took some time to think about our **mission**, which is what we do, our **vision**, which is why we do it, and our **values**, which describe how we do it. We got some help and it took us a full day, but this work will help us in each decision and will act as a "scaffold" for the whole team.
 
 ## Our Vision
 
