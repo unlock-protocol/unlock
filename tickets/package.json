@@ -32,7 +32,7 @@
     "@types/jest": "24.0.15",
     "@types/next": "8.0.5",
     "@types/react": "16.8.22",
-    "@types/react-redux": "7.1.0",
+    "@types/react-redux": "7.1.1",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.1.16",
     "@unlock-protocol/unlock-js": "0.3.7",
