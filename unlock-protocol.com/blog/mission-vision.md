@@ -37,4 +37,4 @@ Values define "how" we want to achieve our mission and realize the vision. They 
 
 Of course, in that list there are things that we already apply, and others which are, at least until now, more aspiratonial.
 
-Based on that list, it should be pretty clear that your input matters to us and we hope that you'll provide us guidance on how to adopt these principles during our journey! Please, reach out to us, in comments below, on [Telegram](https://t.me/unlockprotocol), or even privately using the Intercom widget in the lower right corner of this page.
+Based on that list, it should be pretty clear that your input matters to us. We hope that you'll provide us guidance on how to adopt these principles during our journey! Please, reach out to us, in comments below, on [Telegram](https://t.me/unlockprotocol), or even privately using the Intercom widget in the lower right corner of this page.
