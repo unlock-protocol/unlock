@@ -21,7 +21,7 @@
     "public-lock-abi-0": "1.0.0",
     "solium": "1.2.4",
     "truffle": "5.0.25",
-    "truffle-hdwallet-provider": "1.0.10",
+    "truffle-hdwallet-provider": "1.0.12",
     "unlock-abi-0": "1.0.4",
     "web3-eth-abi": "1.0.0-beta.55",
     "web3-utils": "1.0.0-beta.37",
