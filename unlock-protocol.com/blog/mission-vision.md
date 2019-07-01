@@ -15,7 +15,7 @@ This week, we took some time to think about our **mission**, which is what we do
 
 We believe that, now, most creators are not able to capture enough of the value that they create. Open source developers, musicians, writters, or even curators provide an incredible value for all users of the internet and beyond, but we also have to acknoledge that most of them are not being rewarded for that work, and when they are, it is often through gatekeepers, middlemen who set the terms and too often end up competing with them.
 
-We know there is a better way and this is our vision:
+We know there is a better way. This is our vision:
 
 > “Every creator can make a sustainable living from their work, while respecting the time, privacy and health of their community.”
 
