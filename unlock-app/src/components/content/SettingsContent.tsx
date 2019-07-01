@@ -11,7 +11,7 @@ import PaymentDetails from '../interface/user-account/PaymentDetails'
 // TODO: tighten up this type
 declare global {
   interface Window {
-    Stripe?: any
+    Stripe?: stripe.StripeStatic
   }
 }
 
