@@ -6,6 +6,6 @@
   "license": "ISC",
   "dependencies": {
     "@unlock-protocol/unlock-js": "0.3.7",
-    "ethers": "4.0.27"
+    "ethers": "4.0.32"
   }
 }
