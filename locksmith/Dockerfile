@@ -1,5 +1,6 @@
 FROM node:8.16.0-alpine
 LABEL Locksmith <ops@unlock-protocol.com>
+LABEL maintainer="ops@unlock-protocol.com"
 
 # Adding git which is needed by some dependencies
 RUN apk add --no-cache git openssh
@@ -17,6 +18,7 @@ RUN npm install -g npm@6.4.1
 
 # Dependencies for locksmith
 RUN mkdir /locksmith
+ADD VERSION .
 COPY --chown=node ./package-lock.json /locksmith/.
 COPY --chown=node ./package.json /locksmith/.
 WORKDIR /locksmith
