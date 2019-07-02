@@ -79,7 +79,16 @@ describe('postOfficeMiddleware', () => {
 
       mockPostOfficeService.emit(PostOfficeEvents.Error, 'this is an error')
 
-      expect(store.dispatch).toHaveBeenCalled()
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'error/SET_ERROR',
+          error: {
+            kind: 'PostOffice',
+            level: 'Diagnostic',
+            message: 'this is an error',
+          },
+        })
+      )
     })
   })
 
