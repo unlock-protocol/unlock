@@ -12,7 +12,7 @@ Thousands of people participate in the [IndieWeb](https://indieweb.org): a growi
 
 [Known](https://withknown.com) was one of the first indieweb publishing platforms. It lets anyone host a social media profile on their own webspace. You can respond to posts on other indieweb platforms, or invite visitors to discuss directly on your posts.
 
-Integrating Unlock with Known means allowing these indieweb users to sell access to aspects of their sites. Disclaimer: I'm the co-founder of Known and its first user. [I still use it on my website](https://werd.io) - and I want to use Unlock there, too. So it was in my interest to create a plugin.
+Integrating Unlock with Known means allowing these indieweb users to sell memberships to aspects of their sites. Disclaimer: I'm the co-founder of Known and its first user. [I still use it on my website](https://werd.io) - and I want to use Unlock there, too. So it was in my interest to create a plugin.
 
 Here's what I wanted to achieve:
 
