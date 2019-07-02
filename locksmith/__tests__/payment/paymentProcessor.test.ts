@@ -190,7 +190,7 @@ describe('PaymentProcessor', () => {
     it('returns the total price of the key purchase for the provided lock', async () => {
       expect.assertions(1)
       let { nockDone } = await nockBack('non_charged_user.json')
-      expect(await paymentProcessor.price(lockAddress)).toEqual(500.01)
+      expect(await paymentProcessor.price(lockAddress)).toEqual(501)
       nockDone()
     })
   })
