@@ -35,6 +35,8 @@ import {
   signPurchaseData,
   SIGNED_PURCHASE_DATA,
   signedPurchaseData,
+  KEY_PURCHASE_INITIATED,
+  keyPurchaseInitiated,
 } from '../../actions/user'
 
 const key = {
@@ -260,6 +262,9 @@ describe('user account actions', () => {
 
       expect(signedPaymentData({ data, sig })).toEqual(expectedAction)
     })
+  })
+
+  describe('user transaction actions', () => {
     it('should create an action requesting the signature for a key purchase', () => {
       expect.assertions(1)
       const data = {
@@ -295,6 +300,15 @@ describe('user account actions', () => {
       }
 
       expect(signedPurchaseData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action indicating that locksmith has accepted a key purchase request', () => {
+      expect.assertions(1)
+      const expectedAction = {
+        type: KEY_PURCHASE_INITIATED,
+      }
+
+      expect(keyPurchaseInitiated()).toEqual(expectedAction)
     })
   })
 
