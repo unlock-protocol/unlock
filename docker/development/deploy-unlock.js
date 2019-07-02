@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+const net = require('net')
+const ethers = require('ethers')
 const {
   deploy,
   WalletService,
   Web3Service,
 } = require('@unlock-protocol/unlock-js')
-const net = require('net')
-const ethers = require('ethers')
 const TokenDeployer = require('./deploy-locks')
 
 /*
@@ -14,12 +14,8 @@ const TokenDeployer = require('./deploy-locks')
  */
 const host = process.env.HTTP_PROVIDER_HOST
 const port = process.env.HTTP_PROVIDER_PORT
-let deployedLockAddress
-let purchaser = process.env.PURCHASER_ADDRESS
-let recipientAddress = process.env.ERC20_TOKEN_RECIPIENT
-let bootstrapTransferAmount = process.env.BOOTSTRAP_AMOUNT
-let bootstrapTranferRecipient = process.env.ETHEREUM_ADDRESS
-let contractOwnerAddress = process.env.CONTRACT_OWNER_ADDRESS
+let programmaticPurchaser = process.env.LOCKSMITH_PURCHASER_ADDRESS // This is the locksmith user account
+let userAddress = process.env.ETHEREUM_ADDRESS // This is a user account
 
 let providerURL = `http://${host}:${port}`
 let provider = new ethers.providers.JsonRpcProvider(providerURL, {
@@ -52,57 +48,36 @@ const serverIsUp = (delay, maxAttempts) =>
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
     return deploy(host, port, 'v11', newContractInstance => {
+      console.log(`UNLOCK DEPLOYED AT ${newContractInstance.address}`)
+
       // Once unlock has been deployed, we need to deploy a lock too!
       const wallet = new WalletService({
         unlockAddress: newContractInstance.options.address,
       })
 
-      const web3 = new Web3Service({
+      const web3Service = new Web3Service({
         readOnlyProvider: providerURL,
         unlockAddress: newContractInstance.options.address,
-      })
-
-      console.log(
-        `the unlock deployment ${newContractInstance.options.address}`
-      )
-
-      // // This will be called multiple times, for each confirmation
-      web3.on('lock.updated', address => {
-        if (!deployedLockAddress) {
-          deployedLockAddress = address
-          console.log(`Lock deployed at ${address}`)
-        }
-      })
-
-      wallet.on('lock.updated', (_, { transaction }) => {
-        web3.getTransaction(transaction)
+        requiredConfirmations: 1,
+        blockTime: 3,
       })
 
       wallet.on('account.changed', async account => {
+        // Once Unlock is deployed, we proceed to building the rest of the environment
         TokenDeployer.prepareEnvironment(
+          web3Service,
           wallet,
-          contractOwnerAddress,
           account,
           provider,
-          purchaser,
-          recipientAddress
+          programmaticPurchaser,
+          userAddress
         )
-
-        let eWallet = provider.getSigner(contractOwnerAddress)
-
-        await new Promise(resolve => {
-          setTimeout(resolve, 5000)
-        })
-
-        await eWallet.sendTransaction({
-          to: bootstrapTranferRecipient,
-          value: ethers.utils.parseEther(bootstrapTransferAmount.toString()),
-        })
       })
 
       wallet.on('network.changed', () => {
         wallet.getAccount()
       })
+
       wallet.connect(providerURL)
     })
   })

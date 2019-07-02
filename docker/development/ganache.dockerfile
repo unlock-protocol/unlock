@@ -16,14 +16,16 @@ RUN npm install -g npm@6.4.1
 RUN mkdir /standup
 WORKDIR /standup
 
-COPY ./deploy-unlock.js .
-COPY ./deploy-locks.js .
 COPY ./package.json .
-COPY ./package-lock.json .
-COPY ./TestErc20Token.json .
 
 RUN npm install
+
+COPY ./TestErc20Token.json .
+COPY ./deploy-unlock.js .
+COPY ./deploy-locks.js .
+
 WORKDIR /app
+
 COPY ./standup.sh .
 
 ENV DOCKER true
