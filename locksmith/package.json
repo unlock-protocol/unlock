@@ -71,7 +71,7 @@
     "random-words": "1.1.0",
     "reflect-metadata": "0.1.13",
     "run-script-os": "1.0.7",
-    "sequelize": "5.8.10",
+    "sequelize": "5.9.0",
     "sequelize-cli": "5.5.0",
     "sequelize-typescript": "0.6.11",
     "stripe": "7.4.0",
