@@ -51,7 +51,11 @@ export default async function connectToBlockchain({
   const locksToRetrieve = Object.keys(config.locks)
 
   const provider = new Web3ProxyProvider(window)
-  const walletService = setupWalletService({ unlockAddress, provider })
+  const walletService = setupWalletService({
+    unlockAddress,
+    provider,
+    onChange,
+  })
   const web3Service = setupWeb3Service({
     unlockAddress,
     readOnlyProvider,
