@@ -255,7 +255,7 @@ describe('blockchain handler index', () => {
       })
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        'http://locksmith/transactions?sender=account&recipient[]=0x123'
+        'http://locksmith/transactions?for=account&recipient[]=0x123'
       )
     })
   })

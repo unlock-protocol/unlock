@@ -46982,7 +46982,7 @@ window.unlockProtocolConfig = {
   type: "paywall",
   locks: {
     "0xa62142888aba8370742be823c1782d17a0389da1": { name: "undefined" }
-  }
+  },
   callToAction: {
     default: "You have reached your limit of free articles. Please purchase access"
   }
@@ -47071,7 +47071,7 @@ window.unlockProtocolConfig = {
   type: "paywall",
   locks: {
     "0xa62142888aba8370742be823c1782d17a0389da1": { name: "undefined" }
-  }
+  },
   callToAction: {
     default: "You have reached your limit of free articles. Please purchase access"
   }

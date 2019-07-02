@@ -22,6 +22,7 @@ import {
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
+  SIGNED_PURCHASE_DATA,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -188,6 +189,11 @@ const storageMiddleware = config => {
             data,
             sig
           )
+        }
+
+        if (action.type === SIGNED_PURCHASE_DATA) {
+          const { data, sig } = action
+          storageService.purchaseKey(data, btoa(sig))
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {

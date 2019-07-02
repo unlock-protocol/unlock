@@ -29,10 +29,14 @@ import {
   signPaymentData,
   SIGNED_PAYMENT_DATA,
   signedPaymentData,
-  CONFIRM_KEY_PURCHASE,
-  confirmKeyPurchase,
   GET_STORED_PAYMENT_DETAILS,
   getStoredPaymentDetails,
+  SIGN_PURCHASE_DATA,
+  signPurchaseData,
+  SIGNED_PURCHASE_DATA,
+  signedPurchaseData,
+  KEY_PURCHASE_INITIATED,
+  keyPurchaseInitiated,
 } from '../../actions/user'
 
 const key = {
@@ -260,6 +264,54 @@ describe('user account actions', () => {
     })
   })
 
+  describe('user transaction actions', () => {
+    it('should create an action requesting the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        recipient: '0x123abc',
+        lock: '0x321bca',
+      }
+
+      const expectedAction = {
+        type: SIGN_PURCHASE_DATA,
+        data,
+      }
+
+      expect(signPurchaseData(data)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          purchaseRequest: {
+            recipient: '0x123abc',
+            lock: 'ox321bca',
+            expiry: 60,
+          },
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_PURCHASE_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedPurchaseData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action indicating that locksmith has accepted a key purchase request', () => {
+      expect.assertions(1)
+      const expectedAction = {
+        type: KEY_PURCHASE_INITIATED,
+      }
+
+      expect(keyPurchaseInitiated()).toEqual(expectedAction)
+    })
+  })
+
   describe('user authentication actions', () => {
     it('should create an action to deliver a requested password', () => {
       expect.assertions(1)
@@ -270,17 +322,6 @@ describe('user account actions', () => {
       }
 
       expect(gotPassword(password)).toEqual(expectedAction)
-    })
-  })
-
-  describe('paywall interaction', () => {
-    it('should create an action to confirm a key purchase request', () => {
-      expect.assertions(1)
-      const expectedAction = {
-        type: CONFIRM_KEY_PURCHASE,
-      }
-
-      expect(confirmKeyPurchase()).toEqual(expectedAction)
     })
   })
 })
