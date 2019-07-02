@@ -13,7 +13,7 @@ window.unlockProtocolConfig = {
   type: "paywall",
   locks: {
     "${lock.address}": { name: "${lock.name}" }
-  }
+  },
   callToAction: {
     default: "You have reached your limit of free articles. Please purchase access"
   }
