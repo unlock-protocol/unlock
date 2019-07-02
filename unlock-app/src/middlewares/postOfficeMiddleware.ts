@@ -15,8 +15,9 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
     postOfficeService.on(PostOfficeEvents.Error, message => {
       dispatch(setError(PostOffice.Diagnostic(message)))
     })
-    postOfficeService.on(PostOfficeEvents.LockUpdate, () => {})
-    postOfficeService.on(PostOfficeEvents.KeyPurchase, () => {})
+    postOfficeService.on(PostOfficeEvents.KeyPurchase, () => {
+      postOfficeService.showAccountModal()
+    })
     return (next: (action: any) => void) => (action: any) => {
       next(action)
     }

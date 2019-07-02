@@ -11,6 +11,7 @@ class MockPostOfficeService extends EventEmitter {
   constructor() {
     super()
   }
+  showAccountModal = jest.fn()
 }
 
 let mockPostOfficeService = new MockPostOfficeService()
@@ -89,6 +90,20 @@ describe('postOfficeMiddleware', () => {
           },
         })
       )
+    })
+
+    it('should dispatch paywallLock when receiving KeyPurchase', () => {
+      expect.assertions(2)
+
+      const { store } = makeMiddleware()
+
+      mockPostOfficeService.emit(
+        PostOfficeEvents.KeyPurchase,
+        'a lock',
+        'a tip'
+      )
+      expect(mockPostOfficeService.showAccountModal).toHaveBeenCalled()
+      expect(store.dispatch).toHaveBeenCalledWith('something')
     })
   })
 
