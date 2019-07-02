@@ -1,7 +1,9 @@
 import { ADD_TO_CART } from '../actions/keyPurchase'
 import { Action } from '../unlockTypes'
 
-// Right now, the "cart" can only contain one lock at a time
+// Right now, the "cart" can only contain one lock at a time. It only responds
+// to an action created by the postOfficeMiddleware while a user account key
+// purchase is in progress
 interface State {
   lock: any
   tip: any
