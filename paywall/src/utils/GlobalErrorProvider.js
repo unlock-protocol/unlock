@@ -35,6 +35,7 @@ export class GlobalErrorProvider extends Component {
     // eslint-disable-next-line
     account: UnlockPropTypes.account,
     router: PropTypes.shape({
+      route: PropTypes.string,
       location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
         search: PropTypes.string.isRequired,
