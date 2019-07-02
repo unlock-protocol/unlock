@@ -1,10 +1,19 @@
-import { iframePostOffice, IframePostOfficeWindow } from '../utils/postOffice'
+import { IframePostOfficeWindow } from '../utils/postOffice'
+import {
+  PostOfficeEvents,
+  PostOfficeService,
+} from '../services/postOfficeService'
 
-const postOfficeMiddleware = (window: IframePostOfficeWindow) => {
-  const postOffice = iframePostOffice(window, 'Account UI')
+const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
+  const postOfficeService = new PostOfficeService(
+    window,
+    config.requiredNetworkId
+  )
+  postOfficeService.on(PostOfficeEvents.Error, () => {})
+  postOfficeService.on(PostOfficeEvents.LockUpdate, () => {})
+  postOfficeService.on(PostOfficeEvents.KeyPurchase, () => {})
   return (_: any) => {
     //return ({ getState, dispatch }) => {
-    postOffice.addHandler('boilerplate, not used yet', () => {})
     return (next: (action: any) => void) => (action: any) => {
       next(action)
     }

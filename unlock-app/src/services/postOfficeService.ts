@@ -13,7 +13,7 @@ export enum PostOfficeEvents {
   Error = 'error',
 }
 
-export default class PostOfficeService extends EventEmitter {
+export class PostOfficeService extends EventEmitter {
   private postOffice: PostOffice
   private account: string | null = null
   private network: number
