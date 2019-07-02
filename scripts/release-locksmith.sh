@@ -5,11 +5,12 @@ set -ex
 # docker hub username
 USERNAME=unlockprotocol
 IMAGE=locksmith
+REPO_ROOT=`dirname "$0"`/..
 
-version=`cat ../locksmith/VERSION`
+version=`cat ${REPO_ROOT}/locksmith/VERSION`
 echo "version: $version"
 
-./build.sh
+./build-locksmith.sh
 docker tag $USERNAME/$IMAGE:latest $USERNAME/$IMAGE:$version
 # push it
 docker push $USERNAME/$IMAGE:latest
