@@ -68,7 +68,7 @@
     "react-testing-library": "6.1.2",
     "redux": "4.0.1",
     "rollup": "1.16.3",
-    "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-terser": "5.0.0",
     "run-script-os": "1.0.7",
