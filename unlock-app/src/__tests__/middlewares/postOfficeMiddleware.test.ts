@@ -6,12 +6,16 @@ import {
 } from '../../utils/postOffice'
 import { PostOfficeEvents } from '../../services/postOfficeService'
 import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
+import { ADD_TO_CART } from '../../actions/keyPurchase'
+import { KEY_PURCHASE_INITIATED } from '../../actions/user'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
     super()
   }
   showAccountModal = jest.fn()
+  hideAccountModal = jest.fn()
+  transactionInitiated = jest.fn()
 }
 
 let mockPostOfficeService = new MockPostOfficeService()
@@ -92,31 +96,49 @@ describe('postOfficeMiddleware', () => {
       )
     })
 
-    it('should dispatch paywallLock when receiving KeyPurchase', () => {
+    it('should dispatch addToCart when receiving KeyPurchase', () => {
       expect.assertions(2)
 
       const { store } = makeMiddleware()
+      const lock = 'a lock'
+      const tip = 'a tip'
 
-      mockPostOfficeService.emit(
-        PostOfficeEvents.KeyPurchase,
-        'a lock',
-        'a tip'
-      )
+      mockPostOfficeService.emit(PostOfficeEvents.KeyPurchase, lock, tip)
       expect(mockPostOfficeService.showAccountModal).toHaveBeenCalled()
-      expect(store.dispatch).toHaveBeenCalledWith('something')
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: ADD_TO_CART,
+        lock,
+        tip,
+      })
     })
   })
 
-  it('should pass actions on to the next middleware', () => {
-    expect.assertions(1)
+  describe('handling actions', () => {
+    it('should tell the paywall about a purchase and dismiss itself when receiving KEY_PURCHASE_INITIATED', () => {
+      expect.assertions(3)
+      const { invoke } = makeMiddleware()
+      const action = {
+        type: KEY_PURCHASE_INITIATED,
+      }
 
-    const { invoke } = makeMiddleware()
-    const action = {
-      type: 'any',
-    }
+      invoke(action)
 
-    invoke(action)
+      expect(mockPostOfficeService.transactionInitiated).toHaveBeenCalled()
+      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
 
-    expect(next).toHaveBeenCalledWith(action)
+    it('should pass other actions on to the next middleware', () => {
+      expect.assertions(1)
+
+      const { invoke } = makeMiddleware()
+      const action = {
+        type: 'any',
+      }
+
+      invoke(action)
+
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 })
