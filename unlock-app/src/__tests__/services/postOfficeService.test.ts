@@ -1,4 +1,5 @@
-import PostOfficeService, {
+import {
+  PostOfficeService,
   PostOfficeEvents,
 } from '../../services/postOfficeService'
 import { IframePostOfficeWindow } from '../../windowTypes'
