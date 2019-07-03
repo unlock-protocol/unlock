@@ -1,7 +1,7 @@
 import Dispatcher from '../../src/fulfillment/dispatcher'
 
 let mockWeb3Service: { getLock: any },
-  mockWalletService: { connect?: any; purchaseKey: any },
+  mockWalletService: { connect?: any; purchaseKey: any; on: any },
   dispatcher: Dispatcher
 let lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -31,6 +31,7 @@ mockWeb3Service = {
 mockWalletService = {
   connect: jest.fn(),
   purchaseKey: jest.fn(),
+  on: jest.fn(),
 }
 
 jest.mock('@unlock-protocol/unlock-js', () => ({

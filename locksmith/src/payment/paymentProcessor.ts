@@ -52,11 +52,7 @@ export class PaymentProcessor {
 
         return true
       } else if (user && !user.stripe_customer_id) {
-        let customer = await this.stripe.customers.create({
-          email: user.emailAddress,
-          source: token,
-        })
-
+        let customer = await this.createStripeCustomer(user.emailAddress, token)
         user.stripe_customer_id = customer.id
         await user.save()
         return true
@@ -66,6 +62,13 @@ export class PaymentProcessor {
     } catch (e) {
       return false
     }
+  }
+
+  createStripeCustomer(emailAddress: string, token: string) {
+    return this.stripe.customers.create({
+      email: emailAddress,
+      source: token,
+    })
   }
 
   /**
