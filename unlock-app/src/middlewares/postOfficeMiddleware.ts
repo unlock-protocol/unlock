@@ -1,3 +1,4 @@
+import { Action } from 'redux'
 import { IframePostOfficeWindow } from '../utils/postOffice'
 import {
   PostOfficeEvents,
@@ -13,20 +14,26 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
     window,
     config.requiredNetworkId
   )
+
   return ({ dispatch }: any) => {
     postOfficeService.on(PostOfficeEvents.Error, message => {
       dispatch(setError(PostOffice.Diagnostic(message)))
     })
+
     postOfficeService.on(PostOfficeEvents.KeyPurchase, (lock, tip) => {
       postOfficeService.showAccountModal()
       dispatch(addToCart({ lock, tip }))
     })
-    return (next: (action: any) => void) => (action: any) => {
-      if (action.type === KEY_PURCHASE_INITIATED) {
-        postOfficeService.transactionInitiated()
-        postOfficeService.hideAccountModal()
+
+    return (next: any) => {
+      return (action: Action) => {
+        if (action.type === KEY_PURCHASE_INITIATED) {
+          postOfficeService.transactionInitiated()
+          postOfficeService.hideAccountModal()
+        }
+
+        next(action)
       }
-      next(action)
     }
   }
 }

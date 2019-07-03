@@ -18,6 +18,7 @@ import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
 import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
+import postOfficeMiddleware from '../middlewares/postOfficeMiddleware'
 
 const config = configure()
 
@@ -34,6 +35,18 @@ function getOrCreateStore(initialState, path) {
 
   if (config.services.storage) {
     middlewares.push(storageMiddleware(config))
+  }
+
+  // Cannot load postOfficeMiddleware on the server
+  if (!config.isServer) {
+    const target = window.parent
+    const url = new URL(window.location.href)
+    const origin = url.searchParams.get('origin')
+    // postOfficeMiddleware can't instantiate postOfficeService without these
+    // values
+    if (target && origin) {
+      middlewares.push(postOfficeMiddleware(window, config))
+    }
   }
 
   // Always make a new store if server, otherwise state is shared between requests
