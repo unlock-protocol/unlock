@@ -8,6 +8,7 @@ import { PostOfficeEvents } from '../../services/postOfficeService'
 import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
 import { ADD_TO_CART } from '../../actions/keyPurchase'
 import { KEY_PURCHASE_INITIATED } from '../../actions/user'
+import { SET_ACCOUNT } from '../../actions/accounts'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -16,6 +17,7 @@ class MockPostOfficeService extends EventEmitter {
   showAccountModal = jest.fn()
   hideAccountModal = jest.fn()
   transactionInitiated = jest.fn()
+  setAccount = jest.fn()
 }
 
 let mockPostOfficeService = new MockPostOfficeService()
@@ -114,6 +116,21 @@ describe('postOfficeMiddleware', () => {
   })
 
   describe('handling actions', () => {
+    it('should tell the paywall about account changes', () => {
+      expect.assertions(1)
+      const { invoke } = makeMiddleware()
+      const action = {
+        type: SET_ACCOUNT,
+        account: {
+          address: '0x123abc',
+        },
+      }
+
+      invoke(action)
+
+      expect(mockPostOfficeService.setAccount).toHaveBeenCalledWith('0x123abc')
+    })
+
     it('should tell the paywall about a purchase and dismiss itself when receiving KEY_PURCHASE_INITIATED', () => {
       expect.assertions(3)
       const { invoke } = makeMiddleware()
