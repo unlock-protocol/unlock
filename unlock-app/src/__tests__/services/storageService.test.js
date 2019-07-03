@@ -145,48 +145,6 @@ describe('StorageService', () => {
     })
   })
 
-  describe('updateLockDetails', () => {
-    describe('when a lock can be updated', () => {
-      it('returns a successful promise', done => {
-        expect.assertions(2)
-        axios.put.mockReturnValue()
-        storageService.updateLockDetails(lockAddress, lock)
-
-        storageService.on(success.updateLockDetails, address => {
-          expect(address).toBe(lockAddress)
-          done()
-        })
-
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
-      })
-    })
-
-    describe('when a lock can not be updated', () => {
-      it('returns an rejected Promise', done => {
-        expect.assertions(3)
-        axios.put.mockRejectedValue('An Error')
-
-        storageService.updateLockDetails(lockAddress, lock)
-
-        storageService.on(failure.updateLockDetails, ({ address, error }) => {
-          expect(address).toBe(lockAddress)
-          expect(error).toBe('An Error')
-          done()
-        })
-
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
-      })
-    })
-  })
-
   describe('getTransactionsHashesSentBy', () => {
     it('should succeed with a list of hashes', done => {
       expect.assertions(3)
