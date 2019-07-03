@@ -35,13 +35,11 @@
     "typescript": "3.5.2"
   },
   "devDependencies": {
-    "ganache-cli": "6.4.1",
     "husky": "2.7.0"
   },
   "scripts": {
     "link-parent-bin": "link-parent-bin -c . -s true",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start-ganache": "./scripts/start-ganache.sh",
     "postinstall": "./scripts/postinstall.sh",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build && cd ../locksmith && npm run build",
     "start": "./scripts/start.sh",
