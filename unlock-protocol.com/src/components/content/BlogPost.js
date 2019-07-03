@@ -167,6 +167,17 @@ const Body = styled.div`
   img {
     max-width: 100%;
   }
+
+  pre,
+  code {
+    max-width: 90vw;
+    overflow-x: scroll;
+  }
+
+  pre {
+    background-color: var(--lightgrey);
+    padding: 20px;
+  }
 `
 
 export const AuthorName = styled.h3`
