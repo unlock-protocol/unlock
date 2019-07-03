@@ -18,6 +18,7 @@ import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
 import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
+import postOfficeMiddleware from '../middlewares/postOfficeMiddleware'
 
 const config = configure()
 
@@ -30,6 +31,7 @@ function getOrCreateStore(initialState, path) {
     currencyConversionMiddleware(config),
     walletMiddleware(config),
     wedlocksMiddleware(config),
+    postOfficeMiddleware(window, config),
   ]
 
   if (config.services.storage) {
