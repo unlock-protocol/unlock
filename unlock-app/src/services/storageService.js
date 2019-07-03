@@ -10,7 +10,7 @@ export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   lockLookUp: 'lockLookUp.success',
-  updateLockDetails: 'updateLockDetails.success',
+  storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
@@ -24,7 +24,7 @@ export const failure = {
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   lockLookUp: 'lockLookUp.failure',
-  updateLockDetails: 'updateLockDetails.failure',
+  storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
@@ -118,24 +118,26 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   *  Updates a lock with with details provided. In the case of failure a rejected promise is
+   * Store the details of the provide Lock. In the case of failure a rejected promise is
    * returned to the caller.
    *
-   * @param {*} address
-   * @param {*} update
+   * @param {*} lockDetails
    * @param {*} token
    */
-  async updateLockDetails(address, update, token) {
+  async storeLockDetails(lockDetails, token) {
     const opts = {}
     if (token) {
-      // TODO: Tokens aren't optional
+      // TODO: Token is no longer necessary here. Update this function and callsites.
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      await axios.put(`${this.host}/lock/${address}`, update, opts)
-      this.emit(success.updateLockDetails, address)
+      await axios.post(`${this.host}/lock`, lockDetails, opts)
+      this.emit(success.storeLockDetails, lockDetails.message.lock.address)
     } catch (error) {
-      this.emit(failure.updateLockDetails, { address, error })
+      this.emit(failure.storeLockDetails, {
+        address: lockDetails.message.lock.address,
+        error,
+      })
     }
   }
 

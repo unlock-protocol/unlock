@@ -111,44 +111,36 @@ describe('StorageService', () => {
     })
   })
 
-  describe('updateLockDetails', () => {
-    describe('when a lock can be updated', () => {
-      it('returns a successful promise', done => {
+  describe('storeLockDetails', () => {
+    describe('when storing a new lock', () => {
+      it('emits a success', done => {
         expect.assertions(2)
-        axios.put.mockReturnValue()
-        storageService.updateLockDetails(lockAddress, lock)
+        axios.post.mockReturnValue()
+        storageService.storeLockDetails(lock)
 
-        storageService.on(success.updateLockDetails, address => {
-          expect(address).toBe(lockAddress)
+        storageService.on(success.storeLockDetails, address => {
+          expect(address).toEqual(lockAddress)
           done()
         })
 
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
 
-    describe('when a lock can not be updated', () => {
-      it('returns an rejected Promise', done => {
+    describe('when attempting to store an existing lock', () => {
+      it('emits a failure', done => {
         expect.assertions(3)
-        axios.put.mockRejectedValue('An Error')
+        axios.post.mockRejectedValue('An Error')
 
-        storageService.updateLockDetails(lockAddress, lock)
+        storageService.storeLockDetails(lock)
 
-        storageService.on(failure.updateLockDetails, ({ address, error }) => {
+        storageService.on(failure.storeLockDetails, ({ address, error }) => {
           expect(address).toBe(lockAddress)
           expect(error).toBe('An Error')
           done()
         })
 
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
   })
