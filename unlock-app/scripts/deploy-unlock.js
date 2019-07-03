@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 
+// NOTE: THIS SCRIPT IS CURRENTLY ONLY USED BY THE INTEGRATION TESTS
+// BECAUSE WE DO NOT USE OUR OWN ganache.dockerfile in that context
+
 const { deploy } = require('@unlock-protocol/unlock-js')
 const net = require('net')
 
