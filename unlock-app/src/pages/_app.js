@@ -31,11 +31,22 @@ function getOrCreateStore(initialState, path) {
     currencyConversionMiddleware(config),
     walletMiddleware(config),
     wedlocksMiddleware(config),
-    postOfficeMiddleware(window, config),
   ]
 
   if (config.services.storage) {
     middlewares.push(storageMiddleware(config))
+  }
+
+  // Cannot load postOfficeMiddleware on the server
+  if (!config.isServer) {
+    const target = window.parent
+    const url = new URL(window.location.href)
+    const origin = url.searchParams.get('origin')
+    // postOfficeMiddleware can't instantiate postOfficeService without these
+    // values
+    if (target && origin) {
+      middlewares.push(postOfficeMiddleware(window, config))
+    }
   }
 
   // Always make a new store if server, otherwise state is shared between requests
