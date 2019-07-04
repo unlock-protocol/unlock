@@ -508,4 +508,21 @@ describe('Lock middleware', () => {
       expect(mockWeb3Service.generateLockAddress).not.toHaveBeenCalled()
     })
   })
+
+  describe('ADD_LOCK', () => {
+    it('should retrieve the locks using web3Service', () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const address = '0x123'
+      const lock = {
+        address,
+      }
+      const action = { type: ADD_LOCK, address, lock }
+      mockWeb3Service.getLock = jest.fn()
+
+      invoke(action)
+      expect(next).toHaveBeenCalled()
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
+    })
+  })
 })
