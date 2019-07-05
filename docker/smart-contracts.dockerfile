@@ -5,7 +5,7 @@ RUN mkdir /home/unlock/smart-contracts
 COPY --chown=node smart-contracts/package-lock.json /home/unlock/smart-contracts/.
 COPY --chown=node smart-contracts/package.json /home/unlock/smart-contracts/.
 WORKDIR /home/unlock/smart-contracts
-RUN npm ci --production
+RUN npm ci
 
 # Copy the parent binaries into the smart-contracts
 WORKDIR /home/unlock/
