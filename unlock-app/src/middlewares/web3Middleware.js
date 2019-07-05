@@ -1,13 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import {
-  CREATE_LOCK,
-  ADD_LOCK,
-  addLock,
-  updateLock,
-  createLock,
-} from '../actions/lock'
+import { CREATE_LOCK, addLock, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 import { updateKey, addKey } from '../actions/key'
@@ -156,10 +150,6 @@ const web3Middleware = config => {
             action.lock.address = address
             dispatch(createLock(action.lock))
           })
-        }
-
-        if (action.type === ADD_LOCK) {
-          web3Service.getLock(action.address)
         }
 
         next(action)
