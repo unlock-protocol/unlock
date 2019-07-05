@@ -42,8 +42,20 @@ const getLocksByOwner = async owner => {
   })
 }
 
+const updateLockOwnership = async (address, owner) => {
+  return Lock.update(
+    { owner: ethJsUtil.toChecksumAddress(owner) },
+    {
+      where: {
+        address: { [Op.eq]: ethJsUtil.toChecksumAddress(address) },
+      },
+    }
+  )
+}
+
 module.exports = {
   createLock,
   getLocksByOwner,
   getLockByAddress,
+  updateLockOwnership,
 }
