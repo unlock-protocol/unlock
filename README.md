@@ -57,9 +57,10 @@ ETHEREUM_ADDRESS=<your ethereum address>
 READ_ONLY_PROVIDER=http://localhost:8545
 LOCKSMITH_URI=http://localhost:8080
 WEDLOCKS_URI=http://localhost:1337
-DASHBOARD_URL=http://localhost:3000
+DASHBOARD_URL=http://localhost:3000/dashboard
 PAYWALL_URL=http://localhost:3001
 PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
+USER_IFRAME_URL=http://localhost:3000/account
 UNLOCK_STATIC_URL=http://localhost:3002
 UNLOCK_TICKETS_URL=http://0.0.0.0:3003
 ERC20_CONTRACT_SYMBOL=DAI
@@ -68,6 +69,7 @@ BOOTSTRAP_AMOUNT=15.0
 HTTP_PROVIDER_HOST=127.0.0.1
 HTTP_PROVIDER_PORT=8545
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
+STRIPE_KEY=pk_test_BHXKmScocCfrQ1oW8HTmnVrB
 ```
 
 Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
@@ -78,7 +80,7 @@ This will let you interract with the application using your regular setup.
 Once [docker has been installed](https://docs.docker.com/install/) on your machine, start the cluster:
 
 ```
-$ cd docker & docker-compose -f docker-compose.development.yml up --build
+$ cd docker && docker-compose -f docker-compose.development.yml up --build
 ```
 
 This cluster includes all the required "infrastructure" to run our apps locally (mostly ganache, which is an ethereum dev node.)

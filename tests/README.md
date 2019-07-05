@@ -37,3 +37,8 @@ what is being rendered on screen.
 
 There are a few interesting and useful debugging options [on this page](https://github.com/GoogleChrome/puppeteer#debugging-tips) including
 the ability to 'slow down' execution via `slowMo`...
+
+### Running locally in a simulated CI environment
+
+To simulate the exact environment that the tests are run on CI locally, run `scripts/local-docker-integration-tests.sh`. No further
+setup is needed. The docker dev cluster mentioned above should not be running, nor any of the other apps.
