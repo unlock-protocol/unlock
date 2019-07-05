@@ -2,12 +2,14 @@ import {
   addLock,
   createLock,
   deleteLock,
+  getLock,
   updateLock,
   withdrawFromLock,
   updateKeyPrice,
   CREATE_LOCK,
   ADD_LOCK,
   DELETE_LOCK,
+  GET_LOCK,
   UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
@@ -46,6 +48,16 @@ describe('lock actions', () => {
       lock,
     }
     expect(addLock(address, lock)).toEqual(expectedAction)
+  })
+
+  it('should create an action to get the lock', () => {
+    expect.assertions(1)
+    const address = '0x123'
+    const expectedAction = {
+      type: GET_LOCK,
+      address,
+    }
+    expect(getLock(address)).toEqual(expectedAction)
   })
 
   it('should create an action to delete a lock', () => {
