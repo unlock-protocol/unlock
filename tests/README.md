@@ -29,8 +29,7 @@ locally allows for a little more flexibility to debug. For example, even if the 
 a headless way by default, they can be run in an actual web browser which lets the developer see
 what is being rendered on screen.
 
-- start a local ganache node (at the root): `npm run start-ganache -- -b 1` (the -b 1 means that the node will mine blocks every second, even if no transaction has been added)
-- deploy the smart contracts (in `/unlock-app`): `npm run deploy-unlock-contract`
+- start a docker dev cluster (at the root): see instruction in the main [README.md](https://github.com/unlock-protocol/unlock/blob/master/README.md)
 - run the dashboard application (in `/unlock-app`): `npm run start` (you may need to build the application first: `npm run build`)
 - run the locksmith application (in `/locksmith`): `npm run start`
 - run the paywall application (in `/paywall`): `npm run start` (you may need to build the application first: `npm run build`)
