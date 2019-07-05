@@ -3,15 +3,13 @@ LABEL Locksmith <ops@unlock-protocol.com>
 LABEL maintainer="ops@unlock-protocol.com"
 
 # Adding git which is needed by some dependencies
-RUN apk add --no-cache git openssh
+RUN apk add --no-cache --virtual git openssh
 
 # Adding python which is needed by some dependencies
 RUN apk add --no-cache \
     python \
-    python-dev \
     py-pip \
-    build-base \
-  && pip install virtualenv
+    build-base 
 
 # Update npm version to use npm ci
 RUN npm install -g npm@6.4.1
