@@ -12,7 +12,9 @@
     "globalSetup": "./helpers/setup.js",
     "globalTeardown": "./helpers/teardown.js",
     "testEnvironment": "./helpers/environment.js",
-    "setupTestFrameworkScriptFile": "./jest.setup.js"
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ]
   },
   "author": "Unlock Inc",
   "lint-staged": {
