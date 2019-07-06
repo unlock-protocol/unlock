@@ -69,7 +69,7 @@ BOOTSTRAP_AMOUNT=15.0
 HTTP_PROVIDER_HOST=127.0.0.1
 HTTP_PROVIDER_PORT=8545
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
-STRIPE_KEY=pk_test_BHXKmScocCfrQ1oW8HTmnVrB
+STRIPE_KEY=<put in a valid Stripe testing API KEY (https://stripe.com/docs/keys)>
 ```
 
 Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
