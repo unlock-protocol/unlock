@@ -55,8 +55,11 @@ describe('Lock Ownership', () => {
       ])
 
       let lock = await Lock.findOne({
-        where: { address: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267' },
+        where: {
+          address: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
+        },
       })
+
       expect(lock.owner.toLowerCase()).toEqual('0xb43333')
     })
   })
