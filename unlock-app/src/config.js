@@ -1,4 +1,4 @@
-import { getCurrentProvider } from '@unlock-protocol/unlock-js'
+import { getCurrentProvider, UnlockProvider } from '@unlock-protocol/unlock-js'
 
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
@@ -156,6 +156,8 @@ export default function configure(
   if (readOnlyProviderUrl) {
     readOnlyProvider = readOnlyProviderUrl
   }
+
+  providers['Unlock'] = new UnlockProvider({ readOnlyProvider })
 
   return {
     base64WedlocksPublicKey,
