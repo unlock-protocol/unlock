@@ -21,7 +21,8 @@ import {
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
-import { setError } from '../../actions/error'
+import { setError, SET_ERROR } from '../../actions/error'
+import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 
 const { Storage } = Error
 
@@ -563,6 +564,64 @@ describe('Storage middleware', () => {
 
       addresses.forEach(address => {
         expect(store.dispatch).toHaveBeenCalledWith(getLock(address))
+      })
+    })
+  })
+
+  describe('ADD_TO_CART', () => {
+    it('should get the key price', () => {
+      expect.assertions(1)
+      const { invoke } = create()
+      const action = {
+        type: ADD_TO_CART,
+        lock: {
+          address: '0x123abc',
+        },
+      }
+
+      mockStorageService.getKeyPrice = jest.fn()
+      invoke(action)
+
+      expect(mockStorageService.getKeyPrice).toHaveBeenCalledWith('0x123abc')
+    })
+  })
+
+  describe('getKeyPrice', () => {
+    it('should handle success', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const fees = {
+        creditCardProcessing: 450,
+        gasFee: 30,
+        keyPrice: 100,
+        unlockServiceFee: 20,
+      }
+      const price = 600
+
+      mockStorageService.emit(success.getKeyPrice, fees)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: UPDATE_PRICE,
+        price,
+      })
+    })
+
+    it('should handle failure', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(
+        failure.getKeyPrice,
+        'could not communicate with server'
+      )
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Warning',
+          message: 'Unable to get dollar-denominated key price from server.',
+        },
       })
     })
   })
