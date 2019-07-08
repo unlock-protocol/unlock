@@ -1,4 +1,4 @@
-import { ADD_TO_CART } from '../actions/keyPurchase'
+import { ADD_TO_CART, UPDATE_PRICE } from '../actions/keyPurchase'
 import { Action } from '../unlockTypes'
 
 // Right now, the "cart" can only contain one lock at a time. It only responds
@@ -7,6 +7,7 @@ import { Action } from '../unlockTypes'
 interface State {
   lock: any
   tip: any
+  price?: number
 }
 
 export const initialState: State = {
@@ -18,6 +19,9 @@ const cartReducer = (state = initialState, action: Action) => {
   if (action.type === ADD_TO_CART) {
     const { lock, tip } = action
     state = { lock, tip }
+  } else if (action.type === UPDATE_PRICE) {
+    const { price } = action
+    state = Object.assign({}, state, { price })
   }
 
   return state
