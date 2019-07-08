@@ -44,11 +44,12 @@ const getLocksByOwner = async owner => {
 
 const updateLockOwnership = async (address, owner) => {
   return Lock.upsert(
-    { owner: ethJsUtil.toChecksumAddress(owner) },
     {
-      where: {
-        address: { [Op.eq]: ethJsUtil.toChecksumAddress(address) },
-      },
+      address: ethJsUtil.toChecksumAddress(address),
+      owner: ethJsUtil.toChecksumAddress(owner),
+    },
+    {
+      fields: ['owner'],
     }
   )
 }
