@@ -39,8 +39,7 @@ const lockOwnerGet = async (req, res) => {
 
 const lockOwnershipCheck = async (req, res) => {
   let lockAddress = req.params.lockAddress
-
-  await LockOwnership.update(config.web3ProviderHost, [lockAddress])
+  LockOwnership.update(config.web3ProviderHost, [lockAddress])
   return res.sendStatus(200)
 }
 
