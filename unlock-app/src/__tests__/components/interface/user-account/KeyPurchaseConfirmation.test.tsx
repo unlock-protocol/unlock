@@ -8,6 +8,35 @@ import {
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PurchaseData } from '../../../../actions/user'
 
+const cards: stripe.Card[] = [
+  {
+    id: 'card_1Eox8QIsiZS2oQBMkU2KqFnq',
+    brand: 'Visa',
+    exp_month: 8,
+    exp_year: 2020,
+    last4: '4242',
+    country: 'United States',
+    object: '',
+    dynamic_last4: '4242',
+    fingerprint: '',
+    funding: 'credit',
+    metadata: {},
+  },
+  {
+    id: 'card_1EoxVMIsiZS2oQBMFzQ3ToR5',
+    brand: 'American Express',
+    exp_month: 12,
+    exp_year: 2020,
+    last4: '0005',
+    country: 'United States',
+    object: '',
+    dynamic_last4: '0005',
+    fingerprint: '',
+    funding: 'credit',
+    metadata: {},
+  },
+]
+
 const key: Key = {
   expiration: 123456789000,
   transactions: [],
@@ -37,6 +66,7 @@ describe('KeyPurchaseConfirmation', () => {
           address={address}
           emailAddress={emailAddress}
           signPurchaseData={signPurchaseData}
+          cards={cards}
           lock={lock}
         />
       )
@@ -54,6 +84,7 @@ describe('KeyPurchaseConfirmation', () => {
         <KeyPurchaseConfirmation
           address=""
           emailAddress=""
+          cards={cards}
           signPurchaseData={signPurchaseData}
         />
       )
@@ -87,6 +118,7 @@ describe('KeyPurchaseConfirmation', () => {
         account: {
           emailAddress,
           address,
+          cards,
         },
         cart: {
           lock,
@@ -94,6 +126,7 @@ describe('KeyPurchaseConfirmation', () => {
       }
 
       expect(mapStateToProps(state)).toEqual({
+        cards,
         emailAddress,
         address,
         lock,
@@ -109,6 +142,7 @@ describe('KeyPurchaseConfirmation', () => {
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
         address: '',
+        cards: [],
       })
     })
   })

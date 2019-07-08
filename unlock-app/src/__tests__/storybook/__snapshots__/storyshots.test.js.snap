@@ -59413,7 +59413,7 @@ Object {
 }
 `;
 
-exports[`Storyshots User Account/Components KeyPurchaseConfirmation, no lock info 1`] = `
+exports[`Storyshots User Account/Components KeyPurchaseConfirmation, no info provided 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -59585,7 +59585,7 @@ Object {
           <span
             class="c4"
           >
-            Visa ending in 5869
+            -
           </span>
         </div>
         <div
@@ -59650,7 +59650,7 @@ Object {
         <span
           class="sc-iwsKbI eRMzSD"
         >
-          Visa ending in 5869
+          -
         </span>
       </div>
       <div
@@ -59738,7 +59738,7 @@ Object {
 }
 `;
 
-exports[`Storyshots User Account/Components KeyPurchaseConfirmation, with lock info 1`] = `
+exports[`Storyshots User Account/Components KeyPurchaseConfirmation, with info 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -59908,7 +59908,7 @@ Object {
           <span
             class="c4"
           >
-            Visa ending in 5869
+            Visa ending in 4242
           </span>
         </div>
         <div
@@ -59973,7 +59973,7 @@ Object {
         <span
           class="sc-iwsKbI eRMzSD"
         >
-          Visa ending in 5869
+          Visa ending in 4242
         </span>
       </div>
       <div

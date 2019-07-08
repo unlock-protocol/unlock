@@ -56,20 +56,22 @@ storiesOf('User Account/Components', module)
   .add('ChangePassword', () => {
     return <ChangePassword changePassword={changePassword} />
   })
-  .add('KeyPurchaseConfirmation, no lock info', () => {
+  .add('KeyPurchaseConfirmation, no info provided', () => {
     return (
       <KeyPurchaseConfirmation
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
+        cards={[]}
       />
     )
   })
-  .add('KeyPurchaseConfirmation, with lock info', () => {
+  .add('KeyPurchaseConfirmation, with info', () => {
     return (
       <KeyPurchaseConfirmation
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
         lock={lock}
+        cards={cards}
       />
     )
   })

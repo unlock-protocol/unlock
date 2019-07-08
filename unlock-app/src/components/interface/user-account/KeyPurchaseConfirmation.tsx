@@ -17,6 +17,7 @@ interface KeyPurchaseConfirmationProps {
   address: string
   emailAddress: string
   lock?: Lock
+  cards: stripe.Card[]
   signPurchaseData: (d: PurchaseData) => any
 }
 
@@ -26,6 +27,7 @@ export const KeyPurchaseConfirmation = ({
   address,
   emailAddress,
   lock,
+  cards,
   signPurchaseData,
 }: KeyPurchaseConfirmationProps) => {
   const data: PurchaseData = {
@@ -35,6 +37,12 @@ export const KeyPurchaseConfirmation = ({
   const timeRemaining = (
     <Duration seconds={(lock && lock.expirationDuration) || null} round />
   )
+  let card = '-'
+  if (cards.length) {
+    const { brand, last4 } = cards[0]
+    card = `${brand} ending in ${last4}`
+  }
+
   return (
     <Grid>
       <SectionHeader>Confirm Purchase</SectionHeader>
@@ -42,7 +50,7 @@ export const KeyPurchaseConfirmation = ({
         <ItemValue>{emailAddress}</ItemValue>
       </Item>
       <Item title="Credit Card" size="full">
-        <ItemValue>Visa ending in 5869</ItemValue>
+        <ItemValue>{card}</ItemValue>
       </Item>
       <LockInfo price="$17.19" timeRemaining={timeRemaining} />
       {!!lock && (
@@ -63,16 +71,21 @@ interface ReduxState {
   account: {
     emailAddress?: string
     address?: string
+    cards?: stripe.Card[]
   }
   cart: {
     lock?: Lock
   }
 }
-export const mapStateToProps = (state: ReduxState) => ({
-  emailAddress: state.account.emailAddress || '',
-  address: state.account.address || '',
-  lock: state.cart.lock || undefined,
-})
+export const mapStateToProps = (state: ReduxState) => {
+  const { account, cart } = state
+  return {
+    emailAddress: account.emailAddress || '',
+    address: account.address || '',
+    lock: cart.lock || undefined,
+    cards: account.cards || [],
+  }
+}
 
 export default connect(
   mapStateToProps,
