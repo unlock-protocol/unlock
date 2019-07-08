@@ -24,6 +24,23 @@ const cards = [
   },
 ]
 
+const key = {
+  expiration: 12345678,
+  transactions: [],
+  status: 'confirming',
+  confirmations: 0,
+  lock: 'not a real address',
+  owner: null,
+}
+const lock = {
+  name: 'My ERC20 Lock',
+  address: 'not a real address',
+  keyPrice: '0.2',
+  expirationDuration: 12345678,
+  currencyContractAddress: 'not a real currency contract address',
+  key,
+}
+
 storiesOf('User Account/Components', module)
   .add('AccountInfo, no info', () => {
     return <AccountInfo email="" address="" />
@@ -39,11 +56,20 @@ storiesOf('User Account/Components', module)
   .add('ChangePassword', () => {
     return <ChangePassword changePassword={changePassword} />
   })
-  .add('KeyPurchaseConfirmation', () => {
+  .add('KeyPurchaseConfirmation, no lock info', () => {
     return (
       <KeyPurchaseConfirmation
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
+      />
+    )
+  })
+  .add('KeyPurchaseConfirmation, with lock info', () => {
+    return (
+      <KeyPurchaseConfirmation
+        emailAddress="jenny@googlemail.com"
+        signPurchaseData={signPurchaseData}
+        lock={lock}
       />
     )
   })

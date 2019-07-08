@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { signPurchaseData, PurchaseData } from '../../../actions/user'
+import Duration from '../../helpers/Duration'
 import { Lock } from '../../../unlockTypes'
 import {
   Grid,
@@ -31,6 +32,9 @@ export const KeyPurchaseConfirmation = ({
     recipient: address,
     lock: (lock && lock.address) || '',
   }
+  const timeRemaining = (
+    <Duration seconds={(lock && lock.expirationDuration) || null} round />
+  )
   return (
     <Grid>
       <SectionHeader>Confirm Purchase</SectionHeader>
@@ -40,7 +44,7 @@ export const KeyPurchaseConfirmation = ({
       <Item title="Credit Card" size="full">
         <ItemValue>Visa ending in 5869</ItemValue>
       </Item>
-      <LockInfo price="$17.19" timeRemaining="30 Days" />
+      <LockInfo price="$17.19" timeRemaining={timeRemaining} />
       {!!lock && (
         <SubmitButton onClick={() => signPurchaseData(data)} roundBottomOnly>
           Confirm Purchase
