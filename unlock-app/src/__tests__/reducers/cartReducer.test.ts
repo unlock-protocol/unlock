@@ -1,5 +1,5 @@
 import reducer from '../../reducers/cartReducer'
-import { addToCart } from '../../actions/keyPurchase'
+import { addToCart, updatePrice } from '../../actions/keyPurchase'
 
 describe('cartReducer', () => {
   it('should set state when receiving ADD_TO_CART', () => {
@@ -9,6 +9,22 @@ describe('cartReducer', () => {
     expect(reducer(undefined, addToCart({ lock, tip }))).toEqual({
       lock,
       tip,
+    })
+  })
+
+  it('should update existing state with a price when receiving UPDATE_PRICE', () => {
+    expect.assertions(1)
+    const lock = 'a lock'
+    const tip = 'a tip'
+    const currentState = {
+      lock,
+      tip,
+    }
+    const price = 5.5
+    expect(reducer(currentState, updatePrice(5.5))).toEqual({
+      lock,
+      tip,
+      price,
     })
   })
 
