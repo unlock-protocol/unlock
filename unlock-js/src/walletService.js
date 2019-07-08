@@ -101,6 +101,8 @@ export default class WalletService extends UnlockService {
    * This function submits a web3 transaction and will trigger an event as soon as it receives its
    * hash. We then use the web3Service to handle the ongoing transaction (watch for confirmation
    * receipt... etc)
+   * A the moment the dispatcher relies on the strict emission, it is imperitive that the emission
+   * of these fields not change for the time being!
    * @private
    * @param {Promise} the result of calling a contract method (ethersjs contract)
    * @param {string} the Unlock protocol transaction type

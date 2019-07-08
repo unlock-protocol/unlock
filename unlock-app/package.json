@@ -71,7 +71,6 @@
   },
   "engineStrict": true,
   "scripts": {
-    "predev": "npm run start-ganache && npm run deploy-unlock-contract",
     "dev": "nodemon src/server.js",
     "nodemon": "nodemon",
     "build": "next build src",
@@ -79,9 +78,6 @@
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-unlock-contract": "node scripts/deploy-unlock.js",
     "start": "cross-env NODE_ENV=production node src/server.js",
-    "start-ganache": "run-script-os",
-    "start-ganache:darwin:freebsd:linux:sunos": "cd .. && (npm run start-ganache -- -b 3 &) ",
-    "start-ganache:win32": "cd .. && (START /b npm run start-ganache -- -b 3 ) ",
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",

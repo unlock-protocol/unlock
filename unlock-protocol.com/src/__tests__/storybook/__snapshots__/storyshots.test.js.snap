@@ -1771,6 +1771,17 @@ Object {
   max-width: 100%;
 }
 
+.c18 pre,
+.c18 code {
+  max-width: 90vw;
+  overflow-x: scroll;
+}
+
+.c18 pre {
+  background-color: var(--lightgrey);
+  padding: 20px;
+}
+
 .c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -2547,7 +2558,7 @@ are intentionally not generated from this file date, in case we want to override
             </div>
           </div>
           <div
-            class="b1qsww-6 imLyLP"
+            class="b1qsww-6 llwqIY"
           >
             <div>
               <p>
@@ -3753,6 +3764,17 @@ Object {
   max-width: 100%;
 }
 
+.c6 pre,
+.c6 code {
+  max-width: 90vw;
+  overflow-x: scroll;
+}
+
+.c6 pre {
+  background-color: var(--lightgrey);
+  padding: 20px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4029,7 +4051,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 imLyLP"
+        class="b1qsww-6 llwqIY"
       >
         <div>
           <p>
@@ -4342,6 +4364,17 @@ Object {
   max-width: 100%;
 }
 
+.c5 pre,
+.c5 code {
+  max-width: 90vw;
+  overflow-x: scroll;
+}
+
+.c5 pre {
+  background-color: var(--lightgrey);
+  padding: 20px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4610,7 +4643,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 imLyLP"
+        class="b1qsww-6 llwqIY"
       >
         <div>
           <p>
@@ -4923,6 +4956,17 @@ Object {
   max-width: 100%;
 }
 
+.c5 pre,
+.c5 code {
+  max-width: 90vw;
+  overflow-x: scroll;
+}
+
+.c5 pre {
+  background-color: var(--lightgrey);
+  padding: 20px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -5191,7 +5235,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 imLyLP"
+        class="b1qsww-6 llwqIY"
       >
         <div>
           <p>
@@ -5513,6 +5557,17 @@ Object {
   max-width: 100%;
 }
 
+.c6 pre,
+.c6 code {
+  max-width: 90vw;
+  overflow-x: scroll;
+}
+
+.c6 pre {
+  background-color: var(--lightgrey);
+  padding: 20px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -5789,7 +5844,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 imLyLP"
+        class="b1qsww-6 llwqIY"
       >
         <div>
           <p>

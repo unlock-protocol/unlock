@@ -1,12 +1,7 @@
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
 
-const {
-  getLockByAddress,
-  getLocksByOwner,
-  createLock,
-  updateLock,
-} = lockOperations
+const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
 const lockSave = async (req, res) => {
   let lock = req.body.message.lock
@@ -19,17 +14,6 @@ const lockSave = async (req, res) => {
     logger.logLockDetailsStored(lock.address)
     return res.sendStatus(200)
   }
-
-  // If the lock has an owner which is different
-  if (databaseLock.owner !== lock.owner) {
-    logger.logAttemptedOverwrite(lock.address)
-    return res.sendStatus(401)
-  }
-
-  // Update  the lock
-  await updateLock(lock)
-  logger.logLockDetailsStored(lock.address)
-  return res.sendStatus(202)
 }
 
 const lockGet = async (req, res) => {
