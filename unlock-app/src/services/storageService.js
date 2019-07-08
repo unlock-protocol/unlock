@@ -329,6 +329,8 @@ export class StorageService extends EventEmitter {
 
   /**
    * Given a lock address (ERC20), return the price of a key for that lock in dollars
+   * On success returns an object of { creditCardProcessing, gasFee, keyPrice, unlockServiceFee }
+   * all denominated in cents.
    * @param {string} lockAddress
    */
   async getKeyPrice(lockAddress) {
