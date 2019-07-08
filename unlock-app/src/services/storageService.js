@@ -18,6 +18,7 @@ export const success = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
+  getKeyPrice: 'getKeyPrice.success',
 }
 
 export const failure = {
@@ -33,6 +34,7 @@ export const failure = {
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
+  getKeyPrice: 'getKeyPrice.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -322,6 +324,19 @@ export class StorageService extends EventEmitter {
       }
     } catch (error) {
       this.emit(failure.getLockAddressesForUser, error)
+    }
+  }
+
+  /**
+   * Given a lock address (ERC20), return the price of a key for that lock in dollars
+   * @param {string} lockAddress
+   */
+  async getKeyPrice(lockAddress) {
+    try {
+      const result = await axios.get(`${this.host}/price/${lockAddress}`)
+      this.emit(success.getKeyPrice, result.data)
+    } catch (error) {
+      this.emit(failure.getKeyPrice, error)
     }
   }
 }
