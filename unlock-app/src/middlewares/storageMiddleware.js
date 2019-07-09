@@ -27,6 +27,7 @@ import {
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
+import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
 
 export async function changePassword({
   oldPassword,
@@ -156,6 +157,21 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
     })
 
+    storageService.on(success.getKeyPrice, fees => {
+      // For now just dispatch the sum of these, in the future we may want to be
+      // more granular so we can provide a price breakdown on the checkout page.
+      dispatch(updatePrice(Object.values(fees).reduce((a, b) => a + b)))
+    })
+    storageService.on(failure.getKeyPrice, () => {
+      dispatch(
+        setError(
+          Storage.Warning(
+            'Unable to get dollar-denominated key price from server.'
+          )
+        )
+      )
+    })
+
     return next => {
       return action => {
         if (action.type === NEW_TRANSACTION) {
@@ -247,6 +263,11 @@ const storageMiddleware = config => {
         if (action.type === GET_STORED_PAYMENT_DETAILS) {
           const { emailAddress } = action
           storageService.getCards(emailAddress)
+        }
+
+        if (action.type === ADD_TO_CART) {
+          const { lock } = action
+          storageService.getKeyPrice(lock.address)
         }
 
         next(action)
