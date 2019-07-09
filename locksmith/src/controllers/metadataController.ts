@@ -14,7 +14,8 @@ namespace MetadataController {
     // TODO: move that to a datastore at some point...
     if (
       req.params &&
-      req.params.lockAddress == '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
+      req.params.lockAddress.toLowerCase() ==
+        '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'.toLowerCase()
     ) {
       // Evan Van Ness's News letter
       defaultResponse.description =
