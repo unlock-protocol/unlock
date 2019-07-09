@@ -31,7 +31,7 @@ namespace PurchaseController {
         lock,
         config.purchaserCredentails,
         config.web3ProviderHost,
-        config.purchaserAddress
+        purchaser
       )
 
       return res.sendStatus(202)
