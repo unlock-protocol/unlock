@@ -1,7 +1,5 @@
-const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js');
-
-const UnlockDiscountToken = artifacts.require('../UnlockDiscountToken.sol')
+const UnlockDiscountToken = artifacts.require('../UnlockDiscountToken.sol');
 
 let unlockDiscountToken;
 
@@ -11,7 +9,6 @@ contract('UnlockDiscountToken', accounts => {
   });
 
   describe('Supply', () => {
-
     it('Starting supply is 0', async () => {
       const totalSupply = new BigNumber(await unlockDiscountToken.totalSupply());
       assert(totalSupply.eq(0), 'starting supply must be 0');
@@ -33,12 +30,5 @@ contract('UnlockDiscountToken', accounts => {
       const balanceAfter = await unlockDiscountToken.balanceOf(recipient);
       assert(targetBalanceAfter.eq(balanceAfter), 'Balance must increase by amount minted');
     });
-
-    it('Token transfer')
-
-    it('Initializing again must fail', async () => {
-
-    })
   });
-
 });
