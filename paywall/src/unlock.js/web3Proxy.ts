@@ -118,5 +118,16 @@ export default function web3Proxy(
     },
   }
 
+  const checkoutHandlers: MessageHandlerTemplates<MessageTypes> = {
+    [PostMessages.PURCHASE_KEY]: postMessage => {
+      return details => {
+        // relay a request to purchase a key to the data iframe
+        // as the user has clicked on a key in the checkout UI
+        postMessage('data', PostMessages.PURCHASE_KEY, details)
+      }
+    },
+  }
+
   mapHandlers('data', handlers)
+  mapHandlers('checkout', checkoutHandlers)
 }

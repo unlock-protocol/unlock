@@ -4,6 +4,8 @@ import { IframeType, UnlockWindow, MessageHandler } from '../../windowTypes'
 import setupIframeMailbox, {
   MapHandlers,
 } from '../../unlock.js/setupIframeMailbox'
+import { Locks } from '../../unlockTypes'
+import { waitFor } from '../../utils/promises'
 
 describe('web3Proxy', () => {
   interface MockUnlockWindow extends UnlockWindow {
@@ -21,6 +23,7 @@ describe('web3Proxy', () => {
   let fakeDataIframe: IframeType
   let fakeAccountIframe: IframeType
   let postFromDataIframe: (message: any) => void
+  let postFromCheckoutIframe: (message: any) => void
   interface fakeWindowProps {
     enable: boolean | undefined
   }
@@ -116,6 +119,40 @@ describe('web3Proxy', () => {
       fakeAccountIframe
     )
     postFromDataIframe = handlers.message[0]
+    postFromCheckoutIframe = handlers.message[1]
+  }
+
+  const NoERC20Locks: Locks = {
+    a: {
+      address: 'a',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: null,
+    },
+    b: {
+      address: 'b',
+      name: '',
+      keyPrice: '1',
+      expirationDuration: 1,
+      key: {
+        expiration: 1,
+        transactions: [],
+        status: 'expired',
+        confirmations: 1234,
+        owner: 'b',
+        lock: 'a',
+      },
+      currencyContractAddress: null,
+    },
   }
 
   describe('enable succeeds', () => {
@@ -181,6 +218,71 @@ describe('web3Proxy', () => {
         expect(origin).toBe('http://fun.times')
         done()
       }
+    })
+
+    it('should redirect key purchase requests to the data iframe if all locks are ETH locks', async () => {
+      expect.assertions(2)
+
+      let givenData: any
+      let givenOrigin: any
+
+      fakeDataIframe.contentWindow.postMessage = (data, origin) => {
+        givenData = data
+        givenOrigin = origin
+      }
+
+      web3Proxy(fakeWindow, mapHandlers)
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.UPDATE_LOCKS,
+          id: 1,
+          payload: NoERC20Locks,
+        },
+      })
+
+      postFromDataIframe({
+        source: fakeIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.READY_WEB3,
+          id: 1,
+          payload: undefined,
+        },
+      })
+
+      // wait for the wallet info message to be posted
+      await waitFor(() => givenData)
+
+      // reset
+      givenData = undefined
+
+      postFromCheckoutIframe({
+        source: fakeCheckoutIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.PURCHASE_KEY,
+          id: 1,
+          payload: {
+            lock: '0x123',
+            extraTip: '0',
+          },
+        },
+      })
+
+      // wait for the message to be posted
+      await waitFor(() => givenData)
+
+      expect(givenData).toEqual({
+        type: PostMessages.PURCHASE_KEY,
+        payload: {
+          lock: '0x123',
+          extraTip: '0',
+        },
+      })
+      expect(givenOrigin).toBe('http://fun.times')
     })
   })
 
