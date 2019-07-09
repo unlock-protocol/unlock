@@ -2,7 +2,6 @@ import {
   createLock,
   getLockByAddress,
   getLocksByOwner,
-  updateLock,
 } from '../../src/operations/lockOperations'
 
 const Sequelize = require('sequelize')
@@ -20,17 +19,14 @@ describe('lockOperations', () => {
   describe('createLock', () => {
     it('should invoke Lock.create, with the checksummed adresses', async () => {
       expect.assertions(1)
-      const name = 'My Lock'
       const address = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       const owner = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       Lock.create = jest.fn(() => {})
       await createLock({
-        name,
         address,
         owner,
       })
       expect(Lock.create).toHaveBeenCalledWith({
-        name,
         address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
         owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
       })
@@ -84,30 +80,6 @@ describe('lockOperations', () => {
       )
       expect(lock.owner).toEqual('0xCA750f9232C1c38e34D27e77534e1631526eC99e')
       expect(Lock.findAll).toHaveBeenCalled()
-    })
-  })
-
-  describe('updateLock', () => {
-    it('should call Lock.update with the right checksummed variables', async () => {
-      expect.assertions(5)
-      Lock.update = jest.fn((update, query) => {
-        expect(update).toEqual({
-          name: 'My Lock',
-        })
-        expect(query.where.address[Op.eq]).toEqual(
-          '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
-        )
-        expect(query.where.owner[Op.eq]).toEqual(
-          '0xCA750f9232C1c38e34D27e77534e1631526eC99e'
-        )
-        expect(query.raw).toEqual(true)
-      })
-      updateLock({
-        name: 'My Lock',
-        address: '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5',
-        owner: '0xca750f9232c1c38e34d27e77534e1631526ec99e',
-      })
-      expect(Lock.update).toHaveBeenCalledTimes(1)
     })
   })
 })

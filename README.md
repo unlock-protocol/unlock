@@ -4,7 +4,7 @@
 
 This repository includes all the code deployed by Unlock, including smart contracts and the web app running at [unlock-protocol.com](https://unlock-protocol.com).
 
-> Unlock is an access control protocol built on a blockchain. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
+> Unlock is a membership protocol, built on Ethereum. It enables creators to monetize their content or software without relying on a middleman. It lets consumers manage all of their subscriptions in a consistent way, as well as earn discounts when they share the best content and applications they use.
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
@@ -29,45 +29,67 @@ Please read more about contributing in our [contributor guide](https://github.co
 
 ## Getting started
 
-1. Ensure your dev environment is correct
+We use [docker](https://docker.com/) to run a set or containers which provide the required infrastructure.
 
-unlock requires node version 8.11.4, and the latest npm in order to build. You can ensure that npm is the latest version with:
+1. Check out the code from this repository
 
-```
-$ npm i -g npm
-```
-
-To manage node versions, there are several options. If you are using nvm, note that the default version of npm installed with
-node version 8.11.4 is outdated, and will result in several node-gyp errors. Upgrading npm will fix these errors.
-
-2. Check out the code from this repository
+Unlock uses a mono repo which includes all the services and applications we develop.
 
 ```
 git clone https://github.com/unlock-protocol/unlock
 cd unlock
 ```
 
-3. Install all deps
+2. Install all dependencies
 
 This will install all dependencies required for all the Unlock components (smart contracts and react app).
 
 ```
-$ npm install
+npm ci
 ```
 
-4. Run the app (this should also compile and deploy the smart contract to a local truffle node)
+3. Set up your environment variables
+
+At the root of the repo, add a file names `.env.dev.local` which includes the following variables:
+
+```
+ETHEREUM_ADDRESS=<your ethereum address>
+READ_ONLY_PROVIDER=http://localhost:8545
+LOCKSMITH_URI=http://localhost:8080
+WEDLOCKS_URI=http://localhost:1337
+DASHBOARD_URL=http://localhost:3000
+PAYWALL_URL=http://localhost:3001
+PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
+UNLOCK_STATIC_URL=http://localhost:3002
+UNLOCK_TICKETS_URL=http://0.0.0.0:3003
+ERC20_CONTRACT_SYMBOL=DAI
+ERC20_CONTRACT_ADDRESS=0x591AD9066603f5499d12fF4bC207e2f577448c46
+BOOTSTRAP_AMOUNT=15.0
+HTTP_PROVIDER_HOST=127.0.0.1
+HTTP_PROVIDER_PORT=8545
+LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
+```
+
+Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example).
+This will let you interract with the application using your regular setup.
+
+4. Run the docker cluster.
+
+Once [docker has been installed](https://docs.docker.com/install/) on your machine, start the cluster:
+
+```
+$ cd docker & docker-compose -f docker-compose.development.yml up --build
+```
+
+This cluster includes all the required "infrastructure" to run our apps locally (mostly ganache, which is an ethereum dev node.)
+When starting this script does several things: deploys the unlock smart contract, transfers eth to your address, ... etc
+
+5. Run the app
+
+This applies to any of our applications, but we'll take `unlock-app` as an example as it is our "main" dashboard:
 
 ```
 cd unlock-app && npm run dev
-```
-
-## Running tests/ci
-
-We deploy with docker/docker-compose:
-
-```
-docker-compose -f docker/docker-compose.ci.yml build
-docker-compose -f docker/docker-compose.ci.yml up --abort-on-container-exit
 ```
 
 ## Thank you
