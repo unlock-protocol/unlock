@@ -5,11 +5,9 @@ import 'openzeppelin-eth/contracts/token/ERC20/ERC20Detailed.sol';
 
 
 /**
- * This is an implementation of an ERC20 token to be used in tests.
- * It's a standard ERC20 implementation + `mint` (for testing).
- *
- * This contract should not be used in production.
- */
+* @title The Unlock Discount Token
+* This smart contract implements the Unlock Discount Token
+*/
 contract UnlockDiscountToken is
 ERC20Mintable,
 ERC20Detailed
