@@ -213,7 +213,6 @@ describe('web3Proxy', () => {
         origin: 'http://fun.times',
         data: {
           type: PostMessages.READY_WEB3,
-          id: 1,
           payload: 'it worked!',
         },
       })
@@ -243,7 +242,6 @@ describe('web3Proxy', () => {
         origin: 'http://fun.times',
         data: {
           type: PostMessages.READY_WEB3,
-          id: 1,
           payload: 'it worked!',
         },
       })
@@ -261,7 +259,6 @@ describe('web3Proxy', () => {
           origin: 'http://fun.times',
           data: {
             type: PostMessages.READY_WEB3,
-            id: 1,
             payload: 'it worked!',
           },
         })
