@@ -16,19 +16,31 @@ contract('UnlockDiscountToken', accounts => {
 
     it('Minting tokens', async () => {
       const mintAmount = 1000;
-
       const recipient = accounts[1];
       const balanceBefore = new BigNumber(await unlockDiscountToken.balanceOf(recipient));
-      const targetBalanceAfter = balanceBefore.plus(mintAmount);
+      const totalSupplyBefore = await unlockDiscountToken.totalSupply();
 
-      await unlockDiscountToken.mint(
-        recipient,
-        mintAmount,
-        {from: accounts[0]}
-      );
+      before(async () => {
+        await unlockDiscountToken.mint(
+          recipient,
+          mintAmount,
+          {from: accounts[0]}
+        );
+      });
 
-      const balanceAfter = await unlockDiscountToken.balanceOf(recipient);
-      assert(targetBalanceAfter.eq(balanceAfter), 'Balance must increase by amount minted');
+      it('Balance went up', async () => {
+        const balanceAfter = await unlockDiscountToken.balanceOf(recipient);
+        assert(balanceAfter.eq(
+          balanceBefore.plus(mintAmount)
+        ), 'Balance must increase by amount minted');
+      });
+
+      it('Total supply went up', async () => {
+        const totalSupplyAfter = await unlockDiscountToken.totalSupply();
+        assert(totalSupplyAfter.eq(
+          totalSupplyBefore.plus(mintAmount)
+        ), 'Total supply must increase by amount minted');
+      });
     });
   });
 });
