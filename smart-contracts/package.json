@@ -15,6 +15,7 @@
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.0",
     "cross-env": "5.2.0",
+    "eth-gas-reporter": "0.2.4",
     "ethereumjs-units": "0.2.0",
     "openzeppelin-eth": "2.2.0",
     "openzeppelin-solidity": "2.3.0",
