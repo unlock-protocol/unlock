@@ -1,5 +1,9 @@
-import { Web3Window, web3MethodCall } from '../windowTypes'
-import { MapHandlers, MessageHandlerTemplates } from './setupIframeMailbox'
+import { Web3Window, web3MethodCall, IframeType } from '../windowTypes'
+import {
+  MapHandlers,
+  MessageHandlerTemplates,
+  PostMessageToIframe,
+} from './setupIframeMailbox'
 import { PostMessages, MessageTypes } from '../messageTypes'
 
 let hasWeb3 = true
@@ -7,7 +11,7 @@ let hasWeb3 = true
 export function enable(window: Web3Window) {
   return new window.Promise((resolve, reject) => {
     if (!window.web3 || !window.web3.currentProvider) {
-      return reject(new ReferenceError('no web3 wallet exists'))
+      return resolve('no web3 wallet')
     }
     if (!window.web3.currentProvider.enable) return resolve()
     window.web3.currentProvider
@@ -38,8 +42,27 @@ export default function web3Proxy(
     window.web3.currentProvider &&
     (window.web3.currentProvider.sendAsync || window.web3.currentProvider.send)
 
+  // TODO: this will hold the logic for enabling the user account wallet
+  const checkForUserAccountWallet = async (
+    _: IframeType,
+    postMessage: PostMessageToIframe<MessageTypes>
+  ) => {
+    // we don't have web3
+    hasWeb3 = false
+    postMessage('data', PostMessages.WALLET_INFO, {
+      noWallet: true,
+      notEnabled: false,
+      isMetamask: false,
+    })
+  }
+
   const handlers: MessageHandlerTemplates<MessageTypes> = {
-    [PostMessages.READY_WEB3]: postMessage => {
+    [PostMessages.READY_WEB3]: (
+      postMessage,
+      _dataIframe,
+      _checkoutIframe,
+      accountIframe
+    ) => {
       return async () => {
         // initialize, we do this once the iframe is ready to receive information on the wallet
         // we need to tell the iframe if the wallet is metamask
@@ -50,7 +73,11 @@ export default function web3Proxy(
           window.web3.currentProvider.isMetamask
         )
         try {
-          await enable(window)
+          const result = await enable(window)
+          if (result === 'no web3 wallet') {
+            checkForUserAccountWallet(accountIframe, postMessage)
+            return
+          }
           hasWeb3 = true
           postMessage('data', PostMessages.WALLET_INFO, {
             noWallet: false,
