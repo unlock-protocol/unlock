@@ -1,5 +1,8 @@
 # Changes
 
+## 0.3.8
+- Moved scrypt/N back to the default from Web3 for speed of account interaction
+
 ## 0.3.7
 
 - Add "for" field for key purchase transactions to describe who the key was purchased for
