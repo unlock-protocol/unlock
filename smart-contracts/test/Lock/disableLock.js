@@ -18,10 +18,10 @@ contract('Lock / disableLock', accounts => {
     unlock = await getUnlockProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.purchaseFor(keyOwner, {
+    await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
-    await lock.purchaseFor(keyOwner2, {
+    await lock.purchase(keyOwner2, web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
@@ -52,7 +52,7 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key', async () => {
       await shouldFail(
-        lock.purchaseFor(keyOwner, {
+        lock.purchase(keyOwner, web3.utils.padLeft(0, 40), {
           value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
@@ -61,7 +61,7 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
-        lock.purchaseForFrom(keyOwner, accounts[3], {
+        lock.purchase(keyOwner, accounts[3], {
           value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'

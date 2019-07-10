@@ -163,7 +163,7 @@ contract('Lock / withdraw', accounts => {
 
 async function purchaseKeys(accounts) {
   const purchases = [accounts[1], accounts[2]].map(account => {
-    return locks['OWNED'].purchaseFor(account, {
+    return locks['OWNED'].purchase(account, web3.utils.padLeft(0, 40), {
       value: price,
       from: account,
     })
