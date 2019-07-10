@@ -18,6 +18,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  KEY_PURCHASE_INITIATED,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -316,6 +317,33 @@ describe('Storage middleware', () => {
         'YSBzaWduYXR1cmU='
       )
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should signal the paywall after a successful key purchase', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(success.keyPurchase)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: KEY_PURCHASE_INITIATED,
+      })
+    })
+
+    it('should dispatch a warning if the key purchase is not successful', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.keyPurchase)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Warning',
+          message: 'Could not initiate key purchase.',
+        },
+      })
     })
   })
 

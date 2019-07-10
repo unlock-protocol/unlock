@@ -23,6 +23,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  keyPurchaseInitiated,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -170,6 +171,13 @@ const storageMiddleware = config => {
           )
         )
       )
+    })
+
+    storageService.on(success.keyPurchase, () => {
+      dispatch(keyPurchaseInitiated())
+    })
+    storageService.on(failure.keyPurchase, () => {
+      dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
 
     return next => {
