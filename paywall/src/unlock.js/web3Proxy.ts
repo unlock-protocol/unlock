@@ -7,11 +7,12 @@ import {
 import { PostMessages, MessageTypes } from '../messageTypes'
 
 let hasWeb3 = true
+const NO_WEB3 = 'no web3 wallet'
 
 export function enable(window: Web3Window) {
   return new window.Promise((resolve, reject) => {
     if (!window.web3 || !window.web3.currentProvider) {
-      return resolve('no web3 wallet')
+      return resolve(NO_WEB3)
     }
     if (!window.web3.currentProvider.enable) return resolve()
     window.web3.currentProvider
@@ -74,7 +75,7 @@ export default function web3Proxy(
         )
         try {
           const result = await enable(window)
-          if (result === 'no web3 wallet') {
+          if (result === NO_WEB3) {
             checkForUserAccountWallet(accountIframe, postMessage)
             return
           }
