@@ -31,8 +31,8 @@ contract('Unlock / upgrades', accounts => {
     UnlockV0.schema.contractName = 'UnlockV0'
     proxy = await project.createProxy(UnlockV0, {
       UnlockV0,
-      initMethod: 'initialize',
-      initArgs: [unlockOwner],
+      methodName: 'initialize',
+      methodArgs: [unlockOwner],
     })
 
     unlock = await UnlockV0.at(proxy.address)

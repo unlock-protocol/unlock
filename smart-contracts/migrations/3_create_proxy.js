@@ -1,5 +1,5 @@
 // Load zos scripts and truffle wrapper function
-const { scripts, ConfigVariablesInitializer } = require('zos')
+const { scripts, ConfigManager } = require('zos')
 
 const { create } = scripts
 
@@ -12,8 +12,8 @@ async function deploy(options, accounts) {
     Object.assign(
       {
         contractAlias: 'Unlock',
-        initMethod: 'initialize',
-        initArgs: [unlockOwner],
+        methodName: 'initialize',
+        methodArgs: [unlockOwner],
       },
       options
     )
@@ -24,10 +24,7 @@ module.exports = function(deployer, networkName, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(async () => {
-    const {
-      network,
-      txParams,
-    } = await ConfigVariablesInitializer.initNetworkConfiguration({
+    const { network, txParams } = await ConfigManager.initNetworkConfiguration({
       network: networkName,
       from: proxyAdmin,
     })

@@ -1,5 +1,5 @@
 // Load zos scripts and truffle wrapper function
-const { scripts, ConfigVariablesInitializer } = require('zos')
+const { scripts, ConfigManager } = require('zos')
 
 const { add, push } = scripts
 const Unlock = artifacts.require('Unlock')
@@ -16,10 +16,7 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(async () => {
-    const {
-      network,
-      txParams,
-    } = await ConfigVariablesInitializer.initNetworkConfiguration({
+    const { network, txParams } = await ConfigManager.initNetworkConfiguration({
       network: networkName,
       from: proxyAdmin,
     })
