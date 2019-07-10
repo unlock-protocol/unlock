@@ -20,6 +20,15 @@ interface PaymentFormProps {
   signPaymentData: (stripeTokenId: string) => any
 }
 
+interface PaymentFormState {
+  cardHolderName: string
+  address1: string
+  address2: string
+  addressCity: string
+  addressState: string
+  addressCountry: string
+}
+
 // Memoized because it would constantly rerender (which cleared the Stripe form)
 // because it couldn't tell the props were the same
 export const PaymentDetails = React.memo(
@@ -36,7 +45,8 @@ export const PaymentDetails = React.memo(
 )
 
 export class PaymentForm extends React.Component<
-  PaymentFormProps & ReactStripeElements.InjectedStripeProps
+  PaymentFormProps & ReactStripeElements.InjectedStripeProps,
+  PaymentFormState
 > {
   constructor(props: any) {
     super(props)
@@ -52,6 +62,7 @@ export class PaymentForm extends React.Component<
 
   handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target
+
     this.setState(prevState => {
       const newState = {
         ...prevState,
