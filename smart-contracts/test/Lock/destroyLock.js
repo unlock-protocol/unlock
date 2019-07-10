@@ -46,8 +46,9 @@ contract('Lock / destroyLock', accounts => {
 
         // Add ETH to the lock, even if it's priced in ERC20
         // TODO: should we block this from happening instead?
-        await lockApi.purchaseFor(
+        await lockApi.purchase(
           accounts[9],
+          web3.utils.padLeft(0, 40),
           accounts[9],
           Units.convert('0.01', 'eth', 'wei')
         )
@@ -66,7 +67,12 @@ contract('Lock / destroyLock', accounts => {
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
 
-          await lockApi.purchaseFor(accounts[1], accounts[1], value)
+          await lockApi.purchase(
+            accounts[1],
+            web3.utils.padLeft(0, 40),
+            accounts[1],
+            value
+          )
           assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
           initialLockBalance = await getTokenBalance(lock.address, tokenAddress)
@@ -145,7 +151,12 @@ contract('Lock / destroyLock', accounts => {
                 : 0
 
             // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-            await lockApi.purchaseFor(accounts[1], accounts[1], value)
+            await lockApi.purchase(
+              accounts[1],
+              web3.utils.padLeft(0, 40),
+              accounts[1],
+              value
+            )
 
             let finalLockBalance = await getTokenBalance(
               lock.address,
@@ -161,7 +172,7 @@ contract('Lock / destroyLock', accounts => {
             // assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
           } else {
             try {
-              await lock.purchaseFor(accounts[1], {
+              await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), {
                 value: Units.convert('0.01', 'eth', 'wei'),
               })
             } catch (e) {

@@ -16,7 +16,7 @@ contract('Lock / erc721 / getApproved', accounts => {
   })
 
   before(async function() {
-    await locks['FIRST'].purchaseFor(keyPurchaser, {
+    await locks['FIRST'].purchase(keyPurchaser, web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: keyPurchaser,
     })
