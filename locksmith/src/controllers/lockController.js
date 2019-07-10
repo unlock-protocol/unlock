@@ -1,5 +1,10 @@
+import LockOwnership from '../data/lockOwnership'
+
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
+
+const env = process.env.NODE_ENV || 'development'
+const config = require('../../config/config')[env]
 
 const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
@@ -32,4 +37,11 @@ const lockOwnerGet = async (req, res) => {
   return res.json({ locks: locks })
 }
 
-module.exports = { lockGet, lockOwnerGet, lockSave }
+const lockOwnershipCheck = async (req, res) => {
+  let lockAddress = req.params.lockAddress
+
+  await LockOwnership.update(config.web3ProviderHost, [lockAddress])
+  return res.sendStatus(200)
+}
+
+module.exports = { lockGet, lockOwnerGet, lockSave, lockOwnershipCheck }
