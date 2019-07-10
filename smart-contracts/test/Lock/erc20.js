@@ -45,7 +45,7 @@ contract('Lock / erc20', accounts => {
 
     describe('users can purchase keys', () => {
       it('can purchase', async () => {
-        await lockApi.purchase(keyOwner)
+        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -82,7 +82,7 @@ contract('Lock / erc20', accounts => {
 
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
-        await lockApi.purchase(keyOwner)
+        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
         await lockApi.purchase(keyOwner2, keyOwner)

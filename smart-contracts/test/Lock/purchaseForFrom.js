@@ -15,7 +15,8 @@ contract('Lock / purchaseForFrom', accounts => {
   })
 
   describe('if the referrer does not have a key', () => {
-    it('should fail', async () => {
+    it.skip('should fail', async () => {
+      // TODO this now falls back to no referral, but allow the purchase
       const lock = locks['FIRST']
       await shouldFail(lock.purchase(accounts[0], accounts[1]), 'KEY_NOT_VALID')
       // Making sure we do not have a key set!
