@@ -299,10 +299,42 @@ describe('Storage middleware', () => {
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
+
+    it('should refresh the state after a method is added', () => {
+      expect.assertions(1)
+      // need to initialize the mocks even though we don't use return value of
+      // create()
+      create()
+      mockStorageService.getCards = jest.fn()
+
+      mockStorageService.emit(success.addPaymentMethod, {
+        emailAddress: 'user@email.internet',
+      })
+
+      expect(mockStorageService.getCards).toHaveBeenCalledWith(
+        'user@email.internet'
+      )
+    })
+
+    it('should dispatch a warning if payment method cannot be added', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.addPaymentMethod)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Warning',
+          message: 'Could not add payment method.',
+        },
+      })
+    })
   })
 
   describe('handling SIGNED_PURCHASE_DATA', () => {
-    it('should call storageService for payment method updates', () => {
+    it('should call storageService to request a key purchase', () => {
       expect.assertions(2)
       const data = {}
       const sig = 'a signature'
