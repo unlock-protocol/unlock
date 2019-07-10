@@ -32,7 +32,7 @@ contract('Lock / cancelAndRefund', accounts => {
     lockOwner = await lock.owner.call()
   })
 
-  it.only('should return the correct penalty', async () => {
+  it('should return the correct penalty', async () => {
     const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
     const denominator = await lock.refundPenaltyDenominator.call()
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
