@@ -16,8 +16,8 @@ contract('Unlock / UnlockProxy', function(accounts) {
     this.project = await TestHelper({ from: proxyAdmin })
     this.proxy = await this.project.createProxy(Unlock, {
       Unlock,
-      initMethod: 'initialize',
-      initArgs: [unlockOwner],
+      methodName: 'initialize',
+      methodArgs: [unlockOwner],
     })
     this.unlock = await Unlock.at(this.proxy.address)
   })
