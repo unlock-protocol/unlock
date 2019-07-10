@@ -25,11 +25,6 @@ contract MixinPurchase is
   * @dev Purchase function
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
-  * This will fail if
-  *  - the keyReleaseMechanism is private
-  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
-  *  - the amount value is smaller than the price
-  *  - the recipient already owns a key
   */
   function purchase(
     address _recipient,
