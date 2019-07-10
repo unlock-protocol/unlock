@@ -28,8 +28,10 @@ export default {
 // for available params; right now a custom value of scrypt/N covers our needs.
 export const walletEncryptionOptions = {
   scrypt: {
-    // web3 used 1 << 13, ethers default is 1 << 18 so this is a nice middle ground
-    N: 1 << 16,
+    // web3 used 1 << 13, ethers default is 1 << 18. We want speedy wallet
+    // decryption, and Unlock accounts should hold no currency so this tradeoff
+    // is acceptable.
+    N: 1 << 13,
   },
 }
 
