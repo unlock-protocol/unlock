@@ -36,7 +36,12 @@ contract('Lock / getBalance', accounts => {
           from: accounts[2],
         })
         const lockApi = new LockApi(locks['FIRST'])
-        await lockApi.purchaseFor(accounts[2], accounts[2], keyPrice)
+        await lockApi.purchase(
+          accounts[2],
+          web3.utils.padLeft(0, 40),
+          accounts[2],
+          keyPrice
+        )
       })
 
       it('get balance of contract', async () => {

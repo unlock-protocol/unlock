@@ -23,7 +23,7 @@ contract('Lock / cancelAndRefund', accounts => {
   before(async () => {
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
-      return lock.purchaseFor(account, {
+      return lock.purchase(account, web3.utils.padLeft(0, 40), {
         value: keyPrice.toFixed(),
         from: account,
       })
@@ -32,7 +32,7 @@ contract('Lock / cancelAndRefund', accounts => {
     lockOwner = await lock.owner.call()
   })
 
-  it('should return the correct penalty', async () => {
+  it.only('should return the correct penalty', async () => {
     const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
     const denominator = await lock.refundPenaltyDenominator.call()
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%

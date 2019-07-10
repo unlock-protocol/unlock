@@ -31,14 +31,14 @@ contract('reports / gas', accounts => {
     lockApi = new LockApi(lockErc20)
 
     // First usage costs more, skip it
-    await lock.purchaseFor(accounts[0], {
+    await lock.purchase(accounts[0], web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
-    await lockApi.purchaseFor(accounts[0])
-    await lock.purchaseFor(accounts[9], {
+    await lockApi.purchase(accounts[0], web3.utils.padLeft(0, 40))
+    await lock.purchase(accounts[9], web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
-    await lockApi.purchaseFor(accounts[9])
+    await lockApi.purchase(accounts[9], web3.utils.padLeft(0, 40))
   })
 
   it('gas usage report', async () => {
@@ -61,18 +61,20 @@ contract('reports / gas', accounts => {
     )
 
     const purchaseForEth = await getGasFor(
-      lock.purchaseFor(accounts[2], {
+      lock.purchase(accounts[2], web3.utils.padLeft(0, 40), {
         value: Units.convert('0.01', 'eth', 'wei'),
       })
     )
-    const purchaseForErc20 = await getGasFor(lockApi.purchaseFor(accounts[2]))
+    const purchaseForErc20 = await getGasFor(
+      lockApi.purchase(accounts[2], web3.utils.padLeft(0, 40))
+    )
     const purchaseForFromEth = await getGasFor(
-      lock.purchaseForFrom(accounts[7], accounts[2], {
+      lock.purchase(accounts[7], accounts[2], {
         value: Units.convert('0.01', 'eth', 'wei'),
       })
     )
     const purchaseForFromErc20 = await getGasFor(
-      lockApi.purchaseForFrom(accounts[7], accounts[2])
+      lockApi.purchase(accounts[7], accounts[2])
     )
 
     const setApprovalForAll = await getGasFor(
@@ -143,10 +145,10 @@ contract('reports / gas', accounts => {
     )
 
     // Put some more money back in
-    await lock.purchaseFor(accounts[1], {
+    await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
-    await lockApi.purchaseFor(accounts[1])
+    await lockApi.purchase(accounts[1], web3.utils.padLeft(0, 40))
 
     const withdrawEth = await getGasFor(lock.withdraw(0))
     const withdrawErc20 = await getGasFor(lockApi.withdraw(0, accounts[0]))
@@ -154,10 +156,10 @@ contract('reports / gas', accounts => {
     const updateLockName = await getGasFor(lock.updateLockName('Unlock Blog'))
 
     // Put some more money back in
-    await lock.purchaseFor(accounts[0], {
+    await lock.purchase(accounts[0], web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
-    await lockApi.purchaseFor(accounts[0])
+    await lockApi.purchase(accounts[0], web3.utils.padLeft(0, 40))
 
     const disableLock = await getGasFor(lock.disableLock())
     await lockErc20.disableLock()
