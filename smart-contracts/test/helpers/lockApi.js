@@ -8,21 +8,7 @@ const walletService = require('./walletServiceMock')
  */
 module.exports = function lockApi(lockContract) {
   return {
-    async purchaseFor(keyOwner, from = keyOwner, ethValue = 0) {
-      const call = web3.eth.abi.encodeFunctionCall(
-        lockContract.abi.find(e => e.name === 'purchaseFor'),
-        [keyOwner]
-      )
-      return web3.eth.sendTransaction({
-        to: lockContract.address,
-        value: ethValue,
-        data: call,
-        from,
-        gas: walletService.gasAmountConstants().purchaseKey,
-      })
-    },
-
-    async purchaseForFrom(keyOwner, referrer, from = keyOwner, ethValue = 0) {
+    async purchase(keyOwner, referrer, from = keyOwner, ethValue = 0) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'purchaseForFrom'),
         [keyOwner, referrer]
