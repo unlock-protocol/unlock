@@ -423,6 +423,9 @@ export default class Web3Service extends UnlockService {
     ]).then(async ([blockNumber, blockTransaction]) => {
       if (!blockTransaction && !defaults) {
         // transaction is pending, but we have refreshed the page
+        // even though the transaction may not exist, we poll for it
+        // in case it is soon to exist
+        this._watchTransaction(transactionHash)
         return null
       }
       // Let's find the type of contract before we can get its version
