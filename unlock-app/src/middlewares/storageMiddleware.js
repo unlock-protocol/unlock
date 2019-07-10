@@ -23,6 +23,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  keyPurchaseInitiated,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -135,6 +136,15 @@ const storageMiddleware = config => {
       )
     })
 
+    storageService.on(success.addPaymentMethod, ({ emailAddress }) => {
+      // User has added a new payment method, refresh the state with the current
+      // set of methods.
+      storageService.getCards(emailAddress)
+    })
+    storageService.on(failure.addPaymentMethod, () => {
+      dispatch(setError(Storage.Warning('Could not add payment method.')))
+    })
+
     storageService.on(success.getCards, cards => {
       if (cards.length > 0) {
         dispatch(
@@ -144,6 +154,14 @@ const storageMiddleware = config => {
         )
       }
     })
+    storageService.on(failure.getCards, () => {
+      // This will happen when a user does not have a stripe id in locksmith
+      // yet.
+      // TODO: better decision on when to dispatch a user-visible error,
+      // because we don't want to show one if they just haven't added any cards
+      // yet.
+      dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
+    })
 
     // Note: we do not handle failures for now as most locks (except the pending or transfered ones...) should be eventually retrieved thru the transactions anyway
     storageService.on(success.getLockAddressesForUser, addresses => {
@@ -151,10 +169,6 @@ const storageMiddleware = config => {
       addresses.forEach(address => {
         dispatch(getLock(address))
       })
-    })
-
-    storageService.on(failure.getCards, () => {
-      dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
     })
 
     storageService.on(success.getKeyPrice, fees => {
@@ -170,6 +184,13 @@ const storageMiddleware = config => {
           )
         )
       )
+    })
+
+    storageService.on(success.keyPurchase, () => {
+      dispatch(keyPurchaseInitiated())
+    })
+    storageService.on(failure.keyPurchase, () => {
+      dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
 
     return next => {
