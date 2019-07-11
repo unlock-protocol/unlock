@@ -98,7 +98,7 @@ export type web3Send = (
   callback: web3Callback
 ) => void
 
-export interface Web3Window extends PostOfficeWindow {
+export interface Web3Window extends PostOfficeWindow, IframeManagingWindow {
   Promise: PromiseConstructor
   web3?: {
     currentProvider: {
