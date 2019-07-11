@@ -325,14 +325,9 @@ export class CreatorLockForm extends React.Component {
             data-valid={valid.keyPrice}
             required
           />
-          {isNew && !currency && (
+          {isNew && (
             <LockLabelCurrency onClick={this.toggleCurrency}>
-              Use {ERC20Contract.name}
-            </LockLabelCurrency>
-          )}
-          {isNew && !!currency && (
-            <LockLabelCurrency onClick={this.toggleCurrency}>
-              Use Ether
+              {`Use ${!currency ? ERC20Contract.name : 'Ether'}`}
             </LockLabelCurrency>
           )}
         </FormBalanceWithUnit>
@@ -384,7 +379,9 @@ const LockLabelUnlimited = styled(LockLabel)`
   padding: 5px;
 `
 
-const LockLabelCurrency = styled(LockLabel)`
+const LockLabelCurrency = styled(LockLabel).attrs(() => ({
+  className: 'currency',
+}))`
   font-size: 11px;
   width: 100%;
   padding: 5px;
