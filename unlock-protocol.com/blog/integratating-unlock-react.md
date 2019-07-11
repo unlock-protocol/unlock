@@ -1,6 +1,6 @@
 ---
 title: Integrating Unlock with React
-subTitle: Our Javascript API are very easy to integrate with React!
+subTitle: Our Javascript API is very easy to integrate with React!
 authorName: Julien Genestoux
 publishDate: July 10, 2019
 description: Integrating Unlock with React is straighforward! Here's a quick tutorial on how to get there!
