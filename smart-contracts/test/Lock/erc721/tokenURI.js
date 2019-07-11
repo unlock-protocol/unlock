@@ -69,7 +69,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
       })
       event = txObj.logs[0]
 
-      await lock.purchaseFor(accounts[0], {
+      await lock.purchase(accounts[0], web3.utils.padLeft(0, 40), {
         value: Units.convert('0.01', 'eth', 'wei'),
       })
       const uri = await lock.tokenURI.call(1)

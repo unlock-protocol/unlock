@@ -45,7 +45,7 @@ contract('Lock / erc20', accounts => {
 
     describe('users can purchase keys', () => {
       it('can purchase', async () => {
-        await lockApi.purchaseFor(keyOwner)
+        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -82,10 +82,10 @@ contract('Lock / erc20', accounts => {
 
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
-        await lockApi.purchaseFor(keyOwner)
+        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
-        await lockApi.purchaseForFrom(keyOwner2, keyOwner)
+        await lockApi.purchase(keyOwner2, keyOwner)
 
         const balance = new BigNumber(await token.balanceOf(keyOwner2))
         assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
@@ -107,14 +107,18 @@ contract('Lock / erc20', accounts => {
       const account = accounts[3]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
-      await shouldFail(lock.purchaseFor(account, { from: account }))
+      await shouldFail(
+        lock.purchase(account, web3.utils.padLeft(0, 40), { from: account })
+      )
     })
 
     it('purchaseKey fails when the user did not give the contract an allowance', async () => {
       const account = accounts[4]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice)
-      await shouldFail(lock.purchaseFor(account, { from: account }))
+      await shouldFail(
+        lock.purchase(account, web3.utils.padLeft(0, 40), { from: account })
+      )
     })
   })
 

@@ -27,7 +27,7 @@ contract('Lock / erc721 / approve', accounts => {
 
   describe('when the key exists', () => {
     before(() => {
-      return locks['FIRST'].purchaseFor(accounts[1], {
+      return locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accounts[1],
       })

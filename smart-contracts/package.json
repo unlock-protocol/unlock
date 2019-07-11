@@ -15,6 +15,7 @@
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.0",
     "cross-env": "5.2.0",
+    "eth-gas-reporter": "0.2.4",
     "ethereumjs-units": "0.2.0",
     "openzeppelin-eth": "2.2.0",
     "openzeppelin-solidity": "2.3.0",
@@ -25,8 +26,8 @@
     "unlock-abi-0": "1.0.4",
     "web3-eth-abi": "1.0.0-beta.55",
     "web3-utils": "1.0.0-beta.37",
-    "zos": "2.3.1",
-    "zos-lib": "2.3.1"
+    "zos": "2.4.1",
+    "zos-lib": "2.4.1"
   },
   "devDependencies": {
     "remixd": "0.1.8",

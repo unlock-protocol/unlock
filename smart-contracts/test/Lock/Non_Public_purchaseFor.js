@@ -18,7 +18,11 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
   describe.skip('if the contract has a private key release', () => {
     it('should fail', async () => {
       const lock = locks['PRIVATE']
-      await shouldFail(lock.purchaseFor(accounts[0]), '')
+      await shouldFail(
+        lock.purchase(accounts[0]),
+        web3.utils.padLeft(0, 40),
+        ''
+      )
       // Making sure we do not have a key set!
       await shouldFail(lock.keyExpirationTimestampFor.call(accounts[0]), '')
     })
@@ -36,7 +40,7 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
 
     it('should fail if the sending account was not pre-approved', async () => {
       await shouldFail(
-        locks['RESTRICTED'].purchaseFor(accounts[1], {
+        locks['RESTRICTED'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
           value: Units.convert('0.01', 'eth', 'wei'),
         }),
         ''
@@ -50,7 +54,7 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
           from: owner,
         })
         .then(() => {
-          locks['RESTRICTED'].purchaseFor(accounts[3], {
+          locks['RESTRICTED'].purchase(accounts[3], web3.utils.padLeft(0, 40), {
             value: Units.convert('0.01', 'eth', 'wei'),
           })
         })
