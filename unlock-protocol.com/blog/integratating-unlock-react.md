@@ -154,7 +154,7 @@ render() {
 
 ## Conclusion
 
-Unlock's JavaScript API is very simple and will go out of the way to let you implement behaviors that your application requires. This blog only lets members comments, but also shows the status in the bottom bar...
+Unlock's JavaScript API is very simple and will get out of the way to let you implement behaviors that your application requires. This blog only lets members comments, but also shows the status in the bottom bar...
 
 If the status of the lock is re-used in several components, it might be a good idea to isolate that logic in a single one and pass the state as props to sub-components!
 
