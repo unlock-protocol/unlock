@@ -78,7 +78,7 @@ This will let you interract with the application using your regular setup.
 Once [docker has been installed](https://docs.docker.com/install/) on your machine, start the cluster:
 
 ```
-$ cd docker & docker-compose -f docker-compose.development.yml up --build
+$ cd docker && docker-compose -f docker-compose.development.yml up --build
 ```
 
 This cluster includes all the required "infrastructure" to run our apps locally (mostly ganache, which is an ethereum dev node.)
