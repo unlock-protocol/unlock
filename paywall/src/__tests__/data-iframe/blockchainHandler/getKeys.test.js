@@ -24,7 +24,7 @@ describe('getKeys', () => {
 
     await getKeys({
       walletService: fakeWalletService,
-      locks: [1, 2],
+      locks: ['1', '2'],
       web3Service: fakeWeb3Service,
       requiredConfirmations: 12,
     })
@@ -38,7 +38,7 @@ describe('getKeys', () => {
     setAccount('account')
     await getKeys({
       walletService: fakeWalletService,
-      locks: [1, 2],
+      locks: ['1', '2'],
       web3Service: fakeWeb3Service,
       requiredConfirmations: 12,
     })
@@ -46,12 +46,12 @@ describe('getKeys', () => {
     expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenCalledTimes(2)
     expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
       1,
-      1,
+      '1',
       'account'
     )
     expect(fakeWeb3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
       2,
-      2,
+      '2',
       'account'
     )
   })
@@ -78,7 +78,7 @@ describe('getKeys', () => {
     })
     const keys = await getKeys({
       walletService: fakeWalletService,
-      locks: [1, 2],
+      locks: ['1', '2'],
       web3Service: fakeWeb3Service,
       requiredConfirmations: 12,
     })
@@ -86,13 +86,13 @@ describe('getKeys', () => {
     expect(keys).toEqual({
       1: {
         id: '1-account',
-        lock: 1,
+        lock: '1',
         owner: 'account',
         expiration: 0,
       },
       2: {
         id: '2-account',
-        lock: 2,
+        lock: '2',
         owner: 'account',
         expiration,
       },

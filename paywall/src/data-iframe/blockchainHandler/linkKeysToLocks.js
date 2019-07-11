@@ -13,10 +13,10 @@ export default async function linkKeysToLocks({
   return lockArray.reduce(
     (allLocks, lock) => ({
       ...allLocks,
-      [lock.address]: {
+      [lock.address ? lock.address.toLowerCase() : lock.address]: {
         ...lock,
         key: linkTransactionsToKey({
-          key: keys[lock.address],
+          key: keys[lock.address ? lock.address.toLowerCase() : lock.address],
           transactions,
           requiredConfirmations,
         }),
