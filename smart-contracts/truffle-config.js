@@ -109,6 +109,7 @@ module.exports = {
     },
   },
   mocha: {
+    reporter: 'eth-gas-reporter',
     useColors: true,
   },
   plugins: ['truffle-security'],

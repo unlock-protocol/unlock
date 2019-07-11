@@ -23,7 +23,7 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
   })
 
   it("should return the tokenId for the owner's key", async () => {
-    await locks['FIRST'].purchaseFor(accounts[1], {
+    await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[1],
     })

@@ -133,7 +133,7 @@ export const CenterRow = styled.div`
 
 interface LockInfoProps {
   price: string
-  timeRemaining: string
+  timeRemaining: string | JSX.Element
 }
 export const LockInfo = ({ price, timeRemaining }: LockInfoProps) => (
   <CenterRow>

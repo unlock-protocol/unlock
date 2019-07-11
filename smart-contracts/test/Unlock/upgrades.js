@@ -31,8 +31,8 @@ contract('Unlock / upgrades', accounts => {
     UnlockV0.schema.contractName = 'UnlockV0'
     proxy = await project.createProxy(UnlockV0, {
       UnlockV0,
-      initMethod: 'initialize',
-      initArgs: [unlockOwner],
+      methodName: 'initialize',
+      methodArgs: [unlockOwner],
     })
 
     unlock = await UnlockV0.at(proxy.address)
@@ -158,11 +158,13 @@ contract('Unlock / upgrades', accounts => {
         lockV1 = await PublicLockV1.at(evt.returnValues.newLockAddress)
 
         // Buy Key
-        await lockV1.methods.purchaseFor(keyOwner).send({
-          value: keyPrice,
-          from: keyOwner,
-          gas: 4000000,
-        })
+        await lockV1.methods
+          .purchase(keyOwner, web3.utils.padLeft(0, 40))
+          .send({
+            value: keyPrice,
+            from: keyOwner,
+            gas: 4000000,
+          })
       })
 
       it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {

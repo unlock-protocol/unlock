@@ -142,27 +142,6 @@ describe('setupPostOffice', () => {
     expect(fakeUIIframe.className).toBe('unlock start show')
   })
 
-  it('responds to PostMessages.READY_WEB3 by sending PostMessages.WALLET_INFO', async () => {
-    expect.assertions(2)
-
-    sendMessage(fakeDataIframe, PostMessages.READY_WEB3)
-
-    await Promise.resolve() // sync the Promise queue
-
-    expect(fakeUIIframe.contentWindow.postMessage).not.toHaveBeenCalled()
-    expect(fakeDataIframe.contentWindow.postMessage).toHaveBeenCalledWith(
-      {
-        type: PostMessages.WALLET_INFO,
-        payload: {
-          noWallet: true,
-          notEnabled: false,
-          isMetamask: false,
-        },
-      },
-      'http://paywall'
-    )
-  })
-
   it('responds to PostMessages.READY by sending the config to both iframes', () => {
     expect.assertions(8)
 
@@ -440,6 +419,38 @@ describe('setupPostOffice', () => {
         payload: locks,
       },
       'http://paywall'
+    )
+  })
+
+  it('relays PostMessages.UPDATE_LOCKS to the account UI', () => {
+    expect.assertions(1)
+
+    const locks = {
+      lock: {
+        address: 'lock',
+        name: 'string',
+        keyPrice: '1',
+        expirationDuration: 1,
+        key: {
+          expiration: 1,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: null,
+          lock: 'lock',
+        },
+        currencyContractAddress: null,
+      },
+    }
+
+    sendMessage(fakeDataIframe, PostMessages.UPDATE_LOCKS, locks)
+
+    expect(fakeAccountIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      {
+        type: PostMessages.UPDATE_LOCKS,
+        payload: locks,
+      },
+      'http://unlock-app.com'
     )
   })
 })

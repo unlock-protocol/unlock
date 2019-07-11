@@ -1,9 +1,10 @@
 const url = require('../helpers/url')
 const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
-//const debug = require('../helpers/debugging')
+// const debug = require('../helpers/debugging')
+const iframes = require('../helpers/iframes')
 
-//const sit = debug.screenshotOnFail(page)
+// const it = debug.screenshotOnFail(page)
 
 let lockSelectors
 
@@ -93,7 +94,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   it('should show the logo on the checkout UI', async () => {
     expect.assertions(0)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       unlockIcon => {
         return !!document.body.querySelector(`img[src="${unlockIcon}"]`)
@@ -106,7 +107,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   it('should show the 3 locks', async () => {
     expect.assertions(0)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       lock1 => {
         return !!document.body.querySelector(lock1)
@@ -133,7 +134,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   it('should attempt a key purchase when clicking on a lock, and hide the ads', async () => {
     expect.assertions(2)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     const checkoutBody = await checkoutIframe.$('body')
     await expect(checkoutBody).toClick(lockSelectors[0](''))
     await checkoutIframe.waitForFunction(
@@ -161,7 +162,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       lock1 => {
         const lock = document.body.querySelector(lock1)

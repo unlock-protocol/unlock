@@ -4,7 +4,7 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { UPDATE_LOCK, updateLock } from '../actions/lock'
+import { UPDATE_LOCK, updateLock, getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -27,6 +27,7 @@ import {
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
+import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
 
 export async function changePassword({
   oldPassword,
@@ -143,8 +144,32 @@ const storageMiddleware = config => {
         )
       }
     })
+
+    // Note: we do not handle failures for now as most locks (except the pending or transfered ones...) should be eventually retrieved thru the transactions anyway
+    storageService.on(success.getLockAddressesForUser, addresses => {
+      // Once we have the locks, we should emit them so they can be retrieved from chain
+      addresses.forEach(address => {
+        dispatch(getLock(address))
+      })
+    })
+
     storageService.on(failure.getCards, () => {
       dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
+    })
+
+    storageService.on(success.getKeyPrice, fees => {
+      // For now just dispatch the sum of these, in the future we may want to be
+      // more granular so we can provide a price breakdown on the checkout page.
+      dispatch(updatePrice(Object.values(fees).reduce((a, b) => a + b)))
+    })
+    storageService.on(failure.getKeyPrice, () => {
+      dispatch(
+        setError(
+          Storage.Warning(
+            'Unable to get dollar-denominated key price from server.'
+          )
+        )
+      )
     })
 
     return next => {
@@ -163,6 +188,8 @@ const storageMiddleware = config => {
           dispatch(startLoading())
           // When we set the account, we want to retrieve the list of transactions
           storageService.getTransactionsHashesSentBy(action.account.address)
+          // When we set the account, we want to retrive the list of locks
+          storageService.getLockAddressesForUser(action.account.address)
         }
 
         if (action.type === UPDATE_LOCK) {
@@ -236,6 +263,11 @@ const storageMiddleware = config => {
         if (action.type === GET_STORED_PAYMENT_DETAILS) {
           const { emailAddress } = action
           storageService.getCards(emailAddress)
+        }
+
+        if (action.type === ADD_TO_CART) {
+          const { lock } = action
+          storageService.getKeyPrice(lock.address)
         }
 
         next(action)
