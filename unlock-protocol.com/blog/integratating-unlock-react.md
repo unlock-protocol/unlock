@@ -9,7 +9,7 @@ image: /static/images/blog/react-integration/react-logo.png
 
 React is one of the main JavaScript front end frameworks. Unlock's JavaScript API provides an easy way for any creator to restrict access to content or features. For example, on this very blog (which [uses React](https://github.com/unlock-protocol/unlock/tree/master/unlock-protocol.com)), only the members (who own a key to the creator's lock) can leave comments.
 
-Here is a tutorial on how to integrate Unlock in your react application. We will create an React application (using [create-react-app](https://github.com/facebook/create-react-app)) which will show the user whether they own a key (unlocked!), or if they need to purchase one (locked). The [code for that application is on Github](https://github.com/unlock-protocol/react-example) and you can try it by youself directly on the [corresponding github page](https://unlock-protocol.github.io/react-example/).
+Here is a tutorial on how to integrate Unlock in your react application. We will create an React application (using [create-react-app](https://github.com/facebook/create-react-app)) which will show the user whether they own a key (unlocked!), or if they need to purchase one (locked). The [code for the application is on Github](https://github.com/unlock-protocol/react-example); you can try it yourself directly on the [corresponding github page](https://unlock-protocol.github.io/react-example/).
 
 We will assume you have already created a react application and that application should behave differently based on whether the user is a member or not.
 
