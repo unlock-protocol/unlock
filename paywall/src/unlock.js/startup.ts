@@ -29,17 +29,17 @@ export default function startup(window: UnlockWindow) {
     window,
     process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin
   )
-  addIframeToDocument(window, dataIframe)
   const checkoutIframe = makeIframe(
     window,
     process.env.PAYWALL_URL + '/checkout' + origin
   )
-  addIframeToDocument(window, checkoutIframe)
   const userAccountsIframe = makeIframe(
     window,
     process.env.USER_IFRAME_URL + origin
   )
+  addIframeToDocument(window, dataIframe)
   addIframeToDocument(window, userAccountsIframe)
+  addIframeToDocument(window, checkoutIframe)
 
   setupPostOffices(window, dataIframe, checkoutIframe, userAccountsIframe)
 }

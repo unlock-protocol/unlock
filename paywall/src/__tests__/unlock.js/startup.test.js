@@ -146,7 +146,7 @@ describe('unlock.js startup', () => {
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+      ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeCheckoutIframe)
     })
 
     it('should create a User Accounts UI iframe with the correct URL', () => {
@@ -160,7 +160,7 @@ describe('unlock.js startup', () => {
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeUserAccountsIframe)
     })
   })
 

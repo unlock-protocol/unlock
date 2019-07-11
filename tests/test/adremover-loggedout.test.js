@@ -1,6 +1,7 @@
 const url = require('../helpers/url')
 const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
+const iframes = require('../helpers/iframes')
 //const debug = require('../helpers/debugging')
 
 //const sit = debug.screenshotOnFail(page)
@@ -62,7 +63,7 @@ describe('The Unlock Ad Remover Paywall (logged out user)', () => {
   it('should show the logo on the checkout UI', async () => {
     expect.assertions(0)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(
       unlockIcon => {
         return !!document.body.querySelector(`img[src="${unlockIcon}"]`)
@@ -75,7 +76,7 @@ describe('The Unlock Ad Remover Paywall (logged out user)', () => {
   it('should show the "no wallet" page', async () => {
     expect.assertions(0)
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-    const checkoutIframe = page.mainFrame().childFrames()[1]
+    const checkoutIframe = iframes.checkoutIframe(page)
     await checkoutIframe.waitForFunction(() => {
       const text = document.body.querySelector('p').innerText
       return (
