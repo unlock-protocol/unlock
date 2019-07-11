@@ -52,7 +52,7 @@ The snippet inserted above needs to know which lock are used on this page.  For 
 
 3. Writing the component which listens to Unlock
 
-React component can have their own local state (which can be passed down to their children components). Here, our state will likely include a `locked` key. The value associated with that key can be any of the 3 following:
+React components can have their own local state (which can be passed down to their children components). Here, our state will likely include a `locked` key. The value associated with that key can be any of the 3 following:
 * `locked`
 * `unlocked`
 * `pending`
