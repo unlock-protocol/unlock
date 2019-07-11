@@ -8,10 +8,22 @@ services:
     command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
   ganache-integration:
     restart: always
-    image: trufflesuite/ganache-cli:v6.4.3
+    build:
+      context: ./development
+      args:
+        - blocktime=1
+      dockerfile: ganache.dockerfile
+    environment:
+      CI: '${CI}'
+      ERC20_CONTRACT_ADDRESS: '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+      LOCKSMITH_PURCHASER_ADDRESS: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
+      ETHEREUM_ADDRESS: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      HTTP_PROVIDER_HOST: 'ganache-integration'
+      HTTP_PROVIDER_PORT: 8545
+    ports:
+      - 8545:8545
     expose:
       - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-b 1']
   db:
     image: postgres
     expose:
@@ -20,13 +32,6 @@ services:
       POSTGRES_USER: '${DB_USERNAME}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_NAME}'
-  unlock-contract-deployer: # Used for integration tests to deploy the smart contract
-    image: unlock-app
-    environment:
-      CI: '${CI}'
-      HTTP_PROVIDER: '${HTTP_PROVIDER}'
-    depends_on:
-      - ganache-integration
   smart-contracts:
     image: smart-contracts
     depends_on:
