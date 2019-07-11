@@ -142,8 +142,8 @@ describe('key status manipulation', () => {
           hash: 'transaction3',
           lock: 'lock',
           from: 'account',
-          for: 'account',
-          to: 'lock',
+          for: 'ACCOUNT', // verify that case differences still match
+          to: 'LOCK', // verify that case differences still match
           key: 'lock-account',
           confirmations: 120,
           status: 'mined',
@@ -153,8 +153,8 @@ describe('key status manipulation', () => {
           hash: 'transaction',
           lock: 'lock',
           from: 'account',
-          for: 'account',
-          to: 'lock',
+          for: 'ACCOUNT', // verify that case differences still match
+          to: 'LOCK', // verify that case differences still match
           key: 'lock-account',
           confirmations: 123,
           status: 'mined',
@@ -164,8 +164,8 @@ describe('key status manipulation', () => {
           hash: 'transaction2',
           lock: 'lock',
           from: 'another account',
-          for: 'account',
-          to: 'lock',
+          for: 'ACCOUNT', // verify that case differences still match
+          to: 'LOCK', // verify that case differences still match
           key: 'lock-account',
           confirmations: 0,
           status: 'mined',

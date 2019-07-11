@@ -49,14 +49,21 @@ export function linkTransactionsToKey({
   transactions,
   requiredConfirmations,
 }) {
-  const account = key.owner
+  const account = key.owner ? key.owner.toLowerCase() : key.owner
+  const lock = key.lock ? key.lock.toLowerCase() : key.lock
   const keyPurchaseTransactions = Object.values(transactions)
     .filter(transaction => {
       // in theory, all transactions have already been filtered this way
       // but this is a sanity check to ensure we only process
       // key purchase transactions where the key was purchased
       // for the current account holder
-      return transaction.for === account && transaction.to === key.lock
+      const forUser = transaction.for
+        ? transaction.for.toLowerCase()
+        : transaction.for
+      const toUser = transaction.to
+        ? transaction.to.toLowerCase()
+        : transaction.to
+      return forUser === account && toUser === lock
     })
     // NOTE: submitted and pending transactions have an artificial blockNumber of Number.MAX_SAFE_INTEGER
     // set in walletService, so they are always the first transaction
