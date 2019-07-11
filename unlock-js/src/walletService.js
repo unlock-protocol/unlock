@@ -101,6 +101,8 @@ export default class WalletService extends UnlockService {
    * This function submits a web3 transaction and will trigger an event as soon as it receives its
    * hash. We then use the web3Service to handle the ongoing transaction (watch for confirmation
    * receipt... etc)
+   * A the moment the dispatcher relies on the strict emission, it is imperitive that the emission
+   * of these fields not change for the time being!
    * @private
    * @param {Promise} the result of calling a contract method (ethersjs contract)
    * @param {string} the Unlock protocol transaction type
@@ -171,14 +173,13 @@ export default class WalletService extends UnlockService {
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
-   * TODO: remove the unused account and add support for amount (which will be ignored for old locks)
    * @param {PropTypes.address} lock
-   * @param {PropTypes.address} account
+   * @param {string} amount
    * @param {Function} callback TODO: implement...
    */
-  async withdrawFromLock(lock, account) {
+  async withdrawFromLock(lock, amount) {
     const version = await this.lockContractAbiVersion(lock)
-    return version.withdrawFromLock.bind(this)(lock, account)
+    return version.withdrawFromLock.bind(this)(lock, amount)
   }
 
   /**

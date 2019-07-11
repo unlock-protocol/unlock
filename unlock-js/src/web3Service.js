@@ -40,6 +40,7 @@ export default class Web3Service extends UnlockService {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
+          for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
         return this.emit('key.saved', KEY_ID(contractAddress, owner), {
@@ -422,6 +423,9 @@ export default class Web3Service extends UnlockService {
     ]).then(async ([blockNumber, blockTransaction]) => {
       if (!blockTransaction && !defaults) {
         // transaction is pending, but we have refreshed the page
+        // even though the transaction may not exist, we poll for it
+        // in case it is soon to exist
+        this._watchTransaction(transactionHash)
         return null
       }
       // Let's find the type of contract before we can get its version

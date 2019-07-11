@@ -308,6 +308,7 @@ describe('Web3Service', () => {
         const EventInfo = new ethers.utils.Interface(
           UnlockVersion.PublicLock.abi
         )
+        const owner = checksumLockAddress
         const receipt = {
           blockNumber: 123,
           logs: [
@@ -324,18 +325,19 @@ describe('Web3Service', () => {
           ],
         }
 
-        web3Service.on('transaction.updated', (tHash, lock) => {
+        web3Service.on('transaction.updated', (tHash, transactionUpdate) => {
           expect(tHash).toBe('hash')
-          expect(lock).toEqual({
-            key: KEY_ID(lockAddress, checksumLockAddress),
+          expect(transactionUpdate).toEqual({
+            for: owner,
+            key: KEY_ID(lockAddress, owner),
             lock: lockAddress,
           })
         })
         web3Service.on('key.saved', (id, key) => {
-          expect(id).toBe(KEY_ID(lockAddress, checksumLockAddress))
+          expect(id).toBe(KEY_ID(lockAddress, owner))
           expect(key).toEqual({
             lock: lockAddress,
-            owner: checksumLockAddress,
+            owner,
           })
         })
 
@@ -685,12 +687,29 @@ describe('Web3Service', () => {
         expect.assertions(1)
         await versionedNockBeforeEach()
         testsSetup()
+        web3Service._watchTransaction = jest.fn()
 
         const result = await web3Service.getTransaction(
           transaction.hash // no defaults, because we refreshed
         )
 
         expect(result).toBeNull()
+      })
+
+      it('should poll for transaction (#4149)', async () => {
+        expect.assertions(1)
+        await versionedNockBeforeEach()
+        testsSetup()
+
+        web3Service._watchTransaction = jest.fn()
+
+        await web3Service.getTransaction(
+          transaction.hash // no defaults, because we refreshed
+        )
+
+        expect(web3Service._watchTransaction).toHaveBeenCalledWith(
+          transaction.hash
+        )
       })
     })
 

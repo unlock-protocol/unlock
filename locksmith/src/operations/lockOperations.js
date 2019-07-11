@@ -11,31 +11,9 @@ const { Lock } = models
  */
 const createLock = async lock => {
   return await Lock.create({
-    name: lock.name,
     address: ethJsUtil.toChecksumAddress(lock.address),
     owner: ethJsUtil.toChecksumAddress(lock.owner),
   })
-}
-
-/**
- * Updates a lock, by its owner
- * @param {*} lock
- */
-const updateLock = async lock => {
-  return await Lock.update(
-    { name: lock.name },
-    {
-      where: {
-        address: {
-          [Op.eq]: ethJsUtil.toChecksumAddress(lock.address),
-        },
-        owner: {
-          [Op.eq]: ethJsUtil.toChecksumAddress(lock.owner),
-        },
-      },
-      raw: true,
-    }
-  )
 }
 
 /**
@@ -64,9 +42,21 @@ const getLocksByOwner = async owner => {
   })
 }
 
+const updateLockOwnership = async (address, owner) => {
+  return Lock.upsert(
+    {
+      address: ethJsUtil.toChecksumAddress(address),
+      owner: ethJsUtil.toChecksumAddress(owner),
+    },
+    {
+      fields: ['owner'],
+    }
+  )
+}
+
 module.exports = {
   createLock,
   getLocksByOwner,
   getLockByAddress,
-  updateLock,
+  updateLockOwnership,
 }

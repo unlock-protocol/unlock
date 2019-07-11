@@ -146,7 +146,7 @@ describe('unlock.js startup', () => {
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+      ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeCheckoutIframe)
     })
 
     it('should create a User Accounts UI iframe with the correct URL', () => {
@@ -160,7 +160,7 @@ describe('unlock.js startup', () => {
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
+      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeUserAccountsIframe)
     })
   })
 
@@ -171,11 +171,10 @@ describe('unlock.js startup', () => {
 
     // this is a simple way to test whether setupPostOffices was called
     // by checking to see if event listeners for postMessage were set up
-    // The 4 are:
-    // - the data iframe post office
+    // The 3 are:
+    // - the data iframe post office (used for web3Proxy as well)
     // - the checkout UI post office
     // - the user accounts UI post office
-    // - the Web3ProxyProvider post office
-    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(4)
+    expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(3)
   })
 })

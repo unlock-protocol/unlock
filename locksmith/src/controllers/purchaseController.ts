@@ -1,11 +1,12 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
-import AuthorizedLockOperations from '../operations/authorizedLockOperations'
+import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import PaymentProcessor from '../payment/paymentProcessor'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
 
+// TODO: re-enable lock authorization pending business decision. See usage prior
+// to #4030.
 namespace PurchaseController {
   //eslint-disable-next-line import/prefer-default-export
   export const purchase = async (
@@ -18,17 +19,19 @@ namespace PurchaseController {
 
     if (expired(expiry)) {
       return res.sendStatus(412)
-    } else if (!(await authorizedLock(lock))) {
-      return res.sendStatus(451)
     } else {
-      let paymentProcessor = new PaymentProcessor(config.stripeSecret)
+      let paymentProcessor = new PaymentProcessor(
+        config.stripeSecret,
+        config.web3ProviderHost,
+        config.unlockContractAddress
+      )
 
       await paymentProcessor.initiatePurchase(
         purchaser,
         lock,
         config.purchaserCredentails,
         config.web3ProviderHost,
-        config.purchaserAddress
+        purchaser
       )
 
       return res.sendStatus(202)
@@ -38,10 +41,6 @@ namespace PurchaseController {
   const expired = (expiry: number): Boolean => {
     let currentTime = Math.floor(Date.now() / 1000)
     return expiry < currentTime
-  }
-
-  const authorizedLock = (lock: ethereumAddress): Promise<Boolean> => {
-    return AuthorizedLockOperations.hasAuthorization(lock)
   }
 }
 

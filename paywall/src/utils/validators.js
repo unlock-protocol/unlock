@@ -19,12 +19,12 @@ export const isPositiveNumber = val => {
   return !isNaN(parsedFloat) && +parsedFloat >= 0
 }
 
-export const isAccountOrNull = val => {
-  return val === null || (typeof val === 'string' && val.match(ACCOUNT_REGEXP))
-}
-
 export const isAccount = val => {
   return val && typeof val === 'string' && val.match(ACCOUNT_REGEXP)
+}
+
+export const isAccountOrNull = val => {
+  return val === null || isAccount(val)
 }
 
 /**
@@ -100,6 +100,7 @@ export const isValidPaywallConfig = config => {
       if (!isAccount(lock)) return false
       const thisLock = config.locks[lock]
       if (!thisLock || typeof thisLock !== 'object') return false
+      if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
       if (!thisLock.name || typeof thisLock.name !== 'string') return false
       return true
@@ -122,6 +123,25 @@ function isValidObject(obj, validKeys) {
 
   if (keys.length < validKeys.length) return false
   if (validKeys.filter(key => !keys.includes(key)).length) return false
+  return true
+}
+
+function isValidKeyStatus(status) {
+  if (typeof status !== 'string') return false
+  if (
+    ![
+      'none',
+      'confirming',
+      'confirmed',
+      'expired',
+      'valid',
+      'submitted',
+      'pending',
+      'failed',
+    ].includes(status)
+  ) {
+    return false
+  }
   return true
 }
 
@@ -149,29 +169,15 @@ export const isValidKey = key => {
     return false
   }
   if (!Array.isArray(key.transactions)) return false
-  if (typeof key.status !== 'string') return false
-  if (
-    ![
-      'none',
-      'confirming',
-      'confirmed',
-      'expired',
-      'valid',
-      'submitted',
-      'pending',
-      'failed',
-    ].includes(key.status)
-  ) {
-    return false
-  }
+  if (!isValidKeyStatus(key.status)) return false
   if (
     typeof key.confirmations !== 'number' ||
     !isPositiveInteger(key.confirmations)
   ) {
     return false
   }
-  if (typeof key.owner !== 'string' || !isAccount(key.owner)) return false
-  if (typeof key.lock !== 'string' || !isAccount(key.lock)) return false
+  if (!isAccount(key.owner)) return false
+  if (!isAccount(key.lock)) return false
   // NOTE: transactions are not used in the UI, and may be removed, so
   // for now we do not validate them. If this ever changes, they must
   // be validated
@@ -203,7 +209,7 @@ export const isValidLock = lock => {
   ) {
     return false
   }
-  if (typeof lock.address !== 'string' || !isAccount(lock.address)) return false
+  if (!isAccount(lock.address)) return false
   if (typeof lock.keyPrice !== 'string' || !isDecimal(lock.keyPrice)) {
     return false
   }

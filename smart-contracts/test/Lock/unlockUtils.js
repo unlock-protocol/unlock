@@ -36,7 +36,7 @@ contract('Lock / erc721 / unlockUtils', accounts => {
     // currently returns the address as a string with all chars in lowercase
     it('should convert an ethereum address to an ASCII string', async () => {
       senderAddress = await lock.address2Str.call(accounts[0])
-      assert.equal(senderAddress, '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2')
+      assert.equal(web3.utils.toChecksumAddress(senderAddress), accounts[0])
     })
   })
 })

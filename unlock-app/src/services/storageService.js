@@ -9,26 +9,32 @@ export const success = {
   addPaymentMethod: 'addPaymentMethod.success',
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
+  getLockAddressesForUser: 'getLockAddressesForUser.success',
   lockLookUp: 'lockLookUp.success',
-  updateLockDetails: 'updateLockDetails.success',
+  storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
   getCards: 'getCards.success',
+  keyPurchase: 'keyPurchase.success',
+  getKeyPrice: 'getKeyPrice.success',
 }
 
 export const failure = {
   addPaymentMethod: 'addPaymentMethod.failure',
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
+  getLockAddressesForUser: 'getLockAddressesForUser.failure',
   lockLookUp: 'lockLookUp.failure',
-  updateLockDetails: 'updateLockDetails.failure',
+  storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
   getCards: 'getCards.failure',
+  keyPurchase: 'keyPurchase.failure',
+  getKeyPrice: 'getKeyPrice.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -116,24 +122,26 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   *  Updates a lock with with details provided. In the case of failure a rejected promise is
+   * Store the details of the provide Lock. In the case of failure a rejected promise is
    * returned to the caller.
    *
-   * @param {*} address
-   * @param {*} update
+   * @param {*} lockDetails
    * @param {*} token
    */
-  async updateLockDetails(address, update, token) {
+  async storeLockDetails(lockDetails, token) {
     const opts = {}
     if (token) {
-      // TODO: Tokens aren't optional
+      // TODO: Token is no longer necessary here. Update this function and callsites.
       opts.headers = this.genAuthorizationHeader(token)
     }
     try {
-      await axios.put(`${this.host}/lock/${address}`, update, opts)
-      this.emit(success.updateLockDetails, address)
+      await axios.post(`${this.host}/lock`, lockDetails, opts)
+      this.emit(success.storeLockDetails, lockDetails.message.lock.address)
     } catch (error) {
-      this.emit(failure.updateLockDetails, { address, error })
+      this.emit(failure.storeLockDetails, {
+        address: lockDetails.message.lock.address,
+        error,
+      })
     }
   }
 
@@ -277,6 +285,60 @@ export class StorageService extends EventEmitter {
       this.emit(success.getCards, response.data)
     } catch (error) {
       this.emit(failure.getCards, { error })
+    }
+  }
+
+  async purchaseKey(purchaseRequest, token) {
+    const opts = {
+      headers: this.genAuthorizationHeader(token),
+    }
+    try {
+      await axios.post(`${this.host}/purchase`, purchaseRequest, opts)
+      this.emit(
+        success.keyPurchase,
+        purchaseRequest.message.purchaseRequest.lock
+      )
+    } catch (error) {
+      this.emit(failure.keyPurchase, error)
+    }
+  }
+
+  /**
+   * Retrieves the list of known lock adresses for this user
+   * [Note: locksmith may not know of all the locks by a user at a given point as the lock may not be deployed yet, or the lock might have been transfered]
+   * @param {*} address
+   */
+  async getLockAddressesForUser(address) {
+    try {
+      const result = await axios.get(`${this.host}/${address}/locks`)
+      if (result.data && result.data.locks) {
+        this.emit(
+          success.getLockAddressesForUser,
+          result.data.locks.map(lock => lock.address)
+        )
+      } else {
+        this.emit(
+          failure.getLockAddressesForUser,
+          'We could not retrieve lock addresses for that user'
+        )
+      }
+    } catch (error) {
+      this.emit(failure.getLockAddressesForUser, error)
+    }
+  }
+
+  /**
+   * Given a lock address (ERC20), return the price of a key for that lock in dollars
+   * On success returns an object of { creditCardProcessing, gasFee, keyPrice, unlockServiceFee }
+   * all denominated in cents.
+   * @param {string} lockAddress
+   */
+  async getKeyPrice(lockAddress) {
+    try {
+      const result = await axios.get(`${this.host}/price/${lockAddress}`)
+      this.emit(success.getKeyPrice, result.data)
+    } catch (error) {
+      this.emit(failure.getKeyPrice, error)
     }
   }
 }

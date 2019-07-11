@@ -2,7 +2,15 @@ import PaymentProcessor from '../../src/payment/paymentProcessor'
 import * as Normalizer from '../../src/utils/normalizer'
 import { UserReference } from '../../src/models/userReference'
 
+const nock = require('nock')
+const nockBack = require('nock').back
 const models = require('../../src/models')
+
+const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+const unlockContractAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+const stripeToken = 'sk_test_token'
+const web3HostURL = 'http://0.0.0.0:8545'
+let mockVisaToken = 'tok_visa'
 
 const { User } = models
 
@@ -42,12 +50,21 @@ describe('PaymentProcessor', () => {
   let paymentProcessor: PaymentProcessor
 
   beforeAll(async () => {
-    paymentProcessor = new PaymentProcessor('sk_test_token')
+    nockBack.fixtures = `${__dirname}/fixtures/paymentProcessor`
+    nockBack.setMode('lockdown')
+
+    let { nockDone } = await nockBack('setup.json')
+    paymentProcessor = new PaymentProcessor(
+      stripeToken,
+      web3HostURL,
+      unlockContractAddress
+    )
 
     await User.truncate({ cascade: true })
     await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress('foo2@example.com'),
+        stripe_customer_id: 'a valid customer id',
         User: {
           publicKey: Normalizer.ethereumAddress(
             '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
@@ -78,6 +95,11 @@ describe('PaymentProcessor', () => {
         include: User,
       }
     )
+    nockDone()
+  })
+
+  afterAll(() => {
+    nock.restore()
   })
 
   describe('updateUserPaymentDetails', () => {
@@ -85,7 +107,7 @@ describe('PaymentProcessor', () => {
       it('returns the customer id', async () => {
         expect.assertions(1)
         let user = await paymentProcessor.updateUserPaymentDetails(
-          'tok_visa',
+          mockVisaToken,
           '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
@@ -97,12 +119,12 @@ describe('PaymentProcessor', () => {
       it("adds the card to the user's acceptable card", async () => {
         expect.assertions(2)
         let user = await paymentProcessor.updateUserPaymentDetails(
-          'tok_visa_2',
+          mockVisaToken,
           '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
 
         expect(mockCreateSource).toHaveBeenCalledWith('a valid customer id', {
-          source: 'tok_visa_2',
+          source: mockVisaToken,
         })
         expect(user).toBe(true)
       })
@@ -128,7 +150,7 @@ describe('PaymentProcessor', () => {
         await expect(
           paymentProcessor.chargeUser(
             '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-            '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
+            lockAddress
           )
         ).rejects.toEqual(new Error('Customer lacks purchasing details'))
       })
@@ -137,23 +159,27 @@ describe('PaymentProcessor', () => {
         describe('when the user can be charged', () => {
           it('returns a charge', async () => {
             expect.assertions(1)
+            let { nockDone } = await nockBack('charged_user.json')
             let charge = await paymentProcessor.chargeUser(
               '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-              '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
+              lockAddress
             )
             expect(charge).not.toBeNull()
+            nockDone()
           })
         })
 
         describe('when the user cant be charged', () => {
           it('returns an error', async () => {
             expect.assertions(1)
+            let { nockDone } = await nockBack('non_charged_user.json')
             await expect(
               paymentProcessor.chargeUser(
                 '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-                '0xe4906CE8a8E861339F75611c129b9679EDAe7bBD'
+                lockAddress
               )
             ).rejects.toEqual('An error in purchase')
+            nockDone()
           })
         })
       })
@@ -161,11 +187,11 @@ describe('PaymentProcessor', () => {
   })
 
   describe('price', () => {
-    it('returns the total price of the key purchase for the provided lock', () => {
+    it('returns the total price of the key purchase for the provided lock', async () => {
       expect.assertions(1)
-      expect(
-        paymentProcessor.price('0xe4906CE8a8E861339F75611c129b9679EDAe7bBD')
-      ).toEqual(720)
+      let { nockDone } = await nockBack('non_charged_user.json')
+      expect(await paymentProcessor.price(lockAddress)).toEqual(501)
+      nockDone()
     })
   })
 

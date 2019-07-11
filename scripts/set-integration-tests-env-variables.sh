@@ -2,6 +2,7 @@
 
 # Here we set environment variables which will be used when running docker compose
 # We are setting them globally so that they are used by the whole "cluster"
+# NOTE: Remember to add references in docker-compose-ci.yml when you add a new one
 echo export CI=true
 echo export UNLOCK_ENV='test'
 echo export DB_USERNAME='locksmith_test'
@@ -21,3 +22,4 @@ echo export LOCKSMITH_PORT='8080'
 echo export DASHBOARD_URL='http://unlock-app:3000'
 echo export READ_ONLY_PROVIDER='http://ganache-integration:8545'
 echo export UNLOCK_STATIC_URL='http://unlock-protocol-com:3002'
+echo export STRIPE_KEY='pk_test_BHXKmScocCfrQ1oW8HTmnVrB'

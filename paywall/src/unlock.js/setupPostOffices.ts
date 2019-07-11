@@ -124,6 +124,8 @@ export default function setupPostOffices(
       return locks => {
         // relay the most current lock objects to the checkout UI
         send('checkout', PostMessages.UPDATE_LOCKS, locks)
+        // relay the most current lock objects to the account UI
+        send('account', PostMessages.UPDATE_LOCKS, locks)
       }
     },
   }
@@ -152,18 +154,12 @@ export default function setupPostOffices(
         hideCheckoutModal()
       }
     },
-    [PostMessages.PURCHASE_KEY]: send => {
-      return details => {
-        // relay a request to purchase a key to the data iframe
-        // as the user has clicked on a key in the checkout UI
-        send('data', PostMessages.PURCHASE_KEY, details)
-      }
-    },
+    // purchaseKey is now handled inside the web3Proxy
   }
 
   mapHandlers('data', dataHandlers)
   mapHandlers('checkout', checkoutHandlers)
 
   // set up the main window side of Web3ProxyProvider
-  web3Proxy(window, dataIframe, process.env.PAYWALL_URL)
+  web3Proxy(window, mapHandlers)
 }

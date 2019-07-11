@@ -1,16 +1,38 @@
 # Changes
 
+## 0.3.9
+- If a transaction is unknown poll immediately for it (#4149)
+
+## 0.3.8
+- Moved scrypt/N back to the default from Web3 for speed of account interaction
+
+## 0.3.7
+
+- Add "for" field for key purchase transactions to describe who the key was purchased for
+
+## 0.3.6
+
+- Bugfix: using the right default amount on withdraw when no amount has been provided
+
+## 0.3.5
+
+- Bugfix: key purchase request signatures are no longer always expired
+
 ## 0.3.4
+
 - Bugfix: using correctly formatted structured data for key purchase requests
 
 ## 0.3.3
+
 - UnlockProvider gains the capability to sign key purchase requests
 
 ## 0.3.2
+
 - UnlockProvider gains a `signPaymentData` method that will allow it to sign
   payment details in a way that locksmith can verify and associate with the user
 
 ## 0.3.1
+
 - walletService now emits an `account.updated` event with an account's email
   address if available
 

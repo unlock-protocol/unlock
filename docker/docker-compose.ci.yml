@@ -45,6 +45,7 @@ services:
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
     command: ['npm', 'run', 'start']
   unlock-protocol-com:
     image: unlock-protocol-com
@@ -113,6 +114,7 @@ services:
       USER_IFRAME_URL: '${USER_IFRAME_URL}'
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
     depends_on:
       - ganache-integration
       - unlock-app
@@ -127,6 +129,7 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_HOSTNAME: '${DB_HOSTNAME}'
       NODE_ENV: 'production' # TODO: verify if this is right?
+      WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080

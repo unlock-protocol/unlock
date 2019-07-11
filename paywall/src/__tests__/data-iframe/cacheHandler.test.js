@@ -85,11 +85,15 @@ describe('cacheHandler', () => {
         await setKeys(fakeWindow, myKeys)
         await setKey(fakeWindow, {
           lock: 'lock2',
+          expiration: 5,
         })
 
         expect(await getKeys(fakeWindow)).toEqual({
           ...myKeys,
-          lock2: { lock: 'lock2' },
+          lock2: {
+            ...myKeys.lock2,
+            expiration: 5,
+          },
         })
       })
 
@@ -104,7 +108,7 @@ describe('cacheHandler', () => {
 
         expect(await getKeys(fakeWindow)).toEqual({
           ...myKeys,
-          lock: { lock: 'lock', new: 'guy' },
+          lock: { ...myKeys.lock, new: 'guy' },
         })
       })
     })
@@ -150,7 +154,10 @@ describe('cacheHandler', () => {
         })
 
         expect(await getTransactions(fakeWindow)).toEqual({
-          myTransaction: { hash: 'myTransaction', new: 'guy' },
+          myTransaction: {
+            ...myTransactions.myTransaction,
+            new: 'guy',
+          },
         })
       })
     })
@@ -463,6 +470,7 @@ describe('cacheHandler', () => {
         key: 'lock1-account',
         to: 'lock1',
         from: 'account',
+        for: 'account',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         blockNumber: 1,
         status: 'mined',
@@ -474,6 +482,7 @@ describe('cacheHandler', () => {
         key: 'lock3-account',
         to: 'lock3',
         from: 'account',
+        for: 'account',
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         blockNumber: 2,
         status: 'mined',

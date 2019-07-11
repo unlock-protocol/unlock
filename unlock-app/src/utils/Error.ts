@@ -14,6 +14,7 @@ type ErrorKind =
   | 'Application'
   | 'FormValidation'
   | 'LogIn'
+  | 'PostOffice'
   | 'SignUp'
   | 'Signature'
   | 'Storage'
@@ -93,6 +94,9 @@ export const FormValidation: ErrorMakers = errorsFor('FormValidation')
 // errors that occur while logging in (wrong password...)
 export const LogIn: ErrorMakers = errorsFor('LogIn')
 
+// errors that happen when posting messages back and forth with the paywall
+export const PostOffice: ErrorMakers = errorsFor('PostOffice')
+
 // errors that occur while signing up/creating accounts
 export const SignUp: ErrorMakers = errorsFor('SignUp')
 
@@ -107,6 +111,7 @@ const constructors: { [key: string]: ErrorMakers } = {
   Signature,
   FormValidation,
   LogIn,
+  PostOffice,
   SignUp,
   Transaction,
   Web3,

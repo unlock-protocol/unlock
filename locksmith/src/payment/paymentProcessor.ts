@@ -14,9 +14,13 @@ export class PaymentProcessor {
   stripe: Stripe
   keyPricer: KeyPricer
 
-  constructor(apiKey: string) {
+  constructor(
+    apiKey: string,
+    providerURL: string,
+    unlockContractAddress: string
+  ) {
     this.stripe = new Stripe(apiKey)
-    this.keyPricer = new KeyPricer()
+    this.keyPricer = new KeyPricer(providerURL, unlockContractAddress)
   }
 
   async findUserByPublicKey(publicKey: ethereumAddress) {
@@ -29,7 +33,6 @@ export class PaymentProcessor {
   }
 
   /**
-   *  Updates the user associated with a given email address with the
    *  appropriate stripe customer id based on the provided token.
    *
    * @param token
@@ -49,11 +52,7 @@ export class PaymentProcessor {
 
         return true
       } else if (user && !user.stripe_customer_id) {
-        let customer = await this.stripe.customers.create({
-          email: user.emailAddress,
-          source: token,
-        })
-
+        let customer = await this.createStripeCustomer(user.emailAddress, token)
         user.stripe_customer_id = customer.id
         await user.save()
         return true
@@ -63,6 +62,13 @@ export class PaymentProcessor {
     } catch (e) {
       return false
     }
+  }
+
+  createStripeCustomer(emailAddress: string, token: string) {
+    return this.stripe.customers.create({
+      email: emailAddress,
+      source: token,
+    })
   }
 
   /**
@@ -77,7 +83,7 @@ export class PaymentProcessor {
 
       if (user && user.stripe_customer_id) {
         let charge = await this.stripe.charges.create({
-          amount: this.price(lock),
+          amount: await this.price(lock),
           currency: 'USD',
           customer: user.stripe_customer_id,
         })
@@ -90,8 +96,8 @@ export class PaymentProcessor {
     }
   }
 
-  price(lock: ethereumAddress): number {
-    let itemizedPrice = this.keyPricer.generate(lock)
+  async price(lock: ethereumAddress): Promise<number> {
+    let itemizedPrice = await this.keyPricer.generate(lock)
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
   }
 

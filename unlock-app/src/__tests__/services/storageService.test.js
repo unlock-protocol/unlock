@@ -111,44 +111,36 @@ describe('StorageService', () => {
     })
   })
 
-  describe('updateLockDetails', () => {
-    describe('when a lock can be updated', () => {
-      it('returns a successful promise', done => {
+  describe('storeLockDetails', () => {
+    describe('when storing a new lock', () => {
+      it('emits a success', done => {
         expect.assertions(2)
-        axios.put.mockReturnValue()
-        storageService.updateLockDetails(lockAddress, lock)
+        axios.post.mockReturnValue()
+        storageService.storeLockDetails(lock)
 
-        storageService.on(success.updateLockDetails, address => {
-          expect(address).toBe(lockAddress)
+        storageService.on(success.storeLockDetails, address => {
+          expect(address).toEqual(lockAddress)
           done()
         })
 
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
 
-    describe('when a lock can not be updated', () => {
-      it('returns an rejected Promise', done => {
+    describe('when attempting to store an existing lock', () => {
+      it('emits a failure', done => {
         expect.assertions(3)
-        axios.put.mockRejectedValue('An Error')
+        axios.post.mockRejectedValue('An Error')
 
-        storageService.updateLockDetails(lockAddress, lock)
+        storageService.storeLockDetails(lock)
 
-        storageService.on(failure.updateLockDetails, ({ address, error }) => {
+        storageService.on(failure.storeLockDetails, ({ address, error }) => {
           expect(address).toBe(lockAddress)
           expect(error).toBe('An Error')
           done()
         })
 
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/lock/${lockAddress}`,
-          lock,
-          {}
-        )
+        expect(axios.post).toHaveBeenCalledWith(`${serviceHost}/lock`, lock, {})
       })
     })
   })
@@ -517,6 +509,50 @@ describe('StorageService', () => {
     })
   })
 
+  describe('Retrieve a key price', () => {
+    describe('When a request succeeds', () => {
+      it('emits a success', done => {
+        expect.assertions(1)
+        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
+        axios.get.mockReturnValue({
+          data: {
+            creditCardProcessing: 450,
+            gasFee: 30,
+            keyPrice: 100,
+            unlockServiceFee: 20,
+          },
+        })
+
+        storageService.getKeyPrice(lockAddress)
+
+        storageService.on(success.getKeyPrice, data => {
+          expect(data).toEqual({
+            creditCardProcessing: 450,
+            gasFee: 30,
+            keyPrice: 100,
+            unlockServiceFee: 20,
+          })
+          done()
+        })
+      })
+    })
+
+    describe('When a request fails', () => {
+      it('emits a failure', done => {
+        expect.assertions(1)
+        const lockAddress = '0x8276A24C03B7ff9307c5bb9c0f31aa60d284375f'
+        axios.get.mockRejectedValue('could not communicate with server')
+
+        storageService.getKeyPrice(lockAddress)
+
+        storageService.on(failure.getKeyPrice, error => {
+          expect(error).toEqual('could not communicate with server')
+          done()
+        })
+      })
+    })
+  })
+
   describe('Retrieve a user recovery phrase', () => {
     describe('When a recovery phrase can be retrieved', () => {
       it('emits a success', done => {
@@ -572,6 +608,120 @@ describe('StorageService', () => {
           {}
         )
       })
+    })
+  })
+
+  describe('Purchase key', () => {
+    describe('When a key purchase succeeds', () => {
+      it('emits a success', done => {
+        expect.assertions(2)
+        const data = {
+          message: {
+            purchaseRequest: {
+              lock: '0x321cba',
+            },
+          },
+        }
+        axios.post.mockReturnValue()
+
+        storageService.on(success.keyPurchase, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+
+        storageService.purchaseKey(data, {})
+
+        expect(axios.post).toHaveBeenCalledWith(
+          `${serviceHost}/purchase`,
+          data,
+          expect.objectContaining({
+            headers: expect.any(Object),
+          })
+        )
+      })
+    })
+
+    describe('when a key purchase fails', () => {
+      it('emits a failure', done => {
+        expect.assertions(1)
+        axios.post.mockRejectedValue()
+        storageService.on(failure.keyPurchase, () => {
+          expect(true).toBeTruthy()
+          done()
+        })
+
+        storageService.purchaseKey({}, {})
+      })
+    })
+  })
+
+  describe('getLockAddressesForUser', () => {
+    it('should retrieve the list of locks for a user and emit emit success.getLockAddressesForUser', done => {
+      expect.assertions(2)
+      const user = '0xabc'
+      const locks = [
+        {
+          name: 'The named lock',
+          address: '0xAB4723090f6ea6bE32A1aDF4933EC901d315Ff0b',
+          owner: '0x3CA206264762Caf81a8F0A843bbB850987B41e16',
+          createdAt: '2019-02-06T23:16:16.505Z',
+          updatedAt: '2019-02-06T23:16:16.505Z',
+        },
+        {
+          name: 'A lock with a name',
+          address: '0xFa8b435a51E074Dd5FBCa54679d32c960C3CBDFb',
+          owner: '0x3CA206264762Caf81a8F0A843bbB850987B41e16',
+          createdAt: '2019-03-05T01:23:13.545Z',
+          updatedAt: '2019-03-05T01:23:13.545Z',
+        },
+      ]
+      axios.get.mockReturnValue({
+        data: {
+          locks,
+        },
+      })
+
+      storageService.on(success.getLockAddressesForUser, addresses => {
+        expect(addresses).toEqual(locks.map(lock => lock.address))
+        done()
+      })
+
+      storageService.getLockAddressesForUser(user)
+
+      expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
+    })
+
+    it('should emit failure.getLockAddressesForUser if the data does not have the expected format', done => {
+      expect.assertions(2)
+      const user = '0xabc'
+      axios.get.mockReturnValue({
+        data: {},
+      })
+
+      storageService.getLockAddressesForUser(user)
+
+      storageService.on(failure.getLockAddressesForUser, error => {
+        expect(error).toBe('We could not retrieve lock addresses for that user')
+        done()
+      })
+
+      expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
+    })
+
+    it('should emit failure.getLockAddressesForUser if there was an error', done => {
+      expect.assertions(2)
+      const user = '0xabc'
+      const httpError = 'An Error'
+      axios.get.mockRejectedValue(httpError)
+
+      storageService.getLockAddressesForUser(user)
+
+      storageService.on(failure.getLockAddressesForUser, error => {
+        expect(error).toBe(httpError)
+        done()
+      })
+
+      expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
     })
   })
 })
