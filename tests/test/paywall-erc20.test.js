@@ -6,7 +6,7 @@ const debug = require('../helpers/debugging')
 const it = debug.screenshotOnFail(page)
 
 const lockName = 'A Lock For the Paywall'
-const lockKeyPrice = '1.0'
+const lockKeyPrice = '1.00'
 
 let lockSelector
 

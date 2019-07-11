@@ -4,7 +4,7 @@
   "description": "Integration tests for Unlock",
   "main": "index.js",
   "scripts": {
-    "test": "jest --runInBand --bail dashboard",
+    "test": "jest --runInBand --bail",
     "lint": "eslint **/*.js ",
     "ci": "npm run lint && npm test"
   },
