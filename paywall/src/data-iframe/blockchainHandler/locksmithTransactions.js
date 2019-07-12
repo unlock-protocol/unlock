@@ -20,16 +20,18 @@ export async function storeTransaction({
   await ensureWalletReady(walletService)
   const account = getAccount()
   const network = getNetwork()
+  // we use the transaction lock as the recipient
+  const recipient = transaction.lock
 
   const url = `${locksmithHost}/transaction`
 
   const payload = {
     transactionHash: transaction.hash,
-    sender: account.toLowerCase(),
+    sender: account,
     // when purchasing directly, who we purchase the key "for" is
     // also the "sender" whose wallet the funds came from
-    for: account.toLowerCase(),
-    recipient: transaction.to.toLowerCase(),
+    for: account,
+    recipient,
     data: transaction.input,
     chain: network,
   }
