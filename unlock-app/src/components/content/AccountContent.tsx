@@ -2,12 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import withConfig from '../../utils/withConfig'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
 import LogInSignUp from '../interface/LogInSignUp'
 import KeyPurchaseConfirmation from '../interface/user-account/KeyPurchaseConfirmation'
+import { IframeWrapper } from '../interface/user-account/styles'
 
 declare global {
   interface Window {
@@ -89,14 +89,14 @@ export class AccountContent extends React.Component<
   render() {
     const mode = this.currentPageMode()
     return (
-      <Layout title="Account">
+      <IframeWrapper>
         <Head>
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
         <Errors />
         {this.getComponent(mode)}
-      </Layout>
+      </IframeWrapper>
     )
   }
 }
