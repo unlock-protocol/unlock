@@ -10,18 +10,18 @@ export default async function linkKeysToLocks({
 
   // convert into a map indexed by lock address
   // and link each key to its lock
-  return lockArray.reduce(
-    (allLocks, lock) => ({
+  return lockArray.reduce((allLocks, lock) => {
+    const lockAddress = lock.address ? lock.address.toLowerCase() : lock.address
+    return {
       ...allLocks,
-      [lock.address ? lock.address.toLowerCase() : lock.address]: {
+      [lockAddress]: {
         ...lock,
         key: linkTransactionsToKey({
-          key: keys[lock.address ? lock.address.toLowerCase() : lock.address],
+          key: keys[lockAddress],
           transactions,
           requiredConfirmations,
         }),
       },
-    }),
-    {}
-  )
+    }
+  }, {})
 }
