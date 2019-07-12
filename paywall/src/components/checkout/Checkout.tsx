@@ -25,6 +25,7 @@ export const Checkout = ({
     (isValid, address) => isValid || locks[address].key.status === 'valid',
     false
   )
+  const lockAddresses: string[] = Object.keys(locks)
 
   return (
     <React.Fragment>
@@ -36,15 +37,16 @@ export const Checkout = ({
         <p>{config.callToAction.default}</p>
       </Header>
       <CheckoutLocks>
-        {Object.values(locks).map(lock => {
+        {lockAddresses.map(lockAddress => {
+          const lock = locks[lockAddress]
           if (lock) {
             const lockWithName = {
               ...lock,
-              name: config.locks[lock.address].name || lock.name,
+              name: config.locks[lockAddress].name || lock.name,
             }
             return (
               <CheckoutLock
-                key={lock.address} // React needs a `key` on each child
+                key={lockAddress} // React needs a `key` on each child
                 lock={lockWithName}
                 account={account}
                 disabled={hasValidKey}
