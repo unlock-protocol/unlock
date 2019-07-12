@@ -35,28 +35,28 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     const addresses = []
     // this cannot be done in parallel, or the same lock creation form gets populated with all of them at once
     addresses.push(
-      await dashboard.deployLock(
+      (await dashboard.deployLock(
         locks[0].name,
         locks[0].expirationDuration,
         '1000',
         locks[0].keyPrice
-      )
+      )).toLowerCase()
     )
     addresses.push(
-      await dashboard.deployLock(
+      (await dashboard.deployLock(
         locks[1].name,
         locks[1].expirationDuration,
         '1000',
         locks[1].keyPrice
-      )
+      )).toLowerCase()
     )
     addresses.push(
-      await dashboard.deployLock(
+      (await dashboard.deployLock(
         locks[2].name,
         locks[2].expirationDuration,
         '1000',
         locks[2].keyPrice
-      )
+      )).toLowerCase()
     )
 
     // save the lock address to pass it to the ad remover paywall

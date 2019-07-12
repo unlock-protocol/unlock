@@ -1,6 +1,58 @@
-import setupPostOffices from '../../unlock.js/setupPostOffices'
+import setupPostOffices, {
+  normalizeConfig,
+} from '../../unlock.js/setupPostOffices'
 import { PostMessages, MessageTypes, ExtractPayload } from '../../messageTypes'
 import { UnlockWindow, IframeType } from '../../windowTypes'
+
+describe('normalizeConfig', () => {
+  it('should return invalid configuration as-is', () => {
+    expect.assertions(6)
+
+    const invalidConfigs = [[false], [null], ['hi'], [[]], [5], [{}]]
+
+    invalidConfigs.forEach((config: any) => {
+      expect(normalizeConfig(config)).toBe(config)
+    })
+  })
+
+  it('should return a configuration with no locks as-is', () => {
+    expect.assertions(1)
+
+    const config = {
+      locks: {},
+      callToAction: {
+        default: 'hi',
+      },
+    }
+
+    expect(normalizeConfig(config)).toBe(config)
+  })
+
+  it('should convert all of the lock addresses to lower case', () => {
+    expect.assertions(1)
+
+    const config = {
+      locks: {
+        ABC: { internal: 'thing' },
+        def: { another: 'thing' },
+        eFg: { last: 'thing' },
+      },
+      callToAction: {
+        default: 'hi',
+      },
+    }
+    const expectedConfig = {
+      ...config,
+      locks: {
+        abc: { internal: 'thing' },
+        def: { another: 'thing' },
+        efg: { last: 'thing' },
+      },
+    }
+
+    expect(normalizeConfig(config)).toEqual(expectedConfig)
+  })
+})
 
 describe('setupPostOffice', () => {
   interface MockUnlockWindow extends UnlockWindow {
@@ -38,10 +90,7 @@ describe('setupPostOffice', () => {
     )
   }
 
-  beforeEach(() => {
-    process.env.PAYWALL_URL = 'http://paywall'
-    process.env.USER_IFRAME_URL = 'http://unlock-app.com'
-    const unlockOrigin = 'http://unlock-app.com'
+  function makeFakeWindow() {
     fakeWindow = {
       Promise,
       setInterval: jest.fn(),
@@ -93,6 +142,13 @@ describe('setupPostOffice', () => {
         }),
       },
     }
+  }
+  beforeEach(() => {
+    process.env.PAYWALL_URL = 'http://paywall'
+    process.env.USER_IFRAME_URL = 'http://unlock-app.com'
+    const unlockOrigin = 'http://unlock-app.com'
+
+    makeFakeWindow()
     fakeDataIframe = {
       className: '',
       setAttribute: jest.fn(),
@@ -203,6 +259,7 @@ describe('setupPostOffice', () => {
   it('responds to PostMessages.READY by showing the checkout UI if the paywall type is "paywall"', () => {
     expect.assertions(1)
 
+    makeFakeWindow()
     fakeWindow.unlockProtocolConfig = {
       type: 'paywall',
       locks: {},
@@ -213,6 +270,14 @@ describe('setupPostOffice', () => {
         confirmed: '',
       },
     }
+
+    // we will use the normalized config from the beforeEach, this ensures we use our own
+    setupPostOffices(
+      fakeWindow,
+      fakeDataIframe,
+      fakeUIIframe,
+      fakeAccountIframe
+    )
 
     sendMessage(fakeUIIframe, PostMessages.READY)
 

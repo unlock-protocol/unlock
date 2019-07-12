@@ -14,6 +14,29 @@ interface process {
 
 declare const process: process
 
+export function normalizeConfig(unlockConfig: any) {
+  if (
+    !unlockConfig ||
+    !unlockConfig.locks ||
+    typeof unlockConfig.locks !== 'object'
+  )
+    return unlockConfig
+  const lockAddresses = Object.keys(unlockConfig.locks)
+  if (!lockAddresses.length) {
+    return unlockConfig
+  }
+  const normalizedConfig = {
+    ...unlockConfig,
+    locks: lockAddresses.reduce((allLocks, address) => {
+      return {
+        ...allLocks,
+        [address.toLowerCase()]: unlockConfig.locks[address],
+      }
+    }, {}),
+  }
+  return normalizedConfig
+}
+
 /**
  * set up the main window post office, relaying messages between the iframes
  *
@@ -39,13 +62,14 @@ export default function setupPostOffices(
     window,
     CheckoutUIIframe
   )
+  const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
 
   const dataHandlers: MessageHandlerTemplates<MessageTypes> = {
     [PostMessages.READY]: send => {
       return () => {
-        if (window.unlockProtocolConfig) {
+        if (normalizedConfig) {
           // send the configuration to the data iframe
-          send('data', PostMessages.CONFIG, window.unlockProtocolConfig)
+          send('data', PostMessages.CONFIG, normalizedConfig)
         }
       }
     },
@@ -134,14 +158,15 @@ export default function setupPostOffices(
     [PostMessages.READY]: send => {
       return () => {
         // send the configuration to the checkout iframe
-        if (window.unlockProtocolConfig) {
-          send('checkout', PostMessages.CONFIG, window.unlockProtocolConfig)
+        if (normalizedConfig) {
+          // normalize the locks
+          send('checkout', PostMessages.CONFIG, normalizedConfig)
           // trigger a send of the current state
           send('data', PostMessages.SEND_UPDATES, 'network')
           send('data', PostMessages.SEND_UPDATES, 'account')
           send('data', PostMessages.SEND_UPDATES, 'balance')
           send('data', PostMessages.SEND_UPDATES, 'locks')
-          if (window.unlockProtocolConfig.type === 'paywall') {
+          if (normalizedConfig && normalizedConfig.type === 'paywall') {
             // always show the checkout modal on start for the paywall app
             showIframe(window, CheckoutUIIframe)
           }
