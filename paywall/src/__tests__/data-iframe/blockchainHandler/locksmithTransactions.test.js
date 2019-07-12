@@ -156,15 +156,6 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       fetchedResult = {
         transactions: [
           {
-            // this transaction is skipped because it is for a different chain
-            transactionHash: 'hash1',
-            chain: 2,
-            recipient: 'lock 1',
-            sender: 'account',
-            for: 'account',
-            data: null,
-          },
-          {
             transactionHash: 'hash2',
             chain: 1,
             recipient: 'lock 2',

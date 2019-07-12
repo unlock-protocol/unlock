@@ -1,4 +1,5 @@
 import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
+import { setAccount } from '../../../data-iframe/blockchainHandler/account'
 
 jest.useFakeTimers()
 describe('blockchain handler waitForReady', () => {
@@ -16,6 +17,7 @@ describe('blockchain handler waitForReady', () => {
 
   it('succeeds immediately if walletService is ready', async () => {
     expect.assertions(0)
+    setAccount('test')
     await ensureWalletReady({ ready: true })
   })
 
@@ -27,5 +29,6 @@ describe('blockchain handler waitForReady', () => {
 
     expect(once).toHaveBeenCalledWith('ready', expect.any(Function))
     once.mock.calls[0][1]()
+    setAccount('test')
   })
 })
