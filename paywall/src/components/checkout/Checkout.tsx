@@ -37,7 +37,8 @@ export const Checkout = ({
         <p>{config.callToAction.default}</p>
       </Header>
       <CheckoutLocks>
-        {lockAddresses.map(lockAddress => {
+        {// the key is lower-cased. The lock address is checksummed, and so case sensitive. This change ensures we map locks to their configuration names
+        lockAddresses.map(lockAddress => {
           const lock = locks[lockAddress]
           if (lock) {
             const lockWithName = {
