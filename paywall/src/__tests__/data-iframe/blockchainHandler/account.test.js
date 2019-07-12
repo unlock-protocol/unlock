@@ -1,4 +1,3 @@
-import ensureWalletReady from '../../../data-iframe/blockchainHandler/ensureWalletReady'
 import pollForChanges from '../../../data-iframe/blockchainHandler/pollForChanges'
 import {
   pollForAccountChange,
@@ -8,9 +7,6 @@ import {
 import { POLLING_INTERVAL } from '../../../constants'
 
 let mockPoll
-jest.mock('../../../data-iframe/blockchainHandler/ensureWalletReady', () =>
-  jest.fn().mockResolvedValue()
-)
 jest.mock('../../../data-iframe/blockchainHandler/pollForChanges', () => {
   mockPoll = jest.fn()
   return mockPoll
@@ -29,17 +25,6 @@ describe('blockchainHandler account handling', () => {
       fakeWeb3Service = {
         getAddressBalance: jest.fn(() => '123'),
       }
-    })
-
-    it('waits for the wallet to be ready', async () => {
-      expect.assertions(1)
-      await pollForAccountChange(
-        fakeWalletService,
-        fakeWeb3Service,
-        onAccountChange
-      )
-
-      expect(ensureWalletReady).toBeCalledWith(fakeWalletService)
     })
 
     it('polls for account changes', async () => {

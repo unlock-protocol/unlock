@@ -44,6 +44,11 @@ describe('setupPostOffice', () => {
     const unlockOrigin = 'http://unlock-app.com'
     fakeWindow = {
       Promise,
+      web3: {
+        currentProvider: {
+          send: jest.fn(),
+        },
+      },
       setInterval: jest.fn(),
       unlockProtocol: {
         loadCheckoutModal: jest.fn(),

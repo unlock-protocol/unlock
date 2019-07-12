@@ -42,13 +42,13 @@ export default class Web3ProxyProvider {
     // this is the postMessage version of the callback for sendAsync
     addHandler(POST_MESSAGE_WEB3, web3Result => {
       if (
-        !web3Result.hasOwnProperty('error') ||
+        !web3Result.hasOwnProperty('error') &&
         !web3Result.hasOwnProperty('result')
       ) {
         return
       }
-      const { result, error } = web3Result
-      const id = result.id
+      const { result, error = null } = web3Result
+      const id = web3Result.id
       if (!this.requests[id]) {
         // no pending request with that id
         return
@@ -72,6 +72,7 @@ export default class Web3ProxyProvider {
    */
   async sendAsync({ method, params }, callback) {
     // don't do anything until we have heard back on the wallet status
+    const id = ++this.id // ethers always uses 42, so we will use our own id
     await waitFor(() => !this.waiting)
     if (this.noWallet) {
       callback(new Error('no ethereum wallet is available'))
@@ -81,7 +82,6 @@ export default class Web3ProxyProvider {
       callback(new Error('user declined to enable the ethereum wallet'))
       return
     }
-    const id = ++this.id // ethers always uses 42, so we will use our own id
     this.requests[id] = callback
     const payload = { method, params, id }
     this.postMessage(POST_MESSAGE_WEB3, payload)
