@@ -155,6 +155,7 @@ export async function listenForAccountNetworkChanges({
     }
   })
 
+  // TODO: investigate whether this can be safely removed
   await ensureWalletReady(walletService)
   const account = await walletService.getAccount()
   const balance = await web3Service.getAddressBalance(account)

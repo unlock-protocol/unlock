@@ -47,8 +47,7 @@ export default class Web3ProxyProvider {
       ) {
         return
       }
-      const { result, error = null } = web3Result
-      const id = web3Result.id
+      const { result, error = null, id } = web3Result
       if (!this.requests[id]) {
         // no pending request with that id
         return
