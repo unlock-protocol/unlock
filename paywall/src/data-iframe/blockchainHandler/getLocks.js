@@ -8,7 +8,9 @@
  */
 export default async function getLocks({ locksToRetrieve, web3Service }) {
   const newLocks = await Promise.all(
-    locksToRetrieve.map(lockAddress => web3Service.getLock(lockAddress))
+    locksToRetrieve
+      .map(lockAddress => lockAddress.toLowerCase())
+      .map(lockAddress => web3Service.getLock(lockAddress))
   )
   // convert into a map indexed by lock address
   return newLocks.reduce(

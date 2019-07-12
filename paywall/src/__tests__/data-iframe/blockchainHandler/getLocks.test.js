@@ -17,14 +17,14 @@ describe('Locks retrieval', () => {
       expect.assertions(4)
 
       await getLocks({
-        locksToRetrieve: [1, 2, 3],
+        locksToRetrieve: ['1', '2', '3'],
         web3Service: fakeWeb3Service,
       })
 
       expect(fakeWeb3Service.getLock).toHaveBeenCalledTimes(3)
-      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(1, 1)
-      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(2, 2)
-      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(3, 3)
+      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(1, '1')
+      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(2, '2')
+      expect(fakeWeb3Service.getLock).toHaveBeenNthCalledWith(3, '3')
     })
 
     it('returns the locks indexed by address', async () => {
@@ -32,14 +32,14 @@ describe('Locks retrieval', () => {
 
       setAccount('account')
       const result = await getLocks({
-        locksToRetrieve: [1, 2, 3],
+        locksToRetrieve: ['1', '2', '3'],
         web3Service: fakeWeb3Service,
       })
 
       expect(result).toEqual({
-        1: { address: 1, thing: 1 },
-        2: { address: 2, thing: 2 },
-        3: { address: 3, thing: 3 },
+        1: { address: '1', thing: '1' },
+        2: { address: '2', thing: '2' },
+        3: { address: '3', thing: '3' },
       })
     })
   })
