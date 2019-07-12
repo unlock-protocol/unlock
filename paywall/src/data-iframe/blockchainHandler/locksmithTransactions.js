@@ -88,7 +88,7 @@ export default async function locksmithTransactions({
       result.transactions
         .map(t => ({
           hash: t.transactionHash,
-          network: t.chain,
+          network, // locksmith always uses the right network now
           to: t.recipient,
           input: t.data,
           from: t.sender,
