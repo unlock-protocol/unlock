@@ -12,8 +12,8 @@ contract UnlockDiscountToken is
 ERC20Mintable,
 ERC20Detailed
 {
-    function initialize() public initializer {
-        ERC20Mintable.initialize(msg.sender);
-        ERC20Detailed.initialize('Unlock Discount Token', 'UDT', 18);
-    }
+  function initialize() public initializer {
+    ERC20Mintable.initialize(msg.sender);
+    ERC20Detailed.initialize('Unlock Discount Token', 'UDT', 18);
+  }
 }
