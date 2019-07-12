@@ -52,6 +52,7 @@ export default class Dispatcher {
           transactionHash: transactionHash,
           sender: sender,
           recipient: recipient,
+          chain: walletService.networkId,
           for: this.buyer,
         })
       }
