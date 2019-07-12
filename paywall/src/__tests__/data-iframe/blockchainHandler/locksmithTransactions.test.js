@@ -32,7 +32,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
 
       const transaction = {
         hash: 'hi',
-        to: 'HI',
+        lock: 'HI',
         input: 'input',
       }
 
@@ -57,7 +57,7 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
             transactionHash: 'hi',
             sender: 'account',
             for: 'account',
-            recipient: 'hi',
+            recipient: 'HI',
             data: 'input',
             chain: 1,
           }),
