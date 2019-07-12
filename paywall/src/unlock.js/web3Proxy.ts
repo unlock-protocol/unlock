@@ -74,22 +74,27 @@ export function handleWeb3Call({
     case 'eth_accounts':
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
-        error: null,
-        result: { id, jsonrpc: '2.0', result: [proxyAccount] },
+        jsonrpc: '2.0',
+        result: {
+          id,
+          jsonrpc: '2.0',
+          // if account is null, we have no account, so return []
+          result: proxyAccount ? [proxyAccount] : [],
+        },
       })
       break
     case 'net_version':
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
-        error: null,
+        jsonrpc: '2.0',
         result: { id, jsonrpc: '2.0', result: proxyNetwork },
       })
       break
     default:
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
+        jsonrpc: '2.0',
         error: `"${method}" is not supported`,
-        result: null,
       })
   }
 }
@@ -117,8 +122,7 @@ export default function web3Proxy(
   let canUseUserAccounts: boolean = !window.web3
   let hasNativeWeb3Wallet = !!window.web3
 
-  const useUnlockAccount = () =>
-    !hasNativeWeb3Wallet && proxyAccount && canUseUserAccounts
+  const useUnlockAccount = () => !hasNativeWeb3Wallet && canUseUserAccounts
 
   // we need to listen for the account iframe's READY event, and request the current account and network
   const accountHandlers: MessageHandlerTemplates<MessageTypes> = {
@@ -252,8 +256,8 @@ export default function web3Proxy(
         if (!hasWeb3) {
           return postMessage('data', PostMessages.WEB3, {
             id: payload.id,
+            jsonrpc: '2.0',
             error: 'No web3 wallet is available',
-            result: null,
           })
         }
 
@@ -281,11 +285,21 @@ export default function web3Proxy(
               id,
             },
             (error: string | null, result: any) => {
-              postMessage('data', PostMessages.WEB3_RESULT, {
-                id,
-                error,
-                result,
-              })
+              postMessage(
+                'data',
+                PostMessages.WEB3_RESULT,
+                error
+                  ? {
+                      id,
+                      error,
+                      jsonrpc: '2.0',
+                    }
+                  : {
+                      id,
+                      result,
+                      jsonrpc: '2.0',
+                    }
+              )
             }
           )
       }
