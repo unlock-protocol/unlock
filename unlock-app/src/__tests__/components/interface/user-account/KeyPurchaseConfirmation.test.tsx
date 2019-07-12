@@ -142,16 +142,14 @@ describe('KeyPurchaseConfirmation', () => {
       expect.assertions(1)
       const state = {
         account: {},
-        cart: {
-          price,
-        },
+        cart: {},
       }
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
         address: '',
         cards: [],
         lock: undefined,
-        price: 1212,
+        price: undefined,
       })
     })
   })

@@ -18,7 +18,7 @@ interface KeyPurchaseConfirmationProps {
   emailAddress: string
   lock?: Lock
   cards: stripe.Card[]
-  price: number
+  price?: number
   signPurchaseData: (d: PurchaseData) => any
 }
 
@@ -65,7 +65,7 @@ export const KeyPurchaseConfirmation = ({
   )
 }
 
-const presentLock = (price: number, timeRemaining: any) => {
+const presentLock = (price: any, timeRemaining: any) => {
   let displayedPrice = price ? presentPrice(price) : '-'
   return <LockInfo price={displayedPrice} timeRemaining={timeRemaining} />
 }
@@ -87,7 +87,7 @@ interface ReduxState {
   }
   cart: {
     lock?: Lock
-    price: number
+    price?: number
   }
 }
 export const mapStateToProps = (state: ReduxState) => {
