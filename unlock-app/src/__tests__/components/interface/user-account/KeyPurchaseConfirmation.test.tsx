@@ -55,6 +55,7 @@ const lock: Lock = {
 }
 const emailAddress = 'gaben@valve.hats'
 const address = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
+const price = 1212
 
 describe('KeyPurchaseConfirmation', () => {
   describe('component', () => {
@@ -68,6 +69,7 @@ describe('KeyPurchaseConfirmation', () => {
           signPurchaseData={signPurchaseData}
           cards={cards}
           lock={lock}
+          price={price}
         />
       )
       const submitButton = wrapper.container.getElementsByTagName('button')[0]
@@ -86,6 +88,7 @@ describe('KeyPurchaseConfirmation', () => {
           emailAddress=""
           cards={cards}
           signPurchaseData={signPurchaseData}
+          price={price}
         />
       )
 
@@ -122,6 +125,7 @@ describe('KeyPurchaseConfirmation', () => {
         },
         cart: {
           lock,
+          price,
         },
       }
 
@@ -130,6 +134,7 @@ describe('KeyPurchaseConfirmation', () => {
         emailAddress,
         address,
         lock,
+        price,
       })
     })
 
@@ -137,12 +142,16 @@ describe('KeyPurchaseConfirmation', () => {
       expect.assertions(1)
       const state = {
         account: {},
-        cart: {},
+        cart: {
+          price,
+        },
       }
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
         address: '',
         cards: [],
+        lock: undefined,
+        price: 1212,
       })
     })
   })

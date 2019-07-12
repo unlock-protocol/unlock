@@ -18,6 +18,7 @@ interface KeyPurchaseConfirmationProps {
   emailAddress: string
   lock?: Lock
   cards: stripe.Card[]
+  price: number
   signPurchaseData: (d: PurchaseData) => any
 }
 
@@ -29,6 +30,7 @@ export const KeyPurchaseConfirmation = ({
   lock,
   cards,
   signPurchaseData,
+  price,
 }: KeyPurchaseConfirmationProps) => {
   const data: PurchaseData = {
     recipient: address,
@@ -52,7 +54,7 @@ export const KeyPurchaseConfirmation = ({
       <Item title="Credit Card" size="full">
         <ItemValue>{card}</ItemValue>
       </Item>
-      <LockInfo price="$17.19" timeRemaining={timeRemaining} />
+      {presentLock(price, timeRemaining)}
       {!!lock && (
         <SubmitButton onClick={() => signPurchaseData(data)} roundBottomOnly>
           Confirm Purchase
@@ -61,6 +63,16 @@ export const KeyPurchaseConfirmation = ({
       {!lock && <DisabledButton roundBottomOnly>No lock found</DisabledButton>}
     </Grid>
   )
+}
+
+const presentLock = (price: number, timeRemaining: any) => {
+  let displayedPrice = price ? presentPrice(price) : '-'
+  return <LockInfo price={displayedPrice} timeRemaining={timeRemaining} />
+}
+
+const presentPrice = (price: number) => {
+  var dollars = price / 100
+  return dollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 }
 
 export const mapDispatchToProps = (dispatch: any) => ({
@@ -75,6 +87,7 @@ interface ReduxState {
   }
   cart: {
     lock?: Lock
+    price: number
   }
 }
 export const mapStateToProps = (state: ReduxState) => {
@@ -84,6 +97,7 @@ export const mapStateToProps = (state: ReduxState) => {
     address: account.address || '',
     lock: cart.lock || undefined,
     cards: account.cards || [],
+    price: cart.price,
   }
 }
 
