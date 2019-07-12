@@ -671,7 +671,7 @@ describe('web3Proxy', () => {
           type: PostMessages.WEB3_RESULT,
           payload: {
             id: 1,
-            error: null,
+            jsonrpc: '2.0',
             result: { id: 1, jsonrpc: '2.0', result: [unlockAccountAddress] },
           },
         })
@@ -701,7 +701,7 @@ describe('web3Proxy', () => {
           type: PostMessages.WEB3_RESULT,
           payload: {
             id: 1,
-            error: null,
+            jsonrpc: '2.0',
             result: { id: 1, jsonrpc: '2.0', result: 1 },
           },
         })
@@ -733,8 +733,8 @@ describe('web3Proxy', () => {
           type: PostMessages.WEB3_RESULT,
           payload: {
             id: 1,
+            jsonrpc: '2.0',
             error: '"unknown_method" is not supported',
-            result: null,
           },
         })
         expect(givenOrigin).toBe('http://fun.times')
@@ -967,7 +967,7 @@ describe('web3Proxy', () => {
           type: PostMessages.WEB3_RESULT,
           payload: {
             id: 1,
-            error: null,
+            jsonrpc: '2.0',
             result: ['hi'],
           },
         })
@@ -1332,12 +1332,13 @@ describe('web3Proxy', () => {
         it('posts the result to the iframe', () => {
           expect.assertions(1)
 
-          expect(fakeIframe.contentWindow.postMessage).toHaveBeenCalledWith(
+          expect(fakeIframe.contentWindow.postMessage).toHaveBeenNthCalledWith(
+            2,
             {
               payload: {
                 error: 'error',
                 id: 1,
-                result: 'result',
+                jsonrpc: '2.0',
               },
               type: PostMessages.WEB3,
             },
