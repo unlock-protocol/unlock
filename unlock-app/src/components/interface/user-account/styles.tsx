@@ -165,7 +165,7 @@ export const Item = ({ title, children, size }: ItemProps) => {
 // To be used in place of <Layout> when we embed an app page in an iframe. This
 // avoids including all the UI chrome and positioning, and adds a white
 // background.
-export const IframeWrapper = styled.div`
+export const IframeLayout = styled.div`
   background-color: var(--offwhite);
   max-height: 100%;
   overflow-y: scroll;
@@ -174,7 +174,26 @@ export const IframeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  position: relative;
 `
+
+export const XYCenter = styled.div`
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <XYCenter>
+      <IframeLayout>{children}</IframeLayout>
+    </XYCenter>
+  )
+}
 
 // TODO: steal input/button elements from other parts of app and integrate here
