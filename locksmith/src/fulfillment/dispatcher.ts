@@ -47,13 +47,19 @@ export default class Dispatcher {
 
     walletService.on(
       'transaction.new',
-      async (transactionHash: string, sender: string, recipient: string) => {
+      async (
+        transactionHash: string,
+        sender: string,
+        recipient: string,
+        data: string
+      ) => {
         await findOrCreateTransaction({
           transactionHash: transactionHash,
           sender: sender,
           recipient: recipient,
           chain: walletService.networkId,
           for: this.buyer,
+          data: data,
         })
       }
     )
