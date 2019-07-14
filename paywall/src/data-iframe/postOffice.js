@@ -135,7 +135,7 @@ export default function postOffice(window, requiredConfirmations) {
           actions.walletModal()
           break
         case 'error':
-          if (content.message) {
+          if (process.env.UNLOCK_ENV === 'dev' && content.message) {
             // eslint-disable-next-line no-console
             console.error(content)
           }
