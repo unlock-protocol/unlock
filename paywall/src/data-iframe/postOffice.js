@@ -135,6 +135,10 @@ export default function postOffice(window, requiredConfirmations) {
           actions.walletModal()
           break
         case 'error':
+          if (content.message) {
+            // eslint-disable-next-line no-console
+            console.error(content)
+          }
           actions.error(content.message ? content.message : content)
           break
       }
