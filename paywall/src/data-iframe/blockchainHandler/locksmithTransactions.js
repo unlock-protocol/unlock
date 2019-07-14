@@ -98,12 +98,10 @@ export default async function locksmithTransactions({
         for: t.for,
       }
       const defaults = t.data ? transaction : undefined
-      try {
-        await web3Service.getTransaction(transaction.hash, defaults)
-      } catch (error) {
+      web3Service.getTransaction(transaction.hash, defaults).catch(error => {
         // eslint-disable-next-line no-console
         console.error(error)
-      }
+      })
     }
   }
 }
