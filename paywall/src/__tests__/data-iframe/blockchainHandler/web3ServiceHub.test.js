@@ -1,10 +1,14 @@
-import web3ServiceHub from '../../../data-iframe/blockchainHandler/web3ServiceHub'
-import { setTransaction, setAccount } from '../../../data-iframe/cacheHandler'
+import web3ServiceHub, {
+  __clearCache,
+} from '../../../data-iframe/blockchainHandler/web3ServiceHub'
+import { setAccount } from '../../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../../constants'
 
 describe('web3ServiceHub', () => {
   let fakeWindow
+
   function makeFakeWindow() {
+    __clearCache()
     fakeWindow = {
       storage: {},
       localStorage: {
@@ -90,7 +94,7 @@ describe('web3ServiceHub', () => {
     })
 
     it('should use the cached transaction as a base', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       await web3ServiceHub({
         web3Service,
@@ -100,22 +104,29 @@ describe('web3ServiceHub', () => {
 
       const listener = getTransactionListener()
 
-      await setTransaction(fakeWindow, {
+      await await listener('hi', {
         hash: 'hi',
         thing: 'value',
       })
 
       await listener('hi', { another: 'thing' })
 
-      expect(onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          transaction: {
-            hash: 'hi',
-            thing: 'value',
-            another: 'thing',
-          },
-        })
-      )
+      expect(onChange).toHaveBeenNthCalledWith(1, {
+        transaction: {
+          hash: 'hi',
+          thing: 'value',
+          blockNumber: Number.MAX_SAFE_INTEGER,
+        },
+      })
+
+      expect(onChange).toHaveBeenNthCalledWith(2, {
+        transaction: {
+          hash: 'hi',
+          thing: 'value',
+          another: 'thing',
+          blockNumber: Number.MAX_SAFE_INTEGER,
+        },
+      })
     })
 
     it('should use an empty transaction as a base if it is not cached', async () => {
