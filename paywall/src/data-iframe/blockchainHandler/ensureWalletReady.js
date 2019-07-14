@@ -11,7 +11,7 @@ export default async function ensureWalletReady(walletService) {
       )
     }
     if (walletService.ready) {
-      return resolve()
+      waitFor(getAccount).then(resolve)
     }
     walletService.once('ready', async () => {
       // make sure our account listener has had time to retrieve it
