@@ -6,10 +6,26 @@ export function storageId(networkId: number, accountAddress: string) {
   return `unlock-protocol/${networkId}/${accountAddress}`
 }
 
+type unKeyedKeys = 'account' | 'balance' | 'network' | '__version'
+
+export const currentCacheVersion = '1.0'
+
 export default class LocalStorageDriver implements CacheDriver {
   private window: LocalStorageWindow
+  private isReady: boolean
   constructor(window: LocalStorageWindow) {
     this.window = window
+    this.isReady = false
+    if (this.available()) {
+      this.getUnkeyedItem('__version').then(async version => {
+        if (version !== currentCacheVersion) {
+          // clear cache
+          window.localStorage.clear()
+          await this.saveUnkeyedItem('__version', currentCacheVersion)
+        }
+        this.isReady = true
+      })
+    }
   }
 
   async getKeyedItem(networkId: number, accountAddress: string) {
@@ -26,11 +42,15 @@ export default class LocalStorageDriver implements CacheDriver {
     }
   }
 
+  ready() {
+    return this.isReady
+  }
+
   available() {
     return localStorageAvailable(this.window)
   }
 
-  async getUnkeyedItem(key: 'account' | 'balance' | 'network') {
+  async getUnkeyedItem(key: unKeyedKeys) {
     const item = this.window.localStorage.getItem(`__unlockProtocol.${key}`)
     if (!item) return null
     try {
@@ -48,7 +68,7 @@ export default class LocalStorageDriver implements CacheDriver {
     )
   }
 
-  async saveUnkeyedItem(key: 'account' | 'balance' | 'network', value: any) {
+  async saveUnkeyedItem(key: unKeyedKeys, value: any) {
     return this.window.localStorage.setItem(
       `__unlockProtocol.${key}`,
       JSON.stringify(value)

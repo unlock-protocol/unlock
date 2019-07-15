@@ -43,6 +43,7 @@ describe('makeSetConfig', () => {
       fakeWindow = {
         storage: {},
         localStorage: {
+          clear: () => (fakeWindow.storage = {}),
           setItem(key, item) {
             fakeWindow.storage[key] = item
           },

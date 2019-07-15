@@ -42,6 +42,7 @@ describe('data iframe postOffice', () => {
         },
         storage: {},
         localStorage: {
+          clear: () => (fakeWindow.storage = {}),
           getItem: jest.fn(key => fakeWindow.storage[key]),
           setItem: jest.fn((key, value) => {
             if (typeof value !== 'string') {

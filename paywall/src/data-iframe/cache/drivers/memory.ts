@@ -21,6 +21,10 @@ export default class InMemoryDriver implements CacheDriver {
     return container
   }
 
+  ready() {
+    return true
+  }
+
   available() {
     return true
   }

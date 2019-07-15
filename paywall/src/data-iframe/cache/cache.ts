@@ -3,17 +3,22 @@ import InMemoryDriver from './drivers/memory'
 import LocalStorageDriver from './drivers/localStorage'
 import CacheDriver from './drivers/driverInterface'
 import { LocalStorageWindow } from '../../windowTypes'
+import { waitFor } from '../../utils/promises'
 
 const nullAccount = '0x0000000000000000000000000000000000000000'
 let __driver: CacheDriver
 
-export function getDriver(window: LocalStorageWindow) {
-  if (__driver) return __driver
+export async function getDriver(window: LocalStorageWindow) {
+  if (__driver) {
+    await waitFor(() => __driver.ready())
+    return __driver
+  }
   if (!localStorageAvailable(window)) {
     __driver = new InMemoryDriver()
   } else {
     __driver = new LocalStorageDriver(window)
   }
+  await waitFor(() => __driver.ready())
   return __driver
 }
 
@@ -34,7 +39,7 @@ async function getContainer(
   accountAddress: string,
   type?: string
 ) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   const value = await driver.getKeyedItem(networkId, accountAddress)
   if (!value) {
     if (type) {
@@ -99,7 +104,7 @@ export async function put({
   accountAddress: string
   value: any
 }) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   const container = await getContainer(window, networkId, accountAddress, type)
   if (value === undefined) {
     delete container[type]
@@ -135,7 +140,7 @@ export async function merge({
   accountAddress: string
   value: any
 }) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   const container = await getContainer(window, networkId, accountAddress, type)
   if (value === undefined) {
     delete container[type][subType]
@@ -158,7 +163,7 @@ export async function merge({
  * @returns {string}
  */
 export async function getAccount(window: LocalStorageWindow) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   return driver.getUnkeyedItem('account')
 }
 
@@ -169,7 +174,7 @@ export async function getAccount(window: LocalStorageWindow) {
  * @param {string} account the ethereum account address of the current user
  */
 export async function setAccount(window: LocalStorageWindow, account: string) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   return driver.saveUnkeyedItem('account', account)
 }
 
@@ -180,7 +185,7 @@ export async function setAccount(window: LocalStorageWindow, account: string) {
  * @returns {number}
  */
 export async function getNetwork(window: LocalStorageWindow) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   return +(await driver.getUnkeyedItem('network'))
 }
 
@@ -191,7 +196,7 @@ export async function getNetwork(window: LocalStorageWindow) {
  * @param {number} network the id of the current ethereum network
  */
 export async function setNetwork(window: LocalStorageWindow, network: number) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
   return driver.saveUnkeyedItem('network', network)
 }
 
@@ -214,7 +219,7 @@ export async function clear({
   accountAddress: string
   type?: string
 }) {
-  const driver = getDriver(window)
+  const driver = await getDriver(window)
 
   if (!type) {
     return driver.clearKeyedCache(networkId, accountAddress)

@@ -2,6 +2,7 @@ import LocalStorageDriver from '../../../../data-iframe/cache/drivers/localStora
 import InMemoryDriver from '../../../../data-iframe/cache/drivers/memory'
 import CacheDriver from '../../../../data-iframe/cache/drivers/driverInterface'
 import { LocalStorageWindow } from '../../../../windowTypes'
+import { waitFor } from '../../../../utils/promises'
 
 describe('common functionality between all drivers', () => {
   let storage: any = {}
@@ -36,6 +37,13 @@ describe('common functionality between all drivers', () => {
       storage = {}
       if (driver.__clear) driver.__clear()
     }
+
+    it('should eventually be ready', async () => {
+      expect.assertions(0)
+
+      await waitFor(() => driver.ready())
+    })
+
     describe('getKeyedItem/saveKeyedItem', () => {
       beforeEach(() => {
         clearCache()
