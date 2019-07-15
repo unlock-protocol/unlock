@@ -1,6 +1,4 @@
-import web3ServiceHub, {
-  __clearCache,
-} from '../../../data-iframe/blockchainHandler/web3ServiceHub'
+import web3ServiceHub from '../../../data-iframe/blockchainHandler/web3ServiceHub'
 import { setAccount } from '../../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../../constants'
 
@@ -8,7 +6,6 @@ describe('web3ServiceHub', () => {
   let fakeWindow
 
   function makeFakeWindow() {
-    __clearCache()
     fakeWindow = {
       storage: {},
       localStorage: {

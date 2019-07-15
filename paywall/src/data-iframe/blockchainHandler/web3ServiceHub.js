@@ -1,13 +1,5 @@
 import { getAccount } from '../cacheHandler'
 
-let transactionCache = {}
-
-/**
- * for unit testing purposes
- */
-export function __clearCache() {
-  transactionCache = {}
-}
 /**
  * Listen for transaction updates, update the transaction and key that it affects
  * if the transaction is for a key purchase.
@@ -22,6 +14,7 @@ export default async function web3ServiceHub({
   web3Service,
   onChange,
   window,
+  transactionCache = {},
 }) {
   web3Service.on('transaction.updated', async (hash, update) => {
     const account = await getAccount(window)
