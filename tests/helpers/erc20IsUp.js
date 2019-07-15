@@ -3,10 +3,11 @@
 // when the standup script has finished, it will return 500 tokens,
 // which is assumed if our call to balanceOf returns a non-zero value.
 const http = require('http')
-const url = require('./url')
 
 const erc20ContractAddress = process.env.ERC20_CONTRACT_ADDRESS
 const testingAddress = process.env.ETHEREUM_ADDRESS
+const httpProviderHost = process.env.HTTP_PROVIDER_HOST
+const httpProviderPort = process.env.HTTP_PROVIDER_PORT
 
 // 0x70a08231 = encoded "balanceOf" signature
 // aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2 = the encoded testingAddress
@@ -15,13 +16,13 @@ const balanceOfQuery =
   '0x70a08231000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
 let id = 1
 
-function post(host, payload) {
+function post(payload) {
   return new Promise((resolve, reject) => {
     const body = JSON.stringify(payload)
 
     const options = {
-      hostname: host,
-      port: 8545,
+      hostname: httpProviderHost,
+      port: httpProviderPort,
       path: '/',
       method: 'POST',
       headers: {
@@ -68,7 +69,6 @@ const erc20IsUp = ({ delay, maxAttempts }) => {
   return new Promise((resolve, reject) => {
     function retrieveBalance() {
       post(
-        url.provider,
         {
           jsonrpc: '2.0',
           id: id++,

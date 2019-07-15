@@ -1,7 +1,7 @@
 const host = process.env.UNLOCK_HOST || '127.0.0.1'
 const port = process.env.UNLOCK_PORT || 3000
 const paywall = process.env.PAYWALL_URL || 'http://127.0.0.1:3001'
-const provider = process.env.HTTP_PROVIDER || 'localhost'
+const provider = process.env.READ_ONLY_PROVIDER || 'http://localhost:8545'
 
 /**
  * Use these helpers to get relative paths inside the main unlock-app and the paywall.
