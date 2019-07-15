@@ -111,10 +111,12 @@ describe('makePurchaseCallback', () => {
     it('should pass on any error thrown in keyPurchase', async () => {
       expect.assertions(1)
 
-      walletService.purchaseKey = jest.fn().mockRejectedValue(new Error('fail'))
+      const error = new Error('fail')
+
+      walletService.purchaseKey = jest.fn().mockRejectedValue(error)
 
       await purchase('lock')
-      expect(update).toHaveBeenCalledWith({ error: 'fail' })
+      expect(update).toHaveBeenCalledWith({ error })
     })
 
     it('should initiate monitoring of key purchase transaction', async () => {
@@ -142,14 +144,16 @@ describe('makePurchaseCallback', () => {
     it('should pass on any error thrown in monitoring key purchase transaction', async () => {
       expect.assertions(1)
 
+      const error = new Error('fail')
+
       walletService.on = (type, cb) => {
         if (type === 'error') {
           // trigger an error in the midst of listening for the submitted transaction
-          cb(new Error('fail'))
+          cb(error)
         }
       }
       await purchase('lock')
-      expect(update).toHaveBeenCalledWith({ error: 'fail' })
+      expect(update).toHaveBeenCalledWith({ error })
     })
   })
 })

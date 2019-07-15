@@ -60,7 +60,7 @@ const makePurchaseCallback = ({
         }),
       ])
     } catch (error) {
-      update({ error: error.message })
+      update({ error })
     }
   }
 
