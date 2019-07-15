@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import utils from './utils'
 import FastJsonRpcSigner from './FastJsonRpcSigner'
+import erc20abi from './erc20abi'
 
 // This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
@@ -8,11 +9,7 @@ export async function getErc20BalanceForAddress(
   lockContractAddress,
   provider
 ) {
-  const contract = new ethers.Contract(
-    erc20ContractAddress,
-    ['function balanceOf(address tokenOwner) public view returns (uint)'],
-    provider
-  )
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   const balance = await contract.balanceOf(lockContractAddress)
   return utils.hexToNumberString(balance)
 }
@@ -23,11 +20,7 @@ export async function getErc20BalanceForAddress(
  * @param {*} provider
  */
 export async function getErc20Decimals(erc20ContractAddress, provider) {
-  const contract = new ethers.Contract(
-    erc20ContractAddress,
-    ['function decimals() public view returns (uint)'],
-    provider
-  )
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   const decimals = await contract.decimals()
   return utils.toNumber(decimals)
 }
@@ -43,11 +36,7 @@ export async function approveTransfer(
   // TODO: add test to ensure that this is actually retuning instantly?
   const signer = new FastJsonRpcSigner(provider.getSigner())
 
-  const contract = new ethers.Contract(
-    erc20ContractAddress,
-    ['function approve(address spender, uint256 value) returns (bool value)'],
-    signer
-  )
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
   return contract.approve(lockContractAddress, value)
 }
 

@@ -2,6 +2,7 @@
 
 ## 0.3.10
 - Add "for" field for pending/submitted key purchase transactions (#4190)
+- ignore events from other contracts (erc20 for instance) (#4187)
 
 ## 0.3.9
 - If a transaction is unknown poll immediately for it (#4149)

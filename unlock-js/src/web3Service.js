@@ -273,17 +273,21 @@ export default class Web3Service extends UnlockService {
    * @param {*} transactionHash
    * @param {*} contract
    * @param {*} transactionReceipt
+   * @param {string} contractAddress
    */
   _parseTransactionLogsFromReceipt(
     transactionHash,
     contract,
-    transactionReceipt
+    transactionReceipt,
+    contractAddress
   ) {
-    const metadata = new ethers.utils.Interface(contract.abi)
+    const parser = new ethers.utils.Interface(contract.abi)
 
     transactionReceipt.logs.forEach(log => {
+      // ignore events not from our contract
+      if (log.address !== contractAddress) return
       // For each log, let's find which event it is
-      const logInfo = metadata.parseLog(log)
+      const logInfo = parser.parseLog(log)
 
       this.emitContractEvent(
         transactionHash,
@@ -498,7 +502,8 @@ export default class Web3Service extends UnlockService {
         return this._parseTransactionLogsFromReceipt(
           transactionHash,
           contract,
-          transactionReceipt
+          transactionReceipt,
+          contractAddress
         )
       }
     })
