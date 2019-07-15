@@ -14,6 +14,7 @@ const lock = {
   expirationDuration: 172800,
   maxNumberOfKeys: 240,
   outstandingKeys: 3,
+  currencyContractAddress: null,
 }
 const lockedState = {
   account: {
@@ -27,6 +28,7 @@ const lockedState = {
       expirationDuration: 86400,
       maxNumberOfKeys: 800,
       outstandingKeys: 32,
+      currencyContractAddress: null,
     },
     '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e': lock,
   },
@@ -85,6 +87,9 @@ const config = {
     HTTP: [],
   },
   requiredConfirmations: 12,
+  erc20Contract: {
+    address: 'blah',
+  },
 }
 
 const fakeWindow = {

@@ -30,7 +30,7 @@ const paywallConfig = {
       name: 'One Month',
     },
     '0x789': {
-      name: 'One Year',
+      name: 'One Year at a discount of 20%',
     },
   },
 }
