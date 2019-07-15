@@ -13,14 +13,14 @@ export default async function getLocks({ locksToRetrieve, web3Service }) {
       .map(lockAddress => web3Service.getLock(lockAddress))
   )
   // convert into a map indexed by lock address
-  return newLocks.reduce(
-    (allLocks, lock, index) => ({
+  return newLocks.reduce((allLocks, lock, index) => {
+    const address = locksToRetrieve[index].toLowerCase()
+    return {
       ...allLocks,
-      [locksToRetrieve[index]]: {
-        address: locksToRetrieve[index],
+      [address]: {
+        address,
         ...lock,
       },
-    }),
-    {}
-  )
+    }
+  }, {})
 }
