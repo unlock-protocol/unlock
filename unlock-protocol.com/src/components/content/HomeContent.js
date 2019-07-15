@@ -3,11 +3,19 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import Signature from '../interface/Signature'
-import { Headline, SubTitle, ThreeColumns, Column } from '../Components'
+import {
+  Headline,
+  SubTitle,
+  ThreeColumns,
+  Column,
+  Section,
+} from '../Components'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import { HomepageButton } from '../interface/buttons/homepage/HomepageButton'
+
+import { OptInForm } from '../interface/OptInForm'
 
 export const HomeContent = () => (
   <Layout forContent>
@@ -48,6 +56,10 @@ export const HomeContent = () => (
         </Paragraph>
       </Column>
     </ThreeColumns>
+    <Section>
+      <SubHead>Subscribe to Updates</SubHead>
+      <OptInForm />
+    </Section>
     <Signature />
   </Layout>
 )
@@ -78,6 +90,13 @@ const ImageWithHover = styled.div`
 const Hero = styled.h1`
   font-size: 36px;
   margin-top: 30px;
+  margin-bottom: 0px;
+  color: var(--darkgrey);
+  font-weight: 700;
+`
+
+const SubHead = styled.h2`
+  font-size: 36px;
   margin-bottom: 0px;
   color: var(--darkgrey);
   font-weight: 700;
