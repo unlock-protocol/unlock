@@ -20,6 +20,7 @@ const requiredConfirmations = 12
 const unlockAddress = '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F'
 const lockAddress = '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e'
 const checksumLockAddress = '0x5ED6a5BB0fDA25eaC3B5D03fa875cB60A4639d8E'
+const fakeERC20ContractAddress = '0x1234123456789012345678901234567890567890'
 
 const transaction = {
   status: 'mined',
@@ -400,8 +401,7 @@ describe('Web3Service', () => {
           blockNumber: 123,
           logs: [
             {
-              // fake ERC20 contract address
-              address: '0x1234123456789012345678901234567890567890',
+              address: fakeERC20ContractAddress,
               data: encoder.encode(['uint'], [2]),
               topics: [
                 EventInfo.events['Transfer(address,address,uint256)'].topic,
