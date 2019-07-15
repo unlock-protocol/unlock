@@ -37,6 +37,14 @@ const lock = {
   expirationDuration: 2592000,
 }
 
+const lockWithLongName = {
+  address: '0x123',
+  name: 'Hitting406 Crypto Category',
+  keyPrice: '0.23',
+  fiatPrice: 240.38,
+  expirationDuration: 2592000,
+}
+
 const soldOutLock = Object.assign(
   { maxNumberOfKeys: 1, outstandingKeys: 1 },
   lock
@@ -60,6 +68,27 @@ storiesOf('Lock', module)
         <Provider store={store}>{getStory()}</Provider>
       </WindowProvider>
     </ConfigProvider>
+  ))
+  .addDecorator(getStory => (
+    <div
+      style={{
+        backgroundColor: 'var(--offwhite)',
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'row',
+        placeContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          height: '200px',
+          display: 'grid',
+        }}
+      >
+        {getStory()}
+      </div>
+    </div>
   ))
   .add('with no key, ERC20 Lock, known currency', () => {
     const erc20Lock = {
@@ -122,6 +151,18 @@ storiesOf('Lock', module)
     return (
       <Lock
         lock={lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
+  .add('with very long name', () => {
+    return (
+      <Lock
+        lock={lockWithLongName}
         transaction={null}
         lockKey={null}
         {...lockActions}
