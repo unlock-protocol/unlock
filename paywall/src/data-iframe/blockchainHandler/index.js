@@ -132,14 +132,6 @@ export async function listenForAccountNetworkChanges({
     onChange({ network: id })
   })
 
-  await ensureWalletReady(walletService)
-  const account = await walletService.getAccount()
-  const balance = await web3Service.getAddressBalance(account)
-  setAccount(account)
-  onChange({ account })
-  setAccountBalance(balance)
-  onChange({ balance })
-
   pollForAccountChange(walletService, web3Service, async (account, balance) => {
     setAccount(account)
     onChange({ account })
@@ -162,4 +154,13 @@ export async function listenForAccountNetworkChanges({
       onChange({ keys: {}, transactions: {} })
     }
   })
+
+  // TODO: investigate whether this can be safely removed
+  await ensureWalletReady(walletService)
+  const account = await walletService.getAccount()
+  const balance = await web3Service.getAddressBalance(account)
+  setAccount(account)
+  onChange({ account })
+  setAccountBalance(balance)
+  onChange({ balance })
 }

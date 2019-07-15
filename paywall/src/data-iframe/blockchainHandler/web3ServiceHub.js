@@ -39,6 +39,9 @@ export default async function web3ServiceHub({
         transaction.lock,
         account
       )
+      // normalize the key lock
+      key.lock = key.lock.toLowerCase()
+
       onChange({
         key,
       })
