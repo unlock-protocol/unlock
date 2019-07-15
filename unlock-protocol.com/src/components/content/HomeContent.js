@@ -58,6 +58,10 @@ export const HomeContent = () => (
     </ThreeColumns>
     <Section>
       <SubHead>Subscribe to Updates</SubHead>
+      <Paragraph>
+        We will never share your information. Privacy and your trust are our top
+        priorities.
+      </Paragraph>
       <OptInForm />
     </Section>
     <Signature />
