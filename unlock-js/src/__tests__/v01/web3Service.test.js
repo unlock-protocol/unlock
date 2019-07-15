@@ -188,6 +188,7 @@ describe('Web3Service', () => {
         expect(transactionHash).toBe(fakeHash)
         expect(params).toEqual({
           key: KEY_ID(fakeContractAddress, owner),
+          for: owner,
           lock: fakeContractAddress,
         })
         resolveTransactionUpdater()
