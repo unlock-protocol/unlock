@@ -77,9 +77,11 @@ export class SignUp extends React.Component<Props, State> {
           </Description>
           <Description>
             If you want to know more about Unlock&#39;s decentralized payment
-            protocol, check out our{' '}
+            protocol, check out{' '}
             <Link href="/blog">
-              <span>blog</span>
+              <a target="_blank">
+                <span>our blog</span>
+              </a>
             </Link>
             .
           </Description>
