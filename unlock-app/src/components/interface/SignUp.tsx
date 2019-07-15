@@ -62,6 +62,10 @@ export class SignUp extends React.Component<Props, State> {
       return <SignupSuccess />
     }
 
+    const LogInLink = (callToAction: string) => (
+      <LinkButton onClick={this.handleClick}>{callToAction}</LinkButton>
+    )
+
     if (!emailAddress) {
       return (
         <div>
@@ -77,9 +81,11 @@ export class SignUp extends React.Component<Props, State> {
           </Description>
           <Description>
             If you want to know more about Unlock&#39;s decentralized payment
-            protocol, check out our{' '}
-            <Link href="/blog">
-              <span>blog</span>
+            protocol, check out{' '}
+            <Link href="https://unlock-protocol.com/blog">
+              <a target="_blank">
+                <span>our blog</span>
+              </a>
             </Link>
             .
           </Description>
@@ -93,8 +99,7 @@ export class SignUp extends React.Component<Props, State> {
               />
               <SubmitButton type="submit" value="Sign Up" />
               <Description>
-                Already have an account?{' '}
-                <LinkButton onClick={this.handleClick}>Log in here.</LinkButton>
+                Already have an account? {LogInLink('Log in here')}.
               </Description>
             </Form>
           )}
@@ -102,6 +107,10 @@ export class SignUp extends React.Component<Props, State> {
             <Confirmation>
               <div>Please check your email</div>
               <div>We need to confirm your email before proceeding.</div>
+              <div>
+                Once you&#39;ve created your account you can{' '}
+                {LogInLink('log in here')}.
+              </div>
             </Confirmation>
           )}
         </div>
