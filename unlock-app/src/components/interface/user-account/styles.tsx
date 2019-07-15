@@ -170,7 +170,6 @@ export const IframeLayout = styled.div`
   max-height: 100%;
   overflow-y: scroll;
   max-width: 800px;
-  padding: 10px 40px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
