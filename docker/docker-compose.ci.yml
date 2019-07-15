@@ -10,16 +10,15 @@ services:
     restart: always
     build:
       context: ./development
-      args:
-        - blocktime=1
       dockerfile: ganache.dockerfile
     environment:
       CI: '${CI}'
-      ERC20_CONTRACT_ADDRESS: '0x591AD9066603f5499d12fF4bC207e2f577448c46'
-      LOCKSMITH_PURCHASER_ADDRESS: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
-      ETHEREUM_ADDRESS: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
-      HTTP_PROVIDER_HOST: 'ganache-integration'
-      HTTP_PROVIDER_PORT: 8545
+      ERC20_CONTRACT_ADDRESS: '${ERC20_CONTRACT_ADDRESS}'
+      LOCKSMITH_PURCHASER_ADDRESS: '${LOCKSMITH_PURCHASER_ADDRESS}'
+      ETHEREUM_ADDRESS: '${ETHEREUM_ADDRESS}'
+      HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
+      HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
+      BLOCKTIME: '${BLOCKTIME}'
     ports:
       - 8545:8545
     expose:
@@ -120,6 +119,12 @@ services:
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'
+      ERC20_CONTRACT_ADDRESS: '${ERC20_CONTRACT_ADDRESS}'
+      LOCKSMITH_PURCHASER_ADDRESS: '${LOCKSMITH_PURCHASER_ADDRESS}'
+      ETHEREUM_ADDRESS: '${ETHEREUM_ADDRESS}'
+      HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
+      HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
+      BLOCKTIME: '${BLOCKTIME}'
     depends_on:
       - ganache-integration
       - unlock-app

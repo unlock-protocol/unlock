@@ -1,9 +1,6 @@
 FROM trufflesuite/ganache-cli:v6.4.3
 LABEL Unlock <ops@unlock-protocol.com>
 
-ARG blocktime=3
-ENV BLOCKTIME=${blocktime}
-
 RUN apk add --no-cache git openssh bash
 
 # Adding python which is needed by some dependencies (keccak...)
@@ -34,4 +31,4 @@ COPY ./standup.sh .
 ENV DOCKER true
 EXPOSE 8545
 
-ENTRYPOINT /app/standup.sh ${BLOCKTIME}
+ENTRYPOINT /app/standup.sh

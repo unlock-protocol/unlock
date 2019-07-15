@@ -5,8 +5,8 @@
 const axios = require('axios')
 const url = require('./url')
 
-const erc20ContractAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
-const testingAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+const erc20ContractAddress = process.env.ERC20_CONTRACT_ADDRESS
+const testingAddress = process.env.ETHEREUM_ADDRESS
 
 // 0x70a08231 = encoded "balanceOf" signature
 // aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2 = the encoded testingAddress
