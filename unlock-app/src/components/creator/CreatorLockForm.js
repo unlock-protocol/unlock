@@ -325,9 +325,14 @@ export class CreatorLockForm extends React.Component {
             data-valid={valid.keyPrice}
             required
           />
-          {isNew && (
+          {isNew && !currency && (
             <LockLabelCurrency onClick={this.toggleCurrency}>
-              {`Use ${!currency ? ERC20Contract.name : 'Ether'}`}
+              {`Use ${ERC20Contract.name}`}
+            </LockLabelCurrency>
+          )}
+          {isNew && !!currency && (
+            <LockLabelCurrency onClick={this.toggleCurrency}>
+              Use Ether
             </LockLabelCurrency>
           )}
         </FormBalanceWithUnit>
