@@ -183,19 +183,19 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       })
 
       expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
-        1,
+        2,
         'hash2',
-        expect.objectContaining({
+        {
           to: 'lock 2',
           from: 'another account',
           for: 'account',
           input: 'data 2',
           network: 1,
           hash: 'hash2',
-        })
+        }
       )
       expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
-        2,
+        1,
         'hash3',
         undefined
       )
