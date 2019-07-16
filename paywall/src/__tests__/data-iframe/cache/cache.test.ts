@@ -199,6 +199,35 @@ describe('cache utility', () => {
         clearCache()
       })
 
+      it('should not mutate the input', async () => {
+        expect.assertions(1)
+
+        const input = {
+          one: 1,
+        }
+
+        await put({
+          window: testWindow,
+          networkId: 1,
+          accountAddress: 'hi',
+          type: 'thing',
+          value: input,
+        })
+
+        await merge({
+          window: testWindow,
+          networkId: 1,
+          accountAddress: 'hi',
+          type: 'thing',
+          subType: 'two',
+          value: 2,
+        })
+
+        expect(input).toEqual({
+          one: 1,
+        })
+      })
+
       it('should save a sub-type value inside a larger container', async () => {
         expect.assertions(1)
 
