@@ -4,6 +4,7 @@ import { TRANSACTION_TYPES } from '../../../constants'
 
 describe('web3ServiceHub', () => {
   let fakeWindow
+  const fakeAccount = '0x1234567890123456789012345678901234567890'
 
   function makeFakeWindow() {
     fakeWindow = {
@@ -87,7 +88,7 @@ describe('web3ServiceHub', () => {
           owner,
         }),
       }
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
     })
 
     it('should use the cached transaction as a base', async () => {
@@ -194,7 +195,7 @@ describe('web3ServiceHub', () => {
           key: {
             expiration: 123,
             lock: 'lock',
-            owner: 'account', // this verifies we pulled it from the cache
+            owner: fakeAccount, // this verifies we pulled it from the cache
           },
         })
       )
@@ -214,7 +215,7 @@ describe('web3ServiceHub', () => {
       web3Service = {
         on: jest.fn(),
       }
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
     })
 
     it('should call onChange with the error', async () => {

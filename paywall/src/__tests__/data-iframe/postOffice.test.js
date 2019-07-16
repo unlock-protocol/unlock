@@ -25,6 +25,7 @@ import { setPaywallConfig } from '../../data-iframe/paywallConfig'
 describe('data iframe postOffice', () => {
   let fakeWindow
   let fakeTarget
+  const fakeAccount = '0x1234567890123456789012345678901234567890'
 
   describe('postOffice', () => {
     function makeWindow() {
@@ -173,14 +174,14 @@ describe('data iframe postOffice', () => {
       it('account passes account address to the main window', async () => {
         expect.assertions(1)
 
-        await setAccount(fakeWindow, 'account')
+        await setAccount(fakeWindow, fakeAccount)
 
         fakeTarget.postMessage = jest.fn()
         await blockChainUpdater('account')
         expect(fakeTarget.postMessage).toHaveBeenCalledWith(
           expect.objectContaining({
             type: POST_MESSAGE_UPDATE_ACCOUNT,
-            payload: 'account',
+            payload: fakeAccount,
           }),
           'http://fun.times'
         )
@@ -189,7 +190,7 @@ describe('data iframe postOffice', () => {
       it('should pass locks to the main window on account change', async () => {
         expect.assertions(3)
 
-        await setAccount(fakeWindow, 'account')
+        await setAccount(fakeWindow, fakeAccount)
         await setNetwork(fakeWindow, 2)
         await setLocks(fakeWindow, {
           '0x123': {
@@ -201,14 +202,14 @@ describe('data iframe postOffice', () => {
         })
         await setKeys(fakeWindow, {
           '0x123': {
-            id: '0x123-account',
-            owner: 'account',
+            id: `0x123-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x123',
             expiration: 0,
           },
           '0x456': {
-            id: '0x456-account',
-            owner: 'account',
+            id: `0x456-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x456',
             expiration: 0,
           },
@@ -224,8 +225,8 @@ describe('data iframe postOffice', () => {
               '0x123': {
                 address: '0x123',
                 key: {
-                  id: '0x123-account',
-                  owner: 'account',
+                  id: `0x123-${fakeAccount}`,
+                  owner: fakeAccount,
                   lock: '0x123',
                   expiration: 0,
                   status: 'none',
@@ -236,8 +237,8 @@ describe('data iframe postOffice', () => {
               '0x456': {
                 address: '0x456',
                 key: {
-                  id: '0x456-account',
-                  owner: 'account',
+                  id: `0x456-${fakeAccount}`,
+                  owner: fakeAccount,
                   lock: '0x456',
                   expiration: 0,
                   status: 'none',
@@ -261,7 +262,7 @@ describe('data iframe postOffice', () => {
       it('balance passes account balance to the main window', async () => {
         expect.assertions(1)
 
-        await setAccount(fakeWindow, 'account')
+        await setAccount(fakeWindow, fakeAccount)
         await setAccountBalance(fakeWindow, '123')
 
         fakeTarget.postMessage = jest.fn()
@@ -296,7 +297,7 @@ describe('data iframe postOffice', () => {
       it('locks passes the lock data to the main window', async done => {
         expect.assertions(1)
 
-        await setAccount(fakeWindow, 'account')
+        await setAccount(fakeWindow, fakeAccount)
         await setNetwork(fakeWindow, 2)
         await setLocks(fakeWindow, {
           '0x123': {
@@ -308,14 +309,14 @@ describe('data iframe postOffice', () => {
         })
         await setKeys(fakeWindow, {
           '0x123': {
-            id: '0x123-account',
-            owner: 'account',
+            id: `0x123-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x123',
             expiration: 0,
           },
           '0x456': {
-            id: '0x456-account',
-            owner: 'account',
+            id: `0x456-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x456',
             expiration: 0,
           },
@@ -330,8 +331,8 @@ describe('data iframe postOffice', () => {
                 '0x123': {
                   address: '0x123',
                   key: {
-                    id: '0x123-account',
-                    owner: 'account',
+                    id: `0x123-${fakeAccount}`,
+                    owner: fakeAccount,
                     lock: '0x123',
                     expiration: 0,
                     status: 'none',
@@ -342,8 +343,8 @@ describe('data iframe postOffice', () => {
                 '0x456': {
                   address: '0x456',
                   key: {
-                    id: '0x456-account',
-                    owner: 'account',
+                    id: `0x456-${fakeAccount}`,
+                    owner: fakeAccount,
                     lock: '0x456',
                     expiration: 0,
                     status: 'none',
@@ -378,7 +379,7 @@ describe('data iframe postOffice', () => {
             [hash]: {
               hash,
               lock,
-              key: `${lock}-account`,
+              key: `${lock}-${fakeAccount}`,
               status,
               confirmations,
               blockNumber: 5,
@@ -389,7 +390,7 @@ describe('data iframe postOffice', () => {
         beforeEach(async () => {
           makeWindow()
 
-          await setAccount(fakeWindow, 'account')
+          await setAccount(fakeWindow, fakeAccount)
           await setNetwork(fakeWindow, 2)
           await setLocks(fakeWindow, {
             '0x123': {
@@ -401,14 +402,14 @@ describe('data iframe postOffice', () => {
           })
           await setKeys(fakeWindow, {
             '0x123': {
-              id: '0x123-account',
-              owner: 'account',
+              id: `0x123-${fakeAccount}`,
+              owner: fakeAccount,
               lock: '0x123',
               expiration: 0,
             },
             '0x456': {
-              id: '0x456-account',
-              owner: 'account',
+              id: `0x456-${fakeAccount}`,
+              owner: fakeAccount,
               lock: '0x456',
               expiration: 0,
             },
@@ -565,7 +566,7 @@ describe('data iframe postOffice', () => {
           },
         })
 
-        await setAccount(fakeWindow, 'account')
+        await setAccount(fakeWindow, fakeAccount)
         await setNetwork(fakeWindow, 2)
         await setLocks(fakeWindow, {
           '0x123': {
@@ -577,14 +578,14 @@ describe('data iframe postOffice', () => {
         })
         await setKeys(fakeWindow, {
           '0x123': {
-            id: '0x123-account',
-            owner: 'account',
+            id: `0x123-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x123',
             expiration: 0,
           },
           '0x456': {
-            id: '0x456-account',
-            owner: 'account',
+            id: `0x456-${fakeAccount}`,
+            owner: fakeAccount,
             lock: '0x456',
             expiration: 0,
           },
@@ -599,8 +600,8 @@ describe('data iframe postOffice', () => {
                 '0x123': {
                   address: '0x123',
                   key: {
-                    id: '0x123-account',
-                    owner: 'account',
+                    id: `0x123-${fakeAccount}`,
+                    owner: fakeAccount,
                     lock: '0x123',
                     expiration: 0,
                     status: 'none',

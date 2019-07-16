@@ -20,16 +20,18 @@ import { TRANSACTION_TYPES } from '../../constants'
 
 describe('cacheHandler', () => {
   let fakeWindow
+  const fakeAccount = '0x1234567890123456789012345678901234567890'
+  const fakeAccount2 = '0xa234567890123456789012345678901234567890'
   const myKeys = {
     lock: {
       id: 'myKey',
-      owner: 'account',
+      owner: fakeAccount,
       lock: 'lock',
       expirationTimestamp: 0,
     },
     lock2: {
       id: 'myKey',
-      owner: 'account',
+      owner: fakeAccount,
       lock: 'lock2',
       expirationTimestamp: 0,
     },
@@ -52,7 +54,7 @@ describe('cacheHandler', () => {
   }
 
   beforeEach(() => {
-    setup('network', 'account')
+    setup('network', fakeAccount)
     fakeWindow = {
       storage: {},
       localStorage: {
@@ -192,7 +194,7 @@ describe('cacheHandler', () => {
         },
       }
 
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
       await setNetwork(fakeWindow, 2)
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
@@ -222,9 +224,9 @@ describe('cacheHandler', () => {
         ...myKeys,
         another: {
           expiration: 0,
-          id: 'another-account',
+          id: `another-${fakeAccount}`,
           lock: 'another',
-          owner: 'account',
+          owner: fakeAccount,
         },
       })
     })
@@ -298,13 +300,13 @@ describe('cacheHandler', () => {
         },
       }
 
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
       await setNetwork(fakeWindow, 2)
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
       await setTransactions(fakeWindow, myTransactions)
 
-      await setAccount(fakeWindow, 'different')
+      await setAccount(fakeWindow, fakeAccount2)
     })
 
     it('should still return cached locks', async () => {
@@ -319,15 +321,15 @@ describe('cacheHandler', () => {
       expect(await getKeys(fakeWindow)).toEqual({
         lock: {
           expiration: 0,
-          id: 'lock-different',
+          id: `lock-${fakeAccount2}`,
           lock: 'lock',
-          owner: 'different',
+          owner: fakeAccount2,
         },
         lock2: {
           expiration: 0,
-          id: 'lock2-different',
+          id: `lock2-${fakeAccount2}`,
           lock: 'lock2',
-          owner: 'different',
+          owner: fakeAccount2,
         },
       })
     })
@@ -345,20 +347,20 @@ describe('cacheHandler', () => {
         // a dummy key created just-in-time
         lock: {
           expiration: 0,
-          id: 'lock-different',
+          id: `lock-${fakeAccount2}`,
           lock: 'lock',
-          owner: 'different',
+          owner: fakeAccount2,
         },
         lock2: {
           lock: 'lock2',
-          owner: 'different',
+          owner: fakeAccount2,
         },
       }
 
       await setKeys(fakeWindow, differentKeys)
       expect(await getKeys(fakeWindow)).toEqual(differentKeys)
 
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
       expect(await getKeys(fakeWindow)).toEqual(myKeys)
     })
   })
@@ -380,7 +382,7 @@ describe('cacheHandler', () => {
         },
       }
 
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
       await setNetwork(fakeWindow, 2)
       await setKeys(fakeWindow, myKeys)
       await setLocks(fakeWindow, myLocks)
@@ -413,7 +415,7 @@ describe('cacheHandler', () => {
       const differentKeys = {
         lock2: {
           lock: 'lock2',
-          owner: 'different',
+          owner: fakeAccount2,
         },
       }
 
@@ -428,20 +430,20 @@ describe('cacheHandler', () => {
   describe('getFormattedCacheValues', () => {
     const keys = {
       lock1: {
-        id: 'lock1-account',
-        owner: 'account',
+        id: `lock1-${fakeAccount}`,
+        owner: fakeAccount,
         lock: 'lock1',
         expiration: new Date().getTime() / 1000 + 1000,
       },
       lock2: {
-        id: 'lock2-account',
-        owner: 'account',
+        id: `lock2-${fakeAccount}`,
+        owner: fakeAccount,
         lock: 'lock2',
         expiration: 0,
       },
       lock3: {
-        id: 'lock3-account',
-        owner: 'account',
+        id: `lock3-${fakeAccount}`,
+        owner: fakeAccount,
         lock: 'lock3',
         expiration: new Date().getTime() / 1000 - 1000,
       },
@@ -469,8 +471,8 @@ describe('cacheHandler', () => {
         lock: 'lock1',
         key: 'lock1-account',
         to: 'lock1',
-        from: 'account',
-        for: 'account',
+        from: fakeAccount,
+        for: fakeAccount,
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         blockNumber: 1,
         status: 'mined',
@@ -481,8 +483,8 @@ describe('cacheHandler', () => {
         lock: 'lock3',
         key: 'lock3-account',
         to: 'lock3',
-        from: 'account',
-        for: 'account',
+        from: fakeAccount,
+        for: fakeAccount,
         type: TRANSACTION_TYPES.KEY_PURCHASE,
         blockNumber: 2,
         status: 'mined',
@@ -507,7 +509,7 @@ describe('cacheHandler', () => {
       }
 
       await setNetwork(fakeWindow, 3)
-      await setAccount(fakeWindow, 'account')
+      await setAccount(fakeWindow, fakeAccount)
       await setAccountBalance(fakeWindow, '2')
       await setKeys(fakeWindow, keys)
       await setLocks(fakeWindow, locks)
@@ -520,7 +522,7 @@ describe('cacheHandler', () => {
       const values = await getFormattedCacheValues(fakeWindow, 5)
 
       expect(values).toEqual({
-        account: 'account',
+        account: fakeAccount,
         balance: '2',
         networkId: 3,
         locks: {
@@ -779,7 +781,7 @@ describe('cacheHandler', () => {
           const listener = jest.fn()
           addListener(listener)
 
-          await setAccount(fakeWindow, 'account')
+          await setAccount(fakeWindow, fakeAccount)
 
           expect(listener).toHaveBeenCalledWith('account')
         })
@@ -787,7 +789,7 @@ describe('cacheHandler', () => {
         it('sends balance when balance is modified', async () => {
           expect.assertions(1)
 
-          await setAccount(fakeWindow, 'account')
+          await setAccount(fakeWindow, fakeAccount)
 
           const listener = jest.fn()
           addListener(listener)

@@ -1,11 +1,11 @@
 import * as cache from './cache'
 import linkKeysToLocks from './blockchainHandler/linkKeysToLocks'
+import { isAccount } from '../utils/validators'
 
 let currentNetwork
 let currentAccount
 const nullAccount = '0x0000000000000000000000000000000000000000'
 
-export const getAccount = cache.getAccount
 export const getNetwork = cache.getNetwork
 
 export function setup(networkId, account) {
@@ -58,6 +58,15 @@ export async function createMissingKeys(window, locks, keys) {
       })
     }
   }
+}
+
+export async function getAccount(window) {
+  const account = await cache.getAccount(window)
+  if (!isAccount(account)) {
+    // validate the account
+    return null
+  }
+  return account
 }
 
 export async function getKeys(window) {

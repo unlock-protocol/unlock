@@ -12,6 +12,7 @@ import {
 
 describe('syncToCache', () => {
   let fakeWindow
+  const fakeAccount = '0x1234567890123456789012345678901234567890'
 
   beforeEach(() => {
     fakeWindow = {
@@ -125,7 +126,7 @@ describe('syncToCache', () => {
   it('syncs account to the cache', async () => {
     expect.assertions(1)
 
-    const account = 'account'
+    const account = fakeAccount
     await syncToCache(fakeWindow, { account })
 
     expect(await getAccount(fakeWindow)).toEqual(account)
@@ -152,7 +153,7 @@ describe('syncToCache', () => {
   it('syncs multiple keys to the cache at once', async () => {
     expect.assertions(2)
 
-    const account = 'account'
+    const account = fakeAccount
     const balance = '1'
     await syncToCache(fakeWindow, { account, balance })
 
