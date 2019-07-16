@@ -1,6 +1,3 @@
-import { waitFor } from '../../utils/promises'
-import { getAccount } from './account'
-
 export default async function ensureWalletReady(walletService) {
   return new Promise((resolve, reject) => {
     if (!walletService) {
@@ -11,13 +8,9 @@ export default async function ensureWalletReady(walletService) {
       )
     }
     if (walletService.ready) {
-      waitFor(getAccount).then(resolve)
-      return
+      return resolve()
     }
-    walletService.once('ready', async () => {
-      // make sure our account listener has had time to retrieve it
-      // before we declare the wallet ready
-      await waitFor(getAccount)
+    walletService.once('ready', () => {
       resolve()
     })
   })
