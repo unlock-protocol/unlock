@@ -1,4 +1,5 @@
 import * as validators from '../../utils/validators'
+import { validUnlockNetworks } from '../../constants'
 
 describe('Form field validators', () => {
   it('isMissing', () => {
@@ -57,6 +58,23 @@ describe('Form field validators', () => {
       validators.isAccount('0X12345678901234567890abcdef0123ABCDEF0123')
     ).toBeFalsy()
     expect(validators.isAccount(null)).toBeFalsy()
+  })
+
+  it('isValidNetwork', () => {
+    expect.assertions(8)
+
+    // non-numbers
+    expect(validators.isValidNetwork({})).toBeFalsy()
+    expect(validators.isValidNetwork([])).toBeFalsy()
+    expect(validators.isValidNetwork('1')).toBeFalsy()
+    expect(validators.isValidNetwork(Symbol('hi'))).toBeFalsy()
+    // not a network unlock uses
+    expect(validators.isValidNetwork(7)).toBeFalsy()
+
+    // networks unlock uses
+    validUnlockNetworks.forEach(network =>
+      expect(validators.isValidNetwork(network)).toBeTruthy()
+    )
   })
 
   it('isAccountOrNull', () => {

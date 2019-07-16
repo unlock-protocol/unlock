@@ -2,7 +2,7 @@ import isURL from 'validator/lib/isURL'
 import isDataURI from 'validator/lib/isDataURI'
 import isDecimal from 'validator/lib/isDecimal'
 
-import { ACCOUNT_REGEXP } from '../constants'
+import { ACCOUNT_REGEXP, validUnlockNetworks } from '../constants'
 
 // tests whether a field's value was not entered by the user
 export const isNotEmpty = val => val || val === 0
@@ -25,6 +25,12 @@ export const isAccount = val => {
 
 export const isAccountOrNull = val => {
   return val === null || isAccount(val)
+}
+
+export const isValidNetwork = val => {
+  if (typeof val !== 'number') return false
+  if (validUnlockNetworks.includes(val)) return true
+  return false
 }
 
 /**

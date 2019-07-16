@@ -13,6 +13,9 @@ export const ETHEREUM_NETWORKS_NAMES = {
   1984: ['Winston', 'test'],
 }
 
+// Unlock uses 3 networks: mainnet, rinkeby and winston (testing)
+export const validUnlockNetworks = [1, 4, 1984]
+
 /**
  * Returns a page title to be used within HTML <title> tags.
  * @param title
