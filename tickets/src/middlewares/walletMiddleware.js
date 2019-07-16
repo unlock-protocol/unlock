@@ -134,7 +134,6 @@ const walletMiddleware = config => {
 
         if (action.type === PURCHASE_KEY) {
           ensureReadyBefore(() => {
-            const account = getState().account
             // find the lock to get its keyPrice
             const lock = Object.values(getState().locks).find(
               lock => lock.address === action.key.lock
@@ -143,7 +142,9 @@ const walletMiddleware = config => {
               action.key.lock,
               action.key.owner,
               lock.keyPrice,
-              account.address
+              null /* account */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+              null /* data */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
+              lock.currencyContractAddress
             )
           })
         }
