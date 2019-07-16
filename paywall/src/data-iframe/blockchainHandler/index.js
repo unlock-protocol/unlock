@@ -91,7 +91,7 @@ export async function retrieveChainData({
  * @param {window} window the global context (window, self, global)
  * @param {string} locksmithHost the endpoint for locksmith
  */
-async function getKeysAndTransactions({
+export async function getKeysAndTransactions({
   walletService,
   web3Service,
   locks,

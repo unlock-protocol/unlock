@@ -4,6 +4,7 @@ import {
   setupWeb3Service,
   listenForAccountNetworkChanges,
   retrieveChainData,
+  getKeysAndTransactions,
 } from '../../../data-iframe/blockchainHandler'
 import {
   pollForAccountChange,
@@ -257,6 +258,82 @@ describe('blockchain handler index', () => {
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
         'http://locksmith/transactions?for=account&recipient[]=0x123'
       )
+    })
+  })
+
+  describe('getKeysAndTransactions', () => {
+    let fakeWalletService
+    let fakeWeb3Service
+    let fakeWindow
+    let fakeTransactions
+    let fakeTransactionResults
+
+    beforeEach(() => {
+      fakeTransactions = {}
+      fakeTransactionResults = {}
+      getAccount.mockImplementation(() => 'account')
+      fakeWalletService = {
+        ready: true,
+        handlers: {},
+        addListener: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        removeListener: type => delete fakeWalletService.handlers[type],
+        on: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        once: (type, cb) => (fakeWalletService.handlers[type] = cb),
+        off: type => delete fakeWalletService.handlers[type],
+      }
+      fakeWeb3Service = {
+        getLock: jest.fn(address => ({ address })),
+        getKeyByLockForOwner: jest.fn((lock, owner) => ({
+          id: `${lock}-${owner}`,
+          lock,
+          owner,
+          expiration: new Date().getTime() / 1000 + 1000,
+        })),
+        getTransaction: jest.fn(hash => fakeTransactionResults[hash]),
+      }
+      fakeWindow = {
+        fetch: jest.fn(() => ({
+          json: () => fakeTransactions,
+        })),
+      }
+      pollForAccountChange.mockReset()
+      setPaywallConfig({
+        locks: {
+          '0x123': { name: 'hi' },
+        },
+      })
+      ensureWalletReady.mockImplementationOnce(
+        () =>
+          new Promise(resolve => {
+            return resolve
+          })
+      )
+    })
+
+    it('waits for the wallet to be ready', async done => {
+      expect.assertions(2)
+
+      fakeWalletService.ready = false
+
+      fakeWeb3Service.getKeyByLockForOwner = jest.fn(() => {
+        // if this is called, the ensureWalletReady is not being awaited
+        expect(false).toBe(true)
+        done()
+      })
+
+      getKeysAndTransactions({
+        locks: ['0x123', '0x456'],
+        web3Service: fakeWeb3Service,
+        walletService: fakeWalletService,
+        window: fakeWindow,
+        locksmithHost: 'http://locksmith',
+      })
+      expect(ensureWalletReady).toHaveBeenCalledWith(fakeWalletService)
+
+      // wait for 1 second to verify we don't call getLock
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      expect(fakeWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      done()
     })
   })
 
