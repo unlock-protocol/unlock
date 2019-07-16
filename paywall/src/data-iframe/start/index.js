@@ -20,10 +20,7 @@ export default async function start(window, constants) {
   import(/* webpackPrefetch: true */ '../blockchainHandler/purchaseKey')
   // set up the post office for communicating cache values, errors, and
   // wallet modal notifications to the main window
-  const { blockChainUpdater, addHandler } = postOffice(
-    window,
-    constants.requiredConfirmations
-  )
+  const { blockChainUpdater, addHandler } = postOffice(window, constants)
   // when the cache changes, we send the new information to the main window
   addListener(blockChainUpdater)
   // create the listener setup function for POST_MESSAGE_INITIATED_TRANSACTION

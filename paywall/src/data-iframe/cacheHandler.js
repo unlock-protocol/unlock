@@ -165,7 +165,10 @@ export async function setTransaction(window, transaction) {
  * @param {number} requiredConfirmations the number of confirmations needed to consider a key valid
  * @returns {object} returns locks, account, balance, and networkId, all formatted for use in the UI
  */
-export async function getFormattedCacheValues(window, requiredConfirmations) {
+export async function getFormattedCacheValues(
+  window,
+  { requiredConfirmations }
+) {
   const account = await getAccount(window)
   const balance = await getAccountBalance(window)
   const networkId = await getNetwork(window)

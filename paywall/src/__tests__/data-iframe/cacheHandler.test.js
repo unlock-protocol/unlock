@@ -489,6 +489,7 @@ describe('cacheHandler', () => {
         confirmations: 12345,
       },
     }
+    const constants = { requiredConfirmations: 5, defaultNetwork: 4 }
 
     beforeEach(async () => {
       fakeWindow = {
@@ -506,7 +507,7 @@ describe('cacheHandler', () => {
         },
       }
 
-      await setNetwork(fakeWindow, 3)
+      await setNetwork(fakeWindow, 4)
       await setAccount(fakeWindow, 'account')
       await setAccountBalance(fakeWindow, '2')
       await setKeys(fakeWindow, keys)
@@ -517,12 +518,12 @@ describe('cacheHandler', () => {
     it('returns properly formatted values', async () => {
       expect.assertions(1)
 
-      const values = await getFormattedCacheValues(fakeWindow, 5)
+      const values = await getFormattedCacheValues(fakeWindow, constants)
 
       expect(values).toEqual({
         account: 'account',
         balance: '2',
-        networkId: 3,
+        networkId: 4,
         locks: {
           lock1: {
             ...locks.lock1,
@@ -570,12 +571,12 @@ describe('cacheHandler', () => {
         transactions: [],
       }
 
-      const values = await getFormattedCacheValues(fakeWindow, 5)
+      const values = await getFormattedCacheValues(fakeWindow, constants)
 
       expect(values).toEqual({
         account: null,
         balance: '0',
-        networkId: 3,
+        networkId: 4,
         locks: {
           lock1: {
             ...locks.lock1,

@@ -66,11 +66,12 @@ export const lockHandler = (window, cachedData, actions) => {
  * The callback also sends "unlocked" and "locked" events to the main window, based on
  * the status of the lock/key pairs.
  * @param {window} window the global context (window, self, global)
- * @param {number} requiredConfirmations the minimum number of confirmations for a key to be valid
+ * @param {number} constants.requiredConfirmations the minimum number of confirmations for a key to be valid
+ * @param {number} constants.defaultNetwork the network we expect to be on
  * @returns {Function} a callback that should be passed one of "locks", "account", "balance",
  *                     "network" or "walletModal" to trigger a post of changed data to the main window
  */
-export default function postOffice(window, requiredConfirmations) {
+export default function postOffice(window, constants) {
   const { postMessage, addHandler } = iframePostOffice(
     window,
     'data iframe',
@@ -109,10 +110,7 @@ export default function postOffice(window, requiredConfirmations) {
 
   return {
     blockChainUpdater: async (update, content) => {
-      const cachedData = await getFormattedCacheValues(
-        window,
-        requiredConfirmations
-      )
+      const cachedData = await getFormattedCacheValues(window, constants)
       switch (update) {
         case 'ready':
           actions.ready()

@@ -41,10 +41,7 @@ describe('data iframe startup index', () => {
 
     await start(window, constants)
 
-    expect(postOffice).toHaveBeenCalledWith(
-      window,
-      constants.requiredConfirmations
-    )
+    expect(postOffice).toHaveBeenCalledWith(window, constants)
   })
 
   it('should add a listener to the cache with the post office updater', async () => {

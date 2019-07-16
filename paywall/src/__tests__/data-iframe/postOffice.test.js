@@ -25,6 +25,10 @@ import { setPaywallConfig } from '../../data-iframe/paywallConfig'
 describe('data iframe postOffice', () => {
   let fakeWindow
   let fakeTarget
+  const constants = {
+    requiredConfirmations: 12,
+    defaultNetwork: 1,
+  }
 
   describe('postOffice', () => {
     function makeWindow() {
@@ -63,7 +67,7 @@ describe('data iframe postOffice', () => {
     it('should return an update listener callback', () => {
       expect.assertions(1)
 
-      const { blockChainUpdater } = postOffice(fakeWindow, 12)
+      const { blockChainUpdater } = postOffice(fakeWindow, constants)
 
       expect(blockChainUpdater).toBeInstanceOf(Function)
     })
@@ -71,7 +75,7 @@ describe('data iframe postOffice', () => {
     it('should return an addHandler callback', () => {
       expect.assertions(1)
 
-      const { addHandler } = postOffice(fakeWindow, 12)
+      const { addHandler } = postOffice(fakeWindow, constants)
 
       expect(addHandler).toBeInstanceOf(Function)
     })
@@ -79,7 +83,7 @@ describe('data iframe postOffice', () => {
     it('should return a postMessage callback', () => {
       expect.assertions(1)
 
-      const { postMessage } = postOffice(fakeWindow, 12)
+      const { postMessage } = postOffice(fakeWindow, constants)
 
       expect(postMessage).toBeInstanceOf(Function)
     })
@@ -89,7 +93,7 @@ describe('data iframe postOffice', () => {
       beforeEach(() => {
         makeWindow()
 
-        const info = postOffice(fakeWindow, 12)
+        const info = postOffice(fakeWindow, constants)
         blockChainUpdater = info.blockChainUpdater
         setPaywallConfig({
           locks: {
@@ -190,7 +194,7 @@ describe('data iframe postOffice', () => {
         expect.assertions(3)
 
         await setAccount(fakeWindow, 'account')
-        await setNetwork(fakeWindow, 2)
+        await setNetwork(fakeWindow, 1)
         await setLocks(fakeWindow, {
           '0x123': {
             address: '0x123',
@@ -278,13 +282,13 @@ describe('data iframe postOffice', () => {
       it('network passes the network id to the main window', async done => {
         expect.assertions(1)
 
-        await setNetwork(fakeWindow, 2)
+        await setNetwork(fakeWindow, 4)
 
         fakeTarget.postMessage = (...args) => {
           expect(args).toEqual([
             {
               type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 2,
+              payload: 4,
             },
             'http://fun.times',
           ])
@@ -297,7 +301,7 @@ describe('data iframe postOffice', () => {
         expect.assertions(1)
 
         await setAccount(fakeWindow, 'account')
-        await setNetwork(fakeWindow, 2)
+        await setNetwork(fakeWindow, 1)
         await setLocks(fakeWindow, {
           '0x123': {
             address: '0x123',
@@ -390,7 +394,7 @@ describe('data iframe postOffice', () => {
           makeWindow()
 
           await setAccount(fakeWindow, 'account')
-          await setNetwork(fakeWindow, 2)
+          await setNetwork(fakeWindow, 1)
           await setLocks(fakeWindow, {
             '0x123': {
               address: '0x123',
@@ -413,7 +417,7 @@ describe('data iframe postOffice', () => {
               expiration: 0,
             },
           })
-          const info = postOffice(fakeWindow, 12)
+          const info = postOffice(fakeWindow, constants)
           blockChainUpdater = info.blockChainUpdater
           setPaywallConfig({
             locks: {
@@ -566,7 +570,7 @@ describe('data iframe postOffice', () => {
         })
 
         await setAccount(fakeWindow, 'account')
-        await setNetwork(fakeWindow, 2)
+        await setNetwork(fakeWindow, 1)
         await setLocks(fakeWindow, {
           '0x123': {
             address: '0x123',
@@ -623,7 +627,7 @@ describe('data iframe postOffice', () => {
         beforeEach(() => {
           makeWindow()
 
-          const info = postOffice(fakeWindow, 12)
+          const info = postOffice(fakeWindow, constants)
           blockChainUpdater = info.blockChainUpdater
           fakeTarget.postMessage = jest.fn()
         })
