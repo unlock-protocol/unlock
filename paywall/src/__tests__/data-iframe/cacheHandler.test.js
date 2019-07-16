@@ -153,7 +153,6 @@ describe('cacheHandler', () => {
       it('overwrites an existing transaction', async () => {
         expect.assertions(1)
 
-        // HERE IS THE FAIL - memory driver mutates its input
         await setTransactions(fakeWindow, myTransactions)
         await setTransaction(fakeWindow, {
           hash: 'myTransaction',
