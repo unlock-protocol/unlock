@@ -5,7 +5,7 @@ import withConfig from '../../utils/withConfig'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
-import LogInSignUp from '../interface/LogInSignUp'
+import LogInSignUp from '../interface/user-account/LogInSignUp'
 import KeyPurchaseConfirmation from '../interface/user-account/KeyPurchaseConfirmation'
 import { IframeWrapper } from '../interface/user-account/styles'
 
