@@ -98,7 +98,7 @@ async function getKeysAndTransactions({
   window,
   locksmithHost,
 }) {
-  ensureWalletReady(walletService)
+  await ensureWalletReady(walletService)
   const [keys] = await Promise.all([
     getKeys({ walletService, locks, web3Service }),
     // trigger retrieval of transactions. web3ServiceHub will do the actual
