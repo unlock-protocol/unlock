@@ -65,7 +65,7 @@ export class AccountContent extends React.Component<
     const { emailAddress, cards } = this.props
     if (!emailAddress) {
       return 'LogIn'
-    } else if (!cards) {
+    } else if (!cards || !cards.length) {
       return 'CollectPaymentDetails'
     } else {
       return 'ConfirmPurchase'
