@@ -74,7 +74,7 @@ describe('Sign Up Page', () => {
       expect(emailAddress).toEqual('julien@unlock-protocol.com')
     })
 
-    it('should yield the emailAddress from the location if there are several', () => {
+    it('should yield the first emailAddress from the location if there are several', () => {
       expect.assertions(1)
       const state = {
         router: {
