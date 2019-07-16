@@ -137,18 +137,31 @@ export async function merge({
 }) {
   const driver = getDriver(window)
   const container = await getContainer(window, networkId, accountAddress, type)
+  let newContainer
   if (value === undefined) {
-    delete container[type][subType]
+    newContainer = {
+      ...container,
+      [type]: {
+        ...container[type],
+      },
+    }
+    delete newContainer[type][subType]
   } else {
-    container[type] = container[type] || {}
-    const oldValue = container[type][subType] || {}
-    container[type][subType] = {
-      ...oldValue,
-      ...value,
+    const cType = container[type] || {}
+    const oldValue = { ...cType[subType] } || {}
+    newContainer = {
+      ...container,
+      [type]: {
+        ...cType,
+        [subType]: {
+          ...oldValue,
+          ...value,
+        },
+      },
     }
   }
 
-  await driver.saveKeyedItem(networkId, accountAddress, container)
+  await driver.saveKeyedItem(networkId, accountAddress, newContainer)
 }
 
 /**
