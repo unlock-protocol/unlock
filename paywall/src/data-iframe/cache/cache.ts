@@ -1,6 +1,6 @@
 import localStorageAvailable from '../../utils/localStorage'
 import InMemoryDriver from './drivers/memory'
-// import LocalStorageDriver from './drivers/localStorage'
+import LocalStorageDriver from './drivers/localStorage'
 import CacheDriver from './drivers/driverInterface'
 import { LocalStorageWindow } from '../../windowTypes'
 
@@ -12,9 +12,7 @@ export function getDriver(window: LocalStorageWindow) {
   if (!localStorageAvailable(window)) {
     __driver = new InMemoryDriver()
   } else {
-    __driver = new InMemoryDriver()
-
-    // __driver = new LocalStorageDriver(window)
+    __driver = new LocalStorageDriver(window)
   }
   return __driver
 }
