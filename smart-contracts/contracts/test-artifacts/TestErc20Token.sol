@@ -1,7 +1,7 @@
 pragma solidity 0.5.9;
 
-import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
-import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol';
+import 'openzeppelin-eth/contracts/token/ERC20/ERC20Mintable.sol';
+import 'openzeppelin-eth/contracts/token/ERC20/ERC20Detailed.sol';
 
 
 /**
@@ -15,6 +15,8 @@ contract TestErc20Token is
   ERC20Detailed
 {
   constructor() public
-    ERC20Detailed('Test Token', 'TT', 18)
-  {}
+  {
+    ERC20Mintable.initialize(msg.sender);
+    ERC20Detailed.initialize('Unlock Discount Token', 'UDT', 18);
+  }
 }
