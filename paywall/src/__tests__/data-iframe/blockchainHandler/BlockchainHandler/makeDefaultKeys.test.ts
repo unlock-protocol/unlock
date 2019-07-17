@@ -1,4 +1,4 @@
-import { makeDefaultKeys } from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
+import { makeDefaultKeys } from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 
 describe('setupBlockchainHandler - makeDefaultKeys', () => {
   it.each([null, '0x1234567890123456789012345678901234567890'])(

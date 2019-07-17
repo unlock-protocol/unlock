@@ -1,112 +1,69 @@
 import {
   Web3ServiceType,
-  BlockchainValues,
+  PaywallState,
   FetchWindow,
   ConstantsType,
   LocksmithTransactionsResult,
   TransactionDefaults,
+  WalletServiceType,
+  SetTimeoutWindow,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import { getWeb3Service } from '../../../test-helpers/setupBlockchainHelpers'
 import {
-  retrieveTransactions,
-  RetrieveTransactionsParams,
-} from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
+  BlockchainTestDefaults,
+  defaultValuesOverride,
+  setupTestDefaults,
+  addresses,
+  lockAddresses,
+} from '../../../test-helpers/setupBlockchainHelpers'
+import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+import { PaywallConfig } from '../../../../unlockTypes'
 
 describe('setupBlockchainHandler - retrieveTransactions', () => {
+  let walletService: WalletServiceType
   let web3Service: Web3ServiceType
-  let fakeWindow: FetchWindow
-  let listeners: { [key: string]: Function }
   let emitError: (error: Error) => void
-  let values: BlockchainValues
-  const constants: ConstantsType = {
-    requiredConfirmations: 12,
-    locksmithHost: 'http://fun.times',
-    unlockAddress: '0x123',
-    blockTime: 5000,
-    readOnlyProvider: 'http://readonly',
-    defaultNetwork: 1,
-  }
-  const addresses = [
-    '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-    '0x15B87bdC4B3ecb783F56f735653332EAD3BCa5F8',
-    '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-  ]
-  const lockAddresses = addresses.map(address => address.toLowerCase())
+  let emitChanges: () => void
+  let store: PaywallState
+  let constants: ConstantsType
+  let configuration: PaywallConfig
+  let fakeWindow: FetchWindow & SetTimeoutWindow
+  let handler: BlockchainHandler
+  let defaults: BlockchainTestDefaults
 
-  type optionalBlockchainValues = Partial<BlockchainValues>
+  type OptionalBlockchainValues = Partial<PaywallState>
 
   function setupDefaults(
-    valuesOverride: optionalBlockchainValues = {
-      config: {
-        locks: {
-          // addresses are normalized by the time they reach the listeners
-          [lockAddresses[0]]: { name: '1' },
-          [lockAddresses[1]]: { name: '2' },
-          [lockAddresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-    },
+    valuesOverride: OptionalBlockchainValues = defaultValuesOverride,
     jsonToFetch: { transactions?: LocksmithTransactionsResult[] } = {}
   ) {
-    fakeWindow = {
-      fetch: jest.fn((_: string) => {
-        return Promise.resolve({
-          json: () => Promise.resolve(jsonToFetch),
-        })
-      }),
-    }
-    listeners = {}
-    web3Service = getWeb3Service(listeners)
-    values = {
-      config: {
-        locks: {
-          // addresses are normalized by the time they reach the listeners
-          [lockAddresses[0]]: { name: '1' },
-          [lockAddresses[1]]: { name: '2' },
-          [lockAddresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-      ...valuesOverride,
-    }
-    emitError = jest.fn()
+    defaults = setupTestDefaults(valuesOverride, jsonToFetch)
+    walletService = defaults.walletService
+    web3Service = defaults.web3Service
+    emitError = defaults.emitError
+    emitChanges = defaults.emitChanges
+    store = defaults.store
+    constants = defaults.constants
+    configuration = defaults.configuration
+    fakeWindow = defaults.fakeWindow
+    handler = new BlockchainHandler({
+      walletService,
+      web3Service,
+      constants,
+      configuration,
+      emitChanges,
+      emitError,
+      window: fakeWindow,
+      store,
+    })
+    handler.init()
+    handler.setupListeners()
+
+    handler.retrieveCurrentBlockchainData = jest.fn()
+    handler.dispatchChangesToPostOffice = jest.fn()
   }
 
-  function callRetrieveTransactions(
-    params: Partial<RetrieveTransactionsParams> = {}
-  ) {
-    return retrieveTransactions({
-      lockAddresses,
-      constants,
-      web3Service,
-      window: fakeWindow,
-      values,
-      emitError,
-      ...params,
-    })
+  function callRetrieveTransactions() {
+    return handler.retrieveTransactions()
   }
 
   it('should not fetch transactions if there is no user account', async () => {
@@ -149,7 +106,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
         transactions: [
           {
             transactionHash: 'hash1',
-            chain: 1,
+            chain: 1984,
             recipient: addresses[0],
             data: 'hi',
             sender: addresses[1],
@@ -157,7 +114,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
           },
           {
             transactionHash: 'hash2',
-            chain: 1,
+            chain: 1984,
             recipient: addresses[1],
             data: null,
             sender: addresses[2],
@@ -190,7 +147,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
           for: transaction1.for,
           input: transaction1.data,
           hash: 'hash1',
-          network: 1,
+          network: 1984,
         }
 
         expect(web3Service.getTransaction).toHaveBeenNthCalledWith(

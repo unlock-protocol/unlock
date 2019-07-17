@@ -1,116 +1,68 @@
 import {
   WalletServiceType,
   Web3ServiceType,
-  BlockchainValues,
-  ConstantsType,
-  FetchWindow,
+  PaywallState,
   SetTimeoutWindow,
+  FetchWindow,
   LocksmithTransactionsResult,
+  ConstantsType,
   KeyResult,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import setupBlockchainHandler from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
+import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import {
-  getWalletService,
-  getWeb3Service,
-} from '../../../test-helpers/setupBlockchainHelpers'
-import {
-  PaywallConfig,
-  Transaction,
   TransactionStatus,
   TransactionType,
+  PaywallConfig,
+  Transaction,
   Locks,
 } from '../../../../unlockTypes'
+import {
+  defaultValuesOverride,
+  BlockchainTestDefaults,
+  addresses,
+  setupTestDefaults,
+  lockAddresses,
+  getDefaultFullLocks,
+} from '../../../test-helpers/setupBlockchainHelpers'
 import { waitFor } from '../../../../utils/promises'
 
-describe('setupBlockchainHandler - getNewData', () => {
+describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
   let walletService: WalletServiceType
   let web3Service: Web3ServiceType
   let emitError: (error: Error) => void
   let emitChanges: () => void
-  let listeners: { [key: string]: Function }
-  let values: BlockchainValues
+  let store: PaywallState
   let constants: ConstantsType
   let configuration: PaywallConfig
   let fakeWindow: FetchWindow & SetTimeoutWindow
-  const addresses = [
-    '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-    '0x15B87bdC4B3ecb783F56f735653332EAD3BCa5F8',
-    '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-  ]
-  const lockAddresses = addresses.map(address => address.toLowerCase())
+  let handler: BlockchainHandler
+  let defaults: BlockchainTestDefaults
 
-  type OptionalBlockchainValues = Partial<BlockchainValues>
+  type OptionalBlockchainValues = Partial<PaywallState>
 
   function setupDefaults(
-    valuesOverride: OptionalBlockchainValues = {
-      config: {
-        locks: {
-          // addresses are normalized by the time they reach the listeners
-          [lockAddresses[0]]: { name: '1' },
-          [lockAddresses[1]]: { name: '2' },
-          [lockAddresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-    },
+    valuesOverride: OptionalBlockchainValues = defaultValuesOverride,
     jsonToFetch: { transactions?: LocksmithTransactionsResult[] } = {}
   ) {
-    fakeWindow = {
-      fetch: jest.fn((_: string) => {
-        return Promise.resolve({
-          json: () => Promise.resolve(jsonToFetch),
-        })
-      }),
-      setTimeout: jest.fn(),
-    }
-    listeners = {}
-    constants = {
-      requiredConfirmations: 12,
-      locksmithHost: 'http://fun.times',
-      unlockAddress: '0x123',
-      blockTime: 5000,
-      readOnlyProvider: 'http://readonly',
-      defaultNetwork: 1984,
-    }
-    emitChanges = jest.fn()
-    emitError = jest.fn()
-    walletService = getWalletService(listeners)
-    web3Service = getWeb3Service(listeners)
-    values = {
-      config: {
-        locks: {
-          // addresses are not normalized yet
-          [addresses[0]]: { name: '1' },
-          [addresses[1]]: { name: '2' },
-          [addresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-      ...valuesOverride,
-    }
-    configuration = values.config
+    defaults = setupTestDefaults(valuesOverride, jsonToFetch)
+    walletService = defaults.walletService
+    web3Service = defaults.web3Service
+    emitError = defaults.emitError
+    emitChanges = defaults.emitChanges
+    store = defaults.store
+    constants = defaults.constants
+    configuration = defaults.configuration
+    fakeWindow = defaults.fakeWindow
+    handler = new BlockchainHandler({
+      walletService,
+      web3Service,
+      constants,
+      configuration,
+      emitChanges,
+      emitError,
+      window: fakeWindow,
+      store,
+    })
     const mock: any = web3Service.getLock
     mock.mockImplementation((address: string) => {
       web3Service.emit('lock.updated', address, {
@@ -122,75 +74,7 @@ describe('setupBlockchainHandler - getNewData', () => {
       })
       return Promise.resolve()
     })
-  }
-
-  async function callSetupBlockchainHandler() {
-    return setupBlockchainHandler({
-      walletService,
-      web3Service,
-      constants,
-      configuration,
-      emitChanges,
-      emitError,
-      window: fakeWindow,
-      values,
-    })
-  }
-
-  type KeyExpirationOverrides = {
-    [key: string]: number
-  }
-  function getDefaultFullLocks(
-    values: BlockchainValues,
-    keyExpirations: KeyExpirationOverrides = {}
-  ): Locks {
-    return {
-      [lockAddresses[0]]: {
-        address: lockAddresses[0],
-        key: {
-          confirmations: 0,
-          expiration: keyExpirations[lockAddresses[0]] || 0,
-          lock: lockAddresses[0],
-          owner: values.account,
-          status: 'none',
-          transactions: [],
-        },
-        name: '',
-        keyPrice: '0',
-        expirationDuration: 1,
-        currencyContractAddress: null,
-      },
-      [lockAddresses[1]]: {
-        address: lockAddresses[1],
-        key: {
-          confirmations: 0,
-          expiration: keyExpirations[lockAddresses[1]] || 0,
-          lock: lockAddresses[1],
-          owner: values.account,
-          status: 'none',
-          transactions: [],
-        },
-        name: '',
-        keyPrice: '0',
-        expirationDuration: 1,
-        currencyContractAddress: null,
-      },
-      [lockAddresses[2]]: {
-        address: lockAddresses[2],
-        key: {
-          confirmations: 0,
-          expiration: keyExpirations[lockAddresses[2]] || 0,
-          lock: lockAddresses[2],
-          owner: values.account,
-          status: 'none',
-          transactions: [],
-        },
-        name: '',
-        keyPrice: '0',
-        expirationDuration: 1,
-        currencyContractAddress: null,
-      },
-    }
+    handler.init()
   }
 
   describe('user is not logged in', () => {
@@ -201,12 +85,10 @@ describe('setupBlockchainHandler - getNewData', () => {
     it('should clear transactions, set up default keys, and set balance to "0"', async () => {
       expect.assertions(3)
 
-      const getNewData = await callSetupBlockchainHandler()
+      await handler.retrieveCurrentBlockchainData()
 
-      await getNewData()
-
-      expect(values.transactions).toEqual({})
-      expect(values.keys).toEqual({
+      expect(store.transactions).toEqual({})
+      expect(store.keys).toEqual({
         [lockAddresses[0]]: {
           lock: lockAddresses[0],
           owner: null,
@@ -223,21 +105,19 @@ describe('setupBlockchainHandler - getNewData', () => {
           expiration: 0,
         },
       })
-      expect(values.balance).toBe('0')
+      expect(store.balance).toBe('0')
     })
 
-    it('should call emitChanges with the default values', async () => {
+    it('should call emitChanges with the default store', async () => {
       expect.assertions(1)
 
-      const getNewData = await callSetupBlockchainHandler()
-
-      await getNewData()
+      await handler.retrieveCurrentBlockchainData()
 
       // locks get populated when web3Service.getLock emits 'lock.updated'
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(values),
+        locks: getDefaultFullLocks(store),
         account: null,
         balance: '0',
         network: 1984,
@@ -250,18 +130,16 @@ describe('setupBlockchainHandler - getNewData', () => {
       setupDefaults({ account: addresses[2] })
     })
 
-    it('should call emitChanges with the right values', async () => {
+    it('should call emitChanges with the right store', async () => {
       expect.assertions(1)
 
-      const getNewData = await callSetupBlockchainHandler()
-
-      await getNewData()
+      await handler.retrieveCurrentBlockchainData()
 
       // locks get populated when web3Service.getLock emits 'lock.updated'
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(values),
+        locks: getDefaultFullLocks(store),
         account: addresses[2],
         balance: '0',
         network: 1984,
@@ -282,20 +160,65 @@ describe('setupBlockchainHandler - getNewData', () => {
         return Promise.resolve(key)
       })
 
-      const getNewData = await callSetupBlockchainHandler()
-
-      await getNewData()
+      await handler.retrieveCurrentBlockchainData()
 
       // locks get populated when web3Service.getLock emits 'lock.updated'
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(values, {
+        locks: getDefaultFullLocks(store, {
           [lockAddresses[0]]: 12345, // override key expiration for key on lock 0
         }),
         account: addresses[2],
         balance: '0',
         network: 1984,
+      })
+    })
+
+    it('should pass any errors in key retrieval to emitError', async () => {
+      expect.assertions(1)
+
+      const error = new Error('fail')
+      const mock: any = web3Service.getKeyByLockForOwner
+      mock.mockImplementationOnce(() => {
+        return Promise.reject(error)
+      })
+
+      await handler.retrieveCurrentBlockchainData()
+
+      expect(emitError).toHaveBeenCalledWith(error)
+    })
+
+    describe('default keys', () => {
+      beforeEach(() => {
+        setupDefaults({
+          account: addresses[2],
+          keys: {
+            [lockAddresses[0]]: {
+              lock: lockAddresses[0],
+              owner: addresses[2],
+              expiration: 3,
+            },
+          },
+        })
+      })
+
+      it('should fill in the missing keys with defaults', async () => {
+        expect.assertions(1)
+
+        // remove some keys manually
+
+        delete store.keys[lockAddresses[1]]
+        delete store.keys[lockAddresses[2]]
+        await handler.retrieveCurrentBlockchainData()
+
+        // this proves that 3 keys still exist
+        expect(emitChanges).toHaveBeenCalledWith({
+          locks: getDefaultFullLocks(store, {}),
+          account: addresses[2],
+          balance: '0',
+          network: 1984,
+        })
       })
     })
 
@@ -309,8 +232,8 @@ describe('setupBlockchainHandler - getNewData', () => {
                 transactionHash: 'hash',
                 chain: constants.defaultNetwork,
                 recipient: addresses[1], // locksmith returns checksummed addresses
-                sender: values.account as string,
-                for: values.account as string,
+                sender: store.account as string,
+                for: store.account as string,
                 data: 'data',
               },
             ],
@@ -328,7 +251,7 @@ describe('setupBlockchainHandler - getNewData', () => {
             blockNumber: Number.MAX_SAFE_INTEGER,
             lock: addresses[1], // chain returns checksummed addresses
             to: addresses[1], // chain returns checksummed addresses
-            for: values.account as string,
+            for: store.account as string,
           }
           web3Service.emit('transaction.updated', hash, transaction)
           return Promise.resolve()
@@ -338,14 +261,13 @@ describe('setupBlockchainHandler - getNewData', () => {
       it('should retrieve transactions', async () => {
         expect.assertions(2)
 
-        const getNewData = await callSetupBlockchainHandler()
-        const locks: Locks = getDefaultFullLocks(values)
+        const locks: Locks = getDefaultFullLocks(store)
         locks[lockAddresses[1]].key.status = 'pending'
         locks[lockAddresses[1]].key.transactions = [
           {
             blockNumber: Number.MAX_SAFE_INTEGER,
             confirmations: 0,
-            for: values.account as string,
+            for: store.account as string,
             hash: 'hash',
             lock: lockAddresses[1], // normalized lock value
             status: TransactionStatus.PENDING,
@@ -354,9 +276,9 @@ describe('setupBlockchainHandler - getNewData', () => {
           },
         ]
 
-        await getNewData()
+        await handler.retrieveCurrentBlockchainData()
 
-        await waitFor(() => Object.keys(values.transactions).length)
+        await waitFor(() => Object.keys(store.transactions).length)
 
         // locks get populated when web3Service.getLock emits 'lock.updated'
         // see the setupListeners function for implementation

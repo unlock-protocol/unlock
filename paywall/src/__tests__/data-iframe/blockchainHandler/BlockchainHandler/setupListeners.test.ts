@@ -1,97 +1,71 @@
 import {
   WalletServiceType,
   Web3ServiceType,
-  BlockchainValues,
+  PaywallState,
+  SetTimeoutWindow,
+  FetchWindow,
+  LocksmithTransactionsResult,
+  ConstantsType,
+  TransactionDefaults,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import {
-  setupListeners,
+import BlockchainHandler, {
   makeDefaultKeys,
-} from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
-import { TransactionStatus, TransactionType } from '../../../../unlockTypes'
+} from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import {
-  getWalletService,
-  getWeb3Service,
+  TransactionStatus,
+  TransactionType,
+  PaywallConfig,
+} from '../../../../unlockTypes'
+import {
+  defaultValuesOverride,
+  BlockchainTestDefaults,
+  addresses,
+  setupTestDefaults,
+  lockAddresses,
 } from '../../../test-helpers/setupBlockchainHelpers'
 
-describe('setupBlockchainHandlers - setupListeners', () => {
+describe('BlockchainHandler - setupListeners', () => {
   let walletService: WalletServiceType
   let web3Service: Web3ServiceType
-  let getNewData: () => void
-  let propagateChanges: () => void
   let emitError: (error: Error) => void
-  let listeners: { [key: string]: Function }
-  let values: BlockchainValues
-  const addresses = [
-    '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-    '0x15B87bdC4B3ecb783F56f735653332EAD3BCa5F8',
-    '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-  ]
-  const lockAddresses = addresses.map(address => address.toLowerCase())
+  let emitChanges: () => void
+  let store: PaywallState
+  let constants: ConstantsType
+  let configuration: PaywallConfig
+  let fakeWindow: FetchWindow & SetTimeoutWindow
+  let handler: BlockchainHandler
+  let defaults: BlockchainTestDefaults
 
-  type OptionalBlockchainValues = Partial<BlockchainValues>
+  type OptionalBlockchainValues = Partial<PaywallState>
 
   function setupDefaults(
-    valuesOverride: OptionalBlockchainValues = {
-      config: {
-        locks: {
-          // addresses are normalized by the time they reach the listeners
-          [lockAddresses[0]]: { name: '1' },
-          [lockAddresses[1]]: { name: '2' },
-          [lockAddresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-    }
+    valuesOverride: OptionalBlockchainValues = defaultValuesOverride,
+    jsonToFetch: { transactions?: LocksmithTransactionsResult[] } = {}
   ) {
-    listeners = {}
-    getNewData = jest.fn()
-    propagateChanges = jest.fn()
-    emitError = jest.fn()
-    walletService = getWalletService(listeners)
-    web3Service = getWeb3Service(listeners)
-    values = {
-      config: {
-        locks: {
-          // addresses are normalized by the time they reach the listeners
-          [lockAddresses[0]]: { name: '1' },
-          [lockAddresses[1]]: { name: '2' },
-          [lockAddresses[2]]: { name: '3' },
-        },
-        callToAction: {
-          default: '',
-          expired: '',
-          pending: '',
-          confirmed: '',
-        },
-      },
-      account: null,
-      balance: '0',
-      keys: {},
-      locks: {},
-      transactions: {},
-      network: 1,
-      ...valuesOverride,
-    }
-    setupListeners({
+    defaults = setupTestDefaults(valuesOverride, jsonToFetch)
+    walletService = defaults.walletService
+    web3Service = defaults.web3Service
+    emitError = defaults.emitError
+    emitChanges = defaults.emitChanges
+    store = defaults.store
+    constants = defaults.constants
+    configuration = defaults.configuration
+    fakeWindow = defaults.fakeWindow
+    handler = new BlockchainHandler({
       walletService,
       web3Service,
-      getNewData,
-      propagateChanges,
-      lockAddresses,
-      values,
+      constants,
+      configuration,
+      emitChanges,
       emitError,
+      window: fakeWindow,
+      store,
     })
+    handler.init()
+    handler.setupListeners()
+
+    handler.retrieveCurrentBlockchainData = jest.fn()
+    handler.dispatchChangesToPostOffice = jest.fn()
   }
 
   beforeEach(() => {
@@ -108,11 +82,11 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('account.changed', addresses[1])
 
-      expect(getNewData).toHaveBeenCalled()
+      expect(handler.retrieveCurrentBlockchainData).toHaveBeenCalled()
 
-      expect(values.transactions).toEqual({})
-      expect(values.keys).toEqual(makeDefaultKeys(lockAddresses, addresses[1]))
-      expect(values.account).toBe(addresses[1])
+      expect(store.transactions).toEqual({})
+      expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, addresses[1]))
+      expect(store.account).toBe(addresses[1])
     })
 
     it('should not call getNewData on account.changed if account is the same', () => {
@@ -120,11 +94,11 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('account.changed', null)
 
-      expect(getNewData).not.toHaveBeenCalled()
+      expect(handler.retrieveCurrentBlockchainData).not.toHaveBeenCalled()
 
-      expect(values.transactions).toEqual({})
-      expect(values.keys).toEqual({})
-      expect(values.account).toBeNull()
+      expect(store.transactions).toEqual({})
+      expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, null))
+      expect(store.account).toBeNull()
     })
   })
 
@@ -136,27 +110,25 @@ describe('setupBlockchainHandlers - setupListeners', () => {
     it('should call getNewData on network.changed', () => {
       expect.assertions(4)
 
-      walletService.emit('network.changed', 1984)
+      walletService.emit('network.changed', 1)
 
-      expect(getNewData).toHaveBeenCalled()
+      expect(handler.retrieveCurrentBlockchainData).toHaveBeenCalled()
 
-      expect(values.transactions).toEqual({})
-      expect(values.keys).toEqual(
-        makeDefaultKeys(lockAddresses, values.account)
-      )
-      expect(values.network).toBe(1984)
+      expect(store.transactions).toEqual({})
+      expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, store.account))
+      expect(store.network).toBe(1)
     })
 
     it('should not call getNewData on network.changed if network is the same', () => {
       expect.assertions(4)
 
-      walletService.emit('network.changed', 1)
+      walletService.emit('network.changed', 1984)
 
-      expect(getNewData).not.toHaveBeenCalled()
+      expect(handler.retrieveCurrentBlockchainData).not.toHaveBeenCalled()
 
-      expect(values.transactions).toEqual({})
-      expect(values.keys).toEqual({})
-      expect(values.network).toBe(1)
+      expect(store.transactions).toEqual({})
+      expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, null))
+      expect(store.network).toBe(1984)
     })
   })
 
@@ -170,8 +142,8 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('account.updated', null, { balance: '123' })
 
-      expect(propagateChanges).toHaveBeenCalled()
-      expect(values.balance).toBe('123')
+      expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
+      expect(store.balance).toBe('123')
     })
 
     it('should not call propagateChanges on account.updated if account is not the user account', () => {
@@ -181,8 +153,8 @@ describe('setupBlockchainHandlers - setupListeners', () => {
         balance: '0',
       })
 
-      expect(propagateChanges).not.toHaveBeenCalled()
-      expect(values.balance).toBe('0')
+      expect(handler.dispatchChangesToPostOffice).not.toHaveBeenCalled()
+      expect(store.balance).toBe('0')
     })
   })
 
@@ -198,17 +170,27 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('key.updated', 'id', {
         lock: addresses[0], // non-normalized on purpose
-        owner: values.account,
+        owner: store.account,
         expiration: 5,
       })
 
-      expect(propagateChanges).toHaveBeenCalled()
-      expect(values.keys).toEqual({
+      expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
+      expect(store.keys).toEqual({
         // normalized lock values
         [lockAddresses[0]]: {
           lock: lockAddresses[0],
-          owner: values.account,
+          owner: store.account,
           expiration: 5,
+        },
+        [lockAddresses[1]]: {
+          lock: lockAddresses[1],
+          owner: store.account,
+          expiration: 0,
+        },
+        [lockAddresses[2]]: {
+          lock: lockAddresses[2],
+          owner: store.account,
+          expiration: 0,
         },
       })
     })
@@ -226,7 +208,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('transaction.updated', 'hash', { thing: 1 })
 
-      expect(propagateChanges).toHaveBeenCalled()
+      expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
     })
 
     it('should use defaults if the transaction does not exist yet', () => {
@@ -234,7 +216,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('transaction.updated', 'hash', { thing: 1 })
 
-      expect(values.transactions).toEqual({
+      expect(store.transactions).toEqual({
         hash: {
           hash: 'hash',
           blockNumber: Number.MAX_SAFE_INTEGER,
@@ -247,7 +229,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
     it('should use the existing transaction if the transaction exists', () => {
       expect.assertions(1)
 
-      values.transactions = {
+      store.transactions = {
         hash: {
           hash: 'hash',
           blockNumber: 5,
@@ -259,9 +241,10 @@ describe('setupBlockchainHandlers - setupListeners', () => {
       walletService.emit('transaction.updated', 'hash', {
         thing: 1,
         lock: addresses[0],
+        to: addresses[1],
       })
 
-      expect(values.transactions).toEqual({
+      expect(store.transactions).toEqual({
         hash: {
           hash: 'hash',
           blockNumber: 5,
@@ -269,6 +252,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           confirmations: 1,
           type: TransactionType.KEY_PURCHASE,
           lock: lockAddresses[0], // verify normalized lock address is used
+          to: lockAddresses[1], // verify normalized lock address is used
           thing: 1,
         },
       })
@@ -287,7 +271,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('lock.updated', addresses[0], { thing: 1 })
 
-      expect(propagateChanges).toHaveBeenCalled()
+      expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
     })
 
     it('should use defaults if the lock does not exist yet', () => {
@@ -295,7 +279,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('lock.updated', addresses[0], { thing: 1 })
 
-      expect(values.locks).toEqual({
+      expect(store.locks).toEqual({
         // verify lock addresses are normalized
         [lockAddresses[0]]: {
           address: lockAddresses[0],
@@ -307,7 +291,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
     it('should use the existing transaction if the transaction exists', () => {
       expect.assertions(1)
 
-      values.locks = {
+      store.locks = {
         [lockAddresses[0]]: {
           address: lockAddresses[0],
           name: 'hi',
@@ -318,7 +302,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
       }
       walletService.emit('lock.updated', addresses[0], { thing: 1 })
 
-      expect(values.locks).toEqual({
+      expect(store.locks).toEqual({
         [lockAddresses[0]]: {
           address: lockAddresses[0],
           name: 'hi',
@@ -334,6 +318,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
   describe('transaction.new', () => {
     beforeEach(() => {
       setupDefaults()
+      handler.storeTransaction = jest.fn()
     })
 
     it('should call propagateChanges', () => {
@@ -349,7 +334,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
         'status'
       )
 
-      expect(propagateChanges).toHaveBeenCalled()
+      expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
     })
 
     it('should add a new submitted transaction with values passed in', () => {
@@ -365,7 +350,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
         'submitted'
       )
 
-      expect(values.transactions).toEqual({
+      expect(store.transactions).toEqual({
         hash: {
           hash: 'hash',
           to: lockAddresses[0], // verify lock address is normalized
@@ -377,9 +362,35 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           key: `${addresses[0]}-from`, // key is non-normalized
           lock: lockAddresses[0], // verify lock address is normalized
           confirmations: 0,
-          network: values.network,
+          network: store.network,
         },
       })
+    })
+
+    it('should store the transaction in locksmith', () => {
+      expect.assertions(1)
+
+      walletService.emit(
+        'transaction.new',
+        'hash',
+        'from',
+        addresses[0] /* to */,
+        'input',
+        TransactionType.KEY_PURCHASE,
+        'submitted'
+      )
+
+      const newTransaction: TransactionDefaults = {
+        hash: 'hash',
+        for: 'from',
+        from: 'from',
+        to: lockAddresses[0], // lock address is normalized
+        input: 'input',
+        type: TransactionType.KEY_PURCHASE,
+        status: TransactionStatus.SUBMITTED,
+      }
+
+      expect(handler.storeTransaction).toHaveBeenCalledWith(newTransaction)
     })
   })
 
@@ -413,14 +424,14 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('error', keyPurchaseError)
 
-      expect(getNewData).toHaveBeenCalled()
+      expect(handler.retrieveCurrentBlockchainData).toHaveBeenCalled()
     })
 
     it('should remove submitted transactions from values on key purchase failure', () => {
       expect.assertions(1)
 
       const keyPurchaseError = new Error('FAILED_TO_PURCHASE_KEY')
-      values.transactions = {
+      store.transactions = {
         hash: {
           hash: 'hash',
           status: TransactionStatus.SUBMITTED,
@@ -439,7 +450,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
 
       walletService.emit('error', keyPurchaseError)
 
-      expect(values.transactions).toEqual({
+      expect(store.transactions).toEqual({
         hash1: {
           hash: 'hash1',
           status: TransactionStatus.MINED,

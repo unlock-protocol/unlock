@@ -33,6 +33,7 @@ export interface Web3ServiceType extends EventEmitter {
 }
 
 export interface TransactionDefaults {
+  hash: string
   to: string
   from: string
   input: string | null
@@ -79,14 +80,24 @@ export interface FetchResult {
 }
 
 export interface FetchWindow {
-  fetch: (url: string) => Promise<FetchResult>
+  fetch: (
+    url: string,
+    options?: {
+      method: 'POST'
+      mode: 'cors'
+      headers: {
+        'Content-Type': 'application/json'
+      }
+      body: string
+    }
+  ) => Promise<FetchResult>
 }
 
 export interface SetTimeoutWindow {
   setTimeout: (cb: Function, delay?: number) => number
 }
 
-export interface BlockchainValues {
+export interface PaywallState {
   config: PaywallConfig
   keys: KeyResults
   locks: RawLocks
