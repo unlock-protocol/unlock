@@ -4,7 +4,7 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, lock, locks, tx
 
@@ -14,7 +14,7 @@ contract('Lock / grantKeys', accounts => {
   const validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
   })
