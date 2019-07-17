@@ -19,7 +19,7 @@ For now, it should be empty and look like this:
 
 ![empty dashboard](/static/images/blog/first-lock/empty-dashboard.png)
 
-On the top left, you can see which network you're connected to (Ethereum has a single "Main Metwork" and several test networks, such as Rinkeby or Goerli): make sure you're on the Main network. You can also view which address your wallet is currently using.
+On the top left, you can see which network you're connected to. Ethereum has a single "Main Network" and several test networks, such as Rinkeby or Goerli. Make sure you're on the Main Network. You can also view which address your wallet is currently using.
 
 On the top right, a button lets you create a lock. Once you clicked on it, a form appears and lets you prepare your first lock.
 
