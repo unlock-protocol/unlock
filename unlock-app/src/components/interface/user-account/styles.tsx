@@ -162,4 +162,10 @@ export const Item = ({ title, children, size }: ItemProps) => {
   )
 }
 
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-gap: 16px;
+`
+
 // TODO: steal input/button elements from other parts of app and integrate here
