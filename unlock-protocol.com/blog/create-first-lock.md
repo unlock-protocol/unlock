@@ -21,7 +21,7 @@ For now, it should be empty and look like this:
 
 On the top left, you can see which network you're connected to. Ethereum has a single "Main Network" and several test networks, such as Rinkeby or Goerli. Make sure you're on the Main Network. You can also view which address your wallet is currently using.
 
-On the top right, a button lets you create a lock. Once you clicked on it, a form appears and lets you prepare your first lock.
+On the top right, a button lets you create a lock. Once you click on it, a form appears and lets you prepare your first lock.
 
 ![create lock form](/static/images/blog/first-lock/create-lock-form.png)
 
