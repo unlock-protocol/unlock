@@ -3,7 +3,7 @@ import {
   normalizeAddressKeys,
 } from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 
-describe('setupBlockchainHandler - normalizing functionality', () => {
+describe('BlockchainHandler - normalizing functionality', () => {
   describe('normalizeLockAddress', () => {
     it('should normalize a lock address to all lower case', () => {
       expect.assertions(2)

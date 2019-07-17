@@ -18,7 +18,7 @@ import {
 import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import { PaywallConfig } from '../../../../unlockTypes'
 
-describe('setupBlockchainHandler - retrieveTransactions', () => {
+describe('BlockchainHandler - retrieveTransactions', () => {
   let walletService: WalletServiceType
   let web3Service: Web3ServiceType
   let emitError: (error: Error) => void
