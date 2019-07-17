@@ -3,7 +3,7 @@ const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
 
 const PublicLock = artifacts.require('../../PublicLock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 
@@ -11,7 +11,7 @@ let unlock
 
 contract('Lock / createLockWithInfiniteKeys', () => {
   before(async function() {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
   })
 
   describe('Create a Lock with infinite keys', function() {
