@@ -43,7 +43,7 @@ Picking the right duration is useful because a key holder can "cancel" their key
 
 As the lock owner you can choose how many people can purchase keys. This is important because many membership are "exclusive". For example, an artist may want to only allocate a small number of keys to their truest fans (in that case, they would have several locks, each represented a _level_ of membership).
 
-It is possible to set an unlimited amount of members.
+It is possible to set an unlimited number of members.
 
 Note that expired keys still count toward the maximum number of keys, but as we've seen, keys can be extended (by sending another payment to the lock) and they can be transfered as well...
 
