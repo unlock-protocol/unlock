@@ -21,7 +21,7 @@ contract MixinKeys is
   }
 
   // Called when the Lock owner expires a user's Key
-  event ExpireKey(uint tokenId);
+  event ExpireKey(uint indexed tokenId);
 
   // Keys
   // Each owner can have at most exactly one key
