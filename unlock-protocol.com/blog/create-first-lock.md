@@ -49,7 +49,7 @@ Note that expired keys still count toward the maximum number of keys, but as we'
 
 ### Key Price
 
-The price of each key is made of 2 things : the currency and the amount of that currency. By default, our UI uses Ether, the native Ethereum currency, but the UI also leaves the option to use [DAI](https://makerdao.com/en/dai), a stable coin, whose value is always 1$. <small>(Our smart contract actually supports any [ERC20](https://www.investopedia.com/news/what-erc20-and-what-does-it-mean-ethereum/), please, get in touch if you need to deploy a lock which uses something else than DAI)</small>
+The price of each key is made of 2 things: the currency and the amount of that currency. By default, our UI uses Ether, the native Ethereum currency, but the UI also leaves the option to use [DAI](https://makerdao.com/en/dai), a stable coin, whose value is always 1$. <small>(Our smart contract actually supports any [ERC20](https://www.investopedia.com/news/what-erc20-and-what-does-it-mean-ethereum/). Please get in touch if you need to deploy a lock which uses something else than DAI!)</small>
 
 Once you've chose your currency, you can set the price you want, from 0 to billions!
 
