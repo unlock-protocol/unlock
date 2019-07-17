@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
 const LockApi = require('../helpers/lockApi')
@@ -15,7 +15,7 @@ contract('Lock / erc20', accounts => {
     token = await TestErc20Token.new()
     // Mint some tokens so that the totalSupply is greater than 0
     await token.mint(accounts[0], 1)
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks['FIRST']
     lockApi = new LockApi(lock)
