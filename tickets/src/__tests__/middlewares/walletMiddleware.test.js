@@ -3,6 +3,7 @@ import walletMiddleware from '../../middlewares/walletMiddleware'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
+import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ERROR } from '../../actions/error'
 import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
@@ -353,5 +354,37 @@ describe('Wallet middleware', () => {
       )
     )
     expect(next).toHaveBeenCalledWith(action)
+  })
+
+  describe('PURCHASE_KEY', () => {
+    it('should call purchaseKey on the walletService with the right values', () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      state.locks = {
+        '0xLock': {
+          keyPrice: '0.01',
+          currencyContractAddress: '0xERC20Contract',
+          address: '0xLock',
+        },
+      }
+      const action = {
+        type: PURCHASE_KEY,
+        key: {
+          lock: '0xLock',
+          owner: '0xOwner',
+        },
+      }
+      mockWalletService.purchaseKey = jest.fn()
+      invoke(action)
+      expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
+        action.key.lock,
+        action.key.owner,
+        state.locks['0xLock'].keyPrice,
+        null,
+        null,
+        state.locks['0xLock'].currencyContractAddress
+      )
+      expect(next).toHaveBeenCalledWith(action)
+    })
   })
 })

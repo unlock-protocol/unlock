@@ -10993,6 +10993,1569 @@ Object {
 }
 `;
 
+exports[`Storyshots HomeContent Homepage content 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c4 {
+  fill: var(--brand);
+}
+
+.c7 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 15px;
+}
+
+.c7 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c7:hover {
+  background-color: var(--link);
+}
+
+.c7:hover > svg {
+  fill: white;
+}
+
+.c7:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 48px;
+}
+
+.c10 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
+.c8 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c6:hover .c8 {
+  display: inline-block;
+}
+
+.c3 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(6,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: right;
+  -webkit-justify-content: right;
+  -ms-flex-pack: right;
+  justify-content: right;
+  height: 100%;
+}
+
+.c9 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c9 .c6 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c9 .c6:nth-child(1) {
+  pointer-events: none;
+}
+
+.c9 .c6:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c9 .c6 > svg {
+  fill: var(--grey);
+}
+
+.c9 .c6:hover > svg {
+  fill: var(--grey);
+}
+
+.c11 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c11 .c6 {
+  margin: 24px;
+}
+
+.c11 .c6 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+  line-height: 0;
+}
+
+.c30 {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(6,24px) 1fr;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c31 {
+  justify-self: end;
+  font-size: 12px;
+  font-weight: 200;
+  font-style: italic;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+}
+
+.c0 {
+  display: grid;
+  padding-bottom: 60px;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c2 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c24 {
+  margin-top: 30px;
+}
+
+.c24:before {
+  display: block;
+  content: '';
+  width: 87px;
+  height: 3px;
+  background-color: var(--silver);
+  margin-bottom: 16px;
+}
+
+.c13 {
+  font-size: 32px;
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  margin-top: 0px;
+}
+
+.c29 {
+  font-size: 32px;
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+}
+
+.c19 {
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 500;
+  font-size: 24px;
+}
+
+.c17 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  grid-gap: 24px;
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--darkgrey);
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c18 {
+  display: grid;
+  justify-items: center;
+}
+
+.c15 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  max-width: 400px;
+  padding: 20px 50px;
+}
+
+.c15:hover {
+  background-color: var(--activegreen);
+}
+
+.c14 {
+  display: grid;
+  justify-items: center;
+  grid-gap: 16px;
+  margin-bottom: 50px;
+}
+
+.c16 {
+  font-size: 12px;
+  font-weight: 200;
+  font-family: 'IBM Plex Mono','Courier New',Serif;
+  color: var(--darkgrey);
+  display: grid;
+  grid-row: 2;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.c26 {
+  display: grid;
+  grid-gap: 16px;
+  margin: auto;
+  margin-top: 25px;
+}
+
+.c27 {
+  background: var(--lightgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 16px;
+  border: 0;
+  padding: 20px;
+}
+
+.c28 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  color: var(--white);
+  padding: 20px 50px;
+}
+
+.c28:hover {
+  background-color: var(--activegreen);
+}
+
+.c20 {
+  border-style: none;
+  background: url(/static/images/pages/png/simple.png) no-repeat center/contain;
+  width: 280px;
+  height: 200px;
+}
+
+.c20:hover {
+  background: url(/static/images/pages/png/simple-hover.png) no-repeat center/contain;
+}
+
+.c20:after {
+  content: url(/static/images/pages/png/simple-hover.png);
+  display: none;
+}
+
+.c22 {
+  border-style: none;
+  background: url(/static/images/pages/png/code.png) no-repeat center/contain;
+  width: 280px;
+  height: 200px;
+}
+
+.c22:hover {
+  background: url(/static/images/pages/png/code-hover.png) no-repeat center/contain;
+}
+
+.c22:after {
+  content: url(/static/images/pages/png/code-hover.png);
+  display: none;
+}
+
+.c23 {
+  border-style: none;
+  background: url(/static/images/pages/png/more.png) no-repeat center/contain;
+  width: 280px;
+  height: 200px;
+}
+
+.c23:hover {
+  background: url(/static/images/pages/png/more-hover.png) no-repeat center/contain;
+}
+
+.c23:after {
+  content: url(/static/images/pages/png/more-hover.png);
+  display: none;
+}
+
+.c12 {
+  font-size: 36px;
+  margin-top: 30px;
+  margin-bottom: 0px;
+  color: var(--darkgrey);
+  font-weight: 700;
+}
+
+.c25 {
+  font-size: 36px;
+  margin-bottom: 0px;
+  color: var(--darkgrey);
+  font-weight: 700;
+}
+
+.c21 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c3 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c11 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c11 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c32 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c26 {
+    grid-template-columns: minmax(180px,364px) 212px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        />
+        <div
+          class="c2"
+        >
+          <header
+            class="c3"
+          >
+            <a
+              href="/"
+            >
+              <svg
+                class="c4"
+                height="28px"
+                name="Unlock"
+                viewBox="0 0 1200 256"
+              >
+                <title />
+                <path
+                  d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+                />
+              </svg>
+            </a>
+            <div
+              class="c5"
+            >
+              <a
+                class="c6 c7"
+                href="/about"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="/blog"
+                title="Blog"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Blog
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Blog
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://github.com/unlock-protocol/unlock"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="/jobs"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://t.me/unlockprotocol"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Telegram
+                </small>
+              </a>
+              <a
+                class="c6 c7"
+                href="https://twitter.com/UnlockProtocol"
+                title="Twitter"
+              >
+                <svg
+                  name="Twitter"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c8"
+                >
+                  Twitter
+                </small>
+              </a>
+            </div>
+            <div
+              class="c9"
+            >
+              <a
+                class="c6 c10"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c6 c10"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c11"
+            />
+          </header>
+          <h1
+            class="c12"
+          >
+            The Web's new business model
+          </h1>
+          <p
+            class="c13"
+          >
+            Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
+          </p>
+          <div
+            class="c14"
+          >
+            <button
+              class="c15"
+            >
+              Go to Your Dashboard
+            </button>
+            <small
+              class="c16"
+            >
+              Requires a browser with an Ethereum wallet
+            </small>
+          </div>
+          <div
+            class="3 c17"
+          >
+            <div
+              class="4 c18"
+            >
+              <h2
+                class="c19"
+              >
+                No More Middlemen
+              </h2>
+              <div
+                class="c20"
+              />
+              <p
+                class="c21"
+              >
+                There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
+              </p>
+            </div>
+            <div
+              class="4 c18"
+            >
+              <h2
+                class="c19"
+              >
+                Simple Integration
+              </h2>
+              <div
+                class="c22"
+              />
+              <p
+                class="c21"
+              >
+                Unlock integrates with your website or application using just a few lines of code. It's easy.
+              </p>
+            </div>
+            <div
+              class="4 c18"
+            >
+              <h2
+                class="c19"
+              >
+                And Much More
+              </h2>
+              <div
+                class="c23"
+              />
+              <p
+                class="c21"
+              >
+                For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
+              </p>
+            </div>
+          </div>
+          <section
+            class="c24"
+          >
+            <h2
+              class="c25"
+            >
+              Subscribe to Updates
+            </h2>
+            <p
+              class="c21"
+            >
+              We will never share your information. Privacy and your trust are our top priorities.
+            </p>
+            <form
+              action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
+              class="subscribe c26"
+              method="post"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <input
+                class="c27"
+                id="mce-EMAIL"
+                name="EMAIL"
+                placeholder="Your email here"
+                required=""
+                type="email"
+              />
+              <button
+                class="c28"
+              >
+                Subscribe
+              </button>
+            </form>
+          </section>
+          <section
+            class="c24"
+          >
+            <div
+              class="c29"
+            >
+              Check out our open source code on
+               
+              <a
+                href="https://github.com/unlock-protocol/unlock"
+              >
+                GitHub
+              </a>
+              , come work
+               
+              <a
+                href="/jobs"
+              >
+                with us
+              </a>
+               or simply
+               
+              <a
+                href="mailto:hello@unlock-protocol.com"
+              >
+                get in touch
+              </a>
+              .
+            </div>
+          </section>
+          <footer
+            class="c30"
+          >
+            <a
+              class="c6 c7"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="/blog"
+              title="Blog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Blog
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Blog
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Telegram
+              </small>
+            </a>
+            <a
+              class="c6 c7"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="c8"
+              >
+                Twitter
+              </small>
+            </a>
+            <span
+              class="c31"
+            >
+              Made with passion in New York
+            </span>
+          </footer>
+        </div>
+        <div
+          class="c32"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 hxYMAy"
+    >
+      <div
+        class="hm3mhg-1 hHesyi"
+      />
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 RcGZR"
+        >
+          <a
+            href="/"
+          >
+            <svg
+              class="cenpj1-1 cCNAun"
+              height="28px"
+              name="Unlock"
+              viewBox="0 0 1200 256"
+            >
+              <title />
+              <path
+                d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+              />
+            </svg>
+          </a>
+          <div
+            class="sc-1glv5oz-2 dZTdSX"
+          >
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/about"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/blog"
+              title="Blog"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Blog
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Blog
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://github.com/unlock-protocol/unlock"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="/jobs"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://t.me/unlockprotocol"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Telegram
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 KJKSu"
+              href="https://twitter.com/UnlockProtocol"
+              title="Twitter"
+            >
+              <svg
+                name="Twitter"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 fnqGzL"
+              >
+                Twitter
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-3 eaQBIV"
+          >
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 fWWxcb"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 0 1 4.07 0l26 24a3 3 0 1 1-4.07 4.408L29 7.083 5.035 29.204a3 3 0 0 1-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 bTaeiR"
+          />
+        </header>
+        <h1
+          class="sc-1lwhgj0-1 fNAMFh"
+        >
+          The Web's new business model
+        </h1>
+        <p
+          class="sc-1mz6j63-2 hjoEUf"
+        >
+          Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
+        </p>
+        <div
+          class="sc-9upljg-3 kjuFdI"
+        >
+          <button
+            class="q8p5ah-0 sc-9upljg-0 kSuzMP"
+          >
+            Go to Your Dashboard
+          </button>
+          <small
+            class="sc-9upljg-4 jmRvSo"
+          >
+            Requires a browser with an Ethereum wallet
+          </small>
+        </div>
+        <div
+          class="sc-1mz6j63-13 gTdcXj"
+        >
+          <div
+            class="sc-1mz6j63-14 laOiGL"
+          >
+            <h2
+              class="sc-1mz6j63-4 eeuIDV"
+            >
+              No More Middlemen
+            </h2>
+            <div
+              class="sc-1lwhgj0-0 cSSxBG"
+            />
+            <p
+              class="sc-1lwhgj0-3 iFYZTK"
+            >
+              There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
+            </p>
+          </div>
+          <div
+            class="sc-1mz6j63-14 laOiGL"
+          >
+            <h2
+              class="sc-1mz6j63-4 eeuIDV"
+            >
+              Simple Integration
+            </h2>
+            <div
+              class="sc-1lwhgj0-0 cMBTTv"
+            />
+            <p
+              class="sc-1lwhgj0-3 iFYZTK"
+            >
+              Unlock integrates with your website or application using just a few lines of code. It's easy.
+            </p>
+          </div>
+          <div
+            class="sc-1mz6j63-14 laOiGL"
+          >
+            <h2
+              class="sc-1mz6j63-4 eeuIDV"
+            >
+              And Much More
+            </h2>
+            <div
+              class="sc-1lwhgj0-0 hfIxqd"
+            />
+            <p
+              class="sc-1lwhgj0-3 iFYZTK"
+            >
+              For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
+            </p>
+          </div>
+        </div>
+        <section
+          class="sc-1mz6j63-0 HVtYL"
+        >
+          <h2
+            class="sc-1lwhgj0-2 Nreub"
+          >
+            Subscribe to Updates
+          </h2>
+          <p
+            class="sc-1lwhgj0-3 iFYZTK"
+          >
+            We will never share your information. Privacy and your trust are our top priorities.
+          </p>
+          <form
+            action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
+            class="subscribe sc-1jockd9-0 bqGIyg"
+            method="post"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <input
+              class="sc-1jockd9-1 bVyKAF"
+              id="mce-EMAIL"
+              name="EMAIL"
+              placeholder="Your email here"
+              required=""
+              type="email"
+            />
+            <button
+              class="q8p5ah-0 sc-1jockd9-2 kTBKom"
+            >
+              Subscribe
+            </button>
+          </form>
+        </section>
+        <section
+          class="sc-1mz6j63-0 HVtYL"
+        >
+          <div
+            class="sc-1mz6j63-3 kvKCRV"
+          >
+            Check out our open source code on
+             
+            <a
+              href="https://github.com/unlock-protocol/unlock"
+            >
+              GitHub
+            </a>
+            , come work
+             
+            <a
+              href="/jobs"
+            >
+              with us
+            </a>
+             or simply
+             
+            <a
+              href="mailto:hello@unlock-protocol.com"
+            >
+              get in touch
+            </a>
+            .
+          </div>
+        </section>
+        <footer
+          class="sc-2ix2yp-0 fmIKjS"
+        >
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/about"
+            title="About"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                About
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M12 8.4A1.2 1.2 0 1 0 12 6a1.2 1.2 0 0 0 0 2.4zm0 9.6a1 1 0 0 0 1-1v-6a1 1 0 1 0-2 0v6a1 1 0 0 0 1 1z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              About
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/blog"
+            title="Blog"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Blog
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M6.5 8a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-11zM18 10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1 0-1h11a.5.5 0 0 1 .5.5zm-12 3a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0-.5.5zm8 3a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1 0-1h7a.5.5 0 0 1 .5.5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Blog
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="/jobs"
+            title="Join us"
+          >
+            <svg
+              name="Jobs"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M13 5h-2a2 2 0 0 0-2 2H7a2 2 0 0 0-2 2v1h14V9a2 2 0 0 0-2-2h-2a2 2 0 0 0-2-2zm1 2a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1h4zm-9 4h14v4a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-4z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Join us
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://github.com/unlock-protocol/unlock"
+            title="Source Code"
+          >
+            <svg
+              name="Github"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Source Code
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://t.me/unlockprotocol"
+            title="Telegram"
+          >
+            <svg
+              name="Telegram"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Telegram
+            </small>
+          </a>
+          <a
+            class="sc-850ddk-0 KJKSu"
+            href="https://twitter.com/UnlockProtocol"
+            title="Twitter"
+          >
+            <svg
+              name="Twitter"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M19 7.42a5.49 5.49 0 0 1-1.65.477 3.012 3.012 0 0 0 1.264-1.675 5.566 5.566 0 0 1-1.825.734A2.798 2.798 0 0 0 14.692 6c-1.585 0-2.87 1.356-2.87 3.03 0 .237.024.467.073.69-2.387-.127-4.503-1.332-5.92-3.167-.248.449-.39.97-.39 1.525 0 1.05.508 1.978 1.279 2.52a2.76 2.76 0 0 1-1.302-.377v.037c0 1.469.99 2.693 2.305 2.97a2.718 2.718 0 0 1-1.298.053c.366 1.204 1.426 2.08 2.684 2.103A5.575 5.575 0 0 1 5 16.64 7.839 7.839 0 0 0 9.403 18c5.284 0 8.172-4.615 8.172-8.619 0-.132-.002-.263-.007-.392A5.998 5.998 0 0 0 19 7.42"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <small
+              class="sc-850ddk-1 fnqGzL"
+            >
+              Twitter
+            </small>
+          </a>
+          <span
+            class="sc-2ix2yp-1 gloJyL"
+          >
+            Made with passion in New York
+          </span>
+        </footer>
+      </div>
+      <div
+        class="hm3mhg-2 kyyqtC"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots HomepageButton Accepted terms 1`] = `
 Object {
   "asFragment": [Function],
