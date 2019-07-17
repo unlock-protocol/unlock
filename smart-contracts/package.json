@@ -18,7 +18,6 @@
     "eth-gas-reporter": "0.2.4",
     "ethereumjs-units": "0.2.0",
     "openzeppelin-eth": "2.2.0",
-    "openzeppelin-solidity": "2.3.0",
     "public-lock-abi-0": "1.0.0",
     "solium": "1.2.4",
     "truffle": "5.0.25",
