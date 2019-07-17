@@ -11,6 +11,7 @@ import utils from '../../utils'
 import v10 from '../../v10'
 
 import { KEY_ID } from '../../constants'
+import erc20abi from '../../erc20abi'
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const blockTime = 3
@@ -19,6 +20,7 @@ const requiredConfirmations = 12
 const unlockAddress = '0xc43efE2C7116CB94d563b5A9D68F260CCc44256F'
 const lockAddress = '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e'
 const checksumLockAddress = '0x5ED6a5BB0fDA25eaC3B5D03fa875cB60A4639d8E'
+const fakeERC20ContractAddress = '0x1234123456789012345678901234567890567890'
 
 const transaction = {
   status: 'mined',
@@ -188,6 +190,7 @@ describe('Web3Service', () => {
         expect(transactionHash).toBe(fakeHash)
         expect(params).toEqual({
           key: KEY_ID(fakeContractAddress, owner),
+          for: owner,
           lock: fakeContractAddress,
         })
         resolveTransactionUpdater()
@@ -223,6 +226,7 @@ describe('Web3Service', () => {
           blockNumber: 123,
           logs: [
             {
+              address: lockAddress,
               data: encoder.encode(
                 ['address', 'address'],
                 [unlockAddress, lockAddress]
@@ -255,7 +259,8 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt(
           'hash',
           UnlockVersion.Unlock,
-          receipt
+          receipt,
+          lockAddress
         )
         expect(web3Service.getLock).toHaveBeenCalledWith(checksumLockAddress)
       })
@@ -298,7 +303,8 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt(
           'hash',
           UnlockVersion.PublicLock,
-          receipt
+          receipt,
+          lockAddress
         )
       })
 
@@ -344,7 +350,8 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt(
           'hash',
           UnlockVersion.PublicLock,
-          receipt
+          receipt,
+          lockAddress
         )
       })
 
@@ -379,9 +386,41 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt(
           'hash',
           UnlockVersion.PublicLock,
-          receipt
+          receipt,
+          lockAddress
         )
       })
+    })
+
+    it('ignores events from outside our contract', async () => {
+      expect.assertions(1)
+      await versionedNockBeforeEach()
+      const EventInfo = new ethers.utils.Interface(erc20abi)
+      const receipt = {
+        blockNumber: 123,
+        logs: [
+          {
+            address: fakeERC20ContractAddress,
+            data: encoder.encode(['uint'], [2]),
+            topics: [
+              EventInfo.events['Transfer(address,address,uint256)'].topic,
+              encoder.encode(['address'], [unlockAddress]),
+              encoder.encode(['address'], [lockAddress]),
+              encoder.encode(['uint'], [2]),
+            ],
+          },
+        ],
+      }
+
+      web3Service.emitContractEvent = jest.fn()
+
+      web3Service._parseTransactionLogsFromReceipt(
+        'hash',
+        UnlockVersion.PublicLock,
+        receipt
+      )
+
+      expect(web3Service.emitContractEvent).not.toHaveBeenCalled()
     })
   })
 
@@ -953,7 +992,7 @@ describe('Web3Service', () => {
       })
 
       it('should _parseTransactionLogsFromReceipt with the Unlock abi if the address is one of the Unlock contract', async done => {
-        expect.assertions(5)
+        expect.assertions(6)
         await versionedNockBeforeEach()
         testsSetup()
         const transactionReceipt = {
@@ -975,7 +1014,8 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt = (
           transactionHash,
           contract,
-          receipt
+          receipt,
+          lockAddress
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
           expect(contract).toEqual(UnlockVersion.Unlock)
@@ -986,6 +1026,7 @@ describe('Web3Service', () => {
             UnlockVersion.Unlock,
             blockTransaction.input
           )
+          expect(lockAddress).toBe(blockTransaction.to)
           done()
         }
         web3Service.unlockContractAddress = blockTransaction.to
@@ -994,7 +1035,7 @@ describe('Web3Service', () => {
       })
 
       it('should _parseTransactionLogsFromReceipt with the Lock abi otherwise', async done => {
-        expect.assertions(5)
+        expect.assertions(6)
         await versionedNockBeforeEach()
         testsSetup()
         const transactionReceipt = {
@@ -1015,7 +1056,8 @@ describe('Web3Service', () => {
         web3Service._parseTransactionLogsFromReceipt = (
           transactionHash,
           contract,
-          receipt
+          receipt,
+          lockAddress
         ) => {
           expect(transactionHash).toEqual(transaction.hash)
           expect(contract).toEqual(UnlockVersion.PublicLock)
@@ -1025,6 +1067,7 @@ describe('Web3Service', () => {
             UnlockVersion.PublicLock,
             blockTransaction.input
           )
+          expect(lockAddress).toBe(blockTransaction.to)
           done()
         }
 

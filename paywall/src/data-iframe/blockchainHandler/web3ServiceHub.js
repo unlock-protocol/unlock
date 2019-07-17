@@ -1,4 +1,4 @@
-import { getTransactions, getAccount } from '../cacheHandler'
+import { getAccount } from '../cacheHandler'
 
 /**
  * Listen for transaction updates, update the transaction and key that it affects
@@ -14,13 +14,13 @@ export default async function web3ServiceHub({
   web3Service,
   onChange,
   window,
+  transactionCache = {},
 }) {
   web3Service.on('transaction.updated', async (hash, update) => {
     const account = await getAccount(window)
-    const transactions = await getTransactions(window)
     // we need to build on the previous transaction because 'transaction.updated'
     // never returns the full transaction, we will rely upon the cache
-    const oldTransaction = transactions[hash] || {
+    const oldTransaction = transactionCache[hash] || {
       hash,
       blockNumber: Number.MAX_SAFE_INTEGER,
     }
@@ -28,6 +28,7 @@ export default async function web3ServiceHub({
       ...oldTransaction,
       ...update,
     }
+    transactionCache[hash] = transaction
     // report the changed transaction to syncToCache
     onChange({
       transaction,
@@ -38,6 +39,9 @@ export default async function web3ServiceHub({
         transaction.lock,
         account
       )
+      // normalize the key lock
+      key.lock = key.lock.toLowerCase()
+
       onChange({
         key,
       })

@@ -48,6 +48,9 @@ const config = {
     HTTP: [],
   },
   requiredConfirmations: 12,
+  erc20Contract: {
+    address: 'blah',
+  },
 }
 
 storiesOf('Paywall app page', module)
