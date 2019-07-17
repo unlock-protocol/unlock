@@ -5,7 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks, ID
 
@@ -15,7 +15,7 @@ contract('Lock / disableLock', accounts => {
   let keyOwner2 = accounts[2]
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
     await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), {
