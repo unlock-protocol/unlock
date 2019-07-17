@@ -8,7 +8,7 @@ const LockApi = require('../helpers/lockApi')
 const getTokenBalance = require('../helpers/getTokenBalance')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
@@ -35,7 +35,7 @@ contract('Lock / destroyLock', accounts => {
       let tokenAddress
       before(async () => {
         tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
-        unlock = await getUnlockProxy(unlockContract)
+        unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
         lock = locks['FIRST']
         lockApi = new LockApi(lock)
