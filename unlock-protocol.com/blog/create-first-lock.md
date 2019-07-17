@@ -29,7 +29,7 @@ When creating a lock, each field can be edited.
 
 ### The name
 
-First, the name. The locks' name is stored on chain and is used by other applications which may want to show informations about your lock and its keys, such as [Etherscan](https://etherscan.io/), [OpenSea](https://opensea.io/) and more. Use something descriptive but faily short as every character counts toward the fees you'll pay to deploy this lock.
+First, the name. The lock's name is stored on-chain and is used by other applications which may want to show information about your lock and its keys, such as [Etherscan](https://etherscan.io/), [OpenSea](https://opensea.io/) and more. Use something descriptive but fairly short as every character counts toward the fees you'll pay to deploy this lock.
 
 ### The Duration
 
