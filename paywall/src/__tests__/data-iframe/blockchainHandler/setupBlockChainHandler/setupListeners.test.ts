@@ -18,6 +18,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
   let web3Service: Web3ServiceType
   let getNewData: () => void
   let propagateChanges: () => void
+  let emitError: (error: Error) => void
   let listeners: { [key: string]: Function }
   let values: BlockchainValues
   const addresses = [
@@ -56,6 +57,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
     listeners = {}
     getNewData = jest.fn()
     propagateChanges = jest.fn()
+    emitError = jest.fn()
     walletService = getWalletService(listeners)
     web3Service = getWeb3Service(listeners)
     values = {
@@ -88,6 +90,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
       propagateChanges,
       lockAddresses,
       values,
+      emitError,
     })
   }
 
@@ -236,6 +239,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           hash: 'hash',
           blockNumber: Number.MAX_SAFE_INTEGER,
           thing: 1,
+          status: 'submitted',
         },
       })
     })
@@ -252,7 +256,10 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           type: TransactionType.KEY_PURCHASE,
         },
       }
-      walletService.emit('transaction.updated', 'hash', { thing: 1 })
+      walletService.emit('transaction.updated', 'hash', {
+        thing: 1,
+        lock: addresses[0],
+      })
 
       expect(values.transactions).toEqual({
         hash: {
@@ -261,6 +268,7 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           status: TransactionStatus.MINED,
           confirmations: 1,
           type: TransactionType.KEY_PURCHASE,
+          lock: lockAddresses[0], // verify normalized lock address is used
           thing: 1,
         },
       })
@@ -318,6 +326,126 @@ describe('setupBlockchainHandlers - setupListeners', () => {
           expirationDuration: 1,
           currencyContractAddress: null,
           thing: 1,
+        },
+      })
+    })
+  })
+
+  describe('transaction.new', () => {
+    beforeEach(() => {
+      setupDefaults()
+    })
+
+    it('should call propagateChanges', () => {
+      expect.assertions(1)
+
+      walletService.emit(
+        'transaction.new',
+        'hash',
+        'from',
+        addresses[0] /* to */,
+        'input',
+        'type',
+        'status'
+      )
+
+      expect(propagateChanges).toHaveBeenCalled()
+    })
+
+    it('should add a new submitted transaction with values passed in', () => {
+      expect.assertions(1)
+
+      walletService.emit(
+        'transaction.new',
+        'hash',
+        'from',
+        addresses[0] /* to */,
+        'input',
+        TransactionType.KEY_PURCHASE,
+        'submitted'
+      )
+
+      expect(values.transactions).toEqual({
+        hash: {
+          hash: 'hash',
+          to: lockAddresses[0], // verify lock address is normalized
+          from: 'from',
+          for: 'from',
+          input: 'input',
+          type: TransactionType.KEY_PURCHASE,
+          status: 'submitted',
+          key: `${addresses[0]}-from`, // key is non-normalized
+          lock: lockAddresses[0], // verify lock address is normalized
+          confirmations: 0,
+          network: values.network,
+        },
+      })
+    })
+  })
+
+  describe('error', () => {
+    beforeEach(() => {
+      setupDefaults()
+    })
+
+    it('should ignore errors that are not from key purchase', () => {
+      expect.assertions(1)
+
+      walletService.emit('error', new Error('this is ignored'))
+
+      expect(emitError).not.toHaveBeenCalled()
+    })
+
+    it('should pass key purchase errors to emitError', () => {
+      expect.assertions(1)
+
+      const keyPurchaseError = new Error('FAILED_TO_PURCHASE_KEY')
+
+      walletService.emit('error', keyPurchaseError)
+
+      expect(emitError).toHaveBeenCalledWith(new Error('purchase failed'))
+    })
+
+    it('should fetch new data on key purchase failure', () => {
+      expect.assertions(1)
+
+      const keyPurchaseError = new Error('FAILED_TO_PURCHASE_KEY')
+
+      walletService.emit('error', keyPurchaseError)
+
+      expect(getNewData).toHaveBeenCalled()
+    })
+
+    it('should remove submitted transactions from values on key purchase failure', () => {
+      expect.assertions(1)
+
+      const keyPurchaseError = new Error('FAILED_TO_PURCHASE_KEY')
+      values.transactions = {
+        hash: {
+          hash: 'hash',
+          status: TransactionStatus.SUBMITTED,
+          confirmations: 0,
+          type: TransactionType.KEY_PURCHASE,
+          blockNumber: Number.MAX_SAFE_INTEGER,
+        },
+        hash1: {
+          hash: 'hash1',
+          status: TransactionStatus.MINED,
+          confirmations: 2,
+          type: TransactionType.KEY_PURCHASE,
+          blockNumber: 5,
+        },
+      }
+
+      walletService.emit('error', keyPurchaseError)
+
+      expect(values.transactions).toEqual({
+        hash1: {
+          hash: 'hash1',
+          status: TransactionStatus.MINED,
+          confirmations: 2,
+          type: TransactionType.KEY_PURCHASE,
+          blockNumber: 5,
         },
       })
     })

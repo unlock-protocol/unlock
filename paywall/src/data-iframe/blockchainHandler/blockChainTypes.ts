@@ -22,6 +22,16 @@ export interface WalletServiceType extends EventEmitter {
   ) => Promise<string>
 }
 
+export interface Web3ServiceType extends EventEmitter {
+  refreshAccountBalance: (account: string) => Promise<string>
+  getTransaction: (
+    transactionHash: string,
+    defaults?: TransactionDefaults
+  ) => Promise<void>
+  getLock: (address: string) => Promise<RawLock>
+  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
+}
+
 export interface TransactionDefaults {
   to: string
   from: string
@@ -36,16 +46,6 @@ export interface KeyResult {
 }
 
 export type KeyResults = { [key: string]: KeyResult }
-
-export interface Web3ServiceType extends EventEmitter {
-  refreshAccountBalance: (account: string) => Promise<string>
-  getTransaction: (
-    transactionHash: string,
-    defaults?: TransactionDefaults
-  ) => void
-  getLock: (address: string) => Promise<RawLock>
-  getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
-}
 
 export type unlockNetworks = 1 | 4 | 1984
 
@@ -80,6 +80,10 @@ export interface FetchResult {
 
 export interface FetchWindow {
   fetch: (url: string) => Promise<FetchResult>
+}
+
+export interface SetTimeoutWindow {
+  setTimeout: (cb: Function, delay?: number) => number
 }
 
 export interface BlockchainValues {

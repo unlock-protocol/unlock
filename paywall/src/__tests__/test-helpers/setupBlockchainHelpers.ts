@@ -6,9 +6,10 @@ import {
 export function getWalletService(listeners: { [key: string]: Function }) {
   const walletService: WalletServiceType = {
     ready: true,
-    connect: jest.fn(),
-    getAccount: jest.fn(),
-    purchaseKey: jest.fn(),
+    connect: jest.fn().mockResolvedValue({}),
+    getAccount: jest.fn().mockResolvedValue(false),
+    purchaseKey: jest.fn().mockResolvedValue({}),
+
     addListener: jest.fn(),
     on: (type, listener) => {
       listeners[type as string] = listener
@@ -37,9 +38,10 @@ export function getWalletService(listeners: { [key: string]: Function }) {
 export function getWeb3Service(listeners: { [key: string]: Function }) {
   const web3Service: Web3ServiceType = {
     refreshAccountBalance: jest.fn().mockRejectedValue('123'),
-    getTransaction: jest.fn(),
-    getLock: jest.fn(),
-    getKeyByLockForOwner: jest.fn(),
+    getTransaction: jest.fn().mockResolvedValue({}),
+    getLock: jest.fn().mockResolvedValue({}),
+    getKeyByLockForOwner: jest.fn().mockResolvedValue({}),
+
     addListener: jest.fn(),
     on: (type, listener) => {
       listeners[type as string] = listener

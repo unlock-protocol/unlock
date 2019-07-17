@@ -28,6 +28,9 @@ export interface Transaction {
   type: TransactionType
   blockNumber: number
 
+  to?: string
+  for?: string
+  from?: string
   lock?: string
   name?: string
   key?: string // TODO: tighten up our types, hopefully we won't have too many

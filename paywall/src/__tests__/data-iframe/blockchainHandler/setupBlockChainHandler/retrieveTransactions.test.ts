@@ -7,12 +7,16 @@ import {
   TransactionDefaults,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
 import { getWeb3Service } from '../../../test-helpers/setupBlockchainHelpers'
-import { retrieveTransactions } from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
+import {
+  retrieveTransactions,
+  RetrieveTransactionsParams,
+} from '../../../../data-iframe/blockchainHandler/setupBlockchainHandler'
 
 describe('setupBlockchainHandler - retrieveTransactions', () => {
   let web3Service: Web3ServiceType
   let fakeWindow: FetchWindow
   let listeners: { [key: string]: Function }
+  let emitError: (error: Error) => void
   let values: BlockchainValues
   const constants: ConstantsType = {
     requiredConfirmations: 12,
@@ -88,6 +92,21 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
       network: 1,
       ...valuesOverride,
     }
+    emitError = jest.fn()
+  }
+
+  function callRetrieveTransactions(
+    params: Partial<RetrieveTransactionsParams> = {}
+  ) {
+    return retrieveTransactions({
+      lockAddresses,
+      constants,
+      web3Service,
+      window: fakeWindow,
+      values,
+      emitError,
+      ...params,
+    })
   }
 
   it('should not fetch transactions if there is no user account', async () => {
@@ -95,13 +114,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
 
     setupDefaults()
 
-    await retrieveTransactions({
-      lockAddresses,
-      constants,
-      web3Service,
-      window: fakeWindow,
-      values,
-    })
+    await callRetrieveTransactions()
 
     expect(fakeWindow.fetch).not.toHaveBeenCalled()
   })
@@ -114,13 +127,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
     it('should call fetch with the correct url', async () => {
       expect.assertions(1)
 
-      await retrieveTransactions({
-        lockAddresses,
-        constants,
-        web3Service,
-        window: fakeWindow,
-        values,
-      })
+      await callRetrieveTransactions()
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
         `http://fun.times/transactions?for=${addresses[2]}&recipient[]=${lockAddresses[0]}&recipient[]=${lockAddresses[1]}&recipient[]=${lockAddresses[2]}`
@@ -130,13 +137,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
     it('should not call getTransaction if no results are returned', async () => {
       expect.assertions(1)
 
-      await retrieveTransactions({
-        lockAddresses,
-        constants,
-        web3Service,
-        window: fakeWindow,
-        values,
-      })
+      await callRetrieveTransactions()
 
       expect(web3Service.getTransaction).not.toHaveBeenCalled()
     })
@@ -171,13 +172,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
       it('should call getTransaction for each transaction', async () => {
         expect.assertions(1)
 
-        await retrieveTransactions({
-          lockAddresses,
-          constants,
-          web3Service,
-          window: fakeWindow,
-          values,
-        })
+        await callRetrieveTransactions()
 
         expect(web3Service.getTransaction).toHaveBeenCalledTimes(2)
       })
@@ -185,13 +180,7 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
       it('should pass the transaction as defaults if input is present', async () => {
         expect.assertions(2)
 
-        await retrieveTransactions({
-          lockAddresses,
-          constants,
-          web3Service,
-          window: fakeWindow,
-          values,
-        })
+        await callRetrieveTransactions()
 
         const transaction1 = (returnedTransactions.transactions &&
           returnedTransactions.transactions[0]) as LocksmithTransactionsResult
@@ -214,6 +203,20 @@ describe('setupBlockchainHandler - retrieveTransactions', () => {
           'hash2',
           undefined
         )
+      })
+
+      it('should pass on errors to emitError', async () => {
+        expect.assertions(1)
+
+        const error = new Error('fail')
+
+        const mock: any = web3Service.getTransaction as any
+
+        mock.mockImplementationOnce(() => Promise.reject(error))
+
+        await callRetrieveTransactions()
+
+        expect(emitError).toHaveBeenCalledWith(error)
       })
     })
   })
