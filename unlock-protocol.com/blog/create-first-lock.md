@@ -67,6 +67,6 @@ Locks themselves can be transfered. This means that we can create the locks for 
 
 ## Next!
 
-That's it! Your lock has now been created. The next step is to integrate it on your website to let people become members. We already published a wiki page on [how to integrate unlock](https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site), and a few posts on how to integrate this in your CMS, such as [Known](/blog/integrating-unlock-with-known/), or inside a front end web framework, such as [React](/blog/integratating-unlock-react/).
+That's it! Your lock has now been created. The next step is to integrate it on your website to let people become members. See the wiki page on [how to integrate unlock](https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site), and a few posts on how to integrate this in your CMS, such as [Known](/blog/integrating-unlock-with-known/), or inside a front end web framework, such as [React](/blog/integratating-unlock-react/).
 
 If you need help for your own stack, please, reach out, we're here to help!
