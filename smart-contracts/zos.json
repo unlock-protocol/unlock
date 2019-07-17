@@ -3,7 +3,14 @@
   "name": "unlock-protocol",
   "version": "0.1.0",
   "contracts": {
-    "Unlock": "Unlock"
+    "Unlock": "Unlock",
+    "UnlockDiscountToken": "UnlockDiscountToken"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "compiler": {
+    "manager": "truffle",
+    "compilerSettings": {
+      "optimizer": {}
+    }
+  }
 }
