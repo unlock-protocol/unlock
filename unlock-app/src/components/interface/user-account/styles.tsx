@@ -53,7 +53,7 @@ export const ItemLabel = styled.span`
   align-items: center;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--darkgrey);
+  color: var(--labelgrey);
 `
 
 // Meant for "small" data -- generally a single line of text
@@ -114,6 +114,7 @@ export const Price = styled.span`
   font-size: 30px;
   line-height: 39px;
   color: var(--slate);
+  margin-bottom: 8px;
 `
 
 export const TimeRemaining = styled.span`
