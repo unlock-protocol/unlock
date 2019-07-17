@@ -23,6 +23,7 @@ const globalStyle = `
     --activegreen: #59c245;
     --pink: #ed6e82;
     --yellow: #f6c61b;
+    --labelgrey: #7d7d7d;
 
     --foreground: 9001;
     --alwaysontop: 100000;
