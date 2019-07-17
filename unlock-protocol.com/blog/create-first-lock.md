@@ -33,7 +33,7 @@ First, the name. The lock's name is stored on-chain and is used by other applica
 
 ### The Duration
 
-Each key has a duration. At the end of the duration the membership is considered "expired" and should not grant access to the key holder. In this case, members can obviously renew to make their key valid again.
+Each key has a duration. At the end of the duration the membership is considered "expired" and should not grant access to the key holder. In this case, members can renew to make their key valid again.
 
 The duration is expressed in seconds in the smart contract, but given the inherent latency of the blockchain we believe that durations shorter than 1 day are not practical. Most creators will pick durations of months to years.
 
