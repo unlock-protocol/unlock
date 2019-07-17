@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+const shouldFail = require('../helpers/shouldFail')
 
 const UnlockDiscountToken = artifacts.require('../UnlockDiscountToken.sol')
 
@@ -7,6 +8,10 @@ let unlockDiscountToken
 contract('UnlockDiscountToken', accounts => {
   before(async () => {
     unlockDiscountToken = await UnlockDiscountToken.deployed()
+  })
+
+  it('shouldFail to call init again', async () => {
+    await shouldFail(unlockDiscountToken.initialize())
   })
 
   describe('Supply', () => {
