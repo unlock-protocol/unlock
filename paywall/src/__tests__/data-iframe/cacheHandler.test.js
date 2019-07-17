@@ -17,6 +17,7 @@ import {
   removeListener,
 } from '../../data-iframe/cacheHandler'
 import { TRANSACTION_TYPES } from '../../constants'
+import { __clearDriver } from '../../data-iframe/cache/cache'
 
 describe('cacheHandler', () => {
   let fakeWindow
@@ -67,6 +68,7 @@ describe('cacheHandler', () => {
         },
       },
     }
+    __clearDriver()
   })
 
   describe('setting values', () => {
@@ -130,6 +132,10 @@ describe('cacheHandler', () => {
     })
 
     describe('setTransaction', () => {
+      beforeEach(() => {
+        __clearDriver()
+      })
+
       it('sets a new transaction without disturbing existing transactions', async () => {
         expect.assertions(1)
 
@@ -177,6 +183,7 @@ describe('cacheHandler', () => {
 
   describe('getting values', () => {
     beforeEach(async () => {
+      __clearDriver()
       fakeWindow = {
         storage: {},
         localStorage: {
@@ -247,6 +254,7 @@ describe('cacheHandler', () => {
 
     describe('values not set', () => {
       beforeEach(async () => {
+        __clearDriver()
         fakeWindow = {
           storage: {},
           localStorage: {
@@ -283,6 +291,7 @@ describe('cacheHandler', () => {
 
   describe('user account changes', () => {
     beforeEach(async () => {
+      __clearDriver()
       fakeWindow = {
         storage: {},
         localStorage: {
@@ -365,6 +374,7 @@ describe('cacheHandler', () => {
 
   describe('network changes', () => {
     beforeEach(async () => {
+      __clearDriver()
       fakeWindow = {
         storage: {},
         localStorage: {
@@ -491,6 +501,7 @@ describe('cacheHandler', () => {
     }
 
     beforeEach(async () => {
+      __clearDriver()
       fakeWindow = {
         storage: {},
         localStorage: {
@@ -623,6 +634,7 @@ describe('cacheHandler', () => {
     }
     describe('addListener and removeListener', () => {
       beforeEach(() => {
+        __clearDriver()
         fakeWindow.storage = {}
         clearListeners()
       })

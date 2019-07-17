@@ -21,6 +21,7 @@ import {
   getTransactions,
 } from '../../data-iframe/cacheHandler'
 import { setPaywallConfig } from '../../data-iframe/paywallConfig'
+import { __clearDriver } from '../../data-iframe/cache/cache'
 
 describe('data iframe postOffice', () => {
   let fakeWindow
@@ -28,6 +29,7 @@ describe('data iframe postOffice', () => {
 
   describe('postOffice', () => {
     function makeWindow() {
+      __clearDriver()
       fakeTarget = {
         postMessage: jest.fn(),
       }
