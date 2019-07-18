@@ -362,7 +362,7 @@ storiesOf('Checkout', module)
           status: 'valid',
           transactions: [],
           // expiration in rounded up hours
-          expiration: new Date().getTime() / 1000 + 60 * 90 + 1,
+          expiration: new Date().getTime() / 1000 + 60 * 91,
         },
       },
       '0x789': {
