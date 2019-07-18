@@ -289,7 +289,7 @@ storiesOf('Checkout', module)
       />
     )
   })
-  .add('Checkout with 3 locks and one valid key purchase', () => {
+  .add('Checkout with 3 locks and two valid key purchases', () => {
     const locks = {
       '0x123': {
         name: 'Weekly',
@@ -299,7 +299,8 @@ storiesOf('Checkout', module)
         key: {
           status: 'valid',
           transactions: [{}],
-          expiration: new Date().getTime() / 1000 + 60 * 60,
+          // expiration < 1 minute
+          expiration: new Date().getTime() / 1000 + 30,
         },
       },
       '0x456': {
@@ -308,9 +309,10 @@ storiesOf('Checkout', module)
         keyPrice: '0.3',
         expirationDuration: 60 * 60 * 24 * 30,
         key: {
-          status: 'none',
+          status: 'valid',
           transactions: [],
-          expiration: 0,
+          // expiration in minutes
+          expiration: new Date().getTime() / 1000 + 60 * 20 + 4,
         },
       },
       '0x789': {
@@ -347,7 +349,8 @@ storiesOf('Checkout', module)
         key: {
           status: 'valid',
           transactions: [{}],
-          expiration: new Date().getTime() / 1000 + 60 * 60,
+          // expiration in hours
+          expiration: new Date().getTime() / 1000 + 60 * 60 + 300,
         },
       },
       '0x456': {
@@ -356,9 +359,10 @@ storiesOf('Checkout', module)
         keyPrice: '0.3',
         expirationDuration: 60 * 60 * 24 * 30,
         key: {
-          status: 'none',
+          status: 'valid',
           transactions: [],
-          expiration: 0,
+          // expiration in rounded up hours
+          expiration: new Date().getTime() / 1000 + 60 * 90 + 1,
         },
       },
       '0x789': {
@@ -395,7 +399,7 @@ storiesOf('Checkout', module)
         key: {
           status: 'valid',
           transactions: [{}],
-          expiration: new Date().getTime() / 1000 + 60 * 60,
+          expiration: new Date().getTime() / 1000 + 60 * 60 * 24 * 8,
         },
       },
       '0x456': {
