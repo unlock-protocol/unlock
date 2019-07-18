@@ -1,4 +1,9 @@
-import { PaywallConfig, Transactions } from '../../unlockTypes'
+import {
+  PaywallConfig,
+  Transactions,
+  Locks,
+  TransactionType,
+} from '../../unlockTypes'
 import linkKeysToLocks from './linkKeysToLocks'
 import { POLLING_INTERVAL } from '../../constants'
 import {
@@ -14,30 +19,10 @@ import {
   PaywallState,
   SetTimeoutWindow,
 } from './blockChainTypes'
-
-/**
- * convert lock addresses to a normal form.
- */
-export function normalizeLockAddress(address: string) {
-  // TODO: export checksum lock function from web3Service and use that instead
-  return address.toLowerCase()
-}
-
-/**
- * convert the key indices of an object to normalized form
- *
- * Used for normalizing key and lock indices
- */
-export function normalizeAddressKeys(object: { [key: string]: any }) {
-  return Object.keys(object).reduce(
-    (newObject: { [key: string]: any }, key) => {
-      const value = object[key]
-      newObject[normalizeLockAddress(key)] = value
-      return newObject
-    },
-    {}
-  )
-}
+import {
+  normalizeAddressKeys,
+  normalizeLockAddress,
+} from '../../utils/normalizeAddresses'
 
 /**
  * Make empty keys for the current account
@@ -64,7 +49,7 @@ interface BlockchainHandlerParams {
   emitChanges: (data: BlockchainData) => void
   emitError: (error: Error) => void
   window: FetchWindow & SetTimeoutWindow
-  store: PaywallState
+  store?: PaywallState
 }
 
 // assumptions:
@@ -138,7 +123,7 @@ export default class BlockchainHandler {
 
     // poll for account changes
     const retrieveAccount = () => {
-      if (!this.walletService.ready) return
+      if (!this.walletService.provider) return
       this.walletService.getAccount().catch(error => this.emitError(error))
     }
     const pollForAccountChanges = () => {
@@ -158,7 +143,7 @@ export default class BlockchainHandler {
   }: {
     lockAddress: string
     amountToSend: string
-    erc20Address: string
+    erc20Address: string | null
   }) {
     if (!this.store.account) return
     const account = this.store.account as string
@@ -213,7 +198,7 @@ export default class BlockchainHandler {
    * Dispatch values back to the post office
    */
   async dispatchChangesToPostOffice() {
-    const fullLocks = await linkKeysToLocks({
+    const fullLocks: Locks = await linkKeysToLocks({
       locks: this.store.locks,
       keys: this.store.keys,
       transactions: this.store.transactions,
@@ -235,7 +220,11 @@ export default class BlockchainHandler {
       // we must have keys for every lock at all times
       this.store.keys = makeDefaultKeys(this.lockAddresses, this.store.account)
       this.store.transactions = {}
+      if (this.store.account) {
+        this.web3Service.refreshAccountBalance({ address: this.store.account })
+      }
       this.retrieveCurrentBlockchainData()
+      this.dispatchChangesToPostOffice()
     }
     // the event listeners propagate changes to the main window
     // or fetch new data when network or account changes
@@ -251,15 +240,13 @@ export default class BlockchainHandler {
       reset()
     })
 
-    this.walletService.on(
-      'account.updated',
-      (balanceForAccount, { balance: newBalance }) => {
-        // this can be called for locks also
-        if (balanceForAccount !== this.store.account) return
-        this.store.balance = newBalance
-        this.dispatchChangesToPostOffice()
-      }
-    )
+    this.web3Service.on('account.updated', ({ address }, { balance }) => {
+      // this can be called for locks also
+      if (address !== this.store.account) return
+      if (balance === this.store.balance) return
+      this.store.balance = balance
+      this.dispatchChangesToPostOffice()
+    })
 
     this.web3Service.on('key.updated', (_: any, key: KeyResult) => {
       key.lock = normalizeLockAddress(key.lock)
@@ -290,6 +277,17 @@ export default class BlockchainHandler {
       if (update.to) {
         // ensure all references to locks are normalized
         update.to = normalizeLockAddress(update.to)
+      }
+      if (
+        this.store.transactions[hash] &&
+        this.store.transactions[hash].type === TransactionType.KEY_PURCHASE
+      ) {
+        const transaction = this.store.transactions[hash]
+        const recipient = transaction.lock || transaction.to
+        if (recipient) {
+          this.web3Service.getKeyByLockForOwner(recipient, this.store
+            .account as string)
+        }
       }
       mergeUpdate(
         hash,
@@ -341,6 +339,7 @@ export default class BlockchainHandler {
           input,
           type,
           status,
+          blockNumber: Number.MAX_SAFE_INTEGER,
         }
         this.storeTransaction(newTransaction)
         mergeUpdate(hash, 'transactions', newTransaction, {
@@ -349,8 +348,8 @@ export default class BlockchainHandler {
           confirmations: 0,
           network: this.store.network,
         })
-        // TODO: store the transaction in locksmith also
-        // need to migrate locksmithTransactions.ts to typescript
+        // start polling
+        this.web3Service.getTransaction(hash)
       }
     )
 
@@ -424,7 +423,7 @@ export default class BlockchainHandler {
     const account = this.store.account
     const network = this.store.network
     // we use the transaction lock as the recipient
-    const recipient = transaction.lock
+    const recipient = transaction.lock || transaction.to
 
     const url = `${this.constants.locksmithHost}/transaction`
 

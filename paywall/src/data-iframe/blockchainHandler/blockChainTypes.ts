@@ -4,12 +4,14 @@ import {
   PaywallConfig,
   Transactions,
   RawLocks,
+  Locks,
 } from '../../unlockTypes'
 
 type Web3ProviderType = string | Object
 
 export interface WalletServiceType extends EventEmitter {
   ready: boolean
+  provider?: any
   connect: (provider: Web3ProviderType) => Promise<void>
   getAccount: () => Promise<string | false>
   purchaseKey: (
@@ -23,7 +25,7 @@ export interface WalletServiceType extends EventEmitter {
 }
 
 export interface Web3ServiceType extends EventEmitter {
-  refreshAccountBalance: (account: string) => Promise<string>
+  refreshAccountBalance: ({ address }: { address: string }) => Promise<string>
   getTransaction: (
     transactionHash: string,
     defaults?: TransactionDefaults
@@ -60,7 +62,7 @@ export interface ConstantsType {
 }
 
 export interface BlockchainData {
-  locks: RawLocks
+  locks: Locks
   account: string | null
   balance: string
   network: unlockNetworks

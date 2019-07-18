@@ -1,7 +1,7 @@
 import {
   normalizeLockAddress,
   normalizeAddressKeys,
-} from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+} from '../../utils/normalizeAddresses'
 
 describe('BlockchainHandler - normalizing functionality', () => {
   describe('normalizeLockAddress', () => {

@@ -1,6 +1,15 @@
-import start from './start'
+import Mailbox from './Mailbox'
+import { ConstantsType } from './blockchainHandler/blockChainTypes'
 
-const constants = {
+declare const process: {
+  env: {
+    UNLOCK_ENV: string
+    LOCKSMITH_URI: string
+    READ_ONLY_PROVIDER: string
+  }
+}
+
+const constants: { [key: string]: ConstantsType } = {
   dev: {
     unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
     blockTime: 3000,
@@ -36,6 +45,7 @@ const constants = {
   },
 }
 
-start(window, constants[process.env.UNLOCK_ENV]).catch(e => {
+const mailbox = new Mailbox(constants[process.env.UNLOCK_ENV], window)
+mailbox.init().catch(e => {
   console.error('startup error', e) // eslint-disable-line
 })
