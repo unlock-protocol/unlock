@@ -174,6 +174,7 @@ export const IframeLayout = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
+  position: relative;
 `
 
 export const XYCenter = styled.div`
