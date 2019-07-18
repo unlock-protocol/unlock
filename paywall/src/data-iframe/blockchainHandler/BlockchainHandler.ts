@@ -240,13 +240,17 @@ export default class BlockchainHandler {
       reset()
     })
 
-    this.web3Service.on('account.updated', ({ address }, { balance }) => {
-      // this can be called for locks also
-      if (address !== this.store.account) return
-      if (balance === this.store.balance) return
-      this.store.balance = balance
-      this.dispatchChangesToPostOffice()
-    })
+    this.web3Service.on(
+      'account.updated',
+      (account: { address: string } | null, { balance }) => {
+        // this can be called for locks also
+        const address = account && account.address
+        if (address !== this.store.account) return
+        if (balance === this.store.balance) return
+        this.store.balance = balance
+        this.dispatchChangesToPostOffice()
+      }
+    )
 
     this.web3Service.on('key.updated', (_: any, key: KeyResult) => {
       key.lock = normalizeLockAddress(key.lock)
@@ -278,17 +282,6 @@ export default class BlockchainHandler {
         // ensure all references to locks are normalized
         update.to = normalizeLockAddress(update.to)
       }
-      if (
-        this.store.transactions[hash] &&
-        this.store.transactions[hash].type === TransactionType.KEY_PURCHASE
-      ) {
-        const transaction = this.store.transactions[hash]
-        const recipient = transaction.lock || transaction.to
-        if (recipient) {
-          this.web3Service.getKeyByLockForOwner(recipient, this.store
-            .account as string)
-        }
-      }
       mergeUpdate(
         hash,
         'transactions',
@@ -299,6 +292,13 @@ export default class BlockchainHandler {
         },
         update
       )
+      const transaction = this.store.transactions[hash]
+      const recipient = transaction.lock || transaction.to
+      const isKeyPurchase = transaction.type === TransactionType.KEY_PURCHASE
+      if (isKeyPurchase && recipient) {
+        this.web3Service.getKeyByLockForOwner(recipient, this.store
+          .account as string)
+      }
     })
 
     this.web3Service.on('lock.updated', (lockAddress, update) => {

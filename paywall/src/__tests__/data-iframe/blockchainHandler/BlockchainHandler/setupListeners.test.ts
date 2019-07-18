@@ -77,7 +77,7 @@ describe('BlockchainHandler - setupListeners', () => {
       setupDefaults()
     })
 
-    it('should call getNewData on account.changed', () => {
+    it('should call retrieveCurrentBlockchainData on account.changed', () => {
       expect.assertions(4)
 
       walletService.emit('account.changed', addresses[1])
@@ -89,7 +89,7 @@ describe('BlockchainHandler - setupListeners', () => {
       expect(store.account).toBe(addresses[1])
     })
 
-    it('should not call getNewData on account.changed if account is the same', () => {
+    it('should not call retrieveCurrentBlockchainData on account.changed if account is the same', () => {
       expect.assertions(4)
 
       walletService.emit('account.changed', null)
@@ -107,7 +107,7 @@ describe('BlockchainHandler - setupListeners', () => {
       setupDefaults()
     })
 
-    it('should call getNewData on network.changed', () => {
+    it('should call retrieveCurrentBlockchainData on network.changed', () => {
       expect.assertions(4)
 
       walletService.emit('network.changed', 1)
@@ -119,7 +119,7 @@ describe('BlockchainHandler - setupListeners', () => {
       expect(store.network).toBe(1)
     })
 
-    it('should not call getNewData on network.changed if network is the same', () => {
+    it('should not call retrieveCurrentBlockchainData on network.changed if network is the same', () => {
       expect.assertions(4)
 
       walletService.emit('network.changed', 1984)
@@ -137,16 +137,33 @@ describe('BlockchainHandler - setupListeners', () => {
       setupDefaults()
     })
 
-    it('should call propagateChanges on account.updated', () => {
+    it('should call dispatchChangesToPostOffice on account.updated for our account', () => {
       expect.assertions(2)
 
-      walletService.emit('account.updated', null, { balance: '123' })
+      walletService.emit(
+        'account.updated',
+        { address: store.account },
+        { balance: '123' }
+      )
 
       expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
       expect(store.balance).toBe('123')
     })
 
-    it('should not call propagateChanges on account.updated if account is not the user account', () => {
+    it('should not call dispatchChangesToPostOffice on account.updated for another account', () => {
+      expect.assertions(2)
+
+      walletService.emit(
+        'account.updated',
+        { address: 'oops' },
+        { balance: '123' }
+      )
+
+      expect(handler.dispatchChangesToPostOffice).not.toHaveBeenCalled()
+      expect(store.balance).toBe('0')
+    })
+
+    it('should not call dispatchChangesToPostOffice on account.updated if account is not the user account', () => {
       expect.assertions(2)
 
       walletService.emit('account.updated', 'not user account', {
@@ -165,7 +182,7 @@ describe('BlockchainHandler - setupListeners', () => {
       })
     })
 
-    it('should set up the normalized key and call propagateChanges', () => {
+    it('should set up the normalized key and call dispatchChangesToPostOffice', () => {
       expect.assertions(2)
 
       walletService.emit('key.updated', 'id', {
@@ -203,7 +220,7 @@ describe('BlockchainHandler - setupListeners', () => {
       })
     })
 
-    it('should call propagateChanges', () => {
+    it('should call dispatchChangesToPostOffice', () => {
       expect.assertions(1)
 
       walletService.emit('transaction.updated', 'hash', { thing: 1 })
@@ -257,6 +274,175 @@ describe('BlockchainHandler - setupListeners', () => {
         },
       })
     })
+
+    describe('retrieving key', () => {
+      beforeEach(() => {
+        setupDefaults({
+          account: addresses[1],
+        })
+      })
+
+      it('should not retrieve a key for a non-key purchase transaction', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            type: TransactionType.LOCK_CREATION,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+          lock: addresses[0],
+          to: addresses[1],
+        })
+
+        expect(web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      })
+
+      it('should retrieve the key expiry for a key purchase transaction defined by the stored transaction', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            lock: lockAddresses[0], // this address has already been normalized
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+          to: addresses[1],
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+
+      it('should retrieve the key expiry for a key purchase transaction defined by the update', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+          lock: addresses[0], // this address is normalized in the listener
+          to: addresses[1],
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+
+      it('should retrieve the key expiry and use transaction.lock if present', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            lock: lockAddresses[0], // this address has already been normalized
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+
+      it('should retrieve the key expiry and use transaction.to if lock is not present', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            to: lockAddresses[0], // this address has already been normalized
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+
+      it('should retrieve the key expiry and use transaction.lock from the update if present', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+          lock: addresses[0], // this address is normalized in the listener
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+
+      it('should retrieve the key expiry and use transaction.to from the update if lock is not present', () => {
+        expect.assertions(1)
+
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.MINED,
+            confirmations: 1,
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          thing: 1,
+          to: addresses[0], // this address is normalized in the listener
+        })
+
+        expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
+          lockAddresses[0],
+          addresses[1]
+        )
+      })
+    })
   })
 
   describe('lock.updated', () => {
@@ -266,7 +452,7 @@ describe('BlockchainHandler - setupListeners', () => {
       })
     })
 
-    it('should call propagateChanges', () => {
+    it('should call dispatchChangesToPostOffice', () => {
       expect.assertions(1)
 
       walletService.emit('lock.updated', addresses[0], { thing: 1 })
@@ -321,7 +507,7 @@ describe('BlockchainHandler - setupListeners', () => {
       handler.storeTransaction = jest.fn()
     })
 
-    it('should call propagateChanges', () => {
+    it('should call dispatchChangesToPostOffice', () => {
       expect.assertions(1)
 
       walletService.emit(
@@ -363,6 +549,7 @@ describe('BlockchainHandler - setupListeners', () => {
           lock: lockAddresses[0], // verify lock address is normalized
           confirmations: 0,
           network: store.network,
+          blockNumber: Number.MAX_SAFE_INTEGER,
         },
       })
     })
@@ -388,6 +575,7 @@ describe('BlockchainHandler - setupListeners', () => {
         input: 'input',
         type: TransactionType.KEY_PURCHASE,
         status: TransactionStatus.SUBMITTED,
+        blockNumber: Number.MAX_SAFE_INTEGER,
       }
 
       expect(handler.storeTransaction).toHaveBeenCalledWith(newTransaction)

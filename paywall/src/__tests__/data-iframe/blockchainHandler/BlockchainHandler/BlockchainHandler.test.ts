@@ -135,10 +135,11 @@ describe('BlockchainHandler class setup', () => {
       setupDefaults()
     })
 
-    it('should retrieve the current account if walletService is ready', async () => {
+    it('should retrieve the current account if walletService has a provider', async () => {
       expect.assertions(1)
 
-      walletService.ready = true
+      // for the purposes of this test, we only need the provider to exist
+      walletService.provider = true
       await callSetupBlockchainHandler()
 
       expect(walletService.getAccount).toHaveBeenCalled()
@@ -172,7 +173,8 @@ describe('BlockchainHandler class setup', () => {
       it('should retrieve current account if walletService is ready', async () => {
         expect.assertions(1)
 
-        walletService.ready = true
+        // for the purposes of this test, we only need the provider to exist
+        walletService.provider = true
         await callSetupBlockchainHandler()
 
         const pollForAccounts = getAccountPollingFunction()
@@ -184,7 +186,6 @@ describe('BlockchainHandler class setup', () => {
       it('should not retrieve current account if walletService is not ready', async () => {
         expect.assertions(1)
 
-        walletService.ready = false
         await callSetupBlockchainHandler()
 
         const pollForAccounts = getAccountPollingFunction()

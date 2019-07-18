@@ -43,7 +43,7 @@ export function getWalletService(listeners: { [key: string]: Function }) {
 
 export function getWeb3Service(listeners: { [key: string]: Function }) {
   const web3Service: Web3ServiceType = {
-    refreshAccountBalance: jest.fn().mockRejectedValue('123'),
+    refreshAccountBalance: jest.fn().mockResolvedValue('123'),
     getTransaction: jest.fn().mockResolvedValue({}),
     getLock: jest.fn().mockResolvedValue({}),
     getKeyByLockForOwner: jest.fn().mockResolvedValue({}),
