@@ -5,7 +5,9 @@ import createUnlockStore from '../../../createUnlockStore'
 import {
   AccountContent,
   mapStateToProps,
+  mapDispatchToProps,
 } from '../../../components/content/AccountContent'
+import { DISMISS_PURCHASE_MODAL } from '../../../actions/keyPurchase'
 
 const config = {
   stripeApiKey: 'pk_not_a_real_key',
@@ -37,7 +39,7 @@ describe('AccountContent', () => {
       expect.assertions(0)
       const { getByText } = rtl.render(
         <Provider store={store}>
-          <AccountContent config={config} />
+          <AccountContent config={config} dismissPurchaseModal={() => true} />
         </Provider>
       )
       getByText((_, node) => {
@@ -54,6 +56,7 @@ describe('AccountContent', () => {
             config={config}
             emailAddress="john@smi.th"
             cards={[]}
+            dismissPurchaseModal={() => true}
           />
         </Provider>
       )
@@ -70,11 +73,37 @@ describe('AccountContent', () => {
             config={config}
             emailAddress="john@smi.th"
             cards={[mockCard]}
+            dismissPurchaseModal={() => true}
           />
         </Provider>
       )
 
       getByText('Confirm Purchase')
+    })
+
+    it('should dismiss the modal when close button is clicked', () => {
+      expect.assertions(1)
+
+      const dismissPurchaseModal = jest.fn()
+
+      const { getByTitle } = rtl.render(
+        <Provider store={store}>
+          <AccountContent
+            config={config}
+            emailAddress="john@smi.th"
+            cards={[mockCard]}
+            dismissPurchaseModal={dismissPurchaseModal}
+          />
+        </Provider>
+      )
+
+      // No easy way to grab the button itself, need to select by SVG title
+      const svg = getByTitle('Close')
+      if (svg && svg.parentElement && svg.parentElement.parentElement) {
+        const button = svg.parentElement.parentElement
+        rtl.fireEvent.click(button)
+        expect(dismissPurchaseModal).toHaveBeenCalled()
+      }
     })
   })
 
@@ -100,6 +129,18 @@ describe('AccountContent', () => {
       expect(mapStateToProps(state)).toEqual({
         emailAddress,
         cards,
+      })
+    })
+  })
+
+  describe('mapDispatchToProps', () => {
+    it('should be able to dispatch the dismiss purchase modal action', () => {
+      expect.assertions(1)
+      const dispatch = jest.fn()
+      const { dismissPurchaseModal } = mapDispatchToProps(dispatch)
+      dismissPurchaseModal()
+      expect(dispatch).toHaveBeenCalledWith({
+        type: DISMISS_PURCHASE_MODAL,
       })
     })
   })
