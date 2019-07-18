@@ -45,7 +45,8 @@ export const CheckoutConfirmingModal = ({
         <div>
           <p>
             Your transaction was sent and is currently being confirmed on the
-            Ethereum blockchain. Feel free to start browsing our site ads free!
+            Ethereum blockchain. Please enjoy our content while it is
+            confirming!
           </p>
           <Status>You&apos;ll see the status of your order on the left.</Status>
           <StartReading onClick={hideCheckout}>Start Reading</StartReading>
