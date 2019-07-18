@@ -5,10 +5,21 @@ import {
   ReactStripeElements,
   StripeProvider,
   Elements,
-  CardElement,
   injectStripe,
+  CardNumberElement,
+  CardExpiryElement,
+  CardCVCElement,
 } from 'react-stripe-elements'
-import { Input, SectionHeader, Column, Grid, SubmitButton } from './styles'
+import {
+  Item,
+  ItemLabel,
+  CardContainer,
+  Input,
+  SectionHeader,
+  Column,
+  Grid,
+  SubmitButton,
+} from './styles'
 import { signPaymentData } from '../../../actions/user'
 
 interface PaymentDetailsProps {
@@ -103,53 +114,88 @@ export class PaymentForm extends React.Component<
   }
 
   render() {
+    const stripeElementStyles = {
+      base: { fontSize: '16px', lineHeight: '40px' },
+    }
     return (
       <Grid>
         <SectionHeader>Card Details</SectionHeader>
-        <Input
-          name="cardHolderName"
-          id="cardHolderName"
-          type="text"
-          placeholder="Card Holder Name"
-          onChange={this.handleInputChange}
-        />
-        <Input
-          name="address1"
-          id="address1"
-          type="text"
-          placeholder="Address Line 1"
-          onChange={this.handleInputChange}
-        />
-        <Input
-          name="address2"
-          id="address2"
-          type="text"
-          placeholder="Address Line 2"
-          onChange={this.handleInputChange}
-        />
-        <Input
-          name="addressCity"
-          id="addressCity"
-          type="text"
-          placeholder="City"
-          onChange={this.handleInputChange}
-        />
-        <Input
-          name="addressState"
-          id="addressState"
-          type="text"
-          placeholder="State"
-          onChange={this.handleInputChange}
-        />
-        <Input
-          name="addressCountry"
-          id="addressCountry"
-          type="country"
-          placeholder="Country"
-          onChange={this.handleInputChange}
-        />
+        <div>
+          <ItemLabel>Cardholder Name</ItemLabel>
+          <Input
+            name="cardHolderName"
+            id="cardHolderName"
+            type="text"
+            placeholder="Cardholder Name"
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <div>
+          <ItemLabel>Address Line 1</ItemLabel>
+          <Input
+            name="address1"
+            id="address1"
+            type="text"
+            placeholder="Address Line 1"
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <div>
+          <ItemLabel>Address Line 2</ItemLabel>
+          <Input
+            name="address2"
+            id="address2"
+            type="text"
+            placeholder="Address Line 2"
+            onChange={this.handleInputChange}
+          />
+        </div>
+        <CardContainer>
+          <div>
+            <ItemLabel>City</ItemLabel>
+            <Input
+              name="addressCity"
+              id="addressCity"
+              type="text"
+              placeholder="City"
+              onChange={this.handleInputChange}
+            />
+          </div>
+          <div>
+            <ItemLabel>State</ItemLabel>
+            <Input
+              name="addressState"
+              id="addressState"
+              type="text"
+              placeholder="State"
+              onChange={this.handleInputChange}
+            />
+          </div>
+        </CardContainer>
+        <div>
+          <ItemLabel>Country</ItemLabel>
+          <Input
+            name="addressCountry"
+            id="addressCountry"
+            type="country"
+            placeholder="Country"
+            onChange={this.handleInputChange}
+          />
+        </div>
         <Column size="full">
-          <CardElement />
+          <Item title="Credit Card Number">
+            <CardNumberElement style={stripeElementStyles} />
+          </Item>
+          <CardContainer>
+            <div>
+              <ItemLabel>Expiry Date</ItemLabel>
+              <CardExpiryElement style={stripeElementStyles} />
+            </div>
+            <div>
+              <ItemLabel>CVC Number</ItemLabel>
+              <CardCVCElement style={stripeElementStyles} />
+            </div>
+          </CardContainer>
         </Column>
         <Column size="half">
           <SubmitButton onClick={this.handleSubmit}>

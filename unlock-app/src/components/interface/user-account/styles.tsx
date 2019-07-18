@@ -72,6 +72,7 @@ export const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   margin-bottom: 1rem;
+  width: 100%;
 `
 
 export const Error = styled.span`
@@ -162,6 +163,13 @@ export const Item = ({ title, children, size }: ItemProps) => {
     </Column>
   )
 }
+
+// To be used when two credit card fields need to sit on the same line
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-gap: 16px;
+`
 
 // To be used in place of <Layout> when we embed an app page in an iframe. This
 // avoids including all the UI chrome and positioning, and adds a white
