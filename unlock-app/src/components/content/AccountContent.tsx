@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import styled from 'styled-components'
 import withConfig from '../../utils/withConfig'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
@@ -8,6 +9,8 @@ import PaymentDetails from '../interface/user-account/PaymentDetails'
 import LogInSignUp from '../interface/user-account/LogInSignUp'
 import KeyPurchaseConfirmation from '../interface/user-account/KeyPurchaseConfirmation'
 import { IframeWrapper } from '../interface/user-account/styles'
+import Close from '../interface/buttons/layout/Close'
+import { dismissPurchaseModal } from '../../actions/keyPurchase'
 
 declare global {
   interface Window {
@@ -24,6 +27,7 @@ interface FullAccountContentProps extends AccountContentProps {
   config: {
     stripeApiKey: string
   }
+  dismissPurchaseModal: () => any
 }
 interface AccountContentState {
   stripe: stripe.Stripe | null
@@ -87,6 +91,7 @@ export class AccountContent extends React.Component<
   }
 
   render() {
+    const { dismissPurchaseModal } = this.props
     const mode = this.currentPageMode()
     return (
       <IframeWrapper>
@@ -94,6 +99,11 @@ export class AccountContent extends React.Component<
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
+        <Quit
+          backgroundColor="var(--lightgrey)"
+          fillColor="var(--grey)"
+          action={dismissPurchaseModal}
+        />
         <Errors />
         {this.getComponent(mode)}
       </IframeWrapper>
@@ -123,4 +133,14 @@ export const mapStateToProps = (state: ReduxState) => {
   return props
 }
 
+export const mapDispatchToProps = (dispatch: any) => ({
+  dismissPurchaseModal: () => dispatch(dismissPurchaseModal()),
+})
+
 export default withConfig(connect(mapStateToProps)(AccountContent))
+
+const Quit = styled(Close)`
+  position: absolute;
+  right: 24px;
+  top: 24px;
+`
