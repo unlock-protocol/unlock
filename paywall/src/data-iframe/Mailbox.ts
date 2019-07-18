@@ -107,14 +107,14 @@ export default class Mailbox {
   sendUpdates(type: 'locks' | 'account' | 'balance' | 'network') {
     if (!this.data) return
     const unlockedLocks = this.getUnlockedLockAddresses()
+    if (unlockedLocks.length) {
+      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+    } else {
+      this.postMessage(PostMessages.LOCKED, undefined)
+    }
     switch (type) {
       case 'locks':
         this.postMessage(PostMessages.UPDATE_LOCKS, this.data.locks)
-        if (unlockedLocks.length) {
-          this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-        } else {
-          this.postMessage(PostMessages.LOCKED, undefined)
-        }
         break
       case 'account':
         this.postMessage(PostMessages.UPDATE_ACCOUNT, this.data.account)
