@@ -161,7 +161,7 @@ export default function web3Proxy(
         }
       }
     },
-    [PostMessages.HIDE_ACCOUNT_MODAL]: (
+    [PostMessages.HIDE_ACCOUNTS_MODAL]: (
       _postMessage,
       _dataIframe,
       _checkoutIframe,
