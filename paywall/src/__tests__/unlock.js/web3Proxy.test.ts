@@ -375,8 +375,8 @@ describe('web3Proxy', () => {
             type: PostMessages.WEB3,
             payload: {
               error: 'No web3 wallet is available',
+              jsonrpc: '2.0',
               id: 1,
-              result: null,
             },
           })
           expect(origin).toBe('http://fun.times')
@@ -651,7 +651,7 @@ describe('web3Proxy', () => {
           makeFakeIframe()
           fakeWindow.web3 &&
             (fakeWindow.web3.currentProvider.send = (_, callbackinator) => {
-              callbackinator('error', 'result')
+              callbackinator(null, 'result')
             })
           fakeIframe.contentWindow.postMessage = jest.fn()
 
@@ -666,8 +666,10 @@ describe('web3Proxy', () => {
             },
           })
 
+          const mock = fakeIframe.contentWindow.postMessage as any
           // flush the promise queue so these handler calls happen in order
-          await Promise.resolve()
+          await waitFor(() => mock.mock.calls.length)
+          mock.mockClear()
 
           postFromDataIframe({
             source: fakeIframe.contentWindow,
@@ -689,8 +691,8 @@ describe('web3Proxy', () => {
           expect(fakeIframe.contentWindow.postMessage).toHaveBeenCalledWith(
             {
               payload: {
-                error: 'error',
                 id: 1,
+                jsonrpc: '2.0',
                 result: 'result',
               },
               type: PostMessages.WEB3,

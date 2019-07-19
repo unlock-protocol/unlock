@@ -102,10 +102,10 @@ export default function web3Proxy(
       return async payload => {
         // handler for the actual web3 calls
         if (!hasWeb3 || !window.web3) {
-          return postMessage('data', PostMessages.WEB3, {
+          return postMessage('data', PostMessages.WEB3_RESULT, {
             id: payload.id,
+            jsonrpc: '2.0',
             error: 'No web3 wallet is available',
-            result: null,
           })
         }
 
@@ -135,11 +135,19 @@ export default function web3Proxy(
               id,
             },
             (error: string | null, result: any) => {
-              postMessage('data', PostMessages.WEB3_RESULT, {
-                id,
-                error,
-                result,
-              })
+              if (error) {
+                postMessage('data', PostMessages.WEB3_RESULT, {
+                  id,
+                  jsonrpc: '2.0',
+                  error,
+                })
+              } else {
+                postMessage('data', PostMessages.WEB3_RESULT, {
+                  id,
+                  jsonrpc: '2.0',
+                  result,
+                })
+              }
             }
           )
       }
