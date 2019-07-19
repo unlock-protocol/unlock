@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import Link from 'next/link'
 import queryString from 'query-string'
 import { connect } from 'react-redux'
 import { signupEmail } from '../../../actions/user'
@@ -69,39 +68,24 @@ export class SignUp extends React.Component<Props, State> {
     if (!emailAddress) {
       return (
         <div>
-          <Heading>Pay For Content Seamlessly</Heading>
-          <SubHeading>
-            Unlock enables anyone to seamlessly buy and manage access to content
-            using blockchain technology.
-          </SubHeading>
-          <Description>
-            At Unlock, we believe that the more accessible paid content is, the
-            better it will be. To do that we&#39;re making it easy for readers
-            like you to seamlessly pay for and manage your content.
-          </Description>
-          <Description>
-            If you want to know more about Unlock&#39;s decentralized payment
-            protocol, check out{' '}
-            <Link href="https://unlock-protocol.com/blog">
-              <a target="_blank">
-                <span>our blog</span>
-              </a>
-            </Link>
-            .
-          </Description>
+          <Heading>Create an Account to Pay by Credit Card</Heading>
           {!submitted && (
-            <Form onSubmit={this.handleSubmit}>
-              <Input
-                name="emailAddress"
-                type="email"
-                placeholder="Enter your email to get started"
-                onChange={this.handleInputChange}
-              />
+            <form onSubmit={this.handleSubmit}>
+              <Indent>
+                <Label htmlFor="emailAddress">Email</Label>
+                <Input
+                  name="emailAddress"
+                  id="emailAddress"
+                  type="email"
+                  placeholder="Enter your email to get started"
+                  onChange={this.handleInputChange}
+                />
+                <Description>
+                  Already have an account? {LogInLink('Log in here')}.
+                </Description>
+              </Indent>
               <SubmitButton type="submit" value="Sign Up" />
-              <Description>
-                Already have an account? {LogInLink('Log in here')}.
-              </Description>
-            </Form>
+            </form>
           )}
           {submitted && (
             <Confirmation>
@@ -172,18 +156,25 @@ export default connect(
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 36px;
-  line-height: 47px;
+  font-size: 15px;
+  line-height: 19px;
   font-weight: bold;
   color: var(--darkgrey);
+  padding: 24px 32px 24px 32px;
+  margin: 0;
 `
 
-const SubHeading = styled.h2`
-  font-family: 'IBM Plex Serif', serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
+const Label = styled.label`
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
   color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+`
+
+const Indent = styled.div`
+  padding: 0 32px;
 `
 
 const Description = styled.p`
@@ -193,15 +184,9 @@ const Description = styled.p`
   color: var(--darkgrey);
 `
 
-const Form = styled.form`
-  display: grid;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 16px;
-  max-width: 600px;
-`
-
 const Input = styled.input`
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -211,9 +196,10 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
-  border-radius: 4px;
+  border-bottom-radius: 4px;
   font-size: 16px;
   cursor: pointer;
 `
@@ -226,6 +212,8 @@ const Confirmation = styled.div`
   & > div:first-child {
     font-weight: bold;
   }
+  padding: 0 32px;
+  margin-bottom: 32px;
 `
 
 const LinkButton = styled.a`
