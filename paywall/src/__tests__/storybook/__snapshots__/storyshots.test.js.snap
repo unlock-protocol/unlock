@@ -5779,7 +5779,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Checkout Checkout with 3 locks and one valid key purchase 1`] = `
+exports[`Storyshots Checkout Checkout with 3 locks and two valid key purchases 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -6354,7 +6354,7 @@ Object {
               <footer
                 class="c23 c24"
               >
-                Expires in 1 hour
+                Expires in &lt; 1 Minute
               </footer>
               <footer
                 class="c25 c26"
@@ -6364,9 +6364,8 @@ Object {
             </div>
           </li>
           <li
-            class="lock c27"
+            class="lock c8"
             data-address="0x456"
-            disabled=""
           >
             <header
               class="c9"
@@ -6374,36 +6373,68 @@ Object {
               One Month
             </header>
             <div
-              class="c28"
-              disabled=""
+              class="c10"
             >
               <div
-                class="price c29"
+                class="c11 price c12"
               >
                 0.3
                  
                 Eth
               </div>
-              <div>
+              <div
+                class="c13 "
+              >
                 <span
-                  class="c30"
+                  class="c14 c15"
                 >
                   $
                   ---
                 </span>
                 <span
-                  class="c31"
+                  class="c16"
                 >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
-              <footer
-                class="c32 c33"
-                disabled=""
+              <a
+                class="c17 c18 c19"
               >
-                Purchase
+                <svg
+                  class="c20 "
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <svg
+                  class="c21 c22"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+              <footer
+                class="c23 c24"
+              >
+                Expires in 20 Minutes
+              </footer>
+              <footer
+                class="c25 c26"
+              >
+                Go to Content
               </footer>
             </div>
           </li>
@@ -6586,7 +6617,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Expires in 1 hour
+              Expires in &lt; 1 Minute
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
@@ -6596,9 +6627,8 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock cGsVZV"
+          class="sc-1549ebs-0 lock gxqdDg"
           data-address="0x456"
-          disabled=""
         >
           <header
             class="sc-1549ebs-1 kSQjXI"
@@ -6606,36 +6636,68 @@ Object {
             One Month
           </header>
           <div
-            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-            disabled=""
+            class="sc-1549ebs-3 azpr18-5 fsNpLg"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="azpr18-1 price gXKeU"
             >
               0.3
                
               Eth
             </div>
-            <div>
+            <div
+              class="azpr18-0 hGLUUF"
+            >
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+                class="azpr18-2 azpr18-3 jHnszm"
               >
                 $
                 ---
               </span>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="azpr18-2 azpr18-4 kvkGQn"
               >
                 <span>
                   30 days
                 </span>
               </span>
             </div>
-            <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
-              disabled=""
+            <a
+              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
             >
-              Purchase
+              <svg
+                class="sc-1hzn3pu-0 dozNUb"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="sc-1hzn3pu-1 gckVYZ"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+            <footer
+              class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+            >
+              Expires in 20 Minutes
+            </footer>
+            <footer
+              class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+            >
+              Go to Content
             </footer>
           </div>
         </li>
@@ -7340,7 +7402,7 @@ Object {
               <footer
                 class="c23 c24"
               >
-                Expires in 1 hour
+                Expires in 8 Days
               </footer>
               <footer
                 class="c25 c26"
@@ -7568,7 +7630,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Expires in 1 hour
+              Expires in 8 Days
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
@@ -8318,7 +8380,7 @@ Object {
               <footer
                 class="c23 c24"
               >
-                Expires in 1 hour
+                Expires in 1 Hour
               </footer>
               <footer
                 class="c25 c26"
@@ -8328,44 +8390,75 @@ Object {
             </div>
           </li>
           <li
-            class="lock c27"
+            class="lock c8"
             data-address="0x456"
-            disabled=""
           >
             <header
               class="c9"
             />
             <div
-              class="c28"
-              disabled=""
+              class="c10"
             >
               <div
-                class="price c29"
+                class="c11 price c12"
               >
                 0.3
                  
                 Eth
               </div>
-              <div>
+              <div
+                class="c13 "
+              >
                 <span
-                  class="c30"
+                  class="c14 c15"
                 >
                   $
                   ---
                 </span>
                 <span
-                  class="c31"
+                  class="c16"
                 >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
-              <footer
-                class="c32 c33"
-                disabled=""
+              <a
+                class="c17 c18 c19"
               >
-                Purchase
+                <svg
+                  class="c20 "
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <svg
+                  class="c21 c22"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+              <footer
+                class="c23 c24"
+              >
+                Expires in 2 Hours
+              </footer>
+              <footer
+                class="c25 c26"
+              >
+                Go to Content
               </footer>
             </div>
           </li>
@@ -8548,7 +8641,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Expires in 1 hour
+              Expires in 1 Hour
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
@@ -8558,44 +8651,75 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock cGsVZV"
+          class="sc-1549ebs-0 lock gxqdDg"
           data-address="0x456"
-          disabled=""
         >
           <header
             class="sc-1549ebs-1 kSQjXI"
           />
           <div
-            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
-            disabled=""
+            class="sc-1549ebs-3 azpr18-5 fsNpLg"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="azpr18-1 price gXKeU"
             >
               0.3
                
               Eth
             </div>
-            <div>
+            <div
+              class="azpr18-0 hGLUUF"
+            >
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
+                class="azpr18-2 azpr18-3 jHnszm"
               >
                 $
                 ---
               </span>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="azpr18-2 azpr18-4 kvkGQn"
               >
                 <span>
                   30 days
                 </span>
               </span>
             </div>
-            <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
-              disabled=""
+            <a
+              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
             >
-              Purchase
+              <svg
+                class="sc-1hzn3pu-0 dozNUb"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <svg
+                class="sc-1hzn3pu-1 gckVYZ"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+            <footer
+              class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
+            >
+              Expires in 2 Hours
+            </footer>
+            <footer
+              class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
+            >
+              Go to Content
             </footer>
           </div>
         </li>
