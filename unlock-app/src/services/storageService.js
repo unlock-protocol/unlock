@@ -146,16 +146,25 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Creates a user. In the case of failure a rejected promise is returned to the caller.
+   * Creates a user. In the case of failure a rejected promise is returned to
+   * the caller.  On success, the encrypted key payload and the credentials are
+   * emitted so that the user can automatically be signed in.
    *
    * @param {*} user
+   * @param {string} emailAddress (do not send to locksmith)
+   * @param {string} password (do not send to locksmith)
    * @returns {Promise<*>}
    */
-  async createUser(user) {
+  async createUser(user, emailAddress, password) {
     const opts = {}
     try {
       await axios.post(`${this.host}/users/`, user, opts)
-      this.emit(success.createUser, user.message.user.publicKey)
+      this.emit(success.createUser, {
+        passwordEncryptedPrivateKey:
+          user.message.user.passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+      })
     } catch (error) {
       this.emit(failure.createUser, error)
     }

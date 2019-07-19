@@ -262,14 +262,21 @@ describe('StorageService', () => {
   describe('Create user', () => {
     describe('When a user can be created', () => {
       it('emits a success', done => {
-        expect.assertions(2)
+        expect.assertions(4)
         axios.post.mockReturnValue({})
 
-        storageService.on(success.createUser, returnedPublicKey => {
-          expect(returnedPublicKey).toBe(publicKey)
+        const emailAddress = 'johnnyapple@seed.ly'
+        const password = 'password123'
+
+        storageService.on(success.createUser, result => {
+          expect(result.passwordEncryptedPrivateKey).toEqual(
+            passwordEncryptedPrivateKey
+          )
+          expect(result.emailAddress).toEqual(emailAddress)
+          expect(result.password).toEqual(password)
           done()
         })
-        storageService.createUser(user)
+        storageService.createUser(user, emailAddress, password)
 
         expect(axios.post).toHaveBeenCalledWith(
           `${serviceHost}/users/`,
