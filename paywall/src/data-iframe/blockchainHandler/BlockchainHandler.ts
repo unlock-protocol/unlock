@@ -306,20 +306,17 @@ export default class BlockchainHandler {
       if (update.address) {
         update.address = normalizeLockAddress(update.address)
       }
+      if (this.store.config.locks[address].name) {
+        // use the configuration lock name if present
+        update.name = this.store.config.locks[address].name
+      }
       mergeUpdate(
         address,
         'locks',
         {
           address,
         },
-        {
-          ...update,
-          // TODO: test this
-          // use the configuration lock name if present
-          ...(this.store.config.locks[address]
-            ? this.store.config.locks[address]
-            : null),
-        }
+        update
       )
     })
 

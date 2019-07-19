@@ -64,10 +64,16 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       store,
     })
     const mock: any = web3Service.getLock
+    // emit a unique name for each lock
+    const lockNames = {
+      [lockAddresses[0]]: 'one',
+      [lockAddresses[1]]: 'two',
+      [lockAddresses[2]]: 'three',
+    }
     mock.mockImplementation((address: string) => {
       web3Service.emit('lock.updated', address, {
         address,
-        name: '',
+        name: lockNames[address],
         keyPrice: '0',
         expirationDuration: 1,
         currencyContractAddress: null,
@@ -76,6 +82,69 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
     })
     handler.init()
   }
+
+  describe('lock names', () => {
+    beforeEach(() => {
+      setupDefaults({ account: null })
+    })
+
+    it('should use configuration names if present', async () => {
+      expect.assertions(1)
+
+      handler = new BlockchainHandler({
+        walletService,
+        web3Service,
+        constants,
+        configuration,
+        emitChanges,
+        emitError,
+        window: fakeWindow,
+        store,
+      })
+
+      handler.init()
+
+      // locks get populated when web3Service.getLock emits 'lock.updated'
+      // see the setupListeners function for implementation
+      // the end of "setupDefaults" mocks the emit in this test file
+      expect(emitChanges).toHaveBeenCalledWith({
+        locks: getDefaultFullLocks(store, configuration),
+        account: null,
+        balance: '0',
+        network: 1984,
+      })
+    })
+
+    it('should use lock names if configuration names are not present', async () => {
+      expect.assertions(1)
+
+      configuration.locks[lockAddresses[0]].name = ''
+      handler = new BlockchainHandler({
+        walletService,
+        web3Service,
+        constants,
+        configuration,
+        emitChanges,
+        emitError,
+        window: fakeWindow,
+        store,
+      })
+
+      handler.init()
+
+      await handler.retrieveCurrentBlockchainData()
+
+      // locks get populated when web3Service.getLock emits 'lock.updated'
+      // see the setupListeners function for implementation
+      // the end of "setupDefaults" mocks the emit in this test file
+      expect(emitChanges).toHaveBeenCalledWith({
+        locks: getDefaultFullLocks(store, configuration),
+        account: null,
+        balance: '0',
+        network: 1984,
+      })
+    })
+  })
 
   describe('user is not logged in', () => {
     beforeEach(() => {
@@ -117,7 +186,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(store),
+        locks: getDefaultFullLocks(store, configuration),
         account: null,
         balance: '0',
         network: 1984,
@@ -139,7 +208,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(store),
+        locks: getDefaultFullLocks(store, configuration),
         account: addresses[2],
         balance: '0',
         network: 1984,
@@ -166,7 +235,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       // see the setupListeners function for implementation
       // the end of "setupDefaults" mocks the emit in this test file
       expect(emitChanges).toHaveBeenCalledWith({
-        locks: getDefaultFullLocks(store, {
+        locks: getDefaultFullLocks(store, configuration, {
           [lockAddresses[0]]: 12345, // override key expiration for key on lock 0
         }),
         account: addresses[2],
@@ -214,7 +283,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
 
         // this proves that 3 keys still exist
         expect(emitChanges).toHaveBeenCalledWith({
-          locks: getDefaultFullLocks(store, {}),
+          locks: getDefaultFullLocks(store, configuration, {}),
           account: addresses[2],
           balance: '0',
           network: 1984,
@@ -261,7 +330,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       it('should retrieve transactions', async () => {
         expect.assertions(2)
 
-        const locks: Locks = getDefaultFullLocks(store)
+        const locks: Locks = getDefaultFullLocks(store, configuration)
         locks[lockAddresses[1]].key.status = 'pending'
         locks[lockAddresses[1]].key.transactions = [
           {
