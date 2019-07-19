@@ -85,8 +85,15 @@ export function secondsAsDays(seconds) {
   return Math.ceil(seconds / 86400).toString()
 }
 
-function isLessThanADay(timestamp) {
-  return timestamp - new Date().getTime() / 1000 < 86400
+function roundUp(duration) {
+  if (duration.minutes > 30) {
+    duration.hours = duration.hours || 0
+    duration.hours += 1 // round up
+  }
+  if (duration.hours > 23 || (duration.hours === 23 && duration.minutes > 30)) {
+    duration.days = duration.days || 0
+    duration.days += 1 // round up
+  }
 }
 
 /**
@@ -104,24 +111,50 @@ export function expirationAsDate(timestamp) {
     return 'Expired'
   }
 
-  if (isLessThanADay(timestamp)) {
-    // If it is less than a day from now we provide more granular details, from now
-    const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
-    return durationsAsTextFromSeconds(secondsFromNow)
+  const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
+  const duration = durations(secondsFromNow, {})
+
+  roundUp(duration)
+
+  if (duration.days > 30) {
+    // return the date name
+    let expirationDate = new Date(0)
+    expirationDate.setUTCSeconds(timestamp)
+    let day = expirationDate.getDate()
+    let month = expirationDate.getMonth()
+    let year = expirationDate.getFullYear()
+
+    return MONTH_NAMES[month] + ' ' + day + ', ' + year
   }
 
-  let expirationDate = new Date(0)
-  expirationDate.setUTCSeconds(timestamp)
-  let day = expirationDate.getDate()
-  let month = expirationDate.getMonth()
-  let year = expirationDate.getFullYear()
+  // everything below here returns relative duration left
 
-  return MONTH_NAMES[month] + ' ' + day + ', ' + year
+  if (duration.days) {
+    const plural = duration.days > 1 ? 's' : ''
+    return `${duration.days} Day${plural}`
+  }
+  if (duration.hours) {
+    const plural = duration.hours > 1 ? 's' : ''
+    return `${duration.hours} Hour${plural}`
+  }
+  if (duration.minutes) {
+    const plural = duration.minutes > 1 ? 's' : ''
+    return `${duration.minutes} Minute${plural}`
+  }
+  return '< 1 Minute'
 }
 
 export function expirationAsText(timestamp) {
+  if (!timestamp) return 'Never Expires'
+
   const text = expirationAsDate(timestamp)
-  if (isLessThanADay(timestamp)) {
+  if (text === 'Expired') return text
+
+  const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
+
+  const duration = durations(secondsFromNow, {})
+  roundUp(duration)
+  if (!duration.days || duration.days <= 30) {
     return `Expires in ${text}`
   }
   return `Expires ${text}`
