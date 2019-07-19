@@ -254,7 +254,7 @@ describe('web3Proxy', () => {
           source: fakeAccountIframe.contentWindow,
           origin: 'http://fun.times',
           data: {
-            type: PostMessages.HIDE_ACCOUNT_MODAL,
+            type: PostMessages.HIDE_ACCOUNTS_MODAL,
             payload: undefined,
           },
         })
