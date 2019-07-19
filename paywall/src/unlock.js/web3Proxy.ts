@@ -121,6 +121,7 @@ export default function web3Proxy(
   let currentLocks: Locks
   let canUseUserAccounts: boolean = !window.web3
   let hasNativeWeb3Wallet = !!window.web3
+  let showIframeWhenReady = false
 
   const useUnlockAccount = () => !hasNativeWeb3Wallet && canUseUserAccounts
 
@@ -156,6 +157,14 @@ export default function web3Proxy(
       accountIframe
     ) => {
       return () => {
+        if (
+          (canUseUserAccounts && !currentLocks) ||
+          !currentLocks ||
+          !Object.keys(currentLocks).length
+        ) {
+          // we haven't gotten the locks yet
+          showIframeWhenReady = true
+        }
         if (canUseUserAccounts) {
           showIframe(window, accountIframe)
         }
@@ -206,10 +215,23 @@ export default function web3Proxy(
   }
 
   const dataHandlers: MessageHandlerTemplates<MessageTypes> = {
-    [PostMessages.UPDATE_LOCKS]: () => {
+    [PostMessages.UPDATE_LOCKS]: (
+      _postMessage,
+      _dataIframe,
+      _checkoutIframe,
+      accountIframe
+    ) => {
       return locks => {
         canUseUserAccounts = !hasNativeWeb3Wallet && hasERC20Lock(locks)
         currentLocks = locks
+        if (canUseUserAccounts && locks && Object.keys(locks).length) {
+          if (showIframeWhenReady) {
+            showIframe(window, accountIframe)
+            // turn the flag off, we don't want to re-open the user accounts iframe
+            // every time the locks change
+            showIframeWhenReady = false
+          }
+        }
       }
     },
     [PostMessages.READY_WEB3]: (
