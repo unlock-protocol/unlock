@@ -8,6 +8,7 @@ import {
   ConstantsType,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { PaywallConfig, Locks } from '../../unlockTypes'
+import FakeWindow from './fakeWindowHelpers'
 
 export function getWalletService(listeners: { [key: string]: Function }) {
   const walletService: WalletServiceType = {
@@ -80,7 +81,7 @@ export const addresses = [
 ]
 export const lockAddresses = addresses.map(address => address.toLowerCase())
 
-type OptionalBlockchainValues = Partial<PaywallState>
+export type OptionalBlockchainValues = Partial<PaywallState>
 
 export interface BlockchainTestDefaults {
   fakeWindow: FetchWindow & SetTimeoutWindow
@@ -94,7 +95,7 @@ export interface BlockchainTestDefaults {
   configuration: PaywallConfig
 }
 
-type PartialBlockchainTestDefaults = Partial<BlockchainTestDefaults>
+export type PartialBlockchainTestDefaults = Partial<BlockchainTestDefaults>
 
 export const defaultValuesOverride: OptionalBlockchainValues = {
   config: {
@@ -145,14 +146,8 @@ export function setupTestDefaults(
   jsonToFetch: { transactions?: LocksmithTransactionsResult[] } = {}
 ): BlockchainTestDefaults {
   const result: PartialBlockchainTestDefaults = {}
-  result.fakeWindow = {
-    fetch: jest.fn((_: string) => {
-      return Promise.resolve({
-        json: () => Promise.resolve(jsonToFetch),
-      })
-    }),
-    setTimeout: jest.fn(),
-  }
+  result.fakeWindow = new FakeWindow()
+  ;(result.fakeWindow as FakeWindow).setupTransactionsResult(jsonToFetch)
   result.listeners = {}
   result.constants = {
     requiredConfirmations: 12,

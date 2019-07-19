@@ -21,11 +21,11 @@ export default class Mailbox {
   private postMessage: (
     type: MessageTypes,
     payload: ExtractPayload<MessageTypes>
-  ) => void
-  private addPostMessageListener: (
-    type: string,
+  ) => void = () => {}
+  private addPostMessageListener: <T extends PostMessages = PostMessages>(
+    type: T,
     listener: PostMessageListener
-  ) => void
+  ) => void = () => {}
   private data?: BlockchainData
   constructor(
     constants: ConstantsType,
@@ -33,21 +33,21 @@ export default class Mailbox {
   ) {
     this.constants = constants
     this.window = window
+    this.setConfig = this.setConfig.bind(this)
+    this.sendUpdates = this.sendUpdates.bind(this)
+    this.purchaseKey = this.purchaseKey.bind(this)
+    this.emitChanges = this.emitChanges.bind(this)
+    this.emitError = this.emitError.bind(this)
     const { postMessage, addHandler } = iframePostOffice(
       this.window,
       'data iframe'
     )
     this.postMessage = postMessage
     this.addPostMessageListener = addHandler
-    this.setConfig = this.setConfig.bind(this)
-    this.sendUpdates = this.sendUpdates.bind(this)
-    this.purchaseKey = this.purchaseKey.bind(this)
-    this.emitChanges = this.emitChanges.bind(this)
-    this.emitError = this.emitError.bind(this)
+    this.setupPostMessageListeners()
   }
 
   async init() {
-    this.setupPostMessageListeners()
     // lazy-loading the blockchain handler, this is essential to implement
     // code splitting
     const [
