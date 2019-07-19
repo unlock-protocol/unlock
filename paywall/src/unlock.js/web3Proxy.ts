@@ -223,6 +223,9 @@ export default function web3Proxy(
           currentLocks = locks
           if (showIframeWhenReady) {
             showIframe(window, accountIframe)
+            // turn the flag off, we don't want to re-open the user accounts iframe
+            // every time the locks change
+            showIframeWhenReady = false
           }
         }
       }
