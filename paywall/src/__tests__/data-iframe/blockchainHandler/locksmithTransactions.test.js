@@ -156,15 +156,6 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       fetchedResult = {
         transactions: [
           {
-            // this transaction is skipped because it is for a different chain
-            transactionHash: 'hash1',
-            chain: 2,
-            recipient: 'lock 1',
-            sender: 'account',
-            for: 'account',
-            data: null,
-          },
-          {
             transactionHash: 'hash2',
             chain: 1,
             recipient: 'lock 2',
@@ -192,19 +183,19 @@ describe('locksmithTransactions - retrieving existing transactions', () => {
       })
 
       expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
-        1,
+        2,
         'hash2',
-        expect.objectContaining({
+        {
           to: 'lock 2',
           from: 'another account',
           for: 'account',
           input: 'data 2',
           network: 1,
           hash: 'hash2',
-        })
+        }
       )
       expect(fakeWeb3Service.getTransaction).toHaveBeenNthCalledWith(
-        2,
+        1,
         'hash3',
         undefined
       )
