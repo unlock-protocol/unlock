@@ -56,6 +56,13 @@ export default class Mailbox {
     this.setupPostMessageListeners()
   }
 
+  setupPostMessageListeners() {
+    this.addPostMessageListener(PostMessages.CONFIG, this.setConfig)
+    this.addPostMessageListener(PostMessages.SEND_UPDATES, this.sendUpdates)
+    this.addPostMessageListener(PostMessages.PURCHASE_KEY, this.purchaseKey)
+    this.postMessage(PostMessages.READY, undefined)
+  }
+
   async init() {
     // lazy-loading the blockchain handler, this is essential to implement
     // code splitting
@@ -78,6 +85,8 @@ export default class Mailbox {
     const provider = new Web3ProxyProvider(this.window)
     await walletService.connect(provider)
 
+    // configuration is set by "setConfig" in response to "READY"
+    // it is the paywall configuration
     await waitFor(() => this.configuration)
 
     this.handler = new BlockchainHandlerClass({
@@ -93,25 +102,27 @@ export default class Mailbox {
     this.handler.retrieveCurrentBlockchainData()
   }
 
-  setupPostMessageListeners() {
-    this.addPostMessageListener(PostMessages.CONFIG, this.setConfig)
-    this.addPostMessageListener(PostMessages.SEND_UPDATES, this.sendUpdates)
-    this.addPostMessageListener(PostMessages.PURCHASE_KEY, this.purchaseKey)
-    this.postMessage(PostMessages.READY, undefined)
-  }
-
+  /**
+   * Retrieve the addresses of any unlocked locks
+   */
   getUnlockedLockAddresses() {
     if (!this.data) return []
     const data = this.data as BlockchainData
+    // lock addresses are normalized by here
     return Object.keys(this.data.locks).filter(lockAddress => {
       const lock = data.locks[lockAddress]
+      // locked states are "none", and "expired"
       return ['valid', 'pending', 'submitted', 'confirming'].includes(
         lock.key.status
       )
     })
   }
 
-  sendUpdates(type: 'locks' | 'account' | 'balance' | 'network') {
+  /**
+   * When we receive PostMessages.SEND_UPDATES, it is sent here to
+   * send data back to the main window
+   */
+  sendUpdates(updateRequest: unknown) {
     if (!this.data) return
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
@@ -119,18 +130,20 @@ export default class Mailbox {
     } else {
       this.postMessage(PostMessages.LOCKED, undefined)
     }
+    const { locks, account, balance, network } = this.data
+    const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
     switch (type) {
       case 'locks':
-        this.postMessage(PostMessages.UPDATE_LOCKS, this.data.locks)
+        this.postMessage(PostMessages.UPDATE_LOCKS, locks)
         break
       case 'account':
-        this.postMessage(PostMessages.UPDATE_ACCOUNT, this.data.account)
+        this.postMessage(PostMessages.UPDATE_ACCOUNT, account)
         break
       case 'balance':
-        this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, this.data.balance)
+        this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, balance)
         break
       case 'network':
-        this.postMessage(PostMessages.UPDATE_NETWORK, this.data.network)
+        this.postMessage(PostMessages.UPDATE_NETWORK, network)
         break
       default:
         this.emitError(
@@ -143,6 +156,10 @@ export default class Mailbox {
     }
   }
 
+  /**
+   * When we receive PostMessages.CONFIG, it is sent here to
+   * validate and then set configuration
+   */
   setConfig(config: unknown) {
     if (!isValidPaywallConfig(config)) {
       this.emitError(
@@ -158,6 +175,10 @@ export default class Mailbox {
     this.configuration = config as PaywallConfig
   }
 
+  /**
+   * When we receive PostMessages.PURCHASE_KEY, it is sent here to
+   * do the purchase
+   */
   purchaseKey(request: unknown) {
     if (!this.handler || !this.data) return
     if (
@@ -182,7 +203,7 @@ export default class Mailbox {
     }
     const lock = this.data.locks[details.lock]
 
-    // this catches its errors internally and emits them with "emitError"
+    // this catches its errors internally and emits them with "emitError" (below)
     this.handler.purchaseKey({
       lockAddress: details.lock,
       amountToSend: lock.keyPrice,
@@ -190,8 +211,13 @@ export default class Mailbox {
     })
   }
 
+  /**
+   * This is called by the BlockchainHandler when there is an update to chain data
+   */
   emitChanges(data: BlockchainData) {
     this.data = data
+    // TODO: don't send unchanged values
+    // TODO: cache values
     this.postMessage(PostMessages.UPDATE_ACCOUNT, this.data.account)
     this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, this.data.balance)
     this.postMessage(PostMessages.UPDATE_NETWORK, this.data.network)
@@ -204,6 +230,9 @@ export default class Mailbox {
     }
   }
 
+  /**
+   * This is called whenever an error occurs in the data iframe
+   */
   emitError(error: Error) {
     if (process.env.UNLOCK_ENV === 'dev') {
       // eslint-disable-next-line
