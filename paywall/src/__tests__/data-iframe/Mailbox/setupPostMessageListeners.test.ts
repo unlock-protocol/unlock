@@ -47,7 +47,7 @@ describe('Mailbox - setupPostMessageListeners', () => {
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
 
-  function setupDefaults(noConfig: boolean = false) {
+  function setupDefaults() {
     defaults = setupTestDefaults()
     constants = defaults.constants
     configuration = defaults.configuration
@@ -55,18 +55,11 @@ describe('Mailbox - setupPostMessageListeners', () => {
     fakeWindow = win as FakeWindow
     mailbox = new Mailbox(constants, fakeWindow)
 
-    if (noConfig) {
-      testingMailbox().setConfig = jest.fn()
-      testingMailbox().sendUpdates = jest.fn()
-      testingMailbox().purchaseKey = jest.fn()
-      mailbox.setupPostMessageListeners()
-      return
-    }
-
-    fakeWindow.receivePostMessageFromMainWindow(
-      PostMessages.CONFIG,
-      configuration
-    )
+    testingMailbox().setConfig = jest.fn()
+    testingMailbox().sendUpdates = jest.fn()
+    testingMailbox().purchaseKey = jest.fn()
+    testingMailbox().refreshBlockchainTransactions = jest.fn()
+    mailbox.setupPostMessageListeners()
   }
 
   function testingMailbox(): any {
@@ -75,7 +68,7 @@ describe('Mailbox - setupPostMessageListeners', () => {
 
   describe('setupPostMessageListeners', () => {
     beforeEach(() => {
-      setupDefaults(true)
+      setupDefaults()
     })
 
     it('should listen for the paywall configuration', () => {
@@ -125,6 +118,21 @@ describe('Mailbox - setupPostMessageListeners', () => {
         purchaseRequest,
         expect.any(Function)
       )
+    })
+
+    it('should listen for notifications that a key purchase has been initiated elsewhere', () => {
+      expect.assertions(1)
+
+      const payload = undefined
+      fakeWindow.receivePostMessageFromMainWindow(
+        PostMessages.INITIATED_TRANSACTION,
+        payload
+      )
+
+      // called with the payload, and a function that can be used to respond
+      expect(
+        testingMailbox().refreshBlockchainTransactions
+      ).toHaveBeenCalledWith(payload, expect.any(Function))
     })
 
     it('should send PostMessages.READY to the main window', () => {

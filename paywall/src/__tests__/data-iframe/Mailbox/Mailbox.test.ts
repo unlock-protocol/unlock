@@ -109,6 +109,7 @@ describe('Mailbox - constructor', () => {
       'setConfig',
       'sendUpdates',
       'purchaseKey',
+      'refreshBlockchainTransactions',
       'emitChanges',
       'emitError',
     ])('this.%s should be bound to the current instance', func => {

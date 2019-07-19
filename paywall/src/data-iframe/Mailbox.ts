@@ -45,6 +45,9 @@ export default class Mailbox {
     this.setConfig = this.setConfig.bind(this)
     this.sendUpdates = this.sendUpdates.bind(this)
     this.purchaseKey = this.purchaseKey.bind(this)
+    this.refreshBlockchainTransactions = this.refreshBlockchainTransactions.bind(
+      this
+    )
     this.emitChanges = this.emitChanges.bind(this)
     this.emitError = this.emitError.bind(this)
     const { postMessage, addHandler } = iframePostOffice(
@@ -60,6 +63,10 @@ export default class Mailbox {
     this.addPostMessageListener(PostMessages.CONFIG, this.setConfig)
     this.addPostMessageListener(PostMessages.SEND_UPDATES, this.sendUpdates)
     this.addPostMessageListener(PostMessages.PURCHASE_KEY, this.purchaseKey)
+    this.addPostMessageListener(
+      PostMessages.INITIATED_TRANSACTION,
+      this.refreshBlockchainTransactions
+    )
     this.postMessage(PostMessages.READY, undefined)
   }
 
@@ -209,6 +216,18 @@ export default class Mailbox {
       amountToSend: lock.keyPrice,
       erc20Address: lock.currencyContractAddress,
     })
+  }
+
+  /**
+   * When we receive PostMessages.INITIATED_TRANSACTION, it is sent here
+   * to request a new set of transactions
+   */
+  refreshBlockchainTransactions() {
+    // this next condition is unlikely, but technically possible
+    if (!this.handler) return
+    // a key purchase was triggered elsewhere,
+    // so retrieve the pending purchase's transaction
+    this.handler.retrieveTransactions()
   }
 
   /**
