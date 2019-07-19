@@ -469,6 +469,7 @@ describe('BlockchainHandler - setupListeners', () => {
         // verify lock addresses are normalized
         [lockAddresses[0]]: {
           address: lockAddresses[0],
+          name: '1',
           thing: 1,
         },
       })
@@ -491,7 +492,7 @@ describe('BlockchainHandler - setupListeners', () => {
       expect(store.locks).toEqual({
         [lockAddresses[0]]: {
           address: lockAddresses[0],
-          name: 'hi',
+          name: '1', // it uses the configuration name if present
           keyPrice: '1',
           expirationDuration: 1,
           currencyContractAddress: null,
