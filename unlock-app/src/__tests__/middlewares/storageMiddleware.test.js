@@ -5,7 +5,7 @@ import storageMiddleware, {
 } from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT, setAccount, UPDATE_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import {
@@ -410,15 +410,28 @@ describe('Storage middleware', () => {
       expect(next).toHaveBeenCalledTimes(1)
     })
 
-    it('should dispatch setAccount when an account is created', () => {
+    it('should dispatch gotEncryptedPrivateKeyPayload after an account is created', () => {
       expect.assertions(1)
       const { store } = create()
 
-      mockStorageService.emit(success.createUser, '0x123abc')
+      const passwordEncryptedPrivateKey = {
+        id: 'this is the encrypted key',
+      }
+      const emailAddress = 'paul@bunyan.io'
+      const password = 'guest'
 
-      expect(store.dispatch).toHaveBeenCalledWith(
-        setAccount({ address: '0x123abc' })
-      )
+      mockStorageService.emit(success.createUser, {
+        passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key: passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+      })
     })
 
     it('should dispatch an error when user creation fails', () => {
