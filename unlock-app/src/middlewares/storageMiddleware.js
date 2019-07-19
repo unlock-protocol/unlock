@@ -11,7 +11,7 @@ import { startLoading, doneLoading } from '../actions/loading'
 import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
-import { SET_ACCOUNT, setAccount, updateAccount } from '../actions/accounts'
+import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
@@ -103,11 +103,18 @@ const storageMiddleware = config => {
     })
 
     // SIGNUP_CREDENTIALS
-    storageService.on(success.createUser, publicKey => {
-      // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
-      // setting here, will need to change what storageService emits
-      dispatch(setAccount({ address: publicKey }))
-    })
+    storageService.on(
+      success.createUser,
+      ({ passwordEncryptedPrivateKey, emailAddress, password }) => {
+        dispatch(
+          gotEncryptedPrivateKeyPayload(
+            passwordEncryptedPrivateKey,
+            emailAddress,
+            password
+          )
+        )
+      }
+    )
     storageService.on(failure.createUser, () => {
       dispatch(setError(Storage.Warning('Could not create this user account.')))
     })
@@ -254,7 +261,9 @@ const storageMiddleware = config => {
                 publicKey: address,
                 passwordEncryptedPrivateKey,
               })
-              storageService.createUser(user)
+              // Passing credentials through so that the user can be logged in
+              // after signup.
+              storageService.createUser(user, emailAddress, password)
             }
           )
         }
