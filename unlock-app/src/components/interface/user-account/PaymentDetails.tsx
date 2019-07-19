@@ -33,11 +33,8 @@ interface PaymentFormProps {
 
 interface PaymentFormState {
   cardHolderName: string
-  address1: string
-  address2: string
-  addressCity: string
-  addressState: string
   addressCountry: string
+  addressZip: string
 }
 
 // Memoized because it would constantly rerender (which cleared the Stripe form)
@@ -63,11 +60,8 @@ export class PaymentForm extends React.Component<
     super(props)
     this.state = {
       cardHolderName: '',
-      address1: '',
-      address2: '',
-      addressCity: '',
-      addressState: '',
       addressCountry: '',
+      addressZip: '',
     }
   }
 
@@ -88,21 +82,11 @@ export class PaymentForm extends React.Component<
     event.preventDefault()
 
     const { stripe, signPaymentData } = this.props
-    const {
-      address1,
-      address2,
-      addressCity,
-      addressState,
-      addressCountry,
-      cardHolderName,
-    } = this.state
+    const { addressCountry, addressZip, cardHolderName } = this.state
     if (stripe) {
       const result = await stripe.createToken({
-        address_line1: address1,
-        address_line2: address2,
-        address_city: addressCity,
-        address_state: addressState,
         address_country: addressCountry,
+        address_zip: addressZip,
         name: cardHolderName,
       })
 
@@ -130,58 +114,28 @@ export class PaymentForm extends React.Component<
             onChange={this.handleInputChange}
           />
         </div>
-        <div>
-          <ItemLabel>Address Line 1</ItemLabel>
-          <Input
-            name="address1"
-            id="address1"
-            type="text"
-            placeholder="Address Line 1"
-            onChange={this.handleInputChange}
-          />
-        </div>
-        <div>
-          <ItemLabel>Address Line 2</ItemLabel>
-          <Input
-            name="address2"
-            id="address2"
-            type="text"
-            placeholder="Address Line 2"
-            onChange={this.handleInputChange}
-          />
-        </div>
         <CardContainer>
           <div>
-            <ItemLabel>City</ItemLabel>
+            <ItemLabel>Country</ItemLabel>
             <Input
-              name="addressCity"
-              id="addressCity"
-              type="text"
-              placeholder="City"
+              name="addressCountry"
+              id="addressCountry"
+              type="country"
+              placeholder="Country"
               onChange={this.handleInputChange}
             />
           </div>
           <div>
-            <ItemLabel>State</ItemLabel>
+            <ItemLabel>Zip / Postal Code</ItemLabel>
             <Input
-              name="addressState"
-              id="addressState"
+              name="addressZip"
+              id="addressZip"
               type="text"
-              placeholder="State"
+              placeholder="Zip Code"
               onChange={this.handleInputChange}
             />
           </div>
         </CardContainer>
-        <div>
-          <ItemLabel>Country</ItemLabel>
-          <Input
-            name="addressCountry"
-            id="addressCountry"
-            type="country"
-            placeholder="Country"
-            onChange={this.handleInputChange}
-          />
-        </div>
         <Column size="full">
           <Item title="Credit Card Number">
             <CardNumberElement style={stripeElementStyles} />
