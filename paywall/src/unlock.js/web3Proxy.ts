@@ -157,7 +157,11 @@ export default function web3Proxy(
       accountIframe
     ) => {
       return () => {
-        if (!currentLocks || !Object.keys(currentLocks).length) {
+        if (
+          (canUseUserAccounts && !currentLocks) ||
+          !currentLocks ||
+          !Object.keys(currentLocks).length
+        ) {
           // we haven't gotten the locks yet
           showIframeWhenReady = true
         }
@@ -219,8 +223,8 @@ export default function web3Proxy(
     ) => {
       return locks => {
         canUseUserAccounts = !hasNativeWeb3Wallet && hasERC20Lock(locks)
-        if (locks && Object.keys(locks).length) {
-          currentLocks = locks
+        currentLocks = locks
+        if (canUseUserAccounts && locks && Object.keys(locks).length) {
           if (showIframeWhenReady) {
             showIframe(window, accountIframe)
             // turn the flag off, we don't want to re-open the user accounts iframe
