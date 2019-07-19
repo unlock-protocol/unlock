@@ -262,6 +262,7 @@ describe('web3Proxy', () => {
         expect(fakeAccountIframe.className).toBe('unlock start')
       })
     })
+
     describe('PostMessages.SHOW_MODAL', () => {
       beforeEach(() => {
         makeFakeWindow({ enable: false })
@@ -439,6 +440,93 @@ describe('web3Proxy', () => {
         // wait for the iframe to be shown
         await waitFor(() => fakeAccountIframe.className)
         expect(fakeAccountIframe.className).toBe('unlock start show')
+      })
+
+      it('if the account iframe loads before locks, it should show the account iframe if there are erc20 locks', async () => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(1)
+
+        delete fakeWindow.web3
+
+        postFromAccountIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.SHOW_ACCOUNTS_MODAL,
+            payload: undefined,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            payload: undefined,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            payload: YesERC20Locks,
+          },
+        })
+
+        // wait for the iframe to be shown
+        await waitFor(() => fakeAccountIframe.className)
+        expect(fakeAccountIframe.className).toBe('unlock start show')
+      })
+
+      it('if the account iframe loads before locks, it should not show the account iframe if there are no erc20 locks', async done => {
+        // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
+        expect.assertions(2)
+
+        delete fakeWindow.web3
+
+        fakeIframe.contentWindow.postMessage = data => {
+          expect(data).toEqual({
+            type: PostMessages.WALLET_INFO,
+            payload: {
+              noWallet: true,
+              notEnabled: false,
+              isMetamask: false,
+            },
+          })
+          expect(fakeAccountIframe.className).toBe('')
+          done()
+        }
+
+        postFromAccountIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.SHOW_ACCOUNTS_MODAL,
+            payload: undefined,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.READY_WEB3,
+            id: 1,
+            payload: undefined,
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
+            payload: NoERC20Locks,
+          },
+        })
       })
 
       it('should not show the account iframe if there are no erc20 locks', async done => {
