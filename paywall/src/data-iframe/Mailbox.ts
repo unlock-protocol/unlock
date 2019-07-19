@@ -92,12 +92,10 @@ export default class Mailbox {
   }
 
   getUnlockedLockAddresses() {
-    if (!this.configuration) return []
     if (!this.data) return []
     const data = this.data as BlockchainData
-    return Object.keys(this.configuration.locks).filter(lockAddress => {
+    return Object.keys(this.data.locks).filter(lockAddress => {
       const lock = data.locks[lockAddress]
-      if (!lock) return false
       return ['valid', 'pending', 'submitted', 'confirming'].includes(
         lock.key.status
       )
