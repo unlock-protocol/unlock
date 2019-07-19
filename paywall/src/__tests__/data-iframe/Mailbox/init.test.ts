@@ -17,7 +17,6 @@ import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PostMessages } from '../../../messageTypes'
 import { waitFor } from '../../../utils/promises'
 import {
-  addresses,
   getWalletService,
   getWeb3Service,
 } from '../../test-helpers/setupBlockchainHelpers'
@@ -55,7 +54,6 @@ describe('Mailbox - init', () => {
     configuration = defaults.configuration
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
-    fakeWindow.respondToWeb3(1, addresses[0])
     mailbox = new Mailbox(constants, fakeWindow)
 
     fakeWindow.receivePostMessageFromMainWindow(
@@ -68,14 +66,6 @@ describe('Mailbox - init', () => {
   function testingMailbox(): any {
     return mailbox as any
   }
-
-  // async function resetPostMessageAndWait() {
-  //   ;(fakeWindow.parent as any).postMessage.mockClear()
-
-  //   await waitFor(
-  //     () => (fakeWindow.parent as any).postMessage.mock.calls.length
-  //   )
-  // }
 
   beforeEach(() => {
     setupDefaults()

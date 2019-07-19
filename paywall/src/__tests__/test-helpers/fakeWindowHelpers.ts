@@ -11,11 +11,17 @@ import {
   PostOfficeEventTypes,
   MessageEvent,
   web3MethodResult,
+  ConsoleWindow,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
+import { waitFor } from '../../utils/promises'
 
 export default class FakeWindow
-  implements FetchWindow, SetTimeoutWindow, IframePostOfficeWindow {
+  implements
+    FetchWindow,
+    SetTimeoutWindow,
+    IframePostOfficeWindow,
+    ConsoleWindow {
   public fetchResult: any = {}
   public fetch: (
     url: string,
@@ -38,6 +44,7 @@ export default class FakeWindow
     handler: MessageHandler
   ) => void
   public listeners: { [key: string]: Map<MessageHandler, MessageHandler> } = {}
+  public console: Pick<ConsoleWindow, 'console'>['console']
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -56,6 +63,10 @@ export default class FakeWindow
       this.listeners[type] = this.listeners[type] || new Map()
       this.listeners[type].set(handler, handler)
     })
+    this.console = {
+      log: jest.fn(),
+      error: jest.fn(),
+    }
   }
 
   public setupTransactionsResult(result: {
@@ -77,6 +88,27 @@ export default class FakeWindow
     }
     this.listeners.message &&
       this.listeners.message.forEach(handler => handler(event))
+  }
+
+  public waitForPostMessage() {
+    return waitFor(() => (this.parent as any).postMessage.mock.calls.length)
+  }
+
+  public clearPostMessageMock() {
+    ;(this.parent as any).postMessage.mockClear()
+  }
+
+  public expectPostMessageSent<T extends PostMessages = PostMessages>(
+    type: T,
+    payload: ExtractPayload<T>
+  ) {
+    expect(this.parent.postMessage).toHaveBeenCalledWith(
+      {
+        type,
+        payload,
+      },
+      'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
+    )
   }
 
   public respondToWeb3(netversion: number, account: string | null) {

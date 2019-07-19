@@ -160,7 +160,6 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
     constants = defaults.constants
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
-    fakeWindow.respondToWeb3(1, addresses[0])
     mailbox = new Mailbox(constants, fakeWindow)
 
     const testingData: BlockchainData = {

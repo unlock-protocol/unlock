@@ -13,14 +13,12 @@ import {
   MailboxTestDefaults,
 } from '../../test-helpers/setupMailboxHelpers'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PostMessages, ExtractPayload } from '../../../messageTypes'
+import { PostMessages } from '../../../messageTypes'
 import {
-  addresses,
   getWalletService,
   getWeb3Service,
   lockAddresses,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { waitFor } from '../../../utils/promises'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -55,7 +53,6 @@ describe('Mailbox - setupPostMessageListeners', () => {
     configuration = defaults.configuration
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
-    fakeWindow.respondToWeb3(1, addresses[0])
     mailbox = new Mailbox(constants, fakeWindow)
 
     if (noConfig) {
@@ -75,50 +72,6 @@ describe('Mailbox - setupPostMessageListeners', () => {
   function testingMailbox(): any {
     return mailbox as any
   }
-
-  function expectPostMessageSent<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>
-  ) {
-    expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-      {
-        type,
-        payload,
-      },
-      'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
-    )
-  }
-
-  describe('constructor', () => {
-    beforeEach(() => {
-      setupDefaults(true)
-    })
-
-    it('should set up postMessage functions', () => {
-      expect.assertions(1)
-
-      testingMailbox().postMessage(PostMessages.SCROLL_POSITION, 5)
-      expectPostMessageSent(PostMessages.SCROLL_POSITION, 5)
-    })
-
-    it('should set up addPostMessageListener function', async () => {
-      expect.assertions(1)
-
-      const handler = jest.fn()
-      const payload = undefined
-
-      testingMailbox().addPostMessageListener(PostMessages.REDIRECT, handler)
-
-      fakeWindow.receivePostMessageFromMainWindow(
-        PostMessages.REDIRECT,
-        payload
-      )
-
-      await waitFor(() => handler.mock.calls.length)
-
-      expect(handler).toHaveBeenCalledWith(payload, expect.any(Function)) // the 2nd argument is the "respond" function
-    })
-  })
 
   describe('setupPostMessageListeners', () => {
     beforeEach(() => {

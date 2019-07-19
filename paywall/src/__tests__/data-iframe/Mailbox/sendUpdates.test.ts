@@ -14,14 +14,13 @@ import {
   MailboxTestDefaults,
 } from '../../test-helpers/setupMailboxHelpers'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PostMessages, ExtractPayload } from '../../../messageTypes'
+import { PostMessages } from '../../../messageTypes'
 import {
   addresses,
   getWalletService,
   getWeb3Service,
   lockAddresses,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { waitFor } from '../../../utils/promises'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -42,7 +41,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Mailbox - init', () => {
+describe('Mailbox - sendUpdates', () => {
   let constants: ConstantsType
   let configuration: PaywallConfig
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
@@ -78,7 +77,6 @@ describe('Mailbox - init', () => {
     configuration = defaults.configuration
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
-    fakeWindow.respondToWeb3(1, addresses[0])
     mailbox = new Mailbox(constants, fakeWindow)
 
     fakeWindow.receivePostMessageFromMainWindow(
@@ -90,25 +88,6 @@ describe('Mailbox - init', () => {
 
   function testingMailbox(): any {
     return mailbox as any
-  }
-
-  function waitForPostMessage() {
-    return waitFor(
-      () => (fakeWindow.parent as any).postMessage.mock.calls.length
-    )
-  }
-
-  function expectPostMessageSent<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>
-  ) {
-    expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-      {
-        type,
-        payload,
-      },
-      'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
-    )
   }
 
   describe('blockchain is not ready yet', () => {
@@ -138,18 +117,21 @@ describe('Mailbox - init', () => {
       expect.assertions(1)
 
       mailbox.sendUpdates('account')
-      await waitForPostMessage()
+      await fakeWindow.waitForPostMessage()
 
-      expectPostMessageSent(PostMessages.UPDATE_ACCOUNT, testingData.account)
+      fakeWindow.expectPostMessageSent(
+        PostMessages.UPDATE_ACCOUNT,
+        testingData.account
+      )
     })
 
     it('should send account balance when requested', async () => {
       expect.assertions(1)
 
       mailbox.sendUpdates('balance')
-      await waitForPostMessage()
+      await fakeWindow.waitForPostMessage()
 
-      expectPostMessageSent(
+      fakeWindow.expectPostMessageSent(
         PostMessages.UPDATE_ACCOUNT_BALANCE,
         testingData.balance
       )
@@ -159,9 +141,12 @@ describe('Mailbox - init', () => {
       expect.assertions(1)
 
       mailbox.sendUpdates('network')
-      await waitForPostMessage()
+      await fakeWindow.waitForPostMessage()
 
-      expectPostMessageSent(PostMessages.UPDATE_NETWORK, testingData.network)
+      fakeWindow.expectPostMessageSent(
+        PostMessages.UPDATE_NETWORK,
+        testingData.network
+      )
     })
 
     describe('locks', () => {
@@ -174,9 +159,12 @@ describe('Mailbox - init', () => {
         expect.assertions(1)
 
         mailbox.sendUpdates('locks')
-        await waitForPostMessage()
+        await fakeWindow.waitForPostMessage()
 
-        expectPostMessageSent(PostMessages.UPDATE_LOCKS, testingData.locks)
+        fakeWindow.expectPostMessageSent(
+          PostMessages.UPDATE_LOCKS,
+          testingData.locks
+        )
       })
 
       it('should send "locked" when there are no valid keys', async () => {
@@ -184,9 +172,9 @@ describe('Mailbox - init', () => {
 
         const payload = undefined
         mailbox.sendUpdates('locks')
-        await waitForPostMessage()
+        await fakeWindow.waitForPostMessage()
 
-        expectPostMessageSent(PostMessages.LOCKED, payload)
+        fakeWindow.expectPostMessageSent(PostMessages.LOCKED, payload)
       })
 
       it('should send "unlocked" when there are valid keys', async () => {
@@ -197,9 +185,35 @@ describe('Mailbox - init', () => {
 
         const payload = [lockAddresses[0]]
         mailbox.sendUpdates('locks')
-        await waitForPostMessage()
+        await fakeWindow.waitForPostMessage()
 
-        expectPostMessageSent(PostMessages.UNLOCKED, payload)
+        fakeWindow.expectPostMessageSent(PostMessages.UNLOCKED, payload)
+      })
+
+      it('should emit an error when the update requested is an unknown string', async () => {
+        expect.assertions(1)
+
+        const a: any = mailbox.sendUpdates as any
+        a('oops')
+        await fakeWindow.waitForPostMessage()
+
+        fakeWindow.expectPostMessageSent(
+          PostMessages.ERROR,
+          'Unknown update requested: "oops"'
+        )
+      })
+
+      it('should emit an error when the update requested is an unknown something else', async () => {
+        expect.assertions(1)
+
+        const a: any = mailbox.sendUpdates as any
+        a({ double: 'oops' })
+        await fakeWindow.waitForPostMessage()
+
+        fakeWindow.expectPostMessageSent(
+          PostMessages.ERROR,
+          'Unknown update requested: <invalid value>'
+        )
       })
     })
   })

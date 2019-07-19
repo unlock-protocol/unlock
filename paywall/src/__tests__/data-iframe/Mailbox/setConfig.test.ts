@@ -13,14 +13,13 @@ import {
   MailboxTestDefaults,
 } from '../../test-helpers/setupMailboxHelpers'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PostMessages, ExtractPayload } from '../../../messageTypes'
+import { PostMessages } from '../../../messageTypes'
 import {
   addresses,
   getWalletService,
   getWeb3Service,
   lockAddresses,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { waitFor } from '../../../utils/promises'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -41,7 +40,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Mailbox - init', () => {
+describe('Mailbox - setConfig', () => {
   let constants: ConstantsType
   let configuration: PaywallConfig
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
@@ -55,31 +54,11 @@ describe('Mailbox - init', () => {
     configuration = defaults.configuration
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
-    fakeWindow.respondToWeb3(1, addresses[0])
     mailbox = new Mailbox(constants, fakeWindow)
   }
 
   function testingMailbox(): any {
     return mailbox as any
-  }
-
-  function waitForPostMessage() {
-    return waitFor(
-      () => (fakeWindow.parent as any).postMessage.mock.calls.length
-    )
-  }
-
-  function expectPostMessageSent<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>
-  ) {
-    expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-      {
-        type,
-        payload,
-      },
-      'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
-    )
   }
 
   describe('invalid configuration', () => {
@@ -91,9 +70,9 @@ describe('Mailbox - init', () => {
       expect.assertions(1)
 
       mailbox.setConfig('not a valid config')
-      await waitForPostMessage()
+      await fakeWindow.waitForPostMessage()
 
-      expectPostMessageSent(
+      fakeWindow.expectPostMessageSent(
         PostMessages.ERROR,
         'Invalid paywall configuration, cannot continue'
       )
@@ -103,7 +82,7 @@ describe('Mailbox - init', () => {
       expect.assertions(1)
 
       mailbox.setConfig('not a valid config')
-      await waitForPostMessage()
+      await fakeWindow.waitForPostMessage()
       expect(testingMailbox().configuration).toBe(undefined)
     })
   })

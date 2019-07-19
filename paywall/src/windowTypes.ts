@@ -105,6 +105,11 @@ export interface PostOfficeWindow {
   ) => void
 }
 
+type WindowConsole = Pick<Window, 'console'>['console']
+export interface ConsoleWindow {
+  console: Pick<WindowConsole, 'log' | 'error'>
+}
+
 export interface IframePostOfficeWindow extends PostOfficeWindow {
   parent: PostMessageTarget
   location: {

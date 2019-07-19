@@ -5,19 +5,25 @@ import {
   FetchWindow,
   SetTimeoutWindow,
 } from './blockchainHandler/blockChainTypes'
-import { isValidPaywallConfig } from '../utils/validators'
+import { isValidPaywallConfig, isAccount } from '../utils/validators'
 import { PaywallConfig, PurchaseKeyRequest } from '../unlockTypes'
-import { IframePostOfficeWindow } from '../windowTypes'
+import { IframePostOfficeWindow, ConsoleWindow } from '../windowTypes'
 import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
 import { MessageTypes, PostMessages, ExtractPayload } from '../messageTypes'
-import { normalizeAddressKeys } from '../utils/normalizeAddresses'
+import {
+  normalizeAddressKeys,
+  normalizeLockAddress,
+} from '../utils/normalizeAddresses'
 
 export default class Mailbox {
   private handler?: BlockchainHandler
   private constants: ConstantsType
   private configuration?: PaywallConfig
-  private window: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
+  private window: FetchWindow &
+    SetTimeoutWindow &
+    IframePostOfficeWindow &
+    ConsoleWindow
   private postMessage: (
     type: MessageTypes,
     payload: ExtractPayload<MessageTypes>
@@ -29,7 +35,10 @@ export default class Mailbox {
   private data?: BlockchainData
   constructor(
     constants: ConstantsType,
-    window: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
+    window: FetchWindow &
+      SetTimeoutWindow &
+      IframePostOfficeWindow &
+      ConsoleWindow
   ) {
     this.constants = constants
     this.window = window
@@ -124,7 +133,13 @@ export default class Mailbox {
         this.postMessage(PostMessages.UPDATE_NETWORK, this.data.network)
         break
       default:
-        this.emitError(new Error(`Unknown update requested: ${type}`))
+        this.emitError(
+          new Error(
+            `Unknown update requested: ${
+              typeof type === 'string' ? '"' + type + '"' : '<invalid value>'
+            }`
+          )
+        )
     }
   }
 
@@ -143,8 +158,22 @@ export default class Mailbox {
     this.configuration = config as PaywallConfig
   }
 
-  purchaseKey(details: PurchaseKeyRequest) {
-    if (!this.data || !this.handler) return
+  purchaseKey(request: unknown) {
+    if (!this.handler || !this.data) return
+    if (
+      !request ||
+      !(request as PurchaseKeyRequest).lock ||
+      !(request as PurchaseKeyRequest).extraTip ||
+      !isAccount((request as PurchaseKeyRequest).lock) ||
+      normalizeLockAddress((request as PurchaseKeyRequest).lock) !==
+        (request as PurchaseKeyRequest).lock
+    ) {
+      this.emitError(new Error('Cannot purchase, malformed request'))
+      return
+    }
+    // format is validated here
+    const details: PurchaseKeyRequest = request as PurchaseKeyRequest
+    // lock addresses are normalized
     if (!this.data.locks[details.lock]) {
       this.emitError(
         new Error(`Cannot purchase key on unknown lock: "${details.lock}"`)
@@ -152,6 +181,8 @@ export default class Mailbox {
       return
     }
     const lock = this.data.locks[details.lock]
+
+    // this catches its errors internally and emits them with "emitError"
     this.handler.purchaseKey({
       lockAddress: details.lock,
       amountToSend: lock.keyPrice,
@@ -176,7 +207,7 @@ export default class Mailbox {
   emitError(error: Error) {
     if (process.env.UNLOCK_ENV === 'dev') {
       // eslint-disable-next-line
-      console.error(error)
+      this.window.console.error(error)
     }
     this.postMessage(PostMessages.ERROR, error.message)
   }
