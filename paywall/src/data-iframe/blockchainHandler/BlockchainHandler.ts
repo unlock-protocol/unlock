@@ -98,7 +98,7 @@ export default class BlockchainHandler {
     // set the actual defaults
     store.config = configuration
     store.network = constants.defaultNetwork
-    // take the paywall config, normalize all the locks
+    // take the paywall config, normalize all the locks (this is redundant for safety)
     store.config.locks = normalizeAddressKeys(store.config.locks)
     // this will be used to filter the keys and transactions we return
     this.lockAddresses = Object.keys(store.config.locks)
@@ -312,7 +312,14 @@ export default class BlockchainHandler {
         {
           address,
         },
-        update
+        {
+          ...update,
+          // TODO: test this
+          // use the configuration lock name if present
+          ...(this.store.config.locks[address]
+            ? this.store.config.locks[address]
+            : null),
+        }
       )
     })
 
