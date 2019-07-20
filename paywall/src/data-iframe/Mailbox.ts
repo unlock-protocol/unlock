@@ -32,7 +32,7 @@ export default class Mailbox {
     type: T,
     listener: PostMessageListener
   ) => void = () => {}
-  private data?: BlockchainData
+  private blockchainData?: BlockchainData
   constructor(
     constants: ConstantsType,
     window: FetchWindow &
@@ -117,10 +117,10 @@ export default class Mailbox {
    * Retrieve the addresses of any unlocked locks
    */
   getUnlockedLockAddresses() {
-    if (!this.data) return []
-    const data = this.data as BlockchainData
+    if (!this.getBlockchainData()) return []
+    const data = this.getBlockchainData() as BlockchainData
     // lock addresses are normalized by here
-    return Object.keys(this.data.locks).filter(lockAddress => {
+    return Object.keys(data.locks).filter(lockAddress => {
       const lock = data.locks[lockAddress]
       // locked states are "none", and "expired"
       return ['valid', 'pending', 'submitted', 'confirming'].includes(
@@ -134,14 +134,19 @@ export default class Mailbox {
    * send data back to the main window
    */
   sendUpdates(updateRequest: unknown) {
-    if (!this.data) return
+    if (!this.getBlockchainData()) return
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
     } else {
       this.postMessage(PostMessages.LOCKED, undefined)
     }
-    const { locks, account, balance, network } = this.data
+    const {
+      locks,
+      account,
+      balance,
+      network,
+    } = this.getBlockchainData() as BlockchainData
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
     switch (type) {
       case 'locks':
@@ -191,7 +196,7 @@ export default class Mailbox {
    * do the purchase
    */
   purchaseKey(request: unknown) {
-    if (!this.handler || !this.data) return
+    if (!this.handler || !this.getBlockchainData()) return
     if (
       !request ||
       !(request as PurchaseKeyRequest).lock ||
@@ -206,13 +211,14 @@ export default class Mailbox {
     // format is validated here
     const details: PurchaseKeyRequest = request as PurchaseKeyRequest
     // lock addresses are normalized
-    if (!this.data.locks[details.lock]) {
+    const data = this.getBlockchainData() as BlockchainData
+    if (!data.locks[details.lock]) {
       this.emitError(
         new Error(`Cannot purchase key on unknown lock: "${details.lock}"`)
       )
       return
     }
-    const lock = this.data.locks[details.lock]
+    const lock = data.locks[details.lock]
 
     // this catches its errors internally and emits them with "emitError" (below)
     this.handler.purchaseKey({
@@ -237,14 +243,14 @@ export default class Mailbox {
   /**
    * This is called by the BlockchainHandler when there is an update to chain data
    */
-  emitChanges(data: BlockchainData) {
-    this.data = data
+  emitChanges(newData: BlockchainData) {
+    this.setBlockchainData(newData)
     // TODO: don't send unchanged values
     // TODO: cache values
-    this.postMessage(PostMessages.UPDATE_ACCOUNT, this.data.account)
-    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, this.data.balance)
-    this.postMessage(PostMessages.UPDATE_NETWORK, this.data.network)
-    this.postMessage(PostMessages.UPDATE_LOCKS, this.data.locks)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT, newData.account)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, newData.balance)
+    this.postMessage(PostMessages.UPDATE_NETWORK, newData.network)
+    this.postMessage(PostMessages.UPDATE_LOCKS, newData.locks)
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
@@ -262,5 +268,13 @@ export default class Mailbox {
       this.window.console.error(error)
     }
     this.postMessage(PostMessages.ERROR, error.message)
+  }
+
+  getBlockchainData(): BlockchainData | undefined {
+    return this.blockchainData
+  }
+
+  setBlockchainData(data: BlockchainData) {
+    this.blockchainData = data
   }
 }

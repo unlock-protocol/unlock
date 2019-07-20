@@ -100,7 +100,7 @@ describe('Mailbox - purchaseKey', () => {
     fakeWindow.clearPostMessageMock()
     if (!receiveData) return
 
-    testingMailbox().data = testingData
+    testingMailbox().blockchainData = testingData
   }
 
   function expectPurchaseKey() {
@@ -138,7 +138,7 @@ describe('Mailbox - purchaseKey', () => {
       expect.assertions(2)
 
       testingMailbox().handler = fakeHandler
-      delete testingMailbox().data
+      delete testingMailbox().blockchainData
       await mailbox.purchaseKey(purchaseRequest)
 
       expectPurchaseKey().not.toHaveBeenCalled()
@@ -156,7 +156,7 @@ describe('Mailbox - purchaseKey', () => {
       beforeEach(() => {
         setupDefaults()
         testingMailbox().handler = fakeHandler
-        testingMailbox().data = testingData
+        testingMailbox().blockchainData = testingData
       })
 
       describe('malformed purchase request', () => {
@@ -203,7 +203,7 @@ describe('Mailbox - purchaseKey', () => {
       beforeEach(() => {
         setupDefaults()
         testingMailbox().handler = fakeHandler
-        testingMailbox().data = testingData
+        testingMailbox().blockchainData = testingData
       })
 
       it('should pass the correct values to handler.purchaseKey', async () => {
