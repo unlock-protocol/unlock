@@ -35,20 +35,31 @@ export interface EventWindow {
   dispatchEvent: (event: CustomEvent) => void
 }
 
-export type MessageEventHandler<T> = T extends StorageEventTypes
-  ? StorageHandler
-  : (T extends PostOfficeEventTypes ? MessageHandler : never)
-export type AddEventListener<
-  T extends StorageEventTypes | PostOfficeEventTypes =
-    | StorageEventTypes
-    | PostOfficeEventTypes
-> = (type: T, handler: MessageEventHandler<T>) => void
+export enum EventTypes {
+  STORAGE = 'storage',
+  MESSAGE = 'message',
+}
+
+export interface MappedEvents {
+  [EventTypes.STORAGE]: StorageEvent
+  [EventTypes.MESSAGE]: MessageEvent
+}
+
+export type ExtractEvent<T extends EventTypes> = MappedEvents[T]
+export type EventHandler<T extends EventTypes> = (
+  event: MappedEvents[T]
+) => void
+
+export type AddEventListenerFunc = <T extends EventTypes>(
+  type: T,
+  handler: EventHandler<T>
+) => void
 // used anywhere cache is used
 export type StorageEventTypes = 'storage'
 export type StorageHandler = (event: StorageEvent) => void
 export interface LocalStorageWindow {
   localStorage: Storage
-  addEventListener: AddEventListener<StorageEventTypes>
+  addEventListener: AddEventListenerFunc
 }
 
 // used in web3Proxy.ts
@@ -118,7 +129,7 @@ export type MessageHandler = (event: MessageEvent) => void
 
 export type PostOfficeEventTypes = 'message' // augment later if needed
 export interface PostOfficeWindow {
-  addEventListener: AddEventListener<PostOfficeEventTypes>
+  addEventListener: AddEventListenerFunc
 }
 
 type WindowConsole = Pick<Window, 'console'>['console']

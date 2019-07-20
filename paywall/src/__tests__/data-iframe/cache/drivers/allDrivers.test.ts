@@ -2,29 +2,10 @@ import LocalStorageDriver from '../../../../data-iframe/cache/drivers/localStora
 import InMemoryDriver from '../../../../data-iframe/cache/drivers/memory'
 import CacheDriver from '../../../../data-iframe/cache/drivers/driverInterface'
 import { LocalStorageWindow } from '../../../../windowTypes'
+import FakeWindow from '../../../test-helpers/fakeWindowHelpers'
 
 describe('common functionality between all drivers', () => {
-  let storage: any = {}
-  const fakeWindow: LocalStorageWindow = {
-    localStorage: {
-      length: 1,
-      clear: () => {
-        storage = {}
-      },
-      getItem(key: string) {
-        return storage[key] || null
-      },
-      key(_: number) {
-        return '' // unused but required for the interface
-      },
-      removeItem(key: string) {
-        delete storage[key]
-      },
-      setItem(key: string, value: string) {
-        storage[key] = value
-      },
-    },
-  }
+  const fakeWindow: LocalStorageWindow = new FakeWindow()
 
   type eachThing = Array<[string, CacheDriver]>
   const theEach: eachThing = [
@@ -33,7 +14,7 @@ describe('common functionality between all drivers', () => {
   ]
   describe.each(theEach)('%s driver', (_, driver) => {
     function clearCache() {
-      storage = {}
+      fakeWindow.localStorage.clear()
       if (driver.__clear) driver.__clear()
     }
     describe('getKeyedItem/saveKeyedItem', () => {

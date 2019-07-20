@@ -11,6 +11,7 @@ import {
   IframePostOfficeWindow,
   ConsoleWindow,
   LocalStorageWindow,
+  EventTypes,
 } from '../windowTypes'
 import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
@@ -94,7 +95,7 @@ export default class Mailbox {
    * We can use this to determine whether the user has purchased a key in another tab
    */
   setupStorageListener() {
-    this.window.addEventListener('storage', event => {
+    this.window.addEventListener(EventTypes.STORAGE, event => {
       if (!this.configuration || !this.handler) return
       if (event.key === this.getCacheKey()) {
         // another tab has done something that affects our data, so

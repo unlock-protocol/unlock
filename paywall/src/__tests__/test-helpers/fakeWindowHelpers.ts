@@ -12,7 +12,7 @@ import {
   web3MethodResult,
   ConsoleWindow,
   LocalStorageWindow,
-  AddEventListener,
+  AddEventListenerFunc,
   StorageHandler,
   StorageEvent,
 } from '../../windowTypes'
@@ -43,7 +43,7 @@ export default class FakeWindow
   public location: {
     href: string
   }
-  public addEventListener: AddEventListener
+  public addEventListener: AddEventListenerFunc
   public messageListeners: {
     [key: string]: Map<MessageHandler, MessageHandler>
   } = {}
@@ -68,15 +68,6 @@ export default class FakeWindow
       postMessage: jest.fn(),
     }
     this.addEventListener = jest.fn((type, handler) => {
-      if (type === 'storage') {
-        this.storageListeners[type] =
-          this.storageListeners[type] ||
-          new Map<StorageHandler, StorageHandler>()
-        this.storageListeners[type].set(
-          handler as StorageHandler,
-          handler as StorageHandler
-        )
-      }
       if (type === 'message') {
         this.messageListeners[type] =
           this.messageListeners[type] ||
@@ -84,6 +75,15 @@ export default class FakeWindow
         this.messageListeners[type].set(
           handler as MessageHandler,
           handler as MessageHandler
+        )
+      }
+      if (type === 'storage') {
+        this.storageListeners[type] =
+          this.storageListeners[type] ||
+          new Map<StorageHandler, StorageHandler>()
+        this.storageListeners[type].set(
+          handler as StorageHandler,
+          handler as StorageHandler
         )
       }
     })
