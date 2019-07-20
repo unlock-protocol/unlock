@@ -110,7 +110,7 @@ describe('Mailbox - sendUpdates', () => {
   describe('blockchain has sent data down', () => {
     beforeEach(() => {
       setupDefaults()
-      testingMailbox().data = testingData
+      testingMailbox().blockchainData = testingData
     })
 
     it('should send account when requested', async () => {
@@ -152,7 +152,7 @@ describe('Mailbox - sendUpdates', () => {
     describe('locks', () => {
       beforeEach(() => {
         setupDefaults()
-        testingMailbox().data = testingData
+        testingMailbox().blockchainData = testingData
       })
 
       it('should send locks when requested', async () => {
@@ -179,7 +179,7 @@ describe('Mailbox - sendUpdates', () => {
 
       it('should send "unlocked" when there are valid keys', async () => {
         expect.assertions(1)
-        ;(testingMailbox().data as BlockchainData).locks[
+        ;(testingMailbox().blockchainData as BlockchainData).locks[
           lockAddresses[0]
         ].key.status = 'valid'
 
