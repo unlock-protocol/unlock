@@ -1,3 +1,4 @@
+import * as unlock from '@unlock-protocol/unlock-js'
 import { IframePostOfficeWindow } from '../../../windowTypes'
 import {
   ConstantsType,
@@ -25,14 +26,14 @@ let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
-    WalletService: function() {
+    WalletService: jest.fn(function() {
       mockWalletService = getWalletService({})
       mockWalletService.connect = jest.fn((provider: any) => {
         mockWalletService.provider = provider
         return Promise.resolve()
       })
       return mockWalletService
-    },
+    }),
     Web3Service: function() {
       mockWeb3Service = getWeb3Service({})
       return mockWeb3Service
@@ -48,13 +49,15 @@ describe('Mailbox - init', () => {
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
 
-  function setupDefaults() {
+  function setupDefaults(sendConfig = true) {
     defaults = setupTestDefaults()
     constants = defaults.constants
     configuration = defaults.configuration
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
     mailbox = new Mailbox(constants, fakeWindow)
+
+    if (!sendConfig) return
 
     fakeWindow.receivePostMessageFromMainWindow(
       PostMessages.CONFIG,
@@ -71,6 +74,41 @@ describe('Mailbox - init', () => {
     setupDefaults()
   })
 
+  it('should wait for configuration before initializing walletService', async () => {
+    expect.assertions(2)
+
+    setupDefaults(false)
+    ;(unlock.WalletService as any).mockImplementationOnce(function() {
+      mockWalletService = getWalletService({})
+      mockWalletService.connect = jest.fn((provider: any) => {
+        mockWalletService.provider = provider
+        // eslint-disable-next-line promise/param-names
+        return new Promise(_ => {}) // never resolve
+      })
+      return mockWalletService
+    })
+
+    mailbox.init()
+
+    await waitFor(() => !!mockWalletService)
+    expect(mockWalletService.connect).not.toHaveBeenCalled()
+
+    fakeWindow.receivePostMessageFromMainWindow(
+      PostMessages.CONFIG,
+      configuration
+    )
+
+    const mock: any = mockWalletService.connect
+
+    await fakeWindow.waitForPostMessage()
+    await waitFor(() => mock.mock.calls.length)
+
+    expect(mockWalletService.connect).toHaveBeenCalled()
+
+    // demonstrate that the handler is created even though connection has not finished
+    await waitFor(() => testingMailbox().handler)
+  })
+
   it('should initialize a BlockchainHandler', async () => {
     expect.assertions(1)
 
@@ -85,5 +123,30 @@ describe('Mailbox - init', () => {
     })
 
     await waitFor(() => testingMailbox().handler)
+  })
+
+  it('should retrieve current blockchain data', async () => {
+    expect.assertions(1)
+
+    mailbox.emitChanges = jest.fn()
+    mailbox.init()
+
+    fakeWindow.receivePostMessageFromMainWindow(PostMessages.WALLET_INFO, {
+      noWallet: false,
+      notEnabled: false,
+      isMetamask: false,
+    })
+
+    await waitFor(() => testingMailbox().handler)
+
+    const mock: any = mailbox.emitChanges
+    await waitFor(() => mock.mock.calls.length)
+
+    expect(mailbox.emitChanges).toHaveBeenCalledWith({
+      account: null,
+      balance: '0',
+      locks: {},
+      network: 1984,
+    })
   })
 })
