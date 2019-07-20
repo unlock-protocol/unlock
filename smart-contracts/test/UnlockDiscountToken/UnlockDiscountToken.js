@@ -2,12 +2,14 @@ const BigNumber = require('bignumber.js')
 const shouldFail = require('../helpers/shouldFail')
 
 const UnlockDiscountToken = artifacts.require('../UnlockDiscountToken.sol')
-
-let unlockDiscountToken
+const getProxy = require('../helpers/proxy')
 
 contract('UnlockDiscountToken', accounts => {
+  let unlockDiscountToken
+  const owner = accounts[9]
+
   before(async () => {
-    unlockDiscountToken = await UnlockDiscountToken.deployed()
+    unlockDiscountToken = await getProxy(UnlockDiscountToken)
   })
 
   it('shouldFail to call init again', async () => {
@@ -20,32 +22,42 @@ contract('UnlockDiscountToken', accounts => {
       assert(totalSupply.eq(0), 'starting supply must be 0')
     })
 
-    it('Minting tokens', async () => {
+    describe('Minting tokens', () => {
       const mintAmount = 1000
       const recipient = accounts[1]
-      const balanceBefore = new BigNumber(
-        await unlockDiscountToken.balanceOf(recipient)
-      )
-      const totalSupplyBefore = await unlockDiscountToken.totalSupply()
+      let balanceBefore
+      let totalSupplyBefore
 
       before(async () => {
+        balanceBefore = new BigNumber(
+          await unlockDiscountToken.balanceOf(recipient)
+        )
+        totalSupplyBefore = new BigNumber(
+          await unlockDiscountToken.totalSupply()
+        )
         await unlockDiscountToken.mint(recipient, mintAmount, {
-          from: accounts[0],
+          from: owner,
         })
       })
 
       it('Balance went up', async () => {
-        const balanceAfter = await unlockDiscountToken.balanceOf(recipient)
-        assert(
-          balanceAfter.eq(balanceBefore.plus(mintAmount)),
+        const balanceAfter = new BigNumber(
+          await unlockDiscountToken.balanceOf(recipient)
+        )
+        assert.equal(
+          balanceAfter.toFixed(),
+          balanceBefore.plus(mintAmount).toFixed(),
           'Balance must increase by amount minted'
         )
       })
 
       it('Total supply went up', async () => {
-        const totalSupplyAfter = await unlockDiscountToken.totalSupply()
-        assert(
-          totalSupplyAfter.eq(totalSupplyBefore.plus(mintAmount)),
+        const totalSupplyAfter = new BigNumber(
+          await unlockDiscountToken.totalSupply()
+        )
+        assert.equal(
+          totalSupplyAfter.toFixed(),
+          totalSupplyBefore.plus(mintAmount).toFixed(),
           'Total supply must increase by amount minted'
         )
       })
@@ -56,10 +68,11 @@ contract('UnlockDiscountToken', accounts => {
     const mintAmount = 1000000
 
     before(async () => {
-      for (let i = 0; i < 3; i++)
+      for (let i = 0; i < 3; i++) {
         await unlockDiscountToken.mint(accounts[i], mintAmount, {
-          from: accounts[0],
+          from: owner,
         })
+      }
     })
 
     describe('transfer', async () => {
