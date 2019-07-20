@@ -25,7 +25,7 @@ let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
-    WalletService: () => {
+    WalletService: function() {
       mockWalletService = getWalletService({})
       mockWalletService.connect = jest.fn((provider: any) => {
         mockWalletService.provider = provider
@@ -33,7 +33,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
       })
       return mockWalletService
     },
-    Web3Service: () => {
+    Web3Service: function() {
       mockWeb3Service = getWeb3Service({})
       return mockWeb3Service
     },
