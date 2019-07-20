@@ -78,13 +78,13 @@ export default class Mailbox {
         default: Web3ProxyProvider,
       } /* import('../../providers/Web3ProxyProvider') */,
       {
-        default: BlockchainHandlerClass,
+        default: BlockchainHandler,
+        WalletService,
+        Web3Service,
       } /* './blockchainHandler/BlockchainHandler' */,
-      { WalletService, Web3Service } /* import('@unlock-protocol/unlock-js') */,
     ] = await Promise.all([
       import('../providers/Web3ProxyProvider'),
       import('./blockchainHandler/BlockchainHandler'),
-      import('@unlock-protocol/unlock-js'),
     ])
 
     const web3Service = new Web3Service(this.constants)
@@ -96,7 +96,7 @@ export default class Mailbox {
     // it is the paywall configuration
     await waitFor(() => this.configuration)
 
-    this.handler = new BlockchainHandlerClass({
+    this.handler = new BlockchainHandler({
       web3Service,
       walletService,
       constants: this.constants,

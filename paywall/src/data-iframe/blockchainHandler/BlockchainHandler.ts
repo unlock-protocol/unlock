@@ -1,3 +1,4 @@
+import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import {
   PaywallConfig,
   Transactions,
@@ -51,6 +52,8 @@ interface BlockchainHandlerParams {
   window: FetchWindow & SetTimeoutWindow
   store?: PaywallState
 }
+
+export { Web3Service, WalletService }
 
 // assumptions:
 // 1. walletService has been "connected" to the Web3ProxyProvider
