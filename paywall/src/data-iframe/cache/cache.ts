@@ -167,6 +167,29 @@ export async function merge({
 }
 
 /**
+ * Retrieve the current cached locks
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @returns {Locks}
+ */
+export async function getLocks(window: LocalStorageWindow) {
+  const driver = getDriver(window)
+  return driver.getUnkeyedItem('locks')
+}
+
+/**
+ * Set the current cached account
+ *
+ * @param {object} window this is the global context, either global, window, or self
+ * @param {string} account the ethereum account address of the current user
+ */
+// TODO: use RawLocks once merged instead of any
+export async function setLocks(window: LocalStorageWindow, locks: any) {
+  const driver = getDriver(window)
+  return driver.saveUnkeyedItem('locks', locks)
+}
+
+/**
  * Retrieve the current cached account
  *
  * @param {object} window this is the global context, either global, window, or self

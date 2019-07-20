@@ -74,9 +74,7 @@ export async function getKeys(window) {
  * So we retrieve from the non-account-specific cache
  */
 export async function getLocks(window) {
-  const locks =
-    (await cache.get({ window, networkId: currentNetwork, type: 'locks' })) ||
-    {}
+  const locks = (await cache.getLocks(window)) || {}
   return locks
 }
 
@@ -132,14 +130,9 @@ export async function setKey(window, key) {
  * So we save in the non-account-specific cache
  */
 export async function setLocks(window, locks) {
-  await cache.put({
-    window,
-    networkId: currentNetwork,
-    type: 'locks',
-    value: locks,
-  })
+  await cache.setLocks(window, locks)
+
   notifyListeners('locks')
-  return
 }
 
 export async function setTransactions(window, transactions) {

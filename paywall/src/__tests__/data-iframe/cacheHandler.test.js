@@ -399,16 +399,23 @@ describe('cacheHandler', () => {
       await setNetwork(fakeWindow, 4)
     })
 
-    it('cached locks from a different network do not return', async () => {
+    it('should return new, dummy keys', async () => {
       expect.assertions(1)
 
-      expect(await getLocks(fakeWindow)).toEqual({})
-    })
-
-    it('should not return cached keys', async () => {
-      expect.assertions(1)
-
-      expect(await getKeys(fakeWindow)).toEqual({})
+      expect(await getKeys(fakeWindow)).toEqual({
+        lock: {
+          expiration: 0,
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+        },
+        lock2: {
+          expiration: 0,
+          id: 'lock2-account',
+          lock: 'lock2',
+          owner: 'account',
+        },
+      })
     })
 
     it('should not return cached transactions', async () => {
@@ -428,7 +435,16 @@ describe('cacheHandler', () => {
       }
 
       await setKeys(fakeWindow, differentKeys)
-      expect(await getKeys(fakeWindow)).toEqual(differentKeys)
+      expect(await getKeys(fakeWindow)).toEqual({
+        ...differentKeys,
+        lock: {
+          // dummy key
+          expiration: 0,
+          id: 'lock-account',
+          lock: 'lock',
+          owner: 'account',
+        },
+      })
 
       await setNetwork(fakeWindow, 2)
       expect(await getKeys(fakeWindow)).toEqual(myKeys)

@@ -1,9 +1,11 @@
-import CacheDriver from './driverInterface'
+import CacheDriver, { UnkeyedItems } from './driverInterface'
+import { Locks } from '../../../unlockTypes'
 
 interface InMemoryCache {
   account?: string
   network?: number
   balance?: number
+  locks?: Locks
   [network: number]: {
     [account: string]: {
       [key: string]: any
@@ -25,7 +27,7 @@ export default class InMemoryDriver implements CacheDriver {
     return true
   }
 
-  async getUnkeyedItem(key: 'account' | 'balance' | 'network') {
+  async getUnkeyedItem(key: UnkeyedItems) {
     const item = this.cache[key]
     if (!item) return null
     return item
@@ -36,7 +38,7 @@ export default class InMemoryDriver implements CacheDriver {
     this.cache[networkId][accountAddress] = value
   }
 
-  async saveUnkeyedItem(key: 'account' | 'balance' | 'network', value: any) {
+  async saveUnkeyedItem(key: UnkeyedItems, value: any) {
     this.cache[key] = value
   }
 

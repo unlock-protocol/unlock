@@ -9,6 +9,8 @@ import {
   setNetwork,
   getNetwork,
   clear,
+  setLocks,
+  getLocks,
 } from '../../../data-iframe/cache/cache'
 
 describe('cache utility', () => {
@@ -448,6 +450,24 @@ describe('cache utility', () => {
       const network = await getNetwork(testWindow)
 
       expect(network).toBe(2)
+    })
+
+    it('should save and retrieve locks', async () => {
+      expect.assertions(1)
+
+      const locks = {
+        '0x123': {
+          name: 'Big ol lock',
+          address: '0x123',
+          keyPrice: '1',
+          expirationDuration: 123,
+          currencyContractAddress: '0x345',
+        },
+      }
+      await setLocks(testWindow, locks)
+      const network = await getLocks(testWindow)
+
+      expect(network).toBe(locks)
     })
   })
 })

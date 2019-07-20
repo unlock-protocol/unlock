@@ -10,4 +10,6 @@ export {
   getNetwork,
   setAccount,
   setNetwork,
+  getLocks,
+  setLocks,
 } from './cache'
