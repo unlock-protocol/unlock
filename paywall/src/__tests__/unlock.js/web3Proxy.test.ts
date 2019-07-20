@@ -1,5 +1,5 @@
 import web3Proxy, { hasERC20Lock } from '../../unlock.js/web3Proxy'
-import { IframeType, UnlockWindow, MessageHandler } from '../../windowTypes'
+import { IframeType, UnlockWindow } from '../../windowTypes'
 import setupIframeMailbox, {
   MapHandlers,
 } from '../../unlock.js/setupIframeMailbox'
@@ -17,6 +17,7 @@ describe('web3Proxy', () => {
   let fakeIframe: IframeType
   let handlers: {
     message: Array<(message: any) => void>
+    storage: Array<(message: any) => void>
   }
   let mapHandlers: MapHandlers
   let fakeCheckoutIframe: IframeType
@@ -41,6 +42,7 @@ describe('web3Proxy', () => {
     }
     handlers = {
       message: [],
+      storage: [],
     }
     process.env.PAYWALL_URL = 'http://fun.times'
     process.env.USER_IFRAME_URL = 'http://fun.times/account'
@@ -83,7 +85,7 @@ describe('web3Proxy', () => {
           enable: enableFuncOrUndefined,
         },
       },
-      addEventListener(type: 'message', handler: MessageHandler) {
+      addEventListener(type, handler) {
         handlers[type].push(handler)
       },
     }

@@ -113,5 +113,31 @@ describe('Mailbox - setConfig', () => {
 
       expect(testingMailbox().configuration).toEqual(expectedConfiguration)
     })
+
+    describe('caching', () => {
+      beforeEach(() => {
+        setupDefaults()
+        mailbox.getBlockchainDataFromLocalStorageCache = jest.fn()
+        mailbox.setupStorageListener = jest.fn()
+      })
+
+      it('should retrive the cache', () => {
+        expect.assertions(1)
+
+        mailbox.setConfig(configuration)
+
+        expect(
+          mailbox.getBlockchainDataFromLocalStorageCache
+        ).toHaveBeenCalled()
+      })
+
+      it('should begin listening for storage events', () => {
+        expect.assertions(1)
+
+        mailbox.setConfig(configuration)
+
+        expect(mailbox.setupStorageListener).toHaveBeenCalled()
+      })
+    })
   })
 })

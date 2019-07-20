@@ -1,4 +1,9 @@
-import { Web3Window, web3MethodCall, IframeType } from '../windowTypes'
+import {
+  Web3Window,
+  web3MethodCall,
+  IframeType,
+  IframeManagingWindow,
+} from '../windowTypes'
 import {
   MapHandlers,
   MessageHandlerTemplates,
@@ -107,7 +112,7 @@ export function handleWeb3Call({
  * @param {string} origin the iframe element's URL origin
  */
 export default function web3Proxy(
-  window: Web3Window,
+  window: Web3Window & IframeManagingWindow,
   mapHandlers: MapHandlers
 ) {
   // use sendAsync if available, otherwise we will use send
@@ -191,10 +196,23 @@ export default function web3Proxy(
     await waitFor(() => currentLocks)
     // wait for locks to be populated
     await waitFor(() => Object.keys(currentLocks).length)
+    if (process.env.DEBUG) {
+      // eslint-disable-next-line
+      console.log('[USER ACCOUNTS] got locks')
+    }
     // wait for the account iframe, then respond
     await waitFor(() => accountIframeReady)
+    if (process.env.DEBUG) {
+      // eslint-disable-next-line
+      console.log('[USER ACCOUNTS] got account from user accounts iframe')
+    }
     // we will use the proxy account!
     if (!canUseUserAccounts) {
+      if (process.env.DEBUG) {
+        // eslint-disable-next-line
+        console.log('[USER ACCOUNTS] cannot use user accounts')
+      }
+
       // if we don't have any locks that can be purchased with a user
       // account, we have no wallet
       hasWeb3 = false
@@ -225,6 +243,13 @@ export default function web3Proxy(
     ) => {
       return locks => {
         canUseUserAccounts = !hasNativeWeb3Wallet && hasERC20Lock(locks)
+        if (process.env.DEBUG) {
+          // eslint-disable-next-line
+          console.log('[USER ACCOUNTS] hasERC20Locks?', hasERC20Lock(locks))
+          // eslint-disable-next-line
+          console.log('[USER ACCOUNTS] no wallet?', !hasNativeWeb3Wallet)
+        }
+
         currentLocks = locks
         if (canUseUserAccounts && locks && Object.keys(locks).length) {
           if (showIframeWhenReady) {

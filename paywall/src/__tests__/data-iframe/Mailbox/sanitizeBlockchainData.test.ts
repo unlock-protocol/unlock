@@ -19,7 +19,6 @@ import {
   lockAddresses,
   addresses,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { PostMessages, ExtractPayload } from '../../../messageTypes'
 import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 let mockWalletService: WalletServiceType
@@ -41,7 +40,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Mailbox - emitChanges', () => {
+describe('Mailbox - getDataToSend', () => {
   let constants: ConstantsType
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
   let fakeWindow: FakeWindow
@@ -96,111 +95,126 @@ describe('Mailbox - emitChanges', () => {
     },
   }
 
-  const submittedLocks: BlockchainData = {
-    ...lockedLocks,
-    locks: {
-      ...lockedLocks.locks,
-      [lockAddresses[0]]: {
-        ...lockedLocks.locks[lockAddresses[0]],
-        key: {
-          ...lockedLocks.locks[lockAddresses[0]].key,
-          status: 'submitted',
-          confirmations: 0,
-          expiration: 0,
-          transactions: [
-            {
-              status: TransactionStatus.SUBMITTED,
-              confirmations: 0,
-              hash: 'hash',
-              type: TransactionType.KEY_PURCHASE,
-              blockNumber: Number.MAX_SAFE_INTEGER,
-            },
-          ],
-        },
-      },
-    },
-  }
-
   function setupDefaults() {
     defaults = setupTestDefaults()
     constants = defaults.constants
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
     mailbox = new Mailbox(constants, fakeWindow)
-
-    fakeWindow.clearPostMessageMock()
   }
 
   function testingMailbox() {
     return mailbox as any
   }
 
-  describe('caching', () => {
+  describe('failures', () => {
     beforeEach(() => {
       setupDefaults()
-      mailbox.getDataToSend = jest.fn(data => data)
+      fakeWindow.localStorage.clear = jest.fn()
     })
 
-    it('should call the helper', () => {
+    type Examples = [string, any]
+    it.each(<Examples[]>[
+      ['null', null],
+      ['false', false],
+      ['5', 5],
+      ['a string', 'something'],
+      ['an array', []],
+      ['a cache that is missing keys', { locks: 1, account: 1 }],
+      [
+        'a cache that has extra keys',
+        { locks: 1, account: 1, balance: 1, network: 3, three: 3 },
+      ],
+      [
+        'a cache that has wrong keys',
+        { locks: 1, account: 1, balance: 1, three: 3 },
+      ],
+      [
+        'a cache with invalid locks',
+        {
+          locks: { hi: 'there' },
+          account: addresses[1],
+          balance: '0',
+          network: 1,
+        },
+      ],
+      [
+        'a cache with invalid account',
+        {
+          locks: lockedLocks.locks,
+          account: '0x1234',
+          balance: '0',
+          network: 1,
+        },
+      ],
+      [
+        'a cache with invalid balance',
+        {
+          locks: lockedLocks.locks,
+          account: '0x1234',
+          balance: '0f',
+          network: 1,
+        },
+      ],
+      [
+        'a cache with invalid network',
+        {
+          locks: lockedLocks.locks,
+          account: addresses[0],
+          balance: '17.243',
+          network: 2,
+        },
+      ],
+    ])('should fail on receiving %s', (_, badData) => {
+      expect.assertions(2)
+
+      expect(mailbox.sanitizeBlockchainData(badData)).toBe(
+        testingMailbox().defaultBlockchainData
+      )
+      expect(fakeWindow.localStorage.clear).toHaveBeenCalled()
+    })
+  })
+
+  describe('success', () => {
+    beforeEach(() => {
+      setupDefaults()
+    })
+
+    type Examples = [string, BlockchainData]
+    it.each(<Examples[]>[
+      ['full example', lockedLocks],
+      [
+        'null account',
+        {
+          ...lockedLocks,
+          account: null,
+        },
+      ],
+      [
+        'mainnet network',
+        {
+          ...lockedLocks,
+          network: 1,
+        },
+      ],
+      [
+        'staging network',
+        {
+          ...lockedLocks,
+          network: 4,
+        },
+      ],
+      [
+        'dev network',
+        {
+          ...lockedLocks,
+          network: 1984,
+        },
+      ],
+    ])('should return the input for valid %s', (_, data) => {
       expect.assertions(1)
 
-      testingMailbox().configuration = {
-        locks: {
-          [lockAddresses[0]]: { name: '' },
-          [lockAddresses[1]]: { name: '' },
-        },
-      }
-      mailbox.emitChanges(lockedLocks)
-
-      expect(mailbox.getDataToSend).toHaveBeenCalledWith(lockedLocks)
+      expect(mailbox.sanitizeBlockchainData(data)).toBe(data)
     })
-  })
-
-  type TestSent = [string, PostMessages, ExtractPayload<PostMessages>]
-
-  describe('with locked locks', () => {
-    beforeEach(() => {
-      setupDefaults()
-    })
-
-    it.each(<TestSent[]>[
-      ['account', PostMessages.UPDATE_ACCOUNT, lockedLocks.account],
-      ['network', PostMessages.UPDATE_NETWORK, lockedLocks.network],
-      ['locks', PostMessages.UPDATE_LOCKS, lockedLocks.locks],
-      ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, lockedLocks.balance],
-      ['locked', PostMessages.LOCKED, undefined],
-    ])(
-      'should send the %s to the main window',
-      async (_, type: PostMessages, payload: any) => {
-        expect.assertions(1)
-
-        mailbox.emitChanges(lockedLocks)
-
-        await fakeWindow.expectPostMessageSent(type, payload)
-      }
-    )
-  })
-
-  describe('with unlocked locks', () => {
-    beforeEach(() => {
-      setupDefaults()
-    })
-
-    it.each(<TestSent[]>[
-      ['account', PostMessages.UPDATE_ACCOUNT, submittedLocks.account],
-      ['network', PostMessages.UPDATE_NETWORK, submittedLocks.network],
-      ['locks', PostMessages.UPDATE_LOCKS, submittedLocks.locks],
-      ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, submittedLocks.balance],
-      ['unlocked', PostMessages.UNLOCKED, [lockAddresses[0]]],
-    ])(
-      'should send the %s to the main window',
-      async (_, type: PostMessages, payload: any) => {
-        expect.assertions(1)
-
-        mailbox.emitChanges(submittedLocks)
-
-        await fakeWindow.expectPostMessageSent(type, payload)
-      }
-    )
   })
 })

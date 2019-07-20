@@ -5,9 +5,20 @@ import {
   FetchWindow,
   SetTimeoutWindow,
 } from './blockchainHandler/blockChainTypes'
-import { isValidPaywallConfig, isAccount } from '../utils/validators'
+import {
+  isValidPaywallConfig,
+  isAccount,
+  isValidLocks,
+  isAccountOrNull,
+  isPositiveNumber,
+} from '../utils/validators'
 import { PaywallConfig, PurchaseKeyRequest } from '../unlockTypes'
-import { IframePostOfficeWindow, ConsoleWindow } from '../windowTypes'
+import {
+  IframePostOfficeWindow,
+  ConsoleWindow,
+  LocalStorageWindow,
+  EventTypes,
+} from '../windowTypes'
 import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
 import { MessageTypes, PostMessages, ExtractPayload } from '../messageTypes'
@@ -15,15 +26,19 @@ import {
   normalizeAddressKeys,
   normalizeLockAddress,
 } from '../utils/normalizeAddresses'
+import localStorageAvailable from '../utils/localStorage'
 
 export default class Mailbox {
+  private useLocalStorageCache = true
+  private readonly cachePrefix = '__unlockProtocol.cache'
   private handler?: BlockchainHandler
   private constants: ConstantsType
   private configuration?: PaywallConfig
   private window: FetchWindow &
     SetTimeoutWindow &
     IframePostOfficeWindow &
-    ConsoleWindow
+    ConsoleWindow &
+    LocalStorageWindow
   private postMessage: (
     type: MessageTypes,
     payload: ExtractPayload<MessageTypes>
@@ -32,16 +47,20 @@ export default class Mailbox {
     type: T,
     listener: PostMessageListener
   ) => void = () => {}
-  private blockchainData?: BlockchainData
+  private blockchainData: BlockchainData
+  private readonly defaultBlockchainData: BlockchainData
+  private readonly localStorageAvailable: boolean
   constructor(
     constants: ConstantsType,
     window: FetchWindow &
       SetTimeoutWindow &
       IframePostOfficeWindow &
-      ConsoleWindow
+      ConsoleWindow &
+      LocalStorageWindow
   ) {
     this.constants = constants
     this.window = window
+    this.localStorageAvailable = localStorageAvailable(window)
     this.setConfig = this.setConfig.bind(this)
     this.sendUpdates = this.sendUpdates.bind(this)
     this.purchaseKey = this.purchaseKey.bind(this)
@@ -56,6 +75,14 @@ export default class Mailbox {
     )
     this.postMessage = postMessage
     this.addPostMessageListener = addHandler
+    this.defaultBlockchainData = {
+      locks: {},
+      account: null,
+      balance: '0',
+      network: this.constants.defaultNetwork,
+    }
+    // set the defaults
+    this.blockchainData = this.defaultBlockchainData
     this.setupPostMessageListeners()
   }
 
@@ -68,6 +95,20 @@ export default class Mailbox {
       this.refreshBlockchainTransactions
     )
     this.postMessage(PostMessages.READY, undefined)
+  }
+
+  /**
+   * We can use this to determine whether the user has purchased a key in another tab
+   */
+  setupStorageListener() {
+    this.window.addEventListener(EventTypes.STORAGE, event => {
+      if (!this.configuration || !this.handler) return
+      if (event.key === this.getCacheKey()) {
+        // another tab has done something that affects our data, so
+        // let's refetch
+        this.handler.retrieveCurrentBlockchainData()
+      }
+    })
   }
 
   async init() {
@@ -117,8 +158,8 @@ export default class Mailbox {
    * Retrieve the addresses of any unlocked locks
    */
   getUnlockedLockAddresses() {
-    if (!this.getBlockchainData()) return []
-    const data = this.getBlockchainData() as BlockchainData
+    if (!this.blockchainData) return []
+    const data = this.blockchainData as BlockchainData
     // lock addresses are normalized by here
     return Object.keys(data.locks).filter(lockAddress => {
       const lock = data.locks[lockAddress]
@@ -134,19 +175,15 @@ export default class Mailbox {
    * send data back to the main window
    */
   sendUpdates(updateRequest: unknown) {
-    if (!this.getBlockchainData()) return
+    if (!this.blockchainData) return
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
     } else {
       this.postMessage(PostMessages.LOCKED, undefined)
     }
-    const {
-      locks,
-      account,
-      balance,
-      network,
-    } = this.getBlockchainData() as BlockchainData
+    const { locks, account, balance, network } = this
+      .blockchainData as BlockchainData
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
     switch (type) {
       case 'locks':
@@ -189,6 +226,12 @@ export default class Mailbox {
       (config as PaywallConfig).locks
     )
     this.configuration = config as PaywallConfig
+    // now that we have a valid configuration, we know which locks
+    // are relevant, and can retrieve any cached data.
+    // the cache is retrieved once per process, and thereafter
+    // only changed when new blockchain data comes in.
+    this.blockchainData = this.getBlockchainDataFromLocalStorageCache()
+    this.setupStorageListener()
   }
 
   /**
@@ -196,7 +239,7 @@ export default class Mailbox {
    * do the purchase
    */
   purchaseKey(request: unknown) {
-    if (!this.handler || !this.getBlockchainData()) return
+    if (!this.handler || !this.blockchainData) return
     if (
       !request ||
       !(request as PurchaseKeyRequest).lock ||
@@ -211,7 +254,7 @@ export default class Mailbox {
     // format is validated here
     const details: PurchaseKeyRequest = request as PurchaseKeyRequest
     // lock addresses are normalized
-    const data = this.getBlockchainData() as BlockchainData
+    const data = this.blockchainData as BlockchainData
     if (!data.locks[details.lock]) {
       this.emitError(
         new Error(`Cannot purchase key on unknown lock: "${details.lock}"`)
@@ -240,17 +283,33 @@ export default class Mailbox {
     this.handler.retrieveTransactions()
   }
 
+  getDataToSend(newData: BlockchainData) {
+    const oldChainData = this.blockchainData
+    this.setBlockchainData(newData)
+    // check to see if cache is present while locks are not yet ready
+    const cachedLocksSize = Object.keys(oldChainData.locks).length
+    const newLocksSize = Object.keys(newData.locks).length
+    if (newLocksSize < cachedLocksSize) {
+      if (process.env.DEBUG) {
+        this.window.console.log('[CACHE] using cached values')
+      }
+      // continue to use the cache until the data is ready
+      this.blockchainData = oldChainData
+    }
+    const dataToSend = newLocksSize >= cachedLocksSize ? newData : oldChainData
+    return dataToSend
+  }
+
   /**
    * This is called by the BlockchainHandler when there is an update to chain data
    */
   emitChanges(newData: BlockchainData) {
-    this.setBlockchainData(newData)
+    const dataToSend = this.getDataToSend(newData)
     // TODO: don't send unchanged values
-    // TODO: cache values
-    this.postMessage(PostMessages.UPDATE_ACCOUNT, newData.account)
-    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, newData.balance)
-    this.postMessage(PostMessages.UPDATE_NETWORK, newData.network)
-    this.postMessage(PostMessages.UPDATE_LOCKS, newData.locks)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT, dataToSend.account)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, dataToSend.balance)
+    this.postMessage(PostMessages.UPDATE_NETWORK, dataToSend.network)
+    this.postMessage(PostMessages.UPDATE_LOCKS, dataToSend.locks)
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
@@ -264,17 +323,144 @@ export default class Mailbox {
    */
   emitError(error: Error) {
     if (process.env.UNLOCK_ENV === 'dev') {
-      // eslint-disable-next-line
       this.window.console.error(error)
     }
     this.postMessage(PostMessages.ERROR, error.message)
   }
 
-  getBlockchainData(): BlockchainData | undefined {
-    return this.blockchainData
-  }
-
+  /**
+   * Save the blockchain data in-memory, and also in localStorage if available
+   */
   setBlockchainData(data: BlockchainData) {
     this.blockchainData = data
+    if (this.useLocalStorageCache) {
+      this.saveCacheInLocalStorage()
+    }
+  }
+
+  /**
+   * Validate the incoming cache. If it is invalid, clear localStorage and return defaults
+   */
+  sanitizeBlockchainData(data: unknown) {
+    const nukeAndReturn = () => {
+      this.window.localStorage.clear()
+      return this.defaultBlockchainData
+    }
+    if (!data) return nukeAndReturn()
+    if (typeof data !== 'object') return nukeAndReturn()
+    const chainData = data as BlockchainData
+    const keys = Object.keys(chainData)
+    if (keys.length !== Object.keys(this.defaultBlockchainData).length)
+      return nukeAndReturn()
+    if (
+      keys.filter(
+        key => !['locks', 'account', 'balance', 'network'].includes(key)
+      ).length
+    ) {
+      return nukeAndReturn()
+    }
+    if (
+      !isValidLocks(chainData.locks) ||
+      !isAccountOrNull(chainData.account) ||
+      ![1, 4, 1984].includes(chainData.network) ||
+      !isPositiveNumber(chainData.balance)
+    ) {
+      return nukeAndReturn()
+    }
+    return chainData
+  }
+
+  /**
+   * This either retrieves the cache, or returns a fresh value
+   *
+   * All error conditions result in obliteration of the entire localStorage cache
+   * out of an abundance of caution.
+   *
+   * The cache is indexed by the configuration locks, so that we have separate caches
+   * for every paywall configuration
+   */
+  getBlockchainDataFromLocalStorageCache(): BlockchainData {
+    if (!this.localStorageAvailable) return this.defaultBlockchainData
+
+    try {
+      const blockchainData = this.window.localStorage.getItem(
+        this.getCacheKey()
+      )
+      if (process.env.DEBUG) {
+        this.window.console.log('[CACHE] got', blockchainData)
+      }
+      if (!blockchainData) {
+        return this.defaultBlockchainData
+      }
+      return this.sanitizeBlockchainData(JSON.parse(blockchainData))
+    } catch (error) {
+      if (process.env.UNLOCK_ENV === 'dev') {
+        this.window.console.error(error)
+        // ignore errors from a UI perspective, log for development
+      }
+      // invalidate on any error
+      this.window.localStorage.clear()
+      return this.defaultBlockchainData
+    }
+  }
+
+  /**
+   * The cache is indexed by a sorted list of lock addresses converted to JSON and normalized to lower-case
+   */
+  getCacheKey() {
+    if (!this.configuration) {
+      // this should never happen, and is a guard against crash bugs
+      throw new Error(
+        'internal error: cannot retrieve cache without configuration'
+      )
+    }
+    const configKey = JSON.stringify(
+      Object.keys(this.configuration.locks).sort()
+    ).toLowerCase()
+    return this.cachePrefix + configKey
+  }
+
+  /**
+   * This clears only the current paywall's cache. if there is any error thrown,
+   * the whole cache is cleared out of an abundance of caution.
+   */
+  invalidateLocalStorageCache() {
+    if (!this.localStorageAvailable) return
+    if (!this.configuration) return
+    try {
+      this.window.localStorage.removeItem(this.getCacheKey())
+    } catch (error) {
+      // localStorage can throw, and getCacheKey can throw
+      if (process.env.UNLOCK_ENV === 'dev') {
+        this.window.console.error(error)
+        // ignore errors from a UI perspective, log for development
+      }
+      // safety first: clear entire cache on *any* error
+      this.window.localStorage.clear()
+    }
+  }
+
+  /**
+   * This is performed every time we get an update from the BlockchainHandler
+   *
+   * On any errors, the entire localStorage is cleared out of an abundance of caution.
+   */
+  saveCacheInLocalStorage() {
+    if (!this.localStorageAvailable) return
+    if (!this.configuration) return
+
+    const cacheableData = JSON.stringify(this.blockchainData)
+
+    try {
+      this.window.localStorage.setItem(this.getCacheKey(), cacheableData)
+    } catch (error) {
+      // localStorage can throw, and getCacheKey can throw
+      if (process.env.UNLOCK_ENV === 'dev') {
+        this.window.console.error(error)
+        // ignore errors from a UI perspective, log for development
+      }
+      // safety first: clear cache on *any* error
+      this.window.localStorage.clear()
+    }
   }
 }

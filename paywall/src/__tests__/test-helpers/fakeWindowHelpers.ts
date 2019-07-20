@@ -8,10 +8,13 @@ import {
   IframePostOfficeWindow,
   PostMessageTarget,
   MessageHandler,
-  PostOfficeEventTypes,
   MessageEvent,
   web3MethodResult,
   ConsoleWindow,
+  LocalStorageWindow,
+  AddEventListenerFunc,
+  StorageHandler,
+  StorageEvent,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
@@ -21,7 +24,8 @@ export default class FakeWindow
     FetchWindow,
     SetTimeoutWindow,
     IframePostOfficeWindow,
-    ConsoleWindow {
+    ConsoleWindow,
+    LocalStorageWindow {
   public fetchResult: any = {}
   public fetch: (
     url: string,
@@ -39,12 +43,16 @@ export default class FakeWindow
   public location: {
     href: string
   }
-  public addEventListener: (
-    type: PostOfficeEventTypes,
-    handler: MessageHandler
-  ) => void
-  public listeners: { [key: string]: Map<MessageHandler, MessageHandler> } = {}
+  public addEventListener: AddEventListenerFunc
+  public messageListeners: {
+    [key: string]: Map<MessageHandler, MessageHandler>
+  } = {}
+  public storageListeners: {
+    [key: string]: Map<StorageHandler, StorageHandler>
+  } = {}
   public console: Pick<ConsoleWindow, 'console'>['console']
+  public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
+  public storage: { [key: string]: string } = {}
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -60,12 +68,40 @@ export default class FakeWindow
       postMessage: jest.fn(),
     }
     this.addEventListener = jest.fn((type, handler) => {
-      this.listeners[type] = this.listeners[type] || new Map()
-      this.listeners[type].set(handler, handler)
+      if (type === 'message') {
+        this.messageListeners[type] =
+          this.messageListeners[type] ||
+          new Map<MessageHandler, MessageHandler>()
+        this.messageListeners[type].set(
+          handler as MessageHandler,
+          handler as MessageHandler
+        )
+      }
+      if (type === 'storage') {
+        this.storageListeners[type] =
+          this.storageListeners[type] ||
+          new Map<StorageHandler, StorageHandler>()
+        this.storageListeners[type].set(
+          handler as StorageHandler,
+          handler as StorageHandler
+        )
+      }
     })
     this.console = {
       log: jest.fn(),
       error: jest.fn(),
+    }
+    this.localStorage = {
+      length: 0,
+      clear: () => (this.storage = {}),
+      getItem: (key: string) => this.storage[key] || null,
+      setItem: (key: string, value: string) => (this.storage[key] = value),
+      key: (index: number) => {
+        return Object.keys(this.storage)[index]
+      },
+      removeItem: (key: string) => {
+        delete this.storage[key]
+      },
     }
   }
 
@@ -86,8 +122,19 @@ export default class FakeWindow
         payload,
       },
     }
-    this.listeners.message &&
-      this.listeners.message.forEach(handler => handler(event))
+    this.messageListeners.message &&
+      this.messageListeners.message.forEach(handler => handler(event))
+  }
+
+  public receiveStorageEvent(key: string, newValue: string, oldValue: string) {
+    const event: StorageEvent = {
+      key,
+      oldValue,
+      newValue,
+      storageArea: this.localStorage,
+    }
+    this.storageListeners.storage &&
+      this.storageListeners.storage.forEach(handler => handler(event))
   }
 
   public waitForPostMessage() {
@@ -109,6 +156,24 @@ export default class FakeWindow
       },
       'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
     )
+  }
+
+  public throwOnLocalStorageGet() {
+    this.localStorage.getItem = () => {
+      throw new Error('failed to get')
+    }
+  }
+
+  public throwOnLocalStorageRemove() {
+    this.localStorage.removeItem = () => {
+      throw new Error('failed to get')
+    }
+  }
+
+  public throwOnLocalStorageSet() {
+    this.localStorage.setItem = () => {
+      throw new Error('failed to set')
+    }
   }
 
   public respondToWeb3(netversion: number, account: string | null) {
