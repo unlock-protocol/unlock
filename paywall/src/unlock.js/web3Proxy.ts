@@ -189,6 +189,8 @@ export default function web3Proxy(
     // we don't have web3
     // wait for locks to be retrieved
     await waitFor(() => currentLocks)
+    // wait for locks to be populated
+    await waitFor(() => Object.keys(currentLocks).length)
     // wait for the account iframe, then respond
     await waitFor(() => accountIframeReady)
     // we will use the proxy account!
