@@ -90,11 +90,15 @@ export default class Mailbox {
     const web3Service = new Web3Service(this.constants)
     const walletService = new WalletService(this.constants)
     const provider = new Web3ProxyProvider(this.window)
-    await walletService.connect(provider)
 
     // configuration is set by "setConfig" in response to "READY"
     // it is the paywall configuration
     await waitFor(() => this.configuration)
+
+    // we do not need a connected walletService to work
+    walletService.connect(provider).catch((e: Error) => {
+      this.emitError(e)
+    })
 
     this.handler = new BlockchainHandler({
       web3Service,
