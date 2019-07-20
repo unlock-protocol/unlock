@@ -19,8 +19,13 @@ import {
   lockAddresses,
   addresses,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { PostMessages, ExtractPayload } from '../../../messageTypes'
 import { TransactionType, TransactionStatus } from '../../../unlockTypes'
+
+declare const process: {
+  env: {
+    DEBUG: any
+  }
+}
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -41,7 +46,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Mailbox - emitChanges', () => {
+describe('Mailbox - getDataToSend', () => {
   let constants: ConstantsType
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
   let fakeWindow: FakeWindow
@@ -96,39 +101,12 @@ describe('Mailbox - emitChanges', () => {
     },
   }
 
-  const submittedLocks: BlockchainData = {
-    ...lockedLocks,
-    locks: {
-      ...lockedLocks.locks,
-      [lockAddresses[0]]: {
-        ...lockedLocks.locks[lockAddresses[0]],
-        key: {
-          ...lockedLocks.locks[lockAddresses[0]].key,
-          status: 'submitted',
-          confirmations: 0,
-          expiration: 0,
-          transactions: [
-            {
-              status: TransactionStatus.SUBMITTED,
-              confirmations: 0,
-              hash: 'hash',
-              type: TransactionType.KEY_PURCHASE,
-              blockNumber: Number.MAX_SAFE_INTEGER,
-            },
-          ],
-        },
-      },
-    },
-  }
-
   function setupDefaults() {
     defaults = setupTestDefaults()
     constants = defaults.constants
     win = defaults.fakeWindow
     fakeWindow = win as FakeWindow
     mailbox = new Mailbox(constants, fakeWindow)
-
-    fakeWindow.clearPostMessageMock()
   }
 
   function testingMailbox() {
@@ -138,10 +116,10 @@ describe('Mailbox - emitChanges', () => {
   describe('caching', () => {
     beforeEach(() => {
       setupDefaults()
-      mailbox.getDataToSend = jest.fn(data => data)
+      mailbox.setBlockchainData = jest.fn()
     })
 
-    it('should call the helper', () => {
+    it('should save the new value in the cache', () => {
       expect.assertions(1)
 
       testingMailbox().configuration = {
@@ -150,57 +128,65 @@ describe('Mailbox - emitChanges', () => {
           [lockAddresses[1]]: { name: '' },
         },
       }
-      mailbox.emitChanges(lockedLocks)
+      mailbox.getDataToSend(lockedLocks)
 
-      expect(mailbox.getDataToSend).toHaveBeenCalledWith(lockedLocks)
+      expect(mailbox.setBlockchainData).toHaveBeenCalledWith(lockedLocks)
     })
-  })
+    describe('choosing whether to use the cache', () => {
+      beforeEach(() => {
+        setupDefaults()
+        testingMailbox().blockchainData = lockedLocks
+      })
 
-  type TestSent = [string, PostMessages, ExtractPayload<PostMessages>]
+      it('should use the cache when the BlockchainHandler has not yet retrieved the locks', () => {
+        expect.assertions(2)
 
-  describe('with locked locks', () => {
-    beforeEach(() => {
-      setupDefaults()
-    })
+        const emptyData = testingMailbox().defaultBlockchainData
+        const almostEmptyData = {
+          ...emptyData,
+          locks: {
+            [lockAddresses[0]]: lockedLocks.locks[lockAddresses[0]],
+          },
+        }
 
-    it.each(<TestSent[]>[
-      ['account', PostMessages.UPDATE_ACCOUNT, lockedLocks.account],
-      ['network', PostMessages.UPDATE_NETWORK, lockedLocks.network],
-      ['locks', PostMessages.UPDATE_LOCKS, lockedLocks.locks],
-      ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, lockedLocks.balance],
-      ['locked', PostMessages.LOCKED, undefined],
-    ])(
-      'should send the %s to the main window',
-      async (_, type: PostMessages, payload: any) => {
+        expect(mailbox.getDataToSend(emptyData)).toBe(lockedLocks)
+        expect(mailbox.getDataToSend(almostEmptyData)).toBe(lockedLocks)
+      })
+
+      it('should set the internal store to the cache if still using it', () => {
         expect.assertions(1)
 
-        mailbox.emitChanges(lockedLocks)
+        const emptyData = testingMailbox().defaultBlockchainData
 
-        await fakeWindow.expectPostMessageSent(type, payload)
-      }
-    )
-  })
+        mailbox.getDataToSend(emptyData)
 
-  describe('with unlocked locks', () => {
-    beforeEach(() => {
-      setupDefaults()
-    })
+        expect(testingMailbox().blockchainData).toBe(lockedLocks)
+      })
 
-    it.each(<TestSent[]>[
-      ['account', PostMessages.UPDATE_ACCOUNT, submittedLocks.account],
-      ['network', PostMessages.UPDATE_NETWORK, submittedLocks.network],
-      ['locks', PostMessages.UPDATE_LOCKS, submittedLocks.locks],
-      ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, submittedLocks.balance],
-      ['unlocked', PostMessages.UNLOCKED, [lockAddresses[0]]],
-    ])(
-      'should send the %s to the main window',
-      async (_, type: PostMessages, payload: any) => {
+      it('should log a cache notice in debug mode', () => {
         expect.assertions(1)
 
-        mailbox.emitChanges(submittedLocks)
+        const emptyData = testingMailbox().defaultBlockchainData
 
-        await fakeWindow.expectPostMessageSent(type, payload)
-      }
-    )
+        process.env.DEBUG = 1
+        mailbox.getDataToSend(emptyData)
+        process.env.DEBUG = undefined
+
+        expect(fakeWindow.console.log).toHaveBeenCalledWith(
+          '[CACHE] using cached values'
+        )
+      })
+
+      it('should use the new values when the BlockchainHandler has fully retrieved the locks', () => {
+        expect.assertions(1)
+
+        const fullData = {
+          ...lockedLocks,
+          account: 'hi',
+        }
+
+        expect(mailbox.getDataToSend(fullData)).toBe(fullData)
+      })
+    })
   })
 })

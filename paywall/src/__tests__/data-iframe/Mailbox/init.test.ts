@@ -109,6 +109,36 @@ describe('Mailbox - init', () => {
     await waitFor(() => testingMailbox().handler)
   })
 
+  describe('errors', () => {
+    beforeEach(() => {
+      setupDefaults(false)
+      ;(unlock.WalletService as any).mockImplementationOnce(function() {
+        mockWalletService = getWalletService({})
+        mockWalletService.connect = jest.fn((provider: any) => {
+          mockWalletService.provider = provider
+          return Promise.reject(new Error('fail'))
+        })
+        return mockWalletService
+      })
+    })
+
+    it('should emit an error if connecting to the provider fails', async done => {
+      expect.assertions(1)
+
+      mailbox.emitError = (e: Error) => {
+        expect(e.message).toMatch('fail')
+        done()
+      }
+
+      mailbox.init()
+
+      fakeWindow.receivePostMessageFromMainWindow(
+        PostMessages.CONFIG,
+        configuration
+      )
+    })
+  })
+
   it('should initialize a BlockchainHandler', async () => {
     expect.assertions(1)
 

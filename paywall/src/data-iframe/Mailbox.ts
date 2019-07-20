@@ -5,7 +5,13 @@ import {
   FetchWindow,
   SetTimeoutWindow,
 } from './blockchainHandler/blockChainTypes'
-import { isValidPaywallConfig, isAccount } from '../utils/validators'
+import {
+  isValidPaywallConfig,
+  isAccount,
+  isValidLocks,
+  isAccountOrNull,
+  isPositiveNumber,
+} from '../utils/validators'
 import { PaywallConfig, PurchaseKeyRequest } from '../unlockTypes'
 import {
   IframePostOfficeWindow,
@@ -129,12 +135,6 @@ export default class Mailbox {
     // configuration is set by "setConfig" in response to "READY"
     // it is the paywall configuration
     await waitFor(() => this.configuration)
-    // now that we have a valid configuration, we know which locks
-    // are relevant, and can retrieve any cached data.
-    // the cache is retrieved once per process, and thereafter
-    // only changed when new blockchain data comes in.
-    this.blockchainData = this.getBlockchainDataFromLocalStorageCache()
-    this.setupStorageListener()
 
     // we do not need a connected walletService to work
     walletService.connect(provider).catch((e: Error) => {
@@ -226,6 +226,12 @@ export default class Mailbox {
       (config as PaywallConfig).locks
     )
     this.configuration = config as PaywallConfig
+    // now that we have a valid configuration, we know which locks
+    // are relevant, and can retrieve any cached data.
+    // the cache is retrieved once per process, and thereafter
+    // only changed when new blockchain data comes in.
+    this.blockchainData = this.getBlockchainDataFromLocalStorageCache()
+    this.setupStorageListener()
   }
 
   /**
@@ -277,16 +283,33 @@ export default class Mailbox {
     this.handler.retrieveTransactions()
   }
 
+  getDataToSend(newData: BlockchainData) {
+    const oldChainData = this.blockchainData
+    this.setBlockchainData(newData)
+    // check to see if cache is present while locks are not yet ready
+    const cachedLocksSize = Object.keys(oldChainData.locks).length
+    const newLocksSize = Object.keys(newData.locks).length
+    if (newLocksSize < cachedLocksSize) {
+      if (process.env.DEBUG) {
+        this.window.console.log('[CACHE] using cached values')
+      }
+      // continue to use the cache until the data is ready
+      this.blockchainData = oldChainData
+    }
+    const dataToSend = newLocksSize >= cachedLocksSize ? newData : oldChainData
+    return dataToSend
+  }
+
   /**
    * This is called by the BlockchainHandler when there is an update to chain data
    */
   emitChanges(newData: BlockchainData) {
-    this.setBlockchainData(newData)
+    const dataToSend = this.getDataToSend(newData)
     // TODO: don't send unchanged values
-    this.postMessage(PostMessages.UPDATE_ACCOUNT, newData.account)
-    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, newData.balance)
-    this.postMessage(PostMessages.UPDATE_NETWORK, newData.network)
-    this.postMessage(PostMessages.UPDATE_LOCKS, newData.locks)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT, dataToSend.account)
+    this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, dataToSend.balance)
+    this.postMessage(PostMessages.UPDATE_NETWORK, dataToSend.network)
+    this.postMessage(PostMessages.UPDATE_LOCKS, dataToSend.locks)
     const unlockedLocks = this.getUnlockedLockAddresses()
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
@@ -300,7 +323,6 @@ export default class Mailbox {
    */
   emitError(error: Error) {
     if (process.env.UNLOCK_ENV === 'dev') {
-      // eslint-disable-next-line
       this.window.console.error(error)
     }
     this.postMessage(PostMessages.ERROR, error.message)
@@ -314,6 +336,38 @@ export default class Mailbox {
     if (this.useLocalStorageCache) {
       this.saveCacheInLocalStorage()
     }
+  }
+
+  /**
+   * Validate the incoming cache. If it is invalid, clear localStorage and return defaults
+   */
+  sanitizeBlockchainData(data: unknown) {
+    const nukeAndReturn = () => {
+      this.window.localStorage.clear()
+      return this.defaultBlockchainData
+    }
+    if (!data) return nukeAndReturn()
+    if (typeof data !== 'object') return nukeAndReturn()
+    const chainData = data as BlockchainData
+    const keys = Object.keys(chainData)
+    if (keys.length !== Object.keys(this.defaultBlockchainData).length)
+      return nukeAndReturn()
+    if (
+      keys.filter(
+        key => !['locks', 'account', 'balance', 'network'].includes(key)
+      ).length
+    ) {
+      return nukeAndReturn()
+    }
+    if (
+      !isValidLocks(chainData.locks) ||
+      !isAccountOrNull(chainData.account) ||
+      ![1, 4, 1984].includes(chainData.network) ||
+      !isPositiveNumber(chainData.balance)
+    ) {
+      return nukeAndReturn()
+    }
+    return chainData
   }
 
   /**
@@ -332,13 +386,15 @@ export default class Mailbox {
       const blockchainData = this.window.localStorage.getItem(
         this.getCacheKey()
       )
+      if (process.env.DEBUG) {
+        this.window.console.log('[CACHE] got', blockchainData)
+      }
       if (!blockchainData) {
         return this.defaultBlockchainData
       }
-      return JSON.parse(blockchainData)
+      return this.sanitizeBlockchainData(JSON.parse(blockchainData))
     } catch (error) {
       if (process.env.UNLOCK_ENV === 'dev') {
-        // eslint-disable-next-line
         this.window.console.error(error)
         // ignore errors from a UI perspective, log for development
       }
@@ -376,7 +432,6 @@ export default class Mailbox {
     } catch (error) {
       // localStorage can throw, and getCacheKey can throw
       if (process.env.UNLOCK_ENV === 'dev') {
-        // eslint-disable-next-line
         this.window.console.error(error)
         // ignore errors from a UI perspective, log for development
       }
@@ -401,7 +456,6 @@ export default class Mailbox {
     } catch (error) {
       // localStorage can throw, and getCacheKey can throw
       if (process.env.UNLOCK_ENV === 'dev') {
-        // eslint-disable-next-line
         this.window.console.error(error)
         // ignore errors from a UI perspective, log for development
       }
