@@ -35,9 +35,20 @@ export interface EventWindow {
   dispatchEvent: (event: CustomEvent) => void
 }
 
+export type MessageEventHandler<T> = T extends StorageEventTypes
+  ? StorageHandler
+  : (T extends PostOfficeEventTypes ? MessageHandler : never)
+export type AddEventListener<
+  T extends StorageEventTypes | PostOfficeEventTypes =
+    | StorageEventTypes
+    | PostOfficeEventTypes
+> = (type: T, handler: MessageEventHandler<T>) => void
 // used anywhere cache is used
+export type StorageEventTypes = 'storage'
+export type StorageHandler = (event: StorageEvent) => void
 export interface LocalStorageWindow {
   localStorage: Storage
+  addEventListener: AddEventListener<StorageEventTypes>
 }
 
 // used in web3Proxy.ts
@@ -95,14 +106,19 @@ export interface MessageEvent {
   data: any
 }
 
+// used in Mailbox.ts
+export interface StorageEvent {
+  key: string
+  oldValue: string | null
+  newValue: string | null
+  storageArea: any
+}
+
 export type MessageHandler = (event: MessageEvent) => void
 
 export type PostOfficeEventTypes = 'message' // augment later if needed
 export interface PostOfficeWindow {
-  addEventListener: (
-    type: PostOfficeEventTypes,
-    handler: MessageHandler
-  ) => void
+  addEventListener: AddEventListener<PostOfficeEventTypes>
 }
 
 type WindowConsole = Pick<Window, 'console'>['console']
