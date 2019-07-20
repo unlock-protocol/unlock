@@ -15,8 +15,12 @@ describe('blockchain handler waitForReady', () => {
   })
 
   it('succeeds immediately if walletService is ready', async () => {
-    expect.assertions(0)
-    await ensureWalletReady({ ready: true })
+    expect.assertions(1)
+    const once = jest.fn()
+
+    await ensureWalletReady({ ready: true, once })
+
+    expect(once).not.toHaveBeenCalled()
   })
 
   it('succeed eventually when walletService emits ready', done => {

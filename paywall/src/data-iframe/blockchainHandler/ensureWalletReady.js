@@ -8,10 +8,11 @@ export default async function ensureWalletReady(walletService) {
       )
     }
     if (walletService.ready) {
-      return resolve()
-    }
-    walletService.once('ready', () => {
       resolve()
-    })
+    } else {
+      walletService.once('ready', () => {
+        resolve()
+      })
+    }
   })
 }
