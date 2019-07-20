@@ -168,7 +168,7 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
       balance: '0',
       network: 1,
     }
-    testingMailbox().data = testingData
+    testingMailbox().blockchainData = testingData
   }
 
   it('should return [] if the BlockchainHandler has not yet sent any data', () => {
@@ -176,7 +176,7 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
 
     setupDefaults()
 
-    delete testingMailbox().data
+    delete testingMailbox().blockchainData
 
     expect(mailbox.getUnlockedLockAddresses()).toEqual([])
   })
