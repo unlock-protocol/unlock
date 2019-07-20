@@ -396,6 +396,16 @@ describe('web3Proxy', () => {
           data: {
             type: PostMessages.UPDATE_LOCKS,
             id: 1,
+            payload: {}, // simulate empty cache
+          },
+        })
+
+        postFromDataIframe({
+          source: fakeIframe.contentWindow,
+          origin: 'http://fun.times',
+          data: {
+            type: PostMessages.UPDATE_LOCKS,
+            id: 1,
             payload: YesERC20Locks,
           },
         })
