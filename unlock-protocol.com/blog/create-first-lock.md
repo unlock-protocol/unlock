@@ -4,8 +4,10 @@ subTitle: A lock is a smart contract which holds the list of members of your com
 authorName: Julien Genestoux
 publishDate: July 15, 2019
 description: Locks are the core of the Unlock protocol. They are smart contracts deployed on the Ethereum chain which lets your community become members by purchasing keys to your lock.
-image: /static/images/blog/first-lock/create-lock-form.png
+image: /static/images/blog/first-lock/new-lock.jpg
 ---
+
+![new lock](/static/images/blog/first-lock/new-lock.jpg)
 
 A lock is a way to represent a *membership*. Each member has a key to the lock which they can purchase from the lock directly.
 
