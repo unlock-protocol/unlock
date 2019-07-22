@@ -1,7 +1,7 @@
 pragma solidity 0.5.9;
 
-import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
-import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Pausable.sol';
+import 'openzeppelin-eth/contracts/token/ERC20/ERC20Mintable.sol';
+import 'openzeppelin-eth/contracts/token/ERC20/ERC20Pausable.sol';
 
 
 /**
@@ -13,4 +13,10 @@ import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Pausable.sol';
 contract TestErc20PausableToken is
   ERC20Mintable,
   ERC20Pausable
-{}
+{
+  constructor() public 
+  {
+    ERC20Pausable.initialize(msg.sender);
+    ERC20Mintable.initialize(msg.sender);
+  }
+}

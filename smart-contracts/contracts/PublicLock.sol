@@ -2,7 +2,7 @@ pragma solidity 0.5.9;
 
 import './interfaces/IERC721.sol';
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-solidity/contracts/introspection/ERC165.sol';
+import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinFunds.sol';
@@ -50,6 +50,7 @@ contract PublicLock is
     MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys)
     MixinLockMetadata(_lockName)
   {
+    ERC165.initialize();
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
