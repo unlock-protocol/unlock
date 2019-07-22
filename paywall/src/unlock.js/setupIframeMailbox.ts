@@ -1,9 +1,5 @@
-import { IframeType } from '../windowTypes'
-import {
-  mainWindowPostOffice,
-  PostMessageListener,
-  PostOfficeWindow,
-} from '../utils/postOffice'
+import { IframeType, PostOfficeWindow } from '../windowTypes'
+import { mainWindowPostOffice, PostMessageListener } from '../utils/postOffice'
 import { MessageTypes, ExtractPayload } from '../messageTypes'
 
 export type IframeNames = 'checkout' | 'data' | 'account'
