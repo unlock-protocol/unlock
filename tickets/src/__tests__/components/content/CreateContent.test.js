@@ -125,6 +125,17 @@ describe('CreateContent', () => {
     rtl.fireEvent.change(form.getByTestId('Pick a day'), {
       target: { value: '23' },
     })
+    rtl.fireEvent.change(form.getByPlaceholderText('Give it a nice name'), {
+      target: { value: 'Party!' },
+    })
+    rtl.fireEvent.change(
+      form.getByPlaceholderText(
+        '(Optional) A web page where your visitors can learn more about the event'
+      ),
+      {
+        target: { value: 'https://party.com/fun' },
+      }
+    )
 
     const submit = form.getByText('Save Event')
     expect(submit).not.toBeNull()
@@ -133,12 +144,18 @@ describe('CreateContent', () => {
     let date = new Date('2020-11-23T00:00:00.000')
     expect(addEvent).toHaveBeenCalledWith({
       lockAddress: 'abc123',
-      name: '',
+      name: 'Party!',
       description: '',
       location: '',
       owner: 'ben',
       logo: '',
       date,
+      links: [
+        {
+          href: 'https://party.com/fun',
+          text: 'Event Website',
+        },
+      ],
     })
   })
 
