@@ -1,4 +1,5 @@
 import { MessageTypes, ExtractPayload } from '../messageTypes'
+import { PostOfficeWindow, EventTypes } from '../windowTypes'
 
 export interface MessageEvent {
   source: any
@@ -10,10 +11,6 @@ export type MessageHandler = (event: MessageEvent) => void
 
 interface location {
   href: string
-}
-
-export interface PostOfficeWindow {
-  addEventListener: (type: 'message', handler: MessageHandler) => void
 }
 
 export interface IframePostOfficeWindow extends PostOfficeWindow {
@@ -75,7 +72,7 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
     )
   }
   let handlers: PostMessageHandlers = {}
-  window.addEventListener('message', event => {
+  window.addEventListener(EventTypes.MESSAGE, event => {
     // **SECURITY CHECKS**
     // ignore messages that do not come from our target window
     if (event.source !== target || event.origin !== targetOrigin) return

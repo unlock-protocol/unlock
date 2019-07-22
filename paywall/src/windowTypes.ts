@@ -35,9 +35,31 @@ export interface EventWindow {
   dispatchEvent: (event: CustomEvent) => void
 }
 
+export enum EventTypes {
+  STORAGE = 'storage',
+  MESSAGE = 'message',
+}
+
+export interface MappedEvents {
+  [EventTypes.STORAGE]: StorageEvent
+  [EventTypes.MESSAGE]: MessageEvent
+}
+
+export type ExtractEvent<T extends EventTypes> = MappedEvents[T]
+export type EventHandler<T extends EventTypes> = (
+  event: MappedEvents[T]
+) => void
+
+export type AddEventListenerFunc = <T extends EventTypes>(
+  type: T,
+  handler: EventHandler<T>
+) => void
 // used anywhere cache is used
+export type StorageEventTypes = 'storage'
+export type StorageHandler = (event: StorageEvent) => void
 export interface LocalStorageWindow {
   localStorage: Storage
+  addEventListener: AddEventListenerFunc
 }
 
 // used in web3Proxy.ts
@@ -76,7 +98,7 @@ export type web3Send = (
   callback: web3Callback
 ) => void
 
-export interface Web3Window extends PostOfficeWindow, IframeManagingWindow {
+export interface Web3Window extends PostOfficeWindow {
   Promise: PromiseConstructor
   web3?: {
     currentProvider: {
@@ -95,14 +117,24 @@ export interface MessageEvent {
   data: any
 }
 
+// used in Mailbox.ts
+export interface StorageEvent {
+  key: string
+  oldValue: string | null
+  newValue: string | null
+  storageArea: any
+}
+
 export type MessageHandler = (event: MessageEvent) => void
 
 export type PostOfficeEventTypes = 'message' // augment later if needed
 export interface PostOfficeWindow {
-  addEventListener: (
-    type: PostOfficeEventTypes,
-    handler: MessageHandler
-  ) => void
+  addEventListener: AddEventListenerFunc
+}
+
+type WindowConsole = Pick<Window, 'console'>['console']
+export interface ConsoleWindow {
+  console: Pick<WindowConsole, 'log' | 'error'>
 }
 
 export interface IframePostOfficeWindow extends PostOfficeWindow {

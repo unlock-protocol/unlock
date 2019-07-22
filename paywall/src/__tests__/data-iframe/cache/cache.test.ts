@@ -10,50 +10,12 @@ import {
   getNetwork,
   clear,
 } from '../../../data-iframe/cache/cache'
+import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 
 describe('cache utility', () => {
-  let storage: any = {}
-  const fakeWindow: LocalStorageWindow = {
-    localStorage: {
-      length: 1,
-      clear: () => {
-        storage = {}
-      },
-      getItem(key: string) {
-        return storage[key] || null
-      },
-      key(_: number) {
-        return '' // unused but required for the interface
-      },
-      removeItem(key: string) {
-        delete storage[key]
-      },
-      setItem(key: string, value: string) {
-        storage[key] = value
-      },
-    },
-  }
-  const fakeWindowNoLocalStorage: LocalStorageWindow = {
-    localStorage: {
-      length: 0,
-      clear: () => {
-        storage = {}
-      },
-      getItem(key: string) {
-        return storage[key] || null
-      },
-      key(_: number) {
-        return '' // unused but required for the interface
-      },
-      removeItem(key: string) {
-        delete storage[key]
-      },
-      setItem(key: string, value: string) {
-        storage[key] = value
-        throw new Error('no local storage available')
-      },
-    },
-  }
+  const fakeWindow: LocalStorageWindow = new FakeWindow()
+  const fakeWindowNoLocalStorage: LocalStorageWindow = new FakeWindow()
+  ;(fakeWindowNoLocalStorage as FakeWindow).throwOnLocalStorageSet()
 
   type eachThing = Array<[string, LocalStorageWindow]>
   const theEach: eachThing = [
@@ -63,7 +25,7 @@ describe('cache utility', () => {
   describe.each(theEach)('%s driver cache', (_, testWindow) => {
     function clearCache() {
       __clearDriver()
-      storage = {}
+      fakeWindow.localStorage.clear()
     }
     beforeEach(() => {
       clearCache()
