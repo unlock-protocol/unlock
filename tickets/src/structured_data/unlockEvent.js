@@ -18,6 +18,7 @@ export default class UnlockEvent {
       { name: 'logo', type: 'string' },
       { name: 'image', type: 'string' },
       { name: 'duration', type: 'uint64' },
+      { name: 'links', type: 'string' },
     ]
 
     let domainData = {
@@ -36,6 +37,7 @@ export default class UnlockEvent {
         logo: input.logo,
         image: input.image,
         duration: input.duration,
+        links: input.links,
       },
     }
 
