@@ -89,6 +89,7 @@ export class CreateContent extends Component {
 
   updateStateFromEvent(event) {
     this.setState(state => {
+      const links = event.links ? event.links[0] : null
       return {
         ...state,
         name: event.name,
@@ -96,7 +97,7 @@ export class CreateContent extends Component {
         description: event.description,
         date: event.date,
         location: event.location,
-        website: event.links[0].href, // TODO: support multiple links
+        website: links, // TODO: support multiple links
       }
     })
   }
