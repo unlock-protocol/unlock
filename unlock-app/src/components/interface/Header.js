@@ -22,6 +22,8 @@ const navigationButtons = [
 const appButtons = [
   { Button: PageNavButtons.Dashboard, page: '/dashboard' },
   { Button: PageNavButtons.Log, page: '/log' },
+  { Button: PageNavButtons.Settings, page: '/settings' },
+  { Button: PageNavButtons.KeyChain, page: '/keychain' },
 ]
 
 export const mapStateToProps = ({
