@@ -26,31 +26,11 @@ const eventMiddleware = config => {
     return next => {
       setTimeout(() => {
         if (lockAddress) {
-          eventService.getEvent(lockAddress).then(res => {
-            const {
-              name,
-              date,
-              lockAddress,
-              description,
-              location,
-              duration,
-              logo,
-              image,
-            } = res.data
-            const event = {
-              name,
-              date: new Date(date),
-              lockAddress,
-              description,
-              location,
-              duration,
-              logo,
-              image,
-            }
+          eventService.getEvent(lockAddress).then(event => {
             dispatch(updateEvent(event))
           })
         }
-      }, 0)
+      }, 0) // WEIRD HACK?
 
       return action => {
         // Initial event to add a new ticketed event: here we process data and send for signing
@@ -65,6 +45,7 @@ const eventMiddleware = config => {
             duration,
             logo,
             image,
+            links,
           } = action.event
           const data = UnlockEvent.build({
             lockAddress,
@@ -76,6 +57,7 @@ const eventMiddleware = config => {
             duration,
             logo,
             image,
+            links,
           })
           // We need to sign the data before we can store it
           dispatch(signData(data))
@@ -94,27 +76,7 @@ const eventMiddleware = config => {
 
         // Load an event from locksmith
         if (action.type === LOAD_EVENT) {
-          eventService.getEvent(action.address).then(res => {
-            const {
-              name,
-              date,
-              lockAddress,
-              description,
-              location,
-              duration,
-              logo,
-              image,
-            } = res.data
-            const event = {
-              name,
-              date: new Date(date),
-              lockAddress,
-              description,
-              location,
-              duration,
-              logo,
-              image,
-            }
+          eventService.getEvent(action.address).then(event => {
             dispatch(updateEvent(event))
           })
         }

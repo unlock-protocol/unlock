@@ -124,16 +124,51 @@ describe('EventService', () => {
   describe('getEvent', () => {
     describe('when an event can be retrieved', () => {
       it('returns a successful promise', async () => {
-        expect.assertions(1)
+        expect.assertions(2)
         const eventAddress = 'abc123'
-        axios.get.mockReturnValue({})
-        await eventService.getEvent(eventAddress)
+        const date = new Date(2019, 7, 4, 6, 11, 30)
+        const name = 'My Party'
+        const description = 'The fancy party'
+        const location = 'The block'
+        const duration = 60 * 60 * 3
+        const links = {
+          href: 'https://party.com',
+          text: 'Event website',
+        }
+        const logo = 'mylogo'
+        const image = 'myimage'
+
+        axios.get.mockReturnValue({
+          data: {
+            name,
+            date,
+            description,
+            location,
+            duration,
+            logo,
+            image,
+            eventLinks: links,
+          },
+        })
+        const event = await eventService.getEvent(eventAddress)
 
         expect(axios.get).toHaveBeenCalledWith(
           `${serviceHost}/events/${eventAddress}`
         )
+        expect(event).toEqual({
+          date,
+          name,
+          description,
+          location,
+          links,
+          duration,
+          image,
+          lockAddress: eventAddress,
+          logo,
+        })
       })
     })
+
     describe('when an event cannot be retrieved', () => {
       it('returns a rejected promise', async () => {
         expect.assertions(2)
