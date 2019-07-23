@@ -18,13 +18,19 @@ import withConfig from '../../utils/withConfig'
 import TimePicker from '../interface/TimePicker'
 
 export const formValuesToEvent = formValues => {
-  const { lockAddress, name, description, location, date } = formValues
+  const { lockAddress, name, description, location, date, website } = formValues
   return {
     lockAddress,
     name,
     description,
     location,
     date,
+    links: [
+      {
+        text: 'Event Website',
+        href: website,
+      },
+    ],
   }
 }
 
@@ -40,6 +46,7 @@ export class CreateContent extends Component {
       location: '',
       date: now,
       submitted: false,
+      website: '',
     }
 
     this.state = {
@@ -50,6 +57,7 @@ export class CreateContent extends Component {
       location: event.location || this.defaultState.location,
       date: event.date || this.defaultState.date,
       submitted: submitted || this.defaultState.submitted,
+      website: '',
     }
 
     this.onChange = this.onChange.bind(this)
@@ -88,6 +96,7 @@ export class CreateContent extends Component {
         description: event.description,
         date: event.date,
         location: event.location,
+        website: event.links[0].href, // TODO: support multiple links
       }
     })
   }
@@ -133,7 +142,9 @@ export class CreateContent extends Component {
 
   saveEvent() {
     const { account, addEvent } = this.props
-    const newEvent = formValuesToEvent(this.state)
+    const newEvent = formValuesToEvent({
+      ...this.state,
+    })
     addEvent({
       ...newEvent,
       logo: '', // TODO add logo support
@@ -151,6 +162,7 @@ export class CreateContent extends Component {
       location,
       lockAddress,
       submitted,
+      website,
     } = this.state
 
     return (
@@ -228,6 +240,16 @@ export class CreateContent extends Component {
                         now={now}
                         date={date}
                         onChange={this.timeChanged}
+                      />
+                    </Field>
+                    <Field>&nbsp;</Field>
+                    <Field>
+                      <Label>Event website</Label>
+                      <Input
+                        type="url"
+                        placeholder="(Optional) A web page where your visitors can learn more about the event"
+                        onChange={this.onChange('website')}
+                        value={website}
                       />
                     </Field>
                   </Fieldset>
