@@ -52,7 +52,7 @@ namespace MetadataController {
     if (
       req.params &&
       req.params.lockAddress.toLowerCase() ==
-        '0xb2B879764C649C7769f7c90845b0cb2A86add821'.toLowerCase()
+        '0x98c0cbf0e9525f1a6975a51c9d5e8e063c034d6d'.toLowerCase()
     ) {
       //
       defaultResponse.name = 'Ticket for Berlin Open Source Salon 2019.'
