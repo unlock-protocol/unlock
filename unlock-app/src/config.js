@@ -74,10 +74,7 @@ export default function configure(
   }
 
   if (env === 'test') {
-    // In test, we fake the HTTP provider
-    providers['HTTP'] = `http://${httpProvider}:8545`
     blockTime = 10 // in mseconds.
-    supportedProviders = ['HTTP']
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
