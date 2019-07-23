@@ -168,23 +168,11 @@ describe('duration utilities', () => {
       expect.assertions(2)
 
       expect(expirationAsText(getTimestamp({ minutes: 31 }))).toBe(
-        'Expires in 1 Hour'
+        'Expires in 31 Minutes'
       )
 
       expect(expirationAsText(getTimestamp({ hours: 1, minutes: 29 }))).toBe(
         'Expires in 1 Hour'
-      )
-    })
-
-    it('should round up if there are more than 30 minutes', () => {
-      expect.assertions(2)
-
-      expect(
-        expirationAsText(getTimestamp({ minutes: 31, seconds: 0.5 }))
-      ).toBe('Expires in 1 Hour')
-
-      expect(expirationAsText(getTimestamp({ hours: 1, minutes: 31 }))).toBe(
-        'Expires in 2 Hours'
       )
     })
 
@@ -200,40 +188,26 @@ describe('duration utilities', () => {
       )
     })
 
-    it('should return "1 Day" for expiration between 23 hours, 31 minutes and 1 day, 23 hours, 30 minutes', () => {
-      expect.assertions(2)
+    it('should round up to the highest meaningful unit', () => {
+      expect.assertions(4)
 
-      expect(expirationAsText(getTimestamp({ hours: 23, minutes: 31 }))).toBe(
-        'Expires in 1 Day'
+      expect(
+        expirationAsText(
+          getTimestamp({ days: 5, hours: 2, minutes: 34, seconds: 0.5 })
+        )
+      ).toBe('Expires in 5 Days')
+
+      expect(
+        expirationAsText(getTimestamp({ hours: 2, minutes: 34, seconds: 0.5 }))
+      ).toBe('Expires in 2 Hours')
+
+      expect(
+        expirationAsText(getTimestamp({ minutes: 34, seconds: 0.5 }))
+      ).toBe('Expires in 34 Minutes')
+
+      expect(expirationAsText(getTimestamp({ seconds: 0.5 }))).toBe(
+        'Expires in < 1 Minute'
       )
-
-      expect(
-        expirationAsText(getTimestamp({ days: 1, hours: 23, minutes: 29 }))
-      ).toBe('Expires in 1 Day')
-    })
-
-    it('should return "X Days" for expiration between 1 day, 23 hours, 31 minutes and 29 days, 23 hours, 30 minutes', () => {
-      expect.assertions(2)
-
-      expect(
-        expirationAsText(getTimestamp({ days: 1, hours: 23, minutes: 31 }))
-      ).toBe('Expires in 2 Days')
-
-      expect(
-        expirationAsText(getTimestamp({ days: 30, hours: 23, minutes: 29 }))
-      ).toBe('Expires in 30 Days')
-    })
-
-    it('should return "Blah 3, 1234" format for expiration between 29 days, 23 hours, 31 minutes and beyond', () => {
-      expect.assertions(2)
-
-      expect(
-        expirationAsText(getTimestamp({ days: 30, hours: 23, minutes: 31 }))
-      ).toMatch(/^Expires [a-zA-Z]+ \d+, \d{4}$/)
-
-      expect(
-        expirationAsText(getTimestamp({ days: 123, hours: 23, minutes: 31 }))
-      ).toMatch(/^Expires [a-zA-Z]+ \d+, \d{4}$/)
     })
   })
 })

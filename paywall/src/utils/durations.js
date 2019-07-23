@@ -144,18 +144,47 @@ export function expirationAsDate(timestamp) {
   return '< 1 Minute'
 }
 
+function pluralize(quantity, unit) {
+  const plural = quantity > 1 ? 's' : ''
+  return `${unit}${plural}`
+}
+
+/**
+ * Shows an expiration duration in the largest relevant unit ("1 day" for "1 day, 3 hours, 14 minutes and 34 seconds.")
+ * @param {*} timestamp
+ */
 export function expirationAsText(timestamp) {
   if (!timestamp) return 'Never Expires'
 
-  const text = expirationAsDate(timestamp)
-  if (text === 'Expired') return text
+  if (timestamp - new Date().getTime() / 1000 < 0) return 'Expired'
 
   const secondsFromNow = timestamp - Math.floor(new Date().getTime() / 1000)
 
   const duration = durations(secondsFromNow, {})
-  roundUp(duration)
-  if (!duration.days || duration.days <= 30) {
-    return `Expires in ${text}`
+
+  if (duration.days) {
+    // We have days, we show days
+    return `Expires in ${Math.floor(duration.days)} ${pluralize(
+      duration.days,
+      'Day'
+    )}`
   }
-  return `Expires ${text}`
+
+  if (duration.hours) {
+    // We have hours, we show hours
+    return `Expires in ${Math.floor(duration.hours)} ${pluralize(
+      duration.hours,
+      'Hour'
+    )}`
+  }
+
+  if (duration.minutes) {
+    // We have minutes, we show minutes
+    return `Expires in ${Math.floor(duration.minutes)} ${pluralize(
+      duration.minutes,
+      'Minute'
+    )}`
+  }
+
+  return 'Expires in < 1 Minute'
 }
