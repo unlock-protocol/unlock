@@ -35,9 +35,31 @@ export interface EventWindow {
   dispatchEvent: (event: CustomEvent) => void
 }
 
+export enum EventTypes {
+  STORAGE = 'storage',
+  MESSAGE = 'message',
+}
+
+export interface MappedEvents {
+  [EventTypes.STORAGE]: StorageEvent
+  [EventTypes.MESSAGE]: MessageEvent
+}
+
+export type ExtractEvent<T extends EventTypes> = MappedEvents[T]
+export type EventHandler<T extends EventTypes> = (
+  event: MappedEvents[T]
+) => void
+
+export type AddEventListenerFunc = <T extends EventTypes>(
+  type: T,
+  handler: EventHandler<T>
+) => void
 // used anywhere cache is used
+export type StorageEventTypes = 'storage'
+export type StorageHandler = (event: StorageEvent) => void
 export interface LocalStorageWindow {
   localStorage: Storage
+  addEventListener: AddEventListenerFunc
 }
 
 // used in web3Proxy.ts
@@ -53,11 +75,23 @@ export interface web3MethodCall {
   id: number
 }
 
-export interface web3MethodResult {
+interface web3MethodErrorResult {
   id: number
-  error: null | string
-  result: any
+  error: string
+  jsonrpc: '2.0'
 }
+
+interface web3MethodSuccessResult {
+  id: number
+  jsonrpc: '2.0'
+  result: {
+    id: number
+    jsonrpc: '2.0'
+    result: any
+  }
+}
+
+export type web3MethodResult = web3MethodErrorResult | web3MethodSuccessResult
 export type web3Callback = (error: string | null, result: any) => void
 export type web3Send = (
   methodCall: web3MethodCall,
@@ -83,14 +117,24 @@ export interface MessageEvent {
   data: any
 }
 
+// used in Mailbox.ts
+export interface StorageEvent {
+  key: string
+  oldValue: string | null
+  newValue: string | null
+  storageArea: any
+}
+
 export type MessageHandler = (event: MessageEvent) => void
 
 export type PostOfficeEventTypes = 'message' // augment later if needed
 export interface PostOfficeWindow {
-  addEventListener: (
-    type: PostOfficeEventTypes,
-    handler: MessageHandler
-  ) => void
+  addEventListener: AddEventListenerFunc
+}
+
+type WindowConsole = Pick<Window, 'console'>['console']
+export interface ConsoleWindow {
+  console: Pick<WindowConsole, 'log' | 'error'>
 }
 
 export interface IframePostOfficeWindow extends PostOfficeWindow {
