@@ -60,7 +60,8 @@ Post.propTypes = {
 }
 
 Post.getInitialProps = async context => {
-  return await preparePostProps(context)
+  const { slug } = context.query
+  return await preparePostProps(slug)
 }
 
 export default Post

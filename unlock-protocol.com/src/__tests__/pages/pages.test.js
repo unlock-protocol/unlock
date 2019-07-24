@@ -115,10 +115,15 @@ describe('Pages', () => {
     })
 
     it('should load blog posts as initial props', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
-      await Blog.getInitialProps()
+      await Blog.getInitialProps({
+        query: {
+          slug: '2',
+        },
+      })
       expect(prepareBlogProps).toHaveBeenCalledTimes(1)
+      expect(prepareBlogProps).toHaveBeenCalledWith(10, 2)
     })
   })
 
@@ -140,10 +145,15 @@ describe('Pages', () => {
     })
 
     it('should load post details in initial props', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
-      await Post.getInitialProps()
+      await Post.getInitialProps({
+        query: {
+          slug: 'a-post',
+        },
+      })
       expect(preparePostProps).toHaveBeenCalledTimes(1)
+      expect(preparePostProps).toHaveBeenCalledWith('a-post')
     })
   })
 })

@@ -11,7 +11,7 @@ About.propTypes = {
 
 About.getInitialProps = async () => {
   // Showing 10 posts on the blog page
-  return await prepareBlogProps(10)
+  return await prepareBlogProps(10, 1)
 }
 
 export default About
