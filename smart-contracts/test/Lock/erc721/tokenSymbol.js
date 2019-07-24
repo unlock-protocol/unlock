@@ -20,23 +20,27 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
     })
 
     it('should allow the owner to set the global token Symbol', async () => {
-      txObj = await unlock.setGlobalTokenSymbol('KEY', {
-        from: accounts[0],
-      })
+      txObj = await unlock.configUnlock(
+        'KEY',
+        await unlock.getGlobalBaseTokenURI(),
+        {
+          from: accounts[0],
+        }
+      )
       event = txObj.logs[0]
       assert.equal(await unlock.getGlobalTokenSymbol.call(), 'KEY')
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await shouldFail(
-        unlock.setGlobalBaseTokenURI('BTC', {
+        unlock.configUnlock('BTC', await unlock.getGlobalBaseTokenURI(), {
           from: accounts[1],
         })
       )
     })
 
-    it('should emit the NewGlobalTokenSymbol event', async () => {
-      assert.equal(event.event, 'NewGlobalTokenSymbol')
+    it('should emit the ConfigUnlock event', async () => {
+      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 
