@@ -111,6 +111,11 @@ module.exports = {
   mocha: {
     reporter: 'eth-gas-reporter',
     useColors: true,
+    reporterOptions: {
+      currency: 'USD',
+      excludeContracts: ['Migrations', 'TestErc20Token'],
+      gasPrice: 5,
+    },
   },
   plugins: ['truffle-security'],
 }
