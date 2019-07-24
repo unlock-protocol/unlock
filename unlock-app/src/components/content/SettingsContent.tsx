@@ -80,14 +80,14 @@ export class SettingsContent extends React.Component<
 }
 
 interface ReduxState {
-  account: {
+  account?: {
     cards?: stripe.Card[]
   }
 }
 
 export const mapStateToProps = ({ account }: ReduxState) => {
   let cards: stripe.Card[] = []
-  if (account.cards) {
+  if (account && account.cards) {
     cards = account.cards
   }
 
