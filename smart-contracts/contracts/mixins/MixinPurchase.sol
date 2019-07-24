@@ -76,7 +76,7 @@ contract MixinPurchase is
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      numberOfKeysSold
+      toKey.tokenId
     );
 
     // We explicitly allow for greater amounts of ETH to allow 'donations'
