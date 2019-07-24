@@ -1,20 +1,10 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Grid, SectionHeader, Item, ItemValue } from './styles'
 
-interface StripeCard {
-  id: string
-  brand: string
-  exp_month: number
-  exp_year: number
-  last4: string
-}
-
 interface PaymentMethodProps {
-  cards: StripeCard[]
+  cards: stripe.Card[]
 }
 
-// TODO: Swap between this component and the add payment method component
 // TODO: Make this prettier
 export const PaymentMethods = ({ cards }: PaymentMethodProps) => (
   <Grid>
@@ -29,21 +19,4 @@ export const PaymentMethods = ({ cards }: PaymentMethodProps) => (
   </Grid>
 )
 
-interface ReduxState {
-  account: {
-    cards?: StripeCard[]
-  }
-}
-
-export const mapStateToProps = ({ account }: ReduxState) => {
-  let cards: StripeCard[] = []
-  if (account.cards) {
-    cards = account.cards
-  }
-
-  return {
-    cards,
-  }
-}
-
-export default connect(mapStateToProps)(PaymentMethods)
+export default PaymentMethods
