@@ -114,6 +114,7 @@ module.exports = {
     reporterOptions: {
       currency: 'USD',
       excludeContracts: ['Migrations', 'TestErc20Token'],
+      gasPrice: 5,
     },
   },
   plugins: ['truffle-security'],
