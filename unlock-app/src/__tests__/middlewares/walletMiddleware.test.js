@@ -169,13 +169,14 @@ describe('Wallet middleware', () => {
     })
   })
 
-  it.skip('should handle account.changed events triggered by the walletService', () => {
+  it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
     const address = '0x123'
     const account = {
       address,
     }
+    setTimeout.mockClear()
     mockWalletService.getAccount = jest.fn()
 
     mockWalletService.emit('account.changed', address)
