@@ -41,6 +41,7 @@ describe('exportStatic', () => {
 
     expect(paths).toEqual({
       '/': { page: '/home' },
+      '/account': { page: '/account' },
       '/dashboard': { page: '/dashboard' },
       '/keychain': { page: '/keyChain' },
       '/log': { page: '/log' },

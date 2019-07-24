@@ -28,6 +28,9 @@ export interface Transaction {
   type: TransactionType
   blockNumber: number
 
+  to?: string
+  for?: string
+  from?: string
   lock?: string
   name?: string
   key?: string // TODO: tighten up our types, hopefully we won't have too many
@@ -88,6 +91,19 @@ export enum KeyStatus {
   FAILED = 'failed',
 }
 
+export interface RawLock {
+  name: string
+  address: string
+  keyPrice: string
+  expirationDuration: number
+  currencyContractAddress: string | null
+  asOf?: number
+  maxNumberOfKeys?: number
+  outstandingKeys?: number
+  balance?: string
+  owner?: string
+}
+
 export interface Lock {
   name: string
   address: string
@@ -104,6 +120,10 @@ export interface Lock {
 
 export interface Locks {
   [address: string]: Lock
+}
+
+export interface RawLocks {
+  [address: string]: RawLock
 }
 
 export interface Key {

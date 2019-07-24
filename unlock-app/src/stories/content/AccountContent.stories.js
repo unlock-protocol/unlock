@@ -17,7 +17,30 @@ const loggedInState = {
 const loggedInWithCards = {
   account: {
     emailAddress: 'jenny@googlemail.com',
-    cards: [{ id: 'card1' }],
+    cards: [
+      {
+        id: 'not_a_real_id',
+        object: 'a string',
+        brand: 'Visa',
+        country: 'United States',
+        dynamic_last4: '4242',
+        exp_month: 12,
+        exp_year: 2021,
+        fingerprint: 'another string',
+        funding: 'credit',
+        last4: '4242',
+        metadata: {},
+      },
+    ],
+  },
+  cart: {
+    lock: {
+      name: 'My ERC20 Lock',
+      address: 'not a real address',
+      keyPrice: '0.2',
+      expirationDuration: 12345678,
+    },
+    price: 1215,
   },
 }
 

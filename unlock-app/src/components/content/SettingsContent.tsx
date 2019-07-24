@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Head from 'next/head'
 import withConfig from '../../utils/withConfig'
 import Layout from '../interface/Layout'
@@ -7,6 +8,7 @@ import Errors from '../interface/Errors'
 import AccountInfo from '../interface/user-account/AccountInfo'
 import ChangePassword from '../interface/user-account/ChangePassword'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
+import PaymentMethods from '../interface/user-account/PaymentMethods'
 
 // TODO: tighten up this type
 declare global {
@@ -19,6 +21,7 @@ interface SettingsContentProps {
   config: {
     stripeApiKey: string
   }
+  cards: stripe.Card[]
 }
 interface SettingsContentState {
   stripe: stripe.Stripe | null
@@ -59,6 +62,7 @@ export class SettingsContent extends React.Component<
 
   render() {
     const { stripe } = this.state
+    const { cards } = this.props
     return (
       <Layout title="Account Settings">
         <Head>
@@ -68,10 +72,28 @@ export class SettingsContent extends React.Component<
         <Errors />
         <AccountInfo />
         <ChangePassword />
-        <PaymentDetails stripe={stripe} />
+        {cards.length > 0 && <PaymentMethods cards={cards} />}
+        {!cards.length && <PaymentDetails stripe={stripe} />}
       </Layout>
     )
   }
 }
 
-export default withConfig(SettingsContent)
+interface ReduxState {
+  account?: {
+    cards?: stripe.Card[]
+  }
+}
+
+export const mapStateToProps = ({ account }: ReduxState) => {
+  let cards: stripe.Card[] = []
+  if (account && account.cards) {
+    cards = account.cards
+  }
+
+  return {
+    cards,
+  }
+}
+
+export default connect(mapStateToProps)(withConfig(SettingsContent))

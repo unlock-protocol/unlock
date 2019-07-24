@@ -41,6 +41,8 @@ const lock = {
   key,
 }
 
+const price = 1215
+
 storiesOf('User Account/Components', module)
   .add('AccountInfo, no info', () => {
     return <AccountInfo email="" address="" />
@@ -72,6 +74,7 @@ storiesOf('User Account/Components', module)
         signPurchaseData={signPurchaseData}
         lock={lock}
         cards={cards}
+        price={price}
       />
     )
   })

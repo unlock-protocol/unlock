@@ -1,4 +1,3 @@
-import ensureWalletReady from './ensureWalletReady'
 import pollForChanges from './pollForChanges'
 import { POLLING_INTERVAL } from '../../constants'
 
@@ -26,10 +25,8 @@ export async function pollForAccountChange(
   web3Service,
   onAccountChange = () => {}
 ) {
-  await ensureWalletReady(walletService)
-
   pollForChanges(
-    async () => await walletService.getAccount() /* getFunc */,
+    () => walletService.getAccount() /* getFunc */,
     (before, after) => before !== after /* hasValueChanged */,
     () => 1 /* continuePolling */,
     async newAccount => {

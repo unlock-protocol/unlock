@@ -2,13 +2,13 @@ import {
   setupPostOffice,
   iframePostOffice,
   mainWindowPostOffice,
-  PostOfficeWindow,
   PostMessageTarget,
   PostMessageListener,
   IframePostOfficeWindow,
   Iframe,
 } from '../../utils/postOffice'
 import { PostMessages } from '../../messageTypes'
+import { PostOfficeWindow } from '../../windowTypes'
 
 describe('postOffice', () => {
   const fakeResponder = () => {}

@@ -35,7 +35,7 @@ module.exports = () => {
     cache: false,
     mode: 'production',
     devtool: 'source-map',
-    entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.js'),
+    entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'data-iframe.1.0.min.js',

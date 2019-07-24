@@ -53,7 +53,7 @@ export const ItemLabel = styled.span`
   align-items: center;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--darkgrey);
+  color: var(--labelgrey);
 `
 
 // Meant for "small" data -- generally a single line of text
@@ -72,6 +72,7 @@ export const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   margin-bottom: 1rem;
+  width: 100%;
 `
 
 export const Error = styled.span`
@@ -114,6 +115,7 @@ export const Price = styled.span`
   font-size: 30px;
   line-height: 39px;
   color: var(--slate);
+  margin-bottom: 8px;
 `
 
 export const TimeRemaining = styled.span`
@@ -159,6 +161,47 @@ export const Item = ({ title, children, size }: ItemProps) => {
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
+  )
+}
+
+// To be used when two credit card fields need to sit on the same line
+export const CardContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  grid-gap: 16px;
+`
+
+// To be used in place of <Layout> when we embed an app page in an iframe. This
+// avoids including all the UI chrome and positioning, and adds a white
+// background.
+export const IframeLayout = styled.div`
+  background-color: var(--offwhite);
+  max-height: 100%;
+  overflow-y: scroll;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  position: relative;
+`
+
+export const XYCenter = styled.div`
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`
+
+export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <XYCenter>
+      <IframeLayout>{children}</IframeLayout>
+    </XYCenter>
   )
 }
 

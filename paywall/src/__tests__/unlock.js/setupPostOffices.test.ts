@@ -93,6 +93,11 @@ describe('setupPostOffice', () => {
   function makeFakeWindow() {
     fakeWindow = {
       Promise,
+      web3: {
+        currentProvider: {
+          send: jest.fn(),
+        },
+      },
       setInterval: jest.fn(),
       unlockProtocol: {
         loadCheckoutModal: jest.fn(),

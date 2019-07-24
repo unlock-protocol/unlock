@@ -1,4 +1,4 @@
-import { getCurrentProvider } from '@unlock-protocol/unlock-js'
+import { getCurrentProvider, UnlockProvider } from '@unlock-protocol/unlock-js'
 
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
@@ -90,7 +90,6 @@ export default function configure(
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers['HTTP'] = `http://${httpProvider}:8545`
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
@@ -156,6 +155,8 @@ export default function configure(
   if (readOnlyProviderUrl) {
     readOnlyProvider = readOnlyProviderUrl
   }
+
+  providers['Unlock'] = new UnlockProvider({ readOnlyProvider })
 
   return {
     base64WedlocksPublicKey,
