@@ -14,13 +14,10 @@ interface IUnlock {
     address indexed lockOwner,
     address indexed newLockAddress
   );
-
-  event NewTokenURI(
-    string tokenURI
-  );
-
-  event NewGlobalTokenSymbol(
-    string tokenSymbol
+  
+  event ConfigUnlock(
+    string globalTokenSymbol,
+    string globalTokenURI
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
@@ -84,26 +81,18 @@ interface IUnlock {
     view
     returns (string memory);
 
-  /** Function to set the globalTokenURI field.
-   *  Should throw if called by other than owner
-   */
-  function setGlobalBaseTokenURI(
-    string calldata _URI
-  )
-    external;
-
   // Function to read the globalTokenSymbol field.
   function getGlobalTokenSymbol()
     external
     view
     returns (string memory);
 
-  /** Function to set the globalTokenSymbol field.
+  /** Function for the owner to update configuration variables.
    *  Should throw if called by other than owner.
    */
-  function setGlobalTokenSymbol(
-    string calldata _symbol
+  function configUnlock(
+    string calldata _symbol,
+    string calldata _URI
   )
     external;
-
 }
