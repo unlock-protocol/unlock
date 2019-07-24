@@ -17,18 +17,63 @@ const navigationButtons = [
   Buttons.Telegram,
 ]
 
+const accountTypes = {
+  managed: 'account/managed',
+  crypto: 'account/crypto',
+}
+
+export const typeOfAccount = account => {
+  if (!account) {
+    // this case mostly seems to happen in component tests that include the
+    // header but haven't had an account set.
+    return 'account/undefined'
+  }
+  const { address, emailAddress } = account
+  if (address && emailAddress) {
+    return accountTypes.managed
+  } else if (address) {
+    return accountTypes.crypto
+  } else {
+    // This final catch-all state is invalid. No app navigation will display for
+    // a user who doesn't match the above conditions. A user may be in an
+    // intermediate state (not all account updates have hit redux), which may
+    // cause a brief flicker of the icons. The return value here should indicate
+    // what pieces are missing for debugging purposes.
+    return `account/address={${address}}--emailAddress={${emailAddress}}`
+  }
+}
+
 // distinct from the above buttons are page nav buttons -- they are only visible
 // from within the app and not from the homepage or other static pages.
 const appButtons = [
-  { Button: PageNavButtons.Dashboard, page: '/dashboard' },
-  { Button: PageNavButtons.Log, page: '/log' },
+  {
+    Button: PageNavButtons.Dashboard,
+    page: '/dashboard',
+    allowedUsers: [accountTypes.crypto],
+  },
+  {
+    Button: PageNavButtons.Log,
+    page: '/log',
+    allowedUsers: [accountTypes.crypto, accountTypes.managed],
+  },
+  {
+    Button: PageNavButtons.Settings,
+    page: '/settings',
+    allowedUsers: [accountTypes.managed],
+  },
+  {
+    Button: PageNavButtons.KeyChain,
+    page: '/keychain',
+    allowedUsers: [accountTypes.crypto, accountTypes.managed],
+  },
 ]
 
 export const mapStateToProps = ({
   router: {
     location: { pathname },
   },
-}) => ({ pathname })
+  account,
+}) => ({ pathname, accountType: typeOfAccount(account) })
 
 /**
  * Helper function which returns the path on the button if the current pathname matches it
@@ -39,6 +84,7 @@ export const isOnAppPage = pathname => {
     false
   )
 }
+
 export class Header extends React.PureComponent {
   constructor(props) {
     super(props)
@@ -52,8 +98,11 @@ export class Header extends React.PureComponent {
 
   render() {
     const { menu } = this.state
-    const { forContent, title, pathname } = this.props
+    const { forContent, title, pathname, accountType } = this.props
     const onAppPage = isOnAppPage(pathname)
+    const validAppButtons = appButtons.filter(({ allowedUsers }) => {
+      return allowedUsers.includes(accountType)
+    })
     return (
       <TopHeader>
         {forContent ? (
@@ -80,7 +129,7 @@ export class Header extends React.PureComponent {
         )}
         <AppButtons>
           {onAppPage &&
-            appButtons.map(({ Button }) => (
+            validAppButtons.map(({ Button }) => (
               <Button key={Button} activePath={onAppPage} />
             ))}
         </AppButtons>
@@ -113,12 +162,14 @@ Header.propTypes = {
   title: PropTypes.string,
   forContent: PropTypes.bool,
   pathname: PropTypes.string,
+  accountType: PropTypes.string,
 }
 
 Header.defaultProps = {
   title: 'Unlock',
   forContent: false,
   pathname: '/',
+  accountType: 'account/undefined',
 }
 
 export default connect(mapStateToProps)(Header)

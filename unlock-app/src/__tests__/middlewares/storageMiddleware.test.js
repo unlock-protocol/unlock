@@ -5,7 +5,7 @@ import storageMiddleware, {
 } from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT, setAccount, UPDATE_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
 import configure from '../../config'
 import {
@@ -18,6 +18,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  KEY_PURCHASE_INITIATED,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -298,10 +299,42 @@ describe('Storage middleware', () => {
       )
       expect(next).toHaveBeenCalledTimes(1)
     })
+
+    it('should refresh the state after a method is added', () => {
+      expect.assertions(1)
+      // need to initialize the mocks even though we don't use return value of
+      // create()
+      create()
+      mockStorageService.getCards = jest.fn()
+
+      mockStorageService.emit(success.addPaymentMethod, {
+        emailAddress: 'user@email.internet',
+      })
+
+      expect(mockStorageService.getCards).toHaveBeenCalledWith(
+        'user@email.internet'
+      )
+    })
+
+    it('should dispatch a warning if payment method cannot be added', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.addPaymentMethod)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Warning',
+          message: 'Could not add payment method.',
+        },
+      })
+    })
   })
 
   describe('handling SIGNED_PURCHASE_DATA', () => {
-    it('should call storageService for payment method updates', () => {
+    it('should call storageService to request a key purchase', () => {
       expect.assertions(2)
       const data = {}
       const sig = 'a signature'
@@ -316,6 +349,33 @@ describe('Storage middleware', () => {
         'YSBzaWduYXR1cmU='
       )
       expect(next).toHaveBeenCalledTimes(1)
+    })
+
+    it('should signal the paywall after a successful key purchase', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(success.keyPurchase)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: KEY_PURCHASE_INITIATED,
+      })
+    })
+
+    it('should dispatch a warning if the key purchase is not successful', () => {
+      expect.assertions(1)
+      const { store } = create()
+
+      mockStorageService.emit(failure.keyPurchase)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Warning',
+          message: 'Could not initiate key purchase.',
+        },
+      })
     })
   })
 
@@ -350,15 +410,28 @@ describe('Storage middleware', () => {
       expect(next).toHaveBeenCalledTimes(1)
     })
 
-    it('should dispatch setAccount when an account is created', () => {
+    it('should dispatch gotEncryptedPrivateKeyPayload after an account is created', () => {
       expect.assertions(1)
       const { store } = create()
 
-      mockStorageService.emit(success.createUser, '0x123abc')
+      const passwordEncryptedPrivateKey = {
+        id: 'this is the encrypted key',
+      }
+      const emailAddress = 'paul@bunyan.io'
+      const password = 'guest'
 
-      expect(store.dispatch).toHaveBeenCalledWith(
-        setAccount({ address: '0x123abc' })
-      )
+      mockStorageService.emit(success.createUser, {
+        passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+        key: passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+      })
     })
 
     it('should dispatch an error when user creation fails', () => {
