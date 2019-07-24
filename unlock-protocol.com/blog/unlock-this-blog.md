@@ -4,8 +4,10 @@ subTitle:
 authorName: Julien Genestoux
 publishDate: July 24, 2019
 description:
-image:
+image: /static/images/blog/unlock-blog/hero.jpg
 ---
+
+![new lock](/static/images/blog/unlock-blog/hero.jpg)
 
 Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize their community (fans, supporters, or even simple users) by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell...).
 
