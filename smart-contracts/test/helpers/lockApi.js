@@ -81,10 +81,10 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
-    async withdraw(amount, from) {
+    async withdraw(tokenAddress, amount, from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'withdraw'),
-        [amount]
+        [tokenAddress, amount]
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,

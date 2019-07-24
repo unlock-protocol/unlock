@@ -14,6 +14,8 @@ const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / getBalance', accounts => {
   scenarios.forEach(isErc20 => {
+    let tokenAddress
+
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {
         testToken = await TestErc20Token.new()
@@ -24,9 +26,7 @@ contract('Lock / getBalance', accounts => {
           })
         }
 
-        const tokenAddress = isErc20
-          ? testToken.address
-          : Web3Utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
@@ -45,12 +45,18 @@ contract('Lock / getBalance', accounts => {
       })
 
       it('get balance of contract', async () => {
-        const balance = await locks['FIRST'].getBalance(locks['FIRST'].address)
+        const balance = await locks['FIRST'].getBalance(
+          tokenAddress,
+          locks['FIRST'].address
+        )
         assert.equal(balance.toString(), keyPrice.toString())
       })
 
       it('get balance of account', async () => {
-        const balance = await locks['FIRST'].getBalance(accounts[1])
+        const balance = await locks['FIRST'].getBalance(
+          tokenAddress,
+          accounts[1]
+        )
         assert(balance.gt(0))
       })
     })

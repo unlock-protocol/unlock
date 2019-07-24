@@ -156,7 +156,7 @@ contract MixinRefunds is
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
-      _transfer(msg.sender, refund);
+      _transfer(tokenAddress, msg.sender, refund);
     }
   }
 
