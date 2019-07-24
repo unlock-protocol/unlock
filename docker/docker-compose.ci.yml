@@ -51,6 +51,23 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'
     command: ['npm', 'run', 'start']
+  unlock-provider-unlock-app:
+    image: unlock-app
+    ports:
+      - 9000:9000
+    expose:
+      - 9000  
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: 'unlock-provider-integration'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
+      PORT: 9000
+    command: ['npm', 'run', 'start']    
   unlock-protocol-com:
     image: unlock-protocol-com
     ports:
@@ -127,6 +144,7 @@ services:
       BLOCKTIME: '${BLOCKTIME}'
     depends_on:
       - ganache-integration
+      - unlock-provider-unlock-app
       - unlock-app
       - paywall
       - locksmith
