@@ -2,9 +2,66 @@ import {
   durationsAsTextFromSeconds,
   durationsAsArrayFromSeconds,
   expirationAsText,
+  durations,
 } from '../../utils/durations'
 
 describe('duration utilities', () => {
+  describe('durations', () => {
+    it('should return an object with seconds set for < 1 minute', () => {
+      expect.assertions(3)
+
+      expect(durations(0.5, {})).toEqual({
+        seconds: 0.5,
+      })
+      expect(durations(59, {})).toEqual({
+        seconds: 59,
+      })
+      expect(durations(59.9, {})).toEqual({
+        seconds: 59.9,
+      })
+    })
+
+    it('should return an object with minutes set for > 1 minute, < 1 hour', () => {
+      expect.assertions(3)
+
+      expect(durations(60, {})).toEqual({
+        minutes: 1,
+      })
+      expect(durations(61, {})).toEqual({
+        seconds: 1,
+        minutes: 1,
+      })
+      expect(durations(3599, {})).toEqual({
+        minutes: 59,
+        seconds: 59,
+      })
+    })
+
+    it('should return an object with hours set for > 1 hour, < 1 day', () => {
+      expect.assertions(3)
+
+      expect(durations(3600, {})).toEqual({
+        hours: 1,
+      })
+      expect(durations(3601, {})).toEqual({
+        seconds: 1,
+        hours: 1,
+      })
+      expect(durations(60 * 60 * 24 - 1, {})).toEqual({
+        minutes: 59,
+        seconds: 59,
+        hours: 23,
+      })
+    })
+
+    it('should return an object with days set for > 1 day', () => {
+      expect.assertions(1)
+
+      expect(durations(60 * 60 * 24 * 5, {})).toEqual({
+        days: 5,
+      })
+    })
+  })
   describe('durationsAsTextFromSeconds', () => {
     it('should return the right durations', () => {
       expect.assertions(3)
@@ -47,32 +104,110 @@ describe('duration utilities', () => {
   })
 
   describe('expirationAsText', () => {
-    it('should return "Expires in ..." for small values', () => {
-      expect.assertions(2)
+    function addMinutes(timestamp, minutes) {
+      return timestamp + 60 * minutes
+    }
+    function addHours(timestamp, hours) {
+      return timestamp + 3600 * hours
+    }
+    function addDays(timestamp, days) {
+      return timestamp + 3600 * 24 * days
+    }
+    function getTimestamp({ minutes = 0, hours = 0, days = 0 }) {
+      return addDays(
+        addHours(addMinutes(new Date().getTime() / 1000, minutes), hours),
+        days
+      )
+    }
 
-      expect(
-        expirationAsText(new Date().getTime() / 1000 + 60 * 60 * 12)
-      ).toEqual('Expires in 12 hours')
-      expect(
-        expirationAsText(new Date().getTime() / 1000 + 60 * 60 * 12 + 60)
-      ).toEqual('Expires in 12 hours and 1 minute')
-    })
-
-    it('should return "Expires ..." for large values', () => {
+    it('should return "never" for 0 timestamp', () => {
       expect.assertions(1)
 
-      const now = new Date()
-      const then = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        0,
-        0,
-        0
+      expect(expirationAsText(0)).toBe('Never Expires')
+    })
+
+    it('should return "Expired" for old timestamps', () => {
+      expect.assertions(1)
+
+      expect(expirationAsText(getTimestamp({ minutes: -1 }))).toBe('Expired')
+    })
+
+    it('should return "< 1 Minute" for expiration in seconds', () => {
+      expect.assertions(1)
+
+      expect(expirationAsText(getTimestamp({ seconds: 30 }))).toBe(
+        'Expires in < 1 Minute'
       )
-      const seconds = (now.getTime() - then.getTime()) / 1000
-      const future = new Date('2100-01-01 00:00:00').getTime() / 1000 + seconds
-      expect(expirationAsText(future)).toEqual('Expires Jan 1, 2100')
+    })
+
+    it('should return "1 Minute" for expiration between 1 minute and 2 minutes', () => {
+      expect.assertions(2)
+
+      expect(expirationAsText(getTimestamp({ minutes: 1, seconds: 0.5 }))).toBe(
+        'Expires in 1 Minute'
+      )
+
+      expect(
+        expirationAsText(getTimestamp({ minutes: 1, seconds: 59.9 }))
+      ).toBe('Expires in 1 Minute')
+    })
+
+    it('should return "X Minutes" for expiration between 2 minutes and 30 minutes', () => {
+      expect.assertions(2)
+
+      expect(expirationAsText(getTimestamp({ minutes: 2, seconds: 0.5 }))).toBe(
+        'Expires in 2 Minutes'
+      )
+
+      expect(
+        expirationAsText(getTimestamp({ minutes: 29, seconds: 59.9 }))
+      ).toBe('Expires in 29 Minutes')
+    })
+
+    it('should return "1 Hour" for expiration between 30 minutes and 1 hour, 30 minutes', () => {
+      expect.assertions(2)
+
+      expect(expirationAsText(getTimestamp({ minutes: 31 }))).toBe(
+        'Expires in 31 Minutes'
+      )
+
+      expect(expirationAsText(getTimestamp({ hours: 1, minutes: 29 }))).toBe(
+        'Expires in 1 Hour'
+      )
+    })
+
+    it('should return "X Hours" for expiration between 2 hours and 23 hours, 30 minutes', () => {
+      expect.assertions(2)
+
+      expect(expirationAsText(getTimestamp({ hours: 2, seconds: 0.5 }))).toBe(
+        'Expires in 2 Hours'
+      )
+
+      expect(expirationAsText(getTimestamp({ hours: 23, minutes: 30 }))).toBe(
+        'Expires in 23 Hours'
+      )
+    })
+
+    it('should round up to the highest meaningful unit', () => {
+      expect.assertions(4)
+
+      expect(
+        expirationAsText(
+          getTimestamp({ days: 5, hours: 2, minutes: 34, seconds: 0.5 })
+        )
+      ).toBe('Expires in 5 Days')
+
+      expect(
+        expirationAsText(getTimestamp({ hours: 2, minutes: 34, seconds: 0.5 }))
+      ).toBe('Expires in 2 Hours')
+
+      expect(
+        expirationAsText(getTimestamp({ minutes: 34, seconds: 0.5 }))
+      ).toBe('Expires in 34 Minutes')
+
+      expect(expirationAsText(getTimestamp({ seconds: 0.5 }))).toBe(
+        'Expires in < 1 Minute'
+      )
     })
   })
 })

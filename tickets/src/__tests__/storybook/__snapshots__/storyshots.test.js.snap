@@ -2397,6 +2397,26 @@ Object {
                       </div>
                     </div>
                   </div>
+                  <div
+                    class="c12"
+                  >
+                     
+                  </div>
+                  <div
+                    class="c12"
+                  >
+                    <label
+                      class="c9"
+                    >
+                      Event website
+                    </label>
+                    <input
+                      class="c13"
+                      placeholder="(Optional) A web page where your visitors can learn more about the event"
+                      type="url"
+                      value=""
+                    />
+                  </div>
                 </div>
               </li>
               <li
@@ -2981,6 +3001,26 @@ Object {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="sc-1xgodx9-5 hKuMTX"
+                >
+                   
+                </div>
+                <div
+                  class="sc-1xgodx9-5 hKuMTX"
+                >
+                  <label
+                    class="sc-1xgodx9-6 loqXYl"
+                  >
+                    Event website
+                  </label>
+                  <input
+                    class="sc-1xgodx9-1 gaAqRD"
+                    placeholder="(Optional) A web page where your visitors can learn more about the event"
+                    type="url"
+                    value=""
+                  />
                 </div>
               </div>
             </li>
@@ -3931,6 +3971,26 @@ Object {
                       </div>
                     </div>
                   </div>
+                  <div
+                    class="c12"
+                  >
+                     
+                  </div>
+                  <div
+                    class="c12"
+                  >
+                    <label
+                      class="c9"
+                    >
+                      Event website
+                    </label>
+                    <input
+                      class="c13"
+                      placeholder="(Optional) A web page where your visitors can learn more about the event"
+                      type="url"
+                      value=""
+                    />
+                  </div>
                 </div>
               </li>
               <li
@@ -4527,6 +4587,26 @@ Object {
                       </div>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="sc-1xgodx9-5 hKuMTX"
+                >
+                   
+                </div>
+                <div
+                  class="sc-1xgodx9-5 hKuMTX"
+                >
+                  <label
+                    class="sc-1xgodx9-6 loqXYl"
+                  >
+                    Event website
+                  </label>
+                  <input
+                    class="sc-1xgodx9-1 gaAqRD"
+                    placeholder="(Optional) A web page where your visitors can learn more about the event"
+                    type="url"
+                    value=""
+                  />
                 </div>
               </div>
             </li>

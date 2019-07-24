@@ -36,10 +36,12 @@ export async function pollForAccountChange(
       // only called when account has changed
       /* changeListener */
       const account = newAccount ? newAccount : null
+      // this MUST be befre the async call to get the address balance
+      // or ensureWalletReady calls will fail
+      setAccount(account)
       const balance = newAccount
         ? await web3Service.getAddressBalance(newAccount)
         : '0'
-      setAccount(account)
       setAccountBalance(balance)
       onAccountChange(account, balance)
     } /*changeListener */,

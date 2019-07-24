@@ -16,7 +16,7 @@ export default class EventService {
    * @returns {Promise<*>}
    */
   async saveEvent(
-    { lockAddress, name, description, location, date, owner, logo },
+    { lockAddress, name, description, location, date, owner, logo, links },
     token
   ) {
     const opts = {}
@@ -31,6 +31,7 @@ export default class EventService {
       date,
       owner,
       logo,
+      links,
     })
 
     // First check if the event exists
@@ -65,7 +66,29 @@ export default class EventService {
    */
   async getEvent(lockAddress) {
     try {
-      return await axios.get(`${this.host}/events/${lockAddress}`)
+      const response = await axios.get(`${this.host}/events/${lockAddress}`)
+      const {
+        name,
+        date,
+        description,
+        location,
+        duration,
+        logo,
+        image,
+        eventLinks,
+      } = response.data
+
+      return {
+        name,
+        date: new Date(date),
+        lockAddress,
+        description,
+        location,
+        duration,
+        logo,
+        image,
+        links: eventLinks,
+      }
     } catch (error) {
       return Promise.reject(error)
     }
