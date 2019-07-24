@@ -5,7 +5,7 @@ const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, lock
 let token
@@ -14,7 +14,7 @@ contract('Lock / withdrawByAddress', accounts => {
   let owner = accounts[0]
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, owner)
     lock = locks['OWNED']
 
