@@ -61,5 +61,5 @@ Look at us! We're posting on our very own blog! How exciting!`,
         slug: 'post1',
       },
     ]
-    return <Blog posts={posts} />
+    return <Blog posts={posts} page={5} totalPages={9} />
   })

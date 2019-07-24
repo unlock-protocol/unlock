@@ -26,7 +26,11 @@ function _server(port, dev) {
         } else if (path === 'blog') {
           const params = route('/blog/:slug')(pathname)
           if (params.slug) {
-            app.render(req, res, '/post', Object.assign(params, query))
+            if (isNaN(params.slug)) {
+              app.render(req, res, '/post', Object.assign(params, query))
+            } else {
+              app.render(req, res, '/blog', Object.assign(params, query))
+            }
           } else {
             app.render(req, res, '/blog', Object.assign(params, query))
           }
