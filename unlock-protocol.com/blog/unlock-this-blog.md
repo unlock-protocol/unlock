@@ -19,7 +19,7 @@ When integrating the lock on this blog, we decided to reflect the membership sta
 
 ![member bar](/static/images/blog/unlock-blog/member-bar.png)
 
-2. On each post, users can view and leave [comments](#comments), but only if they are members themselves.
+2. On each post, __members__ can view and leave [comments](#comments).
 
 3. On some posts, we have decided to lock some content. For example, read this Google Slideshow from a presentation I made at Betaworks about [Non Fungible Tokens](/blog/non-fungible-tokens-betaworks).
 
