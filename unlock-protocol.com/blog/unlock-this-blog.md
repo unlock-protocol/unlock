@@ -23,15 +23,15 @@ When integrating the lock on this blog, we decided to reflect the membership sta
 
 # Bundling
 
-One thing to note is that the lock we use on this blog is in no way limited to this site. We could (and will, stay tuned...) re-use the lock on different sites or applications. As a matter of facts, you could even add *our* lock to *your* site or application, if you wanted to only grant access to people who are part of our community. That approach is how creators can deploy "bundles": a single lock is used on several different websites or applications!
+One thing to note is that the lock we use on this blog is in no way limited to this site. We could (and will, stay tuned...) re-use the lock on different sites or applications. As a matter of fact, you could even add *our* lock to *your* site or application, if you wanted to only grant access to people who are part of our community. That approach is how creators can deploy "bundles": a single lock is used on several different websites or applications!
 
 # Several locks
 
-Another important detail is that we could very well add multiple locks to this site. Maybe we'd have one of our most loyal fans (with a limit on the number of keys), and maybe we'd have one for our everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle... etc.
+Another important detail is that we could very well add multiple locks to this site. Maybe we'd have one for our most loyal fans (with a limit on the number of keys), and maybe we'd have one for our everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle... etc.
 
 # A Non Fungible Token
 
-Of course, this website implements what we call [optimistic unlocking](/blog/hello-optimistic-unlocking/). Basically, our blog will treat you as a member as soon as you've sent the transaction, without waiting for it to have been mined. But, once the transaction actually goes through, you will receive you unique access key. It is a non fungible token and you can [view them all on this page](https://opensea.io/assets/unlock-blog-members).
+Of course, this website implements what we call [optimistic unlocking](/blog/hello-optimistic-unlocking/). Basically, our blog will treat you as a member as soon as you've sent the transaction, without waiting for it to have completed mining. But, once the transaction actually goes through, you will receive you unique access key. It is a non fungible token and you can [view them all on this page](https://opensea.io/assets/unlock-blog-members).
 
 Like all other non fungible tokens, you can trade your keys! For example, I am auctionning my key to this very blog for 0.1Eth: get it for free here, [or buy it from me](https://opensea.io/assets/0xb0114bbdce17e0af91b2be32916a1e236cf6034f/2/sell#!)!
 
