@@ -71,7 +71,7 @@ contract('Lock / erc20', accounts => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        await lockApi.withdraw(0, accounts[0])
+        await lockApi.withdraw(await lock.tokenAddress.call(), 0, accounts[0])
 
         assert.equal(await token.balanceOf(lock.address), 0)
         assert.equal(

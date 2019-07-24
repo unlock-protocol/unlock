@@ -7,14 +7,18 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
-let owner
+let unlock, lock
+let tokenAddress
 const price = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / withdraw', accounts => {
+  let owner = accounts[0]
+
   before(async () => {
     unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    const locks = await deployLocks(unlock, owner)
+    lock = locks['OWNED']
+    tokenAddress = await lock.tokenAddress.call()
 
     await purchaseKeys(accounts)
   })
@@ -22,7 +26,7 @@ contract('Lock / withdraw', accounts => {
   it('should only allow the owner to withdraw', async () => {
     assert.notEqual(owner, accounts[1]) // Making sure
     await shouldFail(
-      locks['OWNED'].withdraw(0, {
+      lock.withdraw(tokenAddress, 0, {
         from: accounts[1],
       }),
       ''
@@ -35,16 +39,14 @@ contract('Lock / withdraw', accounts => {
     let contractBalance
     before(async () => {
       ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
-      contractBalance = new BigNumber(
-        await web3.eth.getBalance(locks['OWNED'].address)
-      )
-      tx = await locks['OWNED'].withdraw(0, {
+      contractBalance = new BigNumber(await web3.eth.getBalance(lock.address))
+      tx = await lock.withdraw(tokenAddress, 0, {
         from: owner,
       })
     })
 
     it("should set the lock's balance to 0", async () => {
-      assert.equal(await web3.eth.getBalance(locks['OWNED'].address), 0)
+      assert.equal(await web3.eth.getBalance(lock.address), 0)
     })
 
     it("should increase the owner's balance with the funds from the lock", async () => {
@@ -64,7 +66,7 @@ contract('Lock / withdraw', accounts => {
 
     it('should fail if there is nothing left to withdraw', async () => {
       await shouldFail(
-        locks['OWNED'].withdraw(0, {
+        lock.withdraw(tokenAddress, 0, {
           from: owner,
         }),
         'NOT_ENOUGH_FUNDS'
@@ -81,17 +83,15 @@ contract('Lock / withdraw', accounts => {
       await purchaseKeys(accounts)
 
       ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
-      contractBalance = new BigNumber(
-        await web3.eth.getBalance(locks['OWNED'].address)
-      )
-      tx = await locks['OWNED'].withdraw(42, {
+      contractBalance = new BigNumber(await web3.eth.getBalance(lock.address))
+      tx = await lock.withdraw(tokenAddress, 42, {
         from: owner,
       })
     })
 
     it("should reduce the lock's balance by 42", async () => {
       assert.equal(
-        (await web3.eth.getBalance(locks['OWNED'].address)).toString(),
+        (await web3.eth.getBalance(lock.address)).toString(),
         contractBalance.minus(42).toString()
       )
     })
@@ -113,14 +113,14 @@ contract('Lock / withdraw', accounts => {
 
     describe('when there is nothing left to withdraw', () => {
       before(async () => {
-        await locks['OWNED'].withdraw(0, {
+        await lock.withdraw(tokenAddress, 0, {
           from: owner,
         })
       })
 
       it('withdraw should fail', async () => {
         await shouldFail(
-          locks['OWNED'].withdraw(42, {
+          lock.withdraw(tokenAddress, 42, {
             from: owner,
           }),
           'NOT_ENOUGH_FUNDS'
@@ -135,24 +135,24 @@ contract('Lock / withdraw', accounts => {
     before(async () => {
       await purchaseKeys(accounts)
 
-      await locks['OWNED'].updateBeneficiary(beneficiary, { from: owner })
+      await lock.updateBeneficiary(beneficiary, { from: owner })
     })
 
     it('can withdraw from beneficiary account', async () => {
-      await locks['OWNED'].withdraw(42, {
+      await lock.withdraw(tokenAddress, 42, {
         from: beneficiary,
       })
     })
 
     it('can withdraw from owner account', async () => {
-      await locks['OWNED'].withdraw(42, {
+      await lock.withdraw(tokenAddress, 42, {
         from: owner,
       })
     })
 
     it('should fail to withdraw as non-owner or beneficiary', async () => {
       await shouldFail(
-        locks['OWNED'].withdraw(42, {
+        lock.withdraw(tokenAddress, 42, {
           from: accounts[4],
         }),
         'ONLY_LOCK_OWNER_OR_BENEFICIARY'
@@ -163,16 +163,12 @@ contract('Lock / withdraw', accounts => {
 
 async function purchaseKeys(accounts) {
   const purchases = [accounts[1], accounts[2]].map(account => {
-    return locks['OWNED'].purchase(account, web3.utils.padLeft(0, 40), {
+    return lock.purchase(account, web3.utils.padLeft(0, 40), {
       value: price,
       from: account,
     })
   })
-  await Promise.all(purchases)
-    .then(() => {
-      return locks['OWNED'].owner.call()
-    })
-    .then(_owner => {
-      owner = _owner
-    })
+  await Promise.all(purchases).then(() => {
+    return lock.owner.call()
+  })
 }
