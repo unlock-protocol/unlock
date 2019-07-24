@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.10;
 
 // This contract provides some utility methods for use with the unlock protocol smart contracts.
 // Borrowed from:
