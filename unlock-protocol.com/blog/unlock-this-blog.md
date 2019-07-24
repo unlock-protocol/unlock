@@ -3,7 +3,7 @@ title: Unlock this blog
 subTitle:
 authorName: Julien Genestoux
 publishDate: July 24, 2019
-description:
+description: Read about how we used one lock for differents purposes and to give users access to different features all with one key.
 image: /static/images/blog/unlock-blog/hero.jpg
 ---
 
