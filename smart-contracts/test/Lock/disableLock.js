@@ -99,7 +99,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owner can still withdraw', async () => {
-      await lock.withdraw(0)
+      await lock.withdraw(await lock.tokenAddress.call(), 0)
     })
 
     it('Lock owner can still expireKeyFor', async () => {

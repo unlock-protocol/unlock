@@ -57,7 +57,7 @@ export default function web3Proxy(
     })
   }
 
-  const handlers: MessageHandlerTemplates<MessageTypes> = {
+  const dataHandlers: MessageHandlerTemplates<MessageTypes> = {
     [PostMessages.READY_WEB3]: (
       postMessage,
       _dataIframe,
@@ -156,6 +156,6 @@ export default function web3Proxy(
     },
   }
 
-  mapHandlers('data', handlers)
+  mapHandlers('data', dataHandlers)
   mapHandlers('checkout', checkoutHandlers)
 }

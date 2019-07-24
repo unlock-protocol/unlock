@@ -106,8 +106,26 @@ describe('blockchainHandler account handling', () => {
           expect(balance).toBe('123')
           expect(getAccount()).toBe('new account')
           expect(getAccountBalance()).toBe('123')
+          onAccountChange = () => {} // ensure stray calls don't trigger the expect calls for other tests
           done()
         }
+        await pollForAccountChange(
+          fakeWalletService,
+          fakeWeb3Service,
+          onAccountChange
+        )
+
+        await pollForChanges.mock.calls[0][3]('new account')
+      })
+
+      it('should immediately set the account, then retrieve balance', async done => {
+        expect.assertions(1)
+
+        fakeWeb3Service.getAddressBalance = () => {
+          expect(getAccount()).toBe('new account')
+          done()
+        }
+
         await pollForAccountChange(
           fakeWalletService,
           fakeWeb3Service,
@@ -127,6 +145,7 @@ describe('blockchainHandler account handling', () => {
           expect(balance).toBe('0')
           expect(getAccount()).toBe(null)
           expect(getAccountBalance()).toBe('0')
+          onAccountChange = () => {} // ensure stray calls don't trigger the expect calls for other tests
           done()
         }
         await pollForAccountChange(

@@ -9,16 +9,20 @@ const { Event } = models
 const Op = Sequelize.Op
 
 namespace EventOperations {
-  export const create = (event: EventCreation): Promise<any> => {
+  export const create = async (event: EventCreation): Promise<any> => {
     event.owner = Normalizer.ethereumAddress(event.owner)
     event.lockAddress = Normalizer.ethereumAddress(event.lockAddress)
-    return Event.create(event)
+    const result = await Event.create(event)
+    if (event.links) {
+      await addLinks(event.lockAddress, event.links)
+    }
+    return result
   }
 
   export const update = async (event: EventCreation): Promise<any> => {
     event.owner = Normalizer.ethereumAddress(event.owner)
     event.lockAddress = Normalizer.ethereumAddress(event.lockAddress)
-    return await Event.update(event, {
+    const result = await Event.update(event, {
       where: {
         lockAddress: {
           [Op.eq]: Normalizer.ethereumAddress(event.lockAddress),
@@ -29,6 +33,10 @@ namespace EventOperations {
       },
       raw: true,
     })
+    if (event.links) {
+      await addLinks(event.lockAddress, event.links)
+    }
+    return result
   }
 
   export const find = async (lockAddress: string): Promise<any> => {

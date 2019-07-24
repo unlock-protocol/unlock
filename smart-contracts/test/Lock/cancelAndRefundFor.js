@@ -177,7 +177,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
      * This is a risk: we refund via CC but can't cancel the key because the Lock is broke
      */
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(0, {
+      await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
 
