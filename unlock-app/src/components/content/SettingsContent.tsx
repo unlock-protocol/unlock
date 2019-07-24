@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Head from 'next/head'
 import withConfig from '../../utils/withConfig'
 import Layout from '../interface/Layout'
@@ -72,7 +73,7 @@ export class SettingsContent extends React.Component<
         <AccountInfo />
         <ChangePassword />
         {cards.length > 0 && <PaymentMethods cards={cards} />}
-        {!!cards.length && <PaymentDetails stripe={stripe} />}
+        {!cards.length && <PaymentDetails stripe={stripe} />}
       </Layout>
     )
   }
@@ -95,4 +96,4 @@ export const mapStateToProps = ({ account }: ReduxState) => {
   }
 }
 
-export default withConfig(SettingsContent)
+export default connect(mapStateToProps)(withConfig(SettingsContent))
