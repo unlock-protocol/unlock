@@ -76,7 +76,6 @@ module.exports = withTypescript({
       '/jobs': { page: '/jobs' },
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
-      '/post': { page: '/post' },
       '/blog': { page: '/blog' },
     }
 
