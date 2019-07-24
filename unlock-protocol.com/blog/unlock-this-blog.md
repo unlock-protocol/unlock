@@ -1,15 +1,13 @@
 ---
 title: Unlock this blog
-subTitle:
+subTitle: We've put a lock on our own blog! Members can leave comments, read exclusive content and will receive a Non Fungible Token.
 authorName: Julien Genestoux
 publishDate: July 24, 2019
-description: Read about how we used one lock for differents purposes and to give users access to different features all with one key.
+description: We've put a lock on our own blog! Members can leave comments, read exclusive content and will receive a Non Fungible Token.
 image: /static/images/blog/unlock-blog/hero.jpg
 ---
 
-![new lock](/static/images/blog/unlock-blog/hero.jpg)
-
-Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize their community (fans, supporters, or even simple users) by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell...).
+Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize by selling access keys to their community -fans, supporters, or even simple users- by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell...).
 
 We decided to create a lock for members of our community. It's a good way for us to show what's possible with a lock. Since our goal was not to make money, we decided to charge _0 eth_ for the keys.
 
@@ -21,7 +19,7 @@ When integrating the lock on this blog, we decided to reflect the membership sta
 
 2. On each post, __members__ can view and leave [comments](#comments).
 
-3. On some posts, we have decided to lock some content. For example, read this Google Slideshow from a presentation I made at Betaworks about [Non Fungible Tokens](/blog/non-fungible-tokens-betaworks).
+3. We've locked some exclusive content. For example, this Google Slideshow from a presentation made at Betaworks about [Non Fungible Tokens](/blog/non-fungible-tokens-betaworks).
 
 # Bundling
 
@@ -29,7 +27,9 @@ One thing to note is that the lock we use on this blog is in no way limited to t
 
 # Several locks
 
-Another important detail is that we could very well add multiple locks to this site. Maybe we'd have one for our most loyal fans (with a limit on the number of keys), and maybe we'd have one for our everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle... etc.
+Another important detail is that we could very well add multiple locks to this site. If we did so, a single key to any of the locks would unlock the whole page.
+
+Maybe we'd have a lock for our most loyal fans (with a limit on the number of keys), and maybe we'd have another one for everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle... etc.
 
 # A Non Fungible Token
 
