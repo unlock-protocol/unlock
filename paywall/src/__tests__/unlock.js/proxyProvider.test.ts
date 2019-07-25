@@ -113,7 +113,7 @@ describe('user accounts proxy provider', () => {
         PostMessages.WEB3_RESULT,
         {
           id: 2,
-          error: null,
+          jsonrpc: '2.0',
           result: { id: 2, jsonrpc: '2.0', result: [proxyAccount] },
         }
       )
@@ -134,7 +134,7 @@ describe('user accounts proxy provider', () => {
         PostMessages.WEB3_RESULT,
         {
           id: 23,
-          error: null,
+          jsonrpc: '2.0',
           result: { id: 23, jsonrpc: '2.0', result: proxyNetwork },
         }
       )
@@ -155,8 +155,8 @@ describe('user accounts proxy provider', () => {
         PostMessages.WEB3_RESULT,
         {
           id: 23,
+          jsonrpc: '2.0',
           error: '"gibberish" is not supported',
-          result: null,
         }
       )
     })

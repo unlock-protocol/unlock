@@ -44,22 +44,22 @@ export function proxyProvider({
     case 'eth_accounts':
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
-        error: null,
+        jsonrpc: '2.0',
         result: { id, jsonrpc: '2.0', result: [proxyAccount] },
       })
       break
     case 'net_version':
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
-        error: null,
+        jsonrpc: '2.0',
         result: { id, jsonrpc: '2.0', result: proxyNetwork },
       })
       break
     default:
       postMessage('data', PostMessages.WEB3_RESULT, {
         id,
+        jsonrpc: '2.0',
         error: `"${method}" is not supported`,
-        result: null,
       })
   }
 }
