@@ -61,11 +61,6 @@ const appButtons = [
     page: '/settings',
     allowedUsers: [accountTypes.managed],
   },
-  {
-    Button: PageNavButtons.KeyChain,
-    page: '/keychain',
-    allowedUsers: [accountTypes.crypto, accountTypes.managed],
-  },
 ]
 
 export const mapStateToProps = ({
