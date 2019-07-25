@@ -7,7 +7,7 @@ description: We've put a lock on our own blog! Members can leave comments, read 
 image: /static/images/blog/unlock-blog/hero.jpg
 ---
 
-Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize by selling access keys to their community -fans, supporters, or even simple users- by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell...).
+Unlock is a [protocol for memberships](/blog/protocol-for-membership). It helps creators monetize by selling access keys to their community - fans, supporters, or even simple users - by helping them deploy a lock and sell access keys to this lock (they can chose their currency, price, the duration of the keys and the number of keys they want to sell).
 
 We decided to create a lock for members of our community. It's a good way for us to show what's possible with a lock. Since our goal was not to make money, we decided to charge _0 eth_ for the keys.
 
