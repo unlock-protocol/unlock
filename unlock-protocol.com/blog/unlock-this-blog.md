@@ -29,7 +29,7 @@ The lock we use on this blog is in no way limited to this site. We could (and wi
 
 Another important detail is that we could very well add multiple locks to this site. If we did so, a single key to any of the locks would unlock the whole page.
 
-Maybe we'd have a lock for our most loyal fans (with a limit on the number of keys), and maybe we'd have another one for everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle... etc.
+Maybe we'd have a lock for our most loyal fans (with a limit on the number of keys), and maybe we'd have another one for everyone else, using another currency or one which we would "share" with several other applications to be part of their bundle. The possibilities are endless.
 
 # A Non Fungible Token
 
