@@ -16,7 +16,7 @@ const paywallHost = ci ? 'paywall' : '127.0.0.1'
 class UnlockEnvironment extends PuppeteerEnvironment {
   async setup() {
     await super.setup()
-    console.log(`Waiting for Unlock (${unlockHost})`)
+    console.log('Waiting for Unlock')
     await serverIsUp(
       unlockHost,
       unlockPort,

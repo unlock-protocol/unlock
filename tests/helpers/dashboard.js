@@ -1,6 +1,5 @@
 const url = require('./url')
 const wait = require('./wait')
-//const debug = require('./debugging')
 
 /**
  * Helper function to list locks on the dashboard
