@@ -3,3 +3,4 @@
 
 /demo/* /demo 200
 /paywall/* /paywall 200
+/blog/* /blog 200
