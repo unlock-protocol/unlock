@@ -211,6 +211,20 @@ describe('BlockchainHandler - setupListeners', () => {
         },
       })
     })
+
+    it("should call sendDataWhenKeyExpires with the key's expiration", () => {
+      expect.assertions(1)
+
+      handler.sendDataWhenKeyExpires = jest.fn()
+      walletService.emit('key.updated', 'id', {
+        lock: addresses[0], // non-normalized on purpose
+        owner: store.account,
+        expiration: 5,
+      })
+
+      // it is called with the key's expiration
+      expect(handler.sendDataWhenKeyExpires).toHaveBeenCalledWith(5)
+    })
   })
 
   describe('transaction.updated', () => {
