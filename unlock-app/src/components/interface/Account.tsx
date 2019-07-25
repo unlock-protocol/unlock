@@ -64,7 +64,7 @@ const AccountDetails = styled.div`
   grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
   ${Media.phone`
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2, 80px);
+    grid-template-columns: 45px 145px repeat(2, 0px);
   `};
 `
 
