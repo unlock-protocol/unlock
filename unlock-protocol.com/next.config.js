@@ -63,10 +63,12 @@ module.exports = withTypescript({
       )
 
       // Export _redirects which is used by netlify for URL rewrites
-      await copyFile(
-        join(dir, 'static', '_redirects'),
-        join(outDir, '_redirects')
-      )
+      // Commented out because _redirects folder has been removed
+      // TODO: Determine if this is needed at all
+      // await copyFile(
+      //   join(dir, 'static', '_redirects'),
+      //   join(outDir, '_redirects')
+      // )
     }
 
     // Our statically-defined pages to export
