@@ -127,7 +127,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[1], txSender),
         keyOwners[1]
       )
-      await lock.invalidateCancelSignature({ from: keyOwners[1] })
+      await lock.invalidateApprovalToCancelKey({ from: keyOwners[1] })
       await shouldFail(
         lock.cancelAndRefundFor(keyOwners[1], signature, {
           from: txSender,
