@@ -23,7 +23,7 @@ When integrating the lock on this blog, we decided to reflect the membership sta
 
 # Bundling
 
-One thing to note is that the lock we use on this blog is in no way limited to this site. We could (and will, stay tuned...) re-use the lock on different sites or applications. As a matter of fact, you could even add *our* lock to *your* site or application, if you wanted to only grant access to people who are part of our community. That approach is how creators can deploy "bundles": a single lock is used on several different websites or applications!
+The lock we use on this blog is in no way limited to this site. We could (and will, stay tuned...) re-use the lock on different sites or applications. As a matter of fact, you could even add *our* lock to *your* site or application, if you wanted to only grant access to people who are part of our community. That approach is how creators can deploy "bundles": a single lock is used on several different websites or applications!
 
 # Several locks
 
