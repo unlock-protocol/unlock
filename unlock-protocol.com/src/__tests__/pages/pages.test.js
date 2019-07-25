@@ -37,6 +37,7 @@ describe('Pages', () => {
           authorName: 'Author name',
           publishDate: 'Publish date',
           image: '/foo/image.jpg',
+          slug: 'sample-post',
         },
       ]
 
@@ -89,7 +90,7 @@ describe('Pages', () => {
   describe('Blog', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<Blog posts={[]} />)
+      rtl.render(<Blog page={1} totalPages={1} posts={[]} />)
 
       expect(pageTitle).toBeCalledWith('Blog')
     })
@@ -107,7 +108,7 @@ describe('Pages', () => {
         },
       ]
 
-      const page = rtl.render(<Blog posts={posts} />)
+      const page = rtl.render(<Blog page={1} totalPages={1} posts={posts} />)
 
       expect(page.queryByText(posts[0].title)).not.toBeNull()
       expect(page.queryByText(posts[0].authorName)).not.toBeNull()
