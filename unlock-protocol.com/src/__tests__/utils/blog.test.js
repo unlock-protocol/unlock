@@ -4,14 +4,14 @@ title: This is a sample post
 subTitle: And some sample metadata
 publishDate: Dec 31, 1978
 ---
-Here is some markdown 
+Here is some markdown
 `,
   '/foo/bar/blog/test2.md': `---
 title: This is a second sample post
 subTitle: And some sample metadata
 publishDate: Jan 7, 1979
 ---
-Here is some markdown 
+Here is some markdown
 `,
   '/foo/bar/blog/test3.txt': `
 Here is some non-markdown text content
@@ -21,7 +21,7 @@ title: This is a post from the future
 subTitle: And some sample metadata
 publishDate: Jan 7, 2099
 ---
-Here is some markdown 
+Here is some markdown
 `,
 }
 
@@ -64,17 +64,34 @@ describe('blog', () => {
     expect(feed[1].__content).toEqual(undefined)
   })
 
-  it('should generate a blog pages array from a blog feed', () => {
+  it('should generate a post pages array from a blog feed', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    let pages = blog.generateBlogPages(feed)
+    let pages = blog.generatePostPages(feed)
 
     expect(pages['/blog/test1'].page).toEqual('/post')
     expect(pages['/blog/test1'].query.slug).toEqual('test1')
     expect(pages['/blog/test2'].page).toEqual('/post')
     expect(pages['/blog/test2'].query.slug).toEqual('test2')
+  })
+
+  it('should generate a blog pages array from a blog feed', () => {
+    expect.assertions(8)
+    const blog = require('../../utils/blog')
+
+    let feed = ['post1', 'post2', 'post3', 'post4', 'post5', 'post6', 'post7']
+    let pages = blog.generateBlogPages(feed.length, 2)
+
+    expect(pages['/blog/1'].page).toEqual('/blog')
+    expect(pages['/blog/1'].query.slug).toEqual('1')
+    expect(pages['/blog/2'].page).toEqual('/blog')
+    expect(pages['/blog/2'].query.slug).toEqual('2')
+    expect(pages['/blog/3'].page).toEqual('/blog')
+    expect(pages['/blog/3'].query.slug).toEqual('3')
+    expect(pages['/blog/4'].page).toEqual('/blog')
+    expect(pages['/blog/4'].query.slug).toEqual('4')
   })
 
   it('should generate a blog index file from a blog index array', () => {
