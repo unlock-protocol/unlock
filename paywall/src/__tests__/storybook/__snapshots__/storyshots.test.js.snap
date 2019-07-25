@@ -39,7 +39,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-jWBwVP cleRUp"
+      class="sc-chPdSV gXOBBE"
     >
       Button
     </button>
@@ -146,7 +146,7 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-jWBwVP gPhpka"
+      class="sc-chPdSV htPJav"
       disabled=""
     >
       Button
@@ -8453,7 +8453,7 @@ Object {
               <footer
                 class="c23 c24"
               >
-                Expires in 2 Hours
+                Expires in 1 Hour
               </footer>
               <footer
                 class="c25 c26"
@@ -8714,7 +8714,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Expires in 2 Hours
+              Expires in 1 Hour
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
@@ -10661,7 +10661,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-cvbbAY eawQXs"
+      class="sc-csuQGl dMZmip"
     >
       <section
         class="sc-gZMcBi hbowKy"
@@ -10684,17 +10684,17 @@ Object {
           
         </a>
         <header
-          class="sc-kEYyzF iRvJAG"
+          class="sc-jDwBTQ bjnLwq"
         >
           <h1
-            class="sc-kkGfuU eIujNd"
+            class="sc-gPEVay fSBtlt"
           >
             <img
-              class="sc-iAyFgw fpOCSR"
+              class="sc-iRbamj kYJSaR"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-hMqMXs dAXYya"
+              class="sc-jAaTju iNOlas"
             >
               Unlocked
             </span>
@@ -10704,10 +10704,10 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -10717,7 +10717,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-ckVGcZ cokGCr"
+                class="sc-jWBwVP bAWjRJ"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -10808,14 +10808,14 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -10825,7 +10825,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jKJlTe bBXYau"
+                class="sc-brqgnP gbyqvY"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -10859,14 +10859,14 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -10876,7 +10876,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-eNQAEJ cwbNYV"
+                class="sc-cMljjf gxyhTe"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -12192,7 +12192,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Opera
               </span>
@@ -12200,14 +12200,14 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-hSdWYo dVNown"
+          class="sc-jlyJG iPYQqx"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-kGXeez jWcsRY"
+            class="sth0f3-1 sc-hSdWYo dHaSfm"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -14093,7 +14093,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-cvbbAY eawQXs"
+      class="sc-csuQGl dMZmip"
     >
       <section
         class="sc-gZMcBi hbowKy"
@@ -14116,17 +14116,17 @@ Object {
           
         </a>
         <header
-          class="sc-kEYyzF iRvJAG"
+          class="sc-jDwBTQ bjnLwq"
         >
           <h1
-            class="sc-kkGfuU eIujNd"
+            class="sc-gPEVay fSBtlt"
           >
             <img
-              class="sc-iAyFgw fpOCSR"
+              class="sc-iRbamj kYJSaR"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-hMqMXs dAXYya"
+              class="sc-jAaTju iNOlas"
             >
               Unlocked
             </span>
@@ -14136,10 +14136,10 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -14149,7 +14149,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-ckVGcZ cokGCr"
+                class="sc-jWBwVP bAWjRJ"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14240,14 +14240,14 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -14257,7 +14257,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jKJlTe bBXYau"
+                class="sc-brqgnP gbyqvY"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14291,14 +14291,14 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -14308,7 +14308,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-eNQAEJ cwbNYV"
+                class="sc-cMljjf gxyhTe"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -15624,7 +15624,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Opera
               </span>
@@ -15632,14 +15632,14 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-hSdWYo dVNown"
+          class="sc-jlyJG iPYQqx"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-kGXeez jWcsRY"
+            class="sth0f3-1 sc-hSdWYo dHaSfm"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -17525,7 +17525,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-cvbbAY eawQXs"
+      class="sc-csuQGl dMZmip"
     >
       <section
         class="sc-gZMcBi hbowKy"
@@ -17548,17 +17548,17 @@ Object {
           
         </a>
         <header
-          class="sc-kEYyzF iRvJAG"
+          class="sc-jDwBTQ bjnLwq"
         >
           <h1
-            class="sc-kkGfuU eIujNd"
+            class="sc-gPEVay fSBtlt"
           >
             <img
-              class="sc-iAyFgw fpOCSR"
+              class="sc-iRbamj kYJSaR"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-hMqMXs dAXYya"
+              class="sc-jAaTju iNOlas"
             >
               Unlocked
             </span>
@@ -17568,10 +17568,10 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -17581,7 +17581,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-ckVGcZ cokGCr"
+                class="sc-jWBwVP bAWjRJ"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -17672,14 +17672,14 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -17689,7 +17689,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jKJlTe bBXYau"
+                class="sc-brqgnP gbyqvY"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -17723,14 +17723,14 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -17740,7 +17740,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-eNQAEJ cwbNYV"
+                class="sc-cMljjf gxyhTe"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -19056,7 +19056,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Opera
               </span>
@@ -19064,14 +19064,14 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-hSdWYo dVNown"
+          class="sc-jlyJG iPYQqx"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-kGXeez jWcsRY"
+            class="sth0f3-1 sc-hSdWYo dHaSfm"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -20957,7 +20957,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-cvbbAY eawQXs"
+      class="sc-csuQGl dMZmip"
     >
       <section
         class="sc-gZMcBi hbowKy"
@@ -20980,17 +20980,17 @@ Object {
           
         </a>
         <header
-          class="sc-kEYyzF iRvJAG"
+          class="sc-jDwBTQ bjnLwq"
         >
           <h1
-            class="sc-kkGfuU eIujNd"
+            class="sc-gPEVay fSBtlt"
           >
             <img
-              class="sc-iAyFgw fpOCSR"
+              class="sc-iRbamj kYJSaR"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-hMqMXs dAXYya"
+              class="sc-jAaTju iNOlas"
             >
               Unlocked
             </span>
@@ -21000,10 +21000,10 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -21013,7 +21013,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-ckVGcZ cokGCr"
+                class="sc-jWBwVP bAWjRJ"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -21104,14 +21104,14 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -21121,7 +21121,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jKJlTe bBXYau"
+                class="sc-brqgnP gbyqvY"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -21155,14 +21155,14 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -21172,7 +21172,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-eNQAEJ cwbNYV"
+                class="sc-cMljjf gxyhTe"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -22488,7 +22488,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Opera
               </span>
@@ -22496,14 +22496,14 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-hSdWYo dVNown"
+          class="sc-jlyJG iPYQqx"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-kGXeez jWcsRY"
+            class="sth0f3-1 sc-hSdWYo dHaSfm"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -24389,7 +24389,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-cvbbAY eawQXs"
+      class="sc-csuQGl dMZmip"
     >
       <section
         class="sc-gZMcBi hbowKy"
@@ -24412,17 +24412,17 @@ Object {
           
         </a>
         <header
-          class="sc-kEYyzF iRvJAG"
+          class="sc-jDwBTQ bjnLwq"
         >
           <h1
-            class="sc-kkGfuU eIujNd"
+            class="sc-gPEVay fSBtlt"
           >
             <img
-              class="sc-iAyFgw fpOCSR"
+              class="sc-iRbamj kYJSaR"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
             <span
-              class="sc-hMqMXs dAXYya"
+              class="sc-jAaTju iNOlas"
             >
               Unlocked
             </span>
@@ -24432,10 +24432,10 @@ Object {
           </p>
         </header>
         <ul
-          class="sc-eHgmQL ivyWHt"
+          class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -24445,7 +24445,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-ckVGcZ cokGCr"
+                class="sc-jWBwVP bAWjRJ"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -24536,14 +24536,14 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -24553,7 +24553,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-jKJlTe bBXYau"
+                class="sc-brqgnP gbyqvY"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -24587,14 +24587,14 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-dxgOiQ hMOJfX"
+            class="sc-cvbbAY ckNjOZ"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -24604,7 +24604,7 @@ Object {
             </span>
             <div>
               <svg
-                class="sc-eNQAEJ cwbNYV"
+                class="sc-cMljjf gxyhTe"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -25920,7 +25920,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kpOJdX kAzjOl"
+                class="sc-eHgmQL gmKbQu"
               >
                 Opera
               </span>
@@ -25928,14 +25928,14 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-hSdWYo dVNown"
+          class="sc-jlyJG iPYQqx"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="sth0f3-1 sc-kGXeez jWcsRY"
+            class="sth0f3-1 sc-hSdWYo dHaSfm"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -25946,6 +25946,1976 @@ Object {
         </footer>
       </section>
     </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal with a confirming key purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c2 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c9 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 1fr 140px;
+}
+
+.c11 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  font-size: 20px;
+  min-height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c14 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c16 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c13 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c12 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--yellow);
+}
+
+.c17 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--yellow);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c1 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.c0 {
+  max-width: 800px;
+  padding: 10px 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: var(--offwhite);
+  color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+}
+
+.c19 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  width: 280px;
+  height: 60px;
+}
+
+.c19 :hover {
+  background-color: var(--activegreen);
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
+.c6 {
+  padding-left: 10px;
+}
+
+.c3 {
+  display: grid;
+}
+
+.c3 h2 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0 0 16px;
+}
+
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+  margin-bottom: 24px;
+}
+
+.c5 {
+  height: 30px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 span {
+  padding-right: 1px;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+  padding: 0;
+  margin: 0;
+}
+
+.c7 .c8 {
+  grid-template-rows: 4px 140px;
+}
+
+.c7 .c10 {
+  height: 0;
+}
+
+.c7 > div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  list-style: none;
+  padding: 0 0 0 24px;
+}
+
+.c7 > div > .lock {
+  width: 20%;
+}
+
+.c7 > div > p {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c19 {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c6 {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c18 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 h2 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    place-items: center;
+  }
+
+  .c7 > div {
+    padding: 16px 0 16px;
+  }
+
+  .c7 > div > p {
+    margin: 0 10px 10px 10px;
+    font-size: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <a
+          class="closeButton c1 c2"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <header
+          class="c3"
+        >
+          <h1
+            class="c4"
+          >
+            <img
+              class="c5"
+              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+            />
+            <span
+              class="c6"
+            >
+              Unlocked
+            </span>
+          </h1>
+          <h2>
+            Thanks for your purchase!
+          </h2>
+        </header>
+        <ul
+          class="c7"
+        >
+          <li
+            class="c8 lock c9"
+            data-address="0x456"
+          >
+            <header
+              class="c10 c11"
+            />
+            <div
+              class="c12"
+            >
+              <div
+                class="c13"
+              >
+                <div
+                  class="c14"
+                >
+                  0.3
+                   
+                  Eth
+                </div>
+                <div
+                  class="c15"
+                >
+                  $
+                  105.00
+                </div>
+              </div>
+              <div
+                class="c16"
+              >
+                Waiting for confirmations
+                <br />
+                2
+                /
+                12
+              </div>
+              <footer
+                class="c17"
+              >
+                Payment Pending
+              </footer>
+            </div>
+          </li>
+          <div>
+            <p>
+              Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+            </p>
+            <p
+              class="c18"
+            >
+              You'll see the status of your order on the left.
+            </p>
+            <button
+              class="c19"
+            >
+              Start Reading
+            </button>
+          </div>
+        </ul>
+        <footer
+          class="c20"
+        >
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="c21"
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </footer>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-gZMcBi hbowKy"
+    >
+      <a
+        class="sc-iwsKbI closeButton kwnnhM is925m-0 bYsUmJ"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <header
+        class="sc-ckVGcZ ehWQYT"
+      >
+        <h1
+          class="sc-jKJlTe gaWtws"
+        >
+          <img
+            class="sc-eNQAEJ cmWZxd"
+            src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+          />
+          <span
+            class="sc-kpOJdX imAmGK"
+          >
+            Unlocked
+          </span>
+        </h1>
+        <h2>
+          Thanks for your purchase!
+        </h2>
+      </header>
+      <ul
+        class="sc-kEYyzF dvXXVh"
+      >
+        <li
+          class="sc-1549ebs-0 lock gxqdDg"
+          data-address="0x456"
+        >
+          <header
+            class="sc-1549ebs-1 kSQjXI"
+          />
+          <div
+            class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
+          >
+            <div
+              class="sc-1549ebs-6 hGyOOg"
+            >
+              <div
+                class="sc-1549ebs-4 cXGnbO"
+              >
+                0.3
+                 
+                Eth
+              </div>
+              <div
+                class="sc-1549ebs-4 kUlrFA"
+              >
+                $
+                105.00
+              </div>
+            </div>
+            <div
+              class="sc-1549ebs-5 eUmWhY"
+            >
+              Waiting for confirmations
+              <br />
+              2
+              /
+              12
+            </div>
+            <footer
+              class="sc-1549ebs-2 bn9s5o-1 eKTLUD"
+            >
+              Payment Pending
+            </footer>
+          </div>
+        </li>
+        <div>
+          <p>
+            Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+          </p>
+          <p
+            class="sc-dxgOiQ chjPIu"
+          >
+            You'll see the status of your order on the left.
+          </p>
+          <button
+            class="sc-chPdSV sc-kgoBCf grMjIC"
+          >
+            Start Reading
+          </button>
+        </div>
+      </ul>
+      <footer
+        class="sc-hMqMXs ksHAnk"
+      >
+        <span>
+          Powered by
+        </span>
+        <svg
+          alt="Unlock"
+          class="sth0f3-1 sc-kGXeez jWcsRY"
+          viewBox="0 0 1200 256"
+        >
+          <title />
+          <path
+            d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+          />
+        </svg>
+      </footer>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal with a pending key purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c2 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c9 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 1fr 140px;
+}
+
+.c11 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  font-size: 20px;
+  min-height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c14 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c16 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c13 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c17 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--link);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c12 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+}
+
+.c1 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.c0 {
+  max-width: 800px;
+  padding: 10px 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: var(--offwhite);
+  color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+}
+
+.c19 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  width: 280px;
+  height: 60px;
+}
+
+.c19 :hover {
+  background-color: var(--activegreen);
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
+.c6 {
+  padding-left: 10px;
+}
+
+.c3 {
+  display: grid;
+}
+
+.c3 h2 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0 0 16px;
+}
+
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+  margin-bottom: 24px;
+}
+
+.c5 {
+  height: 30px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 span {
+  padding-right: 1px;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+  padding: 0;
+  margin: 0;
+}
+
+.c7 .c8 {
+  grid-template-rows: 4px 140px;
+}
+
+.c7 .c10 {
+  height: 0;
+}
+
+.c7 > div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  list-style: none;
+  padding: 0 0 0 24px;
+}
+
+.c7 > div > .lock {
+  width: 20%;
+}
+
+.c7 > div > p {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c19 {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c6 {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c18 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 h2 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    place-items: center;
+  }
+
+  .c7 > div {
+    padding: 16px 0 16px;
+  }
+
+  .c7 > div > p {
+    margin: 0 10px 10px 10px;
+    font-size: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <a
+          class="closeButton c1 c2"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <header
+          class="c3"
+        >
+          <h1
+            class="c4"
+          >
+            <img
+              class="c5"
+              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+            />
+            <span
+              class="c6"
+            >
+              Unlocked
+            </span>
+          </h1>
+          <h2>
+            Thanks for your purchase!
+          </h2>
+        </header>
+        <ul
+          class="c7"
+        >
+          <li
+            class="c8 lock c9"
+            data-address="0x456"
+          >
+            <header
+              class="c10 c11"
+            />
+            <div
+              class="c12"
+            >
+              <div
+                class="c13"
+              >
+                <div
+                  class="c14"
+                >
+                  0.3
+                   
+                  Eth
+                </div>
+                <div
+                  class="c15"
+                >
+                  $
+                  105.00
+                </div>
+              </div>
+              <div
+                class="c16"
+              >
+                Waiting for mining confirmation.
+              </div>
+              <footer
+                class="c17"
+              >
+                Payment Sent
+              </footer>
+            </div>
+          </li>
+          <div>
+            <p>
+              Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+            </p>
+            <p
+              class="c18"
+            >
+              You'll see the status of your order on the left.
+            </p>
+            <button
+              class="c19"
+            >
+              Start Reading
+            </button>
+          </div>
+        </ul>
+        <footer
+          class="c20"
+        >
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="c21"
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </footer>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-gZMcBi hbowKy"
+    >
+      <a
+        class="sc-iwsKbI closeButton kwnnhM is925m-0 bYsUmJ"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <header
+        class="sc-ckVGcZ ehWQYT"
+      >
+        <h1
+          class="sc-jKJlTe gaWtws"
+        >
+          <img
+            class="sc-eNQAEJ cmWZxd"
+            src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+          />
+          <span
+            class="sc-kpOJdX imAmGK"
+          >
+            Unlocked
+          </span>
+        </h1>
+        <h2>
+          Thanks for your purchase!
+        </h2>
+      </header>
+      <ul
+        class="sc-kEYyzF dvXXVh"
+      >
+        <li
+          class="sc-1549ebs-0 lock gxqdDg"
+          data-address="0x456"
+        >
+          <header
+            class="sc-1549ebs-1 kSQjXI"
+          />
+          <div
+            class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+          >
+            <div
+              class="sc-1549ebs-6 hGyOOg"
+            >
+              <div
+                class="sc-1549ebs-4 cXGnbO"
+              >
+                0.3
+                 
+                Eth
+              </div>
+              <div
+                class="sc-1549ebs-4 kUlrFA"
+              >
+                $
+                105.00
+              </div>
+            </div>
+            <div
+              class="sc-1549ebs-5 eUmWhY"
+            >
+              Waiting for mining confirmation.
+            </div>
+            <footer
+              class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+            >
+              Payment Sent
+            </footer>
+          </div>
+        </li>
+        <div>
+          <p>
+            Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+          </p>
+          <p
+            class="sc-dxgOiQ chjPIu"
+          >
+            You'll see the status of your order on the left.
+          </p>
+          <button
+            class="sc-chPdSV sc-kgoBCf grMjIC"
+          >
+            Start Reading
+          </button>
+        </div>
+      </ul>
+      <footer
+        class="sc-hMqMXs ksHAnk"
+      >
+        <span>
+          Powered by
+        </span>
+        <svg
+          alt="Unlock"
+          class="sth0f3-1 sc-kGXeez jWcsRY"
+          viewBox="0 0 1200 256"
+        >
+          <title />
+          <path
+            d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+          />
+        </svg>
+      </footer>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal with a submitted key purchase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: 24px;
+}
+
+.c2 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c9 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  grid-gap: 0px;
+  background-clip: padding-box;
+  grid-template-rows: 1fr 140px;
+}
+
+.c11 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  font-size: 20px;
+  min-height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c14 {
+  white-space: nowrap;
+  font-weight: bold;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 {
+  white-space: nowrap;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c16 {
+  display: grid;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  color: var(--dimgrey);
+  font-size: 15px;
+  font-weight: 300;
+  padding: 0px;
+}
+
+.c13 {
+  display: grid;
+  font-size: 15px;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  color: var(--grey);
+  font-weight: 300;
+  grid-gap: 4px;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+  justify-items: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+}
+
+.c17 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--link);
+  color: var(--white);
+  margin-top: 13px;
+}
+
+.c12 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  border: 1px solid var(--link);
+}
+
+.c1 {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+}
+
+.c0 {
+  max-width: 800px;
+  padding: 10px 40px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: var(--offwhite);
+  color: var(--darkgrey);
+  border-radius: 4px;
+  position: relative;
+}
+
+.c19 {
+  background-color: var(--green);
+  border: none;
+  font-size: 16px;
+  color: var(--darkgrey);
+  font-family: 'IBM Plex Sans',sans-serif;
+  border-radius: 4px;
+  cursor: pointer;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  width: 280px;
+  height: 60px;
+}
+
+.c19 :hover {
+  background-color: var(--activegreen);
+}
+
+.c21 {
+  fill: var(--brand);
+  width: 42px;
+  margin-bottom: -1px;
+  margin-left: 1px;
+}
+
+.c6 {
+  padding-left: 10px;
+}
+
+.c3 {
+  display: grid;
+}
+
+.c3 h2 {
+  font-size: 40px;
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0 0 16px;
+}
+
+.c4 {
+  font-size: 40px;
+  font-weight: 200;
+  vertical-align: middle;
+  margin-bottom: 24px;
+}
+
+.c5 {
+  height: 30px;
+}
+
+.c20 {
+  margin-top: 50px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.c20 span {
+  padding-right: 1px;
+}
+
+.c20 div {
+  margin: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.c7 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-pack: start;
+  -webkit-justify-content: start;
+  -ms-flex-pack: start;
+  justify-content: start;
+  padding: 0;
+  margin: 0;
+}
+
+.c7 .c8 {
+  grid-template-rows: 4px 140px;
+}
+
+.c7 .c10 {
+  height: 0;
+}
+
+.c7 > div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  list-style: none;
+  padding: 0 0 0 24px;
+}
+
+.c7 > div > .lock {
+  width: 20%;
+}
+
+.c7 > div > p {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c19 {
+    width: 100%;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c6 {
+    padding-left: 0;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c18 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c3 h2 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c7 {
+    -webkit-flex-flow: column;
+    -ms-flex-flow: column;
+    flex-flow: column;
+    place-items: center;
+  }
+
+  .c7 > div {
+    padding: 16px 0 16px;
+  }
+
+  .c7 > div > p {
+    margin: 0 10px 10px 10px;
+    font-size: 16px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <a
+          class="closeButton c1 c2"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <header
+          class="c3"
+        >
+          <h1
+            class="c4"
+          >
+            <img
+              class="c5"
+              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+            />
+            <span
+              class="c6"
+            >
+              Unlocked
+            </span>
+          </h1>
+          <h2>
+            Thanks for your purchase!
+          </h2>
+        </header>
+        <ul
+          class="c7"
+        >
+          <li
+            class="c8 lock c9"
+            data-address="0x456"
+          >
+            <header
+              class="c10 c11"
+            />
+            <div
+              class="c12"
+            >
+              <div
+                class="c13"
+              >
+                <div
+                  class="c14"
+                >
+                  0.3
+                   
+                  Eth
+                </div>
+                <div
+                  class="c15"
+                >
+                  $
+                  105.00
+                </div>
+              </div>
+              <div
+                class="c16"
+              >
+                Waiting for mining confirmation.
+              </div>
+              <footer
+                class="c17"
+              >
+                Payment Sent
+              </footer>
+            </div>
+          </li>
+          <div>
+            <p>
+              Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+            </p>
+            <p
+              class="c18"
+            >
+              You'll see the status of your order on the left.
+            </p>
+            <button
+              class="c19"
+            >
+              Start Reading
+            </button>
+          </div>
+        </ul>
+        <footer
+          class="c20"
+        >
+          <span>
+            Powered by
+          </span>
+          <svg
+            alt="Unlock"
+            class="c21"
+            viewBox="0 0 1200 256"
+          >
+            <title />
+            <path
+              d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+            />
+          </svg>
+        </footer>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-gZMcBi hbowKy"
+    >
+      <a
+        class="sc-iwsKbI closeButton kwnnhM is925m-0 bYsUmJ"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <header
+        class="sc-ckVGcZ ehWQYT"
+      >
+        <h1
+          class="sc-jKJlTe gaWtws"
+        >
+          <img
+            class="sc-eNQAEJ cmWZxd"
+            src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
+          />
+          <span
+            class="sc-kpOJdX imAmGK"
+          >
+            Unlocked
+          </span>
+        </h1>
+        <h2>
+          Thanks for your purchase!
+        </h2>
+      </header>
+      <ul
+        class="sc-kEYyzF dvXXVh"
+      >
+        <li
+          class="sc-1549ebs-0 lock gxqdDg"
+          data-address="0x456"
+        >
+          <header
+            class="sc-1549ebs-1 kSQjXI"
+          />
+          <div
+            class="sc-1549ebs-3 mmuk7x-1 fuDijf"
+          >
+            <div
+              class="sc-1549ebs-6 hGyOOg"
+            >
+              <div
+                class="sc-1549ebs-4 cXGnbO"
+              >
+                0.3
+                 
+                Eth
+              </div>
+              <div
+                class="sc-1549ebs-4 kUlrFA"
+              >
+                $
+                105.00
+              </div>
+            </div>
+            <div
+              class="sc-1549ebs-5 eUmWhY"
+            >
+              Waiting for mining confirmation.
+            </div>
+            <footer
+              class="sc-1549ebs-2 mmuk7x-0 dqyjiJ"
+            >
+              Payment Sent
+            </footer>
+          </div>
+        </li>
+        <div>
+          <p>
+            Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
+          </p>
+          <p
+            class="sc-dxgOiQ chjPIu"
+          >
+            You'll see the status of your order on the left.
+          </p>
+          <button
+            class="sc-chPdSV sc-kgoBCf grMjIC"
+          >
+            Start Reading
+          </button>
+        </div>
+      </ul>
+      <footer
+        class="sc-hMqMXs ksHAnk"
+      >
+        <span>
+          Powered by
+        </span>
+        <svg
+          alt="Unlock"
+          class="sth0f3-1 sc-kGXeez jWcsRY"
+          viewBox="0 0 1200 256"
+        >
+          <title />
+          <path
+            d="M449.94 230.054h53.04V0h-53.04zM215.102 15.976h-55.596v55.608H70.68V15.976H15.083v55.608H0v26.42h15.083v41.626c0 52.081 45.052 94.578 100.33 94.578 54.956 0 99.689-42.497 99.689-94.578V98.004h14.964v-26.42h-14.964zM159.506 139.63c0 24.603-19.49 44.732-44.094 44.732A44.864 44.864 0 0 1 70.68 139.63V98.004h88.826zm189.15-72.53c-19.17 0-37.703 8.626-48.247 24.282h-.639l-3.195-19.81h-46.65v158.482h53.04v-82.436c0-18.213 14.06-32.91 30.994-32.91 17.573 0 31.312 14.697 31.312 32.271v83.075h53.04v-88.187c0-42.177-26.839-74.768-69.654-74.768zm680.878 77.322l65.181-72.85h-65.5l-51.124 59.43h-.959V0h-53.04v230.054h53.04v-72.212h.96l52.72 72.212h66.78zM613.208 67.1c-49.525 0-90.423 37.703-90.423 83.714s40.898 83.395 90.423 83.395 90.424-37.384 90.424-83.395-40.898-83.714-90.424-83.714zm0 120.778c-20.13 0-37.064-16.934-37.064-37.064s16.935-37.064 37.064-37.064 37.384 16.934 37.384 37.064-17.254 37.064-37.384 37.064zm201.61-74.448c15.657 0 28.438 8.947 33.231 21.408h53.998c-5.431-37.064-41.537-67.738-86.27-67.738-49.845 0-91.063 37.703-91.063 83.714s41.218 83.395 91.064 83.395c43.773 0 81.157-29.396 86.27-68.058h-53.999c-5.752 13.1-17.574 21.408-33.23 21.408a36.955 36.955 0 0 1-36.744-36.745c0-20.13 16.295-37.384 36.744-37.384z"
+          />
+        </svg>
+      </footer>
+    </section>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -26710,7 +28680,7 @@ Object {
       style="width: 100%; height: 100vh; justify-content: center; align-content: center; display: flex;"
     >
       <div
-        class="sc-jzJRlG sc-kgoBCf ensfFp"
+        class="sc-jzJRlG sc-iAyFgw iXcicj"
       >
         <p>
           <span>
@@ -26721,7 +28691,7 @@ Object {
           </span>
         </p>
         <button
-          class="sc-chPdSV jOdAcL"
+          class="sc-kkGfuU fVAtfr"
         >
           Valid until 
           Dec 17, 2119
@@ -30050,7 +32020,7 @@ exports[`Storyshots Lock disabled - another lock has a pending key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30068,7 +32038,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -30081,7 +32051,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30101,11 +32071,11 @@ Object {
   color: var(--white);
 }
 
-.c8:hover .c6 {
+.c10:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -30129,28 +32099,36 @@ Object {
   padding-top: 13px;
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c11 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c11 .c2 {
+  height: 0;
 }
 
 <div>
@@ -30165,21 +32143,21 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
             disabled=""
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
               disabled=""
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -30187,13 +32165,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -30201,7 +32179,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
                 disabled=""
               >
                 Purchase
@@ -30336,7 +32314,7 @@ exports[`Storyshots Lock disabled - no keys left to sell 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30354,7 +32332,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -30367,7 +32345,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30387,7 +32365,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -30411,36 +32389,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -30455,20 +32441,20 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
             disabled=""
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -30476,13 +32462,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -30490,7 +32476,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Sold Out
               </footer>
@@ -30622,7 +32608,7 @@ exports[`Storyshots Lock disabled - too expensive for current user 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30640,7 +32626,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -30653,7 +32639,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30673,7 +32659,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -30697,36 +32683,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -30741,20 +32735,20 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
             disabled=""
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -30762,13 +32756,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -30776,7 +32770,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Insufficient funds
               </footer>
@@ -30908,7 +32902,7 @@ exports[`Storyshots Lock not disabled - even if the price in eth is too expensiv
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30926,7 +32920,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -30939,7 +32933,7 @@ Object {
   cursor: pointer;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30959,7 +32953,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -30983,25 +32977,33 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c5 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c9 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c9 .c2 {
+  height: 0;
 }
 
 <div>
@@ -31016,19 +33018,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 66.00
                  
@@ -31036,7 +33038,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   <span>
                     5 minutes
@@ -31044,7 +33046,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c5 c6"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -31169,7 +33171,7 @@ exports[`Storyshots Lock with a balance 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31187,7 +33189,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -31200,7 +33202,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31220,7 +33222,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -31244,36 +33246,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -31288,19 +33298,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -31308,13 +33318,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -31322,7 +33332,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Purchase
               </footer>
@@ -31453,7 +33463,7 @@ exports[`Storyshots Lock with a mined key (which was not confirmed). 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -31465,7 +33475,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31483,7 +33493,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -31498,7 +33508,7 @@ Object {
   align-self: center;
 }
 
-.c5 {
+.c7 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -31512,7 +33522,7 @@ Object {
   align-self: center;
 }
 
-.c6 {
+.c8 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -31528,7 +33538,7 @@ Object {
   padding: 0px;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -31545,7 +33555,7 @@ Object {
   align-content: center;
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -31569,7 +33579,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31590,6 +33600,14 @@ Object {
   margin-top: 13px;
 }
 
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -31602,36 +33620,36 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   0.23
                    
                   Eth
                 </div>
                 <div
-                  class="c5"
+                  class="c7"
                 >
                   $
                   45.08
                 </div>
               </div>
               <div
-                class="c6"
+                class="c8"
               >
                 Waiting for confirmations
                 <br />
@@ -31640,7 +33658,7 @@ Object {
                 12
               </div>
               <footer
-                class="c7"
+                class="c9"
               >
                 Payment Pending
               </footer>
@@ -31775,7 +33793,7 @@ exports[`Storyshots Lock with a mined key for an know ERC20 Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c8 {
+    .c10 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -31787,25 +33805,25 @@ Object {
   line-height: 50px;
 }
 
-.c8 > svg {
+.c10 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c8:hover {
+.c10:hover {
   background-color: var(--green);
 }
 
-.c8:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c7:hover .c16 {
+.c9:hover .c18 {
   display: inline-block;
 }
 
-.c17 .c7 {
+.c19 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -31816,28 +33834,28 @@ Object {
   align-self: center;
 }
 
-.c17 .c7:nth-child(1) {
+.c19 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c17 .c7:nth-child(2) {
+.c19 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c17 .c7 > svg {
+.c19 .c9 > svg {
   fill: var(--grey);
 }
 
-.c17 .c7:hover > svg {
+.c19 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c18 .c7 {
+.c20 .c9 {
   margin: 24px;
 }
 
-.c18 .c7 small {
+.c20 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -31846,7 +33864,7 @@ Object {
   text-align: center;
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -31858,7 +33876,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -31876,7 +33894,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -31891,7 +33909,7 @@ Object {
   align-self: center;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -31908,21 +33926,45 @@ Object {
   align-content: center;
 }
 
-.c11 {
+.c13 {
   display: none;
 }
 
-.c6 {
+.c8 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c6:hover .c10 {
+.c8:hover .c12 {
   display: block;
 }
 
-.c6:hover .c9 {
+.c8:hover .c11 {
+  display: none;
+}
+
+.c17 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
   display: none;
 }
 
@@ -31947,33 +33989,9 @@ Object {
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
-  display: none;
 }
 
-.c13 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -31998,92 +34016,100 @@ Object {
   cursor: pointer;
 }
 
-.c2 .c14 {
+.c4 .c16 {
   display: none;
 }
 
-.c2 .c12 {
+.c4 .c14 {
   display: grid;
 }
 
-.c2:hover .c5 {
+.c4:hover .c7 {
   background-color: var(--green);
 }
 
-.c2:hover .c5 svg {
+.c4:hover .c7 svg {
   fill: var(--white);
 }
 
-.c2:hover .c10 {
+.c4:hover .c12 {
   display: block;
 }
 
-.c2:hover .c9 {
+.c4:hover .c11 {
   display: none;
 }
 
-.c2:hover .c14 {
+.c4:hover .c16 {
   display: grid;
 }
 
-.c2:hover .c12 {
+.c4:hover .c14 {
   display: none;
 }
 
-.c19 .c14 {
+.c21 .c16 {
   display: none;
 }
 
-.c19 .c12 {
+.c21 .c14 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c19 .c5 {
+.c21 .c7 {
   display: none;
 }
 
-.c19:hover .c5 {
+.c21:hover .c7 {
   background-color: var(--green);
 }
 
-.c19:hover .c5 svg {
+.c21:hover .c7 svg {
   fill: var(--white);
 }
 
-.c19:hover .c5 {
+.c21:hover .c7 {
   display: block;
 }
 
-.c19:hover .c10 {
+.c21:hover .c12 {
   display: none;
 }
 
-.c19:hover .c9 {
+.c21:hover .c11 {
   display: block;
 }
 
-.c19:hover .c14 {
+.c21:hover .c16 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c19:hover .c12 {
+.c21:hover .c14 {
   display: none;
+}
+
+.c22 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c22 .c2 {
+  height: 0;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c19 .c5 {
+  .c21 .c7 {
     display: block;
   }
 
-  .c19 .c10 {
+  .c21 .c12 {
     display: none;
   }
 
-  .c19 .c9 {
+  .c21 .c11 {
     display: block;
   }
 }
@@ -32100,22 +34126,22 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   66.00
                    
@@ -32123,10 +34149,10 @@ Object {
                 </div>
               </div>
               <a
-                class="c5 c6 c7 c8"
+                class="c7 c8 c9 c10"
               >
                 <svg
-                  class="c9 "
+                  class="c11 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -32137,7 +34163,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c10 c11"
+                  class="c12 c13"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -32150,12 +34176,12 @@ Object {
                 
               </a>
               <footer
-                class="c12 c13"
+                class="c14 c15"
               >
                 Payment Confirmed
               </footer>
               <footer
-                class="c14 c15"
+                class="c16 c17"
               >
                 Go to Content
               </footer>
@@ -32307,7 +34333,7 @@ exports[`Storyshots Lock with a mined key which was not confirmed for an know ER
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -32319,7 +34345,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -32337,7 +34363,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -32352,7 +34378,7 @@ Object {
   align-self: center;
 }
 
-.c5 {
+.c7 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -32368,7 +34394,7 @@ Object {
   padding: 0px;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -32385,7 +34411,7 @@ Object {
   align-content: center;
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -32409,7 +34435,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -32430,6 +34456,14 @@ Object {
   margin-top: 13px;
 }
 
+.c9 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c9 .c2 {
+  height: 0;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -32442,22 +34476,22 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   66.00
                    
@@ -32465,7 +34499,7 @@ Object {
                 </div>
               </div>
               <div
-                class="c5"
+                class="c7"
               >
                 Waiting for confirmations
                 <br />
@@ -32474,7 +34508,7 @@ Object {
                 12
               </div>
               <footer
-                class="c6"
+                class="c8"
               >
                 Payment Pending
               </footer>
@@ -32603,7 +34637,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c9 {
+    .c11 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -32615,25 +34649,25 @@ Object {
   line-height: 50px;
 }
 
-.c9 > svg {
+.c11 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c9:hover {
+.c11:hover {
   background-color: var(--green);
 }
 
-.c9:hover > svg {
+.c11:hover > svg {
   fill: white;
 }
 
-.c8:hover .c17 {
+.c10:hover .c19 {
   display: inline-block;
 }
 
-.c18 .c8 {
+.c20 .c10 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -32644,28 +34678,28 @@ Object {
   align-self: center;
 }
 
-.c18 .c8:nth-child(1) {
+.c20 .c10:nth-child(1) {
   pointer-events: none;
 }
 
-.c18 .c8:nth-child(2) {
+.c20 .c10:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c18 .c8 > svg {
+.c20 .c10 > svg {
   fill: var(--grey);
 }
 
-.c18 .c8:hover > svg {
+.c20 .c10:hover > svg {
   fill: var(--grey);
 }
 
-.c19 .c8 {
+.c21 .c10 {
   margin: 24px;
 }
 
-.c19 .c8 small {
+.c21 .c10 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -32674,7 +34708,7 @@ Object {
   text-align: center;
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -32686,7 +34720,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -32704,7 +34738,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -32719,7 +34753,7 @@ Object {
   align-self: center;
 }
 
-.c5 {
+.c7 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -32733,7 +34767,7 @@ Object {
   align-self: center;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -32750,21 +34784,45 @@ Object {
   align-content: center;
 }
 
-.c12 {
+.c14 {
   display: none;
 }
 
-.c7 {
+.c9 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c7:hover .c11 {
+.c9:hover .c13 {
   display: block;
 }
 
-.c7:hover .c10 {
+.c9:hover .c12 {
+  display: none;
+}
+
+.c18 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
   display: none;
 }
 
@@ -32789,33 +34847,9 @@ Object {
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
-  display: none;
 }
 
-.c14 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -32840,92 +34874,100 @@ Object {
   cursor: pointer;
 }
 
-.c2 .c15 {
+.c4 .c17 {
   display: none;
 }
 
-.c2 .c13 {
+.c4 .c15 {
   display: grid;
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--green);
 }
 
-.c2:hover .c6 svg {
+.c4:hover .c8 svg {
   fill: var(--white);
 }
 
-.c2:hover .c11 {
+.c4:hover .c13 {
   display: block;
 }
 
-.c2:hover .c10 {
+.c4:hover .c12 {
   display: none;
 }
 
-.c2:hover .c15 {
+.c4:hover .c17 {
   display: grid;
 }
 
-.c2:hover .c13 {
+.c4:hover .c15 {
   display: none;
 }
 
-.c20 .c15 {
+.c22 .c17 {
   display: none;
 }
 
-.c20 .c13 {
+.c22 .c15 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c20 .c6 {
+.c22 .c8 {
   display: none;
 }
 
-.c20:hover .c6 {
+.c22:hover .c8 {
   background-color: var(--green);
 }
 
-.c20:hover .c6 svg {
+.c22:hover .c8 svg {
   fill: var(--white);
 }
 
-.c20:hover .c6 {
+.c22:hover .c8 {
   display: block;
 }
 
-.c20:hover .c11 {
+.c22:hover .c13 {
   display: none;
 }
 
-.c20:hover .c10 {
+.c22:hover .c12 {
   display: block;
 }
 
-.c20:hover .c15 {
+.c22:hover .c17 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c20:hover .c13 {
+.c22:hover .c15 {
   display: none;
+}
+
+.c23 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c23 .c2 {
+  height: 0;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c20 .c6 {
+  .c22 .c8 {
     display: block;
   }
 
-  .c20 .c11 {
+  .c22 .c13 {
     display: none;
   }
 
-  .c20 .c10 {
+  .c22 .c12 {
     display: block;
   }
 }
@@ -32942,39 +34984,39 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   0.23
                    
                   Eth
                 </div>
                 <div
-                  class="c5"
+                  class="c7"
                 >
                   $
                   45.08
                 </div>
               </div>
               <a
-                class="c6 c7 c8 c9"
+                class="c8 c9 c10 c11"
               >
                 <svg
-                  class="c10 "
+                  class="c12 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -32985,7 +35027,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c11 c12"
+                  class="c13 c14"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -32998,12 +35040,12 @@ Object {
                 
               </a>
               <footer
-                class="c13 c14"
+                class="c15 c16"
               >
                 Payment Confirmed
               </footer>
               <footer
-                class="c15 c16"
+                class="c17 c18"
               >
                 Go to Content
               </footer>
@@ -33161,7 +35203,7 @@ exports[`Storyshots Lock with a pending key (not yet mined) 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -33173,7 +35215,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33191,7 +35233,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -33206,7 +35248,7 @@ Object {
   align-self: center;
 }
 
-.c5 {
+.c7 {
   white-space: nowrap;
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
@@ -33220,7 +35262,7 @@ Object {
   align-self: center;
 }
 
-.c6 {
+.c8 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -33236,7 +35278,7 @@ Object {
   padding: 0px;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -33253,7 +35295,7 @@ Object {
   align-content: center;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33274,7 +35316,7 @@ Object {
   margin-top: 13px;
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -33298,6 +35340,14 @@ Object {
   border: 1px solid var(--link);
 }
 
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -33310,41 +35360,41 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   0.23
                    
                   Eth
                 </div>
                 <div
-                  class="c5"
+                  class="c7"
                 >
                   $
                   45.08
                 </div>
               </div>
               <div
-                class="c6"
+                class="c8"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c7"
+                class="c9"
               >
                 Payment Sent
               </footer>
@@ -33475,7 +35525,7 @@ exports[`Storyshots Lock with a pending key (not yet mined) for an know ERC20 Lo
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c0 {
+    .c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -33487,7 +35537,7 @@ Object {
   grid-template-rows: 1fr 140px;
 }
 
-.c1 {
+.c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33505,7 +35555,7 @@ Object {
   color: var(--grey);
 }
 
-.c4 {
+.c6 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -33520,7 +35570,7 @@ Object {
   align-self: center;
 }
 
-.c5 {
+.c7 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -33536,7 +35586,7 @@ Object {
   padding: 0px;
 }
 
-.c3 {
+.c5 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -33553,7 +35603,7 @@ Object {
   align-content: center;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33574,7 +35624,7 @@ Object {
   margin-top: 13px;
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -33598,6 +35648,14 @@ Object {
   border: 1px solid var(--link);
 }
 
+.c9 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c9 .c2 {
+  height: 0;
+}
+
 <div>
       <link
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
@@ -33610,22 +35668,22 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="c3"
+                class="c5"
               >
                 <div
-                  class="c4"
+                  class="c6"
                 >
                   66.00
                    
@@ -33633,12 +35691,12 @@ Object {
                 </div>
               </div>
               <div
-                class="c5"
+                class="c7"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c6"
+                class="c8"
               >
                 Payment Sent
               </footer>
@@ -33763,7 +35821,7 @@ exports[`Storyshots Lock with an unlinited number of keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33781,7 +35839,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -33794,7 +35852,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -33814,7 +35872,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -33838,36 +35896,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -33882,19 +35948,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -33902,13 +35968,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -33916,7 +35982,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Purchase
               </footer>
@@ -34047,7 +36113,7 @@ exports[`Storyshots Lock with no key (check hover state too) 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34065,7 +36131,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -34078,7 +36144,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34098,7 +36164,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -34122,36 +36188,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -34166,19 +36240,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -34186,13 +36260,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -34200,7 +36274,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Purchase
               </footer>
@@ -34331,7 +36405,7 @@ exports[`Storyshots Lock with no key, ERC20 Lock, known currency 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34349,7 +36423,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -34362,7 +36436,7 @@ Object {
   cursor: pointer;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34382,7 +36456,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -34406,25 +36480,33 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c5 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c9 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c9 .c2 {
+  height: 0;
 }
 
 <div>
@@ -34439,19 +36521,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 10.00
                  
@@ -34459,7 +36541,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   <span>
                     5 minutes
@@ -34467,7 +36549,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c5 c6"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -34592,7 +36674,7 @@ exports[`Storyshots Lock with no key, ERC20 Lock, unknown currency 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34610,7 +36692,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -34623,7 +36705,7 @@ Object {
   cursor: pointer;
 }
 
-.c6 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34643,7 +36725,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -34667,25 +36749,33 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c5 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c9 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c9 .c2 {
+  height: 0;
 }
 
 <div>
@@ -34700,19 +36790,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 66.00
                  
@@ -34720,7 +36810,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   <span>
                     5 minutes
@@ -34728,7 +36818,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c5 c6"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -34853,7 +36943,7 @@ exports[`Storyshots Lock with no key, for a short duration (check hover state to
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34871,7 +36961,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -34884,7 +36974,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -34904,7 +36994,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -34928,36 +37018,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -34972,19 +37070,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Monthly
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -34992,13 +37090,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     5 minutes
@@ -35006,7 +37104,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Purchase
               </footer>
@@ -35137,7 +37235,7 @@ exports[`Storyshots Lock with very long name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
+    .c3 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -35155,7 +37253,7 @@ Object {
   color: var(--grey);
 }
 
-.c0 {
+.c1 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -35168,7 +37266,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c9 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -35188,7 +37286,7 @@ Object {
   color: var(--white);
 }
 
-.c2 {
+.c4 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -35212,36 +37310,44 @@ Object {
   padding-top: 13px;
 }
 
-.c2:hover {
+.c4:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c2:hover .c6 {
+.c4:hover .c8 {
   background-color: var(--activegreen);
 }
 
-.c3 {
+.c5 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c4 {
+.c6 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c4::after {
+.c6::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c5 {
+.c7 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
 }
 
 <div>
@@ -35256,19 +37362,19 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="lock c0"
+            class="c0 lock c1"
             data-address="0x123"
           >
             <header
-              class="c1"
+              class="c2 c3"
             >
               Hitting406 Crypto Category
             </header>
             <div
-              class="c2"
+              class="c4"
             >
               <div
-                class="price c3"
+                class="price c5"
               >
                 0.23
                  
@@ -35276,13 +37382,13 @@ Object {
               </div>
               <div>
                 <span
-                  class="c4"
+                  class="c6"
                 >
                   $
                   45.08
                 </span>
                 <span
-                  class="c5"
+                  class="c7"
                 >
                   <span>
                     30 days
@@ -35290,7 +37396,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c6 c7"
+                class="c8 c9"
               >
                 Purchase
               </footer>
@@ -40470,18 +42576,18 @@ exports[`Storyshots Overlay with a single Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c13 {
+    .c15 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c13 > svg {
+.c15 > svg {
   fill: white;
 }
 
-.c5 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -40499,7 +42605,7 @@ Object {
   color: var(--grey);
 }
 
-.c12 {
+.c14 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -40519,7 +42625,7 @@ Object {
   margin-right: -33px;
 }
 
-.c12 > a {
+.c14 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -40528,7 +42634,7 @@ Object {
   align-self: start;
 }
 
-.c12 > p {
+.c14 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -40538,8 +42644,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c12 > p,
-.c12 > a {
+.c14 > p,
+.c14 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -40547,7 +42653,7 @@ Object {
   font-size: 12px;
 }
 
-.c12 > div {
+.c14 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -40556,7 +42662,7 @@ Object {
   align-self: center;
 }
 
-.c4 {
+.c5 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -40569,7 +42675,7 @@ Object {
   cursor: pointer;
 }
 
-.c11 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -40589,7 +42695,7 @@ Object {
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -40613,33 +42719,33 @@ Object {
   padding-top: 13px;
 }
 
-.c6:hover {
+.c8:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c6:hover .c10 {
+.c8:hover .c12 {
   background-color: var(--activegreen);
 }
 
-.c7 {
+.c9 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c8 {
+.c10 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c8::after {
+.c10::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c9 {
+.c11 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -40692,15 +42798,23 @@ Object {
   grid-column: 1;
 }
 
+.c16 .c4 {
+  grid-template-rows: 4px 140px;
+}
+
+.c16 .c6 {
+  height: 0;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c15 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c12 {
+  .c14 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -40710,7 +42824,7 @@ Object {
     grid-row: 3;
   }
 
-  .c12 > div {
+  .c14 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -40719,7 +42833,7 @@ Object {
     align-self: center;
   }
 
-  .c12 > p {
+  .c14 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -40732,7 +42846,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c12 > a {
+  .c14 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -40827,18 +42941,18 @@ Object {
               class="c3"
             >
               <li
-                class="lock c4"
+                class="c4 lock c5"
               >
                 <header
-                  class="c5"
+                  class="c6 c7"
                 >
                   One Month
                 </header>
                 <div
-                  class="c6"
+                  class="c8"
                 >
                   <div
-                    class="price c7"
+                    class="price c9"
                   >
                     0.12
                      
@@ -40846,13 +42960,13 @@ Object {
                   </div>
                   <div>
                     <span
-                      class="c8"
+                      class="c10"
                     >
                       $
                       24.11
                     </span>
                     <span
-                      class="c9"
+                      class="c11"
                     >
                       <span>
                         142 days
@@ -40860,7 +42974,7 @@ Object {
                     </span>
                   </div>
                   <footer
-                    class="c10 c11"
+                    class="c12 c13"
                   >
                     Purchase
                   </footer>
@@ -40868,13 +42982,13 @@ Object {
               </li>
             </ul>
             <footer
-              class="c12"
+              class="c14"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="c13"
+                class="c15"
               >
                 <svg
                   viewBox="0 0 56 56"
@@ -41638,18 +43752,18 @@ exports[`Storyshots Overlay with multiple locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c13 {
+    .c15 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c13 > svg {
+.c15 > svg {
   fill: white;
 }
 
-.c5 {
+.c7 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -41667,7 +43781,7 @@ Object {
   color: var(--grey);
 }
 
-.c12 {
+.c14 {
   display: grid;
   grid-template-columns: 35px 1fr;
   grid-template-rows: 1fr 1fr;
@@ -41687,7 +43801,7 @@ Object {
   margin-right: -33px;
 }
 
-.c12 > a {
+.c14 > a {
   grid-column: 2;
   grid-row: 2;
   color: var(--red);
@@ -41696,7 +43810,7 @@ Object {
   align-self: start;
 }
 
-.c12 > p {
+.c14 > p {
   grid-column: 2;
   grid-row: 1;
   color: var(--darkgrey);
@@ -41706,8 +43820,8 @@ Object {
   margin-bottom: 0;
 }
 
-.c12 > p,
-.c12 > a {
+.c14 > p,
+.c14 > a {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
@@ -41715,7 +43829,7 @@ Object {
   font-size: 12px;
 }
 
-.c12 > div {
+.c14 > div {
   grid-column: 1;
   grid-row: 1 / span 2;
   margin-left: -14px;
@@ -41724,7 +43838,7 @@ Object {
   align-self: center;
 }
 
-.c4 {
+.c5 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -41737,7 +43851,7 @@ Object {
   cursor: pointer;
 }
 
-.c11 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -41757,7 +43871,7 @@ Object {
   color: var(--white);
 }
 
-.c6 {
+.c8 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -41781,33 +43895,33 @@ Object {
   padding-top: 13px;
 }
 
-.c6:hover {
+.c8:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c6:hover .c10 {
+.c8:hover .c12 {
   background-color: var(--activegreen);
 }
 
-.c7 {
+.c9 {
   font-size: 30px;
   text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c8 {
+.c10 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
 }
 
-.c8::after {
+.c10::after {
   color: var(--lightgrey);
   content: ' | ';
 }
 
-.c9 {
+.c11 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -41860,15 +43974,23 @@ Object {
   grid-column: 1;
 }
 
+.c16 .c4 {
+  grid-template-rows: 4px 140px;
+}
+
+.c16 .c6 {
+  height: 0;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c13 {
+  .c15 {
     height: 16px;
     width: 16px;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c12 {
+  .c14 {
     background-color: transparent;
     grid-template-columns: 1.2fr 18px 1fr;
     grid-template-rows: 30px;
@@ -41878,7 +44000,7 @@ Object {
     grid-row: 3;
   }
 
-  .c12 > div {
+  .c14 > div {
     grid-row: 1;
     grid-column: 2;
     margin-left: 0;
@@ -41887,7 +44009,7 @@ Object {
     align-self: center;
   }
 
-  .c12 > p {
+  .c14 > p {
     width: 100%;
     color: var(--slate);
     grid-row: 1;
@@ -41900,7 +44022,7 @@ Object {
     padding-right: 2px;
   }
 
-  .c12 > a {
+  .c14 > a {
     grid-row: 1;
     grid-column: 3;
     justify-self: start;
@@ -41995,18 +44117,18 @@ Object {
               class="c3"
             >
               <li
-                class="lock c4"
+                class="c4 lock c5"
               >
                 <header
-                  class="c5"
+                  class="c6 c7"
                 >
                   One Month
                 </header>
                 <div
-                  class="c6"
+                  class="c8"
                 >
                   <div
-                    class="price c7"
+                    class="price c9"
                   >
                     0.01
                      
@@ -42014,13 +44136,13 @@ Object {
                   </div>
                   <div>
                     <span
-                      class="c8"
+                      class="c10"
                     >
                       $
                       1.96
                     </span>
                     <span
-                      class="c9"
+                      class="c11"
                     >
                       <span>
                         142 days
@@ -42028,25 +44150,25 @@ Object {
                     </span>
                   </div>
                   <footer
-                    class="c10 c11"
+                    class="c12 c13"
                   >
                     Purchase
                   </footer>
                 </div>
               </li>
               <li
-                class="lock c4"
+                class="c4 lock c5"
               >
                 <header
-                  class="c5"
+                  class="c6 c7"
                 >
                   One Year
                 </header>
                 <div
-                  class="c6"
+                  class="c8"
                 >
                   <div
-                    class="price c7"
+                    class="price c9"
                   >
                     0.01
                      
@@ -42054,13 +44176,13 @@ Object {
                   </div>
                   <div>
                     <span
-                      class="c8"
+                      class="c10"
                     >
                       $
                       1.96
                     </span>
                     <span
-                      class="c9"
+                      class="c11"
                     >
                       <span>
                         142 days
@@ -42068,7 +44190,7 @@ Object {
                     </span>
                   </div>
                   <footer
-                    class="c10 c11"
+                    class="c12 c13"
                   >
                     Purchase
                   </footer>
@@ -42076,13 +44198,13 @@ Object {
               </li>
             </ul>
             <footer
-              class="c12"
+              class="c14"
             >
               <p>
                 Powered by
               </p>
               <div
-                class="c13"
+                class="c15"
               >
                 <svg
                   viewBox="0 0 56 56"

@@ -62,11 +62,11 @@ export const EventContent = ({
 
   const convertCurrency = !lock.currencyContractAddress
 
-  const externalLinks = links.map(({ href, title }) => {
+  const externalLinks = links.map(({ href, text }) => {
     return (
       <li key={href}>
         <a target="_blank" rel="noopener noreferrer" href={href}>
-          {title}
+          {text}
         </a>
       </li>
     )
@@ -207,7 +207,7 @@ export const mapStateToProps = (
   }
 
   if (event) {
-    event.date = new Date(event.date)
+    event.date = new Date(event.date) // TODO: What is this for?
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
       event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
@@ -227,7 +227,7 @@ Meet us at 6:30PM on May 16th, at the Bushwick Generator.
         'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
       event.links = [
         {
-          title: '💬 Telegram Group',
+          text: '💬 Telegram Group',
           href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
         },
         // {

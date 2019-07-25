@@ -51246,12 +51246,12 @@ Object {
         <p
           class="c1"
         >
-          You are now signed in! Go to
+          You are now signed in! Visit
            
           <a
-            href="/keychain"
+            href="/settings"
           >
-            your key chain
+            your settings page
           </a>
           .
         </p>
@@ -51272,12 +51272,12 @@ Object {
       <p
         class="sc-chPdSV erjhiH"
       >
-        You are now signed in! Go to
+        You are now signed in! Visit
          
         <a
-          href="/keychain"
+          href="/settings"
         >
-          your key chain
+          your settings page
         </a>
         .
       </p>
@@ -56196,12 +56196,12 @@ Object {
         <p
           class="c1"
         >
-          You are now signed in! Go to
+          You are now signed in! Visit
            
           <a
-            href="/keychain"
+            href="/settings"
           >
-            your key chain
+            your settings page
           </a>
           .
         </p>
@@ -56222,12 +56222,12 @@ Object {
       <p
         class="sc-chPdSV erjhiH"
       >
-        You are now signed in! Go to
+        You are now signed in! Visit
          
         <a
-          href="/keychain"
+          href="/settings"
         >
-          your key chain
+          your settings page
         </a>
         .
       </p>
