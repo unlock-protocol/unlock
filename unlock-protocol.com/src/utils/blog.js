@@ -42,8 +42,8 @@ const generateBlogFeed = basedir => {
  * @param postFeed
  * @returns {Array}
  */
-const generateBlogPages = postFeed => {
-  let pages = []
+const generatePostPages = postFeed => {
+  let pages = {}
 
   postFeed.forEach(postFile => {
     pages['/blog/' + postFile.slug] = {
@@ -67,6 +67,23 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
     JSON.stringify({ items: postFeed }),
     'utf8'
   )
+}
+
+/**
+ * This function generates the URL for each paginated page
+ */
+const generateBlogPages = (numberOfPosts, postsPerPage) => {
+  let pages = {}
+
+  const numberOfPages = Math.ceil(numberOfPosts / postsPerPage)
+
+  Array.apply(null, Array(numberOfPages)).forEach((x, i) => {
+    pages[`/blog/${i + 1}`] = {
+      page: '/blog',
+      query: { slug: `${i + 1}` },
+    }
+  })
+  return pages
 }
 
 /**
@@ -113,13 +130,14 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
  */
 const addBlogPagesToPageObject = (dir, pages) => {
   let blogFeed = generateBlogFeed(dir)
-  let blogPages = generateBlogPages(blogFeed)
-
-  return { ...pages, ...blogPages }
+  let postPages = generatePostPages(blogFeed)
+  let blogPages = generateBlogPages(blogFeed.length, 10)
+  return { ...pages, ...postPages, ...blogPages }
 }
 
 module.exports = {
   generateBlogFeed,
+  generatePostPages,
   generateBlogPages,
   generateBlogIndexFile,
   generateRSSFile,
