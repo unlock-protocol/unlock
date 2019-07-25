@@ -74,7 +74,7 @@ contract MixinRefunds is
    * @dev Increments the current nonce for the msg.sender.
    * This can be used to invalidate a previously signed message.
    */
-  function invalidateCancelSignature(
+  function invalidateApprovalToCancelKey(
   ) external
   {
     keyOwnerToNonce[msg.sender]++;
