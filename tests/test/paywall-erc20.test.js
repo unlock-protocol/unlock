@@ -28,7 +28,8 @@ describe('The Unlock Paywall (ERC20 lock)', () => {
   })
 
   it('should remove the blocker', async () => {
-    expect.assertions(6) // Assertsions in the beforeAll block!
+    // 1 extra assertion for erc20 locks
+    expect.assertions(7) // Assertions in the beforeAll block!
     await page.waitForFunction(
       () => !document.querySelector('#_unlock_blocker')
     )
