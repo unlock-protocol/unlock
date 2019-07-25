@@ -94,7 +94,7 @@ BlogPost.defaultProps = {
 
 export default BlogPost
 
-const CommentSeparator = styled.hr`
+const CommentSeparator = styled.hr.attrs({ id: 'comments' })`
   margin-top: 50px;
   border: none;
   border-top: 1px solid var(--lightgrey);
