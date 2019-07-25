@@ -56,7 +56,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   })
 
   it('can increment nonce', async () => {
-    await lock.invalidateCancelSignature({ from: keyOwners[0] })
+    await lock.invalidateApprovalToCancelKey({ from: keyOwners[0] })
   })
 
   it('can read the non-zero nonce', async () => {
