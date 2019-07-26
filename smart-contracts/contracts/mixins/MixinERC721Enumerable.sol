@@ -38,7 +38,7 @@ contract MixinERC721Enumerable is
   ) external view
     returns (uint256)
   {
-    require(_index < totalSupply, "OUT_OF_RANGE");
+    require(_index < totalSupply, 'OUT_OF_RANGE');
     return _index;
   }
 
@@ -55,7 +55,7 @@ contract MixinERC721Enumerable is
   ) external view
     returns (uint256)
   {
-    require(_index == 0, "ONLY_ONE_KEY_PER_OWNER");
+    require(_index == 0, 'ONLY_ONE_KEY_PER_OWNER');
     return getTokenIdFor(_owner);
   }
 }
