@@ -164,3 +164,7 @@ services:
     depends_on:
       - db
       - ganache
+  smtp_server:
+    image: mailhog/mailhog
+    expose:
+      - 1025
