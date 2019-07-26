@@ -58,7 +58,7 @@ Object {
   .c0 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -184,7 +184,7 @@ Object {
       class="sc-ksYbfQ jHwjmi"
     >
       <div
-        class="sc-frDJqD dFqKry"
+        class="sc-frDJqD geJjYR"
       >
         <div
           class="sc-kvZOFW bNXwYv"
@@ -401,7 +401,7 @@ Object {
   .c0 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -527,7 +527,7 @@ Object {
       class="sc-ksYbfQ jHwjmi"
     >
       <div
-        class="sc-frDJqD dFqKry"
+        class="sc-frDJqD geJjYR"
       >
         <div
           class="sc-kvZOFW bNXwYv"
@@ -26496,7 +26496,7 @@ Object {
   .c19 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -27975,7 +27975,7 @@ Object {
             class="sc-ksYbfQ jHwjmi"
           >
             <div
-              class="sc-frDJqD dFqKry"
+              class="sc-frDJqD geJjYR"
             >
               <div
                 class="sc-kvZOFW bNXwYv"
@@ -29828,7 +29828,7 @@ Object {
   .c22 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -31339,7 +31339,7 @@ Object {
             class="sc-ksYbfQ jHwjmi"
           >
             <div
-              class="sc-frDJqD dFqKry"
+              class="sc-frDJqD geJjYR"
             >
               <div
                 class="sc-kvZOFW bNXwYv"
@@ -39615,7 +39615,7 @@ Object {
   .c16 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -40122,7 +40122,7 @@ Object {
           class="sc-ksYbfQ jHwjmi"
         >
           <div
-            class="sc-frDJqD dFqKry"
+            class="sc-frDJqD geJjYR"
           >
             <div
               class="sc-kvZOFW bNXwYv"
@@ -56529,7 +56529,7 @@ Object {
   .c19 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,80px);
+    grid-template-columns: 45px 145px repeat(2,0px);
   }
 }
 
@@ -57218,7 +57218,7 @@ Object {
             class="sc-ksYbfQ jHwjmi"
           >
             <div
-              class="sc-frDJqD dFqKry"
+              class="sc-frDJqD geJjYR"
             >
               <div
                 class="sc-kvZOFW bNXwYv"
