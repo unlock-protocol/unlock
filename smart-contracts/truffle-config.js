@@ -113,7 +113,7 @@ module.exports = {
     useColors: true,
     reporterOptions: {
       currency: 'USD',
-      excludeContracts: ['Migrations', 'TestErc20Token'],
+      excludeContracts: ['Migrations', 'TestErc20Token', 'TestNoop'],
       gasPrice: 5,
     },
   },
