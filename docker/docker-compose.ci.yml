@@ -143,6 +143,8 @@ services:
       HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
       BLOCKTIME: '${BLOCKTIME}'
     depends_on:
+      - wedlocks
+      - smtp_server
       - ganache-integration
       - unlock-provider-unlock-app
       - unlock-app
