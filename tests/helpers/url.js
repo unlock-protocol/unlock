@@ -16,5 +16,6 @@ const provider = process.env.READ_ONLY_PROVIDER || 'http://localhost:8545'
 module.exports = {
   main: (path = '/') => `http://${host}:${port}${path}`,
   paywall: (path = '/') => `${paywall}${path}`,
+  newdemo: lockAddress => `${paywall}/newdemo?lock=${lockAddress}`,
   provider,
 }

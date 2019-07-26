@@ -12,7 +12,9 @@ echo export DB_HOSTNAME='db'
 echo export HTTP_PROVIDER='ganache-integration'
 echo export LOCKSMITH_URI='http://locksmith:8080'
 echo export PAYWALL_URL='http://paywall:3001'
-echo export USER_IFRAME_URL='http://unlock-app:3000/account'
+# Capturing context,as this iframe is to be displayed for users of managed account we have updated
+# the URL here to reference our instance of Unlock App where the Unlock Provider is configured
+echo export USER_IFRAME_URL='http://unlock-provider-unlock-app:9000/account'
 echo export PAYWALL_SCRIPT_URL='http://paywall:3001/static/paywall.min.js'
 echo export UNLOCK_HOST='unlock-app'
 echo export LOCKSMITH_HOST='locksmith'
