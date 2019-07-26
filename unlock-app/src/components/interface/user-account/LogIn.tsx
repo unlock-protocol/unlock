@@ -92,7 +92,9 @@ export class LogIn extends React.Component<Props, State> {
             />
             <Description>
               Don&#39;t have an account?{' '}
-              <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
+              <LinkButton id="signUpHereLink" onClick={this.handleClick}>
+                Sign up here.
+              </LinkButton>
             </Description>
           </Indent>
           <br />

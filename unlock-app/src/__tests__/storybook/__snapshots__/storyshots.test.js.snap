@@ -899,6 +899,7 @@ Object {
                    
                   <a
                     class="c10"
+                    id="signUpHereLink"
                   >
                     Sign up here.
                   </a>
@@ -990,6 +991,7 @@ Object {
                  
                 <a
                   class="sc-eNQAEJ kkgKxK"
+                  id="signUpHereLink"
                 >
                   Sign up here.
                 </a>

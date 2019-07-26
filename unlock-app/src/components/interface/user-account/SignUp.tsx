@@ -84,7 +84,7 @@ export class SignUp extends React.Component<Props, State> {
                   Already have an account? {LogInLink('Log in here')}.
                 </Description>
               </Indent>
-              <SubmitButton type="submit" value="Sign Up" />
+              <SubmitButton id="signUpButton" type="submit" value="Sign Up" />
             </form>
           )}
           {submitted && (
