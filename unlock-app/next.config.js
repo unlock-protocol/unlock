@@ -32,7 +32,11 @@ let optionalConfigVariables = {
 // If any env variable is missing, fail to run, except for dev which can set its own defaults
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
-    if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
+    if (
+      ['dev', 'test', 'unlock-provider-integration'].indexOf(
+        requiredConfigVariables.unlockEnv
+      ) > -1
+    ) {
       return console.error(
         `The configuration variable ${configVariableName} is falsy.`
       )

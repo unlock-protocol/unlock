@@ -37,6 +37,15 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       1000 /* every s */,
       120 /* up to 2m */
     )
+
+    console.log('The Unlock Provider App')
+    await serverIsUp(
+      'unlock-provider-unlock-app',
+      9000,
+      1000 /* every s */,
+      120 /* up to 2m */
+    )
+
     console.log('Waiting for ERC20 setup')
     await erc20IsUp({ delay: 1000, maxAttempts: 60 })
     this.global.page.setViewport({ width: 1024, height: 768 })
