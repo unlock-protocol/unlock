@@ -23,7 +23,6 @@ module.exports = async function(deployer, networkName, accounts) {
   })
   // Push implementation contract to the network
   await push({
-    network: networkName,
     from: proxyAdmin,
     network,
     txParams,
