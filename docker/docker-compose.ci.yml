@@ -166,5 +166,7 @@ services:
       - ganache
   smtp_server:
     image: mailhog/mailhog
+    ports:
+      - 1025:1025
     expose:
       - 1025
