@@ -183,7 +183,6 @@ jobs:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh
           when: on_fail
-
   deploy-unlock-app-netlify:
     machine: true
     environment:
