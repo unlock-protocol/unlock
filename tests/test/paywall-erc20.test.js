@@ -1,9 +1,9 @@
 const url = require('../helpers/url')
 const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
-const debug = require('../helpers/debugging')
+// const debug = require('../helpers/debugging')
 
-const it = debug.screenshotOnFail(page)
+// const it = debug.screenshotOnFail(page)
 
 const lockName = 'A Lock For the Paywall'
 const lockKeyPrice = '1.00'
