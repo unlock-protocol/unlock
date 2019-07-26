@@ -86,9 +86,10 @@ describe('BlockchainHandler - setupListeners', () => {
     const validTimestampInSeconds = validTimestamp / 1000
     handler.sendDataWhenKeyExpires(validTimestampInSeconds)
 
+    const rightNow = new Date().getTime()
     expect(fakeWindow.setTimeout).toHaveBeenCalledWith(
       expect.any(Function),
-      validTimestamp + 1000
+      validTimestamp - rightNow + 1000
     )
   })
 

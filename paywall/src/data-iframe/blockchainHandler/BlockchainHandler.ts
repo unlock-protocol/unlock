@@ -222,8 +222,10 @@ export default class BlockchainHandler {
     // a key with no expiry yet does not need an expiration trigger
     if (!expiry) return
     const now = new Date().getTime() / 1000
+    const timeToExpirationInSeconds = expiry - now
+    const timeToExpirationInMilliseconds = timeToExpirationInSeconds * 1000
 
-    if (expiry - now <= 0) {
+    if (timeToExpirationInSeconds <= 0) {
       // key is expired already
       // as this is called by the key.updated listener, it will
       // dispatch changes.  If that ever changes, we need to
@@ -234,7 +236,7 @@ export default class BlockchainHandler {
     // 1 second after the key expires, re-send data to lock the paywall
     this.window.setTimeout(
       () => this.dispatchChangesToPostOffice(),
-      expiry * 1000 + 1000
+      timeToExpirationInMilliseconds + 1000
     )
   }
 
