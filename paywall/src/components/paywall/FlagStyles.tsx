@@ -43,18 +43,15 @@ interface ConfirmationsProps {
   requiredConfirmations: number
 }
 
-export const Progress = styled(ProgressBar)`
+export const Progress = styled(ProgressBar)<ConfirmationsProps>`
   position: absolute;
-  background: ${({
-    confirmations,
-    requiredConfirmations,
-  }: ConfirmationsProps) => {
+  background: ${({ confirmations, requiredConfirmations }) => {
     if (confirmations >= requiredConfirmations) {
       return 'var(--green)}'
     }
     return 'var(--yellow)}'
   }};
-  width: ${({ confirmations, requiredConfirmations }: ConfirmationsProps) => {
+  width: ${({ confirmations, requiredConfirmations }) => {
     const width = Math.min(
       Math.floor(confirmations * (74 / requiredConfirmations)),
       74

@@ -97,7 +97,7 @@ const Footer = styled(LockFooter)`
   color: var(--white);
 `
 
-const Body = styled(LockBody)`
+const Body = styled(LockBody)<{ disabled: boolean }>`
   padding-top: 13px;
 
   &:hover {
