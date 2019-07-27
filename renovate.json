@@ -10,13 +10,13 @@
   "rebaseStalePrs": false,
   "packageRules": [
     {
-      "packageNames": ["@unlock-protocol/unlock-js"],
+      "packageNames": ["@unlock-protocol/unlock-js", "hardlydifficult-test-helpers"],
       "schedule": ["at any time"]
     },
     {
-      "packagePatterns": ["^truffle", "^zos"],
+      "packagePatterns": ["^truffle", "^zos", "hardlydifficult-test-helpers"],
       "reviewers": [
-        "hardlydifficult"
+        "NickCuso"
       ]
     }
   ]
