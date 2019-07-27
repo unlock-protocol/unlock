@@ -1,26 +1,28 @@
 const url = require('../helpers/url')
-const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
 // const debug = require('../helpers/debugging')
 const iframes = require('../helpers/iframes')
+const lockAddresses = require('../helpers/locks')
 
 // const it = debug.screenshotOnFail(page)
 
 let lockSelectors
 
+// These locks are created in /docker/development/deploy-locks.js
+// after the comment "locks for adblock integration tests"
 const locks = [
   {
-    name: 'Lock 1',
+    name: 'ETH adblock lock 1',
     keyPrice: '0.01',
     expirationDuration: '7',
   },
   {
-    name: 'Lock 2',
+    name: 'ETH adblock lock 2',
     keyPrice: '0.05',
     expirationDuration: '30',
   },
   {
-    name: 'Lock 3',
+    name: 'ETH adblock lock 3',
     keyPrice: '0.1',
     expirationDuration: '365',
   },
@@ -31,32 +33,8 @@ const unlockIcon =
 
 describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   beforeAll(async () => {
-    // We first need to deploy the locks
-    const addresses = []
-    // this cannot be done in parallel, or the same lock creation form gets populated with all of them at once
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[0].name,
-        locks[0].expirationDuration,
-        '1000',
-        locks[0].keyPrice
-      )).toLowerCase()
-    )
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[1].name,
-        locks[1].expirationDuration,
-        '1000',
-        locks[1].keyPrice
-      )).toLowerCase()
-    )
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[2].name,
-        locks[2].expirationDuration,
-        '1000',
-        locks[2].keyPrice
-      )).toLowerCase()
+    const addresses = lockAddresses.adblockETHLockAddresses.map(address =>
+      address.toLowerCase()
     )
 
     // save the lock address to pass it to the ad remover paywall
@@ -75,14 +53,9 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     await page.goto(testUrl, { waitUntil: 'networkidle2' })
   })
 
-  it('should load the data iframe and checkout iframe', async () => {
-    // 6 assertions per lock created
-    expect.assertions(18) // Assertions inside dashboard.deployLock block!
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-  })
-
   it('should open the checkout UI when clicking on the button', async () => {
     expect.assertions(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })

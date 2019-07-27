@@ -1,21 +1,17 @@
 const url = require('../helpers/url')
-const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
+const lockAddresses = require('../helpers/locks')
 
-const lockName = 'A Lock For the Paywall'
+//const lockName = 'ETH paywall lock'
 const lockKeyPrice = '0.1'
 
 let lockSelector
 
 describe('The Unlock Paywall', () => {
   beforeAll(async () => {
-    // We first need to deploy a new lock
-    const lock = await dashboard.deployLock(
-      lockName,
-      '10' /* days */,
-      '1000' /* number of keys */,
-      lockKeyPrice
-    )
+    // This lock is created in /docker/development/deploy-locks.js
+    // after the comment "locks for paywall integration tests"
+    const lock = lockAddresses.paywallETHLockAddress
 
     lockSelector = path => {
       return `[data-address="${lock}"] ${path}`
@@ -24,7 +20,7 @@ describe('The Unlock Paywall', () => {
   })
 
   it('should remove the blocker', async () => {
-    expect.assertions(6) // Assertsions in the beforeAll block!
+    expect.assertions(0)
     await page.waitForFunction(
       () => !document.querySelector('#_unlock_blocker')
     )
