@@ -4,4 +4,5 @@
 / /index 200
 /demo/* /demo 200
 /checkout /checkout 200
+/paywall2 /paywall2 200
 /* /paywall 200

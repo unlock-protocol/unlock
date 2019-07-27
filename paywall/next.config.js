@@ -96,6 +96,9 @@ module.exports = withTypescript(
       return {
         '/': { page: '/home' },
         '/paywall': { page: '/paywall' },
+        // note: eventually we will eliminate the old paywall/ and replace
+        // it with this one
+        '/paywall2': { page: '/paywall2' },
         '/demo': { page: '/demo' },
         '/newdemo': { page: '/newdemo' },
         '/checkout': { page: '/checkout' },

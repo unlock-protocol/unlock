@@ -23,6 +23,10 @@ function _server(port, dev) {
             app.render(req, res, '/paywall', Object.assign(params, query))
           } else if (pathname.match('/newdemo')) {
             app.render(req, res, '/newdemo', Object.assign({}, query))
+          } else if (pathname.match('/paywall2')) {
+            // note: eventually we will eliminate the old paywall/ and replace
+            // it with this one
+            app.render(req, res, '/paywall2', Object.assign({}, query))
           } else if (pathname.match('/demo')) {
             const params = route('demo/:lockAddress')(pathname)
             app.render(req, res, '/demo', Object.assign(params, query))
