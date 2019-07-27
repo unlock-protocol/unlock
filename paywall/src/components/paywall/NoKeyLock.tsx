@@ -1,13 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
-import PropTypes from 'prop-types'
-import UnlockPropTypes from '../../propTypes'
 import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
 import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
+import { Lock, UnlockConfig, Account } from '../../unlockTypes'
+
+interface NoKeyLockProps {
+  account: Account | null
+  lock: Lock & { outstandingKeys: number; maxNumberOfKeys: number }
+  disabled: boolean
+  purchaseKey: (lockKey: string) => void
+  lockKey: string
+  config: UnlockConfig
+}
 
 // WARNING: if you use any new fields of a lock here
 // it *must* be added to validation in isValidLock
@@ -20,7 +28,7 @@ export const NoKeyLock = ({
   purchaseKey,
   lockKey,
   config,
-}) => {
+}: NoKeyLockProps) => {
   const soldOut =
     lock.outstandingKeys >= lock.maxNumberOfKeys &&
     lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
@@ -59,7 +67,7 @@ export const NoKeyLock = ({
       <BalanceProvider
         convertCurrency={convertCurrency}
         amount={lock.keyPrice}
-        render={(ethPrice, fiatPrice) => (
+        render={(ethPrice: string, fiatPrice: string) => (
           <Body disabled={disabled}>
             <EthPrice>
               {ethPrice} {currency}
@@ -76,21 +84,6 @@ export const NoKeyLock = ({
       />
     </Wrapper>
   )
-}
-
-NoKeyLock.propTypes = {
-  account: UnlockPropTypes.account,
-  lock: UnlockPropTypes.lock.isRequired,
-  purchaseKey: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-  lockKey: UnlockPropTypes.key,
-  config: UnlockPropTypes.configuration.isRequired,
-}
-
-NoKeyLock.defaultProps = {
-  account: null,
-  disabled: false,
-  lockKey: null,
 }
 
 export default withConfig(NoKeyLock)

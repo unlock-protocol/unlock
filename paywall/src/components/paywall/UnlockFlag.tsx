@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
 
 import { Colophon } from './LockStyles'
 import { RoundedLogo } from '../interface/Logo'
@@ -19,7 +18,7 @@ export function LockedFlag() {
   )
 }
 
-export const UnlockedFlag = ({ expiration }) => {
+export const UnlockedFlag = ({ expiration }: { expiration: boolean }) => {
   const [hidden, setHidden] = useState(false)
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -47,15 +46,11 @@ export const UnlockedFlag = ({ expiration }) => {
   )
 }
 
-UnlockedFlag.propTypes = {
-  expiration: PropTypes.string.isRequired,
-}
-
 export default UnlockedFlag
 
 const Flag = styled(Colophon).attrs({
   className: 'flag',
-})`
+})<{ hidden: boolean }>`
   float: right;
   grid-template-columns: 35px 1fr;
   width: 120px;

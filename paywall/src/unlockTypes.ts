@@ -139,3 +139,31 @@ export interface PurchaseKeyRequest {
   lock: string // lock address
   extraTip: string // extra value to add in addition to key price
 }
+
+export interface UnlockConfig {
+  erc20Contract: {
+    name: string
+    address: string
+  }
+  blockTime: number
+  isServer: boolean
+  isInIframe: boolean
+  env: string
+  providers: {
+    [key: string]: any // TODO: define what a provider looks like
+  }
+  isRequiredNetwork: (currentNetwork: number) => boolean
+  locksmithUri: string
+  readOnlyProvider: any // TODO: define what this is
+  requiredNetworkId: 1 | 4 | 1984
+  requiredNetwork: 'Dev' | 'Rinkeby' | 'Mainnet'
+  requiredConfirmations: number
+  unlockAddress: string
+  services: {
+    storage: {
+      host: string
+    }
+  }
+  supportedProviders: string[]
+  debugMode: boolean
+}

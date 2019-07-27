@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import UnlockPropTypes from '../../propTypes'
 import {
   LockWrapper,
   LockHeader,
@@ -13,8 +12,14 @@ import {
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
+import { Lock, UnlockConfig } from '../../unlockTypes'
 
-export const PendingKeyLock = ({ lock, config }) => {
+interface PendingKeyLockProps {
+  lock: Lock
+  config: UnlockConfig
+}
+
+export const PendingKeyLock = ({ lock, config }: PendingKeyLockProps) => {
   const convertCurrency = !lock.currencyContractAddress
   let currency = currencySymbolForLock(lock, config)
 
@@ -25,7 +30,7 @@ export const PendingKeyLock = ({ lock, config }) => {
         <BalanceProvider
           convertCurrency={convertCurrency}
           amount={lock.keyPrice}
-          render={(ethPrice, fiatPrice) => (
+          render={(ethPrice: string, fiatPrice: string) => (
             <React.Fragment>
               <LockDetails>
                 <LockDetail bold>
@@ -41,11 +46,6 @@ export const PendingKeyLock = ({ lock, config }) => {
       </Body>
     </LockWrapper>
   )
-}
-
-PendingKeyLock.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(PendingKeyLock)

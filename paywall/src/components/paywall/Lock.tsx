@@ -1,27 +1,35 @@
-import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
-import UnlockPropTypes from '../../propTypes'
-
-import { purchaseKey } from '../../actions/key'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
 import usePurchaseKey from '../../hooks/usePurchaseKey'
+import { Transaction, Lock as LockType } from '../../unlockTypes'
 
-export const Lock = ({
-  account,
+interface LockProps {
+  account: Account | null
+  lock: LockType
+  lockKey: string
+  transaction: Transaction
+  purchaseKey: (lockKey: string) => void
+  disabled?: boolean
+  hideModal: () => void
+  openInNewWindow: boolean
+  keyStatus: string
+}
+
+export default function Lock({
+  account = null,
   lock,
   lockKey,
   transaction,
   purchaseKey,
-  disabled,
+  disabled = false,
   hideModal,
   openInNewWindow,
   keyStatus,
-}) => {
+}: LockProps) {
   const purchase = usePurchaseKey(purchaseKey, openInNewWindow)
   switch (keyStatus) {
     case 'submitted':
@@ -46,34 +54,3 @@ export const Lock = ({
       )
   }
 }
-
-Lock.propTypes = {
-  account: UnlockPropTypes.account,
-  lockKey: UnlockPropTypes.key,
-  lock: UnlockPropTypes.lock.isRequired,
-  transaction: UnlockPropTypes.transaction,
-  purchaseKey: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
-  openInNewWindow: PropTypes.bool.isRequired,
-  keyStatus: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-}
-
-Lock.defaultProps = {
-  lockKey: null,
-  transaction: null,
-  disabled: false,
-  account: null,
-}
-
-export const mapDispatchToProps = (dispatch, { showModal }) => ({
-  purchaseKey: key => {
-    showModal()
-    dispatch(purchaseKey(key))
-  },
-})
-
-export default connect(
-  undefined, // no mapStateToProps needed
-  mapDispatchToProps
-)(Lock)

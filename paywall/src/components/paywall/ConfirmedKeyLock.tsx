@@ -1,7 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import UnlockPropTypes from '../../propTypes'
 import {
   LockWrapper,
   LockHeader,
@@ -18,8 +16,15 @@ import { HoverFooter, NotHoverFooter } from './HoverFooters'
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
+import { Lock, UnlockConfig } from '../../unlockTypes'
 
-const ConfirmedKeyLock = ({ lock, onClick, config }) => {
+type ConfirmedProps = {
+  lock: Lock
+  onClick: () => void
+  config: UnlockConfig
+}
+
+const ConfirmedKeyLock = ({ lock, onClick, config }: ConfirmedProps) => {
   const convertCurrency = !lock.currencyContractAddress
   let currency = currencySymbolForLock(lock, config)
 
@@ -30,7 +35,7 @@ const ConfirmedKeyLock = ({ lock, onClick, config }) => {
         <BalanceProvider
           convertCurrency={convertCurrency}
           amount={lock.keyPrice}
-          render={(ethPrice, fiatPrice) => (
+          render={(ethPrice: string, fiatPrice: string) => (
             <React.Fragment>
               <LockDetails>
                 <LockDetail bold>
@@ -49,12 +54,6 @@ const ConfirmedKeyLock = ({ lock, onClick, config }) => {
       </Body>
     </LockWrapper>
   )
-}
-
-ConfirmedKeyLock.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  lock: UnlockPropTypes.lock.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(ConfirmedKeyLock)

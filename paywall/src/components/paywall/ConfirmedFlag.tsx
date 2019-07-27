@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { RoundedLogo } from '../interface/Logo'
@@ -16,11 +15,18 @@ import {
 } from './FlagStyles'
 import Media from '../../theme/media'
 
-export default function ConfirmedFlag({ dismiss }) {
+type FlagProps = {
+  dismiss: () => void
+}
+
+type RoundedLogoWithSizeType = React.ElementType<{ size: string }>
+const RoundedLogoWithSize = RoundedLogo as RoundedLogoWithSizeType
+
+export default function ConfirmedFlag({ dismiss }: FlagProps) {
   return (
     <ClickableFlag onClick={() => dismiss()}>
       <OptimisticLogo>
-        <RoundedLogo size="28px" />
+        <RoundedLogoWithSize size="28px" />
       </OptimisticLogo>
       <p>Purchase Confirmed</p>
       <ConfirmedKeyWrapper>
@@ -35,10 +41,6 @@ export default function ConfirmedFlag({ dismiss }) {
       </PoweredByUnlock>
     </ClickableFlag>
   )
-}
-
-ConfirmedFlag.propTypes = {
-  dismiss: PropTypes.func.isRequired,
 }
 
 const ClickableFlag = styled(OptimisticFlag)`

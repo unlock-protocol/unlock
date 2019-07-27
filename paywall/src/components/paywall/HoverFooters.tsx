@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { LockFooter } from './LockStyles'
 
-const Footer = styled(LockFooter)`
+const Footer = styled(LockFooter)<{ backgroundColor?: string; color?: string }>`
   background-color: ${props => props.backgroundColor || 'var(--link)'};
   color: ${props => props.color || 'var(--white)'};
   align-self: end;

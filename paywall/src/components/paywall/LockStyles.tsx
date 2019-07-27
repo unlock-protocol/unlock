@@ -1,10 +1,16 @@
 import styled from 'styled-components'
 import Media from '../../theme/media'
+import { Lock } from '../../unlockTypes'
 
-export const LockWrapper = styled.li.attrs(props => ({
+type LockWrapperProps = {
+  lock: Lock
+  disabled?: boolean
+}
+
+export const LockWrapper = styled.li.attrs((props: LockWrapperProps) => ({
   className: 'lock',
   'data-address': props.lock.address,
-}))`
+}))<LockWrapperProps>`
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -61,7 +67,7 @@ export const LockBody = styled.div`
   background-color: var(--white);
 `
 
-export const LockDetail = styled.div`
+export const LockDetail = styled.div<{ bold?: boolean }>`
   white-space: nowrap;
   font-weight: ${props => (props.bold === true ? 'bold' : null)};
   align-content: center;

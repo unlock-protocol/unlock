@@ -38,15 +38,23 @@ export const ProgressBar = styled.div`
   `}
 `
 
+interface ConfirmationsProps {
+  confirmations: number
+  requiredConfirmations: number
+}
+
 export const Progress = styled(ProgressBar)`
   position: absolute;
-  background: ${({ confirmations, requiredConfirmations }) => {
+  background: ${({
+    confirmations,
+    requiredConfirmations,
+  }: ConfirmationsProps) => {
     if (confirmations >= requiredConfirmations) {
       return 'var(--green)}'
     }
     return 'var(--yellow)}'
   }};
-  width: ${({ confirmations, requiredConfirmations }) => {
+  width: ${({ confirmations, requiredConfirmations }: ConfirmationsProps) => {
     const width = Math.min(
       Math.floor(confirmations * (74 / requiredConfirmations)),
       74
@@ -54,7 +62,7 @@ export const Progress = styled(ProgressBar)`
     return `${width}%`
   }};
   ${Media.phone`
-    width: ${({ confirmations, requiredConfirmations }) => {
+    width: ${({ confirmations, requiredConfirmations }: ConfirmationsProps) => {
       const width = Math.min(
         Math.floor(confirmations * (80 / requiredConfirmations)),
         80

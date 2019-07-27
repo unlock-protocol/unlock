@@ -1,7 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-import UnlockPropTypes from '../../propTypes'
 import { RoundedLogo } from '../interface/Logo'
 import Svg from '../interface/svg'
 import {
@@ -12,11 +10,17 @@ import {
   PoweredByUnlock,
   Info,
 } from './FlagStyles'
+import { Transaction } from '../../unlockTypes'
+
+interface ConfirmingProps {
+  requiredConfirmations: number
+  transaction?: Transaction | null
+}
 
 export default function ConfirmingFlag({
   requiredConfirmations,
   transaction = null,
-}) {
+}: ConfirmingProps) {
   let text = 'Powered by Unlock'
   let Confirmations = null
   if (transaction) {
@@ -52,13 +56,4 @@ export default function ConfirmingFlag({
       </PoweredByUnlock>
     </OptimisticFlag>
   )
-}
-
-ConfirmingFlag.propTypes = {
-  requiredConfirmations: PropTypes.number.isRequired,
-  transaction: UnlockPropTypes.transaction,
-}
-
-ConfirmingFlag.defaultProps = {
-  transaction: null,
 }

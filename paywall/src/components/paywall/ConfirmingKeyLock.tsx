@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import UnlockPropTypes from '../../propTypes'
 import {
   LockWrapper,
   LockHeader,
@@ -13,8 +12,19 @@ import {
 import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
+import { Lock, Transaction, UnlockConfig } from '../../unlockTypes'
 
-export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
+interface ConfirmingProps {
+  lock: Lock
+  transaction: Transaction
+  config: UnlockConfig
+}
+
+export const ConfirmingKeyLock = ({
+  lock,
+  transaction,
+  config,
+}: ConfirmingProps) => {
   const convertCurrency = !lock.currencyContractAddress
   let currency = currencySymbolForLock(lock, config)
 
@@ -25,7 +35,7 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
         <BalanceProvider
           convertCurrency={convertCurrency}
           amount={lock.keyPrice}
-          render={(ethPrice, fiatPrice) => (
+          render={(ethPrice: string, fiatPrice: string) => (
             <React.Fragment>
               <LockDetails>
                 <LockDetail bold>
@@ -45,12 +55,6 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
       </Body>
     </LockWrapper>
   )
-}
-
-ConfirmingKeyLock.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
-  transaction: UnlockPropTypes.transaction.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
 }
 
 export default withConfig(ConfirmingKeyLock)

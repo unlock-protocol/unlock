@@ -1,26 +1,27 @@
 import styled from 'styled-components'
 import React, { useEffect } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 
 import Lock from './Lock'
-import UnlockPropTypes from '../../propTypes'
-import { hideModal, showModal } from '../../actions/modal'
 import { LockedFlag } from './UnlockFlag'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { mapErrorToComponent } from '../creator/FatalError'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../errors'
-import withConfig from '../../utils/withConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
 import Media from '../../theme/media'
-
+import { PostMessages } from '../../messageTypes'
 import {
-  POST_MESSAGE_GET_OPTIMISTIC,
-  POST_MESSAGE_GET_PESSIMISTIC,
-} from '../../paywall-builder/constants'
+  UnlockConfig,
+  Transaction,
+  KeyStatus,
+  Lock as LockType,
+} from '../../unlockTypes'
 
-export const displayError = isMainWindow =>
-  function overlayDisplayError(error, errorMetadata, children) {
+export const displayError = (isMainWindow: boolean) =>
+  function overlayDisplayError(
+    error: string,
+    errorMetadata: any,
+    children: React.ReactNode
+  ) {
     const Error = mapErrorToComponent(error, errorMetadata)
 
     /*
@@ -47,10 +48,28 @@ export const displayError = isMainWindow =>
     return <React.Fragment>{children}</React.Fragment>
   }
 
-export const Overlay = ({
+interface OverlayProps {
+  locks: LockType[]
+  hideModal: () => void
+  purchaseKey: (lockKey: string) => void
+  scrollPosition: number
+  openInNewWindow: boolean
+  config: UnlockConfig
+  transaction: Transaction
+  optimism: {
+    current: number
+  }
+  smallBody: () => void
+  bigBody: () => void
+  keyStatus: KeyStatus
+  lockKey: string
+  account: Account | null
+}
+
+export default function Overlay({
   locks,
   hideModal,
-  showModal,
+  purchaseKey,
   scrollPosition,
   openInNewWindow,
   config: { isInIframe },
@@ -60,8 +79,8 @@ export const Overlay = ({
   bigBody,
   keyStatus,
   lockKey,
-  account,
-}) => {
+  account = null,
+}: OverlayProps) {
   let message
   switch (keyStatus) {
     case 'confirming':
@@ -83,11 +102,11 @@ export const Overlay = ({
   const { postMessage } = usePostMessage()
   useEffect(() => {
     if (optimism.current && !['expired', 'none'].includes(keyStatus)) {
-      postMessage(POST_MESSAGE_GET_OPTIMISTIC)
+      postMessage(PostMessages.GET_OPTIMISTIC)
       smallBody()
     } else {
       // this branch should execute even if we are optimstic but have no transaction
-      postMessage(POST_MESSAGE_GET_PESSIMISTIC)
+      postMessage(PostMessages.GET_PESSIMISTIC)
       bigBody()
     }
   }, [keyStatus, optimism, postMessage, smallBody, bigBody])
@@ -96,7 +115,7 @@ export const Overlay = ({
   }
   return (
     <FullPage>
-      <Banner scrollPosition={scrollPosition} data-testid="paywall-banner">
+      <Banner scrollPosition={scrollPosition}>
         <Headline>{message}</Headline>
         <Locks>
           <GlobalErrorConsumer displayError={displayError(!isInIframe)}>
@@ -105,7 +124,7 @@ export const Overlay = ({
                 key={JSON.stringify(lock)}
                 lock={lock}
                 hideModal={hideModal}
-                showModal={showModal}
+                purchaseKey={purchaseKey}
                 openInNewWindow={openInNewWindow}
                 keyStatus={keyStatus}
                 transaction={transaction}
@@ -120,49 +139,6 @@ export const Overlay = ({
     </FullPage>
   )
 }
-
-Overlay.propTypes = {
-  account: UnlockPropTypes.account,
-  locks: PropTypes.arrayOf(UnlockPropTypes.lock).isRequired,
-  hideModal: PropTypes.func.isRequired,
-  showModal: PropTypes.func.isRequired,
-  smallBody: PropTypes.func.isRequired,
-  bigBody: PropTypes.func.isRequired,
-  scrollPosition: PropTypes.number.isRequired,
-  openInNewWindow: PropTypes.bool.isRequired,
-  config: UnlockPropTypes.configuration.isRequired,
-  transaction: UnlockPropTypes.transaction,
-  optimism: PropTypes.shape({
-    current: PropTypes.oneOf([0, 1]).isRequired,
-    past: PropTypes.oneOf([0, 1]).isRequired,
-  }).isRequired,
-  keyStatus: PropTypes.string.isRequired,
-  lockKey: UnlockPropTypes.key.isRequired,
-}
-
-Overlay.defaultProps = {
-  transaction: null,
-  account: null,
-}
-export const mapStateToProps = ({ account }) => {
-  return {
-    openInNewWindow: !account || !!account.fromLocalStorage,
-  }
-}
-
-export const mapDispatchToProps = (dispatch, { locks }) => ({
-  hideModal: () => {
-    dispatch(hideModal(locks.map(l => l.address).join('-')))
-  },
-  showModal: () => {
-    dispatch(showModal(locks.map(l => l.address).join('-')))
-  },
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withConfig(Overlay))
 
 const FullPage = styled.div`
   position: fixed; /* Sit on top of the page content */
@@ -179,11 +155,14 @@ const FullPage = styled.div`
   );
 `
 
-const Banner = styled.div.attrs(({ scrollPosition }) => ({
-  style: {
-    height: Math.min(scrollPosition, 100) + '%',
-  },
-}))`
+const Banner = styled.div.attrs(
+  ({ scrollPosition }: { scrollPosition: number }) => ({
+    'data-testid': 'paywall-banner',
+    style: {
+      height: Math.min(scrollPosition, 100) + '%',
+    },
+  })
+)<{ scrollPosition: number }>`
   position: fixed;
   display: grid;
   min-height: 375px;
