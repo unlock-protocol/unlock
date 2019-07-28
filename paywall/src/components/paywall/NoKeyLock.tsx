@@ -78,7 +78,7 @@ export const NoKeyLock = ({
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer>{footerMessage}</Footer>
+            <Footer disabled={disabled}>{footerMessage}</Footer>
           </Body>
         )}
       />
@@ -92,8 +92,9 @@ const Wrapper = styled(LockWrapper)`
   cursor: ${props => (props.disabled ? 'not-allowed ' : 'pointer')};
 `
 
-const Footer = styled(LockFooter)`
-  background-color: var(--green);
+const Footer = styled(LockFooter)<{ disabled?: boolean }>`
+  background-color: ${(props: { disabled?: boolean }) =>
+    props.disabled ? 'var(--lightgrey)' : 'var(--green)'};
   color: var(--white);
 `
 
