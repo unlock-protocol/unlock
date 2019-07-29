@@ -11,6 +11,10 @@ export const Grid = styled.div`
   }
 `
 
+export const GridPadding = styled.div`
+  padding: 25px;
+`
+
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
