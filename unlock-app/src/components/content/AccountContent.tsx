@@ -8,7 +8,7 @@ import Errors from '../interface/Errors'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
 import LogInSignUp from '../interface/user-account/LogInSignUp'
 import KeyPurchaseConfirmation from '../interface/user-account/KeyPurchaseConfirmation'
-import { IframeWrapper } from '../interface/user-account/styles'
+import { GridPadding, IframeWrapper } from '../interface/user-account/styles'
 import Close from '../interface/buttons/layout/Close'
 import { dismissPurchaseModal } from '../../actions/keyPurchase'
 
@@ -58,7 +58,11 @@ export class AccountContent extends React.Component<
     const { stripe } = this.state
     const components: Record<PageMode, JSX.Element> = {
       LogIn: <LogInSignUp login />,
-      CollectPaymentDetails: <PaymentDetails stripe={stripe} />,
+      CollectPaymentDetails: (
+        <GridPadding>
+          <PaymentDetails stripe={stripe} />
+        </GridPadding>
+      ),
       ConfirmPurchase: <KeyPurchaseConfirmation />,
     }
 
