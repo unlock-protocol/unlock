@@ -65,11 +65,6 @@ export default class Dispatcher {
     )
 
     await walletService.connect(this.provider)
-    await walletService.purchaseKey(
-      lockAddress,
-      recipient,
-      lock.keyPrice,
-      this.buyer
-    )
+    await walletService.purchaseKey(lockAddress, recipient, '0', this.buyer)
   }
 }
