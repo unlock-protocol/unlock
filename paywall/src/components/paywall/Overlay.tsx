@@ -14,11 +14,13 @@ import {
   Transaction,
   KeyStatus,
   Lock as LockType,
+  Key,
+  Account,
 } from '../../unlockTypes'
 
 export const displayError = (isMainWindow: boolean) =>
   function overlayDisplayError(
-    error: string,
+    error: string | false,
     errorMetadata: any,
     children: React.ReactNode
   ) {
@@ -55,14 +57,15 @@ interface OverlayProps {
   scrollPosition: number
   openInNewWindow: boolean
   config: UnlockConfig
-  transaction: Transaction
+  transaction?: Transaction
   optimism: {
     current: number
+    past: number
   }
   smallBody: () => void
   bigBody: () => void
   keyStatus: KeyStatus
-  lockKey: string
+  lockKey?: Key
   account: Account | null
 }
 

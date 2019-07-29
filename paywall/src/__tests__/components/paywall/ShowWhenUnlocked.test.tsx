@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import ShowWhenUnlocked from '../../../components/lock/ShowWhenUnlocked'
+import ShowWhenUnlocked from '../../../components/paywall/ShowWhenUnlocked'
 
 describe('ShowWhenUnlocked', () => {
   describe('if the paywall state is unlocked', () => {

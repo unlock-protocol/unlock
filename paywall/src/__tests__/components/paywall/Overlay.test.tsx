@@ -2,103 +2,32 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import configure from '../../../config'
-import { SHOW_MODAL, HIDE_MODAL } from '../../../actions/modal'
 
-import Overlay, {
-  mapDispatchToProps,
-  mapStateToProps,
-  displayError,
-} from '../../../components/lock/Overlay'
+import Overlay, { displayError } from '../../../components/paywall/Overlay'
 import { GlobalErrorContext } from '../../../utils/GlobalErrorProvider'
 import { FATAL_NO_USER_ACCOUNT, FATAL_MISSING_PROVIDER } from '../../../errors'
 import createUnlockStore from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
-import { TRANSACTION_TYPES } from '../../../constants'
 import { WindowContext } from '../../../hooks/browser/useWindow'
 import {
   POST_MESSAGE_GET_OPTIMISTIC,
   POST_MESSAGE_GET_PESSIMISTIC,
 } from '../../../paywall-builder/constants'
+import {
+  Lock,
+  Key,
+  UnlockConfig,
+  Transaction,
+  TransactionType,
+  TransactionStatus,
+} from '../../../unlockTypes'
+import { KeyStatus } from '../../../selectors/keys'
 
 const ErrorProvider = GlobalErrorContext.Provider
 const ConfigProvider = ConfigContext.Provider
 
 describe('Overlay', () => {
-  describe('mapDispatchToProps', () => {
-    it('should yield a prop function which dispatches hideModal with the right value', () => {
-      expect.assertions(2)
-      const locks = [{ address: '0x123' }, { address: '0x456' }]
-      const dispatch = jest.fn()
-      const props = mapDispatchToProps(dispatch, { locks })
-      props.hideModal()
-      expect(dispatch).toHaveBeenCalledWith({
-        modal: '0x123-0x456',
-        type: HIDE_MODAL,
-      })
-      props.showModal()
-      expect(dispatch).toHaveBeenCalledWith({
-        modal: '0x123-0x456',
-        type: SHOW_MODAL,
-      })
-    })
-  })
-
-  describe('mapStateToProps', () => {
-    it('should set openInNewWindow based on the value of account', () => {
-      expect.assertions(3)
-
-      const props = {
-        locks: [
-          {
-            address: '0x123',
-          },
-        ],
-      }
-      const state1 = {
-        account: null,
-      }
-      const state2 = {
-        account: {
-          address: 'account',
-        },
-        keys: {
-          key: {
-            lock: '0x123',
-            owner: 'account',
-            id: 'key',
-          },
-        },
-        transactions: {},
-      }
-      const state3 = {
-        account: {
-          address: 'account',
-          fromLocalStorage: true,
-        },
-        keys: {
-          key: {
-            lock: '0x123',
-            owner: 'account',
-            id: 'key',
-          },
-        },
-        transactions: {},
-      }
-
-      expect(mapStateToProps(state1, props)).toEqual({
-        openInNewWindow: true,
-      })
-
-      expect(mapStateToProps(state2, props)).toEqual({
-        openInNewWindow: false,
-      })
-
-      expect(mapStateToProps(state3, props)).toEqual({
-        openInNewWindow: true,
-      })
-    })
-  })
-
+  const account = { address: '0x123', balance: '0' }
   describe('displayError', () => {
     it('should display children if there is no error', () => {
       expect.assertions(1)
@@ -172,40 +101,53 @@ describe('Overlay', () => {
   })
 
   describe('error replacement', () => {
-    const lock = {
-      id: 'lock',
+    const lock: Lock = {
+      key: {
+        lock: '0xdeadbeef',
+        owner: '0x123',
+        expiration: 0,
+        confirmations: 0,
+        status: 'none',
+        transactions: [],
+      },
+      currencyContractAddress: null,
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
     }
-    const lockKey = {
-      id: 'key',
+    const lockKey: Key = {
+      confirmations: 0,
+      status: 'valid',
+      transactions: [],
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
     }
-    let store
+    let store: any
     beforeEach(() => (store = createUnlockStore()))
 
     it('displays lock when there is no error', () => {
       expect.assertions(3)
-      let config = configure()
+      let config: UnlockConfig = configure() as UnlockConfig
       config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
           <ConfigProvider value={config}>
             <ErrorProvider value={{ error: false, errorMetadata: {} }}>
               <Overlay
+                account={account}
+                config={config}
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
+                purchaseKey={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
-                keyStatus="none"
+                keyStatus={KeyStatus.NONE}
                 lockKey={lockKey}
+                openInNewWindow
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -223,7 +165,7 @@ describe('Overlay', () => {
 
     it('displays error, headline, and flag when there is an error', () => {
       expect.assertions(3)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
@@ -232,13 +174,16 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
-                keyStatus="none"
+                account={account}
+                config={config}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.NONE}
                 lockKey={lockKey}
+                openInNewWindow
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -256,7 +201,7 @@ describe('Overlay', () => {
 
     it('displays lock when the error is missing account', () => {
       expect.assertions(3)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
       const wrapper = rtl.render(
         <Provider store={store}>
@@ -267,14 +212,16 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
                 openInNewWindow={false}
-                keyStatus="none"
                 lockKey={lockKey}
+                account={account}
+                config={config}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.NONE}
               />
             </ConfigProvider>
           </ErrorProvider>
@@ -292,25 +239,39 @@ describe('Overlay', () => {
   })
 
   describe('Optimistic unlocking', () => {
-    const lock = {
+    const lock: Lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+      currencyContractAddress: null,
+      key: {
+        lock: '0xdeadbeef',
+        owner: account.address,
+        expiration: 0,
+        confirmations: 0,
+        status: KeyStatus.NONE,
+        transactions: [],
+      },
     }
-    const lockKey = {
-      id: 'key',
+    const lockKey: Key = {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: KeyStatus.CONFIRMING,
+      confirmations: 4,
     }
-    let state
-    let transaction
+    let state: any
+    let transaction: Transaction
     beforeEach(() => {
       transaction = {
+        hash: 'hash',
+        blockNumber: 123,
+        status: TransactionStatus.MINED,
         key: 'key',
         confirmations: 4,
-        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        type: TransactionType.KEY_PURCHASE,
       }
       state = {
         account: {
@@ -333,7 +294,7 @@ describe('Overlay', () => {
       expect.assertions(1)
 
       const store = createUnlockStore(state)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       const wrapper = rtl.render(
@@ -343,14 +304,17 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
-                keyStatus="confirming"
                 lockKey={lockKey}
                 transaction={transaction}
+                openInNewWindow={false}
+                account={account}
+                config={config}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.CONFIRMING}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -365,7 +329,7 @@ describe('Overlay', () => {
 
       state.transactions.transaction.confirmations = 13
       const store = createUnlockStore(state)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       const wrapper = rtl.render(
@@ -375,14 +339,17 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 1, past: 0 }}
                 locks={[lock]}
-                keyStatus="valid"
                 lockKey={lockKey}
                 transaction={transaction}
+                openInNewWindow={false}
+                account={account}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.VALID}
+                config={config}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -407,7 +374,7 @@ describe('Overlay', () => {
           postMessage: jest.fn(),
         },
       }
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
       config.isServer = false
 
@@ -420,14 +387,17 @@ describe('Overlay', () => {
                   <Overlay
                     scrollPosition={0}
                     hideModal={() => {}}
-                    showModal={() => {}}
                     smallBody={smallBody}
                     bigBody={() => {}}
                     optimism={{ current: 1, past: 0 }}
                     locks={[lock]}
-                    keyStatus="confirming"
                     lockKey={lockKey}
                     transaction={transaction}
+                    openInNewWindow={false}
+                    account={account}
+                    purchaseKey={() => {}}
+                    keyStatus={KeyStatus.CONFIRMING}
+                    config={config}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -459,7 +429,7 @@ describe('Overlay', () => {
         },
       }
 
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       rtl.act(() => {
@@ -471,14 +441,17 @@ describe('Overlay', () => {
                   <Overlay
                     scrollPosition={0}
                     hideModal={() => {}}
-                    showModal={() => {}}
-                    smallBody={() => {}}
                     bigBody={bigBody}
                     optimism={{ current: 0, past: 0 }}
                     locks={[lock]}
-                    keyStatus="confirming"
                     lockKey={lockKey}
                     transaction={transaction}
+                    smallBody={() => {}}
+                    openInNewWindow={false}
+                    account={account}
+                    purchaseKey={() => {}}
+                    keyStatus={KeyStatus.CONFIRMING}
+                    config={config}
                   />
                 </ErrorProvider>
               </ConfigProvider>
@@ -496,26 +469,39 @@ describe('Overlay', () => {
   })
 
   describe('message displayed to user (pessimistic unlocking)', () => {
-    const lock = {
+    const lock: Lock = {
       name: 'Monthly',
       address: '0xdeadbeef',
       keyPrice: '100000',
       expirationDuration: 123456789,
+      currencyContractAddress: null,
+      key: {
+        lock: '0xdeadbeef',
+        owner: account.address,
+        expiration: 0,
+        confirmations: 0,
+        status: KeyStatus.NONE,
+        transactions: [],
+      },
     }
-    const lockKey = {
-      id: 'key',
+    const lockKey: Key = {
       lock: 'lock',
       owner: 'account',
       expiration: new Date().getTime() / 1000 + 10000,
+      transactions: [],
+      status: KeyStatus.CONFIRMING,
+      confirmations: 4,
     }
-    let state
-    let transaction
+    let state: any
+    let transaction: Transaction
     beforeEach(() => {
       transaction = {
+        hash: 'hash',
+        blockNumber: 123,
         key: 'key',
-        status: 'mined',
+        status: TransactionStatus.MINED,
         confirmations: 4,
-        type: TRANSACTION_TYPES.KEY_PURCHASE,
+        type: TransactionType.KEY_PURCHASE,
       }
       const transactions = {
         transaction,
@@ -540,7 +526,7 @@ describe('Overlay', () => {
       expect.assertions(2)
 
       const store = createUnlockStore()
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       const wrapper = rtl.render(
@@ -550,14 +536,17 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
-                keyStatus="none"
                 lockKey={lockKey}
                 transaction={transaction}
+                openInNewWindow={false}
+                account={account}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.NONE}
+                config={config}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -576,7 +565,7 @@ describe('Overlay', () => {
       expect.assertions(2)
 
       const store = createUnlockStore(state)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       const wrapper = rtl.render(
@@ -586,14 +575,17 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
-                keyStatus="confirming"
                 lockKey={lockKey}
                 transaction={transaction}
+                openInNewWindow={false}
+                account={account}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.CONFIRMING}
+                config={config}
               />
             </ErrorProvider>
           </ConfigProvider>
@@ -609,7 +601,7 @@ describe('Overlay', () => {
 
       state.transactions.transaction.confirmations = 123
       const store = createUnlockStore(state)
-      let config = configure()
+      let config = configure() as UnlockConfig
       config.isInIframe = true
 
       const wrapper = rtl.render(
@@ -619,14 +611,17 @@ describe('Overlay', () => {
               <Overlay
                 scrollPosition={0}
                 hideModal={() => {}}
-                showModal={() => {}}
                 smallBody={() => {}}
                 bigBody={() => {}}
                 optimism={{ current: 0, past: 0 }}
                 locks={[lock]}
-                keyStatus="valid"
                 lockKey={lockKey}
                 transaction={transaction}
+                openInNewWindow={false}
+                account={account}
+                purchaseKey={() => {}}
+                keyStatus={KeyStatus.VALID}
+                config={config}
               />
             </ErrorProvider>
           </ConfigProvider>

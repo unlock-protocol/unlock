@@ -6,14 +6,14 @@ import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
-import { Lock, UnlockConfig, Account } from '../../unlockTypes'
+import { Lock, UnlockConfig, Account, Key } from '../../unlockTypes'
 
 interface NoKeyLockProps {
   account: Account | null
   lock: Lock & { outstandingKeys: number; maxNumberOfKeys: number }
   disabled: boolean
-  purchaseKey: (lockKey: string) => void
-  lockKey: string
+  purchaseKey: (lockKey: Key) => void
+  lockKey: Key
   config: UnlockConfig
 }
 

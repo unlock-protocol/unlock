@@ -5,13 +5,13 @@ import ConfirmingKeyLock from './ConfirmingKeyLock'
 import ConfirmedKeyLock from './ConfirmedKeyLock'
 import NoKeyLock from './NoKeyLock'
 import usePurchaseKey from '../../hooks/usePurchaseKey'
-import { Transaction, Lock as LockType } from '../../unlockTypes'
+import { Transaction, Lock as LockType, Account, Key } from '../../unlockTypes'
 
 interface LockProps {
   account: Account | null
   lock: LockType
-  lockKey: string
-  transaction: Transaction
+  lockKey?: Key
+  transaction?: Transaction
   purchaseKey: (lockKey: string) => void
   disabled?: boolean
   hideModal: () => void

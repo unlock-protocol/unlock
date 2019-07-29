@@ -3,45 +3,37 @@ import * as rtl from 'react-testing-library'
 import { Provider } from 'react-redux'
 import configure from '../../../config'
 import { ConfigContext } from '../../../utils/withConfig'
-import { mapDispatchToProps, Lock } from '../../../components/lock/Lock'
-import { purchaseKey } from '../../../actions/key'
+import Lock from '../../../components/paywall/Lock'
 import usePurchaseKey from '../../../hooks/usePurchaseKey'
 import createUnlockStore from '../../../createUnlockStore'
+import { Lock as LockType } from '../../../unlockTypes'
 
 jest.mock('../../../hooks/usePurchaseKey')
 
 const ConfigProvider = ConfigContext.Provider
 
 describe('Lock', () => {
-  describe('mapDispatchToProps', () => {
-    it('should return a purchaseKey function which when invoked dispatches purchaseKey and invokes showModal', () => {
-      expect.assertions(2)
-      const dispatch = jest.fn()
-      const props = {
-        showModal: jest.fn(),
-      }
-      const key = {}
-
-      const newProps = mapDispatchToProps(dispatch, props)
-
-      newProps.purchaseKey(key)
-      expect(props.showModal).toHaveBeenCalledWith()
-      expect(dispatch).toHaveBeenCalledWith(purchaseKey(key))
-    })
-  })
-
   describe('usePurchaseKey is called for purchases', () => {
-    let purchase
+    let purchase: () => void
+    const lockAddress = '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e'
 
-    const lock = {
-      address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
+    const lock: LockType = {
+      address: lockAddress,
       name: 'Monthly',
       keyPrice: '0.23',
-      fiatPrice: 240.38,
       expirationDuration: 2592000,
+      key: {
+        owner: '0x123',
+        expiration: 0,
+        confirmations: 0,
+        lock: lockAddress,
+        status: 'none',
+        transactions: [],
+      },
+      currencyContractAddress: null,
     }
 
-    function renderMockLock(openInNewWindow) {
+    function renderMockLock(openInNewWindow: boolean = false) {
       const state = {
         network: {},
         account: {
@@ -51,21 +43,18 @@ describe('Lock', () => {
       const config = configure()
       config.isInIframe = true
 
+      purchase = jest.fn()
       const store = createUnlockStore(state)
-      usePurchaseKey.mockImplementation(() => purchase)
+      ;(usePurchaseKey as any).mockImplementation(() => purchase)
       return rtl.render(
         <Provider store={store}>
           <ConfigProvider value={config}>
             <Lock
+              account={{ address: '0x123', balance: '0' }}
               lock={lock}
-              transaction={null}
-              lockKey={null}
-              purchaseKey={purchaseKey}
-              config={config}
+              purchaseKey={purchase}
               hideModal={() => {}}
-              showModal={() => {}}
               openInNewWindow={openInNewWindow}
-              requiredConfirmations={12}
               keyStatus="none"
             />
           </ConfigProvider>

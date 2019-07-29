@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 
-import ShowWhenLocked from '../../../components/lock/ShowWhenLocked'
+import ShowWhenLocked from '../../../components/paywall/ShowWhenLocked'
 
 describe('ShowWhenLocked', () => {
   describe('if there is a valid key', () => {

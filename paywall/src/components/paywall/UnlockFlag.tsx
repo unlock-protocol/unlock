@@ -18,7 +18,7 @@ export function LockedFlag() {
   )
 }
 
-export const UnlockedFlag = ({ expiration }: { expiration: boolean }) => {
+export const UnlockedFlag = ({ expiration }: { expiration: string }) => {
   const [hidden, setHidden] = useState(false)
   useEffect(() => {
     const timeout = setTimeout(() => {
