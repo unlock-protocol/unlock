@@ -17,7 +17,7 @@ import {
   Input,
   SectionHeader,
   Column,
-  PaddedGrid,
+  Grid,
   SubmitButton,
 } from './styles'
 import { signPaymentData } from '../../../actions/user'
@@ -102,7 +102,7 @@ export class PaymentForm extends React.Component<
       base: { fontSize: '16px', lineHeight: '40px' },
     }
     return (
-      <PaddedGrid>
+      <Grid>
         <SectionHeader>Card Details</SectionHeader>
         <div>
           <ItemLabel>Cardholder Name</ItemLabel>
@@ -156,7 +156,7 @@ export class PaymentForm extends React.Component<
             Add Payment Method
           </SubmitButton>
         </Column>
-      </PaddedGrid>
+      </Grid>
     )
   }
 }

@@ -11,7 +11,7 @@ export const Grid = styled.div`
   }
 `
 
-export const PaddedGrid = styled(Grid)`
+export const GridPadding = styled.div`
   padding: 25px;
 `
 
