@@ -192,7 +192,7 @@ Object {
   line-height: 0;
 }
 
-.c23 {
+.c26 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -205,7 +205,7 @@ Object {
   align-items: center;
 }
 
-.c24 {
+.c27 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -320,6 +320,24 @@ Object {
   font-size: 36px;
 }
 
+.c23 {
+  margin: 0px;
+  padding: 0px;
+}
+
+.c23 li {
+  display: inline-block;
+  padding: 1px;
+}
+
+.c24 {
+  float: left;
+}
+
+.c25 {
+  float: right;
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c16 {
     display: none;
@@ -382,7 +400,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c25 {
+  .c28 {
     display: none;
   }
 }
@@ -753,8 +771,48 @@ Look at us! We're posting on our very own blog! How exciting!
               </div>
             </div>
           </div>
-          <footer
+          <ul
             class="c23"
+          >
+            <li
+              class="c24"
+            >
+              <a
+                href="/blog/"
+              >
+                ← First Page
+              </a>
+            </li>
+            <li
+              class="c24"
+            >
+              <a
+                href="/blog/4"
+              >
+                │ Previous
+              </a>
+            </li>
+            <li
+              class="c25"
+            >
+              <a
+                href="/blog/9"
+              >
+                Last Page →
+              </a>
+            </li>
+            <li
+              class="c25"
+            >
+              <a
+                href="/blog/6"
+              >
+                Next │
+              </a>
+            </li>
+          </ul>
+          <footer
+            class="c26"
           >
             <a
               class="c6 c7"
@@ -889,14 +947,14 @@ Look at us! We're posting on our very own blog! How exciting!
               </small>
             </a>
             <span
-              class="c24"
+              class="c27"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c25"
+          class="c28"
         />
       </div>
     </div>
@@ -1259,6 +1317,46 @@ Look at us! We're posting on our very own blog! How exciting!
             </div>
           </div>
         </div>
+        <ul
+          class="sc-5kpfof-1 iGnITw"
+        >
+          <li
+            class="sc-5kpfof-2 hMEOFM"
+          >
+            <a
+              href="/blog/"
+            >
+              ← First Page
+            </a>
+          </li>
+          <li
+            class="sc-5kpfof-2 hMEOFM"
+          >
+            <a
+              href="/blog/4"
+            >
+              │ Previous
+            </a>
+          </li>
+          <li
+            class="sc-5kpfof-3 cRNTJI"
+          >
+            <a
+              href="/blog/9"
+            >
+              Last Page →
+            </a>
+          </li>
+          <li
+            class="sc-5kpfof-3 cRNTJI"
+          >
+            <a
+              href="/blog/6"
+            >
+              Next │
+            </a>
+          </li>
+        </ul>
         <footer
           class="sc-2ix2yp-0 fmIKjS"
         >
@@ -2171,6 +2269,7 @@ are intentionally not generated from this file date, in case we want to override
             </div>
             <hr
               class="c19"
+              id="comments"
             />
           </div>
           <footer
@@ -2628,6 +2727,7 @@ are intentionally not generated from this file date, in case we want to override
           </div>
           <hr
             class="b1qsww-0 zPPJJ"
+            id="comments"
           />
         </div>
         <footer
@@ -4013,6 +4113,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
         <hr
           class="c7"
+          id="comments"
         />
       </div>
     </div>
@@ -4235,6 +4336,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </div>
       <hr
         class="b1qsww-0 zPPJJ"
+        id="comments"
       />
     </div>
   </div>,
@@ -4609,6 +4711,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
         <hr
           class="c6"
+          id="comments"
         />
       </div>
     </div>
@@ -4827,6 +4930,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </div>
       <hr
         class="b1qsww-0 zPPJJ"
+        id="comments"
       />
     </div>
   </div>,
@@ -5201,6 +5305,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
         <hr
           class="c6"
+          id="comments"
         />
       </div>
     </div>
@@ -5419,6 +5524,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </div>
       <hr
         class="b1qsww-0 zPPJJ"
+        id="comments"
       />
     </div>
   </div>,
@@ -5806,6 +5912,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
         <hr
           class="c7"
+          id="comments"
         />
       </div>
     </div>
@@ -6028,6 +6135,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </div>
       <hr
         class="b1qsww-0 zPPJJ"
+        id="comments"
       />
     </div>
   </div>,

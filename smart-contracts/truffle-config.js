@@ -98,7 +98,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.9',
+      version: '0.5.10',
       settings: {
         optimizer: {
           enabled: true,
@@ -111,6 +111,11 @@ module.exports = {
   mocha: {
     reporter: 'eth-gas-reporter',
     useColors: true,
+    reporterOptions: {
+      currency: 'USD',
+      excludeContracts: ['Migrations', 'TestErc20Token'],
+      gasPrice: 5,
+    },
   },
   plugins: ['truffle-security'],
 }

@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.10;
 
 /**
  * @title The Unlock contract
@@ -70,20 +70,6 @@ contract Unlock is
    // global base token symbol
   // Used by locks where the owner has not set a custom symbol
   string private globalTokenSymbol;
-
-  // Events
-  event NewLock(
-    address indexed lockOwner,
-    address indexed newLockAddress
-  );
-
-  event NewTokenURI(
-    string tokenURI
-  );
-
-  event NewGlobalTokenSymbol(
-    string tokenSymbol
-  );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
@@ -206,18 +192,6 @@ contract Unlock is
     return globalBaseTokenURI;
   }
 
-
-  // function to set the globalTokenURI field.
-  function setGlobalBaseTokenURI(
-    string calldata _URI
-  )
-    external
-    onlyOwner
-  {
-    globalBaseTokenURI = _URI;
-    emit NewTokenURI(_URI);
-  }
-
   // function to read the globalTokenSymbol field.
   function getGlobalTokenSymbol()
     external
@@ -227,14 +201,15 @@ contract Unlock is
     return globalTokenSymbol;
   }
 
-  // function to set the globalTokenSymbol field.
-  function setGlobalTokenSymbol(
-    string calldata _symbol
-  )
-    external
+  // function for the owner to update configuration variables
+  function configUnlock(
+    string calldata _symbol,
+    string calldata _URI
+  ) external
     onlyOwner
   {
     globalTokenSymbol = _symbol;
-    emit NewGlobalTokenSymbol(_symbol);
+    globalBaseTokenURI = _URI;
+    emit ConfigUnlock(_symbol, _URI);
   }
 }

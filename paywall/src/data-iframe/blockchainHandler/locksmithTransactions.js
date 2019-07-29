@@ -84,26 +84,24 @@ export default async function locksmithTransactions({
   const response = await window.fetch(url)
   const result = await response.json()
   if (result.transactions) {
-    await Promise.all(
-      result.transactions
-        .map(t => ({
-          hash: t.transactionHash,
-          network: t.chain,
-          to: t.recipient,
-          input: t.data,
-          from: t.sender,
-          for: t.for,
-        }))
-        .filter(transaction => transaction.network === network)
-        .map(transaction => {
-          // we pass the transaction as defaults if it has input set, so that we can
-          // parse out the transaction type and other details. If input is not set,
-          // we can't safely pass the transaction default
-          web3Service.getTransaction(
-            transaction.hash,
-            transaction.input ? transaction : undefined
-          )
-        })
-    )
+    const transactions = Object.values(result.transactions)
+    // take advantage of the order locksmith returns transactions
+    // the last one is the newest
+    for (let i = transactions.length - 1; i >= 0; i--) {
+      const t = transactions[i]
+      const transaction = {
+        hash: t.transactionHash,
+        network, // locksmith always uses the right network now
+        to: t.recipient,
+        input: t.data,
+        from: t.sender,
+        for: t.for,
+      }
+      const defaults = t.data ? transaction : undefined
+      web3Service.getTransaction(transaction.hash, defaults).catch(error => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+      })
+    }
   }
 }

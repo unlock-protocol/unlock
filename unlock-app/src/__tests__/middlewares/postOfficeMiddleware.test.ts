@@ -103,13 +103,17 @@ describe('postOfficeMiddleware', () => {
 
       const { store } = makeMiddleware()
       const lock = 'a lock'
-      const tip = 'a tip'
+      const tip = '0'
 
+      mockPostOfficeService.emit(PostOfficeEvents.LockUpdate, {
+        'a lock': 'this is the lock payload',
+      })
       mockPostOfficeService.emit(PostOfficeEvents.KeyPurchase, lock, tip)
+
       expect(mockPostOfficeService.showAccountModal).toHaveBeenCalled()
       expect(store.dispatch).toHaveBeenCalledWith({
         type: ADD_TO_CART,
-        lock,
+        lock: 'this is the lock payload',
         tip,
       })
     })
@@ -117,7 +121,7 @@ describe('postOfficeMiddleware', () => {
 
   describe('handling actions', () => {
     it('should tell the paywall about account changes', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       const { invoke } = makeMiddleware()
       const action = {
         type: SET_ACCOUNT,
@@ -129,6 +133,7 @@ describe('postOfficeMiddleware', () => {
       invoke(action)
 
       expect(mockPostOfficeService.setAccount).toHaveBeenCalledWith('0x123abc')
+      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
     })
 
     it('should tell the paywall about a purchase and dismiss itself when receiving KEY_PURCHASE_INITIATED', () => {
