@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.10;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
@@ -32,7 +32,7 @@ contract MixinKeys is
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
-  // merging this with numberOfKeysSold into an array instead.
+  // merging this with totalSupply into an array instead.
   mapping (uint => address) private ownerByTokenId;
 
   // Addresses of owners are also stored in an array.
@@ -225,7 +225,7 @@ contract MixinKeys is
   }
 
   /**
-   * Assigns the key a new tokenId (from numberOfKeysSold) if it does not already have
+   * Assigns the key a new tokenId (from totalSupply) if it does not already have
    * one assigned.
    */
   function _assignNewTokenId(
@@ -235,9 +235,9 @@ contract MixinKeys is
     if (_key.tokenId == 0) {
       // This is a brand new owner, else an owner of an expired key buying an extension.
       // We increment the tokenId counter
-      numberOfKeysSold++;
-      // we assign the incremented `numberOfKeysSold` as the tokenId for the new key
-      _key.tokenId = numberOfKeysSold;
+      totalSupply++;
+      // we assign the incremented `totalSupply` as the tokenId for the new key
+      _key.tokenId = totalSupply;
     }
   }
 

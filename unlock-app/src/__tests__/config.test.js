@@ -95,9 +95,7 @@ describe('config', () => {
     it('should have the right keys in dev', () => {
       expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Dev')
-      expect(config.providers).toMatchObject({
-        HTTP: 'http://127.0.0.1:8545',
-      })
+      expect(config.providers).toHaveProperty('Unlock')
     })
 
     it('should have the right keys in dev when there is a web3 provider', () => {
@@ -116,7 +114,7 @@ describe('config', () => {
         }
       )
       expect(config.providers).toMatchObject({
-        HTTP: 'http://127.0.0.1:8545',
+        Unlock: expect.any(Object),
         Metamask: {
           isMetaMask: true,
         },
@@ -189,7 +187,8 @@ describe('config', () => {
     it('should have the right keys in production', () => {
       expect.assertions(2)
       expect(config.requiredNetwork).toEqual('Mainnet')
-      expect(config.providers).toEqual({}) // We miss a web3 provider!
+      // No web3 provider, but Unlock provider is always there
+      expect(config.providers).toHaveProperty('Unlock')
     })
 
     it('should contain the right URLs for chain explorers', () => {

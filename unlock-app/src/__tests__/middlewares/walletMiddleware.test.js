@@ -176,6 +176,7 @@ describe('Wallet middleware', () => {
     const account = {
       address,
     }
+    setTimeout.mockClear()
     mockWalletService.getAccount = jest.fn()
 
     mockWalletService.emit('account.changed', address)
