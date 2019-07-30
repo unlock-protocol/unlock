@@ -20,6 +20,7 @@ import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
+import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
 
 interface networkNames {
   [key: number]: string[]
@@ -99,6 +100,18 @@ export default function CheckoutContent() {
     })
   }, [postMessage])
 
+  // get a list of locks with key purchases in progress
+  const purchasingLocks = Object.keys(locks as Locks).filter(
+    (lockAddress: string) =>
+      ['submitted', 'pending', 'confirming'].includes(
+        locks[lockAddress].key.status
+      )
+  )
+  const [userDismissedConfirmingModal, dismissConfirmingModal] = useState(false)
+  const hideConfirmingModal = useCallback(() => {
+    hideCheckout()
+    dismissConfirmingModal(true)
+  }, [hideCheckout, dismissConfirmingModal])
   // get a list of locks that have valid keys
   const activeLocks = Object.keys(locks as Locks).filter(
     (lockAddress: string) => locks[lockAddress].key.status === 'valid'
@@ -133,6 +146,23 @@ export default function CheckoutContent() {
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <NoWallet config={paywallConfig} />
+      </Fragment>
+    )
+  } else if (!userDismissedConfirmingModal && purchasingLocks.length) {
+    // for users who just started a key purchase, display the confirming modal
+    // unless they have dismissed it. Then we display the checkout component
+    // we will use the first confirming lock in the list
+    child = (
+      <Fragment>
+        <Head>
+          <title>{pageTitle('Checkout')}</title>
+        </Head>
+        <CheckoutConfirmingModal
+          config={paywallConfig}
+          account={account}
+          hideCheckout={hideConfirmingModal}
+          confirmingLock={locks[purchasingLocks[0]]}
+        />
       </Fragment>
     )
   } else {
