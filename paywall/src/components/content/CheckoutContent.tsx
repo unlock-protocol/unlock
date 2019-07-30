@@ -100,7 +100,7 @@ export default function CheckoutContent() {
     })
   }, [postMessage])
 
-  // get a list of locks with key purhcases in progress
+  // get a list of locks with key purchases in progress
   const purchasingLocks = Object.keys(locks as Locks).filter(
     (lockAddress: string) =>
       ['submitted', 'pending', 'confirming'].includes(
