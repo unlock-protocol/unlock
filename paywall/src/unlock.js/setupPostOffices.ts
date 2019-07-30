@@ -167,8 +167,16 @@ export default function setupPostOffices(
           send('data', PostMessages.SEND_UPDATES, 'balance')
           send('data', PostMessages.SEND_UPDATES, 'locks')
           if (normalizedConfig && normalizedConfig.type === 'paywall') {
-            // always show the checkout modal on start for the paywall app
-            showIframe(window, CheckoutUIIframe)
+            // This is a temporary hack to check if the account iframe is
+            // visible. Sometimes it's ready before the checkout iframe is, so
+            // the UI can end up in a state where both iframes are visible. This
+            // condition makes sure we only show the checkout iframe when the
+            // account iframe is not there.
+            const accountIsVisible =
+              AccountUIIframe.className === 'unlock start show'
+            if (!accountIsVisible) {
+              showIframe(window, CheckoutUIIframe)
+            }
           }
         }
       }
