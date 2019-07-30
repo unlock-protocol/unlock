@@ -250,7 +250,7 @@ describe('web3Proxy', () => {
       })
 
       it('should hide the accounts iframe', async () => {
-        expect.assertions(1)
+        expect.assertions(2)
 
         postFromAccountIframe({
           source: fakeAccountIframe.contentWindow,
@@ -262,6 +262,7 @@ describe('web3Proxy', () => {
         })
 
         expect(fakeAccountIframe.className).toBe('unlock start')
+        expect(fakeCheckoutIframe.className).toBe('unlock start show')
       })
     })
 
@@ -295,8 +296,8 @@ describe('web3Proxy', () => {
         })
       })
 
-      it('should show the iframe if there are any erc20 locks', async () => {
-        expect.assertions(1)
+      it('should show the account iframe and hide the checkout iframe if there are any erc20 locks', async () => {
+        expect.assertions(2)
 
         postFromDataIframe({
           source: fakeIframe.contentWindow,
@@ -317,6 +318,7 @@ describe('web3Proxy', () => {
         })
 
         expect(fakeAccountIframe.className).toBe('unlock start show')
+        expect(fakeCheckoutIframe.className).toBe('unlock start')
       })
 
       it('should not show the iframe if there are no erc20 locks', async () => {
@@ -423,9 +425,9 @@ describe('web3Proxy', () => {
         })
       })
 
-      it('should show the account iframe if there are erc20 locks', async () => {
+      it('should show the account iframe and hide the checkout iframe if there are erc20 locks', async () => {
         // if this test fails due to "too many assertions", uncomment the debug line in web3Proxy.ts
-        expect.assertions(1)
+        expect.assertions(2)
 
         delete fakeWindow.web3
 
@@ -452,6 +454,7 @@ describe('web3Proxy', () => {
         // wait for the iframe to be shown
         await waitFor(() => fakeAccountIframe.className)
         expect(fakeAccountIframe.className).toBe('unlock start show')
+        expect(fakeCheckoutIframe.className).toBe('unlock start')
       })
 
       it('if the account iframe loads before locks, it should show the account iframe if there are erc20 locks', async () => {
