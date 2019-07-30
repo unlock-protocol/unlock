@@ -15,6 +15,7 @@ import {
   POST_MESSAGE_UPDATE_NETWORK,
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
+  POST_MESSAGE_ERROR,
 } from '../../paywall-builder/constants'
 import configure from '../../config'
 
@@ -515,6 +516,77 @@ storiesOf('Checkout page', module)
             data: {
               type: POST_MESSAGE_UNLOCKED,
               payload: [lockAddress1],
+            },
+          })
+        })
+      })
+    })
+    return <CheckoutContent />
+  })
+  .add('Checkout page, error received from data iframe', () => {
+    // set the data needed to display the checkout
+    useEffect(() => {
+      const messageTemplate = {
+        type: 'message',
+        source: fakeWindow.parent,
+        origin: 'origin',
+      }
+      fakeWindow.handlers.message.forEach(postedMessage => {
+        postedMessage({
+          ...messageTemplate,
+          data: {
+            type: POST_MESSAGE_CONFIG,
+            payload: paywallTypePaywallConfig,
+          },
+        })
+        setTimeout(() => {
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT,
+              payload: lockAddress1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+              payload: '889',
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_LOCKS,
+              payload: unlockedLocks,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UPDATE_NETWORK,
+              payload: 1,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_LOCKED,
+              payload: undefined,
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_UNLOCKED,
+              payload: [lockAddress1],
+            },
+          })
+          postedMessage({
+            ...messageTemplate,
+            data: {
+              type: POST_MESSAGE_ERROR,
+              payload: 'Unable to connect to the regonkulator',
             },
           })
         })

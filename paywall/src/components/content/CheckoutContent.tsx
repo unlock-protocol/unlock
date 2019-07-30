@@ -1,4 +1,10 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useCallback,
+  useReducer,
+} from 'react'
 import Head from 'next/head'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -10,17 +16,13 @@ import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
 import { Key, Locks, PaywallConfig, Account } from '../../unlockTypes'
-import {
-  POST_MESSAGE_PURCHASE_KEY,
-  POST_MESSAGE_DISMISS_CHECKOUT,
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
-} from '../../paywall-builder/constants'
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
+import CheckoutErrorModal from '../checkout/CheckoutError'
+import { PostMessages } from '../../messageTypes'
 
 interface networkNames {
   [key: number]: string[]
@@ -67,20 +69,60 @@ export default function CheckoutContent() {
     // so that we will not automatically dismiss the Checkout UI
     initiatePurchase(true)
     postMessage({
-      type: POST_MESSAGE_PURCHASE_KEY,
+      type: PostMessages.PURCHASE_KEY,
       payload: {
         lock: key.lock,
         extraTip: '0',
       },
     })
   }
+
+  enum actions {
+    HIDE_MODAL = 'hide',
+    SET_ERROR = 'error',
+  }
+  const [errorInfo, dispatchError] = useReducer(
+    (
+      state: { show: boolean; error: string },
+      action: { type: actions; payload: string }
+    ) => {
+      switch (action.type) {
+        case actions.SET_ERROR:
+          return {
+            show: true,
+            error: action.payload as string,
+          }
+        case actions.HIDE_MODAL:
+          return {
+            show: false,
+            error: '',
+          }
+      }
+      return state
+    },
+    { show: false, error: '' }
+  )
+  const errorMessageFromDataIframe = useListenForPostMessage({
+    type: PostMessages.ERROR,
+    defaultValue: '',
+    validator: (val: unknown) => typeof val === 'string',
+    local: 'Checkout UI Error Handler',
+  })
+  useEffect(() => {
+    if (errorMessageFromDataIframe) {
+      dispatchError({
+        type: actions.SET_ERROR,
+        payload: errorMessageFromDataIframe,
+      })
+    }
+  }, [actions.SET_ERROR, errorMessageFromDataIframe])
   const isLocked = useListenForPostMessage({
-    type: POST_MESSAGE_LOCKED,
+    type: PostMessages.LOCKED,
     defaultValue: false,
     getValue: () => true,
   })
   const isUnlocked = useListenForPostMessage({
-    type: POST_MESSAGE_UNLOCKED,
+    type: PostMessages.UNLOCKED,
     defaultValue: false,
     getValue: (val: any) => !!val,
   })
@@ -95,7 +137,7 @@ export default function CheckoutContent() {
   // hide the checkout iframe
   const hideCheckout = useCallback(() => {
     postMessage({
-      type: POST_MESSAGE_DISMISS_CHECKOUT,
+      type: PostMessages.DISMISS_CHECKOUT,
       payload: undefined, // this must be set to trigger a response in unlock.min.js
     })
   }, [postMessage])
@@ -182,6 +224,16 @@ export default function CheckoutContent() {
       </Fragment>
     )
   }
+
+  const ErrorDialog = errorInfo.show ? (
+    <CheckoutErrorModal
+      message={errorInfo.error}
+      dismiss={() => {
+        dispatchError({ type: actions.HIDE_MODAL, payload: '' })
+      }}
+    />
+  ) : null
+
   const Wrapper = () => (
     <CheckoutWrapper
       hideCheckout={hideCheckout}
@@ -192,6 +244,7 @@ export default function CheckoutContent() {
       }}
     >
       {child}
+      {ErrorDialog}
     </CheckoutWrapper>
   )
 
