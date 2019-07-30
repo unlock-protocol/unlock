@@ -4,7 +4,6 @@ import {
   linkTransactionsToKeys,
   linkTransactionsToKey,
 } from '../../../data-iframe/blockchainHandler/keyStatus'
-import { setAccount } from '../../../data-iframe/blockchainHandler/account'
 import { MAX_UINT, TRANSACTION_TYPES } from '../../../constants'
 
 describe('key status manipulation', () => {
@@ -130,7 +129,6 @@ describe('key status manipulation', () => {
   describe('linkTransactionToKey', () => {
     it('uses the newest transaction', () => {
       expect.assertions(1)
-      setAccount('account')
       const key = {
         id: 'lock-account',
         lock: 'lock',
@@ -519,7 +517,6 @@ describe('key status manipulation', () => {
   describe('linkTransactionsToKeys', () => {
     it('uses the newest transaction', () => {
       expect.assertions(1)
-      setAccount('account')
       const keys = {
         'lock-account': {
           id: 'lock-account',
