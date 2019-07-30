@@ -736,6 +736,7 @@ Object {
 }
 
 .c0 {
+  background: rgba(0,0,0,0.4) none repeat scroll 0% 0%;
   position: fixed;
   height: 100%;
   width: 100%;
@@ -922,10 +923,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kAzzGY cxOjox"
+      class="sc-kAzzGY eXxQeO"
     >
       <div
-        class="sc-cSHVUG bCBeAO"
+        class="sc-cSHVUG jIhLkm"
       >
         <a
           class="sc-fAjcbJ glPBrL sc-850ddk-0 eZjxtV"
