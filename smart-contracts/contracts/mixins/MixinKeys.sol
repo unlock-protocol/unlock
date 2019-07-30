@@ -129,8 +129,7 @@ contract MixinKeys is
   function getTokenIdFor(
     address _account
   )
-    external
-    view
+    public view
     hasValidKey(_account)
     returns (uint)
   {
