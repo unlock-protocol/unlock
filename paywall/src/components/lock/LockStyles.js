@@ -3,7 +3,7 @@ import Media from '../../theme/media'
 
 export const LockWrapper = styled.li.attrs(props => ({
   className: 'lock',
-  'data-address': props.lock.address,
+  'data-address': props.lock ? props.lock.address : '',
 }))`
   display: grid;
   justify-items: stretch;

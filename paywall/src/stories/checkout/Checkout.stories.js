@@ -338,7 +338,19 @@ storiesOf('Checkout', module)
       />
     )
   })
+  .add('Checkout with no lock loaded yet', () => {
+    const locks = {}
 
+    return (
+      <Checkout
+        locks={locks}
+        config={paywallConfigNoNames}
+        account={account}
+        purchase={purchaseKey}
+        hideCheckout={hideCheckout}
+      />
+    )
+  })
   .add('Checkout with lock with no name', () => {
     const locks = {
       '0x123': {
