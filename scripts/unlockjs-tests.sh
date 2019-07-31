@@ -13,4 +13,5 @@ UPCASE_SERVICE="${SERVICE^^}"
 ENV_VARS_PREFIX="${UPCASE_SERVICE//-/_}_"
 ENV_VARS=`env | grep $ENV_VARS_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
 
+docker-compose -f $DOCKER_COMPOSE_FILE build ganache-integration
 docker-compose -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
