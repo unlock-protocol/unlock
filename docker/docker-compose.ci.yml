@@ -113,6 +113,8 @@ services:
     image: unlock-js
     environment:
       CI: '${CI}'
+    depends_on:
+      - ganache-integration      
   rover:
     image: rover
     environment:
