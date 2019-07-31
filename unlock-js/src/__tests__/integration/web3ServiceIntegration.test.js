@@ -6,8 +6,12 @@ describe('Web3 Service Integration', () => {
   beforeAll(() => {
     nock.enableNetConnect()
 
+    let provider = process.env.CI
+      ? 'http://ganache-integration::8545'
+      : 'http://127.0.0.1:8545'
+
     web3Service = new Web3Service({
-      readOnlyProvider: 'http://ganache-integration::8545',
+      readOnlyProvider: provider,
       unlockAddress: '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b',
       blockTime: 2,
       requiredConfirmations: 3,
