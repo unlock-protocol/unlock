@@ -1092,6 +1092,26 @@ describe('web3Proxy', () => {
         },
       })
     })
+
+    it('should ignore the HIDE_ACCOUNTS_MODAL postmessage', () => {
+      expect.assertions(2)
+      const startingAccountIframeClassName = fakeAccountIframe.className
+      const startingCheckoutIframeClassName = fakeCheckoutIframe.className
+
+      web3Proxy(fakeWindow, mapHandlers)
+
+      postFromAccountIframe({
+        source: fakeAccountIframe.contentWindow,
+        origin: 'http://fun.times',
+        data: {
+          type: PostMessages.HIDE_ACCOUNTS_MODAL,
+          payload: undefined,
+        },
+      })
+
+      expect(fakeAccountIframe.className).toBe(startingAccountIframeClassName)
+      expect(fakeCheckoutIframe.className).toBe(startingCheckoutIframeClassName)
+    })
   })
 
   describe('enable fails', () => {
