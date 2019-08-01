@@ -195,7 +195,9 @@ describe('setupPostOffice', () => {
         postMessage: jest.fn(),
       },
     }
+
     setupPostOffices(
+      fakeWindow.unlockProtocolConfig,
       fakeWindow,
       fakeDataIframe,
       fakeUIIframe,
@@ -276,7 +278,7 @@ describe('setupPostOffice', () => {
     expect.assertions(1)
 
     makeFakeWindow()
-    fakeWindow.unlockProtocolConfig = {
+    const config = normalizeConfig({
       type: 'paywall',
       locks: {},
       callToAction: {
@@ -285,10 +287,11 @@ describe('setupPostOffice', () => {
         pending: '',
         confirmed: '',
       },
-    }
+    })
 
     // we will use the normalized config from the beforeEach, this ensures we use our own
     setupPostOffices(
+      config,
       fakeWindow,
       fakeDataIframe,
       fakeUIIframe,
@@ -304,7 +307,7 @@ describe('setupPostOffice', () => {
     expect.assertions(1)
 
     makeFakeWindow()
-    fakeWindow.unlockProtocolConfig = {
+    const config = normalizeConfig({
       type: 'paywall',
       locks: {},
       callToAction: {
@@ -313,10 +316,11 @@ describe('setupPostOffice', () => {
         pending: '',
         confirmed: '',
       },
-    }
+    })
 
     // we will use the normalized config from the beforeEach, this ensures we use our own
     setupPostOffices(
+      config,
       fakeWindow,
       fakeDataIframe,
       fakeUIIframe,
