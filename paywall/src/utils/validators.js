@@ -108,6 +108,17 @@ export const isValidPaywallConfig = config => {
   ) {
     return false
   }
+  if (
+    config.unlockUserAccounts &&
+    !(
+      typeof config.unlockUserAccounts === 'boolean' ||
+      config.unlockUserAccounts === 'true' ||
+      config.unlockUserAccounts === 'false'
+    )
+  ) {
+    return false
+  }
+
   return true
 }
 
