@@ -183,8 +183,12 @@ export default function web3Proxy(
       accountIframe
     ) => {
       return () => {
-        hideIframe(window, accountIframe)
-        showIframe(window, checkoutIframe)
+        // Need to check for canUseUserAccounts here because otherwise this will
+        // run when using metamask, causing the checkoutIframe to always appear
+        if (canUseUserAccounts) {
+          hideIframe(window, accountIframe)
+          showIframe(window, checkoutIframe)
+        }
       }
     },
   }
