@@ -20,12 +20,6 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Refresh the page and make sure the page has no more ads
 * [ ] When clicking on the button again, before the key expires, the lock should show the status (pending, confirming, or valid)
 
-## Legacy Paywall
-* [ ] Go to https://www.ouvre-boite.com/members-staging/ and make sure the paywall is in place (no scrolling)
-* [ ] Purchase a key and ensure that the optimistic paywall lets you access the content (scrolling works)
-* [ ] Wait 5 minutes (the key should expire) and reload the page
-* [ ] Purchase another key
-
 ## Tickets
 * [ ] Go to https://tickets-staging.unlock-protocol.com/ and create or update a existing event
 * [ ] Once saved, click on the event link and make sure it shows the right information
