@@ -15,17 +15,29 @@ interface process {
 declare const process: process
 
 export function normalizeConfig(unlockConfig: any) {
+  const unlockUserAccounts =
+    unlockConfig.unlockUserAccounts === 'true' ||
+    unlockConfig.unlockUserAccounts === true
+
   if (
     !unlockConfig ||
     !unlockConfig.locks ||
     typeof unlockConfig.locks !== 'object'
   )
-    return unlockConfig
+    return {
+      ...unlockConfig,
+      unlockUserAccounts,
+    }
+
   const lockAddresses = Object.keys(unlockConfig.locks)
   if (!lockAddresses.length) {
-    return unlockConfig
+    return {
+      ...unlockConfig,
+      unlockUserAccounts,
+    }
   }
-  const normalizedConfig = {
+
+  return {
     ...unlockConfig,
     locks: lockAddresses.reduce((allLocks, address) => {
       return {
@@ -33,8 +45,8 @@ export function normalizeConfig(unlockConfig: any) {
         [address.toLowerCase()]: unlockConfig.locks[address],
       }
     }, {}),
+    unlockUserAccounts,
   }
-  return normalizedConfig
 }
 
 /**

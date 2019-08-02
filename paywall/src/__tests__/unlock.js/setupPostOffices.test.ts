@@ -5,16 +5,6 @@ import { PostMessages, MessageTypes, ExtractPayload } from '../../messageTypes'
 import { UnlockWindow, IframeType } from '../../windowTypes'
 
 describe('normalizeConfig', () => {
-  it('should return invalid configuration as-is', () => {
-    expect.assertions(6)
-
-    const invalidConfigs = [[false], [null], ['hi'], [[]], [5], [{}]]
-
-    invalidConfigs.forEach((config: any) => {
-      expect(normalizeConfig(config)).toBe(config)
-    })
-  })
-
   it('should return a configuration with no locks as-is', () => {
     expect.assertions(1)
 
@@ -25,7 +15,7 @@ describe('normalizeConfig', () => {
       },
     }
 
-    expect(normalizeConfig(config)).toBe(config)
+    expect(normalizeConfig(config).locks).toBe(config.locks)
   })
 
   it('should convert all of the lock addresses to lower case', () => {
@@ -48,9 +38,39 @@ describe('normalizeConfig', () => {
         def: { another: 'thing' },
         efg: { last: 'thing' },
       },
+      unlockUserAccounts: false,
     }
 
-    expect(normalizeConfig(config)).toEqual(expectedConfig)
+    expect(normalizeConfig(config).locks).toEqual(expectedConfig.locks)
+  })
+
+  it('should set the right value for unlockUserAccounts', () => {
+    expect.assertions(5)
+    expect(
+      normalizeConfig({
+        unlockUserAccounts: true,
+      }).unlockUserAccounts
+    ).toEqual(true)
+
+    expect(
+      normalizeConfig({
+        unlockUserAccounts: false,
+      }).unlockUserAccounts
+    ).toEqual(false)
+
+    expect(
+      normalizeConfig({
+        unlockUserAccounts: 'true',
+      }).unlockUserAccounts
+    ).toEqual(true)
+
+    expect(
+      normalizeConfig({
+        unlockUserAccounts: 'false',
+      }).unlockUserAccounts
+    ).toEqual(false)
+
+    expect(normalizeConfig({}).unlockUserAccounts).toEqual(false)
   })
 })
 

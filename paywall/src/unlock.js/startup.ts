@@ -28,22 +28,34 @@ export default function startup(window: UnlockWindow) {
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
 
+  // Loading the data iframe
   const dataIframe = makeIframe(
     window,
     process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin
   )
+  addIframeToDocument(window, dataIframe)
+
+  // Loading the checkout iframe
   const checkoutIframe = makeIframe(
     window,
     process.env.PAYWALL_URL + '/checkout' + origin
   )
-  // TODO: We should not load the iframe for user account is the configuration does not mention it
-  const userAccountsIframe = makeIframe(
-    window,
-    process.env.USER_IFRAME_URL + origin
-  )
-  addIframeToDocument(window, dataIframe)
-  addIframeToDocument(window, userAccountsIframe)
   addIframeToDocument(window, checkoutIframe)
+
+  // Loading the user account iframe (if applicable)
+  let userAccountsIframe
+  if (normalizedConfig.unlockUserAccounts) {
+    userAccountsIframe = makeIframe(
+      window,
+      process.env.USER_IFRAME_URL + origin
+    )
+  } else {
+    userAccountsIframe = makeIframe(
+      window,
+      '' // We make an "empty" accounts iframe
+    )
+  }
+  addIframeToDocument(window, userAccountsIframe)
 
   setupPostOffices(
     normalizedConfig,

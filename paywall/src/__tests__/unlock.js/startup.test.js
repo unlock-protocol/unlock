@@ -146,21 +146,40 @@ describe('unlock.js startup', () => {
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeCheckoutIframe)
+      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeCheckoutIframe)
     })
 
-    it('should create a User Accounts UI iframe with the correct URL', () => {
-      expect.assertions(2)
+    describe('when the unlockUserAccounts config is true', () => {
+      it('should create a User Accounts UI iframe with the correct URL', () => {
+        expect.assertions(2)
+        fakeWindow.unlockProtocolConfig.unlockUserAccounts = true
+        startup(fakeWindow)
 
-      startup(fakeWindow)
+        expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
+          'src',
+          `${process.env.USER_IFRAME_URL}?origin=http%3A%2F%2Ffun.times`
+        )
+        expect(
+          fakeWindow.document.body.insertAdjacentElement
+        ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeUserAccountsIframe)
+      })
+    })
 
-      expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
-        'src',
-        `${process.env.USER_IFRAME_URL}?origin=http%3A%2F%2Ffun.times`
-      )
-      expect(
-        fakeWindow.document.body.insertAdjacentElement
-      ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeUserAccountsIframe)
+    describe('when the unlockUserAccounts config is false', () => {
+      it('should create a User Accounts UI iframe with the correct URL', () => {
+        expect.assertions(2)
+
+        fakeWindow.unlockProtocolConfig.unlockUserAccounts = false
+        startup(fakeWindow)
+
+        expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
+          'src',
+          ``
+        )
+        expect(
+          fakeWindow.document.body.insertAdjacentElement
+        ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeUserAccountsIframe)
+      })
     })
   })
 
