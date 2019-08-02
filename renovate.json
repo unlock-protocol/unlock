@@ -14,7 +14,7 @@
       "schedule": ["at any time"]
     },
     {
-      "packagePatterns": ["^truffle", "^zos", "hardlydifficult-test-helpers"],
+      "packagePatterns": ["^hardlydifficult", "^openzeppelin", "^truffle", "^zos"],
       "reviewers": [
         "NickCuso"
       ]
