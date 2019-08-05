@@ -27,10 +27,10 @@ export const getDaysMonthsAndYearsForSelect = (now, year, month) => {
 export default class DatePicker extends Component {
   constructor(props) {
     super(props)
-    const { now } = props
+    const { now, date } = props
     this.state = {
       ...getDaysMonthsAndYearsForSelect(now),
-      date: now, // defaults to now
+      date: date < now ? date : now,
     }
     this.onChange = this.onChange.bind(this)
   }
@@ -110,11 +110,13 @@ export default class DatePicker extends Component {
 
 DatePicker.propTypes = {
   now: PropTypes.instanceOf(Date),
+  date: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
 }
 
 DatePicker.defaultProps = {
   now: new Date(),
+  date: new Date(),
 }
 
 export const EventDate = styled.div`

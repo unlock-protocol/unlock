@@ -44,6 +44,19 @@ describe('DatePicker', () => {
     expect(wrapper.queryByText('2')).not.toBeNull()
   })
 
+  it('should show a date in the future if it has been initialized with this', () => {
+    expect.assertions(3)
+    const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
+    const date = new Date('2020-03-02T00:00:00.000Z') // March 2nd, 2020
+    let wrapper = rtl.render(
+      <DatePicker now={now} date={date} onChange={jest.fn()} />
+    )
+    wrapper.debug()
+    expect(wrapper.queryByText('2020')).not.toBeNull()
+    expect(wrapper.queryByText('Mar')).not.toBeNull()
+    expect(wrapper.queryByText('2')).not.toBeNull()
+  })
+
   it('should let the user pick a year and trigger onChange', () => {
     expect.assertions(1)
     const onChange = jest.fn()
