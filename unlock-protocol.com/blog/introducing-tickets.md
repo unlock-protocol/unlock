@@ -38,7 +38,7 @@ Ethereum address.
 
 A user with an Ethereum wallet like Metamask can buy a key with one click. The event page then shows a QR code, which
 contains the user's public key and a signed version of the lock address. This can be verified at the door with a
-commodity QR code reader, which are now built into every major mobile operating system.
+commodity QR code reader, which are now built into the camera apps in every major mobile operating system.
 
 ![Unlock ticket screenshot](/static/images/blog/introducing-tickets/unlock-tickets.png)
 
