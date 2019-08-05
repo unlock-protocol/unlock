@@ -225,10 +225,11 @@ async function prepareEnvironment(
   // all locks will be deployed in parallel
   const lockDeployTransactionHashes = []
 
+  lockDeployTransactionHashes.push(await deployETHLock(wallet, account))
+
   lockDeployTransactionHashes.push(
     await deployERC20Lock(wallet, account, testERC20Token.address)
   )
-  lockDeployTransactionHashes.push(await deployETHLock(wallet, account))
 
   const deployedLockAddresses = await Promise.all(
     lockDeployTransactionHashes.map(hash =>
