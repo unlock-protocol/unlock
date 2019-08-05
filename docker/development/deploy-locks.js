@@ -63,28 +63,15 @@ async function setUpERC20Token(provider, recipients) {
 }
 
 /**
- * The function deploys a lock and yields the transaction object once the lock has been deployed
- * @param {*} web3Service
+ * The function deploys a lock and yields the transaction hash immediately
+ * for monitoring with monitorLockDeploy
  * @param {*} wallet
  * @param {*} account
  * @param {*} lock
  */
-async function deployLock(web3Service, wallet, account, lock) {
-  let transaction = {}
+async function deployLock(wallet, account, lock) {
   let promise = new Promise(resolve => {
-    wallet.once('transaction.new', hash => {
-      transaction.hash = hash
-      web3Service.on('transaction.updated', (transactionHash, update) => {
-        if (hash === transactionHash) {
-          transaction = { ...transaction, ...update }
-          if (transaction.confirmations == web3Service.requiredConfirmations) {
-            resolve(transaction)
-          }
-        }
-      })
-
-      web3Service.getTransaction(hash)
-    })
+    wallet.once('transaction.new', resolve)
   })
 
   await wallet.createLock(lock, account)
@@ -92,35 +79,79 @@ async function deployLock(web3Service, wallet, account, lock) {
 }
 
 /**
- * Deploys the Ether lock used for testing locksmith
+ * Listens for lock creation transaction until it is mined,
+ * then yields the transaction object
  * @param {*} web3Service
+ * @param {*} hash the transaction hash returned by deployLock
+ */
+async function monitorLockDeploy(web3Service, hash) {
+  let transaction = { hash }
+  let promise = new Promise(resolve => {
+    const monitorTransaction = (transactionHash, update) => {
+      if (hash === transactionHash) {
+        transaction = { ...transaction, ...update }
+        if (transaction.lock && transaction.status === 'mined') {
+          // stop listening once we have what we need
+          web3Service.off('transaction.updated', monitorTransaction)
+          // as soon as the lock is mined, resolve
+          resolve(transaction)
+        }
+      }
+    }
+    web3Service.on('transaction.updated', monitorTransaction)
+  })
+
+  web3Service.getTransaction(hash)
+  return promise
+}
+
+/**
+ * Deploys an Ether lock and yields its transaction hash
  * @param {*} wallet
  * @param {*} account
+ * @param {*} name the lock name
+ * @param {*} keyPrice key price, in ETH
+ * @param {*} maxNumberOfKeys the max allowed number of keys, or -1 for infinite
+ * @param {*} expirationDuration the number of seconds until a key will expire
  */
-async function deployETHLock(web3Service, wallet, account) {
-  return deployLock(web3Service, wallet, account, {
-    expirationDuration: 60 * 5, // 1 minute!
-    keyPrice: '0.01', // 0.01 Eth
-    maxNumberOfKeys: -1, // Unlimited
-    currencyContractAddress: null,
-    name: 'Ether Lock',
+async function deployETHLock(
+  wallet,
+  account,
+  name = 'Lock',
+  keyPrice = '0.01',
+  maxNumberOfKeys = -1, // unlimited
+  expirationDuration = 60 * 5 // 1 minute!
+) {
+  return deployLock(wallet, account, {
+    expirationDuration,
+    keyPrice, // Price in Eth
+    maxNumberOfKeys,
+    currencyContractAddress: null, // null for eth-based locks
+    name: `ETH ${name}`,
   })
 }
 
 /**
- * Deploys the ERC20 lock used for testing locksmith
- * @param {*} web3Service
+ * Deploys an ERC20 lock and yields its transaction hash
  * @param {*} wallet
  * @param {*} account
  * @param {*} contractAddress
  */
-async function deployERC20Lock(web3Service, wallet, account, contractAddress) {
-  return deployLock(web3Service, wallet, account, {
-    expirationDuration: 60 * 5, // 1 minute!
-    keyPrice: '1', // 1 ERC20
-    maxNumberOfKeys: -1, // Unlimited
+async function deployERC20Lock(
+  wallet,
+  account,
+  contractAddress,
+  name = 'Lock',
+  keyPrice = '1', // 1 ERC20 token
+  maxNumberOfKeys = -1, // unlimited
+  expirationDuration = 60 * 5 // 1 minute!
+) {
+  return deployLock(wallet, account, {
+    expirationDuration,
+    keyPrice, // Price in ERC20
+    maxNumberOfKeys,
     currencyContractAddress: contractAddress,
-    name: 'ERC20 Lock',
+    name: `ERC20 ${name}`,
   })
 }
 
@@ -191,25 +222,45 @@ async function prepareEnvironment(
   ])
   console.log(`ERC20 CONTRACT DEPLOYED AT ${testERC20Token.address}`)
 
-  const ethLockTransaction = await deployETHLock(web3Service, wallet, account)
+  // all locks will be deployed in parallel
+  const lockDeployTransactionHashes = []
 
-  console.log(`ETH LOCK DEPLOYED AT ${ethLockTransaction.lock}`)
+  lockDeployTransactionHashes.push(
+    await deployERC20Lock(wallet, account, testERC20Token.address)
+  )
+  lockDeployTransactionHashes.push(await deployETHLock(wallet, account))
 
-  const erc20LockTransaction = await deployERC20Lock(
-    web3Service,
-    wallet,
-    account,
-    testERC20Token.address
+  const deployedLockAddresses = await Promise.all(
+    lockDeployTransactionHashes.map(hash =>
+      monitorLockDeploy(web3Service, hash)
+    )
   )
 
-  console.log(`ERC20 LOCK DEPLOYED AT ${erc20LockTransaction.lock}`)
+  const lockIndices = {
+    ethLock: 0,
+    erc20Lock: 1,
+  }
 
-  await approveContract(
-    provider,
-    purchaserAddress,
-    testERC20Token.address,
-    erc20LockTransaction.lock
+  console.log(`${deployedLockAddresses.length} locks deployed`)
+  console.log(
+    `ETH LOCK DEPLOYED AT ${deployedLockAddresses[lockIndices.ethLock].lock}`
   )
+
+  console.log(
+    `ERC20 LOCK DEPLOYED AT ${deployedLockAddresses[lockIndices.erc20Lock].lock}`
+  )
+
+  // approvals for erc20 locks to withdraw from the locksmith user's balance
+  const approvals = [
+    approveContract(
+      provider,
+      purchaserAddress,
+      testERC20Token.address,
+      deployedLockAddresses[lockIndices.erc20Lock].lock
+    ),
+  ]
+
+  await Promise.all(approvals)
 }
 
 module.exports = {
