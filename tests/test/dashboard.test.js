@@ -1,6 +1,7 @@
 const url = require('../helpers/url').main
 const wait = require('../helpers/wait')
 const dashboard = require('../helpers/dashboard')
+const { testingAddress } = require('../helpers/vars')
 
 describe('The Unlock Dashboard', () => {
   beforeAll(async () => {
@@ -17,8 +18,8 @@ describe('The Unlock Dashboard', () => {
     expect.assertions(1)
     await page.waitForSelector('#UserAddress')
     const userAddress = await page.$eval('#UserAddress', e => e.innerText)
-    await expect(userAddress).toMatch(
-      '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+    await expect(userAddress.toLowerCase()).toMatch(
+      testingAddress.toLowerCase()
     )
   })
 

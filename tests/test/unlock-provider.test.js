@@ -1,9 +1,9 @@
-// const url = require('../helpers/url').main
+const url = require('../helpers/url')
 
 describe('The Login Page', () => {
   it('it loads the login module', async () => {
     expect.assertions(1)
-    await page.goto('http://unlock-provider-unlock-app:9000/account')
+    await page.goto(url.unlockProviderApp('/account'))
     await expect(page).toMatch('Log In')
   })
 })

@@ -65,13 +65,12 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     lockSelectors = addresses.map(lock => path =>
       `[data-address="${lock}"] ${path}`
     )
-    //debug.debugPage(page, true)
     const testUrl = url.paywall(
       `/static/adremover/integrationtesting-loggedin.html?locks=${encodeURIComponent(
         JSON.stringify(locks)
       )}&paywall=${encodeURIComponent(
         url.paywall('')
-      )}&provider=${encodeURIComponent(url.provider)}&logindelay=0`
+      )}&provider=${encodeURIComponent(url.readOnlyProvider())}&logindelay=0`
     )
     await page.goto(testUrl, { waitUntil: 'networkidle2' })
   })

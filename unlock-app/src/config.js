@@ -60,7 +60,8 @@ export default function configure(
   }
   // Publishable key from Stripe dashboard, make sure to use the test key when
   // developing.
-  let stripeApiKey = runtimeConfig.stripeApiKey
+  let stripeApiKey =
+    runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -87,6 +88,8 @@ export default function configure(
     isRequiredNetwork = networkId => networkId === 1984
   }
 
+  // The `unlock-provider-integration` environment is only used in integration tests
+  // when no provider has been injected so we can test unlock accounts.
   if (env === 'unlock-provider-integration') {
     blockTime = 10 // in mseconds.
     services['storage'] = {

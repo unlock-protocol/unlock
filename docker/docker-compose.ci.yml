@@ -56,7 +56,7 @@ services:
     ports:
       - 9000:9000
     expose:
-      - 9000  
+      - 9000
     environment:
       CI: '${CI}'
       UNLOCK_ENV: 'unlock-provider-integration'
@@ -67,7 +67,7 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'
       PORT: 9000
-    command: ['npm', 'run', 'start']    
+    command: ['npm', 'run', 'start']
   unlock-protocol-com:
     image: unlock-protocol-com
     ports:
@@ -114,7 +114,7 @@ services:
     environment:
       CI: '${CI}'
     depends_on:
-      - ganache-integration      
+      - ganache-integration
   rover:
     image: rover
     environment:
@@ -133,7 +133,12 @@ services:
       LOCKSMITH_PORT: '${LOCKSMITH_PORT}'
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
+      LOCKSMITH_HOST: '${LOCKSMITH_HOST}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_HOST: '${PAYWALL_HOST}'
+      UNLOCK_PROVIDER_APP_HOST: '${UNLOCK_PROVIDER_APP_HOST}'
+      UNLOCK_PROVIDER_APP_PORT: '${UNLOCK_PROVIDER_APP_PORT}'
       USER_IFRAME_URL: '${USER_IFRAME_URL}'
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
