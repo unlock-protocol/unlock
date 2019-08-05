@@ -15,11 +15,12 @@ export interface UnlockAndIframeManagerWindow
   extends IframeManagingWindow,
     UnlockProtocolWindow {}
 
-// lockStatus holds the current state of the lock. It is undefined when we
-// haven't yet determined whether the paywall is locked or unlocked (typically
-// for a short period right after the page loads).
-// lockStatus is _never_ used to make decisions within the paywall, it is simply
-// a user-facing way to query the current state of the paywall
+// lockStatus holds the current state of the lock, and is only ever updated by
+// the event listener defined in `setupUnlockProtocolVariable`. It is undefined
+// when we haven't yet determined whether the paywall is locked or unlocked
+// (typically for a short period right after the page loads).  lockStatus is
+// _never_ used to make decisions within the paywall, it is simply a user-facing
+// way to query the current state of the paywall
 let lockStatus: LockStatus = undefined
 
 export default function setupUnlockProtocolVariable(
