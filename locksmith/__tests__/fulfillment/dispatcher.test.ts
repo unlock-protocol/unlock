@@ -84,7 +84,7 @@ describe('Dispatcher', () => {
         expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
           lockAddress,
           recipient,
-          '0.01',
+          '0',
           buyer
         )
       })
