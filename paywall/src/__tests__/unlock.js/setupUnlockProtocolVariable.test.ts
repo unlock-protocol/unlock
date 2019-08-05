@@ -1,10 +1,19 @@
 import setupUnlockProtocolVariable, {
   UnlockAndIframeManagerWindow,
 } from '../../unlock.js/setupUnlockProtocolVariable'
-import { IframeType, IframeManagingWindow } from '../../windowTypes'
+import {
+  IframeType,
+  IframeManagingWindow,
+  AddEventListenerFunc,
+} from '../../windowTypes'
+
+interface IframeManagingWindowWithAddEventListener
+  extends IframeManagingWindow {
+  addEventListener: AddEventListenerFunc
+}
 
 describe('setupUnlockProtocolVariable', () => {
-  let fakeWindow: IframeManagingWindow
+  let fakeWindow: IframeManagingWindowWithAddEventListener
   let fakeCheckoutUIIframe: IframeType
 
   beforeEach(() => {
@@ -20,6 +29,7 @@ describe('setupUnlockProtocolVariable', () => {
         },
       },
       setInterval: jest.fn(),
+      addEventListener: jest.fn(),
     }
     fakeCheckoutUIIframe = {
       contentWindow: {
@@ -38,7 +48,7 @@ describe('setupUnlockProtocolVariable', () => {
       fakeWindow as UnlockAndIframeManagerWindow,
       fakeCheckoutUIIframe
     )
-    const resultWindow: UnlockAndIframeManagerWindow = fakeWindow as UnlockAndIframeManagerWindow
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
 
     expect(resultWindow.unlockProtocol).not.toBeUndefined()
   })
@@ -50,11 +60,24 @@ describe('setupUnlockProtocolVariable', () => {
       fakeWindow as UnlockAndIframeManagerWindow,
       fakeCheckoutUIIframe
     )
-    const resultWindow: UnlockAndIframeManagerWindow = fakeWindow as UnlockAndIframeManagerWindow
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
 
     expect(resultWindow.unlockProtocol.loadCheckoutModal).toBeInstanceOf(
       Function
     )
+  })
+
+  it('should set a getState function on the window.unlockProtocol object, which initially returns undefined', () => {
+    expect.assertions(2)
+
+    setupUnlockProtocolVariable(
+      fakeWindow as UnlockAndIframeManagerWindow,
+      fakeCheckoutUIIframe
+    )
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
+
+    expect(resultWindow.unlockProtocol.getState).toBeInstanceOf(Function)
+    expect(resultWindow.unlockProtocol.getState()).toBeUndefined()
   })
 
   it('should not allow setting new variables on the unlockProtocol object', () => {
@@ -67,10 +90,11 @@ describe('setupUnlockProtocolVariable', () => {
     interface MockWindowWithHi extends UnlockAndIframeManagerWindow {
       unlockProtocol: {
         loadCheckoutModal: () => void
+        getState: () => undefined
         hi: number
       }
     }
-    const resultWindow: MockWindowWithHi = fakeWindow as MockWindowWithHi
+    const resultWindow = fakeWindow as MockWindowWithHi
 
     expect(() => {
       resultWindow.unlockProtocol.hi = 1
@@ -84,7 +108,7 @@ describe('setupUnlockProtocolVariable', () => {
       fakeWindow as UnlockAndIframeManagerWindow,
       fakeCheckoutUIIframe
     )
-    const resultWindow: UnlockAndIframeManagerWindow = fakeWindow as UnlockAndIframeManagerWindow
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
 
     expect(() => {
       resultWindow.unlockProtocol.loadCheckoutModal = () => {}
@@ -99,7 +123,7 @@ describe('setupUnlockProtocolVariable', () => {
       fakeCheckoutUIIframe
     )
 
-    const resultWindow: UnlockAndIframeManagerWindow = fakeWindow as UnlockAndIframeManagerWindow
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
 
     resultWindow.unlockProtocol.loadCheckoutModal()
     expect(fakeCheckoutUIIframe.className).toBe('unlock start show')
@@ -113,7 +137,7 @@ describe('setupUnlockProtocolVariable', () => {
       fakeCheckoutUIIframe
     )
 
-    const resultWindow: UnlockAndIframeManagerWindow = fakeWindow as UnlockAndIframeManagerWindow
+    const resultWindow = fakeWindow as UnlockAndIframeManagerWindow
 
     resultWindow.unlockProtocol.loadCheckoutModal()
     expect(fakeCheckoutUIIframe.className).toBe('unlock start show')

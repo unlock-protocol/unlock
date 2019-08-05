@@ -1,8 +1,10 @@
 import { showIframe, hideIframe } from './iframeManager'
 import {
+  EventTypes,
   IframeManagingWindow,
-  UnlockProtocolWindow,
   IframeType,
+  LockStatus,
+  UnlockProtocolWindow,
 } from '../windowTypes'
 
 interface hasPrototype {
@@ -12,6 +14,13 @@ interface hasPrototype {
 export interface UnlockAndIframeManagerWindow
   extends IframeManagingWindow,
     UnlockProtocolWindow {}
+
+// lockStatus is a private variable that is only ever set by the event listener
+// defined in setupUnlockProtocolVariable.
+// lockStatus is _never_ used to make decisions withing the paywall, it is simply
+// a convenience that allows users to query to state of the paywall.
+// The undefined state should only occur for a brief period when the page first loads.
+let lockStatus: LockStatus = undefined
 
 export default function setupUnlockProtocolVariable(
   window: UnlockAndIframeManagerWindow,
@@ -23,8 +32,14 @@ export default function setupUnlockProtocolVariable(
   const hideCheckoutModal = () => {
     hideIframe(window, CheckoutUIIframe)
   }
+  const getState = () => lockStatus
 
   const unlockProtocol: hasPrototype = {}
+
+  // Update the user-facing status with locked/unlocked updates
+  window.addEventListener(EventTypes.UNLOCK, ({ detail }) => {
+    lockStatus = detail
+  })
 
   Object.defineProperties(unlockProtocol, {
     loadCheckoutModal: {
@@ -32,6 +47,12 @@ export default function setupUnlockProtocolVariable(
       writable: false, // prevent changing loadCheckoutModal by simple `unlockProtocol.loadCheckoutModal = () => {}`
       configurable: false, // prevent re-defining the writable property
       enumerable: false, // prevent finding it exists via `for ... of`
+    },
+    getState: {
+      value: getState,
+      writable: false,
+      configurable: false,
+      enumerable: false,
     },
   })
 
