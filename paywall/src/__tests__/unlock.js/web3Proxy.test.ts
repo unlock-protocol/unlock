@@ -18,6 +18,7 @@ describe('web3Proxy', () => {
   let handlers: {
     message: Array<(message: any) => void>
     storage: Array<(message: any) => void>
+    unlockProtocol: Array<(message: any) => void>
   }
   let mapHandlers: MapHandlers
   let fakeCheckoutIframe: IframeType
@@ -43,6 +44,7 @@ describe('web3Proxy', () => {
     handlers = {
       message: [],
       storage: [],
+      unlockProtocol: [],
     }
     process.env.PAYWALL_URL = 'http://fun.times'
     process.env.USER_IFRAME_URL = 'http://fun.times/account'
