@@ -238,11 +238,7 @@ export class CreateContent extends Component {
                     </Field>
                     <Field>
                       <Label>Start Time</Label>
-                      <TimePicker
-                        now={now}
-                        date={date}
-                        onChange={this.timeChanged}
-                      />
+                      <TimePicker now={date} onChange={this.timeChanged} />
                     </Field>
                     <Field>&nbsp;</Field>
                     <Field>
