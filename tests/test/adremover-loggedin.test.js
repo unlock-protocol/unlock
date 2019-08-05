@@ -2,7 +2,8 @@ const url = require('../helpers/url')
 const wait = require('../helpers/wait')
 // const debug = require('../helpers/debugging')
 const iframes = require('../helpers/iframes')
-const lockAddresses = require('../helpers/locks')
+
+const { adblockETHLockAddresses } = require('../helpers/vars')
 
 // const it = debug.screenshotOnFail(page)
 
@@ -33,7 +34,7 @@ const unlockIcon =
 
 describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   beforeAll(async () => {
-    const addresses = lockAddresses.adblockETHLockAddresses.map(address =>
+    const addresses = adblockETHLockAddresses.map(address =>
       address.toLowerCase()
     )
 

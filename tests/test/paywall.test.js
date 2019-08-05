@@ -1,6 +1,7 @@
 const url = require('../helpers/url')
 const wait = require('../helpers/wait')
-const lockAddresses = require('../helpers/locks')
+
+const { paywallETHLockAddress } = require('../helpers/vars')
 
 //const lockName = 'ETH paywall lock'
 const lockKeyPrice = '0.1'
@@ -11,7 +12,7 @@ describe('The Unlock Paywall', () => {
   beforeAll(async () => {
     // This lock is created in /docker/development/deploy-locks.js
     // after the comment "locks for paywall integration tests"
-    const lock = lockAddresses.paywallETHLockAddress
+    const lock = paywallETHLockAddress
 
     lockSelector = path => {
       return `[data-address="${lock}"] ${path}`
