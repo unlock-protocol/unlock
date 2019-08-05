@@ -31,12 +31,12 @@ to a _lock_ using Ethereum. Tickets are no different.
 
 ![Unlock ticket creation screen](/static/images/blog/introducing-tickets/create-an-event.png)
 
-Once you've created a lock, you'll have access to a number of ways to use it: different applications that sit on top of
+Once a lock has been created, creators have access to a number of ways to use it: different applications that sit on top of
 the Unlock Protocol. The ticketed event application allows you to save a date, title, description, and location for the
 event. These aren't stored on the blockchain itself: instead, they create a database record that references the lock's 
 Ethereum address.
 
-A user with an Ethereum wallet like Metamask can buy a key with one click. The event page then shows a QR code, which
+An attendee with an Ethereum wallet like Metamask can buy a key with one click. The event page then shows a QR code, which
 contains the user's public key and a signed version of the lock address. This can be verified at the door with a
 commodity QR code reader, which are now built into the camera apps in every major mobile operating system.
 
