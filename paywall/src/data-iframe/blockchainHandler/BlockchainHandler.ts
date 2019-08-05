@@ -216,6 +216,31 @@ export default class BlockchainHandler {
   }
 
   /**
+   * Manage triggering send of data when keys expire
+   */
+  sendDataWhenKeyExpires(expiry: number) {
+    // a key with no expiry yet does not need an expiration trigger
+    if (!expiry) return
+    const now = new Date().getTime() / 1000
+    const timeToExpirationInSeconds = expiry - now
+    const timeToExpirationInMilliseconds = timeToExpirationInSeconds * 1000
+
+    if (timeToExpirationInSeconds <= 0) {
+      // key is expired already
+      // as this is called by the key.updated listener, it will
+      // dispatch changes.  If that ever changes, we need to
+      // call dispatchChangesToPostOffice() here
+      return
+    }
+
+    // 1 second after the key expires, re-send data to lock the paywall
+    this.window.setTimeout(
+      () => this.dispatchChangesToPostOffice(),
+      timeToExpirationInMilliseconds + 1000
+    )
+  }
+
+  /**
    * Set up the event listeners on walletService and web3Service
    */
   setupListeners() {
@@ -258,6 +283,10 @@ export default class BlockchainHandler {
     this.web3Service.on('key.updated', (_: any, key: KeyResult) => {
       key.lock = normalizeLockAddress(key.lock)
       this.store.keys[key.lock] = key
+      this.sendDataWhenKeyExpires(key.expiration)
+      // note: if this next line is ever removed, it will need to be
+      // added inside sendDataWhenKeyExpires() to ensure expired
+      // key information is sent to the post office
       this.dispatchChangesToPostOffice()
     })
 
