@@ -55,6 +55,7 @@ describe('web3Proxy', () => {
       dispatchEvent: jest.fn(),
       unlockProtocol: {
         loadCheckoutModal: jest.fn(),
+        getState: jest.fn(),
       },
       setInterval: jest.fn(),
       localStorage: {
