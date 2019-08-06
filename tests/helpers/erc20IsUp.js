@@ -2,61 +2,9 @@
 // balanceOf(0xaaadeed4...) to get the ERC20 token balance.
 // when the standup script has finished, it will return 500 tokens,
 // which is assumed if our call to balanceOf returns a non-zero value.
-const http = require('http')
+const post = require('./http').post
 
-const {
-  erc20ContractAddress,
-  testingAddress,
-  httpProviderHost,
-  httpProviderPort,
-} = require('./vars.js')
-
-function post(payload) {
-  return new Promise((resolve, reject) => {
-    const body = JSON.stringify(payload)
-
-    const options = {
-      hostname: httpProviderHost,
-      port: httpProviderPort,
-      path: '/',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-      body: body,
-    }
-
-    const request = new http.ClientRequest(options)
-
-    request.on('response', res => {
-      if (res.statusCode !== 200) {
-        reject(new Error(`failed ${res.statusCode}`))
-      }
-      res.setEncoding('utf8')
-      let result = ''
-      res.on('data', chunk => {
-        result += chunk
-      })
-      res.on('end', () => {
-        try {
-          const response = {
-            data: JSON.parse(result),
-          }
-          resolve(response)
-        } catch (e) {
-          reject(e)
-        }
-      })
-    })
-
-    request.on('error', e => {
-      reject(new Error(`problem with request: ${e.message}`))
-    })
-
-    request.end(body)
-  })
-}
+const { erc20ContractAddress, testingAddress } = require('./vars.js')
 
 const erc20IsUp = ({ delay, maxAttempts }) => {
   let attempts = 0
