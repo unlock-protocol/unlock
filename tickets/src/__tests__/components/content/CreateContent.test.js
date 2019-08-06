@@ -23,7 +23,7 @@ const account = {
 }
 
 const inputLocks = {
-  abc123: { address: 'abc123', owner: '0x123' },
+  abc123: { address: 'abc123', name: 'This one has a name', owner: '0x123' },
   def459: { address: 'def456', owner: '0x123' },
   ghi789: { address: 'ghi789', owner: '0x567' },
 }
@@ -59,13 +59,13 @@ describe('CreateContent', () => {
       <Provider store={store}>
         <CreateContent
           config={config}
-          locks={['abc123', 'def456']}
+          locks={[inputLocks.abc123, inputLocks.def459]}
           loadEvent={jest.fn()}
         />
       </Provider>
     )
     expect(form.container.querySelector('option[value="abc123"]').text).toEqual(
-      'abc123'
+      'This one has a name'
     )
     expect(form.container.querySelector('option[value="def456"]').text).toEqual(
       'def456'
@@ -104,7 +104,7 @@ describe('CreateContent', () => {
           <CreateContent
             config={config}
             account={{ address: 'ben' }}
-            locks={['abc123', 'def456']}
+            locks={[inputLocks.abc123, inputLocks.def459]}
             addEvent={addEvent}
             now={now}
             loadEvent={jest.fn()}
@@ -178,7 +178,7 @@ describe('CreateContent', () => {
           <CreateContent
             config={config}
             account={{ address: 'ben' }}
-            locks={['abc123', 'def456']}
+            locks={[inputLocks.abc123, inputLocks.def459]}
             addEvent={addEvent}
             loadEvent={loadEvent}
             now={now}
@@ -221,7 +221,7 @@ describe('CreateContent', () => {
         <CreateContent
           config={config}
           account={{ address: 'ben' }}
-          locks={['abc123', 'def456']}
+          locks={[inputLocks.abc123, inputLocks.def459]}
           addEvent={addEvent}
           loadEvent={loadEvent}
           now={now}
@@ -267,7 +267,7 @@ describe('CreateContent', () => {
         <CreateContent
           config={config}
           account={{ address: 'ben' }}
-          locks={['abc123', 'def456']}
+          locks={[inputLocks.abc123, inputLocks.def459]}
           addEvent={addEvent}
           loadEvent={loadEvent}
           now={now}
@@ -288,8 +288,8 @@ describe('mapStateToProps', () => {
     const props = mapStateToProps({ locks: inputLocks, account }, { now: null })
 
     expect(props.locks.length).toEqual(2)
-    expect(props.locks[0]).toEqual('abc123')
-    expect(props.locks[1]).toEqual('def456')
+    expect(props.locks[0]).toEqual(inputLocks.abc123)
+    expect(props.locks[1]).toEqual(inputLocks.def459)
     expect(props.now).toBeInstanceOf(Date)
   })
 
