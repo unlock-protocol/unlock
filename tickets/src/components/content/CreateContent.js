@@ -49,9 +49,12 @@ export class CreateContent extends Component {
       website: '',
     }
 
+    let firstLockAddress
+    if (locks[0]) firstLockAddress = locks[0].address
+
     this.state = {
       lockAddress:
-        locks[0] || event.lockAddress || this.defaultState.lockAddress,
+        firstLockAddress || event.lockAddress || this.defaultState.lockAddress,
       name: event.name || this.defaultState.name,
       description: event.description || this.defaultState.description,
       location: event.location || this.defaultState.location,
@@ -186,8 +189,8 @@ export class CreateContent extends Component {
                       className="select-container"
                       classNamePrefix="select-option"
                       options={locks.map(savedLock => ({
-                        value: savedLock,
-                        label: savedLock,
+                        value: savedLock.address,
+                        label: savedLock.name || savedLock.address,
                       }))}
                       onChange={selectedOption => {
                         if (selectedOption.value)
@@ -274,7 +277,7 @@ CreateContent.propTypes = {
   addEvent: PropTypes.func.isRequired,
   loadEvent: PropTypes.func.isRequired,
   event: UnlockPropTypes.ticketedEvent,
-  locks: PropTypes.arrayOf(PropTypes.string),
+  locks: PropTypes.arrayOf(UnlockPropTypes.lock),
   submitted: PropTypes.bool,
   config: UnlockPropTypes.configuration.isRequired,
 }
@@ -287,9 +290,9 @@ CreateContent.defaultProps = {
 }
 
 export const mapStateToProps = ({ locks, account, event }, { now }) => {
-  let selectLocks = Object.values(locks)
-    .filter(lock => lock.owner === account.address)
-    .map(lock => lock.address)
+  let selectLocks = Object.values(locks).filter(
+    lock => lock.owner === account.address
+  )
 
   return {
     locks: selectLocks,
