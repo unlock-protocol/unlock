@@ -6,6 +6,7 @@ import {
   LOAD_EVENT,
   updateEvent,
   eventError,
+  savedEvent,
 } from '../actions/event'
 import { signData, SIGNED_DATA } from '../actions/signature'
 import UnlockEvent from '../structured_data/unlockEvent'
@@ -71,14 +72,37 @@ const eventMiddleware = config => {
         ) {
           eventService
             .saveEvent(action.data.message.event, action.signature)
-            .catch(error => dispatch(eventError(error)))
+            .then(() => dispatch(savedEvent(action.data.message.event)))
+            .catch(error => {
+              dispatch(eventError(error))
+            })
         }
 
         // Load an event from locksmith
         if (action.type === LOAD_EVENT) {
-          eventService.getEvent(action.address).then(event => {
-            dispatch(updateEvent(event))
-          })
+          eventService
+            .getEvent(action.address)
+            .then(event => {
+              dispatch(updateEvent(event))
+            })
+            .catch(() => {
+              // Not Found?
+              dispatch(
+                updateEvent({
+                  lockAddress: action.address,
+                  name: '',
+                  description: '',
+                  location: '',
+                  date: new Date(),
+                  links: [
+                    {
+                      text: 'Event Website',
+                      href: '',
+                    },
+                  ],
+                })
+              ) // Makes sure we unset the event
+            })
         }
         next(action)
       }
