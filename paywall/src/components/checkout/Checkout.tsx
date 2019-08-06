@@ -4,6 +4,7 @@ import { RoundedLogo } from '../interface/Logo'
 
 import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
+import LoadingLock from '../lock/LoadingLock'
 import Media from '../../theme/media'
 
 interface Props {
@@ -37,6 +38,7 @@ export const Checkout = ({
         <p>{config.callToAction.default}</p>
       </Header>
       <CheckoutLocks>
+        {lockAddresses.length == 0 && <LoadingLock />}
         {// the key is lower-cased. The lock address is checksummed, and so case sensitive. This change ensures we map locks to their configuration names
         lockAddresses.map(lockAddress => {
           const lock = locks[lockAddress]

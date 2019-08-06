@@ -74,6 +74,7 @@ describe('setupPostOffice', () => {
   let fakeDataIframe: MockIframe
   let fakeUIIframe: MockIframe
   let fakeAccountIframe: MockIframe
+  let visibleFakeAccountIframe: MockIframe
 
   function sendMessage(
     source: MockIframe,
@@ -176,6 +177,16 @@ describe('setupPostOffice', () => {
     }
     fakeAccountIframe = {
       className: 'unlock start',
+      setAttribute: jest.fn(),
+      src: 'http://unlock-app.com/account',
+      origin: unlockOrigin,
+      contentWindow: {
+        Iam: 'account',
+        postMessage: jest.fn(),
+      },
+    }
+    visibleFakeAccountIframe = {
+      className: 'unlock start show',
       setAttribute: jest.fn(),
       src: 'http://unlock-app.com/account',
       origin: unlockOrigin,
@@ -287,6 +298,34 @@ describe('setupPostOffice', () => {
     sendMessage(fakeUIIframe, PostMessages.READY)
 
     expect(fakeUIIframe.className).toBe('unlock start show')
+  })
+
+  it('does not show the checkout UI on PostMessages.READY if the account iframe is visible', () => {
+    expect.assertions(1)
+
+    makeFakeWindow()
+    fakeWindow.unlockProtocolConfig = {
+      type: 'paywall',
+      locks: {},
+      callToAction: {
+        default: '',
+        expired: '',
+        pending: '',
+        confirmed: '',
+      },
+    }
+
+    // we will use the normalized config from the beforeEach, this ensures we use our own
+    setupPostOffices(
+      fakeWindow,
+      fakeDataIframe,
+      fakeUIIframe,
+      visibleFakeAccountIframe
+    )
+
+    sendMessage(fakeUIIframe, PostMessages.READY)
+
+    expect(fakeUIIframe.className).toBe('unlock start')
   })
 
   it('responds to PostMessages.UNLOCKED by sending unlocked to the UI iframe', () => {

@@ -11,6 +11,10 @@ export const Grid = styled.div`
   }
 `
 
+export const GridPadding = styled.div`
+  padding: 25px;
+`
+
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -186,6 +190,7 @@ export const IframeLayout = styled.div`
 `
 
 export const XYCenter = styled.div`
+  background: rgba(0, 0, 0, 0.4) none repeat scroll 0% 0%;
   position: fixed;
   height: 100%;
   width: 100%;

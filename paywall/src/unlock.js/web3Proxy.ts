@@ -158,7 +158,7 @@ export default function web3Proxy(
     [PostMessages.SHOW_ACCOUNTS_MODAL]: (
       _postMessage,
       _dataIframe,
-      _checkoutIframe,
+      checkoutIframe,
       accountIframe
     ) => {
       return () => {
@@ -172,23 +172,30 @@ export default function web3Proxy(
         }
         if (canUseUserAccounts) {
           showIframe(window, accountIframe)
+          hideIframe(window, checkoutIframe)
         }
       }
     },
     [PostMessages.HIDE_ACCOUNTS_MODAL]: (
       _postMessage,
       _dataIframe,
-      _checkoutIframe,
+      checkoutIframe,
       accountIframe
     ) => {
       return () => {
-        hideIframe(window, accountIframe)
+        // Need to check for canUseUserAccounts here because otherwise this will
+        // run when using metamask, causing the checkoutIframe to always appear
+        if (canUseUserAccounts) {
+          hideIframe(window, accountIframe)
+          showIframe(window, checkoutIframe)
+        }
       }
     },
   }
 
   const checkForUserAccountWallet = async (
     accountIframe: IframeType,
+    checkoutIframe: IframeType,
     postMessage: PostMessageToIframe<MessageTypes>
   ) => {
     // we don't have web3
@@ -225,6 +232,7 @@ export default function web3Proxy(
     } else if (canUseUserAccounts && !proxyAccount) {
       // show the login form if the user is not logged in
       showIframe(window, accountIframe)
+      hideIframe(window, checkoutIframe)
     }
     hasWeb3 = true
     postMessage('data', PostMessages.WALLET_INFO, {
@@ -238,7 +246,7 @@ export default function web3Proxy(
     [PostMessages.UPDATE_LOCKS]: (
       _postMessage,
       _dataIframe,
-      _checkoutIframe,
+      checkoutIframe,
       accountIframe
     ) => {
       return locks => {
@@ -254,6 +262,7 @@ export default function web3Proxy(
         if (canUseUserAccounts && locks && Object.keys(locks).length) {
           if (showIframeWhenReady) {
             showIframe(window, accountIframe)
+            hideIframe(window, checkoutIframe)
             // turn the flag off, we don't want to re-open the user accounts iframe
             // every time the locks change
             showIframeWhenReady = false
@@ -264,7 +273,7 @@ export default function web3Proxy(
     [PostMessages.READY_WEB3]: (
       postMessage,
       _dataIframe,
-      _checkoutIframe,
+      checkoutIframe,
       accountIframe
     ) => {
       return async () => {
@@ -279,7 +288,11 @@ export default function web3Proxy(
         try {
           const result = await enable(window)
           if (result === NO_WEB3) {
-            checkForUserAccountWallet(accountIframe, postMessage)
+            checkForUserAccountWallet(
+              accountIframe,
+              checkoutIframe,
+              postMessage
+            )
             return
           }
           hasWeb3 = true

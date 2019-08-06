@@ -69,7 +69,7 @@ jobs:
           command: scripts/build-image.sh unlock-js
       - run:
           name: unlock-js tests
-          command: scripts/tests.sh unlock-js
+          command: scripts/unlockjs-tests.sh unlock-js
 
   rover-tests:
     machine: true
