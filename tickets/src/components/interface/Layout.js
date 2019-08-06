@@ -95,7 +95,7 @@ const HomeLink = styled.span`
 const Content = styled.div`
   color: var(--darkgrey);
   display: grid;
-  row-gap: 24px;
+  row-gap: 12px;
   width: 100%;
   height: 100%;
 `
