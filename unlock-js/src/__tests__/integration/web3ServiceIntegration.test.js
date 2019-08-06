@@ -53,7 +53,7 @@ describe('Web3 Service Integration', () => {
         expirationDuration: 300,
         keyPrice: '0.01',
         maxNumberOfKeys: -1,
-        name: 'Ether Lock',
+        name: 'ETH Lock',
         outstandingKeys: 0,
         owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         publicLockVersion: 4,
