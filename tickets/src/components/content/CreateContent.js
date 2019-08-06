@@ -379,7 +379,9 @@ const Text = styled.label`
   font-size: 13px;
   color: var(--darkgrey);
 `
-export const Label = Text
+export const Label = styled(Text)`
+  text-transform: uppercase;
+`
 
 const Cta = styled.a`
   clear: both;

@@ -62,18 +62,6 @@ export const EventContent = ({
 
   const convertCurrency = !lock.currencyContractAddress
 
-  const externalLinks = links.map(({ href, text }) => {
-    return (
-      <li key={href}>
-        <a target="_blank" rel="noopener noreferrer" href={href}>
-          {text}
-        </a>
-      </li>
-    )
-  })
-
-  const details = `For details, click here ${window.location.href}`
-
   let googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
@@ -81,6 +69,29 @@ export const EventContent = ({
     duration,
     location
   )
+
+  const eventLinks = [
+    ...links,
+    {
+      href: googleCalendarLink,
+      text: 'Add to your Calendar!',
+      icon: '/static/images/illustrations/calendar.svg',
+    },
+  ]
+
+  const externalLinks = eventLinks.map(
+    ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
+      return (
+        <Link key={href} icon={icon}>
+          <a target="_blank" rel="noopener noreferrer" href={href}>
+            {text}
+          </a>
+        </Link>
+      )
+    }
+  )
+
+  const details = `For details, click here ${window.location.href}`
 
   return (
     <GlobalErrorConsumer>
@@ -95,6 +106,8 @@ export const EventContent = ({
             {dateString}
             <DisplayTime>{timeString}</DisplayTime>
           </DisplayDate>
+          <Location>{location}</Location>
+
           <Columns count={2}>
             <Column>
               <Description>
@@ -102,14 +115,6 @@ export const EventContent = ({
                   return <DescriptionPara key={line}>{line}</DescriptionPara>
                 })}
               </Description>
-              <Location>{location}</Location>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={googleCalendarLink}
-              >
-                Add to your Calendar!
-              </a>
               <Links>{externalLinks}</Links>
             </Column>
             <Column>
@@ -267,6 +272,7 @@ export default withConfig(
 )
 
 const Columns = styled.section`
+  margin-top: 10px;
   ${Media.nophone`
     display: grid;
     grid-gap: 40px;
@@ -298,16 +304,17 @@ const Image = styled.img`
   max-width: 100%;
 `
 
-const Links = styled.ul`
-  padding: 0px;
+const Link = styled.li`
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(${props => props.icon}) no-repeat;
+  padding-left: 40px;
+`
 
-  li {
-    display: inline-block;
-  }
-  li + li:before {
-    content: ' - ';
-    padding: 0 5px;
-  }
+const Links = styled.ul`
+  font-size: 24px;
+  padding: 0px;
 `
 
 export const Title = styled.h1`
@@ -374,7 +381,8 @@ const Description = styled.div`
 const Location = styled.p`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 16px;
-  margin-top: 30px;
+  margin: 0px;
+  padding-left: 20px;
 `
 
 const DescriptionPara = styled.p`
