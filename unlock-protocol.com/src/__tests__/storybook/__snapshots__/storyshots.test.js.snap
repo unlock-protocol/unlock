@@ -11406,6 +11406,7 @@ Object {
   transition: background-color 200ms ease;
   max-width: 400px;
   padding: 20px 50px;
+  color: var(--white);
 }
 
 .c15:hover {
@@ -12325,7 +12326,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="q8p5ah-0 sc-9upljg-0 kSuzMP"
+            class="q8p5ah-0 sc-9upljg-0 bCIeGK"
           >
             Go to Your Dashboard
           </button>
@@ -12847,6 +12848,7 @@ Object {
   transition: background-color 200ms ease;
   max-width: 400px;
   padding: 20px 50px;
+  color: var(--white);
 }
 
 .c1:hover {
@@ -12904,7 +12906,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="q8p5ah-0 sc-9upljg-0 kSuzMP"
+        class="q8p5ah-0 sc-9upljg-0 bCIeGK"
       >
         Go to Your Dashboard
       </button>

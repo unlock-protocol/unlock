@@ -67,6 +67,7 @@ export class HomepageButton extends React.Component {
 const DashboardButton = styled(ActionButton)`
   max-width: 400px;
   padding: 20px 50px;
+  color: var(--white);
 `
 
 const TermsButton = styled(ActionButton)`
