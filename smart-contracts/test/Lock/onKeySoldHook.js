@@ -1,13 +1,10 @@
-const BigNumber = require('bignumber.js')
-
 const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const testKeySoldHookContract = artifacts.require('TestKeySoldHook.sol')
 const getProxy = require('../helpers/proxy')
 
-let lock, locks, unlock, testKeySoldHook, tx
+let lock, locks, unlock, testKeySoldHook
 
 contract('Lock / onKeySoldHook', accounts => {
   const from = accounts[1]
@@ -22,7 +19,7 @@ contract('Lock / onKeySoldHook', accounts => {
     testKeySoldHook = await testKeySoldHookContract.new()
     await lock.updateBeneficiary(testKeySoldHook.address)
     keyPrice = await lock.keyPrice()
-    tx = await lock.purchase(to, web3.utils.padLeft(0, 40), dataField, {
+    await lock.purchase(to, web3.utils.padLeft(0, 40), dataField, {
       from,
       value: keyPrice,
     })

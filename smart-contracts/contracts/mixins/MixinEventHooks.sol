@@ -1,8 +1,8 @@
 pragma solidity 0.5.10;
 
-import "../interfaces/IUnlockEventHooks.sol";
-import "./MixinLockCore.sol";
-import "@openzeppelin/contracts/introspection/IERC1820Registry.sol";
+import '../interfaces/IUnlockEventHooks.sol';
+import './MixinLockCore.sol';
+import '@openzeppelin/contracts/introspection/IERC1820Registry.sol';
 
 
 /**
