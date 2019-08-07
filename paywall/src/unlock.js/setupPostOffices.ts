@@ -46,6 +46,7 @@ export function normalizeConfig(unlockConfig: any) {
  *                                  (created by document.createElement)
  */
 export default function setupPostOffices(
+  normalizedConfig: any,
   window: UnlockWindow,
   dataIframe: IframeType,
   CheckoutUIIframe: IframeType,
@@ -62,7 +63,6 @@ export default function setupPostOffices(
     window,
     CheckoutUIIframe
   )
-  const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
 
   const dataHandlers: MessageHandlerTemplates<MessageTypes> = {
     [PostMessages.READY]: send => {
