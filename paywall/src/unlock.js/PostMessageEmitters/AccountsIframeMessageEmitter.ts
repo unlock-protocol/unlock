@@ -16,13 +16,26 @@ import {
   UserAccountsIframeEventEmitter,
   UserAccountsIframeEvents,
 } from './EventEmitterTypes'
-import { waitFor } from '../../utils/promises'
 
 // eslint is too stupid to parse this if the extends is in the class declaration below, so we extract it
 class FancyEmitter extends (EventEmitter as {
   new (): UserAccountsIframeEventEmitter
 }) {}
 
+/**
+ * This class loads user accounts on-demand
+ *
+ * As such, it is slightly different from the other emitters.
+ * This one does not create the iframe in the constructor, but instead
+ * makes a fake one so that we can interact with it as if it were there,
+ * but nothing happens unless we actually have an explicit need for user
+ * accounts.
+ *
+ * The Wallet class handles initialization of this, and the
+ * IframeHandler class handles setting up cross-iframe communication
+ * in the IframeHandler.setupAccountUIHandler() method, which is also
+ * called by the Wallet class in Wallet.setupWallet()
+ */
 export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
   private _addHandler?: (
     type: keyof UserAccountsIframeEvents,
@@ -50,6 +63,10 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
     }
   }
 
+  /**
+   * This is called by the Wallet.setupWallet() method if user accounts
+   * are needed
+   */
   createIframe() {
     const url = new URL(this.iframe.src)
     this.iframe = makeIframe(this.window, this.iframe.src)
@@ -67,18 +84,21 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
     this.setupListeners()
   }
 
+  /**
+   * This method is used by the MainWindowHandler to show the account iframe when needed.
+   * It also hides the checkout iframe if it is visible
+   */
   showIframe() {
     // note: if we are using a dummy iframe this will not display anything
     this.iframe.className = 'unlock start show'
   }
 
   hideIframe() {
+    // note: if we are using a dummy iframe this will not hide anything
     this.iframe.className = 'unlock start'
   }
 
-  async setupListeners() {
-    await waitFor(() => this._addHandler)
-    if (!this._addHandler) return
+  private setupListeners() {
     this.addHandler(PostMessages.READY, () => this.emit(PostMessages.READY))
     this.addHandler(PostMessages.UPDATE_ACCOUNT, account =>
       this.emit(PostMessages.UPDATE_ACCOUNT, account)
