@@ -7265,14 +7265,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirmed key transacti
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c24 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c24 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -7291,7 +7291,7 @@ Object {
   height: 24px;
 }
 
-.c23 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -7323,39 +7323,10 @@ Object {
   height: 100%;
 }
 
-.c18 {
+.c17 {
   font-size: 13px;
   color: var(--darkgrey);
   text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
 }
 
 .c10 {
@@ -7407,29 +7378,6 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
 .c7 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
@@ -7468,14 +7416,20 @@ Object {
   margin-bottom: 1em;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
-    display: none;
-  }
+.c18 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c18 img {
+  width: 30px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -7499,13 +7453,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c25 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c19 {
     display: none;
   }
 }
@@ -7513,12 +7467,6 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
   }
 }
 
@@ -7655,44 +7603,26 @@ Object {
             <div
               class="c11"
             >
-              <div
+              <label
                 class="c17"
               >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
+                Loading ticket details...
+              </label>
               <div
-                class="c19"
+                class="5 c18"
               >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Confirmed
+                <img
+                  alt="loading"
+                  src="/static/images/loading.svg"
+                />
               </div>
             </div>
           </section>
           <div
-            class="c23"
+            class="c19"
           >
             <div
-              class="c24"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -7709,7 +7639,7 @@ Object {
           </div>
         </div>
         <div
-          class="c25"
+          class="c21"
         />
       </div>
     </div>
@@ -7811,36 +7741,18 @@ Object {
           <div
             class="sc-1fq9sck-1 ktgvUI"
           >
-            <div
-              class="sc-8fuwpj-0 btHddm"
+            <label
+              class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
             >
-              <label
-                class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
-              >
-                Tickets
-              </label>
-            </div>
+              Loading ticket details...
+            </label>
             <div
-              class="sc-1fq9sck-7 dlUBBh"
+              class="sc-1fq9sck-15 hWGyKd"
             >
-              <div
-                class="sc-1fq9sck-8 fQvRnD"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="sc-1fq9sck-9 knnBWM"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Confirmed
+              <img
+                alt="loading"
+                src="/static/images/loading.svg"
+              />
             </div>
           </div>
         </section>
@@ -8611,14 +8523,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with confirming key transact
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c24 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c24 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -8637,7 +8549,7 @@ Object {
   height: 24px;
 }
 
-.c23 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -8669,39 +8581,10 @@ Object {
   height: 100%;
 }
 
-.c18 {
+.c17 {
   font-size: 13px;
   color: var(--darkgrey);
   text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
 }
 
 .c10 {
@@ -8753,29 +8636,6 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
 .c7 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
@@ -8814,14 +8674,20 @@ Object {
   margin-bottom: 1em;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
-    display: none;
-  }
+.c18 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c18 img {
+  width: 30px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -8845,13 +8711,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c25 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c19 {
     display: none;
   }
 }
@@ -8859,12 +8725,6 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
   }
 }
 
@@ -9001,49 +8861,26 @@ Object {
             <div
               class="c11"
             >
-              <div
+              <label
                 class="c17"
               >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
+                Loading ticket details...
+              </label>
               <div
-                class="c19"
+                class="5 c18"
               >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Confirming Payment (
-                3
-                 /
-                 
-                12
-                )
+                <img
+                  alt="loading"
+                  src="/static/images/loading.svg"
+                />
               </div>
             </div>
           </section>
           <div
-            class="c23"
+            class="c19"
           >
             <div
-              class="c24"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -9060,7 +8897,7 @@ Object {
           </div>
         </div>
         <div
-          class="c25"
+          class="c21"
         />
       </div>
     </div>
@@ -9162,41 +8999,18 @@ Object {
           <div
             class="sc-1fq9sck-1 ktgvUI"
           >
-            <div
-              class="sc-8fuwpj-0 btHddm"
+            <label
+              class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
             >
-              <label
-                class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
-              >
-                Tickets
-              </label>
-            </div>
+              Loading ticket details...
+            </label>
             <div
-              class="sc-1fq9sck-7 dlUBBh"
+              class="sc-1fq9sck-15 hWGyKd"
             >
-              <div
-                class="sc-1fq9sck-8 fQvRnD"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="sc-1fq9sck-9 knnBWM"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Confirming Payment (
-              3
-               /
-               
-              12
-              )
+              <img
+                alt="loading"
+                src="/static/images/loading.svg"
+              />
             </div>
           </div>
         </section>
@@ -9291,14 +9105,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with submitted key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c24 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c24 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -9317,7 +9131,7 @@ Object {
   height: 24px;
 }
 
-.c23 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -9349,39 +9163,10 @@ Object {
   height: 100%;
 }
 
-.c18 {
+.c17 {
   font-size: 13px;
   color: var(--darkgrey);
   text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
 }
 
 .c10 {
@@ -9433,29 +9218,6 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
 .c7 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
@@ -9494,14 +9256,20 @@ Object {
   margin-bottom: 1em;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
-    display: none;
-  }
+.c18 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c18 img {
+  width: 30px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -9525,13 +9293,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c25 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c19 {
     display: none;
   }
 }
@@ -9539,12 +9307,6 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
   }
 }
 
@@ -9681,44 +9443,26 @@ Object {
             <div
               class="c11"
             >
-              <div
+              <label
                 class="c17"
               >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
+                Loading ticket details...
+              </label>
               <div
-                class="c19"
+                class="5 c18"
               >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Payment Sent ...
+                <img
+                  alt="loading"
+                  src="/static/images/loading.svg"
+                />
               </div>
             </div>
           </section>
           <div
-            class="c23"
+            class="c19"
           >
             <div
-              class="c24"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -9735,7 +9479,7 @@ Object {
           </div>
         </div>
         <div
-          class="c25"
+          class="c21"
         />
       </div>
     </div>
@@ -9837,36 +9581,18 @@ Object {
           <div
             class="sc-1fq9sck-1 ktgvUI"
           >
-            <div
-              class="sc-8fuwpj-0 btHddm"
+            <label
+              class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
             >
-              <label
-                class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
-              >
-                Tickets
-              </label>
-            </div>
+              Loading ticket details...
+            </label>
             <div
-              class="sc-1fq9sck-7 dlUBBh"
+              class="sc-1fq9sck-15 hWGyKd"
             >
-              <div
-                class="sc-1fq9sck-8 fQvRnD"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="sc-1fq9sck-9 knnBWM"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Payment Sent ...
+              <img
+                alt="loading"
+                src="/static/images/loading.svg"
+              />
             </div>
           </div>
         </section>
@@ -9961,14 +9687,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with unpurchased key 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c24 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c24 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -9987,7 +9713,7 @@ Object {
   height: 24px;
 }
 
-.c23 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -10019,31 +9745,10 @@ Object {
   height: 100%;
 }
 
-.c18 {
+.c17 {
   font-size: 13px;
   color: var(--darkgrey);
   text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
 }
 
 .c10 {
@@ -10095,29 +9800,6 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
 .c7 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
@@ -10156,14 +9838,20 @@ Object {
   margin-bottom: 1em;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
-    display: none;
-  }
+.c18 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c18 img {
+  width: 30px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -10187,13 +9875,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c25 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c19 {
     display: none;
   }
 }
@@ -10201,12 +9889,6 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
   }
 }
 
@@ -10343,44 +10025,26 @@ Object {
             <div
               class="c11"
             >
-              <div
+              <label
                 class="c17"
               >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
+                Loading ticket details...
+              </label>
               <div
-                class="c19"
+                class="5 c18"
               >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Pay & Register for This Event
+                <img
+                  alt="loading"
+                  src="/static/images/loading.svg"
+                />
               </div>
             </div>
           </section>
           <div
-            class="c23"
+            class="c19"
           >
             <div
-              class="c24"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -10397,7 +10061,7 @@ Object {
           </div>
         </div>
         <div
-          class="c25"
+          class="c21"
         />
       </div>
     </div>
@@ -10499,36 +10163,18 @@ Object {
           <div
             class="sc-1fq9sck-1 ktgvUI"
           >
-            <div
-              class="sc-8fuwpj-0 btHddm"
+            <label
+              class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
             >
-              <label
-                class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
-              >
-                Tickets
-              </label>
-            </div>
+              Loading ticket details...
+            </label>
             <div
-              class="sc-1fq9sck-7 dlUBBh"
+              class="sc-1fq9sck-15 hWGyKd"
             >
-              <div
-                class="sc-1fq9sck-8 fQvRnD"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="sc-1fq9sck-9 knnBWM"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 gvSDlr"
-            >
-              Pay & Register for This Event
+              <img
+                alt="loading"
+                src="/static/images/loading.svg"
+              />
             </div>
           </div>
         </section>
@@ -10623,14 +10269,14 @@ exports[`Storyshots Event RSVP page Event RSVP page with unpurchased key for ERC
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c23 {
+    .c20 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c23 > svg {
+.c20 > svg {
   fill: white;
 }
 
@@ -10649,7 +10295,7 @@ Object {
   height: 24px;
 }
 
-.c22 {
+.c19 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -10681,31 +10327,10 @@ Object {
   height: 100%;
 }
 
-.c18 {
+.c17 {
   font-size: 13px;
   color: var(--darkgrey);
   text-transform: uppercase;
-}
-
-.c21 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-}
-
-.c21:hover {
-  background-color: var(--activegreen);
 }
 
 .c10 {
@@ -10757,22 +10382,6 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
 .c7 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
@@ -10811,14 +10420,20 @@ Object {
   margin-bottom: 1em;
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
-    display: none;
-  }
+.c18 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c18 img {
+  width: 30px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c20 {
     height: 16px;
     width: 16px;
   }
@@ -10842,13 +10457,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
+  .c21 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
+  .c19 {
     display: none;
   }
 }
@@ -10856,12 +10471,6 @@ Object {
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c3 {
     display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
-    margin-bottom: 20px;
   }
 }
 
@@ -10998,38 +10607,26 @@ Object {
             <div
               class="c11"
             >
-              <div
+              <label
                 class="c17"
               >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
+                Loading ticket details...
+              </label>
               <div
-                class="c19"
+                class="5 c18"
               >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  DEV
-                </div>
-              </div>
-              <div
-                class="c21"
-              >
-                Pay & Register for This Event
+                <img
+                  alt="loading"
+                  src="/static/images/loading.svg"
+                />
               </div>
             </div>
           </section>
           <div
-            class="c22"
+            class="c19"
           >
             <div
-              class="c23"
+              class="c20"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -11046,7 +10643,7 @@ Object {
           </div>
         </div>
         <div
-          class="c24"
+          class="c21"
         />
       </div>
     </div>
@@ -11148,30 +10745,18 @@ Object {
           <div
             class="sc-1fq9sck-1 ktgvUI"
           >
-            <div
-              class="sc-8fuwpj-0 btHddm"
+            <label
+              class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
             >
-              <label
-                class="sc-1xgodx9-6 sc-1xgodx9-7 gGYixC"
-              >
-                Tickets
-              </label>
-            </div>
+              Loading ticket details...
+            </label>
             <div
-              class="sc-1fq9sck-7 dlUBBh"
+              class="sc-1fq9sck-15 hWGyKd"
             >
-              <div
-                class="sc-1fq9sck-8 fQvRnD"
-              >
-                0.01
-                 
-                DEV
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 gvSDlr"
-            >
-              Pay & Register for This Event
+              <img
+                alt="loading"
+                src="/static/images/loading.svg"
+              />
             </div>
           </div>
         </section>
