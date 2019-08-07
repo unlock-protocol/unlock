@@ -33,7 +33,7 @@ contract('Lock / expireKeyFor', accounts => {
   })
 
   it('should fail if the key has already expired', async () => {
-    await locks['FIRST'].purchase(accounts[2], web3.utils.padLeft(0, 40), {
+    await locks['FIRST'].purchase(accounts[2], web3.utils.padLeft(0, 40), [], {
       value: locks['FIRST'].params.keyPrice.toFixed(),
       from: accounts[0],
     })
@@ -58,10 +58,15 @@ contract('Lock / expireKeyFor', accounts => {
     let event
 
     before(async () => {
-      await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
-        value: locks['FIRST'].params.keyPrice.toFixed(),
-        from: accounts[0],
-      })
+      await locks['FIRST'].purchase(
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: locks['FIRST'].params.keyPrice.toFixed(),
+          from: accounts[0],
+        }
+      )
       ID = await locks['FIRST'].getTokenIdFor(accounts[1])
       const expirationTimestamp = new BigNumber(
         await locks['FIRST'].keyExpirationTimestampFor.call(accounts[1])

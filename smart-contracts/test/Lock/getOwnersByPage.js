@@ -25,9 +25,14 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when there are less owners than the page size', () => {
     it('should return all of the key owners', async () => {
-      await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
       let result = await locks['FIRST'].getOwnersByPage.call(0, 2, {
         from: accounts[0],
       })
@@ -38,17 +43,32 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when there are more owners than the page size', () => {
     it('return page size number of key owners', async () => {
-      await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchase(accounts[2], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[2],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchase(accounts[3], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[3],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
       let result = await locks['FIRST'].getOwnersByPage.call(0, 2, {
         from: accounts[0],
@@ -61,17 +81,32 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when requesting a secondary page', () => {
     it('return page size number of key owners', async () => {
-      await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchase(accounts[2], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[2],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchase(accounts[3], web3.utils.padLeft(0, 40), {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        accounts[3],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
       let result = await locks['FIRST'].getOwnersByPage.call(1, 2, {
         from: accounts[0],
