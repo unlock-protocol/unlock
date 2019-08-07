@@ -3,6 +3,8 @@ import IframeHandler from './IframeHandler'
 import WalletHandler from './WalletHandler'
 import MainWindowHandler from './MainWindowHandler'
 import PurchaseHandler from './PurchaseHandler'
+import DataHandler from './DataHandler'
+import CheckoutUIHandler from './CheckoutUIHandler'
 
 export function normalizeConfig(unlockConfig: any) {
   if (
@@ -44,11 +46,16 @@ export default function startup(window: UnlockWindow) {
   )
   iframes.init()
 
-  const wallet = new WalletHandler(window, iframes)
+  const dataIframeHandler = new DataHandler(iframes, config)
+  const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
+  const wallet = new WalletHandler(window, iframes, config)
   const mainWindow = new MainWindowHandler(window, iframes, config)
   const purchaseHandler = new PurchaseHandler(iframes, wallet)
 
   mainWindow.init()
   wallet.init()
+  dataIframeHandler.init()
+  checkoutIframeHandler.init()
   purchaseHandler.init()
+  // user accounts is loaded on-demand inside of WalletHandler
 }

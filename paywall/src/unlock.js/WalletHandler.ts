@@ -1,6 +1,7 @@
 import { Web3Window, web3MethodCall, ConfigWindow } from '../windowTypes'
 import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
+import { PaywallConfig } from '../unlockTypes'
 
 const NO_WEB3 = 'no web3 wallet'
 
@@ -9,15 +10,21 @@ export default class WalletHandler {
   private readonly window: Web3Window & ConfigWindow
   private readonly hasWallet: boolean = true
   private readonly isMetamask: boolean
+  private readonly config: PaywallConfig
   private hasWeb3: boolean = false
   private useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: number = 1
 
-  constructor(window: Web3Window & ConfigWindow, iframes: IframeHandler) {
+  constructor(
+    window: Web3Window & ConfigWindow,
+    iframes: IframeHandler,
+    config: PaywallConfig
+  ) {
     this.window = window
     this.iframes = iframes
+    this.config = config
 
     // do we have a web3 wallet?
     this.hasWallet = !!(this.window.web3 && this.window.web3.currentProvider)
@@ -36,13 +43,13 @@ export default class WalletHandler {
   }
 
   init() {
-    this.iframes.data.setupListeners()
-    this.iframes.checkout.setupListeners()
     if (!this.hasWallet) {
       this.setupUserAccounts()
       this.iframes.accounts.createIframe()
-      this.iframes.accounts.setupListeners()
+      // now that we are loaded, handle the passing of data back and forth between the account UI and the data iframe
+      this.iframes.setupAccountUIHandler(this.config)
     }
+    this.setupWallet()
   }
 
   usingUserAccounts() {

@@ -6,7 +6,7 @@ export default class CheckoutUIHandler {
   private iframes: IframeHandler
   private config: PaywallConfig
 
-  constructor(config: PaywallConfig, iframes: IframeHandler) {
+  constructor(iframes: IframeHandler, config: PaywallConfig) {
     this.iframes = iframes
     this.config = config
   }
@@ -35,7 +35,7 @@ export default class CheckoutUIHandler {
     )
 
     // pass on the configuration and request the latest data
-    this.iframes.data.on(PostMessages.READY, () => {
+    this.iframes.checkout.on(PostMessages.READY, () => {
       this.iframes.checkout.postMessage(PostMessages.CONFIG, this.config)
 
       this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')

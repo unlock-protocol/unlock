@@ -6,6 +6,8 @@ import {
   PostOfficeWindow,
   OriginWindow,
 } from '../windowTypes'
+import { PaywallConfig } from '../unlockTypes'
+import { PostMessages } from '../messageTypes'
 
 export default class IframeHandler {
   data: DataIframeMessageEmitter
@@ -27,5 +29,19 @@ export default class IframeHandler {
     this.data.setupListeners()
     this.checkout.setupListeners()
     // account listener setup will be on-demand
+  }
+
+  setupAccountUIHandler(config: PaywallConfig) {
+    // listen for updates to state from the data iframe, and forward them to the checkout UI
+    this.data.on(PostMessages.UPDATE_LOCKS, locks =>
+      this.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
+    )
+
+    // pass on the configuration and request the latest data
+    this.data.on(PostMessages.READY, () => {
+      this.accounts.postMessage(PostMessages.CONFIG, config)
+
+      this.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+    })
   }
 }
