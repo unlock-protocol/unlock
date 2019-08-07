@@ -1,38 +1,54 @@
-import { makeIframe, addIframeToDocument } from './iframeManager'
-import setupPostOffices, { normalizeConfig } from './setupPostOffices'
 import { UnlockWindow } from '../windowTypes'
+import IframeHandler from './IframeHandler'
+import WalletHandler from './WalletHandler'
+import MainWindowHandler from './MainWindowHandler'
+import PurchaseHandler from './PurchaseHandler'
+
+export function normalizeConfig(unlockConfig: any) {
+  if (
+    !unlockConfig ||
+    !unlockConfig.locks ||
+    typeof unlockConfig.locks !== 'object'
+  )
+    return unlockConfig
+  const lockAddresses = Object.keys(unlockConfig.locks)
+  if (!lockAddresses.length) {
+    return unlockConfig
+  }
+  const normalizedConfig = {
+    ...unlockConfig,
+    locks: lockAddresses.reduce((allLocks, address) => {
+      return {
+        ...allLocks,
+        [address.toLowerCase()]: unlockConfig.locks[address],
+      }
+    }, {}),
+  }
+  return normalizedConfig
+}
 
 export default function startup(window: UnlockWindow) {
-  // Get the config
-  const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
+  const config = normalizeConfig(window.unlockProtocolConfig)
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
+  const dataIframeUrl =
+    process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin
+  const checkoutIframeUrl = process.env.PAYWALL_URL + '/checkout' + origin
+  const userIframeUrl = process.env.USER_IFRAME_URL + origin
 
-  const dataIframe = makeIframe(
+  const iframes = new IframeHandler(
     window,
-    process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin,
-    'unlock data'
+    dataIframeUrl,
+    checkoutIframeUrl,
+    userIframeUrl
   )
-  const checkoutIframe = makeIframe(
-    window,
-    process.env.PAYWALL_URL + '/checkout' + origin,
-    'unlock checkout'
-  )
-  // TODO: We should not load the iframe for user account is the configuration does not mention it
-  const userAccountsIframe = makeIframe(
-    window,
-    process.env.USER_IFRAME_URL + origin,
-    'unlock accounts'
-  )
-  addIframeToDocument(window, dataIframe)
-  addIframeToDocument(window, userAccountsIframe)
-  addIframeToDocument(window, checkoutIframe)
+  iframes.init()
 
-  setupPostOffices(
-    normalizedConfig,
-    window,
-    dataIframe,
-    checkoutIframe,
-    userAccountsIframe
-  )
+  const wallet = new WalletHandler(window, iframes)
+  const mainWindow = new MainWindowHandler(window, iframes, config)
+  const purchaseHandler = new PurchaseHandler(iframes, wallet)
+
+  mainWindow.init()
+  wallet.init()
+  purchaseHandler.init()
 }
