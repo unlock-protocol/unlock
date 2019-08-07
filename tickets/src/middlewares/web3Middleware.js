@@ -15,14 +15,16 @@ import {
 import { setError } from '../actions/error'
 import { transactionTypeMapping } from '../utils/types'
 import { lockRoute } from '../utils/routes'
-import { addKey, updateKey } from '../actions/key'
+import { setKey, SET_KEY } from '../actions/key'
 import {
   SIGNED_ADDRESS_VERIFIED,
   VERIFY_SIGNED_ADDRESS,
   signedAddressVerified,
   signedAddressMismatch,
+  signAddress,
 } from '../actions/ticket'
 import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
+import keyStatus, { KeyStatus } from '../selectors/keys'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -43,12 +45,16 @@ const web3Middleware = config => {
 
     // When explicitly retrieved
     web3Service.on('key.updated', (id, key) => {
-      dispatch(addKey(id, key))
+      dispatch(setKey(id, key))
     })
 
     // When transaction succeeds
     web3Service.on('key.saved', (id, key) => {
-      dispatch(addKey(id, key))
+      dispatch(setKey(id, key))
+      // If we do not have the expiration for thet key in store, get it
+      if (getState().keys[id] && !getState().keys[id].expiration) {
+        web3Service.getKeyByLockForOwner(key.lock, key.owner)
+      }
     })
 
     web3Service.on('error', error => {
@@ -150,6 +156,21 @@ const web3Middleware = config => {
           )
         }
 
+        // When we have a key, if it is valid, ask the user to sign it
+        if (action.type == SET_KEY) {
+          const currentKeyStatus = keyStatus(
+            action.id,
+            getState().keys,
+            requiredConfirmations
+          )
+          if (currentKeyStatus === KeyStatus.VALID) {
+            const ticket = getState().tickets[action.key.lock]
+            if (!ticket) {
+              dispatch(signAddress(action.key.lock))
+            }
+          }
+        }
+
         if (
           action.type === VERIFY_SIGNED_ADDRESS &&
           action.eventAddress &&
@@ -198,7 +219,7 @@ const web3Middleware = config => {
 
             if (key) {
               dispatch(
-                updateKey(keyId, {
+                setKey(keyId, {
                   ...key,
                   transactions: {
                     ...key.transactions,
@@ -208,7 +229,7 @@ const web3Middleware = config => {
               )
             } else {
               dispatch(
-                addKey(keyId, {
+                setKey(keyId, {
                   lock: lockAddress,
                   owner: accountAddress,
                   expiration: 0,

@@ -1,5 +1,5 @@
 import reducer, { initialState } from '../../reducers/keysReducer'
-import { ADD_KEY, PURCHASE_KEY, UPDATE_KEY } from '../../actions/key'
+import { SET_KEY, PURCHASE_KEY } from '../../actions/key'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 import { SET_ACCOUNT } from '../../actions/accounts'
@@ -60,14 +60,14 @@ describe('keys reducer', () => {
     ).toBe(initialState)
   })
 
-  describe('ADD_KEY', () => {
+  describe('SET_KEY', () => {
     it('should refuse to add a key with the wrong id and keep state intact', () => {
       expect.assertions(1)
       const id = '0x123'
 
       const state = {}
       const action = {
-        type: ADD_KEY,
+        type: SET_KEY,
         id,
         key: {
           id: '0x456',
@@ -78,29 +78,7 @@ describe('keys reducer', () => {
       expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should refuse to overwrite keys and keep state unchanged', () => {
-      expect.assertions(1)
-
-      const id = '0x123'
-
-      const state = {
-        [id]: {
-          data: 'previous key',
-        },
-      }
-      const action = {
-        type: ADD_KEY,
-        id,
-        key: {
-          id,
-          data: 'new key',
-        },
-      }
-
-      expect(reducer(state, action)).toEqual(state)
-    })
-
-    it('should add the key by its id accordingly when receiving ADD_KEY', () => {
+    it('should add the key by its id accordingly when receiving SET_KEY', () => {
       expect.assertions(1)
 
       const id = '0x123'
@@ -112,7 +90,7 @@ describe('keys reducer', () => {
         reducer(
           {},
           {
-            type: ADD_KEY,
+            type: SET_KEY,
             id,
             key,
           }
@@ -122,6 +100,33 @@ describe('keys reducer', () => {
           id,
           data: 'data',
           expiration: 100,
+        },
+      })
+    })
+
+    it('should update the keys values', () => {
+      expect.assertions(1)
+      const key = {
+        id: 'keyId',
+        expiration: 1,
+        data: 'hello',
+      }
+      const state = {
+        [key.id]: key,
+      }
+
+      const action = {
+        type: SET_KEY,
+        id: key.id,
+        key: {
+          data: 'world',
+        },
+      }
+      expect(reducer(state, action)).toEqual({
+        [key.id]: {
+          data: 'world',
+          id: 'keyId',
+          expiration: 1,
         },
       })
     })
@@ -164,80 +169,6 @@ describe('keys reducer', () => {
           id: '0x123-0x456',
           lock: '0x123',
           owner: '0x456',
-        },
-      })
-    })
-  })
-
-  describe('UPDATE_KEY', () => {
-    it('should keep state unchanged if trying to update the key id', () => {
-      expect.assertions(1)
-
-      const key = {
-        id: 'keyId',
-        expiration: 0,
-        data: 'hello',
-      }
-      const state = {
-        [key.id]: key,
-      }
-
-      const action = {
-        type: UPDATE_KEY,
-        id: key.id,
-        update: {
-          id: 'newKeyId',
-        },
-      }
-      expect(reducer(state, action)).toEqual(state)
-    })
-
-    it('should keep state unchanged when the key being updated does not exist', () => {
-      expect.assertions(1)
-
-      const key = {
-        id: 'keyId',
-        expiration: 0,
-        data: 'hello',
-      }
-      const state = {
-        [key.id]: key,
-      }
-
-      const action = {
-        type: UPDATE_KEY,
-        id: 'newKeyId',
-        update: {
-          data: 'world',
-        },
-      }
-      expect(reducer(state, action)).toEqual(state)
-    })
-
-    it('should update the keys values', () => {
-      expect.assertions(1)
-      const key = {
-        id: 'keyId',
-        expiration: 0,
-        data: 'hello',
-      }
-      const state = {
-        [key.id]: key,
-      }
-
-      const action = {
-        type: UPDATE_KEY,
-        id: key.id,
-        update: {
-          data: 'world',
-          expiration: '10',
-        },
-      }
-      expect(reducer(state, action)).toEqual({
-        [key.id]: {
-          data: 'world',
-          id: 'keyId',
-          expiration: '10',
         },
       })
     })
