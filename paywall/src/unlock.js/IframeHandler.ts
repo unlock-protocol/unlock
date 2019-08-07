@@ -1,6 +1,6 @@
-import DataIframeMessageEmitter from './DataIframeMessageEmitter'
-import CheckoutIframeMessageEmitter from './CheckoutIframeMessageEmitter'
-import UserAccountsIframeMessageEmitter from './UserAccountsIframeMessageEmitter'
+import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
+import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
+import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import {
   IframeManagingWindow,
   PostOfficeWindow,
@@ -12,7 +12,7 @@ import { PostMessages } from '../messageTypes'
 export default class IframeHandler {
   data: DataIframeMessageEmitter
   checkout: CheckoutIframeMessageEmitter
-  accounts: UserAccountsIframeMessageEmitter
+  accounts: AccountsIframeMessageEmitter
 
   constructor(
     window: IframeManagingWindow & PostOfficeWindow & OriginWindow,
@@ -22,7 +22,7 @@ export default class IframeHandler {
   ) {
     this.data = new DataIframeMessageEmitter(window, dataIframeUrl)
     this.checkout = new CheckoutIframeMessageEmitter(window, checkoutIframeUrl)
-    this.accounts = new UserAccountsIframeMessageEmitter(window, userIframeUrl)
+    this.accounts = new AccountsIframeMessageEmitter(window, userIframeUrl)
   }
 
   init() {
