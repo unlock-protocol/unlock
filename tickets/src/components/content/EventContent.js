@@ -13,7 +13,6 @@ import { lockRoute } from '../../utils/routes'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import { purchaseKey } from '../../actions/key'
-import { loadEvent } from '../../actions/event'
 import PayButton from './purchase/PayButton'
 import Media, { NoPhone } from '../../theme/media'
 import { transactionTypeMapping } from '../../utils/types'
@@ -34,7 +33,7 @@ export const EventContent = ({
   account,
   config,
 }) => {
-  if (!lock.address || !event.name) return null // Wait for the lock and event to load
+  if (!event.name) return null // Wait for the lock and event to load
 
   const {
     name,
@@ -93,6 +92,48 @@ export const EventContent = ({
 
   const details = `For details, click here ${window.location.href}`
 
+  const loadingTicket = (
+    <Column>
+      <Label>Loading ticket details...</Label>
+      <Loading>
+        <img alt="loading" src="/static/images/loading.svg" />
+      </Loading>
+    </Column>
+  )
+
+  const ticketInfo = (
+    <Column>
+      <NoPhone>
+        <Label>Tickets</Label>
+      </NoPhone>
+      <BalanceProvider
+        amount={lock.keyPrice}
+        render={(ethWithPresentation, convertedUSDValue) => (
+          <Price>
+            <Eth>
+              {ethWithPresentation} {currency}
+            </Eth>
+            {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
+          </Price>
+        )}
+      />
+      <PayButton
+        transaction={transaction}
+        keyStatus={keyStatus}
+        purchaseKey={() => purchaseKey(lockKey)}
+      />
+      {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
+        <small>
+          The transaction may take a couple minutes to go through... You can
+          close this page safely and come back later to see your ticket!
+        </small>
+      )}
+      {account && (
+        <Ticket account={account} lock={lock} keyStatus={keyStatus} />
+      )}
+    </Column>
+  )
+
   return (
     <GlobalErrorConsumer>
       <BrowserOnly>
@@ -107,7 +148,6 @@ export const EventContent = ({
             <DisplayTime>{timeString}</DisplayTime>
           </DisplayDate>
           <Location>{location}</Location>
-
           <Columns count={2}>
             <Column>
               <Description>
@@ -117,37 +157,8 @@ export const EventContent = ({
               </Description>
               <Links>{externalLinks}</Links>
             </Column>
-            <Column>
-              <NoPhone>
-                <Label>Tickets</Label>
-              </NoPhone>
-              <BalanceProvider
-                amount={lock.keyPrice}
-                render={(ethWithPresentation, convertedUSDValue) => (
-                  <Price>
-                    <Eth>
-                      {ethWithPresentation} {currency}
-                    </Eth>
-                    {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
-                  </Price>
-                )}
-              />
-              <PayButton
-                transaction={transaction}
-                keyStatus={keyStatus}
-                purchaseKey={() => purchaseKey(lockKey)}
-              />
-              {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
-                <small>
-                  The transaction may take a couple minutes to go through... You
-                  can close this page safely and come back later to see your
-                  ticket!
-                </small>
-              )}
-              {account && (
-                <Ticket account={account} lock={lock} keyStatus={keyStatus} />
-              )}
-            </Column>
+            {lock.address && keyStatus && ticketInfo}
+            {(!lock.address || !keyStatus) && loadingTicket}
           </Columns>
         </Layout>
         <DeveloperOverlay />
@@ -179,9 +190,6 @@ EventContent.defaultProps = {
 export const mapDispatchToProps = dispatch => ({
   purchaseKey: key => {
     dispatch(purchaseKey(key))
-  },
-  loadEvent: address => {
-    dispatch(loadEvent(address))
   },
 })
 
@@ -387,4 +395,12 @@ const Location = styled.p`
 
 const DescriptionPara = styled.p`
   margin-bottom: 1em;
+`
+
+const Loading = styled.div`
+  display: grid;
+  align-items: center;
+  img {
+    width: 30px;
+  }
 `

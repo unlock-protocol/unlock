@@ -93,6 +93,7 @@ describe('EventContent', () => {
             transaction={null}
             account={account}
             config={config}
+            keyStatus="none"
           />
         </ConfigProvider>
       </Provider>
