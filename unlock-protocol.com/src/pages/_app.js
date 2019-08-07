@@ -56,6 +56,7 @@ The Unlock team
 
     this.state = {
       isMember: 'pending',
+      gaInitialized: false,
     }
 
     // Listen to Unlock events
@@ -70,7 +71,21 @@ The Unlock team
         )
       }
 
+      // Initialize Google Analytics on the client side only, and only once
+      if (
+        !this.state.gaInitialized &&
+        config.googleAnalyticsId &&
+        config.googleAnalyticsId !== '0'
+      ) {
+        ReactGA.initialize(config.googleAnalyticsId)
+        this.setState(state => ({
+          ...state,
+          gaInitialized: true,
+        }))
+      }
+
       window.addEventListener('unlockProtocol', event => {
+        if (!this.state.gaInitialized) return
         if (event.detail === 'unlocked') {
           ReactGA.event({
             category: GA_LABELS.MEMBERSHIP,
@@ -97,14 +112,6 @@ The Unlock team
 
   render() {
     const { Component, pageProps } = this.props
-    // Register pageview with Google Analytics on the client side only
-    if (
-      process.browser &&
-      config.googleAnalyticsId &&
-      config.googleAnalyticsId !== '0'
-    ) {
-      ReactGA.initialize(config.googleAnalyticsId)
-    }
 
     return (
       <Container>
