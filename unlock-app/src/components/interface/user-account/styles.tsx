@@ -104,6 +104,7 @@ export const SubmitButton = styled.button`
   display: flex;
   flex-direction: column;
   text-align: center;
+  text-align: -webkit-center; /* Safari fix  */
   justify-content: center;
   color: var(--darkgrey);
 `
