@@ -5,7 +5,7 @@ import { PaywallConfig } from '../unlockTypes'
 
 const NO_WEB3 = 'no web3 wallet'
 
-export default class WalletHandler {
+export default class Wallet {
   private readonly iframes: IframeHandler
   private readonly window: Web3Window & ConfigWindow
   private readonly hasWallet: boolean = true
@@ -93,6 +93,14 @@ export default class WalletHandler {
     } else {
       this.setupUserAccountsWallet()
     }
+
+    this.iframes.checkout.on(PostMessages.PURCHASE_KEY, async request => {
+      if (this.usingUserAccounts()) {
+        this.iframes.accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+      } else {
+        this.iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
+      }
+    })
   }
 
   setupWeb3Wallet() {
