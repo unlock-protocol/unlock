@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // This file is used to probe the ganache server. It attempts to call
 // eth_getCode to ensure each of the locks needed for testing have been deployed
 const post = require('./http').post
@@ -58,6 +59,17 @@ function resolveWhenDeployed(address, delay, maxAttempts) {
 
 const locksAreDeployed = ({ delay, maxAttempts }) => {
   // return a promise that resolves when every lock has been deployed
+  console.log('Will wait for the following lock addresses to deploy:')
+  console.log(paywallETHLockAddress)
+  console.log(paywallERC20LockAddress)
+  adblockETHLockAddresses.forEach(address => console.log(address))
+  adblockERC20LockAddresses.forEach(address => console.log(address))
+  console.log(
+    'If any are incorrect, integration tests will fail. Change to correct values in tests/helpers/vars.js'
+  )
+  console.log(
+    'Get new values by running the dev standup in docker/development (see the README.md in the root directory)'
+  )
   return Promise.all([
     resolveWhenDeployed(paywallETHLockAddress, delay, maxAttempts),
     resolveWhenDeployed(paywallERC20LockAddress, delay, maxAttempts),
