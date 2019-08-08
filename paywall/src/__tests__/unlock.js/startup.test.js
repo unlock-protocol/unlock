@@ -85,7 +85,7 @@ describe('unlock.js startup', () => {
       },
     }
   })
-
+  /*
   describe('look for immediate cache of locked state', () => {
     it('should dispatch locked if the cache is locked', () => {
       expect.assertions(2)
@@ -132,6 +132,7 @@ describe('unlock.js startup', () => {
       startup(fakeWindow)
     })
   })
+  */
 
   describe('iframe creation', () => {
     it('should create a data iframe with the correct URL', () => {
@@ -152,7 +153,7 @@ describe('unlock.js startup', () => {
         fakeWindow.document.body.insertAdjacentElement
       ).toHaveBeenNthCalledWith(1, 'afterbegin', fakeDataIframe)
     })
-
+    /*
     it('should create a Checkout UI iframe with the correct URL', () => {
       expect.assertions(3)
 
@@ -188,8 +189,9 @@ describe('unlock.js startup', () => {
         fakeWindow.document.body.insertAdjacentElement
       ).toHaveBeenNthCalledWith(2, 'afterbegin', fakeUserAccountsIframe)
     })
+    */
   })
-
+  /*
   it('should set up the post offices', () => {
     expect.assertions(1)
 
@@ -204,5 +206,5 @@ describe('unlock.js startup', () => {
     // - the user accounts UI post office
     // - getState (locked, unlocked, undefined)
     expect(fakeWindow.addEventListener).toHaveBeenCalledTimes(4)
-  })
+  })*/
 })
