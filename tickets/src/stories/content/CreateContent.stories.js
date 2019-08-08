@@ -23,7 +23,8 @@ const store = createUnlockStore({
   },
 })
 
-const now = new Date(2019, 3, 25, 12, 35, 0) // March 25th, 2019
+// We MUST NOT specify a TZ otherwise the snapshot fail when executed in a different env.
+const now = new Date('Mar 25 2019 10:00:00')
 
 storiesOf('Create event landing page', module)
   .addDecorator(getStory => (
@@ -35,4 +36,7 @@ storiesOf('Create event landing page', module)
   })
   .add('Create event page, event submitted', () => {
     return <CreateContent now={now} submitted />
+  })
+  .add('Create event page, event saved', () => {
+    return <CreateContent now={now} saved />
   })
