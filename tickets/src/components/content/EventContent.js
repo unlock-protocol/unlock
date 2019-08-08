@@ -61,6 +61,9 @@ export const EventContent = ({
 
   const convertCurrency = !lock.currencyContractAddress
 
+  const details =
+    description + '\n' + `For more details, click here: ${window.location.href}`
+
   let googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
@@ -89,8 +92,6 @@ export const EventContent = ({
       )
     }
   )
-
-  const details = `For details, click here ${window.location.href}`
 
   const loadingTicket = (
     <Column>

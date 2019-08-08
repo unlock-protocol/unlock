@@ -6,12 +6,12 @@ describe('googleCalendarLinkBuilder', () => {
     const link = googleCalendarLinkBuilder(
       'The party',
       'This is going to be a very cool party that you should attend',
-      new Date(2019, 12, 26),
+      new Date(2019, 12, 26, 23, 30, 0),
       null,
       'The office'
     )
     expect(link).toEqual(
-      'https://calendar.google.com/calendar/r/eventedit?&text=The party&dates=20200126/20200127&details=This is going to be a very cool party that you should attend&location=The office&sf=true&output=xml'
+      'https://calendar.google.com/calendar/r/eventedit?&text=The party&dates=20200126T233000/20200127T003000&details=This is going to be a very cool party that you should attend&location=The office&sf=true&output=xml'
     )
   })
 
