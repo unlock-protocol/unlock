@@ -69,7 +69,7 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
    */
   createIframe() {
     const url = new URL(this.iframe.src)
-    this.iframe = makeIframe(this.window, this.iframe.src)
+    this.iframe = makeIframe(this.window, this.iframe.src, 'unlock accounts')
     addIframeToDocument(this.window, this.iframe)
 
     const { postMessage, addHandler } = mainWindowPostOffice(

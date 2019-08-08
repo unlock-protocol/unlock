@@ -2,8 +2,13 @@ import { Web3Window, web3MethodCall, ConfigWindow } from '../windowTypes'
 import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
+import StartupConstants from './startupTypes'
 
 const NO_WEB3 = 'no web3 wallet'
+
+declare const process: {
+  env: any
+}
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -26,16 +31,18 @@ export default class Wallet {
   private useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
-  private userAccountNetwork: number = 1
+  private userAccountNetwork: number
 
   constructor(
     window: Web3Window & ConfigWindow,
     iframes: IframeHandler,
-    config: PaywallConfig
+    config: PaywallConfig,
+    constants: StartupConstants
   ) {
     this.window = window
     this.iframes = iframes
     this.config = config
+    this.userAccountNetwork = constants.network
 
     // do we have a web3 wallet?
     this.hasWallet = !!(this.window.web3 && this.window.web3.currentProvider)
@@ -51,9 +58,18 @@ export default class Wallet {
       !this.hasWallet &&
       !!(
         this.window.unlockProtocolConfig &&
-        (this.window.unlockProtocolConfig.useUnlockUserAccounts === true ||
-          this.window.unlockProtocolConfig.useUnlockUserAccounts === 'true')
+        (this.window.unlockProtocolConfig.unlockUserAccounts === true ||
+          this.window.unlockProtocolConfig.unlockUserAccounts === 'true')
       )
+    if (process.env.DEBUG) {
+      if (this.useUserAccounts) {
+        // eslint-disable-next-line
+        console.log('[USER ACCOUNTS] using user accounts')
+      } else {
+        // eslint-disable-next-line
+        console.log('[USER ACCOUNTS] using native crypto wallet')
+      }
+    }
   }
 
   init() {
@@ -127,6 +143,13 @@ export default class Wallet {
       } else {
         this.iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
       }
+    })
+    // when a purchase is in progress, tell the data iframe to retrieve the transaction
+    this.iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
+      this.iframes.data.postMessage(
+        PostMessages.INITIATED_TRANSACTION,
+        undefined
+      )
     })
   }
 
@@ -233,6 +256,17 @@ export default class Wallet {
       this.iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
       this.iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
     })
+
+    // enable the user account wallet
+    this.iframes.data.on(PostMessages.READY_WEB3, async () => {
+      this.hasWeb3 = true
+      this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
+        noWallet: false,
+        notEnabled: false,
+        isMetamask: false,
+      })
+    })
+
     this.iframes.data.on(PostMessages.WEB3, payload => {
       const { method, id }: web3MethodCall = payload
       switch (method) {

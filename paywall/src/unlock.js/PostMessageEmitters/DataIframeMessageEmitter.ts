@@ -50,7 +50,7 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
   ) {
     super()
 
-    this.iframe = makeIframe(window, dataIframeUrl)
+    this.iframe = makeIframe(window, dataIframeUrl, 'unlock data')
     addIframeToDocument(window, this.iframe)
 
     const { postMessage, addHandler } = mainWindowPostOffice(

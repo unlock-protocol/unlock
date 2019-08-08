@@ -187,7 +187,7 @@ export const isValidKey = key => {
   ) {
     return false
   }
-  if (!isAccount(key.owner)) return false
+  if (!isAccountOrNull(key.owner)) return false
   if (!isAccount(key.lock)) return false
   // NOTE: transactions are not used in the UI, and may be removed, so
   // for now we do not validate them. If this ever changes, they must

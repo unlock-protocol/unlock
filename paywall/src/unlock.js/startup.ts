@@ -30,10 +30,17 @@ export function normalizeConfig(unlockConfig: any) {
   return normalizedConfig
 }
 
+export interface StartupConstants {
+  network: 1 | 4 | 1984
+}
+
 /**
  * Start the unlock app!
  */
-export default function startup(window: UnlockWindow) {
+export default function startup(
+  window: UnlockWindow,
+  constants: StartupConstants
+) {
   // normalize all of the lock addresses
   const config = normalizeConfig(window.unlockProtocolConfig)
 
@@ -57,7 +64,7 @@ export default function startup(window: UnlockWindow) {
   const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
-  const wallet = new Wallet(window, iframes, config)
+  const wallet = new Wallet(window, iframes, config, constants)
   // set up the main window handler, for both events and hiding/showing iframes
   const mainWindow = new MainWindowHandler(window, iframes, config)
 

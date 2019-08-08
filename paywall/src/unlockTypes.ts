@@ -76,7 +76,7 @@ export type PaywallAppKind = 'adblock' | 'paywall'
 export interface PaywallConfig {
   icon?: string
   type?: PaywallAppKind
-  useUnlockUserAccounts?: true | 'true' | false
+  unlockUserAccounts?: true | 'true' | false
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
 }

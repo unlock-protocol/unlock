@@ -54,7 +54,7 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
     super()
 
     this.window = window
-    this.iframe = makeIframe(window, checkoutIframeUrl)
+    this.iframe = makeIframe(window, checkoutIframeUrl, 'unlock checkout')
     addIframeToDocument(window, this.iframe)
 
     const { postMessage, addHandler } = mainWindowPostOffice(
