@@ -15,6 +15,11 @@ import {
   AddEventListenerFunc,
   StorageHandler,
   StorageEvent,
+  OriginWindow,
+  IframeManagingWindow,
+  IframeManagingDocument,
+  IframeType,
+  IframeAttributeNames,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
@@ -24,8 +29,11 @@ export default class FakeWindow
     FetchWindow,
     SetTimeoutWindow,
     IframePostOfficeWindow,
+    IframeManagingWindow,
     ConsoleWindow,
-    LocalStorageWindow {
+    LocalStorageWindow,
+    OriginWindow {
+  public origin = 'http://example.com'
   public fetchResult: any = {}
   public fetch: (
     url: string,
@@ -38,6 +46,7 @@ export default class FakeWindow
       body: string
     }
   ) => Promise<FetchResult>
+  public setInterval: (cb: Function, delay?: number) => number
   public setTimeout: (cb: Function, delay?: number) => number
   public parent: PostMessageTarget
   public location: {
@@ -53,6 +62,10 @@ export default class FakeWindow
   public console: Pick<ConsoleWindow, 'console'>['console']
   public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
   public storage: { [key: string]: string } = {}
+  public document: IframeManagingDocument
+  public iframeMap: {
+    [url: string]: IframeType
+  } = {}
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -61,8 +74,32 @@ export default class FakeWindow
       })
     })
     this.setTimeout = jest.fn()
+    this.setInterval = jest.fn()
     this.location = {
       href: 'http://fun.times?origin=http%3a%2f%2fexample.com',
+    }
+    this.document = {
+      createElement: (_: 'iframe') => {
+        const iframe: IframeType = {
+          src: '',
+          name: '',
+          className: '',
+          setAttribute: (attr: IframeAttributeNames, value: string) => {
+            iframe[attr] = value
+          },
+          contentWindow: {
+            postMessage: jest.fn(),
+          },
+        }
+        return iframe
+      },
+      querySelector: () => false,
+      body: {
+        insertAdjacentElement: jest.fn(),
+        style: {
+          overflow: '',
+        },
+      },
     }
     this.parent = {
       postMessage: jest.fn(),
@@ -126,6 +163,24 @@ export default class FakeWindow
       this.messageListeners.message.forEach(handler => handler(event))
   }
 
+  public receivePostMessageFromIframe<T extends PostMessages = PostMessages>(
+    type: T,
+    payload: ExtractPayload<T>,
+    iframe: IframeType,
+    origin: string
+  ) {
+    const event: MessageEvent = {
+      origin,
+      source: iframe.contentWindow,
+      data: {
+        type,
+        payload,
+      },
+    }
+    this.messageListeners.message &&
+      this.messageListeners.message.forEach(handler => handler(event))
+  }
+
   public receiveStorageEvent(key: string, newValue: string, oldValue: string) {
     const event: StorageEvent = {
       key,
@@ -155,6 +210,21 @@ export default class FakeWindow
         payload,
       },
       'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
+    )
+  }
+
+  public expectPostMessageSentToIframe<T extends PostMessages = PostMessages>(
+    type: T,
+    payload: ExtractPayload<T>,
+    iframe: IframeType,
+    iframeOrigin: string
+  ) {
+    expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
+      {
+        type,
+        payload,
+      },
+      iframeOrigin
     )
   }
 
