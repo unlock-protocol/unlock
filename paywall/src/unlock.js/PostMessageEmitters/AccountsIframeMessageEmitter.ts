@@ -117,6 +117,9 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
     )
   }
 
+  /**
+   * This is a proxy that ignores requests if the account iframe is not active yet
+   */
   async addHandler(
     type: keyof UserAccountsIframeEvents,
     listener: PostMessageListener
@@ -125,6 +128,9 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
     this._addHandler(type, listener)
   }
 
+  /**
+   * This is a proxy that ignores requests if the account iframe is not active yet
+   */
   async postMessage<T extends MessageTypes = MessageTypes>(
     type: T,
     payload: ExtractPayload<T>

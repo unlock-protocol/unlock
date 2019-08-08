@@ -33,10 +33,15 @@ export default class IframeHandler {
     this.accounts = new AccountsIframeMessageEmitter(window, userIframeUrl)
   }
 
-  init() {
+  init(config: PaywallConfig) {
     this.data.setupListeners()
     this.checkout.setupListeners()
     // account listener setup will be on-demand, done by the Wallet in setupWallet()
+    this.data.on(PostMessages.READY, () => {
+      if (config) {
+        this.data.postMessage(PostMessages.CONFIG, config)
+      }
+    })
   }
 
   /**

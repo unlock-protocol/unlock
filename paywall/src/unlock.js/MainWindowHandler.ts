@@ -104,6 +104,9 @@ export default class MainWindowHandler {
     })
   }
 
+  /**
+   * Create window.unlockProtocol
+   */
   setupUnlockProtocolVariable() {
     const loadCheckoutModal = () => {
       this.showCheckoutIframe()
@@ -165,6 +168,9 @@ export default class MainWindowHandler {
     }
   }
 
+  /**
+   * Dispatch the unlockProtocol event
+   */
   dispatchEvent(detail: any) {
     let event
     try {
@@ -184,12 +190,19 @@ export default class MainWindowHandler {
     this.window.dispatchEvent(event)
   }
 
+  /**
+   * hide the checkout iframe
+   */
   hideCheckoutIframe() {
     this.showCheckoutWhenAccountsHides = false
     this.showingCheckout = false
     this.iframes.checkout.hideIframe()
   }
 
+  /**
+   * show the checkout iframe, unless the account iframe is visible,
+   * then mark it for showing when the account iframe is hidden
+   */
   showCheckoutIframe() {
     if (this.showingAccountsIframe) {
       // if the accounts iframe is active, we will
@@ -205,6 +218,12 @@ export default class MainWindowHandler {
     }
   }
 
+  /**
+   * show the account iframe
+   *
+   * If the checkout iframe is visible, hide it and mark it for
+   * showing after the account iframe hides
+   */
   showAccountIframe() {
     if (this.showingCheckout) {
       // hide the checkout iframe, but mark it as needing
@@ -217,6 +236,11 @@ export default class MainWindowHandler {
     this.iframes.accounts.showIframe()
   }
 
+  /**
+   * hide the account iframe
+   *
+   * If the checkout iframe was visible, show it again
+   */
   hideAccountIframe() {
     this.showingAccountsIframe = false
     // note: if user accounts are disabled, this is a no-op

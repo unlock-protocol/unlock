@@ -2,6 +2,13 @@ import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { PaywallConfig } from '../unlockTypes'
 
+/**
+ * This class handles inter-iframe communication between the checkout iframe and data iframe
+ *
+ * It listens for state updates from the data iframe and forwards them to the checkout iframe
+ * it listens for the "ready" event, and requests updates from the data iframe
+ * it passes on errors to the checkout iframe
+ */
 export default class CheckoutUIHandler {
   private iframes: IframeHandler
   private config: PaywallConfig

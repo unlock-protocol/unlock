@@ -11,7 +11,12 @@ import {
   PostOfficeWindow,
   OriginWindow,
 } from '../../windowTypes'
-import { makeIframe, addIframeToDocument } from '../iframeManager'
+import {
+  makeIframe,
+  addIframeToDocument,
+  showIframe,
+  hideIframe,
+} from '../iframeManager'
 import {
   CheckoutIframeEventEmitter,
   CheckoutIframeEvents,
@@ -25,7 +30,15 @@ class FancyEmitter extends (EventEmitter as {
   new (): CheckoutIframeEventEmitter
 }) {}
 
+/**
+ * This is an abstraction layer around the post office for the checkout iframe
+ *
+ * It is used both to listen for incoming messages, and to send outgoing messages.
+ * In addition, it handles showing and hiding the iframe. Those pieces are handled
+ * in the MainWindowHandler for showing the checkout and user accounts iframes
+ */
 export default class CheckoutIframeMessageEmitter extends FancyEmitter {
+  private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
   public readonly addHandler: (
     type: keyof CheckoutIframeEvents,
     listener: PostMessageListener
@@ -40,6 +53,7 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
   ) {
     super()
 
+    this.window = window
     this.iframe = makeIframe(window, checkoutIframeUrl)
     addIframeToDocument(window, this.iframe)
 
@@ -55,11 +69,11 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
   }
 
   showIframe() {
-    this.iframe.className = 'unlock start show'
+    showIframe(this.window, this.iframe)
   }
 
   hideIframe() {
-    this.iframe.className = 'unlock start'
+    hideIframe(this.window, this.iframe)
   }
 
   async setupListeners() {

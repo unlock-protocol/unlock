@@ -2,9 +2,11 @@ import { UnlockWindow } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
 import MainWindowHandler from './MainWindowHandler'
-import DataHandler from './DataHandler'
 import CheckoutUIHandler from './CheckoutUIHandler'
 
+/**
+ * convert all of the lock addresses to lower-case so they are normalized across the app
+ */
 export function normalizeConfig(unlockConfig: any) {
   if (
     !unlockConfig ||
@@ -28,31 +30,39 @@ export function normalizeConfig(unlockConfig: any) {
   return normalizedConfig
 }
 
+/**
+ * Start the unlock app!
+ */
 export default function startup(window: UnlockWindow) {
+  // normalize all of the lock addresses
   const config = normalizeConfig(window.unlockProtocolConfig)
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
+  // construct the 3 urls for the iframes
   const dataIframeUrl =
     process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin
   const checkoutIframeUrl = process.env.PAYWALL_URL + '/checkout' + origin
   const userIframeUrl = process.env.USER_IFRAME_URL + origin
 
+  // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())
   const iframes = new IframeHandler(
     window,
     dataIframeUrl,
     checkoutIframeUrl,
     userIframeUrl
   )
-  iframes.init()
+  iframes.init(config)
 
-  const dataIframeHandler = new DataHandler(iframes, config)
+  // set up the communication with the checkout iframe
   const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
+  // user accounts is loaded on-demand inside of Wallet
+  // set up the proxy wallet handler
   const wallet = new Wallet(window, iframes, config)
+  // set up the main window handler, for both events and hiding/showing iframes
   const mainWindow = new MainWindowHandler(window, iframes, config)
 
+  // go!
   mainWindow.init()
   wallet.init()
-  dataIframeHandler.init()
   checkoutIframeHandler.init()
-  // user accounts is loaded on-demand inside of WalletHandler
 }
