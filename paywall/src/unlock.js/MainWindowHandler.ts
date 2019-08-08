@@ -7,6 +7,13 @@ interface hasPrototype {
   prototype?: any
 }
 
+/**
+ * This class handles all of the messaging to the window object
+ *
+ * Specifically, sending the "unlockProtocol" event, creating the
+ * "unlockProtocol" object on window, and also all of the showing
+ * and hiding of checkout and account iframes
+ */
 export default class MainWindowHandler {
   private window: UnlockWindow
   private iframes: IframeHandler
@@ -185,9 +192,13 @@ export default class MainWindowHandler {
 
   showCheckoutIframe() {
     if (this.showingAccountsIframe) {
+      // if the accounts iframe is active, we will
+      // wait to show the checkout iframe
+      // until it is hidden
       this.showCheckoutWhenAccountsHides = true
       this.showingCheckout = false
     } else {
+      // otherwise we will show the checkout iframe immediately
       this.showingCheckout = true
       this.showCheckoutWhenAccountsHides = false
       this.iframes.checkout.showIframe()
@@ -196,17 +207,22 @@ export default class MainWindowHandler {
 
   showAccountIframe() {
     if (this.showingCheckout) {
+      // hide the checkout iframe, but mark it as needing
+      // to be shown when the accounts iframe hides
       this.showCheckoutWhenAccountsHides = true
       this.showingCheckout = false
       this.iframes.checkout.hideIframe()
     }
+    // note: if user accounts are disabled, this is a no-op
     this.iframes.accounts.showIframe()
   }
 
   hideAccountIframe() {
     this.showingAccountsIframe = false
-    this.iframes.accounts.showIframe()
+    // note: if user accounts are disabled, this is a no-op
+    this.iframes.accounts.hideIframe()
     if (this.showCheckoutWhenAccountsHides) {
+      // now that the accounts iframe is hidden, show the checkout iframe
       this.showingCheckout = true
       this.showCheckoutWhenAccountsHides = false
       this.iframes.checkout.showIframe()
