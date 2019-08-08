@@ -58019,6 +58019,7 @@ Object {
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
+  text-align: -webkit-center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -58184,7 +58185,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI kCRntp"
+          class="sc-iwsKbI brlwMR"
         >
           Update Password
         </button>
@@ -58389,6 +58390,7 @@ Object {
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
+  text-align: -webkit-center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -58544,7 +58546,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-fjdhpX sc-eqIVtm ktBbsx"
+        class="sc-iwsKbI sc-fjdhpX sc-eqIVtm bwGNNh"
       >
         No lock found
       </button>
@@ -58748,6 +58750,7 @@ Object {
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
+  text-align: -webkit-center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -58901,7 +58904,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-dVhcbM bBsIgi"
+        class="sc-iwsKbI sc-dVhcbM epkeON"
       >
         Confirm Purchase
       </button>
@@ -59352,6 +59355,7 @@ Object {
   -ms-flex-direction: column;
   flex-direction: column;
   text-align: center;
+  text-align: -webkit-center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -59651,7 +59655,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI kCRntp"
+            class="sc-iwsKbI brlwMR"
           >
             Update Password
           </button>

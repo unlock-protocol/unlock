@@ -102,6 +102,7 @@ describe('setupPostOffice', () => {
       setInterval: jest.fn(),
       unlockProtocol: {
         loadCheckoutModal: jest.fn(),
+        getState: jest.fn(),
       },
       document: {
         createEvent: jest.fn(),

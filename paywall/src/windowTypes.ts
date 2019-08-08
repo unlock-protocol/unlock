@@ -38,11 +38,13 @@ export interface EventWindow {
 export enum EventTypes {
   STORAGE = 'storage',
   MESSAGE = 'message',
+  UNLOCK = 'unlockProtocol',
 }
 
 export interface MappedEvents {
   [EventTypes.STORAGE]: StorageEvent
   [EventTypes.MESSAGE]: MessageEvent
+  [EventTypes.UNLOCK]: UnlockProtocolEvent
 }
 
 export type ExtractEvent<T extends EventTypes> = MappedEvents[T]
@@ -125,6 +127,13 @@ export interface StorageEvent {
   storageArea: any
 }
 
+export type LockStatus = 'locked' | 'unlocked' | undefined
+
+// used in setupUnlockProtocolVariable
+export interface UnlockProtocolEvent {
+  detail: LockStatus
+}
+
 export type MessageHandler = (event: MessageEvent) => void
 
 export type PostOfficeEventTypes = 'message' // augment later if needed
@@ -167,10 +176,12 @@ export interface IframeManagingWindow {
 
 export interface UnlockProtocolObject {
   loadCheckoutModal: () => void
+  getState: () => LockStatus
 }
 
 export interface UnlockProtocolWindow {
   unlockProtocol: UnlockProtocolObject
+  addEventListener: AddEventListenerFunc
 }
 
 export interface UnlockWindow
