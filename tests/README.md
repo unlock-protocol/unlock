@@ -30,9 +30,10 @@ a headless way by default, they can be run in an actual web browser which lets t
 what is being rendered on screen.
 
 - start a docker dev cluster (at the root): see instruction in the main [README.md](https://github.com/unlock-protocol/unlock/blob/master/README.md)
-- run the dashboard application (in `/unlock-app`): `npm run start` (you may need to build the application first: `npm run build`)
-- run the locksmith application (in `/locksmith`): `npm run start`
-- run the paywall application (in `/paywall`): `npm run start` (you may need to build the application first: `npm run build`)
+- run the dashboard application (in `/unlock-app`): `UNLOCK_ENV=test npm run start` (you may need to build the application first: `npm run build`)
+- run the dashboard application without an injected provider (required to test unlock accounts) (in `/unlock-app`): `PORT=9000 UNLOCK_ENV=unlock-provider-integration npm run start`
+- run the locksmith application (in `/locksmith`): `UNLOCK_ENV=test npm run start`
+- run the paywall application (in `/paywall`): `UNLOCK_ENV=test USER_IFRAME_URL=http://localhost:9000/account npm run start` (you may need to build the application first: `npm run build`)
 - execute the tests (in `/tests`): `npm run test`
 
 There are a few interesting and useful debugging options [on this page](https://github.com/GoogleChrome/puppeteer#debugging-tips) including
