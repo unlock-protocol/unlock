@@ -28,6 +28,7 @@ export default class DatePicker extends Component {
   constructor(props) {
     super(props)
     const { now, date } = props
+
     this.state = {
       ...getDaysMonthsAndYearsForSelect(now),
       date: date < now ? date : now,
@@ -36,7 +37,10 @@ export default class DatePicker extends Component {
   }
 
   onChange(method) {
-    const { now } = this.props
+    const { now, disabled, onChange } = this.props
+    if (disabled) {
+      return
+    }
     return selected => {
       this.setState(state => {
         let date = state.date
@@ -53,7 +57,6 @@ export default class DatePicker extends Component {
           date,
         }
 
-        const { onChange } = this.props
         onChange(date)
 
         // Get the new possible days, months and years
@@ -69,6 +72,7 @@ export default class DatePicker extends Component {
 
   render() {
     const { date, months, days, years } = this.state
+    const { disabled } = this.props
 
     const month = {
       value: date.getMonth(),
@@ -80,6 +84,7 @@ export default class DatePicker extends Component {
     return (
       <EventDate>
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a month"
           className="select-container"
           classNamePrefix="select-option"
@@ -88,6 +93,7 @@ export default class DatePicker extends Component {
           value={month}
         />
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a day"
           className="select-container"
           classNamePrefix="select-option"
@@ -96,6 +102,7 @@ export default class DatePicker extends Component {
           value={day}
         />
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a year"
           className="select-container"
           classNamePrefix="select-option"
@@ -109,14 +116,15 @@ export default class DatePicker extends Component {
 }
 
 DatePicker.propTypes = {
-  now: PropTypes.instanceOf(Date),
+  now: PropTypes.instanceOf(Date).isRequired,
   date: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 }
 
 DatePicker.defaultProps = {
-  now: new Date(),
   date: new Date(),
+  disabled: false,
 }
 
 export const EventDate = styled.div`
@@ -128,7 +136,6 @@ export const EventDate = styled.div`
 export const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
   border-radius: 4px;
-
   .select-option__control {
     background-color: var(--offwhite);
     border: none;
@@ -139,7 +146,7 @@ export const StyledSelect = styled(Select)`
     display: none;
   }
   .select-option__single-value {
-    color: var(--darkgrey);
+    color: ${props => (props.isDisabled ? 'var(--grey)' : 'var(--darkgrey)')};
     font-size: 20px;
   }
 `
