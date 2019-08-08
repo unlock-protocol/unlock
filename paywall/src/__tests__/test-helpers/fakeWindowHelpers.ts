@@ -63,9 +63,6 @@ export default class FakeWindow
   public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
   public storage: { [key: string]: string } = {}
   public document: IframeManagingDocument
-  public iframeMap: {
-    [url: string]: IframeType
-  } = {}
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
