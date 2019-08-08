@@ -51,7 +51,6 @@ describe('DatePicker', () => {
     let wrapper = rtl.render(
       <DatePicker now={now} date={date} onChange={jest.fn()} />
     )
-    wrapper.debug()
     expect(wrapper.queryByText('2020')).not.toBeNull()
     expect(wrapper.queryByText('Mar')).not.toBeNull()
     expect(wrapper.queryByText('2')).not.toBeNull()

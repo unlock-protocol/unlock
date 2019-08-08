@@ -7,6 +7,8 @@ import {
   updateEvent,
   EVENT_ERROR,
   eventError,
+  SAVED_EVENT,
+  savedEvent,
 } from '../../actions/event'
 
 describe('event actions', () => {
@@ -52,5 +54,17 @@ describe('event actions', () => {
     }
 
     expect(eventError(error)).toEqual(expectedError)
+  })
+
+  it('should create an action for saved event', () => {
+    expect.assertions(1)
+    const event = {}
+
+    const expectedAction = {
+      type: SAVED_EVENT,
+      event,
+    }
+
+    expect(savedEvent(event)).toEqual(expectedAction)
   })
 })

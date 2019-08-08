@@ -7,14 +7,19 @@ export default class TimePicker extends Component {
   constructor(props) {
     super(props)
 
-    const { now } = props
+    const { date } = props
     this.state = {
-      date: now, // defaults to now
+      date,
     }
     this.onChange = this.onChange.bind(this)
   }
 
   onChange(method) {
+    const { disabled } = this.props
+    if (disabled) {
+      return
+    }
+
     return selected => {
       this.setState(state => {
         let date = state.date
@@ -51,19 +56,23 @@ export default class TimePicker extends Component {
         .toString()
         .padStart(2, '0'),
     }
+    const { disabled } = this.props
 
     let hours = []
     let minutes = []
     let i
 
-    for (i = 0; i < 24; i++)
+    for (i = 0; i < 24; i++) {
       hours.push({ value: i, label: i.toString().padStart(2, '0') })
-    for (i = 0; i < 60; i++)
-      minutes.push({ value: i, label: i.toString().padStart(2, '0') })
+    }
+    for (i = 0; i < 12; i++) {
+      minutes.push({ value: i * 5, label: (i * 5).toString().padStart(2, '0') })
+    }
 
     return (
       <TimeDate>
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Hour"
           className="select-container"
           classNamePrefix="select-option"
@@ -73,6 +82,7 @@ export default class TimePicker extends Component {
         />
         <Divider>:</Divider>
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Minute"
           className="select-container"
           classNamePrefix="select-option"
@@ -86,12 +96,13 @@ export default class TimePicker extends Component {
 }
 
 TimePicker.propTypes = {
-  now: PropTypes.instanceOf(Date),
+  date: PropTypes.instanceOf(Date).isRequired,
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 }
 
 TimePicker.defaultProps = {
-  now: new Date(),
+  disabled: false,
 }
 
 const Divider = styled.div`
