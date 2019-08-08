@@ -3,6 +3,7 @@ import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
 import MainWindowHandler from './MainWindowHandler'
 import CheckoutUIHandler from './CheckoutUIHandler'
+import StartupConstants from './startupTypes'
 
 /**
  * convert all of the lock addresses to lower-case so they are normalized across the app
@@ -28,10 +29,6 @@ export function normalizeConfig(unlockConfig: any) {
     }, {}),
   }
   return normalizedConfig
-}
-
-export interface StartupConstants {
-  network: 1 | 4 | 1984
 }
 
 /**

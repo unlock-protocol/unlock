@@ -4,8 +4,6 @@ import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
 
-const NO_WEB3 = 'no web3 wallet'
-
 declare const process: {
   env: any
 }
@@ -81,14 +79,22 @@ export default class Wallet {
     this.setupProxyWallet()
   }
 
-  usingUserAccounts() {
-    return this.useUserAccounts
-  }
-
   /**
    * This is called only if we can use user accounts
    */
   private setupUserAccounts() {
+    // listen for updates to state from the data iframe, and forward them to the checkout UI
+    this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks =>
+      this.iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
+    )
+
+    // pass on the configuration and request the latest data
+    this.iframes.data.on(PostMessages.READY, () => {
+      this.iframes.accounts.postMessage(PostMessages.CONFIG, this.config)
+
+      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+    })
+
     // listen for account and network from the user accounts iframe
     this.iframes.accounts.on(PostMessages.UPDATE_ACCOUNT, account => {
       this.userAccountAddress = account
@@ -96,43 +102,6 @@ export default class Wallet {
     this.iframes.accounts.on(PostMessages.UPDATE_NETWORK, network => {
       this.userAccountNetwork = network
     })
-    // then create the iframe and ready its post office
-    this.iframes.accounts.createIframe()
-    // now that we are loaded, handle the passing of data back and forth between the account UI and the data iframe
-    this.iframes.setupAccountUIHandler(this.config)
-  }
-
-  private enable() {
-    return new this.window.Promise((resolve, reject) => {
-      if (!this.hasWallet) {
-        return resolve(NO_WEB3)
-      }
-      if (
-        !this.window.web3 ||
-        !this.window.web3.currentProvider ||
-        !this.window.web3.currentProvider.enable
-      )
-        return resolve()
-      this.window.web3.currentProvider
-        .enable()
-        .then(() => {
-          return resolve()
-        })
-        .catch((e: any) => {
-          reject(e)
-        })
-    })
-  }
-
-  private setupProxyWallet() {
-    if (this.hasWallet) {
-      // if we have a wallet, we always use it
-      this.setupWeb3ProxyWallet()
-    } else if (this.useUserAccounts) {
-      // if user accounts are explicitly enabled, we use them
-      this.setupUserAccountsProxyWallet()
-    }
-    // note: if we don't have a wallet, all data requests will be ignored
 
     // when receiving a key purchase request, we either pass it to the
     // account iframe for credit card purchase if user accounts are
@@ -144,6 +113,7 @@ export default class Wallet {
         this.iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
       }
     })
+
     // when a purchase is in progress, tell the data iframe to retrieve the transaction
     this.iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
       this.iframes.data.postMessage(
@@ -151,47 +121,76 @@ export default class Wallet {
         undefined
       )
     })
+
+    // then create the iframe and ready its post office
+    this.iframes.accounts.createIframe()
+  }
+
+  private async enableCryptoWallet() {
+    if (
+      !this.window.web3 ||
+      !this.window.web3.currentProvider ||
+      !this.window.web3.currentProvider.enable
+    ) {
+      return
+    }
+    await this.window.web3.currentProvider.enable()
+  }
+
+  private setupProxyWallet() {
+    if (this.hasWallet) {
+      // if we have a wallet, we always use it
+      this.setupWeb3ProxyWallet()
+    } else if (this.useUserAccounts) {
+      // if user accounts are explicitly enabled, we use them
+      this.setupUserAccountsProxyWallet()
+    }
   }
 
   /**
    * This is the proxy wallet for a crypto wallet
+   *
+   * It handles the "ready" event posted by the Web3ProxyProvider
+   * in the data iframe, and also the "web3" event for
+   * communicating with the crypto wallet
    */
   private setupWeb3ProxyWallet() {
     this.iframes.data.on(PostMessages.READY_WEB3, async () => {
       // initialize, we do this once the iframe is ready to receive information on the wallet
       // we need to tell the iframe if the wallet is metamask
       // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
-      try {
-        // first, enable the wallet if necessary
-        const result = await this.enable()
-        if (result === NO_WEB3) {
-          // the user has no crypto wallet
-          this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
-            noWallet: true,
-            notEnabled: false,
-            isMetamask: false,
-          })
-          return
-        }
-        this.hasWeb3 = true
+      if (!this.hasWallet) {
+        // the user has no crypto wallet
         this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
-          noWallet: false,
+          noWallet: true,
           notEnabled: false,
-          isMetamask: this.isMetamask, // this is used for some decisions in signing
-        })
-      } catch (e) {
-        // user declined to enable the crypto wallet
-        this.hasWeb3 = true
-        this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
-          noWallet: false,
-          notEnabled: true, // user declined to enable the wallet
           isMetamask: false,
         })
         return
       }
+      try {
+        // first, enable the wallet if necessary
+        await this.enableCryptoWallet()
+      } catch (e) {
+        // user declined to enable the crypto wallet
+        // they still have a wallet, but we need to re-enable it to use it
+        this.hasWeb3 = true
+        this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
+          noWallet: false,
+          notEnabled: true, // user declined to enable the wallet
+          isMetamask: this.isMetamask, // this is used for some decisions in signing
+        })
+        return
+      }
+      this.hasWeb3 = true
+      this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
+        noWallet: false,
+        notEnabled: false,
+        isMetamask: this.isMetamask, // this is used for some decisions in signing
+      })
     })
 
-    // to communicate with the crpyto wallet,
+    // to communicate with the crypto wallet,
     // use sendAsync if available, otherwise we will use send
     const send =
       this.window.web3 &&
@@ -225,8 +224,9 @@ export default class Wallet {
             id,
           },
           (error: string | null, result: any) => {
-            // the callback has our result, pass it back
-            // to the data iframe
+            // this callback is called by the crypto wallet
+            // with the result of the web3 call, we pass
+            // it to the data iframe as-is
             this.iframes.data.postMessage(
               PostMessages.WEB3_RESULT,
               error
@@ -248,6 +248,12 @@ export default class Wallet {
 
   /**
    * This is the proxy wallet for user accounts
+   *
+   * When the account iframe is ready, we request the account and network
+   * When the data iframe Web3ProxyProvider is ready, we tell it that we
+   * have a fully enabled wallet.
+   * Then, we respond to "eth_accounts" and "net_version" only, passing
+   * in the current values
    */
   private setupUserAccountsProxyWallet() {
     this.iframes.accounts.on(PostMessages.READY, () => {
@@ -271,25 +277,16 @@ export default class Wallet {
       const { method, id }: web3MethodCall = payload
       switch (method) {
         case 'eth_accounts':
-          this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+          // if account is null, we have no account, so return []
+          // userAccountAddress listening is in this.setupUserAccounts()
+          this.postResult(
             id,
-            jsonrpc: '2.0',
-            result: {
-              id,
-              jsonrpc: '2.0',
-              // if account is null, we have no account, so return []
-              // userAccountAddress listending is in this.setupUserAccounts()
-              result: this.userAccountAddress ? [this.userAccountAddress] : [],
-            },
-          })
+            this.userAccountAddress ? [this.userAccountAddress] : []
+          )
           break
         case 'net_version':
-          this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
-            id,
-            jsonrpc: '2.0',
-            // userAccountNetwork listending is in this.setupUserAccounts()
-            result: { id, jsonrpc: '2.0', result: this.userAccountNetwork },
-          })
+          // userAccountNetwork listening is in this.setupUserAccounts()
+          this.postResult(id, this.userAccountNetwork)
           break
         default:
           // this is a fail-safe, and will not happen unless there is a bug
@@ -299,6 +296,18 @@ export default class Wallet {
             error: `"${method}" is not supported`,
           })
       }
+    })
+  }
+
+  private postResult(id: number, result: any) {
+    this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+      id,
+      jsonrpc: '2.0',
+      result: {
+        id,
+        jsonrpc: '2.0',
+        result,
+      },
     })
   }
 }

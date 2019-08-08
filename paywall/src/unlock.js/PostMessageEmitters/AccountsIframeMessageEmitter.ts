@@ -11,7 +11,12 @@ import {
   PostOfficeWindow,
   OriginWindow,
 } from '../../windowTypes'
-import { makeIframe, addIframeToDocument } from '../iframeManager'
+import {
+  makeIframe,
+  addIframeToDocument,
+  hideIframe,
+  showIframe,
+} from '../iframeManager'
 import {
   UserAccountsIframeEventEmitter,
   UserAccountsIframeEvents,
@@ -90,12 +95,12 @@ export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
    */
   showIframe() {
     // note: if we are using a dummy iframe this will not display anything
-    this.iframe.className = 'unlock start show'
+    showIframe(this.window, this.iframe)
   }
 
   hideIframe() {
     // note: if we are using a dummy iframe this will not hide anything
-    this.iframe.className = 'unlock start'
+    hideIframe(this.window, this.iframe)
   }
 
   private setupListeners() {

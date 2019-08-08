@@ -38,49 +38,26 @@ export default class MainWindowHandler {
     // of the data iframe. The data iframe will then send down the current
     // value, overriding this. A bit later, the blockchain handler will update
     // with the actual value, so this is only used for a few milliseconds
-    let locked
-    try {
-      locked = JSON.parse(
-        this.window.localStorage.getItem('__unlockProtocol.locked') ||
-          '"ignore"'
-      )
-    } catch (_) {
-      locked = 'ignore'
-    }
+    const locked = this.getCachedLockState()
     if (locked === true) {
       this.dispatchEvent('locked')
     }
     if (locked === false) {
       this.dispatchEvent('unlocked')
     }
+    // create window.unlockProtocol
     this.setupUnlockProtocolVariable()
+
+    // respond to "unlocked" and "locked" events by
+    // dispatching "unlockProtocol" on the main window
+    // and
     this.iframes.data.on(PostMessages.LOCKED, () => {
       this.dispatchEvent('locked')
-      try {
-        // reset the cache to locked for the next page view
-        window.localStorage.setItem(
-          '__unlockProtocol.locked',
-          JSON.stringify(true)
-        )
-      } catch (e) {
-        // ignore
-      }
+      this.setCachedLockedState(true)
     })
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
       this.dispatchEvent('unlocked')
-      try {
-        // this is a fast cache. The value will only be used
-        // to prevent a flash of ads on startup. If a cheeky
-        // user attempts to prevent display of ads by setting
-        // the localStorage cache, it will only work for a
-        // few milliseconds
-        window.localStorage.setItem(
-          '__unlockProtocol.locked',
-          JSON.stringify(false)
-        )
-      } catch (e) {
-        // ignore
-      }
+      this.setCachedLockedState(false)
     })
 
     // handle display of checkout and account UI
@@ -104,6 +81,33 @@ export default class MainWindowHandler {
     })
   }
 
+  getCachedLockState() {
+    try {
+      return JSON.parse(
+        this.window.localStorage.getItem('__unlockProtocol.locked') ||
+          '"ignore"'
+      )
+    } catch (_) {
+      return 'ignore'
+    }
+  }
+
+  setCachedLockedState(newState: boolean) {
+    try {
+      // this is a fast cache. The value will only be used
+      // to prevent a flash of ads on startup. If a cheeky
+      // user attempts to prevent display of ads by setting
+      // the localStorage cache, it will only work for a
+      // few milliseconds
+      window.localStorage.setItem(
+        '__unlockProtocol.locked',
+        JSON.stringify(newState)
+      )
+    } catch (e) {
+      // ignore
+    }
+  }
+
   /**
    * Create window.unlockProtocol
    */
@@ -119,19 +123,20 @@ export default class MainWindowHandler {
     this.window.addEventListener(EventTypes.UNLOCK, ({ detail }) => {
       this.lockStatus = detail
     })
+    const immutable = {
+      writable: false, // prevent changing loadCheckoutModal by simple `unlockProtocol.loadCheckoutModal = () => {}`
+      configurable: false, // prevent re-defining the writable property
+      enumerable: false, // prevent finding it exists via `for ... of`
+    }
 
     Object.defineProperties(unlockProtocol, {
       loadCheckoutModal: {
         value: loadCheckoutModal,
-        writable: false, // prevent changing loadCheckoutModal by simple `unlockProtocol.loadCheckoutModal = () => {}`
-        configurable: false, // prevent re-defining the writable property
-        enumerable: false, // prevent finding it exists via `for ... of`
+        ...immutable,
       },
       getState: {
         value: getState,
-        writable: false,
-        configurable: false,
-        enumerable: false,
+        ...immutable,
       },
     })
 
@@ -152,10 +157,8 @@ export default class MainWindowHandler {
       ) {
         Object.defineProperties(window, {
           unlockProtocol: {
-            writable: false, // prevent removing unlockProtocol from window via `window.unlockProtocol = {...}`
-            configurable: false, // prevent re-defining the writable property
-            enumerable: false, // prevent finding it exists via `for ... of`
             value: unlockProtocol,
+            ...immutable,
           },
         })
       }

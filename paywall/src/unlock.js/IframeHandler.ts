@@ -38,26 +38,7 @@ export default class IframeHandler {
     this.checkout.setupListeners()
     // account listener setup will be on-demand, done by the Wallet in setupWallet()
     this.data.on(PostMessages.READY, () => {
-      if (config) {
-        this.data.postMessage(PostMessages.CONFIG, config)
-      }
-    })
-  }
-
-  /**
-   * This is called in Wallet.init() if user accounts are enabled
-   */
-  setupAccountUIHandler(config: PaywallConfig) {
-    // listen for updates to state from the data iframe, and forward them to the checkout UI
-    this.data.on(PostMessages.UPDATE_LOCKS, locks =>
-      this.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
-    )
-
-    // pass on the configuration and request the latest data
-    this.data.on(PostMessages.READY, () => {
-      this.accounts.postMessage(PostMessages.CONFIG, config)
-
-      this.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+      this.data.postMessage(PostMessages.CONFIG, config)
     })
   }
 }
