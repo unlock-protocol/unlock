@@ -2,6 +2,7 @@ export const ADD_EVENT = 'event/ADD_EVENT'
 export const LOAD_EVENT = 'event/LOAD_EVENT'
 export const UPDATE_EVENT = 'event/UPDATE_EVENT'
 export const EVENT_ERROR = 'event/EVENT_ERROR'
+export const SAVED_EVENT = 'event/SAVED_EVENT'
 
 export function eventError(error) {
   return {
@@ -22,5 +23,10 @@ export const loadEvent = address => ({
 
 export const updateEvent = event => ({
   type: UPDATE_EVENT,
+  event,
+})
+
+export const savedEvent = event => ({
+  type: SAVED_EVENT,
   event,
 })

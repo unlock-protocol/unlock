@@ -40,6 +40,12 @@ const event = {
 Join us for an hour or two of fine entertainment.`,
   location: 'Totters Lane, London',
   duration: 3600,
+  links: [
+    {
+      href: 'https://party.com/fun',
+      text: 'Event Website',
+    },
+  ],
 }
 const purchaseKey = () => {}
 const dummyFunc = () => {}

@@ -29,19 +29,19 @@ jest.mock('react-select', () => ({ options, value, onChange, placeholder }) => {
 describe('TimePicker', () => {
   it('should show the current time by default', () => {
     expect.assertions(2)
-    const now = new Date('2019-03-02T00:11:34.000Z') // The important piece here is 11:34am
+    const date = new Date('2019-03-02T00:11:35.000Z') // The important piece here is 11:34am
 
-    let wrapper = rtl.render(<TimePicker now={now} onChange={jest.fn()} />)
+    let wrapper = rtl.render(<TimePicker date={date} onChange={jest.fn()} />)
 
     expect(wrapper.queryByText('11')).not.toBeNull()
-    expect(wrapper.queryByText('34')).not.toBeNull()
+    expect(wrapper.queryByText('35')).not.toBeNull()
   })
 
   it('should let the user pick an hour and trigger onChange', () => {
     expect.assertions(1)
     const onChange = jest.fn()
-    const now = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
-    let wrapper = rtl.render(<TimePicker now={now} onChange={onChange} />)
+    const date = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
+    let wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Hour'), {
       target: { value: '6' }, // Changed to 23
     })
@@ -51,11 +51,11 @@ describe('TimePicker', () => {
   it('should let the user pick a minute and trigger onChange', () => {
     expect.assertions(1)
     const onChange = jest.fn()
-    const now = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
-    let wrapper = rtl.render(<TimePicker now={now} onChange={onChange} />)
+    const date = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
+    let wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Minute'), {
-      target: { value: '17' }, // Changed to 55
+      target: { value: '15' }, // Changed to 15
     })
-    expect(onChange).toHaveBeenCalledWith(new Date('2020-03-02T00:17:00.000'))
+    expect(onChange).toHaveBeenCalledWith(new Date('2020-03-02T00:15:00.000'))
   })
 })

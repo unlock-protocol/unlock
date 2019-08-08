@@ -11,7 +11,7 @@ import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { SET_ERROR } from '../../actions/error'
 import configure from '../../config'
 import { TRANSACTION_TYPES } from '../../constants'
-import { ADD_KEY, addKey, updateKey } from '../../actions/key'
+import { SET_KEY, setKey } from '../../actions/key'
 import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
 import {
   VERIFY_SIGNED_ADDRESS,
@@ -274,7 +274,7 @@ describe('Web3 middleware', () => {
   })
 
   describe('when handling the key.updated events triggered by the web3Service', () => {
-    it('it should dispatch updateKey', () => {
+    it('it should dispatch setKey', () => {
       expect.assertions(1)
       const { store } = create()
 
@@ -290,7 +290,7 @@ describe('Web3 middleware', () => {
 
       mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: ADD_KEY,
+        type: SET_KEY,
         id: key.id,
         key: { data: 'hello' },
       })
@@ -298,7 +298,7 @@ describe('Web3 middleware', () => {
   })
 
   describe('when handling the key.saved events triggered by the web3Service', () => {
-    it('it should dispatch addKey', () => {
+    it('it should dispatch setKey', () => {
       expect.assertions(1)
       const { store } = create()
 
@@ -314,7 +314,7 @@ describe('Web3 middleware', () => {
 
       mockWeb3Service.emit('key.updated', keyId, { data: 'hello' })
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: ADD_KEY,
+        type: SET_KEY,
         id: key.id,
         key: { data: 'hello' },
       })
@@ -420,7 +420,7 @@ describe('Web3 middleware', () => {
     expect(next).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining(
-        updateKey(key.id, {
+        setKey(key.id, {
           ...key,
           transactions: {
             [transaction.hash]: transaction,
@@ -467,7 +467,7 @@ describe('Web3 middleware', () => {
     expect(next).toHaveBeenCalled()
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining(
-        addKey(key.id, {
+        setKey(key.id, {
           ...key,
           expiration: 0,
           transactions: {

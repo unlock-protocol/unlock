@@ -1,5 +1,5 @@
 import reducer from '../../reducers/eventReducer'
-import { UPDATE_EVENT } from '../../actions/event'
+import { UPDATE_EVENT, SAVED_EVENT } from '../../actions/event'
 
 describe('events reducer', () => {
   it('should return the initial state', () => {
@@ -21,5 +21,18 @@ describe('events reducer', () => {
         }
       )
     ).toEqual(event)
+  })
+
+  it('should mark an event as saved', () => {
+    expect.assertions(1)
+    const event = {
+      name: 'I am a dummy event',
+    }
+    expect(
+      reducer(event, {
+        type: SAVED_EVENT,
+        event,
+      }).saved
+    ).toEqual(true)
   })
 })
