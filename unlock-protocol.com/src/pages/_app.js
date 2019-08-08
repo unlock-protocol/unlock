@@ -85,22 +85,23 @@ The Unlock team
       }
 
       window.addEventListener('unlockProtocol', event => {
-        if (!this.state.gaInitialized) return
         if (event.detail === 'unlocked') {
-          ReactGA.event({
-            category: GA_LABELS.MEMBERSHIP,
-            action: GA_ACTIONS.UNLOCKED,
-          })
+          if (this.state.gaInitialized)
+            ReactGA.event({
+              category: GA_LABELS.MEMBERSHIP,
+              action: GA_ACTIONS.UNLOCKED,
+            })
           this.setState(state => ({
             ...state,
             isMember: 'yes',
           }))
         }
         if (event.detail === 'locked') {
-          ReactGA.event({
-            category: GA_LABELS.MEMBERSHIP,
-            action: GA_ACTIONS.LOCKED,
-          })
+          if (this.state.gaInitialized)
+            ReactGA.event({
+              category: GA_LABELS.MEMBERSHIP,
+              action: GA_ACTIONS.LOCKED,
+            })
           this.setState(state => ({
             ...state,
             isMember: 'no',
