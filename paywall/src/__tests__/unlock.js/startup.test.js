@@ -122,7 +122,7 @@ describe('unlock.js startup', () => {
 
   describe('iframe creation', () => {
     it('should create a data iframe with the correct URL', () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       startup(fakeWindow)
 
@@ -130,13 +130,18 @@ describe('unlock.js startup', () => {
         'src',
         'http://paywall/static/data-iframe.1.0.html?origin=http%3A%2F%2Ffun.times'
       )
+
+      expect(fakeDataIframe.setAttribute).toHaveBeenCalledWith(
+        'name',
+        'unlock data'
+      )
       expect(
         fakeWindow.document.body.insertAdjacentElement
       ).toHaveBeenNthCalledWith(1, 'afterbegin', fakeDataIframe)
     })
 
     it('should create a Checkout UI iframe with the correct URL', () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       startup(fakeWindow)
 
@@ -144,19 +149,27 @@ describe('unlock.js startup', () => {
         'src',
         'http://paywall/checkout?origin=http%3A%2F%2Ffun.times'
       )
+      expect(fakeCheckoutIframe.setAttribute).toHaveBeenCalledWith(
+        'name',
+        'unlock checkout'
+      )
       expect(
         fakeWindow.document.body.insertAdjacentElement
       ).toHaveBeenNthCalledWith(3, 'afterbegin', fakeCheckoutIframe)
     })
 
     it('should create a User Accounts UI iframe with the correct URL', () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       startup(fakeWindow)
 
       expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
         'src',
         `${process.env.USER_IFRAME_URL}?origin=http%3A%2F%2Ffun.times`
+      )
+      expect(fakeUserAccountsIframe.setAttribute).toHaveBeenCalledWith(
+        'name',
+        'unlock accounts'
       )
       expect(
         fakeWindow.document.body.insertAdjacentElement

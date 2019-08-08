@@ -1,9 +1,14 @@
 import { IframeManagingWindow, IframeType } from '../windowTypes'
 
-export function makeIframe(window: IframeManagingWindow, src: string) {
+export function makeIframe(
+  window: IframeManagingWindow,
+  src: string,
+  iframeName: string
+) {
   const iframe = window.document.createElement('iframe')
   iframe.className = 'unlock start'
   iframe.setAttribute('src', src)
+  iframe.setAttribute('name', iframeName)
 
   return iframe
 }
