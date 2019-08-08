@@ -83,9 +83,10 @@ export const EventContent = ({
 
   const externalLinks = eventLinks.map(
     ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
+      const encodedHref = encodeURI(href)
       return (
-        <Link key={href} icon={icon}>
-          <a target="_blank" rel="noopener noreferrer" href={href}>
+        <Link key={encodedHref} icon={icon}>
+          <a target="_blank" rel="noopener noreferrer" href={encodedHref}>
             {text}
           </a>
         </Link>
