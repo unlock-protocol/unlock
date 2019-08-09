@@ -1,28 +1,8 @@
 import { makeIframe, addIframeToDocument } from './iframeManager'
 import setupPostOffices, { normalizeConfig } from './setupPostOffices'
-import dispatchEvent from './dispatchEvent'
 import { UnlockWindow } from '../windowTypes'
 
 export default function startup(window: UnlockWindow) {
-  // this is a cache for the time between script startup and the full load
-  // of the data iframe. The data iframe will then send down the current
-  // value, overriding this. A bit later, the blockchain handler will update
-  // with the actual value, so this is only used for a few milliseconds
-  let locked
-  try {
-    locked = JSON.parse(
-      window.localStorage.getItem('__unlockProtocol.locked') || '"ignore"'
-    )
-  } catch (_) {
-    locked = 'ignore'
-  }
-  if (locked === true) {
-    dispatchEvent(window, 'locked')
-  }
-  if (locked === false) {
-    dispatchEvent(window, 'unlocked')
-  }
-
   // Get the config
   const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
 
