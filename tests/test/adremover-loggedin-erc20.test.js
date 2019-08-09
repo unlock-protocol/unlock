@@ -1,8 +1,8 @@
 const url = require('../helpers/url')
-const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
 // const debug = require('../helpers/debugging')
 const iframes = require('../helpers/iframes')
+const { adblockERC20LockAddresses } = require('../helpers/vars')
 
 // const it = debug.screenshotOnFail(page)
 
@@ -10,16 +10,19 @@ let lockSelectors
 
 const locks = [
   {
+    address: adblockERC20LockAddresses[0].toLowerCase(),
     name: 'Lock 1',
     keyPrice: '1.00',
     expirationDuration: '7',
   },
   {
+    address: adblockERC20LockAddresses[1].toLowerCase(),
     name: 'Lock 2',
     keyPrice: '5.00',
     expirationDuration: '30',
   },
   {
+    address: adblockERC20LockAddresses[2].toLowerCase(),
     name: 'Lock 3',
     keyPrice: '25.00',
     expirationDuration: '365',
@@ -31,39 +34,9 @@ const unlockIcon =
 
 describe('The Unlock Ad Remover Paywall (logged in user)', () => {
   beforeAll(async () => {
-    // We first need to deploy the locks
-    const addresses = []
-    // this cannot be done in parallel, or the same lock creation form gets populated with all of them at once
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[0].name,
-        locks[0].expirationDuration,
-        '1000',
-        locks[0].keyPrice,
-        true /* useERC20 */
-      )).toLowerCase()
+    const addresses = adblockERC20LockAddresses.map(address =>
+      address.toLowerCase()
     )
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[1].name,
-        locks[1].expirationDuration,
-        '1000',
-        locks[1].keyPrice,
-        true /* useERC20 */
-      )).toLowerCase()
-    )
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[2].name,
-        locks[2].expirationDuration,
-        '1000',
-        locks[2].keyPrice,
-        true /* useERC20 */
-      )).toLowerCase()
-    )
-
-    // save the lock address to pass it to the ad remover paywall
-    addresses.forEach((address, i) => (locks[i].address = address))
 
     lockSelectors = addresses.map(lock => path =>
       `[data-address="${lock}"] ${path}`
