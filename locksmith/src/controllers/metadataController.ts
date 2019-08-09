@@ -21,7 +21,7 @@ namespace MetadataController {
       ) {
         defaultResponse.name = lockMetadata.name
         defaultResponse.description = lockMetadata.description
-        defaultResponse.image = lockMetadata.image
+        defaultResponse.image = lockMetadata.image || defaultResponse.image
       }
     })
 
