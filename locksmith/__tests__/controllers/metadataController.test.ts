@@ -35,7 +35,8 @@ describe('Metadata Controller', () => {
         expect.objectContaining({
           description:
             "A Key to the 'Week in Ethereum News' lock. Unlock is a protocol for memberships. https://unlock-protocol.com/",
-          image: 'https://assets.unlock-protocol.com/week-in-ethereum.png',
+          image:
+            'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
           name: 'Unlock Key to Week in Ethereum News',
         })
       )
