@@ -34,6 +34,9 @@ export default class MainWindowHandler {
   }
 
   init() {
+    // create window.unlockProtocol
+    this.setupUnlockProtocolVariable()
+
     // this is a cache for the time between script startup and the full load
     // of the data iframe. The data iframe will then send down the current
     // value, overriding this. A bit later, the blockchain handler will update
@@ -45,8 +48,6 @@ export default class MainWindowHandler {
     if (locked === false) {
       this.dispatchEvent('unlocked')
     }
-    // create window.unlockProtocol
-    this.setupUnlockProtocolVariable()
 
     // respond to "unlocked" and "locked" events by
     // dispatching "unlockProtocol" on the main window
