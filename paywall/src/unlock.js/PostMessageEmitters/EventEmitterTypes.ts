@@ -19,6 +19,33 @@ export interface CheckoutIframeEvents {
   ) => void
 }
 
+/**
+ * These are the event definitions for the user accounts iframe. They correspond directly with the post message events
+ * These events are the ones received from the user accounts iframe
+ *
+ * for new events, they should have 1 of 2 forms:
+ *
+ * for events with no payload, () => void
+ * for all others, (payload: ExtractPayload<PostMessages.***>) => void
+ */
+export interface UserAccountsIframeEvents {
+  [PostMessages.READY]: () => void
+  [PostMessages.UPDATE_ACCOUNT]: (
+    account: ExtractPayload<PostMessages.UPDATE_ACCOUNT>
+  ) => void
+  [PostMessages.UPDATE_NETWORK]: (
+    account: ExtractPayload<PostMessages.UPDATE_NETWORK>
+  ) => void
+  [PostMessages.INITIATED_TRANSACTION]: () => void
+  [PostMessages.SHOW_ACCOUNTS_MODAL]: () => void
+  [PostMessages.HIDE_ACCOUNTS_MODAL]: () => void
+}
+
+export type UserAccountsIframeEventEmitter = StrictEventEmitter<
+  EventEmitter,
+  UserAccountsIframeEvents
+>
+
 export type CheckoutIframeEventEmitter = StrictEventEmitter<
   EventEmitter,
   CheckoutIframeEvents
