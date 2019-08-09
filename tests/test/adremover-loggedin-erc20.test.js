@@ -52,14 +52,9 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     await page.goto(testUrl, { waitUntil: 'networkidle2' })
   })
 
-  it('should load the data iframe and checkout iframe', async () => {
-    // 7 assertions per lock created (1 additional for erc20)
-    expect.assertions(21) // Assertions inside dashboard.deployLock block!
-    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-  })
-
   it('should open the checkout UI when clicking on the button', async () => {
     expect.assertions(1)
+    await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
     await expect(page).toClick('button', {
       text: 'Unlock the ads free experience!',
     })
