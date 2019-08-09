@@ -59,7 +59,7 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
         readOnlyProvider: providerURL,
         unlockAddress: newContractInstance.options.address,
         requiredConfirmations: 1,
-        blockTime: 3,
+        blockTime: 3000, // this is in milliseconds
       })
 
       wallet.on('account.changed', async account => {
