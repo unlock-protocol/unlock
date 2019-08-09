@@ -162,6 +162,7 @@ export type IframeAttributeNames = 'src' | 'name'
 export interface IframeType {
   contentWindow: PostMessageTarget
   className: string
+  name?: string
   src: string
   setAttribute: (attr: IframeAttributeNames, value: string) => void
 }
