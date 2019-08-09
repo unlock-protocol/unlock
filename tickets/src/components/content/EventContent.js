@@ -61,6 +61,9 @@ export const EventContent = ({
 
   const convertCurrency = !lock.currencyContractAddress
 
+  const details =
+    description + '\n' + `For more details, click here: ${window.location.href}`
+
   let googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
@@ -80,17 +83,16 @@ export const EventContent = ({
 
   const externalLinks = eventLinks.map(
     ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
+      const encodedHref = encodeURI(href)
       return (
-        <Link key={href} icon={icon}>
-          <a target="_blank" rel="noopener noreferrer" href={href}>
+        <Link key={encodedHref} icon={icon}>
+          <a target="_blank" rel="noopener noreferrer" href={encodedHref}>
             {text}
           </a>
         </Link>
       )
     }
   )
-
-  const details = `For details, click here ${window.location.href}`
 
   const loadingTicket = (
     <Column>
