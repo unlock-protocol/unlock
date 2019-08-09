@@ -118,6 +118,19 @@ describe('unlock.js startup', () => {
 
       expect(fakeWindow.dispatchEvent).not.toHaveBeenCalled()
     })
+
+    it('should not dispatch before window.unlockProtocol is created', done => {
+      expect.assertions(2)
+
+      fakeWindow.storage['__unlockProtocol.locked'] = 'false'
+      fakeWindow.dispatchEvent = () => {
+        expect(fakeWindow.unlockProtocol).not.toBeUndefined()
+        done()
+      }
+
+      expect(fakeWindow.unlockProtocol).toBeUndefined()
+      startup(fakeWindow)
+    })
   })
 
   describe('iframe creation', () => {
