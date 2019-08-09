@@ -146,8 +146,6 @@ describe('CheckoutIframeMessageEmitter', () => {
     it('should emit PostMessages.READY upon receiving it', () => {
       expect.assertions(1)
 
-      dismiss()
-      purchase(request)
       const emitter = makeEmitter(fakeWindow)
 
       emitter.on(PostMessages.READY, ready)
@@ -165,8 +163,6 @@ describe('CheckoutIframeMessageEmitter', () => {
     it('should emit PostMessages.DISMISS_CHECKOUT upon receiving it', () => {
       expect.assertions(1)
 
-      dismiss()
-      purchase(request)
       const emitter = makeEmitter(fakeWindow)
 
       emitter.on(PostMessages.DISMISS_CHECKOUT, dismiss)
@@ -184,8 +180,6 @@ describe('CheckoutIframeMessageEmitter', () => {
     it('should emit PostMessages.PURCHASE_KEY upon receiving it', () => {
       expect.assertions(1)
 
-      dismiss()
-      purchase(request)
       const emitter = makeEmitter(fakeWindow)
 
       emitter.on(PostMessages.PURCHASE_KEY, purchase)
