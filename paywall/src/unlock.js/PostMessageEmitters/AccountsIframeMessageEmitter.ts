@@ -41,7 +41,7 @@ class FancyEmitter extends (EventEmitter as {
  * in the IframeHandler.setupAccountUIHandler() method, which is also
  * called by the Wallet class in Wallet.setupWallet()
  */
-export default class UserAccountsIframeMessageEmitter extends FancyEmitter {
+export default class AccountsIframeMessageEmitter extends FancyEmitter {
   private _addHandler?: (
     type: keyof UserAccountsIframeEvents,
     listener: PostMessageListener
