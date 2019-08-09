@@ -3,6 +3,7 @@
 const PuppeteerEnvironment = require('jest-environment-puppeteer')
 const serverIsUp = require('./serverIsUp')
 const erc20IsUp = require('./erc20IsUp')
+const locksAreDeployed = require('./locksAreDeployed')
 
 const {
   unlockPort,
@@ -50,6 +51,9 @@ class UnlockEnvironment extends PuppeteerEnvironment {
     )
     console.log('Waiting for ERC20 setup')
     await erc20IsUp({ delay: 1000, maxAttempts: 60 })
+
+    console.log('Waiting for Locks to Deploy')
+    await locksAreDeployed({ delay: 1000, maxAttempts: 60 })
     this.global.page.setViewport({ width: 1024, height: 768 })
     console.log('Ready!')
   }
