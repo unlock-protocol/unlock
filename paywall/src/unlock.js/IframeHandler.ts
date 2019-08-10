@@ -11,10 +11,6 @@ import { PostMessages } from '../messageTypes'
 
 /**
  * This class creates the 3 iframes and provides a simple way to access all 3
- *
- * In addition, it contains code for passing information to the accounts iframe
- * because putting anywhere else introduces a circular dependency and eslint
- * bails out
  */
 export default class IframeHandler {
   data: DataIframeMessageEmitter
