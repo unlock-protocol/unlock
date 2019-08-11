@@ -41,7 +41,7 @@ export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
           <br />
           {transaction.confirmations}/{config.requiredConfirmations}
         </TransactionStatus>
-        <Footer>Payment Pending</Footer>
+        <Footer>Payment Confirming</Footer>
       </Body>
     </LockWrapper>
   )
