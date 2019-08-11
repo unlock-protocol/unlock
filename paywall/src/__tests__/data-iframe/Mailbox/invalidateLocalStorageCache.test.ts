@@ -108,6 +108,7 @@ describe('Mailbox - invalidateLocalStorageCache', () => {
       fakeWindow.throwOnLocalStorageSet()
     }
     mailbox = new Mailbox(constants, fakeWindow)
+    testingMailbox().useLocalStorageCache = true
     ;(testingMailbox().configuration as PaywallConfig) = {
       locks: {
         [lockAddresses[1]]: { name: '' },
@@ -237,6 +238,27 @@ describe('Mailbox - invalidateLocalStorageCache', () => {
           fakeWindow.localStorage.getItem(mailbox.getCacheKey())
         ).toBeNull()
       })
+    })
+  })
+
+  describe('localStorage cache disabled', () => {
+    beforeEach(() => {
+      setupDefaults()
+      ;(testingMailbox().blockchainData as BlockchainData) = blockchainData
+      // used to show we don't nuke other caches
+      fakeWindow.localStorage.setItem('another', 'item')
+      mailbox.saveCacheInLocalStorage()
+      testingMailbox().useLocalStorageCache = false
+    })
+
+    it('should not remove any cache', () => {
+      expect.assertions(1)
+
+      mailbox.invalidateLocalStorageCache()
+
+      expect(fakeWindow.localStorage.getItem(mailbox.getCacheKey())).toEqual(
+        JSON.stringify(blockchainData)
+      )
     })
   })
 })

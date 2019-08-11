@@ -427,7 +427,7 @@ export default class Mailbox {
    * the whole cache is cleared out of an abundance of caution.
    */
   invalidateLocalStorageCache() {
-    if (!this.localStorageAvailable) return
+    if (!this.localStorageAvailable || !this.useLocalStorageCache) return
     if (!this.configuration) return
     try {
       this.window.localStorage.removeItem(this.getCacheKey())
@@ -448,7 +448,7 @@ export default class Mailbox {
    * On any errors, the entire localStorage is cleared out of an abundance of caution.
    */
   saveCacheInLocalStorage() {
-    if (!this.localStorageAvailable) return
+    if (!this.localStorageAvailable || !this.useLocalStorageCache) return
     if (!this.configuration) return
 
     const cacheableData = JSON.stringify(this.blockchainData)
