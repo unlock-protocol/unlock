@@ -71,7 +71,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
         JSON.stringify(locks)
       )}&paywall=${encodeURIComponent(
         url.paywall('')
-      )}&provider=${encodeURIComponent(url.readOnlyProvider)}&logindelay=0`
+      )}&provider=${encodeURIComponent(url.readOnlyProvider())}&logindelay=0`
     )
     await page.goto(testUrl, { waitUntil: 'networkidle2' })
   })
