@@ -29,7 +29,7 @@ import {
 import localStorageAvailable from '../utils/localStorage'
 
 export default class Mailbox {
-  private useLocalStorageCache = true
+  private readonly useLocalStorageCache = false
   private readonly cachePrefix = '__unlockProtocol.cache'
   private handler?: BlockchainHandler
   private constants: ConstantsType
@@ -101,6 +101,8 @@ export default class Mailbox {
    * We can use this to determine whether the user has purchased a key in another tab
    */
   setupStorageListener() {
+    if (!this.useLocalStorageCache) return
+    // TODO: check to see if there are any changes to the keys and don't retrieve if not
     this.window.addEventListener(EventTypes.STORAGE, event => {
       if (!this.configuration || !this.handler) return
       if (event.key === this.getCacheKey()) {
