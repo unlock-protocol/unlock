@@ -7,25 +7,43 @@ const { adblockERC20LockAddresses } = require('../helpers/vars')
 // const it = debug.screenshotOnFail(page)
 
 let lockSelectors
+/*
+to test locally, paste this into the console:
+
+var locks = [
+  {
+    address: '0x1c0E27f7967899578eF138384F8cFC0bf579d063'.toLowerCase(),
+    name: 'Lock 1',
+  },
+  {
+    address: '0xce341cc78D9774808f0E5b654aF8B57B5126C6BA'.toLowerCase(),
+    name: 'Lock 2',
+  },
+  {
+    address: '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'.toLowerCase(),
+    name: 'Lock 3',
+  },
+]
+var url = `http://localhost:3001/static/adremover/integrationtesting-loggedin.html?locks=${encodeURIComponent(
+  JSON.stringify(locks)
+)}&paywall=${encodeURIComponent(
+  'http://localhost:3001'
+)}&provider=${encodeURIComponent('http://localhost:8545')}&logindelay=0`
+window.location.href = url
+*/
 
 const locks = [
   {
     address: adblockERC20LockAddresses[0].toLowerCase(),
     name: 'Lock 1',
-    keyPrice: '1.00',
-    expirationDuration: '7',
   },
   {
     address: adblockERC20LockAddresses[1].toLowerCase(),
     name: 'Lock 2',
-    keyPrice: '5.00',
-    expirationDuration: '30',
   },
   {
     address: adblockERC20LockAddresses[2].toLowerCase(),
     name: 'Lock 3',
-    keyPrice: '25.00',
-    expirationDuration: '365',
   },
 ]
 
@@ -41,7 +59,7 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
     lockSelectors = addresses.map(lock => path =>
       `[data-address="${lock}"] ${path}`
     )
-    //debug.debugPage(page, true)
+    // debug.debugPage(page, true)
     const testUrl = url.paywall(
       `/static/adremover/integrationtesting-loggedin.html?locks=${encodeURIComponent(
         JSON.stringify(locks)
