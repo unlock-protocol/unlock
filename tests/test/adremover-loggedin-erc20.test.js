@@ -42,7 +42,7 @@ const locks = [
   {
     address: adblockERC20LockAddresses[1].toLowerCase(),
     name: 'Lock 2',
-    keyPrice: '25.00',
+    keyPrice: '5.00',
     expirationDuration: '30',
   },
   {
