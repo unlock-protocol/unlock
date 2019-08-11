@@ -91,6 +91,7 @@ const WalletDescription = styled.a`
     letter-spacing: 1px;
     text-transform: uppercase;
     padding-bottom: 8px;
+    width: 160px;
   }
   & div {
     display: flex;
