@@ -20,7 +20,6 @@ describe('Wallet.setupUserAccounts()', () => {
   const checkoutIframeUrl = 'http://paywall/checkout'
   const userIframeUrl = 'http://app/accounts'
   const dataOrigin = 'http://paywall'
-  const checkoutOrigin = 'http://paywall'
   const accountsOrigin = 'http://app'
   const fakeAddress = '0x1234567890123456789012345678901234567890'
   const config: PaywallConfig = {
@@ -129,28 +128,6 @@ describe('Wallet.setupUserAccounts()', () => {
       'locks',
       iframes.data.iframe,
       dataOrigin
-    )
-  })
-
-  it('should forward purchase requests to the account iframe', () => {
-    expect.assertions(1)
-
-    const purchaseRequest = {
-      lock: fakeAddress,
-      extraTip: '0',
-    }
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.PURCHASE_KEY,
-      purchaseRequest,
-      iframes.checkout.iframe,
-      checkoutOrigin
-    )
-
-    fakeWindow.expectPostMessageSentToIframe(
-      PostMessages.PURCHASE_KEY,
-      purchaseRequest,
-      iframes.accounts.iframe,
-      accountsOrigin
     )
   })
 
