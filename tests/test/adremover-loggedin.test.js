@@ -142,7 +142,8 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
         return (
           lock &&
           (lock.innerText === 'Payment Sent' ||
-            lock.innerText === 'Payment Pending')
+            lock.innerText === 'Payment Pending' ||
+            lock.innerText === 'Payment Confirming')
         )
       },
       {},
@@ -168,7 +169,8 @@ describe('The Unlock Ad Remover Paywall (logged in user)', () => {
         return (
           lock &&
           (lock.innerText === 'Payment Sent' ||
-            lock.innerText === 'Payment Pending')
+            lock.innerText === 'Payment Pending' ||
+            lock.innerText === 'Payment Confirming')
         )
       },
       {},
