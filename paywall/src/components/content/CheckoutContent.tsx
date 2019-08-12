@@ -86,7 +86,9 @@ export default function CheckoutContent() {
   })
   const locked = !isUnlocked && isLocked
   let allowClosingCheckout: boolean
-  if (paywallConfig.type === 'paywall') {
+
+  // TODO: remove paywallConfig.type
+  if (paywallConfig.type === 'paywall' || paywallConfig.persistentCheckout) {
     // for the paywall, the checkout cannot be closed unless the user explicitly closes it
     allowClosingCheckout = !locked
   } else {
