@@ -107,6 +107,9 @@ const WalletDescription = styled.a`
       padding-top: 20px;
     }
   }
+  & div:hover {
+    border: 1px solid var(--link);
+  }
   & div ${Caption} {
     text-transform: none;
     font-family: IBM Plex Sans, sans serif;

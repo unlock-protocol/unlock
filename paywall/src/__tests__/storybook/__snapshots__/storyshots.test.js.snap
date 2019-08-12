@@ -9397,6 +9397,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -11143,7 +11147,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -11251,7 +11255,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -11302,7 +11306,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -12830,6 +12834,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -14576,7 +14584,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -14684,7 +14692,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -14735,7 +14743,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -16263,6 +16271,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -18009,7 +18021,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -18117,7 +18129,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -18168,7 +18180,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -19696,6 +19708,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -21442,7 +21458,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -21550,7 +21566,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -21601,7 +21617,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -23129,6 +23145,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -24875,7 +24895,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -24983,7 +25003,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -25034,7 +25054,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
@@ -26562,6 +26582,10 @@ Object {
   padding-top: 20px;
 }
 
+.c9 div:hover {
+  border: 1px solid var(--link);
+}
+
 .c9 div .c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
@@ -28308,7 +28332,7 @@ Object {
           class="sc-gipzik frwbpa"
         >
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
@@ -28416,7 +28440,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
@@ -28467,7 +28491,7 @@ Object {
             </div>
           </a>
           <a
-            class="sc-cvbbAY ktIRhd"
+            class="sc-cvbbAY fXOVRu"
             href="https://play.google.com/store/apps/details?id=com.opera.browser"
             rel="noopener"
             target="_blank"
