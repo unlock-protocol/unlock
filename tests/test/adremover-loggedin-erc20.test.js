@@ -8,8 +8,11 @@ const { adblockERC20LockAddresses } = require('../helpers/vars')
 
 let lockSelectors
 /*
-to test locally, paste this into the console:
+to debug this test locally, run the dev standup (see the README.md in the root directory)
 
+then, paste the code between the "```" into the console in a browser without metamask (like Safari):
+
+```
 var locks = [
   {
     address: '0x1c0E27f7967899578eF138384F8cFC0bf579d063'.toLowerCase(),
@@ -30,6 +33,9 @@ var url = `http://localhost:3001/static/adremover/integrationtesting-loggedin.ht
   'http://localhost:3001'
 )}&provider=${encodeURIComponent('http://localhost:8545')}&logindelay=0`
 window.location.href = url
+```
+
+this will allow exploring why the test has failed
 */
 
 const locks = [
