@@ -11,7 +11,7 @@ export const LockWrapper = styled.li.attrs(props => ({
   padding: 0px;
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   width: 200px;
-  grid-gap: 0px;
+  grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
 `
