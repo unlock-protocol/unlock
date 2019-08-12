@@ -147,7 +147,7 @@ async function deployERC20Lock(
   name = 'Lock',
   keyPrice = '1', // 1 ERC20 token
   maxNumberOfKeys = -1, // unlimited
-  expirationDuration = 60 * 5 // 1 minute!
+  expirationDuration = 60 // 1 minute!
 ) {
   return deployLock(wallet, account, {
     expirationDuration,
@@ -244,7 +244,8 @@ async function prepareEnvironment(
       account,
       'paywall lock',
       '0.1', // 0.1 Eth
-      '1000' // 1000 keys maximum
+      '1000', // 1000 keys maximum
+      60 * 5 // expire in 5 minutes
     )
   )
 
@@ -253,7 +254,10 @@ async function prepareEnvironment(
       wallet,
       account,
       testERC20Token.address,
-      'paywall lock'
+      'paywall lock',
+      '1', // 1 ERC20
+      -1, // unlimited keys
+      60 * 5 // expire in 5 minutes
     )
   )
 
