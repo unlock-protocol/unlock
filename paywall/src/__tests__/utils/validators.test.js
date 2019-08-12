@@ -666,6 +666,85 @@ describe('Form field validators', () => {
           ).toBe(false)
         })
       })
+
+      describe('persistentCheckout', () => {
+        it("should accept or 'true' as value", () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: true,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 'true',
+            })
+          ).toBe(true)
+        })
+        it("should accept false or 'false' as value", () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: false,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 'false',
+            })
+          ).toBe(true)
+        })
+
+        it('should accept no value set', () => {
+          expect.assertions(1)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+            })
+          ).toBe(true)
+        })
+
+        it('should reject other types', () => {
+          expect.assertions(4)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: '',
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 3,
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: [],
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: {},
+            })
+          ).toBe(false)
+        })
+      })
     })
 
     describe('valid cases', () => {
