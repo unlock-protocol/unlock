@@ -103,6 +103,7 @@ export default class Mailbox {
   setupStorageListener() {
     if (!this.useLocalStorageCache) return
     // TODO: check to see if there are any changes to the keys and don't retrieve if not
+    // Issues that reference this: #4381 #4410
     this.window.addEventListener(EventTypes.STORAGE, event => {
       if (!this.configuration || !this.handler) return
       if (event.key === this.getCacheKey()) {
