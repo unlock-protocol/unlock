@@ -49,7 +49,7 @@ export const CheckoutConfirmingModal = ({
             confirming!
           </p>
           <Status>You&apos;ll see the status of your order on the left.</Status>
-          <StartReading onClick={hideCheckout}>Start Reading</StartReading>
+          <Continue onClick={hideCheckout}>Continue</Continue>
         </div>
       </Content>
       <Footer>
@@ -62,7 +62,7 @@ export const CheckoutConfirmingModal = ({
 
 export default CheckoutConfirmingModal
 
-const StartReading = styled(ActionButton)`
+const Continue = styled(ActionButton)`
   width: 280px;
   height: 60px;
   ${Media.phone`
