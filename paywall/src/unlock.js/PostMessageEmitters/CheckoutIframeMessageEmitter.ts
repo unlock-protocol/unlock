@@ -22,10 +22,6 @@ import {
   CheckoutIframeEvents,
 } from './EventEmitterTypes'
 
-declare const process: {
-  env: any
-}
-
 class FancyEmitter extends (EventEmitter as {
   new (): CheckoutIframeEventEmitter
 }) {}
@@ -55,12 +51,13 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
 
     this.window = window
     this.iframe = makeIframe(window, checkoutIframeUrl, 'unlock checkout')
+    const url = new URL(this.iframe.src)
     addIframeToDocument(window, this.iframe)
 
     const { postMessage, addHandler } = mainWindowPostOffice(
       window,
       this.iframe,
-      process.env.PAYWALL_URL,
+      url.origin,
       'main window',
       'Checkout UI iframe'
     )

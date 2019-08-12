@@ -13,10 +13,6 @@ import {
 import { makeIframe, addIframeToDocument } from '../iframeManager'
 import { DataIframeEventEmitter, DataIframeEvents } from './EventEmitterTypes'
 
-declare const process: {
-  env: any
-}
-
 interface UnvalidatedPayload {
   method?: any
   id?: any
@@ -51,12 +47,13 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
     super()
 
     this.iframe = makeIframe(window, dataIframeUrl, 'unlock data')
+    const url = new URL(this.iframe.src)
     addIframeToDocument(window, this.iframe)
 
     const { postMessage, addHandler } = mainWindowPostOffice(
       window,
       this.iframe,
-      process.env.PAYWALL_URL,
+      url.origin,
       'main window',
       'Data iframe'
     )
