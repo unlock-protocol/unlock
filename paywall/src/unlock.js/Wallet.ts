@@ -115,6 +115,8 @@ export default class Wallet {
     this.iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
       this.iframes.data.postMessage(
         PostMessages.INITIATED_TRANSACTION,
+        // TODO: passing undefined is limitation of the way messages are typed, eventually it should be fixed
+        // the natural behavior would be passing nothing as the 2nd argument
         undefined
       )
     })
