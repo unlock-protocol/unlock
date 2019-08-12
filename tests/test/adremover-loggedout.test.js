@@ -1,14 +1,17 @@
 const url = require('../helpers/url')
-const dashboard = require('../helpers/dashboard')
 const wait = require('../helpers/wait')
 const iframes = require('../helpers/iframes')
 //const debug = require('../helpers/debugging')
 
+const { adblockETHLockAddresses } = require('../helpers/vars')
+
 //const sit = debug.screenshotOnFail(page)
 
+// This lock is created in /docker/development/deploy-locks.js
+// after the comment "locks for adblock integration tests"
 const locks = [
   {
-    name: 'Lock 1',
+    name: 'ETH adblock lock 1',
     keyPrice: '0.01',
     expirationDuration: '7',
   },
@@ -19,17 +22,7 @@ const unlockIcon =
 
 describe('The Unlock Ad Remover Paywall (logged out user)', () => {
   beforeAll(async () => {
-    // We first need to deploy the locks
-    const addresses = []
-    // this cannot be done in parallel, or the same lock creation form gets populated with all of them at once
-    addresses.push(
-      (await dashboard.deployLock(
-        locks[0].name,
-        locks[0].expirationDuration,
-        '1000',
-        locks[0].keyPrice
-      )).toLowerCase()
-    )
+    const addresses = [adblockETHLockAddresses[0].toLowerCase()]
 
     // save the lock address to pass it to the ad remover paywall
     addresses.forEach((address, i) => (locks[i].address = address))
@@ -43,11 +36,6 @@ describe('The Unlock Ad Remover Paywall (logged out user)', () => {
       ),
       { waitUntil: 'networkidle2' }
     )
-  })
-
-  it('should load the data iframe and checkout iframe', async () => {
-    // 6 assertions per lock created
-    expect.assertions(6) // Assertions inside dashboard.deployLock block!
     await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
   })
 
