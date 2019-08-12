@@ -11,6 +11,8 @@ interface hasPrototype {
   prototype?: any
 }
 
+export const IGNORE_CACHE = 'ignore'
+
 /**
  * This class handles all of the messaging to the window object
  *
@@ -46,6 +48,8 @@ export default class MainWindowHandler {
     // value, overriding this. A bit later, the blockchain handler will update
     // with the actual value, so this is only used for a few milliseconds
     const locked = this.getCachedLockState()
+    // note: locked can also be value IGNORE_CACHE in addition to true/false
+    // IGNORE_CACHE is used to ignore the cache and not respond to it
     if (locked === true) {
       this.dispatchEvent('locked')
     }
@@ -75,6 +79,8 @@ export default class MainWindowHandler {
     })
 
     this.iframes.checkout.on(PostMessages.READY, () => {
+      // TODO: "type" is going to be removed. Instead, we will respond to specific config directives
+      // so this code will be removed
       if (this.config && this.config.type === 'paywall') {
         // show the checkout UI
         this.showCheckoutIframe()
@@ -93,12 +99,12 @@ export default class MainWindowHandler {
   getCachedLockState() {
     try {
       const cache = this.window.localStorage.getItem('__unlockProtocol.locked')
-      if (!cache) return 'ignore'
-      if (cache !== 'true' && cache !== 'false') return 'ignore'
+      if (!cache) return IGNORE_CACHE
+      if (cache !== 'true' && cache !== 'false') return IGNORE_CACHE
 
       return JSON.parse(cache)
     } catch (_) {
-      return 'ignore'
+      return IGNORE_CACHE
     }
   }
 

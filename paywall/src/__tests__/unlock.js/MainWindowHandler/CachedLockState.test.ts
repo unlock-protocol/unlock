@@ -1,5 +1,7 @@
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
+import MainWindowHandler, {
+  IGNORE_CACHE,
+} from '../../../unlock.js/MainWindowHandler'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import { PaywallConfig } from '../../../unlockTypes'
 
@@ -30,11 +32,11 @@ describe('MainWindowHandler - locked/unlocked cache', () => {
       fakeWindow = new FakeWindow()
     })
 
-    it('should return "ignore" if there is no cache', () => {
+    it('should return IGNORE_CACHE if there is no cache', () => {
       expect.assertions(1)
 
       const handler = getMainWindowHandler()
-      expect(handler.getCachedLockState()).toBe('ignore')
+      expect(handler.getCachedLockState()).toBe(IGNORE_CACHE)
     })
 
     it('should return true if cache is true', () => {
@@ -54,22 +56,22 @@ describe('MainWindowHandler - locked/unlocked cache', () => {
       expect(handler.getCachedLockState()).toBe(false)
     })
 
-    it('should return "ignore" if cache is not valid', () => {
+    it('should return IGNORE_CACHE if cache is not valid', () => {
       expect.assertions(1)
 
       fakeWindow.storage['__unlockProtocol.locked'] = '1'
       const handler = getMainWindowHandler()
-      expect(handler.getCachedLockState()).toBe('ignore')
+      expect(handler.getCachedLockState()).toBe(IGNORE_CACHE)
     })
 
-    it('should return "ignore" if localStorage.getItem() throws', () => {
+    it('should return IGNORE_CACHE if localStorage.getItem() throws', () => {
       expect.assertions(1)
 
       fakeWindow.localStorage.getItem = () => {
         throw new Error('fail')
       }
       const handler = getMainWindowHandler()
-      expect(handler.getCachedLockState()).toBe('ignore')
+      expect(handler.getCachedLockState()).toBe(IGNORE_CACHE)
     })
   })
 
