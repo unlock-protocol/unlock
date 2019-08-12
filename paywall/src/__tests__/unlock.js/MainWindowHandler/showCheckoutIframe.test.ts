@@ -3,7 +3,16 @@ import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 
+declare const process: {
+  env: {
+    PAYWALL_URL: string
+    USER_IFRAME_URL: string
+  }
+}
+
 describe('MainWindowHandler - showCheckoutIframe', () => {
+  process.env.PAYWALL_URL = 'http://paywall'
+  process.env.USER_IFRAME_URL = 'http://app/account'
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
   const config: PaywallConfig = {
