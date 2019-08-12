@@ -108,6 +108,7 @@ describe('Mailbox - saveCacheInLocalStorage', () => {
       fakeWindow.throwOnLocalStorageSet()
     }
     mailbox = new Mailbox(constants, fakeWindow)
+    testingMailbox().useLocalStorageCache = true
     ;(testingMailbox().configuration as PaywallConfig) = {
       locks: {
         [lockAddresses[1]]: { name: '' },
@@ -218,6 +219,22 @@ describe('Mailbox - saveCacheInLocalStorage', () => {
       mailbox.saveCacheInLocalStorage()
 
       expectCacheToContain(blockchainData)
+    })
+  })
+
+  describe('localStorage cache disabled', () => {
+    beforeEach(() => {
+      setupDefaults()
+      testingMailbox().useLocalStorageCache = false
+      ;(testingMailbox().blockchainData as BlockchainData) = blockchainData
+    })
+
+    it('should not save a serialized representation of current data to the cache', () => {
+      expect.assertions(1)
+
+      mailbox.saveCacheInLocalStorage()
+
+      expect(fakeWindow.storage).toEqual({})
     })
   })
 })
