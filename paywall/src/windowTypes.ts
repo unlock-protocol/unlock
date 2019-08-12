@@ -104,14 +104,28 @@ export interface Web3Window extends PostOfficeWindow {
   Promise: PromiseConstructor
   web3?: {
     currentProvider: {
-      sendAsync?: web3Send
-      send?: web3Send
       isMetamask?: true // is only ever true or undefined
       enable?: () => Promise<void>
     }
   }
 }
+// this is the same as Web3Window, but marks web3 as required instead of optional
+export type CryptoWalletWindow = Required<Web3Window>
 
+// a provider that defines sendAsync may define send
+export interface SendAsyncProvider {
+  sendAsync: web3Send
+  send?: web3Send
+  isMetamask?: true // is only ever true or undefined
+  enable?: () => Promise<void>
+}
+
+// some providers do not define sendAsync
+export interface SendProvider {
+  send: web3Send
+  isMetamask?: true // is only ever true or undefined
+  enable?: () => Promise<void>
+}
 // used in utils/postOffice.ts
 export interface MessageEvent {
   source: any
