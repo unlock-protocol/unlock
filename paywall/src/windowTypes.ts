@@ -104,6 +104,8 @@ export interface Web3Window extends PostOfficeWindow {
   Promise: PromiseConstructor
   web3?: {
     currentProvider: {
+      sendAsync?: web3Send
+      send?: web3Send
       isMetamask?: true // is only ever true or undefined
       enable?: () => Promise<void>
     }
