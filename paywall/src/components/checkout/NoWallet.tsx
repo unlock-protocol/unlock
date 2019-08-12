@@ -14,10 +14,7 @@ export const NoWallet = ({ config }: Props) => {
   return (
     <React.Fragment>
       <Header>
-        <Title>
-          {config.icon && <Logo src={config.icon} />}
-          <UnlockedText>Unlocked</UnlockedText>
-        </Title>
+        <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <p>
           To enjoy content without any ads you&apos;ll need to use a
           crypto-enabled browser that has a wallet. Here are a few options
@@ -137,13 +134,6 @@ const CoinbaseWallet = styled(Svg.CoinbaseWallet)`
 
 const Opera = styled(Svg.Opera)`
   width: 120px;
-`
-
-const UnlockedText = styled.span`
-  padding-left: 10px;
-  ${Media.phone`
-    padding-left: 0;
-  `}
 `
 
 const Header = styled.header`

@@ -28,10 +28,7 @@ export const CheckoutConfirmingModal = ({
   return (
     <React.Fragment>
       <Header>
-        <Title>
-          {config.icon && <Logo src={config.icon} />}
-          <UnlockedText>Unlocked</UnlockedText>
-        </Title>
+        <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <h2>Thanks for your purchase!</h2>
       </Header>
       <Content>
@@ -74,13 +71,6 @@ const WordMark = styled(WordMarkLogo)`
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
-`
-
-const UnlockedText = styled.span`
-  padding-left: 10px;
-  ${Media.phone`
-    padding-left: 0;
-  `}
 `
 
 const Status = styled.p`
