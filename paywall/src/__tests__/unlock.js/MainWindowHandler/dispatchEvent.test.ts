@@ -3,16 +3,7 @@ import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 
-declare const process: {
-  env: {
-    PAYWALL_URL: string
-    USER_IFRAME_URL: string
-  }
-}
-
 describe('MainWindowHandler - dispatchEvent', () => {
-  process.env.PAYWALL_URL = 'http://paywall'
-  process.env.USER_IFRAME_URL = 'http://app/account'
   let fakeWindow: FakeWindow
   const config: PaywallConfig = {
     locks: {},
@@ -25,7 +16,12 @@ describe('MainWindowHandler - dispatchEvent', () => {
   }
 
   function getMainWindowHandler() {
-    const iframes = new IframeHandler(fakeWindow, '', '', '')
+    const iframes = new IframeHandler(
+      fakeWindow,
+      'http://t', // these values are unused in this test
+      'http://u',
+      'http://v'
+    )
     return new MainWindowHandler(fakeWindow, iframes, config)
   }
 

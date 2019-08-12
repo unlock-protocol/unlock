@@ -5,16 +5,7 @@ import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 import { UnlockWindow } from '../../../windowTypes'
 import { UnlockAndIframeManagerWindow } from '../../../unlock.js/setupUnlockProtocolVariable'
 
-declare const process: {
-  env: {
-    PAYWALL_URL: string
-    USER_IFRAME_URL: string
-  }
-}
-
 describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
-  process.env.PAYWALL_URL = 'http://paywall'
-  process.env.USER_IFRAME_URL = 'http://app/account'
   let fakeWindow: FakeWindow
   const config: PaywallConfig = {
     locks: {},
@@ -27,7 +18,13 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
   }
 
   function getMainWindowHandler() {
-    const iframes = new IframeHandler(fakeWindow, '', '', '')
+    // iframe URLs are unused in this test
+    const iframes = new IframeHandler(
+      fakeWindow,
+      'http://t',
+      'http://u',
+      'http://v'
+    )
     return new MainWindowHandler(fakeWindow, iframes, config)
   }
 

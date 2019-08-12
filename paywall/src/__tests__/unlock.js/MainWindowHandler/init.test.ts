@@ -5,12 +5,6 @@ import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 import { PostMessages } from '../../../messageTypes'
 import { UnlockWindow } from '../../../windowTypes'
 
-declare const process: {
-  env: {
-    PAYWALL_URL: string
-  }
-}
-
 describe('MainWindowHandler - init', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
@@ -29,7 +23,6 @@ describe('MainWindowHandler - init', () => {
       confirmed: '',
     },
   }
-  process.env.PAYWALL_URL = 'http://paywall'
 
   function getMainWindowHandler(configuration = config) {
     iframes = new IframeHandler(
