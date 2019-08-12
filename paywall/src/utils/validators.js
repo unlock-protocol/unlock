@@ -108,6 +108,7 @@ export const isValidPaywallConfig = config => {
   ) {
     return false
   }
+
   if (
     config.unlockUserAccounts &&
     !(
@@ -115,6 +116,15 @@ export const isValidPaywallConfig = config => {
       config.unlockUserAccounts === 'true' ||
       config.unlockUserAccounts === 'false'
     )
+  ) {
+    return false
+  }
+
+  // persistentCheckout can ne not set, a boolean, or true or false.
+  if (
+    typeof config.persistentCheckout !== 'undefined' &&
+    (typeof config.persistentCheckout !== 'boolean' &&
+      ['true', 'false'].indexOf(config.persistentCheckout) === -1)
   ) {
     return false
   }
