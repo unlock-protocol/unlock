@@ -76,7 +76,15 @@ export default class Wallet {
       this.setupUserAccounts()
     }
     // set up the proxy wallet
-    this.setupProxyWallet()
+    if (this.useUserAccounts && !this.hasWallet) {
+      // if user accounts are explicitly enabled, we use them
+      // but only if there is no crypto wallet
+      this.setupUserAccountsProxyWallet()
+    } else {
+      // if we have a wallet, we always use it
+      // if we have no wallet, and no use accounts, we use the web3 proxy wallet
+      this.setupWeb3ProxyWallet()
+    }
   }
 
   /**
@@ -113,18 +121,6 @@ export default class Wallet {
 
     // then create the iframe and ready its post office
     this.iframes.accounts.createIframe()
-  }
-
-  setupProxyWallet() {
-    if (this.useUserAccounts && !this.hasWallet) {
-      // if user accounts are explicitly enabled, we use them
-      // but only if there is no crypto wallet
-      this.setupUserAccountsProxyWallet()
-    } else {
-      // if we have a wallet, we always use it
-      // if we have no wallet, and no use accounts, we use the web3 proxy wallet
-      this.setupWeb3ProxyWallet()
-    }
   }
 
   async enableCryptoWallet() {
