@@ -191,6 +191,18 @@ export interface ConfigWindow {
   unlockProtocolConfig?: PaywallConfig
 }
 
+export interface UnlockWindowNoProtocolYet
+  extends PostOfficeWindow,
+    EventWindow,
+    LocalStorageWindow,
+    IframeManagingWindow,
+    Web3Window,
+    OriginWindow,
+    ConfigWindow {
+  document: FullDocument
+  addEventListener: AddEventListenerFunc
+}
+
 export interface UnlockWindow
   extends PostOfficeWindow,
     EventWindow,

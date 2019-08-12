@@ -17,9 +17,11 @@ import {
   StorageEvent,
   OriginWindow,
   IframeManagingWindow,
-  IframeManagingDocument,
   IframeType,
   IframeAttributeNames,
+  EventWindow,
+  FullDocument,
+  UnlockWindowNoProtocolYet,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
@@ -29,10 +31,12 @@ export default class FakeWindow
     FetchWindow,
     SetTimeoutWindow,
     IframePostOfficeWindow,
+    UnlockWindowNoProtocolYet,
     IframeManagingWindow,
     ConsoleWindow,
     LocalStorageWindow,
-    OriginWindow {
+    OriginWindow,
+    EventWindow {
   public origin = 'http://example.com'
   public fetchResult: any = {}
   public fetch: (
@@ -62,7 +66,10 @@ export default class FakeWindow
   public console: Pick<ConsoleWindow, 'console'>['console']
   public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
   public storage: { [key: string]: string } = {}
-  public document: IframeManagingDocument
+  public document: FullDocument
+  public CustomEvent = CustomEvent
+  public Promise = Promise
+  public dispatchEvent: (event: Event) => void
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -89,6 +96,10 @@ export default class FakeWindow
           },
         }
         return iframe
+      },
+      createEvent: (type: string) => {
+        const event = new this.CustomEvent<any>(type)
+        return event
       },
       querySelector: () => false,
       body: {
@@ -125,6 +136,7 @@ export default class FakeWindow
       log: jest.fn(),
       error: jest.fn(),
     }
+    this.dispatchEvent = jest.fn()
     this.localStorage = {
       length: 0,
       clear: () => (this.storage = {}),
