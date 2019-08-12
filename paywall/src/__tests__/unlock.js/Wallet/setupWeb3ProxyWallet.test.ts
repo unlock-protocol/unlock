@@ -5,13 +5,6 @@ import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
 import { PostMessages } from '../../../messageTypes'
 
-declare const process: {
-  env: {
-    PAYWALL_URL: string
-    USER_IFRAME_URL: string
-  }
-}
-
 describe('Wallet.setupUserAccounts()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
@@ -34,10 +27,8 @@ describe('Wallet.setupUserAccounts()', () => {
   }
   const startup: StartupConstants = {
     network: 1984,
+    debug: 0,
   }
-  process.env.PAYWALL_URL = 'http://paywall'
-  process.env.USER_IFRAME_URL = 'http://app/accounts'
-
   function makeWallet() {
     iframes = new IframeHandler(
       fakeWindow,

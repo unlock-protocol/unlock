@@ -4,10 +4,6 @@ import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
 
-declare const process: {
-  env: any
-}
-
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
  *
@@ -30,6 +26,7 @@ export default class Wallet {
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: number
+  private debug: boolean
 
   constructor(
     window: Web3Window,
@@ -41,6 +38,7 @@ export default class Wallet {
     this.iframes = iframes
     this.config = config
     this.userAccountNetwork = constants.network
+    this.debug = !!constants.debug
 
     // do we have a web3 wallet?
     this.hasWallet = !!(this.window.web3 && this.window.web3.currentProvider)
@@ -56,7 +54,7 @@ export default class Wallet {
       !this.hasWallet &&
       (config.unlockUserAccounts === true ||
         config.unlockUserAccounts === 'true')
-    if (process.env.DEBUG) {
+    if (this.debug) {
       if (this.useUserAccounts) {
         // eslint-disable-next-line
         console.log('[USER ACCOUNTS] using user accounts')

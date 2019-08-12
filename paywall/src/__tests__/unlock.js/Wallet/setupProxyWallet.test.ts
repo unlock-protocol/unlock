@@ -4,13 +4,6 @@ import IframeHandler from '../../../unlock.js/IframeHandler'
 import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
 
-declare const process: {
-  env: {
-    PAYWALL_URL: string
-    USER_IFRAME_URL: string
-  }
-}
-
 describe('Wallet.setupProxyWallet()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
@@ -28,13 +21,12 @@ describe('Wallet.setupProxyWallet()', () => {
   }
   const startup: StartupConstants = {
     network: 1984,
+    debug: 0,
   }
   const userAccountsConfig: PaywallConfig = {
     ...regularConfig,
     unlockUserAccounts: true,
   }
-  process.env.PAYWALL_URL = 'http://paywall'
-  process.env.USER_IFRAME_URL = 'http://app/accounts'
 
   function makeWallet(configuration = regularConfig) {
     iframes = new IframeHandler(
