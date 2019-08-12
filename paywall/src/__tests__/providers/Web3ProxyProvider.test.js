@@ -5,7 +5,8 @@ import {
   POST_MESSAGE_WALLET_INFO,
   POST_MESSAGE_WEB3,
 } from '../../paywall-builder/constants'
-import { delayPromise } from '../../utils/promises'
+import { delayPromise, waitFor } from '../../utils/promises'
+import FakeWindow from '../test-helpers/fakeWindowHelpers'
 
 describe('Web3ProxyProvider', () => {
   let fakeWindow
@@ -197,14 +198,7 @@ describe('Web3ProxyProvider', () => {
 
     // resolve when the spy has been called
     // if we await on the connect call, it may hang
-    await new Promise(resolve => {
-      const interval = setInterval(() => {
-        if (called) {
-          clearInterval(interval)
-          resolve()
-        }
-      })
-    })
+    await waitFor(() => called)
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -213,5 +207,62 @@ describe('Web3ProxyProvider', () => {
       }),
       expect.any(Function)
     )
+  })
+
+  describe('handling result of a call', () => {
+    let provider
+    let callback
+
+    beforeEach(async () => {
+      fakeWindow = new FakeWindow()
+      callback = jest.fn()
+      provider = new Web3ProxyProvider(fakeWindow)
+
+      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WALLET_INFO, {
+        isMetamask: false,
+        noWallet: false,
+        notEnabled: false,
+      })
+
+      provider.sendAsync({ method: 'hi', params: [] }, callback)
+    })
+
+    it('should call the callback with a result and no error', async () => {
+      expect.assertions(1)
+
+      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+        id: 1,
+        jsonrpc: '2.0',
+        result: {
+          id: 1,
+          jsonrpc: '2.0',
+          result: 'foo',
+        },
+      })
+
+      expect(callback).toHaveBeenCalledWith(null, {
+        id: 42,
+        jsonrpc: '2.0',
+        result: 'foo',
+      })
+    })
+
+    it('should call the callback with an error', async () => {
+      expect.assertions(1)
+
+      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+        id: 1,
+        jsonrpc: '2.0',
+        error: { error: 'no foo for you', code: 501 },
+      })
+
+      expect(callback).toHaveBeenCalledWith(
+        {
+          error: 'no foo for you',
+          code: 501,
+        },
+        undefined
+      )
+    })
   })
 })
