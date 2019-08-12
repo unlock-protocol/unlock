@@ -3,14 +3,9 @@ import DataIframeMessageEmitter from '../../../unlock.js/PostMessageEmitters/Dat
 import { PostMessages, ExtractPayload } from '../../../messageTypes'
 import { web3MethodCall } from '../../../windowTypes'
 
-declare const process: {
-  env: any
-}
-process.env.PAYWALL_URL = 'http://paywall'
-
 describe('DataIframeMessageEmitter', () => {
   let fakeWindow: FakeWindow
-  const dataOrigin = process.env.PAYWALL_URL
+  const dataOrigin = 'http://fun.times'
 
   function makeEmitter(fakeWindow: FakeWindow) {
     const emitter = new DataIframeMessageEmitter(
@@ -56,7 +51,7 @@ describe('DataIframeMessageEmitter', () => {
         PostMessages.SCROLL_POSITION,
         5,
         emitter.iframe,
-        process.env.PAYWALL_URL // iframe origin
+        dataOrigin // iframe origin
       )
     })
 
@@ -72,7 +67,7 @@ describe('DataIframeMessageEmitter', () => {
         PostMessages.READY,
         undefined,
         emitter.iframe,
-        process.env.PAYWALL_URL
+        dataOrigin
       )
 
       expect(fakeReady).toHaveBeenCalled()
