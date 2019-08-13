@@ -40,6 +40,13 @@ export default function startup(
 ) {
   // normalize all of the lock addresses
   const config = normalizeConfig(window.unlockProtocolConfig)
+  // this next line ensures that the minimally valid configuration is passed to Wallet
+  // TODO: provide some kind of developer mode which lazy-loads more extensive validation
+  if (!config) {
+    throw new Error(
+      'Invalid configuration, please set window.unlockProtocolConfig'
+    )
+  }
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
   // construct the 3 urls for the iframes
@@ -61,6 +68,7 @@ export default function startup(
   const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
+  // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
   const wallet = new Wallet(window, iframes, config, constants)
   // set up the main window handler, for both events and hiding/showing iframes
   const mainWindow = new MainWindowHandler(window, iframes, config)

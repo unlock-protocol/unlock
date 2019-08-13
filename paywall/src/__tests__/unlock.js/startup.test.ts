@@ -86,10 +86,12 @@ describe('unlock.js startup', () => {
       fakeWindow = new FakeWindow()
     })
 
-    it('should not crash if there is no configuration on the window', () => {
-      expect.assertions(0)
+    it('should throw if there is no configuration on the window', () => {
+      expect.assertions(1)
 
-      startup(fakeWindow, constants)
+      expect(() => startup(fakeWindow, constants)).toThrow(
+        'Invalid configuration, please set window.unlockProtocolConfig'
+      )
     })
 
     // verify the IframeHandler is set up

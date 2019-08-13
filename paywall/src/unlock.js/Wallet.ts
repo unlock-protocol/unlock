@@ -57,9 +57,8 @@ export default class Wallet {
     // 2. the paywall configuration explicitly asks for them
     this.useUserAccounts =
       !this.hasWallet &&
-      (config &&
-        (config.unlockUserAccounts === true ||
-          config.unlockUserAccounts === 'true'))
+      (config.unlockUserAccounts === true ||
+        config.unlockUserAccounts === 'true')
     if (this.debug) {
       if (this.useUserAccounts) {
         // eslint-disable-next-line
