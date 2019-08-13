@@ -1,5 +1,6 @@
 const wait = require('../helpers/wait')
-const url = require('../helpers/url').newdemo
+const url = require('../helpers/url')
+const iframes = require('../helpers/iframes')
 
 describe('Unlock Account Creation', () => {
   describe('when visiting a locked page without a wallet', () => {
@@ -23,7 +24,7 @@ describe('Unlock Account Creation', () => {
         { waitUntil: 'networkidle2' }
       )
       await wait.forIframe(2) // wait for 2 iframes to be loaded, the data and checkout iframes
-      const loginIframe = page.mainFrame().childFrames()[1]
+      const loginIframe = iframes.accountsIframe(page)
       let content = await loginIframe.content()
 
       await expect(content).toMatch('Log In')
