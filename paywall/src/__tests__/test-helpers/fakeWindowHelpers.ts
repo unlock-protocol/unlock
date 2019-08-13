@@ -22,6 +22,8 @@ import {
   EventWindow,
   FullDocument,
   UnlockWindowNoProtocolYet,
+  Web3Window,
+  web3Send,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
@@ -36,6 +38,7 @@ export default class FakeWindow
     ConsoleWindow,
     LocalStorageWindow,
     OriginWindow,
+    Web3Window,
     EventWindow {
   public origin = 'http://example.com'
   public fetchResult: any = {}
@@ -70,6 +73,14 @@ export default class FakeWindow
   public CustomEvent = CustomEvent
   public Promise = Promise
   public dispatchEvent: (event: Event) => void
+  public web3?: {
+    currentProvider: {
+      sendAsync?: web3Send
+      send?: web3Send
+      isMetamask?: true // is only ever true or undefined
+      enable?: () => Promise<void>
+    }
+  }
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -201,6 +212,12 @@ export default class FakeWindow
       this.storageListeners.storage.forEach(handler => handler(event))
   }
 
+  public waitForPostMessageToIframe(iframe: IframeType) {
+    return waitFor(
+      () => (iframe.contentWindow as any).postMessage.mock.calls.length
+    )
+  }
+
   public waitForPostMessage() {
     return waitFor(() => (this.parent as any).postMessage.mock.calls.length)
   }
@@ -252,6 +269,14 @@ export default class FakeWindow
   public throwOnLocalStorageSet() {
     this.localStorage.setItem = () => {
       throw new Error('failed to set')
+    }
+  }
+
+  public makeWeb3() {
+    this.web3 = {
+      currentProvider: {
+        sendAsync: jest.fn(),
+      },
     }
   }
 
