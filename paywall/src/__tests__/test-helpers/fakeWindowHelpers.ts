@@ -24,9 +24,11 @@ import {
   UnlockWindowNoProtocolYet,
   Web3Window,
   web3Send,
+  ConfigWindow,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
+import { PaywallConfig } from '../../unlockTypes'
 
 export default class FakeWindow
   implements
@@ -39,7 +41,8 @@ export default class FakeWindow
     LocalStorageWindow,
     OriginWindow,
     Web3Window,
-    EventWindow {
+    EventWindow,
+    ConfigWindow {
   public origin = 'http://example.com'
   public fetchResult: any = {}
   public fetch: (
@@ -81,6 +84,7 @@ export default class FakeWindow
       enable?: () => Promise<void>
     }
   }
+  public unlockProtocolConfig?: PaywallConfig
 
   constructor() {
     this.fetch = jest.fn((_: string) => {

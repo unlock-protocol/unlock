@@ -28,6 +28,8 @@ describe('Wallet.setupUserAccounts()', () => {
   const startup: StartupConstants = {
     network: 1984,
     debug: 0,
+    paywallUrl: 'http://paywall',
+    accountsUrl: 'http://app/accounts',
   }
   function makeWallet() {
     iframes = new IframeHandler(
