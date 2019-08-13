@@ -2,8 +2,10 @@ import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
-import { UnlockWindow } from '../../../windowTypes'
-import { UnlockAndIframeManagerWindow } from '../../../unlock.js/setupUnlockProtocolVariable'
+import {
+  UnlockWindow,
+  UnlockAndIframeManagerWindow,
+} from '../../../windowTypes'
 
 describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
   let fakeWindow: FakeWindow
