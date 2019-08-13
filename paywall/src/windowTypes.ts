@@ -206,6 +206,9 @@ export interface OriginWindow extends Pick<Window, 'origin'> {}
 export interface ConfigWindow {
   unlockProtocolConfig?: PaywallConfig
 }
+export interface UnlockAndIframeManagerWindow
+  extends IframeManagingWindow,
+    UnlockProtocolWindow {}
 
 export interface UnlockWindowNoProtocolYet
   extends PostOfficeWindow,
