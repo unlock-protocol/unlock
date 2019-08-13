@@ -1,38 +1,73 @@
-import { makeIframe, addIframeToDocument } from './iframeManager'
-import setupPostOffices, { normalizeConfig } from './setupPostOffices'
-import { UnlockWindow } from '../windowTypes'
+import { UnlockWindowNoProtocolYet } from '../windowTypes'
+import IframeHandler from './IframeHandler'
+import Wallet from './Wallet'
+import MainWindowHandler from './MainWindowHandler'
+import CheckoutUIHandler from './CheckoutUIHandler'
+import StartupConstants from './startupTypes'
 
-export default function startup(window: UnlockWindow) {
-  // Get the config
-  const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
+/**
+ * convert all of the lock addresses to lower-case so they are normalized across the app
+ */
+export function normalizeConfig(unlockConfig: any) {
+  if (
+    !unlockConfig ||
+    !unlockConfig.locks ||
+    typeof unlockConfig.locks !== 'object'
+  )
+    return unlockConfig
+  const lockAddresses = Object.keys(unlockConfig.locks)
+  if (!lockAddresses.length) {
+    return unlockConfig
+  }
+  const normalizedConfig = {
+    ...unlockConfig,
+    locks: lockAddresses.reduce((allLocks, address) => {
+      return {
+        ...allLocks,
+        [address.toLowerCase()]: unlockConfig.locks[address],
+      }
+    }, {}),
+  }
+  return normalizedConfig
+}
+
+/**
+ * Start the unlock app!
+ */
+export default function startup(
+  window: UnlockWindowNoProtocolYet,
+  constants: StartupConstants
+) {
+  // normalize all of the lock addresses
+  const config = normalizeConfig(window.unlockProtocolConfig)
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
+  // construct the 3 urls for the iframes
+  const dataIframeUrl =
+    constants.paywallUrl + '/static/data-iframe.1.0.html' + origin
+  const checkoutIframeUrl = constants.paywallUrl + '/checkout' + origin
+  const userIframeUrl = constants.accountsUrl + origin
 
-  const dataIframe = makeIframe(
+  // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())
+  const iframes = new IframeHandler(
     window,
-    process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin,
-    'unlock data'
+    dataIframeUrl,
+    checkoutIframeUrl,
+    userIframeUrl
   )
-  const checkoutIframe = makeIframe(
-    window,
-    process.env.PAYWALL_URL + '/checkout' + origin,
-    'unlock checkout'
-  )
-  // TODO: We should not load the iframe for user account is the configuration does not mention it
-  const userAccountsIframe = makeIframe(
-    window,
-    process.env.USER_IFRAME_URL + origin,
-    'unlock accounts'
-  )
-  addIframeToDocument(window, dataIframe)
-  addIframeToDocument(window, userAccountsIframe)
-  addIframeToDocument(window, checkoutIframe)
+  iframes.init(config)
 
-  setupPostOffices(
-    normalizedConfig,
-    window,
-    dataIframe,
-    checkoutIframe,
-    userAccountsIframe
-  )
+  // set up the communication with the checkout iframe
+  const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
+  // user accounts is loaded on-demand inside of Wallet
+  // set up the proxy wallet handler
+  const wallet = new Wallet(window, iframes, config, constants)
+  // set up the main window handler, for both events and hiding/showing iframes
+  const mainWindow = new MainWindowHandler(window, iframes, config)
+
+  // go!
+  mainWindow.init()
+  wallet.init()
+  checkoutIframeHandler.init()
+  return iframes // this is only useful in testing, it is ignored in the app
 }
