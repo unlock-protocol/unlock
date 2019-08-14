@@ -5,6 +5,7 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import 'openzeppelin-eth/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
+import './MixinEventHooks.sol';
 
 
 /**
@@ -17,7 +18,8 @@ contract MixinPurchase is
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinEventHooks
 {
   using SafeMath for uint;
 
@@ -25,10 +27,12 @@ contract MixinPurchase is
   * @dev Purchase function
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _data arbitrary data populated by the front-end which initiated the sale
   */
   function purchase(
     address _recipient,
-    address _referrer
+    address _referrer,
+    bytes calldata _data
   ) external payable
     onlyIfAlive
     notSoldOut
@@ -80,7 +84,10 @@ contract MixinPurchase is
     );
 
     // We explicitly allow for greater amounts of ETH to allow 'donations'
+    // Security: after state changes to minimize risk of re-entrancy
+    uint pricePaid = _chargeAtLeast(netPrice);
+
     // Security: last line to minimize risk of re-entrancy
-    _chargeAtLeast(netPrice);
+    _onKeySold(_recipient, _referrer, pricePaid, _data);
   }
 }

@@ -68,10 +68,17 @@ describe('Mailbox - setupStorageListener', () => {
 
     mailbox.setupStorageListener()
 
-    expect(fakeWindow.addEventListener).toHaveBeenCalledWith(
-      'storage',
-      expect.any(Function)
-    )
+    if (testingMailbox().useLocalStorageCache) {
+      expect(fakeWindow.addEventListener).toHaveBeenCalledWith(
+        'storage',
+        expect.any(Function)
+      )
+    } else {
+      expect(fakeWindow.addEventListener).not.toHaveBeenCalledWith(
+        'storage',
+        expect.any(Function)
+      )
+    }
   })
 
   describe('event listener', () => {
@@ -80,6 +87,8 @@ describe('Mailbox - setupStorageListener', () => {
         setupDefaults()
         mailbox.setupStorageListener()
         testingMailbox().configuration = configuration
+        // enable caching to test functionality
+        testingMailbox().useLocalStorageCache = true
       })
 
       it('should do nothing if there is no configuration', () => {
@@ -111,6 +120,8 @@ describe('Mailbox - setupStorageListener', () => {
     describe('valid states', () => {
       beforeEach(() => {
         setupDefaults()
+        // enable caching to test functionality
+        testingMailbox().useLocalStorageCache = true
         mailbox.setupStorageListener()
         testingMailbox().configuration = configuration
         testingMailbox().handler = {

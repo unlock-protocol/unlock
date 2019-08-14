@@ -3,14 +3,9 @@ import { PurchaseKeyRequest } from '../../../unlockTypes'
 import CheckoutIframeMessageEmitter from '../../../unlock.js/PostMessageEmitters/CheckoutIframeMessageEmitter'
 import { PostMessages } from '../../../messageTypes'
 
-declare const process: {
-  env: any
-}
-process.env.PAYWALL_URL = 'http://paywall'
-
 describe('CheckoutIframeMessageEmitter', () => {
   let fakeWindow: FakeWindow
-  const checkoutOrigin = process.env.PAYWALL_URL
+  const checkoutOrigin = 'http://fun.times'
 
   function makeEmitter(fakeWindow: FakeWindow) {
     const emitter = new CheckoutIframeMessageEmitter(
@@ -56,7 +51,7 @@ describe('CheckoutIframeMessageEmitter', () => {
         PostMessages.SCROLL_POSITION,
         5,
         emitter.iframe,
-        process.env.PAYWALL_URL // iframe origin
+        checkoutOrigin // iframe origin
       )
     })
 
@@ -72,7 +67,7 @@ describe('CheckoutIframeMessageEmitter', () => {
         PostMessages.READY,
         undefined,
         emitter.iframe,
-        process.env.PAYWALL_URL
+        checkoutOrigin
       )
 
       expect(fakeReady).toHaveBeenCalled()

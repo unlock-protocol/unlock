@@ -108,7 +108,7 @@ contract('Lock / erc20', accounts => {
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
       await shouldFail(
-        lock.purchase(account, web3.utils.padLeft(0, 40), { from: account })
+        lock.purchase(account, web3.utils.padLeft(0, 40), [], { from: account })
       )
     })
 
@@ -117,7 +117,7 @@ contract('Lock / erc20', accounts => {
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice)
       await shouldFail(
-        lock.purchase(account, web3.utils.padLeft(0, 40), { from: account })
+        lock.purchase(account, web3.utils.padLeft(0, 40), [], { from: account })
       )
     })
   })
