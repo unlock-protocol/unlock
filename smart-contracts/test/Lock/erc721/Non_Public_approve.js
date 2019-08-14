@@ -57,6 +57,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
             return locks['RESTRICTED'].purchase(
               accounts[2],
               web3.utils.padLeft(0, 40),
+              [],
               {
                 value: locks['RESTRICTED'].params.keyPrice.toFixed(),
                 from: accounts[2],
@@ -104,6 +105,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
         await locks['RESTRICTED'].purchase(
           accounts[5],
           web3.utils.padLeft(0, 40),
+          [],
           {
             value: locks['RESTRICTED'].params.keyPrice.toFixed(),
             from: accounts[5],
@@ -126,6 +128,7 @@ contract('Lock / erc721 / Non_Public_approve', accounts => {
         await locks['RESTRICTED'].purchase(
           accounts[5],
           web3.utils.padLeft(0, 40),
+          [],
           {
             value: locks['RESTRICTED'].params.keyPrice.toFixed(),
             from: accounts[5],

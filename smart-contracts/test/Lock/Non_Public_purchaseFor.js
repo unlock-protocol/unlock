@@ -19,7 +19,7 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
     it('should fail', async () => {
       const lock = locks['PRIVATE']
       await shouldFail(
-        lock.purchase(accounts[0]),
+        lock.purchase(accounts[0], web3.utils.padLeft(0, 40), []),
         web3.utils.padLeft(0, 40),
         ''
       )
@@ -40,9 +40,14 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
 
     it('should fail if the sending account was not pre-approved', async () => {
       await shouldFail(
-        locks['RESTRICTED'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
-          value: Units.convert('0.01', 'eth', 'wei'),
-        }),
+        locks['RESTRICTED'].purchase(
+          accounts[1],
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: Units.convert('0.01', 'eth', 'wei'),
+          }
+        ),
         ''
       )
     })
@@ -54,9 +59,14 @@ contract('Lock / Non_Public_purchaseFor', accounts => {
           from: owner,
         })
         .then(() => {
-          locks['RESTRICTED'].purchase(accounts[3], web3.utils.padLeft(0, 40), {
-            value: Units.convert('0.01', 'eth', 'wei'),
-          })
+          locks['RESTRICTED'].purchase(
+            accounts[3],
+            web3.utils.padLeft(0, 40),
+            [],
+            {
+              value: Units.convert('0.01', 'eth', 'wei'),
+            }
+          )
         })
     })
   })

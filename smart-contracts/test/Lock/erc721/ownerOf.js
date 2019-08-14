@@ -19,7 +19,7 @@ contract('Lock / erc721 / ownerOf', accounts => {
   })
 
   it('should return the owner of the key', async () => {
-    await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), {
+    await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[1],
     })

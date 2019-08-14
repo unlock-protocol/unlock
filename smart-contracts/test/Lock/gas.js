@@ -16,7 +16,7 @@ contract('Lock / gas', accounts => {
   })
 
   it('gas used to purchaseFor is less than wallet service limit', async () => {
-    let tx = await lock.purchase(accounts[0], web3.utils.padLeft(0, 40), {
+    let tx = await lock.purchase(accounts[0], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
     const gasUsed = new BigNumber(tx.receipt.gasUsed)

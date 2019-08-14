@@ -159,7 +159,7 @@ contract('Unlock / upgrades', accounts => {
 
         // Buy Key
         await lockV1.methods
-          .purchase(keyOwner, web3.utils.padLeft(0, 40))
+          .purchase(keyOwner, web3.utils.padLeft(0, 40), [])
           .send({
             value: keyPrice,
             from: keyOwner,

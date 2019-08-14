@@ -52,11 +52,12 @@ contract MixinFunds
    */
   function _chargeAtLeast(
     uint _price
-  ) internal
+  ) internal returns (uint)
   {
     if(_price > 0) {
       if(tokenAddress == address(0)) {
         require(msg.value >= _price, 'NOT_ENOUGH_FUNDS');
+        return msg.value;
       } else {
         IERC20 token = IERC20(tokenAddress);
         uint balanceBefore = token.balanceOf(address(this));
@@ -66,6 +67,8 @@ contract MixinFunds
         // trust the return value of `transferFrom`.  This require statement ensures
         // that a transfer occurred.
         require(token.balanceOf(address(this)) > balanceBefore, 'TRANSFER_FAILED');
+
+        return _price;
       }
     }
   }

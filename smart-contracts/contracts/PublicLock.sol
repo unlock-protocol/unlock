@@ -7,6 +7,7 @@ import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinERC721Enumerable.sol';
+import './mixins/MixinEventHooks.sol';
 import './mixins/MixinFunds.sol';
 import './mixins/MixinGrantKeys.sol';
 import './mixins/MixinKeys.sol';
@@ -15,7 +16,6 @@ import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
-
 
 /**
  * @title The Lock contract
@@ -35,6 +35,7 @@ contract PublicLock is
   MixinKeys,
   MixinLockMetadata,
   MixinERC721Enumerable,
+  MixinEventHooks,
   MixinGrantKeys,
   MixinPurchase,
   MixinApproval,
