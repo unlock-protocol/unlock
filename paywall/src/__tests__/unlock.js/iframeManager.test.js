@@ -9,12 +9,13 @@ describe('iframeManager', () => {
   jest.useFakeTimers()
 
   it('creates an iframe element', () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
-    const iframe = makeIframe(window, 'http://example.com')
+    const iframe = makeIframe(window, 'http://example.com', 'iframe name')
 
     expect(iframe).toBeInstanceOf(Element)
     expect(iframe.src).toBe('http://example.com/')
+    expect(iframe.name).toBe('iframe name')
     expect(iframe.className).toBe('unlock start')
   })
 

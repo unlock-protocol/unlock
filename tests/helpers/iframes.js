@@ -2,6 +2,8 @@
 // so that any re-ordering of frames is controlled in a single location
 
 module.exports = {
-  checkoutIframe: page => page.mainFrame().childFrames()[2],
-  accountsIframe: page => page.mainFrame().childFrames()[1],
+  checkoutIframe: page =>
+    page.frames().find(frame => frame.name() === 'unlock checkout'),
+  accountsIframe: page =>
+    page.frames().find(frame => frame.name() === 'unlock accounts'),
 }

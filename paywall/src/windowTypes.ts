@@ -158,10 +158,11 @@ export interface PostMessageTarget {
 }
 
 // the attributes we expect will be modified by setAttribute
-export type IframeAttributeNames = 'src'
+export type IframeAttributeNames = 'src' | 'name'
 export interface IframeType {
   contentWindow: PostMessageTarget
   className: string
+  name?: string
   src: string
   setAttribute: (attr: IframeAttributeNames, value: string) => void
 }
@@ -184,14 +185,20 @@ export interface UnlockProtocolWindow {
   addEventListener: AddEventListenerFunc
 }
 
+export interface OriginWindow extends Pick<Window, 'origin'> {}
+
+export interface ConfigWindow {
+  unlockProtocolConfig?: PaywallConfig
+}
+
 export interface UnlockWindow
   extends PostOfficeWindow,
     EventWindow,
     UnlockProtocolWindow,
     LocalStorageWindow,
     IframeManagingWindow,
-    Web3Window {
-  unlockProtocolConfig?: PaywallConfig
+    Web3Window,
+    OriginWindow,
+    ConfigWindow {
   document: FullDocument
-  origin: string
 }
