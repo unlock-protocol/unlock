@@ -11,7 +11,7 @@ module.exports = function lockApi(lockContract) {
     async purchase(keyOwner, referrer, from = keyOwner, ethValue = 0) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'purchase'),
-        [keyOwner, referrer]
+        [keyOwner, referrer, []]
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,
