@@ -17,22 +17,32 @@ import {
   StorageEvent,
   OriginWindow,
   IframeManagingWindow,
-  IframeManagingDocument,
   IframeType,
   IframeAttributeNames,
+  EventWindow,
+  FullDocument,
+  UnlockWindowNoProtocolYet,
+  Web3Window,
+  web3Send,
+  ConfigWindow,
 } from '../../windowTypes'
 import { ExtractPayload, PostMessages } from '../../messageTypes'
 import { waitFor } from '../../utils/promises'
+import { PaywallConfig } from '../../unlockTypes'
 
 export default class FakeWindow
   implements
     FetchWindow,
     SetTimeoutWindow,
     IframePostOfficeWindow,
+    UnlockWindowNoProtocolYet,
     IframeManagingWindow,
     ConsoleWindow,
     LocalStorageWindow,
-    OriginWindow {
+    OriginWindow,
+    Web3Window,
+    EventWindow,
+    ConfigWindow {
   public origin = 'http://example.com'
   public fetchResult: any = {}
   public fetch: (
@@ -62,7 +72,19 @@ export default class FakeWindow
   public console: Pick<ConsoleWindow, 'console'>['console']
   public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
   public storage: { [key: string]: string } = {}
-  public document: IframeManagingDocument
+  public document: FullDocument
+  public CustomEvent = CustomEvent
+  public Promise = Promise
+  public dispatchEvent: (event: Event) => void
+  public web3?: {
+    currentProvider: {
+      sendAsync?: web3Send
+      send?: web3Send
+      isMetamask?: true // is only ever true or undefined
+      enable?: () => Promise<void>
+    }
+  }
+  public unlockProtocolConfig?: PaywallConfig
 
   constructor() {
     this.fetch = jest.fn((_: string) => {
@@ -89,6 +111,10 @@ export default class FakeWindow
           },
         }
         return iframe
+      },
+      createEvent: (type: string) => {
+        const event = new this.CustomEvent<any>(type)
+        return event
       },
       querySelector: () => false,
       body: {
@@ -125,6 +151,7 @@ export default class FakeWindow
       log: jest.fn(),
       error: jest.fn(),
     }
+    this.dispatchEvent = jest.fn()
     this.localStorage = {
       length: 0,
       clear: () => (this.storage = {}),
@@ -189,6 +216,12 @@ export default class FakeWindow
       this.storageListeners.storage.forEach(handler => handler(event))
   }
 
+  public waitForPostMessageToIframe(iframe: IframeType) {
+    return waitFor(
+      () => (iframe.contentWindow as any).postMessage.mock.calls.length
+    )
+  }
+
   public waitForPostMessage() {
     return waitFor(() => (this.parent as any).postMessage.mock.calls.length)
   }
@@ -240,6 +273,14 @@ export default class FakeWindow
   public throwOnLocalStorageSet() {
     this.localStorage.setItem = () => {
       throw new Error('failed to set')
+    }
+  }
+
+  public makeWeb3() {
+    this.web3 = {
+      currentProvider: {
+        sendAsync: jest.fn(),
+      },
     }
   }
 

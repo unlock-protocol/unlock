@@ -1,58 +1,81 @@
-import { makeIframe, addIframeToDocument } from './iframeManager'
-import setupPostOffices, { normalizeConfig } from './setupPostOffices'
-import dispatchEvent from './dispatchEvent'
-import { UnlockWindow } from '../windowTypes'
+import { UnlockWindowNoProtocolYet } from '../windowTypes'
+import IframeHandler from './IframeHandler'
+import Wallet from './Wallet'
+import MainWindowHandler from './MainWindowHandler'
+import CheckoutUIHandler from './CheckoutUIHandler'
+import StartupConstants from './startupTypes'
 
-export default function startup(window: UnlockWindow) {
-  // this is a cache for the time between script startup and the full load
-  // of the data iframe. The data iframe will then send down the current
-  // value, overriding this. A bit later, the blockchain handler will update
-  // with the actual value, so this is only used for a few milliseconds
-  let locked
-  try {
-    locked = JSON.parse(
-      window.localStorage.getItem('__unlockProtocol.locked') || '"ignore"'
+/**
+ * convert all of the lock addresses to lower-case so they are normalized across the app
+ */
+export function normalizeConfig(unlockConfig: any) {
+  if (
+    !unlockConfig ||
+    !unlockConfig.locks ||
+    typeof unlockConfig.locks !== 'object'
+  )
+    return unlockConfig
+  const lockAddresses = Object.keys(unlockConfig.locks)
+  if (!lockAddresses.length) {
+    return unlockConfig
+  }
+  const normalizedConfig = {
+    ...unlockConfig,
+    locks: lockAddresses.reduce((allLocks, address) => {
+      return {
+        ...allLocks,
+        [address.toLowerCase()]: unlockConfig.locks[address],
+      }
+    }, {}),
+  }
+  return normalizedConfig
+}
+
+/**
+ * Start the unlock app!
+ */
+export default function startup(
+  window: UnlockWindowNoProtocolYet,
+  constants: StartupConstants
+) {
+  // normalize all of the lock addresses
+  const config = normalizeConfig(window.unlockProtocolConfig)
+  // this next line ensures that the minimally valid configuration is passed to Wallet
+  // TODO: provide some kind of developer mode which lazy-loads more extensive validation
+  if (!config) {
+    throw new Error(
+      'Invalid configuration, please set window.unlockProtocolConfig'
     )
-  } catch (_) {
-    locked = 'ignore'
   }
-  if (locked === true) {
-    dispatchEvent(window, 'locked')
-  }
-  if (locked === false) {
-    dispatchEvent(window, 'unlocked')
-  }
-
-  // Get the config
-  const normalizedConfig = normalizeConfig(window.unlockProtocolConfig)
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
+  // construct the 3 urls for the iframes
+  const dataIframeUrl =
+    constants.paywallUrl + '/static/data-iframe.1.0.html' + origin
+  const checkoutIframeUrl = constants.paywallUrl + '/checkout' + origin
+  const userIframeUrl = constants.accountsUrl + origin
 
-  const dataIframe = makeIframe(
+  // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())
+  const iframes = new IframeHandler(
     window,
-    process.env.PAYWALL_URL + '/static/data-iframe.1.0.html' + origin,
-    'unlock data'
+    dataIframeUrl,
+    checkoutIframeUrl,
+    userIframeUrl
   )
-  const checkoutIframe = makeIframe(
-    window,
-    process.env.PAYWALL_URL + '/checkout' + origin,
-    'unlock checkout'
-  )
-  // TODO: We should not load the iframe for user account is the configuration does not mention it
-  const userAccountsIframe = makeIframe(
-    window,
-    process.env.USER_IFRAME_URL + origin,
-    'unlock accounts'
-  )
-  addIframeToDocument(window, dataIframe)
-  addIframeToDocument(window, userAccountsIframe)
-  addIframeToDocument(window, checkoutIframe)
+  iframes.init(config)
 
-  setupPostOffices(
-    normalizedConfig,
-    window,
-    dataIframe,
-    checkoutIframe,
-    userAccountsIframe
-  )
+  // set up the communication with the checkout iframe
+  const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
+  // user accounts is loaded on-demand inside of Wallet
+  // set up the proxy wallet handler
+  // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
+  const wallet = new Wallet(window, iframes, config, constants)
+  // set up the main window handler, for both events and hiding/showing iframes
+  const mainWindow = new MainWindowHandler(window, iframes, config)
+
+  // go!
+  mainWindow.init()
+  wallet.init()
+  checkoutIframeHandler.init()
+  return iframes // this is only useful in testing, it is ignored in the app
 }
