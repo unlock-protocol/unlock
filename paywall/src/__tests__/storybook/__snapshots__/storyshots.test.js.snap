@@ -53837,11 +53837,50 @@ Object {
   font-size: 16px;
 }
 
-.c7 {
+.c12 {
   width: 250px;
   height: 250px;
   opacity: 0.52;
   background-color: #74ce63;
+}
+
+.c9 {
+  text-align: center;
+  font-size: 1.2em;
+  display: block;
+}
+
+.c10 {
+  cursor: pointer;
+  border: 3px solid #d8d8d8;
+  border-radius: 3px;
+  font-size: 1.3em;
+  background-color: transparent;
+  display: block;
+  padding: 10px 50px;
+  color: rgb(106,106,106);
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.c7 {
+  display: block;
+  position: relative;
+}
+
+.c11 {
+  display: none;
+  position: relative;
+}
+
+.c8 {
+  display: block;
+  position: absolute;
+  background: linear-gradient(rgb(253,250,247,0),rgb(253,250,247,1) 80%);
+  top: 0;
+  width: 100%;
+  height: 100%;
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -53853,6 +53892,12 @@ Object {
 @media (max-width:650px) {
   .c5 {
     grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c12 {
+    display: none;
   }
 }
 
@@ -53898,18 +53943,37 @@ Object {
                 <p>
                   It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
                 </p>
-                <p>
+                <div
+                  class="3 c7"
+                >
                   The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that real freedom comes from knowledge that’s expensive to produce. They understood that when Stewart Brand famously said that “information wants to be free” he meant free as in “speech” (libre), not free as in “beer” (gratis).
+                  <div
+                    class="4 c8"
+                  />
+                </div>
+                <p
+                  class="1 c9"
+                >
+                  Support our work and read the rest of this article by becoming a member today!
+                  <button
+                    class="2 c10"
+                  >
+                    Join us
+                  </button>
                 </p>
-                <p>
+                <div
+                  class="3 c11"
+                >
                   Some publishers, like the New York Times, got a lot of heat when they introduced their paywall, but the trend they set isn’t reversing: they now have 3M subscribers and aim for 10M by 2020. Hundreds of other news and content organizations are going in the same direction, including this very platform.
-                </p>
-                <p>
+                </div>
+                <div
+                  class="3 c11"
+                >
                   Another trend emerged in the last 10 years: ownership does not seem to matter as much as it used to. People are getting rid of their meticulously amassed records and DVD collections to replace them with monthly subscriptions to Spotify and Netflix. Ride sharing platforms have put yet another dent in the car ownership status symbol… etc. My generation is putting access above ownership.
-                </p>
+                </div>
               </div>
               <div
-                class="0 c7"
+                class="0 c12"
               />
             </div>
           </div>
@@ -53962,18 +54026,37 @@ Object {
               <p>
                 It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
               </p>
-              <p>
+              <div
+                class="sc-6evtnq-13 cvxGrZ"
+              >
                 The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that real freedom comes from knowledge that’s expensive to produce. They understood that when Stewart Brand famously said that “information wants to be free” he meant free as in “speech” (libre), not free as in “beer” (gratis).
+                <div
+                  class="sc-6evtnq-14 jKZLDF"
+                />
+              </div>
+              <p
+                class="sc-6evtnq-11 gdbQic"
+              >
+                Support our work and read the rest of this article by becoming a member today!
+                <button
+                  class="sc-6evtnq-12 krGXRl"
+                >
+                  Join us
+                </button>
               </p>
-              <p>
+              <div
+                class="sc-6evtnq-13 exfaDn"
+              >
                 Some publishers, like the New York Times, got a lot of heat when they introduced their paywall, but the trend they set isn’t reversing: they now have 3M subscribers and aim for 10M by 2020. Hundreds of other news and content organizations are going in the same direction, including this very platform.
-              </p>
-              <p>
+              </div>
+              <div
+                class="sc-6evtnq-13 exfaDn"
+              >
                 Another trend emerged in the last 10 years: ownership does not seem to matter as much as it used to. People are getting rid of their meticulously amassed records and DVD collections to replace them with monthly subscriptions to Spotify and Netflix. Ride sharing platforms have put yet another dent in the car ownership status symbol… etc. My generation is putting access above ownership.
-              </p>
+              </div>
             </div>
             <div
-              class="sc-6evtnq-10 jUSggY"
+              class="sc-6evtnq-10 klzFSq"
             />
           </div>
         </div>

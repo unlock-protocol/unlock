@@ -11,13 +11,12 @@ import Media from '../../theme/media'
  * @param {*} children
  * @param {*} paywall
  */
-const Demo = ({ children, paywall }) => {
+const Demo = ({ checkout, locked }) => {
   return (
     <Container>
       <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
-        {children}
       </Head>
       <Left />
       <Content>
@@ -39,7 +38,7 @@ const Demo = ({ children, paywall }) => {
                 it’s feeding our democracies with more misinformation and fake
                 news.
               </p>
-              <p>
+              <Locked locked={locked} overlay>
                 The thing is, plenty of publishers and creators have been ahead
                 of the curve on this one, even if we don’t give them much credit
                 for it. They knew that free content can, in fact, be very costly
@@ -47,15 +46,23 @@ const Demo = ({ children, paywall }) => {
                 produce. They understood that when Stewart Brand famously said
                 that “information wants to be free” he meant free as in “speech”
                 (libre), not free as in “beer” (gratis).
-              </p>
-              <p>
+                <Overlay locked={locked} />
+              </Locked>
+
+              <CallToAction locked={locked}>
+                Support our work and read the rest of this article by becoming a
+                member today!
+                <Button onClick={checkout}>Join us</Button>
+              </CallToAction>
+
+              <Locked locked={locked}>
                 Some publishers, like the New York Times, got a lot of heat when
                 they introduced their paywall, but the trend they set isn’t
                 reversing: they now have 3M subscribers and aim for 10M by 2020.
                 Hundreds of other news and content organizations are going in
                 the same direction, including this very platform.
-              </p>
-              <p>
+              </Locked>
+              <Locked locked={locked}>
                 Another trend emerged in the last 10 years: ownership does not
                 seem to matter as much as it used to. People are getting rid of
                 their meticulously amassed records and DVD collections to
@@ -63,26 +70,24 @@ const Demo = ({ children, paywall }) => {
                 Ride sharing platforms have put yet another dent in the car
                 ownership status symbol… etc. My generation is putting access
                 above ownership.
-              </p>
+              </Locked>
             </Article>
             <Illustration />
           </Section>
         </Body>
       </Content>
       <Right />
-      {paywall}
     </Container>
   )
 }
 
 Demo.propTypes = {
-  children: PropTypes.node,
-  paywall: PropTypes.node,
+  checkout: PropTypes.func.isRequired,
+  locked: PropTypes.bool,
 }
 
 Demo.defaultProps = {
-  children: null,
-  paywall: null,
+  locked: true,
 }
 
 export default Demo
@@ -161,4 +166,41 @@ const Illustration = styled.div`
   height: 250px;
   opacity: 0.52;
   background-color: #74ce63;
+  ${Media.phone`
+    display: none;
+  `};
+`
+
+const CallToAction = styled.p`
+  text-align: center;
+  font-size: 1.2em;
+  display: ${props => (props.locked ? 'block' : 'none')};
+`
+
+const Button = styled.button`
+  cursor: pointer;
+  border: 3px solid #d8d8d8;
+  border-radius: 3px;
+  font-size: 1.3em;
+  background-color: transparent;
+  display: block;
+  padding: 10px 50px;
+  color: rgb(106, 106, 106);
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+`
+
+const Locked = styled.div`
+  display: ${props => (props.locked && !props.overlay ? 'none' : 'block')};
+  position: relative; // Important to make the overlay work
+`
+
+const Overlay = styled.div`
+  display: ${props => (props.locked ? 'block' : 'none')};
+  position: absolute;
+  background: linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 80%);
+  top: 0;
+  width: 100%;
+  height: 100%;
 `

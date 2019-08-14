@@ -4,6 +4,9 @@ const wait = require('../helpers/wait')
 const iframes = require('../helpers/iframes')
 
 const { adblockETHLockAddresses } = require('../helpers/vars')
+/**
+ * We are testing the behavior of the paywall application when the user has a crypto wallet with an Ether lock
+ */
 
 // const it = debug.screenshotOnFail(page)
 
