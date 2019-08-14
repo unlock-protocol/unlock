@@ -73,7 +73,7 @@ describe('The Unlock Ad Remover Paywall (logged out user)', () => {
       const text = document.body.querySelector('p').innerText
       return (
         text ===
-        "To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options"
+        "To enjoy content without any ads you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:"
       )
     })
   })
