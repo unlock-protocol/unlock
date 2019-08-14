@@ -1,5 +1,4 @@
 import React from 'react'
-import Paywall from '../../pages/paywall'
 import Demo from './Demo'
 
 /**
@@ -7,5 +6,5 @@ import Demo from './Demo'
  * an iframe. It is used only in storybook
  */
 export default function StaticDemo() {
-  return <Demo paywall={<Paywall />} />
+  return <Demo checkout={() => {}} />
 }
