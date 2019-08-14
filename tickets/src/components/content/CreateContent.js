@@ -43,7 +43,9 @@ export class CreateContent extends Component {
   }
 
   render() {
-    const { locks, now, config, event, lockPlaceholder } = this.props
+    const { locks, now, config, event, loading } = this.props
+
+    const lockPlaceholder = loading ? 'Loading ...' : 'Choose a lock'
 
     return (
       <GlobalErrorConsumer>
@@ -107,7 +109,7 @@ CreateContent.propTypes = {
   event: UnlockPropTypes.ticketedEvent,
   locks: PropTypes.arrayOf(UnlockPropTypes.lock),
   config: UnlockPropTypes.configuration.isRequired,
-  lockPlaceholder: PropTypes.string,
+  loading: PropTypes.number.isRequired,
 }
 
 CreateContent.defaultProps = {
@@ -115,21 +117,18 @@ CreateContent.defaultProps = {
   event: {},
   account: null,
   now: new Date(),
-  lockPlaceholder: 'Loading ...',
 }
 
-export const mapStateToProps = ({ locks, account, event }) => {
+export const mapStateToProps = ({ locks, account, event, loading }) => {
   let selectLocks = Object.values(locks).filter(
     lock => lock.owner === account.address
   )
-
-  const lockPlaceholder = selectLocks.length ? 'Choose a lock' : 'Loading ...'
 
   return {
     locks: selectLocks,
     account,
     event,
-    lockPlaceholder,
+    loading,
   }
 }
 

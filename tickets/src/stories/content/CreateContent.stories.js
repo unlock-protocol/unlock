@@ -21,6 +21,7 @@ const store = createUnlockStore({
   account: {
     address: '0xuser',
   },
+  loading: 0,
 })
 
 const noLockStore = createUnlockStore({
@@ -28,6 +29,7 @@ const noLockStore = createUnlockStore({
   account: {
     address: '0xuser',
   },
+  loading: 8,
 })
 
 // We MUST NOT specify a TZ otherwise the snapshot fail when executed in a different env.
@@ -47,7 +49,7 @@ storiesOf('Create event landing page', module)
   .add('Create event page, no locks', () => {
     return (
       <Provider store={noLockStore}>
-        <CreateContent now={now} />
+        <CreateContent now={now} loading="9" />
       </Provider>
     )
   })
