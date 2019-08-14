@@ -5,6 +5,10 @@ const iframes = require('../helpers/iframes')
 
 const { adblockETHLockAddresses } = require('../helpers/vars')
 
+/**
+ * We are testing the behavior of the paywall application when the user has no wallet.
+ */
+
 //const sit = debug.screenshotOnFail(page)
 
 // This lock is created in /docker/development/deploy-locks.js
