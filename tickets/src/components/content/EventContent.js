@@ -66,6 +66,13 @@ export const EventContent = ({
     '\n\n' +
     `For more details, click here: ${window.location.href}`
 
+  // Sanitize user-provided links
+  const sanitizedLinks = links.map(link => {
+    link.href = encodeURI(link.href)
+    return link
+  })
+
+  // No need to sanitize the GCal link because googleCalendarLinkBuilder does it for us
   let googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
@@ -75,7 +82,7 @@ export const EventContent = ({
   )
 
   const eventLinks = [
-    ...links,
+    ...sanitizedLinks,
     {
       href: googleCalendarLink,
       text: 'Add to your Calendar!',
@@ -85,10 +92,9 @@ export const EventContent = ({
 
   const externalLinks = eventLinks.map(
     ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
-      const encodedHref = encodeURI(href)
       return (
-        <Link key={encodedHref} icon={icon}>
-          <a target="_blank" rel="noopener noreferrer" href={encodedHref}>
+        <Link key={href} icon={icon}>
+          <a target="_blank" rel="noopener noreferrer" href={href}>
             {text}
           </a>
         </Link>

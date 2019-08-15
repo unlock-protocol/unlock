@@ -33,10 +33,10 @@ export function googleCalendarLinkBuilder(
   }
 
   let googleCalendarLink = `https://calendar.google.com/calendar/r/eventedit?`
-  googleCalendarLink += `&text=${name}`
+  googleCalendarLink += `&text=${encodeURIComponent(name)}`
   googleCalendarLink += `&dates=${start}/${end}`
-  googleCalendarLink += `&details=${details}`
-  googleCalendarLink += `&location=${location}`
+  googleCalendarLink += `&details=${encodeURIComponent(details)}`
+  googleCalendarLink += `&location=${encodeURIComponent(location)}`
   googleCalendarLink += `&sf=true&output=xml`
   return googleCalendarLink
 }
