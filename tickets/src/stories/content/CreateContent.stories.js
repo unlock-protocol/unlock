@@ -46,7 +46,7 @@ storiesOf('Create event landing page', module)
       </Provider>
     )
   })
-  .add('Create event page, no locks', () => {
+  .add('Create event page, loading locks', () => {
     return (
       <Provider store={noLockStore}>
         <CreateContent now={now} loading="9" />

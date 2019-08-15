@@ -6371,7 +6371,7 @@ Object {
 }
 `;
 
-exports[`Storyshots Create event landing page Create event page, no locks 1`] = `
+exports[`Storyshots Create event landing page Create event page, loading locks 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
