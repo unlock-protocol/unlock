@@ -115,6 +115,7 @@ describe('CreateContent', () => {
             now={now}
             loadEvent={jest.fn()}
             event={event}
+            loading={0}
           />
         </ConfigProvider>
       </Provider>
@@ -172,12 +173,13 @@ describe('CreateContent', () => {
     })
   })
 
-  it('should load an event on address selection', () => {
+  it('should display loading message if loading state is non-zero', () => {
     expect.assertions(1)
 
     const store = createUnlockStore({
       account: { address: 'ben' },
-      locks: inputLocks,
+      locks: [],
+      loading: 1,
     })
 
     const addEvent = jest.fn()
@@ -195,6 +197,40 @@ describe('CreateContent', () => {
             addEvent={addEvent}
             loadEvent={loadEvent}
             now={now}
+            loading={1}
+          />
+        </ConfigProvider>
+      </Provider>
+    )
+
+    expect(form.getByTestId('Loading ...')).not.toBeNull()
+  })
+
+  it('should load an event on address selection', () => {
+    expect.assertions(1)
+
+    const store = createUnlockStore({
+      account: { address: 'ben' },
+      locks: inputLocks,
+      loading: 0,
+    })
+
+    const addEvent = jest.fn()
+    const loadEvent = jest.fn()
+
+    const now = new Date('2022-03-02T00:00:00.000') // March 2nd, 2022
+
+    const form = rtl.render(
+      <Provider store={store}>
+        <ConfigProvider value={config}>
+          <CreateContent
+            config={config}
+            account={{ address: 'ben' }}
+            locks={[inputLocks.abc123, inputLocks.def459]}
+            addEvent={addEvent}
+            loadEvent={loadEvent}
+            now={now}
+            loading={0}
           />
         </ConfigProvider>
       </Provider>
@@ -239,6 +275,7 @@ describe('CreateContent', () => {
           loadEvent={loadEvent}
           now={now}
           event={event}
+          loading={0}
         />
       </Provider>
     )
@@ -285,6 +322,7 @@ describe('CreateContent', () => {
           loadEvent={loadEvent}
           now={now}
           event={event}
+          loading={0}
         />
       </Provider>
     )
