@@ -61,16 +61,20 @@ export const EventContent = ({
 
   const convertCurrency = !lock.currencyContractAddress
 
-  const details =
-    description +
-    '\n\n' +
-    `For more details, click here: ${window.location.href}`
-
   // Sanitize user-provided links
   const sanitizedLinks = links.map(link => {
     link.href = encodeURI(link.href)
     return link
   })
+
+  let details = description
+  if (sanitizedLinks.length) {
+    details += '\n\n<strong>Event Website</strong>'
+    sanitizedLinks.forEach(link => {
+      details += '\n' + link.href
+    })
+  }
+  details += `\n\n<strong>Ticket Details</strong>\n${window.location.href}`
 
   // No need to sanitize the GCal link because googleCalendarLinkBuilder does it for us
   let googleCalendarLink = googleCalendarLinkBuilder(
