@@ -90,6 +90,12 @@ module.exports = [
     name: 'Truffle Flattener Community Lock',
     description: 'A key to the Truffle Flattener Community Lock.',
   },
+  {
+    address: '0x8aFA4Feff8B5676Bcd76341ad1bA3038245F2596',
+    name: 'Wallet Connect Community Lock',
+    description: 'A key to the Wallet Connect Community Lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/walletconnect.png',
+  },
   // {
   //   address: '',
   //   name: '',
