@@ -17,7 +17,7 @@ Scout provides analytics for Ethereum smart contracts. It provides unique (and r
 
 For example, it provides a very useful dashboard to inspect the [state of the Aragon network](https://scout.cool/aragon/mainnet), or the state of the [Set Protocol](https://scout.cool/setprotocol/mainnet).
 
-Or course, they also added a [dashboard for Unlock](https://scout.cool/unlockprotocol/mainnet), where you can view the total number of locks deployed, the balances of Ether or DAI across all locks, and even all the latest key purchases.
+Of course, they also added a [dashboard for Unlock](https://scout.cool/unlockprotocol/mainnet), where you can view the total number of locks deployed, the balances of Ether or DAI across all locks, and even all the latest key purchases.
 
 ![Scout dashboard for Unlock](/static/images/blog/unlocking-scout/unlock-scout-dashboard.png)
 
