@@ -11,6 +11,9 @@ import keysReducer, {
 import locksReducer, {
   initialState as defaultLocks,
 } from './reducers/locksReducer'
+import loadingReducer, {
+  initialState as defaultLoading,
+} from './reducers/loadingReducer'
 import networkReducer, {
   initialState as defaultNetwork,
 } from './reducers/networkReducer'
@@ -51,6 +54,7 @@ export const createUnlockStore = (
     account: accountReducer,
     keys: keysReducer,
     locks: locksReducer,
+    loading: loadingReducer,
     network: networkReducer,
     provider: providerReducer,
     transactions: transactionsReducer,
@@ -74,6 +78,7 @@ export const createUnlockStore = (
       account: defaultAccount,
       keys: defaultKeys,
       locks: defaultLocks,
+      loading: defaultLoading,
       network: defaultNetwork,
       provider: defaultProvider,
       transactions: defaultTransactions,
