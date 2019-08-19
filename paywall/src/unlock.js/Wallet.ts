@@ -119,6 +119,10 @@ export default class Wallet {
         // the natural behavior would be passing nothing as the 2nd argument
         undefined
       )
+      this.iframes.checkout.postMessage(
+        PostMessages.INITIATED_TRANSACTION,
+        undefined
+      )
     })
 
     // then create the iframe and ready its post office

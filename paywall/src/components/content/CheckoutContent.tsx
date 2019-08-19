@@ -219,7 +219,7 @@ export default function CheckoutContent() {
     </CheckoutWrapper>
   )
 
-  if (showWalletCheckOverlay) {
+  if (showWalletCheckOverlay && !purchasingLocks.length) {
     return (
       <Greyout>
         <MessageBox>
