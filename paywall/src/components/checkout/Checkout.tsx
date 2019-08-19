@@ -81,7 +81,8 @@ const Title = styled.h1`
 `
 
 const Logo = styled.img`
-  height: 30px;
+  max-height: 100px;
+  max-width: 200px;
 `
 
 const Footer = styled.footer`
