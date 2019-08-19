@@ -97,12 +97,10 @@ export default function CheckoutContent() {
   useListenForPostMessage({
     type: POST_MESSAGE_ERROR,
     defaultValue: undefined,
-    getValue: (payload: any) => {
-      if (payload === 'purchase failed') {
-        // Purchase failed (likely because transaction was rejected in MetaMask)
-        // remove the wallet check overlay.
-        setShowWalletCheckOverlay(false)
-      }
+    getValue: () => {
+      // Purchase failed (likely because transaction was rejected in MetaMask),
+      // remove the wallet check overlay.
+      setShowWalletCheckOverlay(false)
     },
   })
 
@@ -219,6 +217,9 @@ export default function CheckoutContent() {
     </CheckoutWrapper>
   )
 
+  // purchasingLocks is an array of locks for which a transaction has
+  // been initiated. Once purchasingLocks is non-empty, we know that the
+  // user's wallet is enabled and no longer need to show the overlay.
   if (showWalletCheckOverlay && !purchasingLocks.length) {
     return (
       <Greyout>
