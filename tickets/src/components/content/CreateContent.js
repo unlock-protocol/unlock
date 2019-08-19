@@ -43,7 +43,9 @@ export class CreateContent extends Component {
   }
 
   render() {
-    const { locks, now, config, event } = this.props
+    const { locks, now, config, event, loading } = this.props
+
+    const lockPlaceholder = loading ? 'Loading ...' : 'Choose a lock'
 
     return (
       <GlobalErrorConsumer>
@@ -59,7 +61,7 @@ export class CreateContent extends Component {
                   <Field>
                     <Label>Lock</Label>
                     <StyledSelect
-                      placeholder="Choose a lock"
+                      placeholder={lockPlaceholder}
                       className="select-container"
                       classNamePrefix="select-option"
                       options={locks.map(savedLock => ({
@@ -107,6 +109,7 @@ CreateContent.propTypes = {
   event: UnlockPropTypes.ticketedEvent,
   locks: PropTypes.arrayOf(UnlockPropTypes.lock),
   config: UnlockPropTypes.configuration.isRequired,
+  loading: PropTypes.number.isRequired,
 }
 
 CreateContent.defaultProps = {
@@ -116,7 +119,7 @@ CreateContent.defaultProps = {
   now: new Date(),
 }
 
-export const mapStateToProps = ({ locks, account, event }) => {
+export const mapStateToProps = ({ locks, account, event, loading }) => {
   let selectLocks = Object.values(locks).filter(
     lock => lock.owner === account.address
   )
@@ -125,6 +128,7 @@ export const mapStateToProps = ({ locks, account, event }) => {
     locks: selectLocks,
     account,
     event,
+    loading,
   }
 }
 
