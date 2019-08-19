@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
+import styled from 'styled-components'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import Checkout from '../checkout/Checkout'
@@ -15,6 +16,7 @@ import {
   POST_MESSAGE_DISMISS_CHECKOUT,
   POST_MESSAGE_LOCKED,
   POST_MESSAGE_UNLOCKED,
+  POST_MESSAGE_ERROR,
 } from '../../paywall-builder/constants'
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
@@ -60,12 +62,18 @@ export default function CheckoutContent() {
   ][0]
   // for sending purchase requests, hiding the checkout iframe
   const { postMessage } = usePostMessage('Checkout UI')
+  const [showWalletCheckOverlay, setShowWalletCheckOverlay] = useState(false)
   const [userInitiatedPurchase, initiatePurchase] = useState(false)
   // purchase a key with this callback
   const purchaseKey = (key: Key) => {
     // record the fact that the purchase was initiated in this process
     // so that we will not automatically dismiss the Checkout UI
     initiatePurchase(true)
+
+    // Until we receive confirmation that a transaction was initiated or rejected,
+    // show the modal overlay reminding the user to check their wallet.
+    // TODO: how does this perform with user accounts?
+    setShowWalletCheckOverlay(true)
     postMessage({
       type: POST_MESSAGE_PURCHASE_KEY,
       payload: {
@@ -84,6 +92,20 @@ export default function CheckoutContent() {
     defaultValue: false,
     getValue: (val: any) => !!val,
   })
+
+  // This listener is used only for the side effect of closing the overlay when a purchase is rejected.
+  useListenForPostMessage({
+    type: POST_MESSAGE_ERROR,
+    defaultValue: undefined,
+    getValue: (payload: any) => {
+      if (payload === 'purchase failed') {
+        // Purchase failed (likely because transaction was rejected in MetaMask)
+        // remove the wallet check overlay.
+        setShowWalletCheckOverlay(false)
+      }
+    },
+  })
+
   const locked = !isUnlocked && isLocked
   let allowClosingCheckout: boolean
 
@@ -197,9 +219,49 @@ export default function CheckoutContent() {
     </CheckoutWrapper>
   )
 
+  if (showWalletCheckOverlay) {
+    return (
+      <Greyout>
+        <MessageBox>
+          <p>Please check your browser wallet to complete the transaction.</p>
+          <Dismiss onClick={() => setShowWalletCheckOverlay(false)}>
+            Dismiss
+          </Dismiss>
+        </MessageBox>
+      </Greyout>
+    )
+  }
   return (
     <Greyout onClick={allowClosingCheckout ? hideCheckout : () => {}}>
       <Wrapper />
     </Greyout>
   )
 }
+
+const MessageBox = styled.div`
+  background: var(--white);
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+`
+
+const Dismiss = styled.button`
+  height: 24px;
+  font-size: 20px;
+  font-family: Roboto, sans-serif;
+  text-align: center;
+  border: none;
+  background: none;
+  color: var(--grey);
+
+  &:hover {
+    color: var(--link);
+  }
+`
