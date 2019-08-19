@@ -49,16 +49,6 @@ const People = [
             currently live in Brooklyn.`,
   },
   {
-    name: 'Ben Werdmuller',
-    picture: '/static/images/illustrations/ben.jpg',
-    personalLink: 'https://benwerd.com/',
-    linkedIn: 'https://www.linkedin.com/in/benwerd/',
-    bio: `I work at the intersection of technology, media, and democracy. I
-            co-founded Elgg and Known, worked on Medium and Latakoo, and
-            invested in innovative media startups to support a stronger
-            democracy at Matter.`,
-  },
-  {
     name: 'Sascha Mombartz',
     picture: '/static/images/illustrations/sascha.jpg',
     personalLink: 'http://mombartz.com/',
@@ -77,15 +67,6 @@ const People = [
             excited to help build our future enabling people with technology.
             Prior to joining Unlock, I worked to launch and scale projects at
             Facebook.`,
-  },
-  {
-    name: 'Gregory Beaver',
-    picture: '/static/images/illustrations/greg.jpg',
-    personalLink: 'https://gregorybeaver.com',
-    linkedIn: 'https://www.linkedin.com/in/gbeaver/',
-    bio: `I am a symbiotic organism, thriving in both music and the art of
-          software development. 18 years as cellist of The Chiara Quartet, and now
-          a soloist and composer matches equal experience in open source.`,
   },
   {
     name: 'Christopher Nascone',
