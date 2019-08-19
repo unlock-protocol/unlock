@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { act } from 'react-dom/test-utils'
 import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
+import { EventEmitter } from 'events'
 import CheckoutContent from '../../../components/content/CheckoutContent'
 import { createUnlockStore } from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -49,6 +51,28 @@ jest.mock('../../../hooks/usePaywallConfig', () => {
   })
 })
 
+const messageEmitter = new EventEmitter()
+
+interface MockPostMessageListener {
+  type: string
+  defaultValue: any
+  getValue: any
+}
+jest.mock('../../../hooks/browser/useListenForPostMessage', () => {
+  return ({ type, defaultValue, getValue }: MockPostMessageListener) => {
+    const [data, setData] = useState(defaultValue)
+
+    useEffect(() => {
+      const update = (event: any) => {
+        const newValue = getValue(event.data.payload, defaultValue)
+        setData(newValue)
+      }
+
+      messageEmitter.on(type, update)
+    }, [data, defaultValue, getValue, type])
+  }
+})
+
 const store = createUnlockStore()
 const config = {
   erc20Contract: {
@@ -58,9 +82,10 @@ const config = {
 
 describe('CheckoutContent', () => {
   it('shows the wallet check after the purchase button is clicked', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     const walletCheckMessage =
       'Please check your browser wallet to complete the transaction.'
+
     const { getByText } = rtl.render(
       <Provider store={store}>
         <ConfigContext.Provider value={config}>
@@ -78,5 +103,42 @@ describe('CheckoutContent', () => {
 
     // ...but then it is
     getByText(walletCheckMessage)
+
+    // and it goes away when dismissed
+    const dismissButton = getByText('Dismiss')
+    rtl.fireEvent.click(dismissButton)
+    expect(() => {
+      getByText(walletCheckMessage)
+    }).toThrow()
+  })
+
+  it('dismisses the wallet check when an error is received', () => {
+    expect.assertions(1)
+
+    const walletCheckMessage =
+      'Please check your browser wallet to complete the transaction.'
+
+    const { getByText } = rtl.render(
+      <Provider store={store}>
+        <ConfigContext.Provider value={config}>
+          <CheckoutContent />
+        </ConfigContext.Provider>
+      </Provider>
+    )
+    const purchaseButton = getByText('Purchase')
+    rtl.fireEvent.click(purchaseButton)
+
+    // Let's be very sure that the overlay is up
+    getByText(walletCheckMessage)
+
+    // simulate getting an error
+    act(() => {
+      messageEmitter.emit('error', { data: {} })
+    })
+
+    // gone-zo
+    expect(() => {
+      getByText(walletCheckMessage)
+    }).toThrow()
   })
 })
