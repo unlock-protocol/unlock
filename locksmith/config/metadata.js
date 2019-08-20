@@ -96,6 +96,12 @@ module.exports = [
     description: 'A key to the Wallet Connect Community Lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/walletconnect.png',
   },
+  {
+    address: '0x1b66f61b890193A2f89B2f42d88F794DB584C0d8',
+    name: 'Coinfund Rabbithole Lock',
+    description: 'A key to the Coinfund Rabbithole Lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/coinfund.png',
+  },
   // {
   //   address: '',
   //   name: '',
