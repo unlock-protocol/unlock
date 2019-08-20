@@ -6489,26 +6489,26 @@ Object {
             One Week
           </header>
           <div
-            class="sc-1549ebs-3 azpr18-5 fsNpLg"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="azpr18-1 price gXKeU"
+              class="ynhyps-1 price WzAoK"
             >
               0.1
                
               Eth
             </div>
             <div
-              class="azpr18-0 hGLUUF"
+              class="ynhyps-0 dBjFND"
             >
               <span
-                class="azpr18-2 azpr18-3 jHnszm"
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 ---
               </span>
               <span
-                class="azpr18-2 azpr18-4 kvkGQn"
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
                 <span>
                   7 days
@@ -6564,26 +6564,26 @@ Object {
             One Month
           </header>
           <div
-            class="sc-1549ebs-3 azpr18-5 fsNpLg"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="azpr18-1 price gXKeU"
+              class="ynhyps-1 price WzAoK"
             >
               0.3
                
               Eth
             </div>
             <div
-              class="azpr18-0 hGLUUF"
+              class="ynhyps-0 dBjFND"
             >
               <span
-                class="azpr18-2 azpr18-3 jHnszm"
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 ---
               </span>
               <span
-                class="azpr18-2 azpr18-4 kvkGQn"
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
                 <span>
                   30 days
@@ -7484,26 +7484,26 @@ Object {
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 azpr18-5 fsNpLg"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="azpr18-1 price gXKeU"
+              class="ynhyps-1 price WzAoK"
             >
               0.1
                
               Eth
             </div>
             <div
-              class="azpr18-0 hGLUUF"
+              class="ynhyps-0 dBjFND"
             >
               <span
-                class="azpr18-2 azpr18-3 jHnszm"
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 ---
               </span>
               <span
-                class="azpr18-2 azpr18-4 kvkGQn"
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
                 <span>
                   7 days
@@ -8477,26 +8477,26 @@ Object {
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 azpr18-5 fsNpLg"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="azpr18-1 price gXKeU"
+              class="ynhyps-1 price WzAoK"
             >
               0.1
                
               Eth
             </div>
             <div
-              class="azpr18-0 hGLUUF"
+              class="ynhyps-0 dBjFND"
             >
               <span
-                class="azpr18-2 azpr18-3 jHnszm"
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 ---
               </span>
               <span
-                class="azpr18-2 azpr18-4 kvkGQn"
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
                 <span>
                   7 days
@@ -8550,26 +8550,26 @@ Object {
             class="sc-1549ebs-1 kSQjXI"
           />
           <div
-            class="sc-1549ebs-3 azpr18-5 fsNpLg"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="azpr18-1 price gXKeU"
+              class="ynhyps-1 price WzAoK"
             >
               0.3
                
               Eth
             </div>
             <div
-              class="azpr18-0 hGLUUF"
+              class="ynhyps-0 dBjFND"
             >
               <span
-                class="azpr18-2 azpr18-3 jHnszm"
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 ---
               </span>
               <span
-                class="azpr18-2 azpr18-4 kvkGQn"
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
                 <span>
                   30 days
@@ -36577,7 +36577,7 @@ exports[`Storyshots Lock with a mined key for an know ERC20 Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c10 {
+    .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -36589,25 +36589,25 @@ Object {
   line-height: 50px;
 }
 
-.c10 > svg {
+.c12 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c10:hover {
+.c12:hover {
   background-color: var(--green);
 }
 
-.c10:hover > svg {
+.c12:hover > svg {
   fill: white;
 }
 
-.c9:hover .c18 {
+.c11:hover .c20 {
   display: inline-block;
 }
 
-.c19 .c9 {
+.c21 .c11 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -36618,28 +36618,28 @@ Object {
   align-self: center;
 }
 
-.c19 .c9:nth-child(1) {
+.c21 .c11:nth-child(1) {
   pointer-events: none;
 }
 
-.c19 .c9:nth-child(2) {
+.c21 .c11:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c19 .c9 > svg {
+.c21 .c11 > svg {
   fill: var(--grey);
 }
 
-.c19 .c9:hover > svg {
+.c21 .c11:hover > svg {
   fill: var(--grey);
 }
 
-.c20 .c9 {
+.c22 .c11 {
   margin: 24px;
 }
 
-.c20 .c9 small {
+.c22 .c11 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -36678,53 +36678,45 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c13 {
+.c15 {
   display: none;
 }
 
-.c8 {
+.c10 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c8:hover .c12 {
+.c10:hover .c14 {
   display: block;
 }
 
-.c8:hover .c11 {
+.c10:hover .c13 {
+  display: none;
+}
+
+.c19 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
   display: none;
 }
 
@@ -36749,82 +36741,19 @@ Object {
   -webkit-align-self: end;
   -ms-flex-item-align: end;
   align-self: end;
-  display: none;
 }
 
-.c15 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
+.c6 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c8 {
   font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c21 .c16 {
-  display: none;
-}
-
-.c21 .c14 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c21 .c7 {
-  display: none;
-}
-
-.c21:hover .c7 {
-  background-color: var(--green);
-}
-
-.c21:hover .c7 svg {
-  fill: var(--white);
-}
-
-.c21:hover .c7 {
-  display: block;
-}
-
-.c21:hover .c12 {
-  display: none;
-}
-
-.c21:hover .c11 {
-  display: block;
-}
-
-.c21:hover .c16 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c21:hover .c14 {
-  display: none;
-}
-
-.c22 .c0 {
-  grid-template-rows: 4px 140px;
-}
-
-.c22 .c2 {
-  height: 0;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c4 {
@@ -36848,52 +36777,96 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  border: 1px solid var(--green);
   cursor: pointer;
+  padding-top: 13px;
+}
+
+.c4 .c18 {
+  display: none;
 }
 
 .c4 .c16 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.c4 .c9 {
   display: none;
 }
 
-.c4 .c14 {
-  display: grid;
+.c4:hover {
+  grid-template-rows: 20px 60px 30px;
 }
 
-.c4:hover .c7 {
+.c4:hover .c9 {
   background-color: var(--green);
 }
 
-.c4:hover .c7 svg {
+.c4:hover .c9 svg {
   fill: var(--white);
 }
 
-.c4:hover .c12 {
+.c4:hover .c9 {
   display: block;
 }
 
-.c4:hover .c11 {
+.c4:hover .c5 {
   display: none;
 }
 
-.c4:hover .c16 {
-  display: grid;
+.c4:hover .c7 span {
+  font-size: 15px;
+}
+
+.c4:hover .c24 {
+  font-weight: bold;
 }
 
 .c4:hover .c14 {
   display: none;
 }
 
+.c4:hover .c13 {
+  display: block;
+}
+
+.c4:hover .c18 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.c4:hover .c16 {
+  display: none;
+}
+
+.c23 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c23 .c2 {
+  height: 0;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c21 .c7 {
-    display: block;
+  .c4 {
+    grid-template-rows: 20px 60px 30px;
   }
 
-  .c21 .c12 {
+  .c4 .c5 {
     display: none;
   }
 
-  .c21 .c11 {
+  .c4 .c9 {
+    display: block;
+  }
+
+  .c4 .c14 {
+    display: none;
+  }
+
+  .c4 .c13 {
     display: block;
   }
 }
@@ -36922,21 +36895,28 @@ Object {
               class="c4"
             >
               <div
-                class="c5"
+                class="c5 price c6"
               >
-                <div
-                  class="c6"
+                66.00
+                 
+                DEV
+              </div>
+              <div
+                class="c7 "
+              >
+                <span
+                  class="c8"
                 >
-                  66.00
-                   
-                  DEV
-                </div>
+                  <span>
+                    5 minutes
+                  </span>
+                </span>
               </div>
               <a
-                class="c7 c8 c9 c10"
+                class="c9 c10 c11 c12"
               >
                 <svg
-                  class="c11 "
+                  class="c13 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -36947,7 +36927,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c12 c13"
+                  class="c14 c15"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -36960,12 +36940,12 @@ Object {
                 
               </a>
               <footer
-                class="c14 c15"
+                class="c16 c17"
               >
-                Payment Confirmed
+                Never Expires
               </footer>
               <footer
-                class="c16 c17"
+                class="c18 c19"
               >
                 Go to Content
               </footer>
@@ -36996,18 +36976,25 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-0 dMttvX"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="ynhyps-1 price WzAoK"
             >
-              <div
-                class="sc-1549ebs-4 cXGnbO"
+              66.00
+               
+              DEV
+            </div>
+            <div
+              class="ynhyps-0 dBjFND"
+            >
+              <span
+                class="ynhyps-2 ynhyps-4 fUQtfi"
               >
-                66.00
-                 
-                DEV
-              </div>
+                <span>
+                  5 minutes
+                </span>
+              </span>
             </div>
             <a
               class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
@@ -37039,7 +37026,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Payment Confirmed
+              Never Expires
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
@@ -37421,7 +37408,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
+    .c14 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -37433,25 +37420,25 @@ Object {
   line-height: 50px;
 }
 
-.c11 > svg {
+.c14 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c11:hover {
+.c14:hover {
   background-color: var(--green);
 }
 
-.c11:hover > svg {
+.c14:hover > svg {
   fill: white;
 }
 
-.c10:hover .c19 {
+.c13:hover .c22 {
   display: inline-block;
 }
 
-.c20 .c10 {
+.c23 .c13 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -37462,28 +37449,28 @@ Object {
   align-self: center;
 }
 
-.c20 .c10:nth-child(1) {
+.c23 .c13:nth-child(1) {
   pointer-events: none;
 }
 
-.c20 .c10:nth-child(2) {
+.c23 .c13:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c20 .c10 > svg {
+.c23 .c13 > svg {
   fill: var(--grey);
 }
 
-.c20 .c10:hover > svg {
+.c23 .c13:hover > svg {
   fill: var(--grey);
 }
 
-.c21 .c10 {
+.c24 .c13 {
   margin: 24px;
 }
 
-.c21 .c10 small {
+.c24 .c13 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -37522,167 +37509,93 @@ Object {
   color: var(--grey);
 }
 
-.c6 {
-  white-space: nowrap;
-  font-weight: bold;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c5 {
-  display: grid;
-  font-size: 15px;
-  grid-auto-columns: min-content;
-  grid-auto-flow: column;
-  color: var(--grey);
-  font-weight: 300;
-  grid-gap: 4px;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-  justify-items: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-}
-
-.c14 {
+.c17 {
   display: none;
+}
+
+.c12 {
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c12:hover .c16 {
+  display: block;
+}
+
+.c12:hover .c15 {
+  display: none;
+}
+
+.c21 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+  display: none;
+}
+
+.c19 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--green);
+  color: var(--white);
+  -webkit-align-self: end;
+  -ms-flex-item-align: end;
+  align-self: end;
+}
+
+.c6 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
 }
 
 .c9 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c9:hover .c13 {
-  display: block;
-}
-
-.c9:hover .c12 {
-  display: none;
-}
-
-.c18 {
-  display: grid;
-  font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
   font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  display: none;
-}
-
-.c16 {
-  display: grid;
   font-weight: 300;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
+  color: var(--grey);
+}
+
+.c9::after {
+  color: var(--lightgrey);
+  content: ' | ';
+}
+
+.c10 {
   font-size: 20px;
-  line-height: 20px;
-  height: 40px;
-  border-radius: 0px 0px 4px 4px;
-  padding: 0px;
-  width: 200px;
-  background-color: var(--green);
-  color: var(--white);
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-}
-
-.c22 .c17 {
-  display: none;
-}
-
-.c22 .c15 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c22 .c8 {
-  display: none;
-}
-
-.c22:hover .c8 {
-  background-color: var(--green);
-}
-
-.c22:hover .c8 svg {
-  fill: var(--white);
-}
-
-.c22:hover .c8 {
-  display: block;
-}
-
-.c22:hover .c13 {
-  display: none;
-}
-
-.c22:hover .c12 {
-  display: block;
-}
-
-.c22:hover .c17 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c22:hover .c15 {
-  display: none;
-}
-
-.c23 .c0 {
-  grid-template-rows: 4px 140px;
-}
-
-.c23 .c2 {
-  height: 0;
+  font-weight: 300;
+  color: var(--grey);
 }
 
 .c4 {
@@ -37706,52 +37619,96 @@ Object {
   border: 1px solid transparent;
   border-radius: 4px;
   background-color: var(--white);
-  border: 1px solid var(--green);
   cursor: pointer;
+  padding-top: 13px;
 }
 
-.c4 .c17 {
+.c4 .c20 {
   display: none;
 }
 
-.c4 .c15 {
+.c4 .c18 {
   display: grid;
+  background-color: var(--white);
+  color: var(--green);
 }
 
-.c4:hover .c8 {
+.c4 .c11 {
+  display: none;
+}
+
+.c4:hover {
+  grid-template-rows: 20px 60px 30px;
+}
+
+.c4:hover .c11 {
   background-color: var(--green);
 }
 
-.c4:hover .c8 svg {
+.c4:hover .c11 svg {
   fill: var(--white);
 }
 
-.c4:hover .c13 {
+.c4:hover .c11 {
   display: block;
 }
 
-.c4:hover .c12 {
+.c4:hover .c5 {
   display: none;
 }
 
-.c4:hover .c17 {
-  display: grid;
+.c4:hover .c7 span {
+  font-size: 15px;
+}
+
+.c4:hover .c8 {
+  font-weight: bold;
+}
+
+.c4:hover .c16 {
+  display: none;
 }
 
 .c4:hover .c15 {
+  display: block;
+}
+
+.c4:hover .c20 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.c4:hover .c18 {
   display: none;
 }
 
+.c25 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c25 .c2 {
+  height: 0;
+}
+
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c22 .c8 {
-    display: block;
+  .c4 {
+    grid-template-rows: 20px 60px 30px;
   }
 
-  .c22 .c13 {
+  .c4 .c5 {
     display: none;
   }
 
-  .c22 .c12 {
+  .c4 .c11 {
+    display: block;
+  }
+
+  .c4 .c16 {
+    display: none;
+  }
+
+  .c4 .c15 {
     display: block;
   }
 }
@@ -37780,27 +37737,34 @@ Object {
               class="c4"
             >
               <div
-                class="c5"
+                class="c5 price c6"
               >
-                <div
-                  class="c6"
-                >
-                  0.23
-                   
-                  Eth
-                </div>
-                <div
-                  class="c7"
+                0.23
+                 
+                Eth
+              </div>
+              <div
+                class="c7 "
+              >
+                <span
+                  class="c8 c9"
                 >
                   $
                   45.08
-                </div>
+                </span>
+                <span
+                  class="c10"
+                >
+                  <span>
+                    30 days
+                  </span>
+                </span>
               </div>
               <a
-                class="c8 c9 c10 c11"
+                class="c11 c12 c13 c14"
               >
                 <svg
-                  class="c12 "
+                  class="c15 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -37811,7 +37775,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c13 c14"
+                  class="c16 c17"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -37824,12 +37788,12 @@ Object {
                 
               </a>
               <footer
-                class="c15 c16"
+                class="c18 c19"
               >
-                Payment Confirmed
+                Never Expires
               </footer>
               <footer
-                class="c17 c18"
+                class="c20 c21"
               >
                 Go to Content
               </footer>
@@ -37860,24 +37824,31 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-0 dMttvX"
+            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="ynhyps-1 price WzAoK"
             >
-              <div
-                class="sc-1549ebs-4 cXGnbO"
-              >
-                0.23
-                 
-                Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
+              0.23
+               
+              Eth
+            </div>
+            <div
+              class="ynhyps-0 dBjFND"
+            >
+              <span
+                class="ynhyps-2 ynhyps-3 imuio"
               >
                 $
                 45.08
-              </div>
+              </span>
+              <span
+                class="ynhyps-2 ynhyps-4 fUQtfi"
+              >
+                <span>
+                  30 days
+                </span>
+              </span>
             </div>
             <a
               class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
@@ -37909,7 +37880,7 @@ Object {
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-2 epNQgy"
             >
-              Payment Confirmed
+              Never Expires
             </footer>
             <footer
               class="sc-1549ebs-2 ik5149-0 ik5149-1 ocNib"
