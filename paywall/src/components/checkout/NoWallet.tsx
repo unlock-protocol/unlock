@@ -16,8 +16,8 @@ export const NoWallet = ({ config }: Props) => {
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <p>
-          To enjoy content without any ads you&apos;ll need to use a
-          crypto-enabled browser that has a wallet. Here are a few options:
+          To buy a key you&apos;ll need to use a crypto-enabled browser that has
+          a wallet. Here are a few options:
         </p>
       </Header>
       <WalletOptions>
