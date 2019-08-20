@@ -2,7 +2,7 @@ import React from 'react'
 
 import PendingKeyLock from '../lock/PendingKeyLock'
 import ConfirmingKeyLock from '../lock/ConfirmingKeyLock'
-import ConfirmedKeyLock from './ConfirmedKeyLock'
+import ConfirmedKeyLock from '../lock/ConfirmedKeyLock'
 import NoKeyLock from '../lock/NoKeyLock'
 
 import { Lock, Account, KeyStatus, Key } from '../../unlockTypes'
