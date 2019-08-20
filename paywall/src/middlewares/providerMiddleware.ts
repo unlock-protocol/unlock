@@ -4,6 +4,7 @@ import {
   FATAL_MISSING_PROVIDER,
   FATAL_NOT_ENABLED_IN_PROVIDER,
 } from '../errors'
+import { waitForWallet, dismissWalletCheck } from '../actions/walletStatus'
 
 interface Action {
   type: string
@@ -12,7 +13,31 @@ interface Action {
 
 type dispatcher = (action: Action) => void
 
-function initializeProvider(
+export function delayedDispatch(
+  dispatch: dispatcher,
+  action: () => { type: string },
+  time: number
+) {
+  return setTimeout(() => dispatch(action()), time)
+}
+
+// Returns true if provider was successfully enabled, false otherwise
+export async function enableProvider(provider: { enable?: () => any }) {
+  // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
+  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
+  if (provider.enable) {
+    try {
+      await provider.enable()
+      return true
+    } catch (_) {
+      return false
+    }
+  }
+  // provider.enable doesn't exist, which means it doesn't support EIP1102. The provider is already in a state we can work with, and thus counts as "enabled."
+  return true
+}
+
+export async function initializeProvider(
   provider: { enable?: () => any },
   dispatch: dispatcher
 ) {
@@ -21,17 +46,21 @@ function initializeProvider(
     return
   }
 
-  // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
-  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
-  if (provider.enable) {
-    provider
-      .enable()
-      .then(() => dispatch(providerReady()))
-      .catch(() => dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER)))
-  } else {
-    // Default case, provider doesn't have an enable method, so it must already be ready
+  // To avoid flickering when wallet enables without user interaction, delay for a bit
+  // before showing the overlay
+  const walletCheckTimeout = delayedDispatch(dispatch, waitForWallet, 750)
+  const enabled = await enableProvider(provider)
+
+  if (enabled) {
     dispatch(providerReady())
+  } else {
+    dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER))
   }
+
+  // The timeout should be cleared no matter what
+  clearTimeout(walletCheckTimeout)
+  // Always safe to dismiss the overlay, even if it hasn't come up yet.
+  dispatch(dismissWalletCheck())
 }
 
 const providerMiddleware = (config: any) => {
