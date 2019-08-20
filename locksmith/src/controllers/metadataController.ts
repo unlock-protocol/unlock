@@ -1,6 +1,8 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 
 import Metadata from '../../config/metadata'
+import Normalizer from '../utils/normalizer'
+import { LockMetadata } from '../models/lockmetadata'
 
 namespace MetadataController {
   // eslint-disable-next-line import/prefer-default-export
@@ -29,6 +31,27 @@ namespace MetadataController {
     defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
 
     return res.json(defaultResponse)
+  }
+
+  export const updateDefaults = async (
+    req: Request,
+    res: Response
+  ): Promise<any> => {
+    let lockAddress: string = Normalizer.ethereumAddress(req.params.lockAddress)
+    let metadata = req.body.message
+
+    try {
+      await LockMetadata.upsert(
+        {
+          address: lockAddress,
+          data: metadata,
+        },
+        { returning: true }
+      )
+      res.sendStatus(202)
+    } catch (e) {
+      res.sendStatus(400)
+    }
   }
 }
 
