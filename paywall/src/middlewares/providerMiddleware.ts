@@ -33,7 +33,7 @@ export async function enableProvider(provider: { enable?: () => any }) {
       return false
     }
   }
-  // provider.enable doesn't exist, so provider is de facto enabled
+  // provider.enable doesn't exist, which means it doesn't support EIP1102. The provider is already in a state we can work with, and thus counts as "enabled."
   return true
 }
 
