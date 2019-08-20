@@ -48,7 +48,7 @@ export async function initializeProvider(
 
   // To avoid flickering when wallet enables without user interaction, delay for a bit
   // before showing the overlay
-  const timeout = delayedDispatch(dispatch, waitForWallet, 750)
+  const walletCheckTimeout = delayedDispatch(dispatch, waitForWallet, 750)
   const enabled = await enableProvider(provider)
 
   if (enabled) {
@@ -58,7 +58,7 @@ export async function initializeProvider(
   }
 
   // The timeout should be cleared no matter what
-  clearTimeout(timeout)
+  clearTimeout(walletCheckTimeout)
   // Always safe to dismiss the overlay, even if it hasn't come up yet.
   dispatch(dismissWalletCheck())
 }
