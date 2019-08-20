@@ -23,6 +23,8 @@ export function delayedDispatch(
 
 // Returns true if provider was successfully enabled, false otherwise
 export async function enableProvider(provider: { enable?: () => any }) {
+  // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
+  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
   if (provider.enable) {
     try {
       await provider.enable()
@@ -44,18 +46,20 @@ export async function initializeProvider(
     return
   }
 
-  // provider.enable exists for metamask and other modern dapp wallets and must be called, see:
-  // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
+  // To avoid flickering when wallet enables without user interaction, delay for a bit
+  // before showing the overlay
   const timeout = delayedDispatch(dispatch, waitForWallet, 750)
-  const couldEnable = await enableProvider(provider)
+  const enabled = await enableProvider(provider)
 
-  if (couldEnable) {
+  if (enabled) {
     dispatch(providerReady())
   } else {
     dispatch(setError(FATAL_NOT_ENABLED_IN_PROVIDER))
   }
 
+  // The timeout should be cleared no matter what
   clearTimeout(timeout)
+  // Always safe to dismiss the overlay, even if it hasn't come up yet.
   dispatch(dismissWalletCheck())
 }
 
