@@ -3,19 +3,9 @@ import MainWindowHandler, {
   IGNORE_CACHE,
 } from '../../../unlock.js/MainWindowHandler'
 import IframeHandler from '../../../unlock.js/IframeHandler'
-import { PaywallConfig } from '../../../unlockTypes'
 
 describe('MainWindowHandler - locked/unlocked cache', () => {
   let fakeWindow: FakeWindow
-  const config: PaywallConfig = {
-    locks: {},
-    callToAction: {
-      default: '',
-      pending: '',
-      expired: '',
-      confirmed: '',
-    },
-  }
 
   function getMainWindowHandler() {
     const iframes = new IframeHandler(
@@ -24,7 +14,7 @@ describe('MainWindowHandler - locked/unlocked cache', () => {
       'http://u',
       'http://v'
     )
-    return new MainWindowHandler(fakeWindow, iframes, config)
+    return new MainWindowHandler(fakeWindow, iframes)
   }
 
   describe('getCachedLockState', () => {
