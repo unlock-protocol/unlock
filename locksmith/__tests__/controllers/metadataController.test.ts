@@ -44,43 +44,55 @@ describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate()
   })
-  describe('the data stub', () => {
-    it('returns wellformed stub data', async () => {
-      expect.assertions(2)
+  describe('token data request', () => {
+    describe("when persisted data doesn't exist", () => {
+      it('returns wellformed data for Week in Ethereum News', async () => {
+        expect.assertions(2)
 
-      let response = await request(app)
-        .get('/api/key/0x5543625f4581af4754204e452e72a65708708bc2/1')
-        .set('Accept', 'json')
+        let response = await request(app)
+          .get('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/1')
+          .set('Accept', 'json')
 
-      expect(response.status).toBe(200)
-
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          description: expect.any(String),
-          image: expect.any(String),
-          name: expect.any(String),
-        })
-      )
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            description:
+              "A Key to the 'Week in Ethereum News' lock. Unlock is a protocol for memberships. https://unlock-protocol.com/",
+            image:
+              'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
+            name: 'Unlock Key to Week in Ethereum News',
+          })
+        )
+      })
     })
 
-    it('returns wellformed data for Week in Ethereum News', async () => {
-      expect.assertions(2)
-
-      let response = await request(app)
-        .get('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/1')
-        .set('Accept', 'json')
-
-      expect(response.status).toBe(200)
-
-      expect(response.body).toEqual(
-        expect.objectContaining({
-          description:
-            "A Key to the 'Week in Ethereum News' lock. Unlock is a protocol for memberships. https://unlock-protocol.com/",
-          image:
-            'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
-          name: 'Unlock Key to Week in Ethereum News',
+    describe('when the persisted data exists', () => {
+      beforeAll(async () => {
+        await LockMetadata.create({
+          address: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+          data: {
+            description: 'A Description for Persisted Lock Metadata',
+            image: 'https://assets.unlock-protocol.com/logo.png',
+            name: 'Persisted Lock Metadata',
+          },
         })
-      )
+      })
+
+      it('returns data from the data store', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
+          .set('Accept', 'json')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            description: 'A Description for Persisted Lock Metadata',
+            image: 'https://assets.unlock-protocol.com/logo.png',
+            name: 'Persisted Lock Metadata',
+          })
+        )
+      })
     })
   })
 
