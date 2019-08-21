@@ -121,6 +121,11 @@ describe('Mailbox - emitChanges', () => {
     },
   }
 
+  const noLocks: BlockchainData = {
+    ...lockedLocks,
+    locks: {},
+  }
+
   function setupDefaults() {
     defaults = setupTestDefaults()
     constants = defaults.constants
@@ -157,6 +162,21 @@ describe('Mailbox - emitChanges', () => {
   })
 
   type TestSent = [string, PostMessages, ExtractPayload<PostMessages>]
+
+  describe('with no locks', () => {
+    beforeEach(() => {
+      setupDefaults()
+    })
+
+    it('should send neither "locked" nor "unlocked"', () => {
+      expect.assertions(2)
+
+      mailbox.emitChanges(noLocks)
+
+      fakeWindow.expectPostMessageNotSent(PostMessages.LOCKED, undefined)
+      fakeWindow.expectPostMessageNotSent(PostMessages.UNLOCKED, [])
+    })
+  })
 
   describe('with locked locks', () => {
     beforeEach(() => {

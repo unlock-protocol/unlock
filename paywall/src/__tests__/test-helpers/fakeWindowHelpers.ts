@@ -243,6 +243,19 @@ export default class FakeWindow
     )
   }
 
+  public expectPostMessageNotSent<T extends PostMessages = PostMessages>(
+    type: T,
+    payload: ExtractPayload<T>
+  ) {
+    expect(this.parent.postMessage).not.toHaveBeenCalledWith(
+      {
+        type,
+        payload,
+      },
+      'http://example.com' // origin passed in the URL as ?origin=<urlencoded origin>
+    )
+  }
+
   public expectPostMessageSentToIframe<T extends PostMessages = PostMessages>(
     type: T,
     payload: ExtractPayload<T>,
