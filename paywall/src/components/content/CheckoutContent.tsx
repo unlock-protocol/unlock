@@ -127,6 +127,14 @@ export default function CheckoutContent() {
         locks[lockAddress].key.status
       )
   )
+
+  // One we have something in purchasingLocks, we can assume that the
+  // user approved the transaction in their wallet and dismiss the wallet
+  //check overlay.
+  if (purchasingLocks.length && showWalletCheckOverlay) {
+    setShowWalletCheckOverlay(false)
+  }
+
   const [userDismissedConfirmingModal, dismissConfirmingModal] = useState(false)
   const hideConfirmingModal = useCallback(() => {
     hideCheckout()
@@ -218,7 +226,7 @@ export default function CheckoutContent() {
   // purchasingLocks is an array of locks for which a transaction has
   // been initiated. Once purchasingLocks is non-empty, we know that the
   // user's wallet is enabled and no longer need to show the overlay.
-  if (showWalletCheckOverlay && !purchasingLocks.length) {
+  if (showWalletCheckOverlay) {
     return (
       <Greyout>
         <MessageBox>
