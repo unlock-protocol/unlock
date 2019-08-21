@@ -698,7 +698,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -839,6 +839,7 @@ Object {
         >
           <a
             class="c2 c3"
+            target="_self"
           >
             <svg
               viewBox="0 0 24 24"
@@ -929,7 +930,8 @@ Object {
         class="sc-cSHVUG bCBeAO"
       >
         <a
-          class="sc-fAjcbJ glPBrL sc-850ddk-0 eZjxtV"
+          class="sc-fAjcbJ glPBrL sc-850ddk-0 bqpIVT"
+          target="_self"
         >
           <svg
             viewBox="0 0 24 24"
@@ -1082,7 +1084,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -1111,6 +1113,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -1171,6 +1174,7 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3002/about"
+        target="_self"
         title="About"
       >
         <svg
@@ -1199,8 +1203,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="http://localhost:3002/about"
+      target="_self"
       title="About"
     >
       <svg
@@ -1216,7 +1221,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         About
       </small>
@@ -1297,7 +1302,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -1370,6 +1375,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
       >
         <svg
           viewBox="0 0 56 42"
@@ -1391,7 +1397,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
+      target="_self"
     >
       <svg
         viewBox="0 0 56 42"
@@ -1481,7 +1488,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -1554,6 +1561,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
       >
         <svg
           viewBox="0 0 58 32"
@@ -1577,7 +1585,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
+      target="_self"
     >
       <svg
         viewBox="0 0 58 32"
@@ -1669,7 +1678,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 100px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -1742,6 +1751,7 @@ Object {
       />
       <button
         class="c0 c1"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -1765,7 +1775,8 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-850ddk-0 bCNmgy"
+      class="sc-850ddk-0 izwIeQ"
+      target="_self"
     >
       <svg
         viewBox="0 0 24 24"
@@ -1857,7 +1868,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 16px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -1930,6 +1941,7 @@ Object {
       />
       <button
         class="c0 c1"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -1953,7 +1965,8 @@ Object {
       rel="stylesheet"
     />
     <button
-      class="sc-850ddk-0 lhBnqq"
+      class="sc-850ddk-0 eflLhw"
+      target="_self"
     >
       <svg
         viewBox="0 0 24 24"
@@ -2045,7 +2058,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -2074,6 +2087,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -2134,6 +2148,7 @@ Object {
       <a
         class="c0 c1"
         href="https://github.com/unlock-protocol/unlock"
+        target="_self"
         title="Source Code"
       >
         <svg
@@ -2159,8 +2174,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="https://github.com/unlock-protocol/unlock"
+      target="_self"
       title="Source Code"
     >
       <svg
@@ -2173,7 +2189,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Source Code
       </small>
@@ -2254,7 +2270,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -2283,6 +2299,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -2343,6 +2360,7 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3002/jobs"
+        target="_self"
         title="Join us"
       >
         <svg
@@ -2370,8 +2388,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="http://localhost:3002/jobs"
+      target="_self"
       title="Join us"
     >
       <svg
@@ -2386,7 +2405,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Join us
       </small>
@@ -2467,7 +2486,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -2496,6 +2515,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -2556,6 +2576,7 @@ Object {
       <a
         class="c0 c1"
         href="/newsletter"
+        target="_self"
         title="Newsletter"
       >
         <svg
@@ -2583,8 +2604,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="/newsletter"
+      target="_self"
       title="Newsletter"
     >
       <svg
@@ -2599,7 +2621,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Newsletter
       </small>
@@ -2680,7 +2702,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -2709,6 +2731,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -2769,6 +2792,7 @@ Object {
       <a
         class="c0 c1"
         href="https://t.me/unlockprotocol"
+        target="_self"
         title="Telegram"
       >
         <svg
@@ -2796,8 +2820,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="https://t.me/unlockprotocol"
+      target="_self"
       title="Telegram"
     >
       <svg
@@ -2812,7 +2837,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Telegram
       </small>
@@ -2893,7 +2918,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -2922,6 +2947,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -2982,6 +3008,7 @@ Object {
       <a
         class="c0 c1"
         href="/twitter"
+        target="_self"
         title="Twitter"
       >
         <svg
@@ -3009,8 +3036,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 KJKSu"
+      class="sc-850ddk-0 iabPtF"
       href="/twitter"
+      target="_self"
       title="Twitter"
     >
       <svg
@@ -3025,7 +3053,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Twitter
       </small>
@@ -3106,7 +3134,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -3135,6 +3163,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -3194,6 +3223,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Copy"
       >
         <svg
@@ -3221,7 +3251,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Copy"
     >
       <svg
@@ -3236,7 +3267,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Copy
       </small>
@@ -3317,7 +3348,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -3346,6 +3377,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -3405,6 +3437,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Download"
       >
         <svg
@@ -3432,7 +3465,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Download"
     >
       <svg
@@ -3447,7 +3481,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Download
       </small>
@@ -3528,7 +3562,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -3557,6 +3591,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -3616,6 +3651,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Edit"
       >
         <svg
@@ -3646,7 +3682,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Edit"
     >
       <svg
@@ -3664,7 +3701,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Edit
       </small>
@@ -3745,7 +3782,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -3774,6 +3811,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -3833,6 +3871,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Etherscan"
       >
         <svg
@@ -3860,7 +3899,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Etherscan"
     >
       <svg
@@ -3875,7 +3915,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Etherscan
       </small>
@@ -3956,7 +3996,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -3985,6 +4025,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -4044,6 +4085,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Export"
       >
         <svg
@@ -4071,7 +4113,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Export"
     >
       <svg
@@ -4086,7 +4129,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Export
       </small>
@@ -4167,7 +4210,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -4196,6 +4239,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -4256,6 +4300,7 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3001/newdemo?lock=0xabc&name=undefined"
+        target="_self"
         title="Preview"
       >
         <svg
@@ -4289,8 +4334,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
       href="http://localhost:3001/newdemo?lock=0xabc&name=undefined"
+      target="_self"
       title="Preview"
     >
       <svg
@@ -4311,7 +4357,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Preview
       </small>
@@ -4392,7 +4438,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -4421,6 +4467,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -4480,6 +4527,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Embed"
       >
         <svg
@@ -4507,7 +4555,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Embed"
     >
       <svg
@@ -4522,7 +4571,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Embed
       </small>
@@ -4603,7 +4652,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -4632,6 +4681,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -4691,6 +4741,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Upload"
       >
         <svg
@@ -4718,7 +4769,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Upload"
     >
       <svg
@@ -4733,7 +4785,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Upload
       </small>
@@ -4814,7 +4866,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -4887,6 +4939,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
       >
         <svg
           name="Withdraw"
@@ -4909,7 +4962,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 GBCms"
+      class="sc-850ddk-0 hgGppu"
+      target="_self"
     >
       <svg
         name="Withdraw"
@@ -5000,7 +5054,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -5029,6 +5083,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -5088,6 +5143,7 @@ Object {
       />
       <a
         class="c0 c1"
+        target="_self"
         title="Withdraw"
       >
         <svg
@@ -5115,7 +5171,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
+      target="_self"
       title="Withdraw"
     >
       <svg
@@ -5130,7 +5187,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Withdraw
       </small>
@@ -5211,7 +5268,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -5240,6 +5297,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -5300,6 +5358,7 @@ Object {
       <a
         class="c0 c1"
         href="/dashboard"
+        target="_self"
         title="Dashboard"
       >
         <svg
@@ -5326,8 +5385,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
       href="/dashboard"
+      target="_self"
       title="Dashboard"
     >
       <svg
@@ -5341,7 +5401,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Dashboard
       </small>
@@ -5422,7 +5482,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -5451,6 +5511,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -5511,6 +5572,7 @@ Object {
       <a
         class="c0 c1"
         href="/dashboard"
+        target="_self"
         title="Dashboard"
       >
         <svg
@@ -5537,8 +5599,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 kmwKuX"
+      class="sc-850ddk-0 jqOqAf"
       href="/dashboard"
+      target="_self"
       title="Dashboard"
     >
       <svg
@@ -5552,7 +5615,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Dashboard
       </small>
@@ -5633,7 +5696,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -5662,6 +5725,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -5722,6 +5786,7 @@ Object {
       <a
         class="c0 c1"
         href="/log"
+        target="_self"
         title="Log"
       >
         <svg
@@ -5750,8 +5815,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 eZjxtV"
+      class="sc-850ddk-0 bqpIVT"
       href="/log"
+      target="_self"
       title="Log"
     >
       <svg
@@ -5767,7 +5833,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Log
       </small>
@@ -5848,7 +5914,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c1 > svg {
@@ -5877,6 +5943,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -5937,6 +6004,7 @@ Object {
       <a
         class="c0 c1"
         href="/log"
+        target="_self"
         title="Log"
       >
         <svg
@@ -5965,8 +6033,9 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="sc-850ddk-0 kmwKuX"
+      class="sc-850ddk-0 jqOqAf"
       href="/log"
+      target="_self"
       title="Log"
     >
       <svg
@@ -5982,7 +6051,7 @@ Object {
         />
       </svg>
       <small
-        class="sc-850ddk-1 fnqGzL"
+        class="sc-850ddk-1 jgJDdG"
       >
         Log
       </small>
@@ -6063,7 +6132,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c2 > svg {
@@ -6162,6 +6231,7 @@ Object {
       />
       <a
         class="c0 c1 c2"
+        target="_self"
       >
         <svg
           class="c3 "
@@ -6195,7 +6265,8 @@ Object {
       rel="stylesheet"
     />
     <a
-      class="nk4431-2 kIuyEq sc-850ddk-0 igqVvJ"
+      class="nk4431-2 kIuyEq sc-850ddk-0 dMsuy"
+      target="_self"
     >
       <svg
         class="nk4431-0 jIPREr"
@@ -6297,7 +6368,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c8 > svg {
@@ -6327,7 +6398,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -6356,6 +6427,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -6793,6 +6865,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -6816,6 +6889,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -6838,6 +6912,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -6858,6 +6933,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -6883,6 +6959,7 @@ Object {
             >
               <a
                 class="c7 c11"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -6898,6 +6975,7 @@ Object {
               </a>
               <a
                 class="c7 c11"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -7033,6 +7111,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -7056,6 +7135,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -7078,6 +7158,7 @@ Object {
             <a
               class="c7 c8"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -7098,6 +7179,7 @@ Object {
             <a
               class="c7 c8"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -7169,8 +7251,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -7186,14 +7269,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -7208,14 +7292,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -7228,14 +7313,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -7250,7 +7336,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -7260,7 +7346,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -7275,7 +7362,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -7409,8 +7497,9 @@ Object {
           class="sc-2ix2yp-0 clvjsX"
         >
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/about"
+            target="_self"
             title="About"
           >
             <svg
@@ -7426,14 +7515,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               About
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/jobs"
+            target="_self"
             title="Join us"
           >
             <svg
@@ -7448,14 +7538,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Join us
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="https://github.com/unlock-protocol/unlock"
+            target="_self"
             title="Source Code"
           >
             <svg
@@ -7468,14 +7559,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Source Code
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="https://t.me/unlockprotocol"
+            target="_self"
             title="Telegram"
           >
             <svg
@@ -7490,7 +7582,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Telegram
             </small>
@@ -8264,7 +8356,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -8293,6 +8385,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -8680,6 +8773,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                target="_self"
                 title="Withdraw"
               >
                 <svg
@@ -8701,6 +8795,7 @@ Object {
               </button>
               <button
                 class="c14 c15"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -8725,6 +8820,7 @@ Object {
               </button>
               <button
                 class="c14 c15"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -8963,7 +9059,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Withdraw"
             >
               <svg
@@ -8978,13 +9075,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Withdraw
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -9002,13 +9100,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Edit
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -9023,7 +9122,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Embed
               </small>
@@ -9714,7 +9813,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c16 > svg {
@@ -9744,7 +9843,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -9773,6 +9872,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -10160,6 +10260,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -10176,6 +10277,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -10200,6 +10302,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -10438,7 +10541,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 GBCms"
+              class="sc-850ddk-0 hgGppu"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -10454,7 +10558,8 @@ Object {
               
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -10472,13 +10577,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Edit
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -10493,7 +10599,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Embed
               </small>
@@ -11858,7 +11964,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -11887,6 +11993,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -12274,6 +12381,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                target="_self"
                 title="Withdraw"
               >
                 <svg
@@ -12295,6 +12403,7 @@ Object {
               </button>
               <button
                 class="c14 c15"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -12319,6 +12428,7 @@ Object {
               </button>
               <button
                 class="c14 c15"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -12557,7 +12667,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Withdraw"
             >
               <svg
@@ -12572,13 +12683,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Withdraw
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -12596,13 +12708,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Edit
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -12617,7 +12730,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Embed
               </small>
@@ -12705,7 +12818,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c16 > svg {
@@ -12735,7 +12848,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -12764,6 +12877,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -13151,6 +13265,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -13167,6 +13282,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -13191,6 +13307,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -13431,7 +13548,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 GBCms"
+              class="sc-850ddk-0 hgGppu"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -13447,7 +13565,8 @@ Object {
               
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -13465,13 +13584,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Edit
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -13486,7 +13606,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Embed
               </small>
@@ -13576,7 +13696,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c16 > svg {
@@ -13606,7 +13726,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -13635,6 +13755,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -14022,6 +14143,7 @@ Object {
             >
               <button
                 class="c14 c15"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -14038,6 +14160,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -14062,6 +14185,7 @@ Object {
               </button>
               <button
                 class="c14 c16"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -14305,7 +14429,8 @@ Object {
             class="sc-1dp5gbn-1 hxNcaM"
           >
             <button
-              class="sc-850ddk-0 GBCms"
+              class="sc-850ddk-0 hgGppu"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -14321,7 +14446,8 @@ Object {
               
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -14339,13 +14465,14 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Edit
               </small>
             </button>
             <button
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -14360,7 +14487,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Embed
               </small>
@@ -18666,7 +18793,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c21 > svg {
@@ -18696,7 +18823,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c20 > svg {
@@ -18725,6 +18852,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -19255,6 +19383,7 @@ Object {
               >
                 <button
                   class="c19 c20"
+                  target="_self"
                 >
                   <svg
                     name="Withdraw"
@@ -19271,6 +19400,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Edit"
                 >
                   <svg
@@ -19295,6 +19425,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Embed"
                 >
                   <svg
@@ -19527,6 +19658,7 @@ Object {
               >
                 <button
                   class="c19 c20"
+                  target="_self"
                 >
                   <svg
                     name="Withdraw"
@@ -19543,6 +19675,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Edit"
                 >
                   <svg
@@ -19567,6 +19700,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Embed"
                 >
                   <svg
@@ -20007,7 +20141,8 @@ Object {
               class="sc-1dp5gbn-1 hxNcaM"
             >
               <button
-                class="sc-850ddk-0 GBCms"
+                class="sc-850ddk-0 hgGppu"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -20023,7 +20158,8 @@ Object {
                 
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -20041,13 +20177,14 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -20062,7 +20199,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Embed
                 </small>
@@ -20279,7 +20416,8 @@ Object {
               class="sc-1dp5gbn-1 hxNcaM"
             >
               <button
-                class="sc-850ddk-0 GBCms"
+                class="sc-850ddk-0 hgGppu"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -20295,7 +20433,8 @@ Object {
                 
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -20313,13 +20452,14 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -20334,7 +20474,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Embed
                 </small>
@@ -21170,7 +21310,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c21 > svg {
@@ -21200,7 +21340,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c20 > svg {
@@ -21229,6 +21369,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -21749,6 +21890,7 @@ Object {
               >
                 <button
                   class="c19 c20"
+                  target="_self"
                 >
                   <svg
                     name="Withdraw"
@@ -21765,6 +21907,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Edit"
                 >
                   <svg
@@ -21789,6 +21932,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Embed"
                 >
                   <svg
@@ -22021,6 +22165,7 @@ Object {
               >
                 <button
                   class="c19 c20"
+                  target="_self"
                 >
                   <svg
                     name="Withdraw"
@@ -22037,6 +22182,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Edit"
                 >
                   <svg
@@ -22061,6 +22207,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Embed"
                 >
                   <svg
@@ -22346,7 +22493,8 @@ Object {
               class="sc-1dp5gbn-1 hxNcaM"
             >
               <button
-                class="sc-850ddk-0 GBCms"
+                class="sc-850ddk-0 hgGppu"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -22362,7 +22510,8 @@ Object {
                 
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -22380,13 +22529,14 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -22401,7 +22551,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Embed
                 </small>
@@ -22618,7 +22768,8 @@ Object {
               class="sc-1dp5gbn-1 hxNcaM"
             >
               <button
-                class="sc-850ddk-0 GBCms"
+                class="sc-850ddk-0 hgGppu"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -22634,7 +22785,8 @@ Object {
                 
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -22652,13 +22804,14 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -22673,7 +22826,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Embed
                 </small>
@@ -23918,7 +24071,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c21 > svg {
@@ -23948,7 +24101,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c20 > svg {
@@ -23977,6 +24130,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -24497,6 +24651,7 @@ Object {
               >
                 <button
                   class="c19 c20"
+                  target="_self"
                 >
                   <svg
                     name="Withdraw"
@@ -24513,6 +24668,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Edit"
                 >
                   <svg
@@ -24537,6 +24693,7 @@ Object {
                 </button>
                 <button
                   class="c19 c21"
+                  target="_self"
                   title="Embed"
                 >
                   <svg
@@ -24822,7 +24979,8 @@ Object {
               class="sc-1dp5gbn-1 hxNcaM"
             >
               <button
-                class="sc-850ddk-0 GBCms"
+                class="sc-850ddk-0 hgGppu"
+                target="_self"
               >
                 <svg
                   name="Withdraw"
@@ -24838,7 +24996,8 @@ Object {
                 
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Edit"
               >
                 <svg
@@ -24856,13 +25015,14 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Edit
                 </small>
               </button>
               <button
-                class="sc-850ddk-0 eZjxtV"
+                class="sc-850ddk-0 bqpIVT"
+                target="_self"
                 title="Embed"
               >
                 <svg
@@ -24877,7 +25037,7 @@ Object {
                   />
                 </svg>
                 <small
-                  class="sc-850ddk-1 fnqGzL"
+                  class="sc-850ddk-1 jgJDdG"
                 >
                   Embed
                 </small>
@@ -24966,7 +25126,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -24996,7 +25156,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -25025,6 +25185,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -25349,6 +25510,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -25372,6 +25534,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -25394,6 +25557,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -25414,6 +25578,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -25439,6 +25604,7 @@ Object {
             >
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -25454,6 +25620,7 @@ Object {
               </a>
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -25547,8 +25714,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -25564,14 +25732,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -25586,14 +25755,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -25606,14 +25776,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -25628,7 +25799,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -25638,7 +25809,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -25653,7 +25825,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -25755,7 +25928,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c12 > svg {
@@ -25785,7 +25958,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c44 > svg {
@@ -25815,7 +25988,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c10 > svg {
@@ -25845,7 +26018,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -25875,7 +26048,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c16 > svg {
@@ -25904,6 +26077,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -26578,6 +26752,7 @@ Object {
               <a
                 class="c9 c10"
                 href="/dashboard"
+                target="_self"
                 title="Dashboard"
               >
                 <svg
@@ -26599,6 +26774,7 @@ Object {
               <a
                 class="c9 c12"
                 href="/log"
+                target="_self"
                 title="Log"
               >
                 <svg
@@ -26626,6 +26802,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -26649,6 +26826,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -26671,6 +26849,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -26691,6 +26870,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -26716,6 +26896,7 @@ Object {
             >
               <a
                 class="c9 c16"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -26731,6 +26912,7 @@ Object {
               </a>
               <a
                 class="c9 c16"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -27113,6 +27295,7 @@ Object {
                   >
                     <button
                       class="c9 c44"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -27129,6 +27312,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -27153,6 +27337,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -27385,6 +27570,7 @@ Object {
                   >
                     <button
                       class="c9 c44"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -27401,6 +27587,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -27425,6 +27612,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -27657,6 +27845,7 @@ Object {
                   >
                     <button
                       class="c9 c44"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -27673,6 +27862,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -27697,6 +27887,7 @@ Object {
                     </button>
                     <button
                       class="c9 c12"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -27794,8 +27985,9 @@ Object {
             class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
           >
             <a
-              class="sc-850ddk-0 kmwKuX"
+              class="sc-850ddk-0 jqOqAf"
               href="/dashboard"
+              target="_self"
               title="Dashboard"
             >
               <svg
@@ -27809,14 +28001,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
               </small>
             </a>
             <a
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
               href="/log"
+              target="_self"
               title="Log"
             >
               <svg
@@ -27832,7 +28025,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Log
               </small>
@@ -27842,8 +28035,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -27859,14 +28053,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -27881,14 +28076,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -27901,14 +28097,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -27923,7 +28120,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -27933,7 +28130,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -27948,7 +28146,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -28330,7 +28529,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -28346,7 +28546,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -28364,13 +28565,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -28385,7 +28587,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -28602,7 +28804,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -28618,7 +28821,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -28636,13 +28840,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -28657,7 +28862,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -28874,7 +29079,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -28890,7 +29096,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -28908,13 +29115,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -28929,7 +29137,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -29023,7 +29231,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c15 > svg {
@@ -29053,7 +29261,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c47 > svg {
@@ -29083,7 +29291,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c13 > svg {
@@ -29113,7 +29321,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c17 > svg {
@@ -29143,7 +29351,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c19 > svg {
@@ -29172,6 +29380,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -29926,6 +30135,7 @@ Object {
               <a
                 class="c12 c13"
                 href="/dashboard"
+                target="_self"
                 title="Dashboard"
               >
                 <svg
@@ -29947,6 +30157,7 @@ Object {
               <a
                 class="c12 c15"
                 href="/log"
+                target="_self"
                 title="Log"
               >
                 <svg
@@ -29974,6 +30185,7 @@ Object {
               <a
                 class="c12 c17"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -29997,6 +30209,7 @@ Object {
               <a
                 class="c12 c17"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -30019,6 +30232,7 @@ Object {
               <a
                 class="c12 c17"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -30039,6 +30253,7 @@ Object {
               <a
                 class="c12 c17"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -30064,6 +30279,7 @@ Object {
             >
               <a
                 class="c12 c19"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -30079,6 +30295,7 @@ Object {
               </a>
               <a
                 class="c12 c19"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -30461,6 +30678,7 @@ Object {
                   >
                     <button
                       class="c12 c47"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -30477,6 +30695,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -30501,6 +30720,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -30733,6 +30953,7 @@ Object {
                   >
                     <button
                       class="c12 c47"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -30749,6 +30970,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -30773,6 +30995,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -31005,6 +31228,7 @@ Object {
                   >
                     <button
                       class="c12 c47"
+                      target="_self"
                     >
                       <svg
                         name="Withdraw"
@@ -31021,6 +31245,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Edit"
                     >
                       <svg
@@ -31045,6 +31270,7 @@ Object {
                     </button>
                     <button
                       class="c12 c15"
+                      target="_self"
                       title="Embed"
                     >
                       <svg
@@ -31158,8 +31384,9 @@ Object {
             class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
           >
             <a
-              class="sc-850ddk-0 kmwKuX"
+              class="sc-850ddk-0 jqOqAf"
               href="/dashboard"
+              target="_self"
               title="Dashboard"
             >
               <svg
@@ -31173,14 +31400,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
               </small>
             </a>
             <a
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
               href="/log"
+              target="_self"
               title="Log"
             >
               <svg
@@ -31196,7 +31424,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Log
               </small>
@@ -31206,8 +31434,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -31223,14 +31452,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -31245,14 +31475,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -31265,14 +31496,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -31287,7 +31519,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -31297,7 +31529,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -31312,7 +31545,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -31694,7 +31928,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -31710,7 +31945,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -31728,13 +31964,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -31749,7 +31986,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -31966,7 +32203,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -31982,7 +32220,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -32000,13 +32239,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -32021,7 +32261,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -32238,7 +32478,8 @@ Object {
                   class="sc-1dp5gbn-1 hxNcaM"
                 >
                   <button
-                    class="sc-850ddk-0 GBCms"
+                    class="sc-850ddk-0 hgGppu"
+                    target="_self"
                   >
                     <svg
                       name="Withdraw"
@@ -32254,7 +32495,8 @@ Object {
                     
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Edit"
                   >
                     <svg
@@ -32272,13 +32514,14 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Edit
                     </small>
                   </button>
                   <button
-                    class="sc-850ddk-0 eZjxtV"
+                    class="sc-850ddk-0 bqpIVT"
+                    target="_self"
                     title="Embed"
                   >
                     <svg
@@ -32293,7 +32536,7 @@ Object {
                       />
                     </svg>
                     <small
-                      class="sc-850ddk-1 fnqGzL"
+                      class="sc-850ddk-1 jgJDdG"
                     >
                       Embed
                     </small>
@@ -32639,7 +32882,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 16px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -32753,6 +32996,7 @@ Object {
         </div>
         <button
           class="c2 c3"
+          target="_self"
         >
           <svg
             viewBox="0 0 24 24"
@@ -32783,6 +33027,7 @@ Object {
         </div>
         <button
           class="c2 c3"
+          target="_self"
         >
           <svg
             viewBox="0 0 24 24"
@@ -32813,6 +33058,7 @@ Object {
         </div>
         <button
           class="c2 c3"
+          target="_self"
         >
           <svg
             viewBox="0 0 24 24"
@@ -32849,7 +33095,8 @@ Object {
         </p>
       </div>
       <button
-        class="sc-850ddk-0 lhBnqq"
+        class="sc-850ddk-0 eflLhw"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -32879,7 +33126,8 @@ Object {
         </p>
       </div>
       <button
-        class="sc-850ddk-0 lhBnqq"
+        class="sc-850ddk-0 eflLhw"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -32909,7 +33157,8 @@ Object {
         </p>
       </div>
       <button
-        class="sc-850ddk-0 lhBnqq"
+        class="sc-850ddk-0 eflLhw"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -33002,7 +33251,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 16px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -33116,6 +33365,7 @@ Object {
         </div>
         <button
           class="c2 c3"
+          target="_self"
         >
           <svg
             viewBox="0 0 24 24"
@@ -33152,7 +33402,8 @@ Object {
         </p>
       </div>
       <button
-        class="sc-850ddk-0 lhBnqq"
+        class="sc-850ddk-0 eflLhw"
+        target="_self"
       >
         <svg
           viewBox="0 0 24 24"
@@ -34392,7 +34643,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c2 > svg {
@@ -34421,6 +34672,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -34505,6 +34757,7 @@ Object {
         <a
           class="c1 c2"
           href="http://localhost:3002/about"
+          target="_self"
           title="About"
         >
           <svg
@@ -34528,6 +34781,7 @@ Object {
         <a
           class="c1 c2"
           href="http://localhost:3002/jobs"
+          target="_self"
           title="Join us"
         >
           <svg
@@ -34550,6 +34804,7 @@ Object {
         <a
           class="c1 c2"
           href="https://github.com/unlock-protocol/unlock"
+          target="_self"
           title="Source Code"
         >
           <svg
@@ -34570,6 +34825,7 @@ Object {
         <a
           class="c1 c2"
           href="https://t.me/unlockprotocol"
+          target="_self"
           title="Telegram"
         >
           <svg
@@ -34606,8 +34862,9 @@ Object {
       class="sc-2ix2yp-0 clvjsX"
     >
       <a
-        class="sc-850ddk-0 KJKSu"
+        class="sc-850ddk-0 iabPtF"
         href="http://localhost:3002/about"
+        target="_self"
         title="About"
       >
         <svg
@@ -34623,14 +34880,15 @@ Object {
           />
         </svg>
         <small
-          class="sc-850ddk-1 fnqGzL"
+          class="sc-850ddk-1 jgJDdG"
         >
           About
         </small>
       </a>
       <a
-        class="sc-850ddk-0 KJKSu"
+        class="sc-850ddk-0 iabPtF"
         href="http://localhost:3002/jobs"
+        target="_self"
         title="Join us"
       >
         <svg
@@ -34645,14 +34903,15 @@ Object {
           />
         </svg>
         <small
-          class="sc-850ddk-1 fnqGzL"
+          class="sc-850ddk-1 jgJDdG"
         >
           Join us
         </small>
       </a>
       <a
-        class="sc-850ddk-0 KJKSu"
+        class="sc-850ddk-0 iabPtF"
         href="https://github.com/unlock-protocol/unlock"
+        target="_self"
         title="Source Code"
       >
         <svg
@@ -34665,14 +34924,15 @@ Object {
           />
         </svg>
         <small
-          class="sc-850ddk-1 fnqGzL"
+          class="sc-850ddk-1 jgJDdG"
         >
           Source Code
         </small>
       </a>
       <a
-        class="sc-850ddk-0 KJKSu"
+        class="sc-850ddk-0 iabPtF"
         href="https://t.me/unlockprotocol"
+        target="_self"
         title="Telegram"
       >
         <svg
@@ -34687,7 +34947,7 @@ Object {
           />
         </svg>
         <small
-          class="sc-850ddk-1 fnqGzL"
+          class="sc-850ddk-1 jgJDdG"
         >
           Telegram
         </small>
@@ -36298,7 +36558,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c5 > svg {
@@ -36328,7 +36588,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c8 > svg {
@@ -36357,6 +36617,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -36561,6 +36822,7 @@ Object {
           <a
             class="c4 c5"
             href="http://localhost:3002/about"
+            target="_self"
             title="About"
           >
             <svg
@@ -36584,6 +36846,7 @@ Object {
           <a
             class="c4 c5"
             href="http://localhost:3002/jobs"
+            target="_self"
             title="Join us"
           >
             <svg
@@ -36606,6 +36869,7 @@ Object {
           <a
             class="c4 c5"
             href="https://github.com/unlock-protocol/unlock"
+            target="_self"
             title="Source Code"
           >
             <svg
@@ -36626,6 +36890,7 @@ Object {
           <a
             class="c4 c5"
             href="https://t.me/unlockprotocol"
+            target="_self"
             title="Telegram"
           >
             <svg
@@ -36651,6 +36916,7 @@ Object {
         >
           <a
             class="c4 c8"
+            target="_self"
           >
             <svg
               viewBox="0 0 56 42"
@@ -36666,6 +36932,7 @@ Object {
           </a>
           <a
             class="c4 c8"
+            target="_self"
           >
             <svg
               viewBox="0 0 58 32"
@@ -36718,8 +36985,9 @@ Object {
         class="sc-1glv5oz-2 bwZQqD"
       >
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
+          target="_self"
           title="About"
         >
           <svg
@@ -36735,14 +37003,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             About
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
+          target="_self"
           title="Join us"
         >
           <svg
@@ -36757,14 +37026,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Join us
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
+          target="_self"
           title="Source Code"
         >
           <svg
@@ -36777,14 +37047,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Source Code
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
+          target="_self"
           title="Telegram"
         >
           <svg
@@ -36799,7 +37070,7 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Telegram
           </small>
@@ -36809,7 +37080,8 @@ Object {
         class="sc-1glv5oz-4 fkpKLc"
       >
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 56 42"
@@ -36824,7 +37096,8 @@ Object {
           
         </a>
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 58 32"
@@ -36921,7 +37194,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c7 > svg {
@@ -36951,7 +37224,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c10 > svg {
@@ -36980,6 +37253,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -37223,6 +37497,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/about"
+            target="_self"
             title="About"
           >
             <svg
@@ -37246,6 +37521,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/jobs"
+            target="_self"
             title="Join us"
           >
             <svg
@@ -37268,6 +37544,7 @@ Object {
           <a
             class="c6 c7"
             href="https://github.com/unlock-protocol/unlock"
+            target="_self"
             title="Source Code"
           >
             <svg
@@ -37288,6 +37565,7 @@ Object {
           <a
             class="c6 c7"
             href="https://t.me/unlockprotocol"
+            target="_self"
             title="Telegram"
           >
             <svg
@@ -37313,6 +37591,7 @@ Object {
         >
           <a
             class="c6 c10"
+            target="_self"
           >
             <svg
               viewBox="0 0 56 42"
@@ -37328,6 +37607,7 @@ Object {
           </a>
           <a
             class="c6 c10"
+            target="_self"
           >
             <svg
               viewBox="0 0 58 32"
@@ -37390,8 +37670,9 @@ Object {
         class="sc-1glv5oz-2 bwZQqD"
       >
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
+          target="_self"
           title="About"
         >
           <svg
@@ -37407,14 +37688,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             About
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
+          target="_self"
           title="Join us"
         >
           <svg
@@ -37429,14 +37711,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Join us
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
+          target="_self"
           title="Source Code"
         >
           <svg
@@ -37449,14 +37732,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Source Code
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
+          target="_self"
           title="Telegram"
         >
           <svg
@@ -37471,7 +37755,7 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Telegram
           </small>
@@ -37481,7 +37765,8 @@ Object {
         class="sc-1glv5oz-4 fkpKLc"
       >
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 56 42"
@@ -37496,7 +37781,8 @@ Object {
           
         </a>
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 58 32"
@@ -37593,7 +37879,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c7 > svg {
@@ -37623,7 +37909,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c10 > svg {
@@ -37652,6 +37938,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -37895,6 +38182,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/about"
+            target="_self"
             title="About"
           >
             <svg
@@ -37918,6 +38206,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/jobs"
+            target="_self"
             title="Join us"
           >
             <svg
@@ -37940,6 +38229,7 @@ Object {
           <a
             class="c6 c7"
             href="https://github.com/unlock-protocol/unlock"
+            target="_self"
             title="Source Code"
           >
             <svg
@@ -37960,6 +38250,7 @@ Object {
           <a
             class="c6 c7"
             href="https://t.me/unlockprotocol"
+            target="_self"
             title="Telegram"
           >
             <svg
@@ -37985,6 +38276,7 @@ Object {
         >
           <a
             class="c6 c10"
+            target="_self"
           >
             <svg
               viewBox="0 0 56 42"
@@ -38000,6 +38292,7 @@ Object {
           </a>
           <a
             class="c6 c10"
+            target="_self"
           >
             <svg
               viewBox="0 0 58 32"
@@ -38062,8 +38355,9 @@ Object {
         class="sc-1glv5oz-2 bwZQqD"
       >
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
+          target="_self"
           title="About"
         >
           <svg
@@ -38079,14 +38373,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             About
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
+          target="_self"
           title="Join us"
         >
           <svg
@@ -38101,14 +38396,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Join us
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
+          target="_self"
           title="Source Code"
         >
           <svg
@@ -38121,14 +38417,15 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Source Code
           </small>
         </a>
         <a
-          class="sc-850ddk-0 KJKSu"
+          class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
+          target="_self"
           title="Telegram"
         >
           <svg
@@ -38143,7 +38440,7 @@ Object {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Telegram
           </small>
@@ -38153,7 +38450,8 @@ Object {
         class="sc-1glv5oz-4 fkpKLc"
       >
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 56 42"
@@ -38168,7 +38466,8 @@ Object {
           
         </a>
         <a
-          class="sc-850ddk-0 fWWxcb"
+          class="sc-850ddk-0 cVcBAp"
+          target="_self"
         >
           <svg
             viewBox="0 0 58 32"
@@ -39247,7 +39546,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -39277,7 +39576,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -39306,6 +39605,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -39694,6 +39994,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -39717,6 +40018,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -39739,6 +40041,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -39759,6 +40062,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -39784,6 +40088,7 @@ Object {
             >
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -39799,6 +40104,7 @@ Object {
               </a>
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -39992,8 +40298,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -40009,14 +40316,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -40031,14 +40339,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -40051,14 +40360,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -40073,7 +40383,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -40083,7 +40393,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -40098,7 +40409,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -40300,7 +40612,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -40330,7 +40642,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -40359,6 +40671,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -40735,6 +41048,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -40758,6 +41072,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -40780,6 +41095,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -40800,6 +41116,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -40825,6 +41142,7 @@ Object {
             >
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -40840,6 +41158,7 @@ Object {
               </a>
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -40991,8 +41310,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -41008,14 +41328,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -41030,14 +41351,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -41050,14 +41372,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -41072,7 +41395,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -41082,7 +41405,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -41097,7 +41421,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -43952,7 +44277,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c8 > svg {
@@ -43982,7 +44307,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -44011,6 +44336,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -44289,6 +44615,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -44312,6 +44639,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -44334,6 +44662,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -44354,6 +44683,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -44379,6 +44709,7 @@ Object {
             >
               <a
                 class="c7 c11"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -44394,6 +44725,7 @@ Object {
               </a>
               <a
                 class="c7 c11"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -44420,6 +44752,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -44443,6 +44776,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -44465,6 +44799,7 @@ Object {
             <a
               class="c7 c8"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -44485,6 +44820,7 @@ Object {
             <a
               class="c7 c8"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -44556,8 +44892,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -44573,14 +44910,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -44595,14 +44933,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -44615,14 +44954,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -44637,7 +44977,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -44647,7 +44987,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -44662,7 +45003,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -44687,8 +45029,9 @@ Object {
           class="sc-2ix2yp-0 clvjsX"
         >
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/about"
+            target="_self"
             title="About"
           >
             <svg
@@ -44704,14 +45047,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               About
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/jobs"
+            target="_self"
             title="Join us"
           >
             <svg
@@ -44726,14 +45070,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Join us
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="https://github.com/unlock-protocol/unlock"
+            target="_self"
             title="Source Code"
           >
             <svg
@@ -44746,14 +45091,15 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Source Code
             </small>
           </a>
           <a
-            class="sc-850ddk-0 KJKSu"
+            class="sc-850ddk-0 iabPtF"
             href="https://t.me/unlockprotocol"
+            target="_self"
             title="Telegram"
           >
             <svg
@@ -44768,7 +45114,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Telegram
             </small>
@@ -44860,7 +45206,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c11 > svg {
@@ -44890,7 +45236,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -44919,6 +45265,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -45243,6 +45590,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -45266,6 +45614,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -45288,6 +45637,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -45308,6 +45658,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -45333,6 +45684,7 @@ Object {
             >
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -45348,6 +45700,7 @@ Object {
               </a>
               <a
                 class="c10 c14"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -45441,8 +45794,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -45458,14 +45812,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -45480,14 +45835,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -45500,14 +45856,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -45522,7 +45879,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -45532,7 +45889,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -45547,7 +45905,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
@@ -45649,7 +46008,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c5 > svg {
@@ -45678,6 +46037,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -45805,6 +46165,7 @@ window.unlockProtocolConfig = {
         >
           <button
             class="c4 c5"
+            target="_self"
             title="Copy"
           >
             <svg
@@ -45893,7 +46254,8 @@ window.unlockProtocolConfig = {
         class="sc-1uq8tkh-0 jMfkKo"
       >
         <button
-          class="sc-850ddk-0 eZjxtV"
+          class="sc-850ddk-0 bqpIVT"
+          target="_self"
           title="Copy"
         >
           <svg
@@ -45908,13 +46270,13 @@ window.unlockProtocolConfig = {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Copy
           </small>
         </button>
         <a
-          class="sc-850ddk-0 eZjxtV"
+          class="sc-850ddk-0 bqpIVT"
           href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined"
           target="_blank"
           title="Preview"
@@ -45937,7 +46299,7 @@ window.unlockProtocolConfig = {
             />
           </svg>
           <small
-            class="sc-850ddk-1 fnqGzL"
+            class="sc-850ddk-1 jgJDdG"
           >
             Preview
           </small>
@@ -46326,7 +46688,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -46356,7 +46718,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -46385,6 +46747,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -46481,6 +46844,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -46497,6 +46861,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -46521,6 +46886,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -46568,7 +46934,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -46584,7 +46951,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -46602,13 +46970,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -46623,7 +46992,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -46715,7 +47084,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -46745,7 +47114,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -46774,6 +47143,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -46870,6 +47240,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -46886,6 +47257,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -46910,6 +47282,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -46952,7 +47325,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -46968,7 +47342,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -46986,13 +47361,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -47007,7 +47383,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -47094,7 +47470,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -47124,7 +47500,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -47153,6 +47529,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -47249,6 +47626,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -47265,6 +47643,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -47289,6 +47668,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -47331,7 +47711,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -47347,7 +47728,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -47365,13 +47747,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -47386,7 +47769,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -47473,7 +47856,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -47503,7 +47886,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -47532,6 +47915,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -47628,6 +48012,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -47644,6 +48029,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -47668,6 +48054,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -47710,7 +48097,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -47726,7 +48114,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -47744,13 +48133,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -47765,7 +48155,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -47852,7 +48242,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -47882,7 +48272,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -47911,6 +48301,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -48007,6 +48398,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -48023,6 +48415,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -48047,6 +48440,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -48089,7 +48483,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -48105,7 +48500,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -48123,13 +48519,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -48144,7 +48541,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -48521,7 +48918,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -48551,7 +48948,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -48580,6 +48977,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -48676,6 +49074,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -48692,6 +49091,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -48716,6 +49116,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -48760,7 +49161,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -48776,7 +49178,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -48794,13 +49197,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -48815,7 +49219,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -49194,7 +49598,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c4 > svg {
@@ -49224,7 +49628,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c3 > svg {
@@ -49253,6 +49657,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -49349,6 +49754,7 @@ Object {
           >
             <button
               class="c2 c3"
+              target="_self"
             >
               <svg
                 name="Withdraw"
@@ -49365,6 +49771,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Edit"
             >
               <svg
@@ -49389,6 +49796,7 @@ Object {
             </button>
             <button
               class="c2 c4"
+              target="_self"
               title="Embed"
             >
               <svg
@@ -49433,7 +49841,8 @@ Object {
           class="sc-1dp5gbn-1 hxNcaM"
         >
           <button
-            class="sc-850ddk-0 GBCms"
+            class="sc-850ddk-0 hgGppu"
+            target="_self"
           >
             <svg
               name="Withdraw"
@@ -49449,7 +49858,8 @@ Object {
             
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Edit"
           >
             <svg
@@ -49467,13 +49877,14 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Edit
             </small>
           </button>
           <button
-            class="sc-850ddk-0 eZjxtV"
+            class="sc-850ddk-0 bqpIVT"
+            target="_self"
             title="Embed"
           >
             <svg
@@ -49488,7 +49899,7 @@ Object {
               />
             </svg>
             <small
-              class="sc-850ddk-1 fnqGzL"
+              class="sc-850ddk-1 jgJDdG"
             >
               Embed
             </small>
@@ -53540,7 +53951,7 @@ Object {
 }
 
 .c1:hover:before {
-  content: 'About';
+  content: 'AppStore';
   position: absolute;
 }
 
@@ -53556,7 +53967,7 @@ Object {
 }
 
 .c2:hover:before {
-  content: 'Arrow';
+  content: 'About';
   position: absolute;
 }
 
@@ -53572,7 +53983,7 @@ Object {
 }
 
 .c3:hover:before {
-  content: 'Checkmark';
+  content: 'Arrow';
   position: absolute;
 }
 
@@ -53588,7 +53999,7 @@ Object {
 }
 
 .c4:hover:before {
-  content: 'Close';
+  content: 'Checkmark';
   position: absolute;
 }
 
@@ -53604,7 +54015,7 @@ Object {
 }
 
 .c5:hover:before {
-  content: 'Code';
+  content: 'Close';
   position: absolute;
 }
 
@@ -53620,7 +54031,7 @@ Object {
 }
 
 .c6:hover:before {
-  content: 'Copy';
+  content: 'Code';
   position: absolute;
 }
 
@@ -53636,7 +54047,7 @@ Object {
 }
 
 .c7:hover:before {
-  content: 'Download';
+  content: 'Copy';
   position: absolute;
 }
 
@@ -53652,7 +54063,7 @@ Object {
 }
 
 .c8:hover:before {
-  content: 'Edit';
+  content: 'Documentation';
   position: absolute;
 }
 
@@ -53668,7 +54079,7 @@ Object {
 }
 
 .c9:hover:before {
-  content: 'Eth';
+  content: 'Download';
   position: absolute;
 }
 
@@ -53684,7 +54095,7 @@ Object {
 }
 
 .c10:hover:before {
-  content: 'Etherscan';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -53700,7 +54111,7 @@ Object {
 }
 
 .c11:hover:before {
-  content: 'EthSub';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -53716,7 +54127,7 @@ Object {
 }
 
 .c12:hover:before {
-  content: 'Export';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -53732,7 +54143,7 @@ Object {
 }
 
 .c13:hover:before {
-  content: 'Github';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -53748,7 +54159,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'Lemniscate';
+  content: 'Export';
   position: absolute;
 }
 
@@ -53764,7 +54175,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'Loading';
+  content: 'Github';
   position: absolute;
 }
 
@@ -53780,7 +54191,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'LockClosed';
+  content: 'Heart';
   position: absolute;
 }
 
@@ -53796,7 +54207,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Log';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -53812,7 +54223,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Preview';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -53828,7 +54239,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Jobs';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -53844,7 +54255,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'Unlock';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -53860,7 +54271,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Log';
   position: absolute;
 }
 
@@ -53876,7 +54287,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Upload';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -53892,7 +54303,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Withdraw';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -53908,7 +54319,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Newsletter';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -53924,7 +54335,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Telegram';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -53940,7 +54351,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Twitter';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -53956,7 +54367,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Bars';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -53972,7 +54383,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'ChevronUp';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -53988,6 +54399,86 @@ Object {
 }
 
 .c29:hover:before {
+  content: 'Telegram';
+  position: absolute;
+}
+
+.c30 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c30:hover {
+  background-color: var(--offwhite);
+}
+
+.c30:hover:before {
+  content: 'Ticket';
+  position: absolute;
+}
+
+.c31 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c31:hover {
+  background-color: var(--offwhite);
+}
+
+.c31:hover:before {
+  content: 'Twitter';
+  position: absolute;
+}
+
+.c32 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c32:hover {
+  background-color: var(--offwhite);
+}
+
+.c32:hover:before {
+  content: 'Bars';
+  position: absolute;
+}
+
+.c33 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c33:hover {
+  background-color: var(--offwhite);
+}
+
+.c33:hover:before {
+  content: 'ChevronUp';
+  position: absolute;
+}
+
+.c34 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c34:hover {
+  background-color: var(--offwhite);
+}
+
+.c34:hover:before {
   content: 'Home';
   position: absolute;
 }
@@ -54006,6 +54497,21 @@ Object {
         >
           <div
             class="c1"
+            name="AppStore"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M11.766 4.56a.5.5 0 0 1 .472 0l5.998 3.215a.5.5 0 0 1 .264.441v7.566a.5.5 0 0 1-.264.44l-6 3.219a.5.5 0 0 1-.474 0l-5.999-3.222a.5.5 0 0 1-.263-.441l.004-7.562a.5.5 0 0 1 .264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c2"
             name="About"
           >
             <svg
@@ -54020,7 +54526,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c2"
+            class="c3"
             name="Arrow"
           >
             <svg
@@ -54035,7 +54541,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c3"
+            class="c4"
             name="Checkmark"
           >
             <svg
@@ -54050,7 +54556,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c4"
+            class="c5"
             name="Close"
           >
             <svg
@@ -54065,7 +54571,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c5"
+            class="c6"
             name="Code"
           >
             <svg
@@ -54080,7 +54586,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c6"
+            class="c7"
             name="Copy"
           >
             <svg
@@ -54095,7 +54601,22 @@ Object {
             </svg>
           </div>
           <div
-            class="c7"
+            class="c8"
+            name="Documentation"
+          >
+            <svg
+              viewBox="-6 -6 76 76"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M6.385 2.959c0-.788.614-1.498 1.482-1.498H51.198c.843 0 1.494.687 1.494 1.5v5.885h3.423a1.5 1.5 0 0 1 1.5 1.5v38.27a1 1 0 0 1-.282.696L44.779 62.235a1 1 0 0 1-.718.303H15.27c-.821 0-1.5-.661-1.5-1.497v-5.887H7.885c-.822 0-1.5-.662-1.5-1.498V2.96zm44.307.502v5.385H15.27c-.821 0-1.5.662-1.5 1.497v42.81H8.385V3.462H50.692zM15.77 10.846v49.692h27.292V48.615a1 1 0 0 1 1-1h11.554V10.846H15.77zm38.48 38.77h-9.188v9.458l9.189-9.459zM19.693 18.691a1 1 0 1 0 0 2h32a1 1 0 1 0 0-2h-32zm-1 8.385a1 1 0 0 1 1-1h32a1 1 0 1 1 0 2h-32a1 1 0 0 1-1-1zm1 6.384a1 1 0 1 0 0 2h32a1 1 0 1 0 0-2h-32zm-1 8.385a1 1 0 0 1 1-1h32a1 1 0 0 1 0 2h-32a1 1 0 0 1-1-1zm1 6.385a1 1 0 1 0 0 2h17.231a1 1 0 0 0 0-2h-17.23z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c9"
             name="Download"
           >
             <svg
@@ -54110,7 +54631,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c8"
+            class="c10"
             name="Edit"
           >
             <svg
@@ -54128,7 +54649,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c9"
+            class="c11"
             name="Eth"
           >
             <svg
@@ -54143,7 +54664,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c12"
             name="Etherscan"
           >
             <svg
@@ -54158,7 +54679,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c11"
+            class="c13"
             name="EthSub"
           >
             <svg
@@ -54172,7 +54693,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c12"
+            class="c14"
             name="Export"
           >
             <svg
@@ -54187,7 +54708,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c13"
+            class="c15"
             name="Github"
           >
             <svg
@@ -54200,7 +54721,20 @@ Object {
             </svg>
           </div>
           <div
-            class="c14"
+            class="c16"
+            name="Heart"
+          >
+            <svg
+              viewBox="-6 -6 36 36"
+            >
+              <title />
+              <path
+                d="M22.15 2.945a6.303 6.303 0 0 0-2.05-1.44A6.05 6.05 0 0 0 17.683 1a6.05 6.05 0 0 0-2.417.505 6.304 6.304 0 0 0-2.05 1.44l-.854.898a.5.5 0 0 1-.725 0l-.854-.898C9.598 1.7 7.992 1.001 6.316 1.001 4.641 1 3.035 1.7 1.85 2.945S0 5.878 0 7.639c0 1.76.665 3.449 1.85 4.694l1.217 1.279 8.57 9.007a.5.5 0 0 0 .725 0l8.57-9.007 1.217-1.28a6.667 6.667 0 0 0 1.37-2.153A6.93 6.93 0 0 0 24 7.64a6.93 6.93 0 0 0-.481-2.54 6.668 6.668 0 0 0-1.37-2.154z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c17"
             name="Lemniscate"
           >
             <svg
@@ -54216,7 +54750,36 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c18"
+            name="LiveDemo"
+          >
+            <svg
+              viewBox="0 0 64 64"
+            >
+              <title />
+              <mask
+                fill="#fff"
+                id="live-demo_svg__a"
+              >
+                <path
+                  clip-rule="evenodd"
+                  d="M10.846 7.385a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V8.385a1 1 0 0 0-1-1H10.846zm0 27.282a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V35.667a1 1 0 0 0-1-1H10.846zM37.128 8.385a1 1 0 0 1 1-1h17.487a1 1 0 0 1 1 1v17.487a1 1 0 0 1-1 1H38.128a1 1 0 0 1-1-1V8.385zm1 26.282a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V35.667a1 1 0 0 0-1-1H38.128z"
+                  fill-rule="evenodd"
+                />
+              </mask>
+              <path
+                d="M11.846 8.385a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V8.385h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H10.846v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V8.385h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H10.846v4zm1 26.282a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V35.667h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H10.846v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V35.667h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H10.846v4zM38.128 5.385a3 3 0 0 0-3 3h4a1 1 0 0 1-1 1v-4zm17.487 0H38.128v4h17.487v-4zm3 3a3 3 0 0 0-3-3v4a1 1 0 0 1-1-1h4zm0 17.487V8.385h-4v17.487h4zm-3 3a3 3 0 0 0 3-3h-4a1 1 0 0 1 1-1v4zm-17.487 0h17.487v-4H38.128v4zm-3-3a3 3 0 0 0 3 3v-4a1 1 0 0 1 1 1h-4zm0-17.487v17.487h4V8.385h-4zm4 27.282a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V35.667h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H38.128v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V35.667h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H38.128v4z"
+                mask="url(#live-demo_svg__a)"
+              />
+              <path
+                d="M30.618 34.281l7.514-.009c1.356-.002 2.014-1.658 1.03-2.59l-20.4-19.302c-.957-.905-2.531-.227-2.531 1.09v27.554c0 1.321 1.584 1.997 2.538 1.083l5.498-5.274 4.342 9.896a1.5 1.5 0 0 0 1.927.791l3.554-1.41a1.5 1.5 0 0 0 .821-1.995l-4.293-9.834z"
+                stroke="#fff"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+          <div
+            class="c19"
             name="Loading"
           >
             <svg
@@ -54369,7 +54932,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c20"
             name="LockClosed"
           >
             <svg
@@ -54384,7 +54947,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c21"
             name="Log"
           >
             <svg
@@ -54399,7 +54962,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c22"
             name="Preview"
           >
             <svg
@@ -54420,7 +54983,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c23"
             name="Jobs"
           >
             <svg
@@ -54435,7 +54998,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c24"
             name="Unlock"
           >
             <svg
@@ -54448,7 +55011,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c25"
             name="UnlockWordMark"
           >
             <svg
@@ -54461,7 +55024,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c26"
             name="Upload"
           >
             <svg
@@ -54476,7 +55039,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c27"
             name="Withdraw"
           >
             <svg
@@ -54491,7 +55054,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c28"
             name="Newsletter"
           >
             <svg
@@ -54506,7 +55069,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c29"
             name="Telegram"
           >
             <svg
@@ -54521,7 +55084,22 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c30"
+            name="Ticket"
+          >
+            <svg
+              viewBox="-8 -6 40 40"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M23 19.853h-.733c-.406 0-.734.355-.734.794 0 .44.328.794.734.794H23v3.383c0 .876-.657 1.588-1.467 1.588H2.467C1.657 26.412 1 25.7 1 24.824V21.44h.733c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H1V2.588C1 1.712 1.657 1 2.467 1h19.066C22.343 1 23 1.712 23 2.588v17.265zM4.667 21.44h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H4.667c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H9.067c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794h-1.466c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794h-1.466c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zM5 3.5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h14a1.5 1.5 0 0 0 1.5-1.5V5A1.5 1.5 0 0 0 19 3.5H5zM4.5 5a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V5z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c31"
             name="Twitter"
           >
             <svg
@@ -54536,7 +55114,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c32"
             name="Bars"
           >
             <svg
@@ -54549,7 +55127,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c33"
             name="ChevronUp"
           >
             <svg
@@ -54564,7 +55142,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c34"
             name="Home"
           >
             <svg
@@ -54592,6 +55170,21 @@ Object {
       <div
         class="lx77hn-0 grUDTp"
       >
+        <div
+          class="lx77hn-1 djrLFN"
+          name="AppStore"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M11.766 4.56a.5.5 0 0 1 .472 0l5.998 3.215a.5.5 0 0 1 .264.441v7.566a.5.5 0 0 1-.264.44l-6 3.219a.5.5 0 0 1-.474 0l-5.999-3.222a.5.5 0 0 1-.263-.441l.004-7.562a.5.5 0 0 1 .264-.44l5.998-3.217zM6.504 9.04l4.995 2.609v6.515L6.5 15.479l.004-6.438zm5.995 9.125l5.001-2.682V9.041l-5.001 2.608v6.516zm-.5-7.383L16.93 8.21l-4.928-2.643L7.073 8.21 12 10.782z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
         <div
           class="lx77hn-1 cVywVH"
           name="About"
@@ -54678,6 +55271,21 @@ Object {
             <path
               clip-rule="evenodd"
               d="M10 6v1h4V6h-4zm5 4.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zm0 2a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 .5-.5zM8 17h8V7h-1v1H9V7H8v10zm2-12a1 1 0 0 0-1 1H8a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1a1 1 0 0 0-1-1h-4z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 meAgU"
+          name="Documentation"
+        >
+          <svg
+            viewBox="-6 -6 76 76"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M6.385 2.959c0-.788.614-1.498 1.482-1.498H51.198c.843 0 1.494.687 1.494 1.5v5.885h3.423a1.5 1.5 0 0 1 1.5 1.5v38.27a1 1 0 0 1-.282.696L44.779 62.235a1 1 0 0 1-.718.303H15.27c-.821 0-1.5-.661-1.5-1.497v-5.887H7.885c-.822 0-1.5-.662-1.5-1.498V2.96zm44.307.502v5.385H15.27c-.821 0-1.5.662-1.5 1.497v42.81H8.385V3.462H50.692zM15.77 10.846v49.692h27.292V48.615a1 1 0 0 1 1-1h11.554V10.846H15.77zm38.48 38.77h-9.188v9.458l9.189-9.459zM19.693 18.691a1 1 0 1 0 0 2h32a1 1 0 1 0 0-2h-32zm-1 8.385a1 1 0 0 1 1-1h32a1 1 0 1 1 0 2h-32a1 1 0 0 1-1-1zm1 6.384a1 1 0 1 0 0 2h32a1 1 0 1 0 0-2h-32zm-1 8.385a1 1 0 0 1 1-1h32a1 1 0 0 1 0 2h-32a1 1 0 0 1-1-1zm1 6.385a1 1 0 1 0 0 2h17.231a1 1 0 0 0 0-2h-17.23z"
               fill-rule="evenodd"
             />
           </svg>
@@ -54788,6 +55396,19 @@ Object {
           </svg>
         </div>
         <div
+          class="lx77hn-1 ljRBVL"
+          name="Heart"
+        >
+          <svg
+            viewBox="-6 -6 36 36"
+          >
+            <title />
+            <path
+              d="M22.15 2.945a6.303 6.303 0 0 0-2.05-1.44A6.05 6.05 0 0 0 17.683 1a6.05 6.05 0 0 0-2.417.505 6.304 6.304 0 0 0-2.05 1.44l-.854.898a.5.5 0 0 1-.725 0l-.854-.898C9.598 1.7 7.992 1.001 6.316 1.001 4.641 1 3.035 1.7 1.85 2.945S0 5.878 0 7.639c0 1.76.665 3.449 1.85 4.694l1.217 1.279 8.57 9.007a.5.5 0 0 0 .725 0l8.57-9.007 1.217-1.28a6.667 6.667 0 0 0 1.37-2.153A6.93 6.93 0 0 0 24 7.64a6.93 6.93 0 0 0-.481-2.54 6.668 6.668 0 0 0-1.37-2.154z"
+            />
+          </svg>
+        </div>
+        <div
           class="lx77hn-1 fjhcGa"
           name="Lemniscate"
         >
@@ -54800,6 +55421,35 @@ Object {
             />
             <path
               d="M11.25 10.192c-1.13 0-2.016-.379-2.656-1.136-.63-.757-.944-1.819-.944-3.184 0-1.365.315-2.427.944-3.184.64-.757 1.526-1.136 2.656-1.136 1.13 0 2.01.379 2.64 1.136.64.757.96 1.819.96 3.184 0 1.365-.32 2.427-.96 3.184-.63.757-1.51 1.136-2.64 1.136zm0-.8c.81 0 1.45-.256 1.92-.768s.704-1.259.704-2.24V5.36c0-.981-.235-1.728-.704-2.24-.47-.512-1.11-.768-1.92-.768-.81 0-1.45.256-1.92.768s-.704 1.259-.704 2.24v1.024c0 .981.235 1.728.704 2.24.47.512 1.11.768 1.92.768z"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 gHTgVW"
+          name="LiveDemo"
+        >
+          <svg
+            viewBox="0 0 64 64"
+          >
+            <title />
+            <mask
+              fill="#fff"
+              id="live-demo_svg__a"
+            >
+              <path
+                clip-rule="evenodd"
+                d="M10.846 7.385a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V8.385a1 1 0 0 0-1-1H10.846zm0 27.282a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V35.667a1 1 0 0 0-1-1H10.846zM37.128 8.385a1 1 0 0 1 1-1h17.487a1 1 0 0 1 1 1v17.487a1 1 0 0 1-1 1H38.128a1 1 0 0 1-1-1V8.385zm1 26.282a1 1 0 0 0-1 1v17.487a1 1 0 0 0 1 1h17.487a1 1 0 0 0 1-1V35.667a1 1 0 0 0-1-1H38.128z"
+                fill-rule="evenodd"
+              />
+            </mask>
+            <path
+              d="M11.846 8.385a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V8.385h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H10.846v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V8.385h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H10.846v4zm1 26.282a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V35.667h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H10.846v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V35.667h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H10.846v4zM38.128 5.385a3 3 0 0 0-3 3h4a1 1 0 0 1-1 1v-4zm17.487 0H38.128v4h17.487v-4zm3 3a3 3 0 0 0-3-3v4a1 1 0 0 1-1-1h4zm0 17.487V8.385h-4v17.487h4zm-3 3a3 3 0 0 0 3-3h-4a1 1 0 0 1 1-1v4zm-17.487 0h17.487v-4H38.128v4zm-3-3a3 3 0 0 0 3 3v-4a1 1 0 0 1 1 1h-4zm0-17.487v17.487h4V8.385h-4zm4 27.282a1 1 0 0 1-1 1v-4a3 3 0 0 0-3 3h4zm0 17.487V35.667h-4v17.487h4zm-1-1a1 1 0 0 1 1 1h-4a3 3 0 0 0 3 3v-4zm17.487 0H38.128v4h17.487v-4zm-1 1a1 1 0 0 1 1-1v4a3 3 0 0 0 3-3h-4zm0-17.487v17.487h4V35.667h-4zm1 1a1 1 0 0 1-1-1h4a3 3 0 0 0-3-3v4zm-17.487 0h17.487v-4H38.128v4z"
+              mask="url(#live-demo_svg__a)"
+            />
+            <path
+              d="M30.618 34.281l7.514-.009c1.356-.002 2.014-1.658 1.03-2.59l-20.4-19.302c-.957-.905-2.531-.227-2.531 1.09v27.554c0 1.321 1.584 1.997 2.538 1.083l5.498-5.274 4.342 9.896a1.5 1.5 0 0 0 1.927.791l3.554-1.41a1.5 1.5 0 0 0 .821-1.995l-4.293-9.834z"
+              stroke="#fff"
+              stroke-width="2"
             />
           </svg>
         </div>
@@ -55104,6 +55754,21 @@ Object {
             <path
               clip-rule="evenodd"
               d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 0 1-.227.325.953.953 0 0 1-.228.033.613.613 0 0 1-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 0 1-.357.163.361.361 0 0 1-.163-.032.409.409 0 0 1-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0 1 16.54 5c.087 0 .173.022.26.065z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 cUlIiU"
+          name="Ticket"
+        >
+          <svg
+            viewBox="-8 -6 40 40"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M23 19.853h-.733c-.406 0-.734.355-.734.794 0 .44.328.794.734.794H23v3.383c0 .876-.657 1.588-1.467 1.588H2.467C1.657 26.412 1 25.7 1 24.824V21.44h.733c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H1V2.588C1 1.712 1.657 1 2.467 1h19.066C22.343 1 23 1.712 23 2.588v17.265zM4.667 21.44h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H4.667c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794H9.067c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794h-1.466c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zm4.4 0h1.466c.406 0 .734-.355.734-.794 0-.44-.328-.794-.734-.794h-1.466c-.406 0-.734.355-.734.794 0 .44.328.794.734.794zM5 3.5A1.5 1.5 0 0 0 3.5 5v9A1.5 1.5 0 0 0 5 15.5h14a1.5 1.5 0 0 0 1.5-1.5V5A1.5 1.5 0 0 0 19 3.5H5zM4.5 5a.5.5 0 0 1 .5-.5h14a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5V5z"
               fill-rule="evenodd"
             />
           </svg>
@@ -56021,7 +56686,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c10 > svg {
@@ -56051,7 +56716,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c12 > svg {
@@ -56081,7 +56746,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 15px;
+  line-height: '15px';
 }
 
 .c14 > svg {
@@ -56111,7 +56776,7 @@ Object {
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: 48px;
+  line-height: '15px';
 }
 
 .c16 > svg {
@@ -56140,6 +56805,7 @@ Object {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   -ms-transform: translateX(-50%);
@@ -56611,6 +57277,7 @@ Object {
               <a
                 class="c9 c10"
                 href="/dashboard"
+                target="_self"
                 title="Dashboard"
               >
                 <svg
@@ -56632,6 +57299,7 @@ Object {
               <a
                 class="c9 c12"
                 href="/log"
+                target="_self"
                 title="Log"
               >
                 <svg
@@ -56659,6 +57327,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
+                target="_self"
                 title="About"
               >
                 <svg
@@ -56682,6 +57351,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
+                target="_self"
                 title="Join us"
               >
                 <svg
@@ -56704,6 +57374,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
+                target="_self"
                 title="Source Code"
               >
                 <svg
@@ -56724,6 +57395,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
+                target="_self"
                 title="Telegram"
               >
                 <svg
@@ -56749,6 +57421,7 @@ Object {
             >
               <a
                 class="c9 c16"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 56 42"
@@ -56764,6 +57437,7 @@ Object {
               </a>
               <a
                 class="c9 c16"
+                target="_self"
               >
                 <svg
                   viewBox="0 0 58 32"
@@ -57037,8 +57711,9 @@ Object {
             class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
           >
             <a
-              class="sc-850ddk-0 eZjxtV"
+              class="sc-850ddk-0 bqpIVT"
               href="/dashboard"
+              target="_self"
               title="Dashboard"
             >
               <svg
@@ -57052,14 +57727,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
               </small>
             </a>
             <a
-              class="sc-850ddk-0 kmwKuX"
+              class="sc-850ddk-0 jqOqAf"
               href="/log"
+              target="_self"
               title="Log"
             >
               <svg
@@ -57075,7 +57751,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Log
               </small>
@@ -57085,8 +57761,9 @@ Object {
             class="sc-1glv5oz-2 bwZQqD"
           >
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
+              target="_self"
               title="About"
             >
               <svg
@@ -57102,14 +57779,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 About
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
+              target="_self"
               title="Join us"
             >
               <svg
@@ -57124,14 +57802,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Join us
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
+              target="_self"
               title="Source Code"
             >
               <svg
@@ -57144,14 +57823,15 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Source Code
               </small>
             </a>
             <a
-              class="sc-850ddk-0 KJKSu"
+              class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
+              target="_self"
               title="Telegram"
             >
               <svg
@@ -57166,7 +57846,7 @@ Object {
                 />
               </svg>
               <small
-                class="sc-850ddk-1 fnqGzL"
+                class="sc-850ddk-1 jgJDdG"
               >
                 Telegram
               </small>
@@ -57176,7 +57856,8 @@ Object {
             class="sc-1glv5oz-4 fkpKLc"
           >
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 56 42"
@@ -57191,7 +57872,8 @@ Object {
               
             </a>
             <a
-              class="sc-850ddk-0 fWWxcb"
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
             >
               <svg
                 viewBox="0 0 58 32"
