@@ -13,6 +13,8 @@ namespace MetadataController {
       image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
     }
 
+    let lockAddress: string = Normalizer.ethereumAddress(req.params.lockAddress)
+
     // Custom mappings
     // TODO: move that to a datastore at some point...
     Metadata.forEach(lockMetadata => {
@@ -30,7 +32,15 @@ namespace MetadataController {
     // Append description
     defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
 
-    return res.json(defaultResponse)
+    let metadata = await LockMetadata.findOne({
+      where: { address: lockAddress },
+    })
+
+    if (metadata) {
+      return res.json(metadata.data)
+    } else {
+      return res.json(defaultResponse)
+    }
   }
 
   export const updateDefaults = async (
