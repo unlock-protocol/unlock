@@ -150,16 +150,7 @@ export default function CheckoutContent() {
     if (activeLocks.length && !userInitiatedPurchase) {
       hideCheckout()
     }
-
-    if (activeLocks.length && showWalletCheckOverlay) {
-      setShowWalletCheckOverlay(false)
-    }
-  }, [
-    activeLocks.length,
-    hideCheckout,
-    showWalletCheckOverlay,
-    userInitiatedPurchase,
-  ])
+  }, [activeLocks.length, hideCheckout, userInitiatedPurchase])
 
   let child: React.ReactNode
   let bgColor = 'var(--offwhite)'
