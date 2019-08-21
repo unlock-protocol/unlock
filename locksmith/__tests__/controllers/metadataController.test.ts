@@ -1,13 +1,17 @@
 import request from 'supertest'
 import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
-import { LockMetadata } from '../../src/models/lockmetadata'
+import { LockMetadata } from '../../src/models/lockMetadata'
 
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
 
 let privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
+)
+
+let privateKey2 = ethJsUtil.toBuffer(
+  '0xbbabdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
 function generateTypedData(message: any) {
@@ -105,6 +109,34 @@ describe('Metadata Controller', () => {
         .send(typedData)
 
       expect(response.status).toEqual(202)
+    })
+
+    describe('when signature does not match', () => {
+      it('return an Unauthorized status code', async () => {
+        expect.assertions(1)
+
+        let typedData = generateTypedData({
+          LockMetaData: {
+            name: 'An awesome Lock',
+            description: 'we are chilling and such',
+            address: '0x95de5F777A3e283bFf0c47374998E10D8A2183C7',
+            owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            image: 'http://image.location.url',
+          },
+        })
+
+        const sig = sigUtil.signTypedData(privateKey2, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(401)
+      })
     })
   })
 })

@@ -2,7 +2,7 @@ import { Request, Response } from 'express-serve-static-core' // eslint-disable-
 
 import Metadata from '../../config/metadata'
 import Normalizer from '../utils/normalizer'
-import { LockMetadata } from '../models/lockmetadata'
+import { LockMetadata } from '../models/lockMetadata'
 
 namespace MetadataController {
   // eslint-disable-next-line import/prefer-default-export

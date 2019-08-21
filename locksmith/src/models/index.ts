@@ -7,7 +7,7 @@ import { Lock } from './lock'
 import { Transaction } from './transaction'
 import { AuthorizedLock } from './authorizedLock'
 import { EventLink } from './eventLink'
-import { LockMetadata } from './lockmetadata'
+import { LockMetadata } from './lockMetadata'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
