@@ -32,7 +32,7 @@ describe('MainWindowHandler - init', () => {
       accountIframeUrl
     )
     iframes.init(configuration)
-    return new MainWindowHandler(fakeWindow, iframes, configuration)
+    return new MainWindowHandler(fakeWindow, iframes)
   }
 
   function fullWindow() {
@@ -204,34 +204,11 @@ describe('MainWindowHandler - init', () => {
       fakeWindow = new FakeWindow()
     })
 
-    it('should show the checkout iframe when it is ready on a paywall', () => {
-      expect.assertions(1)
-
-      const paywallConfig: PaywallConfig = {
-        ...config,
-        type: 'paywall',
-      }
-
-      const handler = getMainWindowHandler(paywallConfig)
-      handler.init()
-      handler.showCheckoutIframe = jest.fn()
-
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY,
-        undefined,
-        iframes.checkout.iframe,
-        checkoutOrigin
-      )
-
-      expect(handler.showCheckoutIframe).toHaveBeenCalled()
-    })
-
     it('should hide the checkout iframe on DISMISS_CHECKOUT message', () => {
       expect.assertions(1)
 
       const paywallConfig: PaywallConfig = {
         ...config,
-        type: 'paywall',
       }
 
       const handler = getMainWindowHandler(paywallConfig)
@@ -253,7 +230,6 @@ describe('MainWindowHandler - init', () => {
 
       const paywallConfig: PaywallConfig = {
         ...config,
-        type: 'paywall',
       }
 
       const handler = getMainWindowHandler(paywallConfig)
@@ -276,7 +252,6 @@ describe('MainWindowHandler - init', () => {
 
       const paywallConfig: PaywallConfig = {
         ...config,
-        type: 'paywall',
       }
 
       const handler = getMainWindowHandler(paywallConfig)
