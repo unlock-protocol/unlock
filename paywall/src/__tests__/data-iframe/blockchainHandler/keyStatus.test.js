@@ -124,6 +124,17 @@ describe('key status manipulation', () => {
         )
       ).toBe('expired')
     })
+
+    it('should recognize a key with expiration of 0 but with transactions as valid', () => {
+      expect.assertions(1)
+
+      expect(
+        getKeyStatus({
+          transactions: [{ status: 'mined', confirmations: 1 }],
+          expiration: 0,
+        })
+      ).toBe('valid')
+    })
   })
 
   describe('linkTransactionToKey', () => {

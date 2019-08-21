@@ -54,16 +54,20 @@ export default class MainWindowHandler {
     // dispatching "unlockProtocol" on the main window
     // and
     this.iframes.data.on(PostMessages.LOCKED, () => {
-      this.dispatchEvent('locked')
-      this.setCachedLockedState(true)
-      // Update the user-facing status with locked/unlocked updates
-      this.lockStatus = 'locked'
+      if (this.lockStatus !== 'locked') {
+        this.dispatchEvent('locked')
+        this.setCachedLockedState(true)
+        // Update the user-facing status with locked/unlocked updates
+        this.lockStatus = 'locked'
+      }
     })
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
-      this.dispatchEvent('unlocked')
-      this.setCachedLockedState(false)
-      // Update the user-facing status with locked/unlocked updates
-      this.lockStatus = 'unlocked'
+      if (this.lockStatus !== 'unlocked') {
+        this.dispatchEvent('unlocked')
+        this.setCachedLockedState(false)
+        // Update the user-facing status with locked/unlocked updates
+        this.lockStatus = 'unlocked'
+      }
     })
 
     // handle display of checkout and account UI

@@ -70,6 +70,12 @@ describe('Mailbox - sendUpdates', () => {
     balance: '123',
     network: 1,
   }
+  const testingDataWithoutLocks: BlockchainData = {
+    locks: {},
+    account: addresses[1],
+    balance: '123',
+    network: 1,
+  }
 
   function setupDefaults() {
     defaults = setupTestDefaults()
@@ -165,6 +171,17 @@ describe('Mailbox - sendUpdates', () => {
           PostMessages.UPDATE_LOCKS,
           testingData.locks
         )
+      })
+
+      it('should send neither "locked" nor "unlocked" when there are no locks', () => {
+        expect.assertions(2)
+        const payload = undefined
+        testingMailbox().blockchainData = testingDataWithoutLocks
+
+        mailbox.sendUpdates('locks')
+
+        fakeWindow.expectPostMessageNotSent(PostMessages.LOCKED, payload)
+        fakeWindow.expectPostMessageNotSent(PostMessages.UNLOCKED, [])
       })
 
       it('should send "locked" when there are no valid keys', async () => {
