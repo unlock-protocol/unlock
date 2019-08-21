@@ -1,7 +1,7 @@
 import React from 'react'
 import * as PropTypes from 'prop-types'
 
-import BaseButton from './Button'
+import Button from './Button'
 
 const LayoutButton = ({
   children,
@@ -12,7 +12,7 @@ const LayoutButton = ({
   ...props
 }) => {
   return (
-    <BaseButton
+    <Button
       backgroundColor={backgroundColor}
       backgroundHoverColor={backgroundHoverColor}
       fillColor={fillColor}
@@ -20,7 +20,7 @@ const LayoutButton = ({
       {...props}
     >
       {children}
-    </BaseButton>
+    </Button>
   )
 }
 
