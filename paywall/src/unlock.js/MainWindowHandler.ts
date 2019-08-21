@@ -5,7 +5,6 @@ import {
 } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
-import { PaywallConfig } from '../unlockTypes'
 
 interface hasPrototype {
   prototype?: any
@@ -27,16 +26,10 @@ export default class MainWindowHandler {
   private showingCheckout: boolean = false
   private showingAccountsIframe: boolean = false
   private lockStatus: LockStatus = undefined
-  private config: PaywallConfig
 
-  constructor(
-    window: UnlockWindowNoProtocolYet,
-    iframes: IframeHandler,
-    config: PaywallConfig
-  ) {
+  constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
-    this.config = config
   }
 
   init() {
@@ -76,15 +69,6 @@ export default class MainWindowHandler {
     // handle display of checkout and account UI
     this.iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
       this.hideCheckoutIframe()
-    })
-
-    this.iframes.checkout.on(PostMessages.READY, () => {
-      // TODO: "type" is going to be removed. Instead, we will respond to specific config directives
-      // so this code will be removed
-      if (this.config && this.config.type === 'paywall') {
-        // show the checkout UI
-        this.showCheckoutIframe()
-      }
     })
 
     this.iframes.accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {

@@ -4255,7 +4255,7 @@ Object {
       />
       <a
         class="c0 c1"
-        href="http://localhost:3001/newdemo?lock=0xabc&name=undefined&type=paywall"
+        href="http://localhost:3001/newdemo?lock=0xabc&name=undefined"
         title="Preview"
       >
         <svg
@@ -4290,7 +4290,7 @@ Object {
     />
     <a
       class="sc-850ddk-0 eZjxtV"
-      href="http://localhost:3001/newdemo?lock=0xabc&name=undefined&type=paywall"
+      href="http://localhost:3001/newdemo?lock=0xabc&name=undefined"
       title="Preview"
     >
       <svg
@@ -45826,7 +45826,7 @@ window.unlockProtocolConfig = {
           </button>
           <a
             class="c4 c5"
-            href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined&type=paywall"
+            href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined"
             target="_blank"
             title="Preview"
           >
@@ -45915,7 +45915,7 @@ window.unlockProtocolConfig = {
         </button>
         <a
           class="sc-850ddk-0 eZjxtV"
-          href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined&type=paywall"
+          href="http://localhost/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined"
           target="_blank"
           title="Preview"
         >

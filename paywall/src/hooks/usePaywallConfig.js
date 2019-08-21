@@ -38,7 +38,6 @@ export function getValue(value, defaults) {
 
 export const defaultValue = {
   locks: {},
-  type: 'adblock',
   icon: false,
   callToAction: {
     default:

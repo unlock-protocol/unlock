@@ -13,8 +13,6 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_LOCKS,
   POST_MESSAGE_UPDATE_NETWORK,
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
 } from '../../paywall-builder/constants'
 import configure from '../../config'
 
@@ -39,11 +37,6 @@ const paywallConfig = {
       name: 'One Year',
     },
   },
-}
-
-const paywallTypePaywallConfig = {
-  ...paywallConfig,
-  type: 'paywall',
 }
 
 const locks = {
@@ -87,61 +80,6 @@ const locks = {
       confirmations: 0,
       owner: lockAddress1,
       lock: lockAddress3,
-    },
-  },
-}
-
-const nextYear =
-  Math.round(new Date().getTime() / 1000) + 60 * 60 * 24 * 365 + 5000
-
-const confirmingLocks = {
-  ...locks,
-  [lockAddress1]: {
-    name: 'Weekly',
-    address: lockAddress1,
-    keyPrice: '0.1',
-    expirationDuration: 60 * 60 * 24 * 7,
-    key: {
-      status: 'pending',
-      transactions: [
-        {
-          hash: 'hash',
-          confirmations: 432,
-          for: lockAddress1,
-          lock: lockAddress1,
-          key: `${lockAddress1}-${lockAddress1}`,
-        },
-      ],
-      expiration: nextYear,
-      confirmations: 0,
-      owner: lockAddress1,
-      lock: lockAddress1,
-    },
-  },
-}
-
-const unlockedLocks = {
-  ...locks,
-  [lockAddress1]: {
-    name: 'Weekly',
-    address: lockAddress1,
-    keyPrice: '0.1',
-    expirationDuration: 60 * 60 * 24 * 7,
-    key: {
-      status: 'valid',
-      transactions: [
-        {
-          hash: 'hash',
-          confirmations: 432,
-          for: lockAddress1,
-          lock: lockAddress1,
-          key: `${lockAddress1}-${lockAddress1}`,
-        },
-      ],
-      expiration: nextYear,
-      confirmations: 432,
-      owner: lockAddress1,
-      lock: lockAddress1,
     },
   },
 }
@@ -330,191 +268,6 @@ storiesOf('Checkout page', module)
             data: {
               type: POST_MESSAGE_UPDATE_NETWORK,
               payload: 1,
-            },
-          })
-        })
-      })
-    })
-    return <CheckoutContent />
-  })
-  .add('Checkout page, paywall checkout locked', () => {
-    // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallTypePaywallConfig,
-          },
-        })
-        setTimeout(() => {
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_LOCKED,
-              payload: undefined,
-            },
-          })
-        })
-      })
-    })
-    return <CheckoutContent />
-  })
-  .add('Checkout page, paywall checkout confirming', () => {
-    // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallTypePaywallConfig,
-          },
-        })
-        setTimeout(() => {
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: confirmingLocks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_LOCKED,
-              payload: undefined,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UNLOCKED,
-              payload: [lockAddress1],
-            },
-          })
-        })
-      })
-    })
-    return <CheckoutContent />
-  })
-  .add('Checkout page, paywall checkout unlocked', () => {
-    // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallTypePaywallConfig,
-          },
-        })
-        setTimeout(() => {
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: unlockedLocks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_LOCKED,
-              payload: undefined,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UNLOCKED,
-              payload: [lockAddress1],
             },
           })
         })

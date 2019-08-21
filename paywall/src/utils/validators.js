@@ -73,13 +73,6 @@ export const isValidPaywallConfig = config => {
       return false
     }
   }
-  // allow type to be empty (empty is assumed to be "adblock")
-  if (config.type) {
-    if (typeof config.type !== 'string') return false
-    const allowedTypes = ['adblock', 'paywall']
-
-    if (!allowedTypes.includes(config.type)) return false
-  }
   if (!config.callToAction || typeof config.callToAction !== 'object')
     return false
   const callsToAction = ['default', 'expired', 'pending', 'confirmed']
