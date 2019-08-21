@@ -54,20 +54,10 @@ export default class MainWindowHandler {
     // dispatching "unlockProtocol" on the main window
     // and
     this.iframes.data.on(PostMessages.LOCKED, () => {
-      if (this.lockStatus !== 'locked') {
-        this.dispatchEvent('locked')
-        this.setCachedLockedState(true)
-        // Update the user-facing status with locked/unlocked updates
-        this.lockStatus = 'locked'
-      }
+      this.toggleLockState(PostMessages.LOCKED)
     })
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
-      if (this.lockStatus !== 'unlocked') {
-        this.dispatchEvent('unlocked')
-        this.setCachedLockedState(false)
-        // Update the user-facing status with locked/unlocked updates
-        this.lockStatus = 'unlocked'
-      }
+      this.toggleLockState(PostMessages.UNLOCKED)
     })
 
     // handle display of checkout and account UI
@@ -82,6 +72,21 @@ export default class MainWindowHandler {
     this.iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
       this.hideAccountIframe()
     })
+  }
+
+  toggleLockState(message: PostMessages.LOCKED | PostMessages.UNLOCKED) {
+    const isLocked = {
+      [PostMessages.LOCKED]: true,
+      [PostMessages.UNLOCKED]: false,
+    }[message]
+
+    // Only update if there's actually a change
+    if (this.lockStatus !== message) {
+      this.dispatchEvent(message)
+      this.setCachedLockedState(isLocked)
+      // Update the user-facing status with locked/unlocked updates
+      this.lockStatus = message
+    }
   }
 
   getCachedLockState() {
