@@ -25,7 +25,7 @@ export function getKeyStatus(key, requiredConfirmations) {
 
   // For a brief period, a transaction that moves from "submitted" to
   // "confirming" will have an expiration of 0. We establish a special
-  // case for that here to avoid a bried flicker of the "locked"
+  // case for that here to avoid a brief flicker of the "locked"
   // paywall state.
   valid = valid || key.expiration === 0
 
