@@ -9,14 +9,26 @@ let metaDataConfiguration = {
   signee: 'owner',
 }
 
+let keyMetaDataConfiguration = {
+  name: 'KeyMetaData',
+  required: ['owner'],
+  signee: 'owner',
+}
+
 router.put(
-  '/:lockAddress',
+  '/:address',
   signatureValidationMiddleware.generateProcessor(metaDataConfiguration)
+)
+
+router.put(
+  '/:address/:keyId',
+  signatureValidationMiddleware.generateProcessor(keyMetaDataConfiguration)
 )
 
 var metaDataController = require('../controllers/metadataController')
 
-router.get('/:lockAddress/:keyId', metaDataController.data)
-router.put('/:lockAddress', metaDataController.updateDefaults)
+router.get('/:address/:keyId', metaDataController.data)
+router.put('/:address/:keyId', metaDataController.updateKeyMetadata)
+router.put('/:address', metaDataController.updateDefaults)
 
 module.exports = router
