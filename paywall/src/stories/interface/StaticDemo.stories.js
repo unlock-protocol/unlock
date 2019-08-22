@@ -31,7 +31,7 @@ const store = createUnlockStore({
   },
   router: {
     location: {
-      pathname: '/demo/' + myLock.address,
+      pathname: '/newdemo?lock=' + myLock.address,
       search: '',
       hash: '',
     },
