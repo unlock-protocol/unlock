@@ -83,8 +83,7 @@ const config = {
 describe('CheckoutContent', () => {
   it('shows the wallet check after the purchase button is clicked', () => {
     expect.assertions(2)
-    const walletCheckMessage =
-      'Please check your browser wallet to complete the transaction.'
+    const walletCheckMessage = 'Please check your browser wallet.'
 
     const { getByText } = rtl.render(
       <Provider store={store}>
@@ -115,8 +114,7 @@ describe('CheckoutContent', () => {
   it('dismisses the wallet check when an error is received', () => {
     expect.assertions(1)
 
-    const walletCheckMessage =
-      'Please check your browser wallet to complete the transaction.'
+    const walletCheckMessage = 'Please check your browser wallet.'
 
     const { getByText } = rtl.render(
       <Provider store={store}>

@@ -230,7 +230,7 @@ export default function CheckoutContent() {
     return (
       <Greyout>
         <MessageBox>
-          <p>Please check your browser wallet to complete the transaction.</p>
+          <p>Please check your browser wallet.</p>
           <Dismiss onClick={() => setShowWalletCheckOverlay(false)}>
             Dismiss
           </Dismiss>
