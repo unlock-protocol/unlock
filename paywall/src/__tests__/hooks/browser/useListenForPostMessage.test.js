@@ -29,7 +29,7 @@ describe('useListenForPostMessage hook', () => {
       removeEventListener: jest.fn(),
       parent: {},
       location: {
-        pathname: '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        pathname: '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         search: '?origin=origin',
         hash: '',
       },
