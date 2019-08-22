@@ -155,17 +155,19 @@ describe('The Unlock Dashboard', () => {
       })
     })
 
-    describe('Lock Embed Code', () => {
-      it('should toggle the embed code', async () => {
+    describe('Lock Integration Pane', () => {
+      it('should toggle the integration pane', async () => {
         expect.assertions(2)
         await page.waitForSelector(lockSelector)
-        await expect(page).toClick(`${lockSelector} button[title="Embed"]`)
-        await expect(page).toMatch('Code snippet')
+        await expect(page).toClick(
+          `${lockSelector} button[title="Integrations"]`
+        )
+        await expect(page).toMatch('Easily integrate')
       })
 
       it('has a Preview lock link', async () => {
         expect.assertions(1)
-        await expect(page).toMatchElement(`${lockSelector} a[title="Preview"]`)
+        await expect(page).toMatch('Live Demo')
       })
     })
 
