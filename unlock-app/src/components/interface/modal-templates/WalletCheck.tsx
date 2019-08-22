@@ -5,7 +5,7 @@ import { Dispatch } from '../../../unlockTypes' // eslint-disable-line
 
 const WalletCheck = ({ dispatch }: { dispatch: Dispatch }) => (
   <MessageBox>
-    <p>Please check your browser wallet to complete the transaction.</p>
+    <p>Please check your browser wallet.</p>
     <Dismiss onClick={() => dispatch(dismissWalletCheck())}>Dismiss</Dismiss>
   </MessageBox>
 )
