@@ -31,7 +31,7 @@
     "@types/react-redux": "7.1.1",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.1.16",
-    "@unlock-protocol/unlock-js": "0.3.10",
+    "@unlock-protocol/unlock-js": "0.3.11",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
