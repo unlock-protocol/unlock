@@ -2,6 +2,7 @@ import request from 'supertest'
 import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
 import { LockMetadata } from '../../src/models/lockMetadata'
+import { KeyMetadata } from '../../src/models/keyMetadata'
 
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
@@ -40,9 +41,30 @@ function generateTypedData(message: any) {
   }
 }
 
+function generateKeyTypedData(message: any) {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+        { name: 'salt', type: 'bytes32' },
+      ],
+      KeyMetadata: [],
+    },
+    domain: {
+      name: 'Unlock',
+      version: '1',
+    },
+    primaryType: 'KeyMetadata',
+    message: message,
+  }
+}
+
 describe('Metadata Controller', () => {
   afterEach(async () => {
-    await LockMetadata.truncate()
+    await LockMetadata.truncate({ cascade: true })
   })
   describe('token data request', () => {
     describe("when persisted data doesn't exist", () => {
@@ -76,6 +98,19 @@ describe('Metadata Controller', () => {
             name: 'Persisted Lock Metadata',
           },
         })
+
+        await KeyMetadata.create({
+          address: '0x95de5F777A3e283bFf0c47374998E10D8A2183C7',
+          id: '6',
+          data: {
+            custom_item: 'custom value',
+          },
+        })
+      })
+
+      afterAll(async () => {
+        await LockMetadata.truncate({ cascade: true })
+        await KeyMetadata.truncate()
       })
 
       it('returns data from the data store', async () => {
@@ -93,14 +128,33 @@ describe('Metadata Controller', () => {
           })
         )
       })
+
+      it('returns key specific information when available', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/6')
+          .set('Accept', 'json')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            description:
+              "A Key to the 'Week in Ethereum News' lock. Unlock is a protocol for memberships. https://unlock-protocol.com/",
+            image:
+              'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
+            name: 'Unlock Key to Week in Ethereum News',
+            custom_item: 'custom value',
+          })
+        )
+      })
     })
   })
 
   describe('updateDefaults', () => {
-    it('stores the provided lock metadata', async () => {
-      expect.assertions(1)
+    let typedData: any
 
-      let typedData = generateTypedData({
+    beforeAll(() => {
+      typedData = generateTypedData({
         LockMetaData: {
           name: 'An awesome Lock',
           description: 'we are chilling and such',
@@ -109,7 +163,9 @@ describe('Metadata Controller', () => {
           image: 'http://image.location.url',
         },
       })
-
+    })
+    it('stores the provided lock metadata', async () => {
+      expect.assertions(1)
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
       })
@@ -126,17 +182,6 @@ describe('Metadata Controller', () => {
     describe('when signature does not match', () => {
       it('return an Unauthorized status code', async () => {
         expect.assertions(1)
-
-        let typedData = generateTypedData({
-          LockMetaData: {
-            name: 'An awesome Lock',
-            description: 'we are chilling and such',
-            address: '0x95de5F777A3e283bFf0c47374998E10D8A2183C7',
-            owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            image: 'http://image.location.url',
-          },
-        })
-
         const sig = sigUtil.signTypedData(privateKey2, {
           data: typedData,
         })
@@ -148,6 +193,49 @@ describe('Metadata Controller', () => {
           .send(typedData)
 
         expect(response.status).toEqual(401)
+      })
+    })
+  })
+
+  describe('updateKeyMetadata', () => {
+    let typedData: any
+    beforeAll(() => {
+      typedData = generateKeyTypedData({
+        KeyMetaData: {
+          custom_field: 'custom value',
+          owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+        },
+      })
+    })
+
+    describe('when missing relevant signature details', () => {
+      it('returns as unauthorized', async () => {
+        expect.assertions(1)
+
+        let response = await request(app)
+          .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
+          .set('Accept', 'json')
+          .send(typedData)
+
+        expect(response.status).toEqual(401)
+      })
+    })
+
+    describe('when including signature details', () => {
+      it('stores the provided key metadata', async () => {
+        expect.assertions(1)
+
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(202)
       })
     })
   })
