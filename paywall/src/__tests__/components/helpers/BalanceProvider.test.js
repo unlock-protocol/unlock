@@ -3,17 +3,25 @@ import * as rtl from 'react-testing-library'
 // Note, we use name import to import the non connected version of the component for testing
 import { BalanceProvider } from '../../../components/helpers/BalanceProvider'
 
+let mockConversion = {
+  USD: 195.99,
+}
+
+jest.mock('../../../hooks/useCurrencyConverter.js', () => {
+  return () => mockConversion
+})
+
+beforeEach(() => {
+  mockConversion = {
+    USD: 195.99,
+  }
+})
+
 describe('BalanceProvider Component', () => {
-  function renderIt({
-    amount,
-    conversion = { USD: 195.99 },
-    convertCurrency = true,
-    render,
-  }) {
+  function renderIt({ amount, convertCurrency = true, render }) {
     return rtl.render(
       <BalanceProvider
         amount={amount}
-        conversion={conversion}
         render={render}
         convertCurrency={convertCurrency}
       />
@@ -24,7 +32,6 @@ describe('BalanceProvider Component', () => {
     expect.assertions(2)
     renderIt({
       amount: null,
-      conversion: {},
       convertCurrency: false,
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual(' - ')
@@ -37,7 +44,6 @@ describe('BalanceProvider Component', () => {
     expect.assertions(2)
     renderIt({
       amount: null,
-      conversion: {},
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual(' - ')
         expect(fiatValue).toEqual(' - ')
@@ -49,7 +55,6 @@ describe('BalanceProvider Component', () => {
     expect.assertions(2)
     renderIt({
       amount: undefined,
-      conversion: {},
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual(' - ')
         expect(fiatValue).toEqual(' - ')
@@ -59,9 +64,9 @@ describe('BalanceProvider Component', () => {
 
   it('USD conversion data is not available', () => {
     expect.assertions(2)
+    mockConversion = {}
     renderIt({
       amount: '100',
-      conversion: {},
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual('100.00')
         expect(fiatValue).toEqual('---')
