@@ -102,6 +102,12 @@ module.exports = [
     description: 'A key to the Coinfund Rabbithole Lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/coinfund.png',
   },
+  {
+    address: '0xd7D2C20a8d49cD2b0A4980070888502A1Bcb4F8c',
+    name: 'Blue Checkmark',
+    description: 'A blue checkmark for all of your social web accounts!',
+    image: 'https://assets.unlock-protocol.com/nft-images/blue-checkmark.png',
+  },
   // {
   //   address: '',
   //   name: '',
