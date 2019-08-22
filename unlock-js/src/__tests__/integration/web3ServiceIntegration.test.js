@@ -108,5 +108,19 @@ describe('Web3 Service Integration', () => {
 
       expect(balance).toBe('500.0')
     })
+
+    it('emits an error when balance cannot be retrieved', async () => {
+      expect.assertions(1)
+      web3Service.on('error', e => {
+        expect(e.message).toEqual(
+          expect.stringContaining('contract not deployed')
+        )
+      })
+
+      await web3Service.getTokenBalance(
+        '0xffffffffffffffffffffffffffffffffffffffff',
+        '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
+      )
+    })
   })
 })
