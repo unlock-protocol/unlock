@@ -694,4 +694,21 @@ export default class Web3Service extends UnlockService {
       symbol,
     })
   }
+
+  /**
+   * Given an ERC20 token contract address, resolve with the provided user's balance of that token.
+   * @param {string} contractAddress
+   * @param {string} userWalletAddress
+   * @returns {Promise<string>}
+   */
+  async getTokenBalance(contractAddress, userWalletAddress) {
+    const abi = ['function balanceOf(address owner) view returns (uint)']
+    const contract = new ethers.Contract(contractAddress, abi, this.provider)
+    try {
+      const rawBalance = await contract.balanceOf(userWalletAddress)
+      return ethers.utils.formatEther(rawBalance)
+    } catch (e) {
+      this.emit('error', e)
+    }
+  }
 }
