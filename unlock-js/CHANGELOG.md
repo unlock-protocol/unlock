@@ -1,5 +1,8 @@
 # Changes
 
+### Next Version
+- add `getTokenSymbol` method to web3Service to identify arbitrary ERC20 tokens (#4481)
+
 ## 0.3.10
 - Add "for" field for pending/submitted key purchase transactions (#4190)
 - ignore events from other contracts (erc20 for instance) (#4187)

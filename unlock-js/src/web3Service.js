@@ -666,4 +666,32 @@ export default class Web3Service extends UnlockService {
   async recoverAccountFromSignedData(data, signedData) {
     return utils.verifyMessage(data, signedData)
   }
+
+  /**
+   * Given an ERC20 token contract address, resolve with the symbol that identifies that token.
+   * Additionally emits an event that maps the address to the symbol.
+   * @param {string} contractAddress
+   * @returns {Promise<string>}
+   */
+  async getTokenSymbol(contractAddress) {
+    const abi = ['function symbol() view returns (string)']
+    const contract = new ethers.Contract(contractAddress, abi, this.provider)
+    const symbolPromise = contract.symbol()
+
+    this.emitTokenSymbol(contractAddress, symbolPromise)
+    return symbolPromise
+  }
+
+  /**
+   * Given an ERC20 token contract address, and a promise that resolves to the symbol that identifies the token,
+   * emit a event that maps the address to the symbol.
+   * @param {string} contractAddress
+   * @param {Promise<string>} symbolPromise
+   */
+  async emitTokenSymbol(contractAddress, symbolPromise) {
+    const symbol = await symbolPromise
+    this.emit('token.update', contractAddress, {
+      symbol,
+    })
+  }
 }

@@ -72,4 +72,29 @@ describe('Web3 Service Integration', () => {
       ).toEqual([])
     })
   })
+
+  describe('getTokenSymbol', () => {
+    it('returns a promise that resolves to the ERC20 symbol', async () => {
+      expect.assertions(1)
+      const symbol = await web3Service.getTokenSymbol(
+        '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+      )
+
+      expect(symbol).toBe('TT')
+    })
+
+    it('emits an event mapping the contract address to the ERC20 symbol', async () => {
+      expect.assertions(2)
+      const contractAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+
+      web3Service.on('token.update', (receivedContractAddress, update) => {
+        expect(receivedContractAddress).toBe(contractAddress)
+        expect(update).toEqual({
+          symbol: 'TT',
+        })
+      })
+
+      await web3Service.getTokenSymbol(contractAddress)
+    })
+  })
 })
