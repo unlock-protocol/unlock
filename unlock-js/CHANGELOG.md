@@ -1,6 +1,6 @@
 # Changes
 
-### Next Version
+## 0.3.11
 - add `getTokenSymbol` method to web3Service to identify arbitrary ERC20 tokens (#4481)
 - add `getTokenBalance` method to web3Service to get the user's balance of arbitrary ERC20 tokens (#4431)
 
