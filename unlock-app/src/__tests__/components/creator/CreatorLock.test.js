@@ -53,7 +53,7 @@ const transaction = {
 const ConfigProvider = ConfigContext.Provider
 
 describe('CreatorLock', () => {
-  it('should show embed code when the button is clicked', () => {
+  it('should show integration tab when the button is clicked', () => {
     expect.assertions(2)
     const config = configure()
 
@@ -72,20 +72,18 @@ describe('CreatorLock', () => {
     )
 
     expect(
-      wrapper.queryByText(
-        'Include this script in the <head> section of your page',
-        { exact: false }
-      )
+      wrapper.queryByText('Easily integrate Unlock into your application', {
+        exact: false,
+      })
     ).toBeNull()
 
-    let codeButton = wrapper.getByTitle('Embed')
+    let codeButton = wrapper.getByTitle('Integrations')
     rtl.fireEvent.click(codeButton)
 
     expect(
-      wrapper.queryByText(
-        'Include this script in the <head> section of your page',
-        { exact: false }
-      )
+      wrapper.queryByText('Easily integrate Unlock into your application', {
+        exact: false,
+      })
     ).not.toBeNull()
   })
 

@@ -5,7 +5,6 @@ import {
 } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
-import { PaywallConfig } from '../unlockTypes'
 
 interface hasPrototype {
   prototype?: any
@@ -27,16 +26,10 @@ export default class MainWindowHandler {
   private showingCheckout: boolean = false
   private showingAccountsIframe: boolean = false
   private lockStatus: LockStatus = undefined
-  private config: PaywallConfig
 
-  constructor(
-    window: UnlockWindowNoProtocolYet,
-    iframes: IframeHandler,
-    config: PaywallConfig
-  ) {
+  constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
-    this.config = config
   }
 
   init() {
@@ -61,30 +54,15 @@ export default class MainWindowHandler {
     // dispatching "unlockProtocol" on the main window
     // and
     this.iframes.data.on(PostMessages.LOCKED, () => {
-      this.dispatchEvent('locked')
-      this.setCachedLockedState(true)
-      // Update the user-facing status with locked/unlocked updates
-      this.lockStatus = 'locked'
+      this.toggleLockState(PostMessages.LOCKED)
     })
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
-      this.dispatchEvent('unlocked')
-      this.setCachedLockedState(false)
-      // Update the user-facing status with locked/unlocked updates
-      this.lockStatus = 'unlocked'
+      this.toggleLockState(PostMessages.UNLOCKED)
     })
 
     // handle display of checkout and account UI
     this.iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
       this.hideCheckoutIframe()
-    })
-
-    this.iframes.checkout.on(PostMessages.READY, () => {
-      // TODO: "type" is going to be removed. Instead, we will respond to specific config directives
-      // so this code will be removed
-      if (this.config && this.config.type === 'paywall') {
-        // show the checkout UI
-        this.showCheckoutIframe()
-      }
     })
 
     this.iframes.accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
@@ -94,6 +72,21 @@ export default class MainWindowHandler {
     this.iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
       this.hideAccountIframe()
     })
+  }
+
+  toggleLockState(message: PostMessages.LOCKED | PostMessages.UNLOCKED) {
+    const isLocked = {
+      [PostMessages.LOCKED]: true,
+      [PostMessages.UNLOCKED]: false,
+    }[message]
+
+    // Only update if there's actually a change
+    if (this.lockStatus !== message) {
+      this.dispatchEvent(message)
+      this.setCachedLockedState(isLocked)
+      // Update the user-facing status with locked/unlocked updates
+      this.lockStatus = message
+    }
   }
 
   getCachedLockState() {

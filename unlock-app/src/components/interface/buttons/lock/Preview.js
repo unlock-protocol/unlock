@@ -9,7 +9,7 @@ import withConfig from '../../../../utils/withConfig'
 const Preview = ({ lock, config, ...props }) => (
   // use the new snippet
   <Button
-    href={`${config.paywallUrl}/newdemo?lock=${lock.address}&name=${lock.name}&type=paywall`}
+    href={`${config.paywallUrl}/newdemo?lock=${lock.address}&name=${lock.name}`}
     label="Preview"
     {...props}
   >
