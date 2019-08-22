@@ -27,11 +27,18 @@ export const Checkout = ({
   )
   const lockAddresses: string[] = Object.keys(locks)
 
+  const callToActionParagraphs = config.callToAction.default
+    .split('\n')
+    .map((paragraph, index) => {
+      // eslint-disable-next-line react/no-array-index-key
+      return <p key={index}>{paragraph}</p>
+    })
+
   return (
     <React.Fragment>
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
-        <p>{config.callToAction.default}</p>
+        {callToActionParagraphs}
       </Header>
       <CheckoutLocks>
         {lockAddresses.length == 0 && <LoadingLock />}
@@ -71,6 +78,7 @@ const Header = styled.header`
 
   p {
     font-size: 20px;
+    margin: 5px;
   }
 `
 
@@ -81,7 +89,8 @@ const Title = styled.h1`
 `
 
 const Logo = styled.img`
-  height: 30px;
+  max-height: 100px;
+  max-width: 200px;
 `
 
 const Footer = styled.footer`

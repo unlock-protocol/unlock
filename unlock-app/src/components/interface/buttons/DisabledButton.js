@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import BaseButton from './Button'
+import Button from './Button'
 
 const DisabledButton = ({
   children,
@@ -11,7 +11,7 @@ const DisabledButton = ({
   ...props
 }) => {
   return (
-    <BaseButton
+    <Button
       backgroundColor={backgroundColor}
       backgroundHoverColor={backgroundHoverColor}
       fillColor={fillColor}
@@ -19,7 +19,7 @@ const DisabledButton = ({
       {...props}
     >
       {children}
-    </BaseButton>
+    </Button>
   )
 }
 

@@ -341,9 +341,14 @@ storiesOf('Lock', module)
       status: 'mined',
       confirmations: config.requiredConfirmations + 1,
     }
+
+    const lockWithKey = {
+      ...lock,
+      key: {},
+    }
     return (
       <Lock
-        lock={lock}
+        lock={lockWithKey}
         transaction={t}
         lockKey={k}
         config={config}
@@ -353,6 +358,7 @@ storiesOf('Lock', module)
       />
     )
   })
+
   .add('with a mined key for an know ERC20 Lock', () => {
     const erc20Lock = {
       currencyContractAddress: storyConfig.erc20Contract.address,
@@ -360,6 +366,7 @@ storiesOf('Lock', module)
       name: 'Monthly',
       keyPrice: '66',
       expirationDuration: 5 * 60, // 5 minutes
+      key: {},
     }
     const k = {
       lock: erc20Lock.address,

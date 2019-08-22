@@ -8,18 +8,20 @@ const clickAction = (e, action) => {
   if (action) action()
 }
 
-const BaseButton = ({
+const Button = ({
   href,
   label,
   children,
   action,
   disabled,
   title,
+  target,
   ...props
 }) => {
   const button = (
     <ButtonLink
       href={href}
+      target={target}
       onClick={e => {
         if (!disabled) return clickAction(e, action)
       }}
@@ -30,13 +32,20 @@ const BaseButton = ({
       {label && <Label>{label}</Label>}
     </ButtonLink>
   )
+
+  // Use Next nav for non external links
   if (href) {
-    return <Link href={href}>{button}</Link>
+    if (target != '_blank') {
+      return <Link href={href}>{button}</Link>
+    } else {
+      return button
+    }
   }
+
   return button
 }
 
-BaseButton.propTypes = {
+Button.propTypes = {
   href: PropTypes.string,
   label: PropTypes.string,
   children: PropTypes.node,
@@ -47,9 +56,10 @@ BaseButton.propTypes = {
   fillHoverColor: PropTypes.string,
 }
 
-BaseButton.defaultProps = {
+Button.defaultProps = {
   href: null,
   label: '',
+  target: '_self',
   children: null,
   action: null,
   backgroundColor: 'var(--lightgrey)',
@@ -61,18 +71,18 @@ BaseButton.defaultProps = {
 export const ButtonLink = styled.a`
   background-color: ${props => props.backgroundColor || 'var(--grey)'};
   cursor: pointer;
-  border-radius: 50%;
-  height: ${props => props.size || ' 24px'};
-  width: ${props => props.size || ' 24px'};
+  border-radius: ${props => props.borderRadius || '50%'};
+  height: ${props => props.size || '24px'};
+  width: ${props => props.size || '24px'};
   display: inline-block;
   padding: 0;
   border: 0;
-  line-height: ${props => props.size || ' 15px'};
+  line-height: '15px';
 
   > svg {
     fill: ${props => props.fillColor || 'white'};
-    height: ${props => props.size || ' 24px'};
-    width: ${props => props.size || ' 24px'};
+    height: ${props => props.size || '24px'};
+    width: ${props => props.size || '24px'};
   }
 
   &:hover {
@@ -95,6 +105,7 @@ export const Label = styled.small`
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   font-weight: 400;
   font-size: 12px;
+  line-height: 15px;
   left: 50%;
   transform: translateX(-50%);
   color: var(--link);
@@ -104,4 +115,4 @@ export const Label = styled.small`
   }
 `
 
-export default BaseButton
+export default Button

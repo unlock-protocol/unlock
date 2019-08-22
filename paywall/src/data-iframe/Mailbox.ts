@@ -179,14 +179,18 @@ export default class Mailbox {
    */
   sendUpdates(updateRequest: unknown) {
     if (!this.blockchainData) return
-    const unlockedLocks = this.getUnlockedLockAddresses()
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else {
-      this.postMessage(PostMessages.LOCKED, undefined)
-    }
+
     const { locks, account, balance, network } = this
       .blockchainData as BlockchainData
+    const unlockedLocks = this.getUnlockedLockAddresses()
+
+    if (unlockedLocks.length) {
+      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+    } else if (Object.keys(locks).length) {
+      // Don't send LOCKED unless we have locks
+      this.postMessage(PostMessages.LOCKED, undefined)
+    }
+
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
     switch (type) {
       case 'locks':
@@ -314,9 +318,11 @@ export default class Mailbox {
     this.postMessage(PostMessages.UPDATE_NETWORK, dataToSend.network)
     this.postMessage(PostMessages.UPDATE_LOCKS, dataToSend.locks)
     const unlockedLocks = this.getUnlockedLockAddresses()
+
     if (unlockedLocks.length) {
       this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else {
+    } else if (Object.keys(dataToSend.locks).length) {
+      // Only send LOCKED if we actually have locks
       this.postMessage(PostMessages.LOCKED, undefined)
     }
   }

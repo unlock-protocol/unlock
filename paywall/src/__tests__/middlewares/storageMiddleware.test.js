@@ -1,8 +1,6 @@
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { NEW_TRANSACTION } from '../../actions/transaction'
 import configure from '../../config'
-import { delayPromise } from '../../utils/promises'
 
 /**
  * This is a "fake" middleware caller
@@ -84,53 +82,6 @@ describe('Storage middleware', () => {
         transaction.network,
         transaction.input
       )
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('handling SET_ACCOUNT', () => {
-    it('should retrieve the transactions for that user', async () => {
-      expect.assertions(4)
-      const { next, invoke, store } = create()
-      const account = {
-        address: '0x123',
-      }
-      const action = { type: SET_ACCOUNT, account }
-
-      mockStorageService.getTransactionsHashesSentBy = jest.fn(() => {
-        return Promise.resolve([
-          {
-            hash: '0xabc',
-            from: 'hi',
-            to: 'there',
-            network: 4,
-          },
-          {
-            hash: '0xdef',
-            from: 'bye',
-            to: 'person',
-            network: 1984,
-          },
-        ])
-      })
-      await invoke(action)
-      await delayPromise(1)
-
-      expect(
-        mockStorageService.getTransactionsHashesSentBy
-      ).toHaveBeenCalledWith(account.address)
-
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        1,
-        addTransaction({
-          hash: '0xdef',
-          from: 'bye',
-          to: 'person',
-          network: 1984,
-        })
-      )
-
-      expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(next).toHaveBeenCalledTimes(1)
     })
   })

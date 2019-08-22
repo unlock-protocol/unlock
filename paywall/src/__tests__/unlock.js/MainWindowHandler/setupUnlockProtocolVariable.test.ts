@@ -1,5 +1,4 @@
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 import {
@@ -9,15 +8,6 @@ import {
 
 describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
   let fakeWindow: FakeWindow
-  const config: PaywallConfig = {
-    locks: {},
-    callToAction: {
-      default: '',
-      pending: '',
-      expired: '',
-      confirmed: '',
-    },
-  }
 
   function getMainWindowHandler() {
     // iframe URLs are unused in this test
@@ -27,7 +17,7 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
       'http://u',
       'http://v'
     )
-    return new MainWindowHandler(fakeWindow, iframes, config)
+    return new MainWindowHandler(fakeWindow, iframes)
   }
 
   function fullWindow() {

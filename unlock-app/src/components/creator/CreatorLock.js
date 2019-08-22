@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
-import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import AppStore from './lock/AppStore'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
@@ -156,7 +156,7 @@ export class CreatorLock extends React.Component {
         {showEmbedCode && (
           <LockPanel>
             <LockDivider />
-            <EmbedCodeSnippet lock={lock} />
+            <AppStore lock={lock} />
           </LockPanel>
         )}
         {!showEmbedCode && showKeys && (

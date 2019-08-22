@@ -23,7 +23,7 @@ const WalletCheckOverlay = ({ waiting, dispatch }) => {
   if (waiting) {
     return (
       <ModalOverlay>
-        <p>Please check your browser wallet to complete the transaction.</p>
+        <p>Please check your browser wallet.</p>
         <Dismiss onClick={() => dispatch(dismissWalletCheck())}>
           Dismiss
         </Dismiss>
