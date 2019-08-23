@@ -8,7 +8,13 @@ import {
   ConstantsType,
   BlockchainData,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
-import { PaywallConfig, Locks } from '../../unlockTypes'
+import {
+  PaywallConfig,
+  Locks,
+  Lock,
+  TransactionStatus,
+  TransactionType,
+} from '../../unlockTypes'
 import FakeWindow from './fakeWindowHelpers'
 
 export function getWalletService(listeners: { [key: string]: Function }) {
@@ -254,11 +260,83 @@ export function getDefaultFullLocks(
   }
 }
 
-export function makeBlockchainData(): BlockchainData {
-  return {
-    account: accountAddress,
-    balance: '234',
-    network: 1984,
-    locks: {},
-  }
+const firstLockAddress = lockAddresses[0]
+const firstLockLocked: Lock = {
+  address: firstLockAddress,
+  name: 'The First Lock',
+  expirationDuration: 5,
+  keyPrice: '1',
+  key: {
+    status: 'none',
+    confirmations: 0,
+    expiration: 0,
+    transactions: [],
+    owner: accountAddress,
+    lock: firstLockAddress,
+  },
+  currencyContractAddress: addresses[2],
+}
+
+const firstLockSubmitted: Lock = {
+  ...firstLockLocked,
+  key: {
+    ...firstLockLocked.key,
+    status: 'submitted',
+    transactions: [
+      {
+        status: TransactionStatus.SUBMITTED,
+        confirmations: 0,
+        hash: 'hash',
+        type: TransactionType.KEY_PURCHASE,
+        blockNumber: Number.MAX_SAFE_INTEGER,
+      },
+    ],
+  },
+}
+
+const secondLockAddress = lockAddresses[1]
+const secondLockLocked: Lock = {
+  address: secondLockAddress,
+  name: 'The Second Lock',
+  expirationDuration: 5,
+  keyPrice: '1',
+  key: {
+    status: 'expired',
+    confirmations: 1678234,
+    expiration: 163984,
+    transactions: [
+      {
+        status: TransactionStatus.MINED,
+        confirmations: 1678234,
+        hash: 'hash',
+        type: TransactionType.KEY_PURCHASE,
+        blockNumber: 123,
+      },
+    ],
+    owner: accountAddress,
+    lock: secondLockAddress,
+  },
+  currencyContractAddress: addresses[2],
+}
+
+export const blockchainDataNoLocks: BlockchainData = {
+  account: accountAddress,
+  balance: '234',
+  network: 1984,
+  locks: {},
+}
+
+export const blockchainDataLocked: BlockchainData = {
+  ...blockchainDataNoLocks,
+  locks: {
+    [firstLockAddress]: firstLockLocked,
+    [secondLockAddress]: secondLockLocked,
+  },
+}
+
+export const blockchainDataUnlocked: BlockchainData = {
+  ...blockchainDataNoLocks,
+  locks: {
+    [firstLockAddress]: firstLockSubmitted,
+  },
 }
