@@ -112,6 +112,25 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         account: null,
         balance: '0',
         network: 1984,
+        // These keys are from makeDefaultKeys
+        keys: {
+          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+            expiration: 0,
+            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+            owner: null,
+          },
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+            expiration: 0,
+            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            owner: null,
+          },
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+            expiration: 0,
+            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+            owner: null,
+          },
+        },
+        transactions: {},
       })
     })
 
@@ -142,6 +161,24 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         account: null,
         balance: '0',
         network: 1984,
+        keys: {
+          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+            expiration: 0,
+            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+            owner: null,
+          },
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+            expiration: 0,
+            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            owner: null,
+          },
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+            expiration: 0,
+            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+            owner: null,
+          },
+        },
+        transactions: {},
       })
     })
   })
@@ -190,6 +227,24 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         account: null,
         balance: '0',
         network: 1984,
+        keys: {
+          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+            expiration: 0,
+            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+            owner: null,
+          },
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+            expiration: 0,
+            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            owner: null,
+          },
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+            expiration: 0,
+            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+            owner: null,
+          },
+        },
+        transactions: {},
       })
     })
   })
@@ -212,6 +267,24 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         account: addresses[2],
         balance: '0',
         network: 1984,
+        keys: {
+          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+            expiration: 0,
+            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+            expiration: 0,
+            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+            expiration: 0,
+            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+        },
+        transactions: {},
       })
     })
 
@@ -241,6 +314,24 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         account: addresses[2],
         balance: '0',
         network: 1984,
+        keys: {
+          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+            expiration: 0,
+            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+            expiration: 12345,
+            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+            expiration: 0,
+            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+          },
+        },
+        transactions: {},
       })
     })
 
@@ -287,6 +378,24 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           account: addresses[2],
           balance: '0',
           network: 1984,
+          keys: {
+            '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+              expiration: 0,
+              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+            '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+              expiration: 0,
+              lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+            '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+              expiration: 0,
+              lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+          },
+          transactions: {},
         })
       })
     })
@@ -357,6 +466,35 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           account: addresses[2],
           balance: '0',
           network: 1984,
+          keys: {
+            '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
+              expiration: 0,
+              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+            '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
+              expiration: 0,
+              lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+            '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
+              expiration: 0,
+              lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+            },
+          },
+          transactions: {
+            hash: {
+              blockNumber: 9007199254740991,
+              confirmations: 0,
+              for: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
+              hash: 'hash',
+              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+              status: 'pending',
+              to: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
+              type: 'KEY_PURCHASE',
+            },
+          },
         })
         // once for each lock (3), once for the transaction
         expect(emitChanges).toHaveBeenCalledTimes(4)

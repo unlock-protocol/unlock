@@ -1,5 +1,11 @@
-import { PaywallConfig, Locks, PurchaseKeyRequest } from './unlockTypes'
+import {
+  PaywallConfig,
+  Locks,
+  PurchaseKeyRequest,
+  Transactions,
+} from './unlockTypes'
 import { web3MethodCall, Web3WalletInfo, web3MethodResult } from './windowTypes'
+import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
@@ -23,6 +29,8 @@ export enum PostMessages {
   UPDATE_ACCOUNT_BALANCE = 'update/accountBalance',
   UPDATE_NETWORK = 'update/network',
   UPDATE_WALLET = 'update/walletmodal',
+  UPDATE_KEYS = 'update/keys',
+  UPDATE_TRANSACTIONS = 'update/transactions',
 
   ERROR = 'error',
   SEND_UPDATES = 'send/updates',
@@ -136,6 +144,11 @@ export type Message =
       type: PostMessages.HIDE_ACCOUNTS_MODAL
       payload: undefined
     }
+  | {
+      type: PostMessages.UPDATE_KEYS
+      payload: KeyResults
+    }
+  | { type: PostMessages.UPDATE_TRANSACTIONS; payload: Transactions }
 
 export type MessageTypes = Message['type']
 export type ExtractPayload<TYPE> = Extract<Message, { type: TYPE }>['payload']
