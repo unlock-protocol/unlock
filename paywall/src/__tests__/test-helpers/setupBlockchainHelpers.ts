@@ -17,6 +17,8 @@ import {
 } from '../../unlockTypes'
 import FakeWindow from './fakeWindowHelpers'
 
+// TODO: this needs a lot of cleanup. Lots of redundancies.
+
 export function getWalletService(listeners: { [key: string]: Function }) {
   const walletService: WalletServiceType = {
     ready: true,
@@ -261,7 +263,7 @@ export function getDefaultFullLocks(
 }
 
 const firstLockAddress = lockAddresses[0]
-const firstLockLocked: Lock = {
+export const firstLockLocked: Lock = {
   address: firstLockAddress,
   name: 'The First Lock',
   expirationDuration: 5,
@@ -277,7 +279,7 @@ const firstLockLocked: Lock = {
   currencyContractAddress: addresses[2],
 }
 
-const firstLockSubmitted: Lock = {
+export const firstLockSubmitted: Lock = {
   ...firstLockLocked,
   key: {
     ...firstLockLocked.key,
@@ -295,7 +297,7 @@ const firstLockSubmitted: Lock = {
 }
 
 const secondLockAddress = lockAddresses[1]
-const secondLockLocked: Lock = {
+export const secondLockLocked: Lock = {
   address: secondLockAddress,
   name: 'The Second Lock',
   expirationDuration: 5,
@@ -324,6 +326,8 @@ export const blockchainDataNoLocks: BlockchainData = {
   balance: '234',
   network: 1984,
   locks: {},
+  keys: {},
+  transactions: {},
 }
 
 export const blockchainDataLocked: BlockchainData = {
@@ -332,11 +336,24 @@ export const blockchainDataLocked: BlockchainData = {
     [firstLockAddress]: firstLockLocked,
     [secondLockAddress]: secondLockLocked,
   },
+  keys: {
+    [firstLockAddress]: firstLockLocked.key,
+    [secondLockAddress]: secondLockLocked.key,
+  },
+  transactions: {
+    hash: secondLockLocked.key.transactions[0],
+  },
 }
 
 export const blockchainDataUnlocked: BlockchainData = {
   ...blockchainDataNoLocks,
   locks: {
     [firstLockAddress]: firstLockSubmitted,
+  },
+  keys: {
+    [firstLockAddress]: firstLockSubmitted.key,
+  },
+  transactions: {
+    hash: firstLockSubmitted.key.transactions[0],
   },
 }

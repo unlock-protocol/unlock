@@ -19,6 +19,9 @@ import {
   getWalletService,
   getWeb3Service,
   lockAddresses,
+  firstLockLocked,
+  firstLockSubmitted,
+  secondLockLocked,
 } from '../../test-helpers/setupBlockchainHelpers'
 
 let mockWalletService: WalletServiceType
@@ -50,66 +53,13 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
   const account = addresses[1]
 
   // all locks have had their addresses normalized before arriving
-  const lockedLocks = {
-    [lockAddresses[0]]: {
-      address: lockAddresses[0],
-      name: '1',
-      expirationDuration: 5,
-      currencyContractAddress: addresses[2],
-      keyPrice: '1',
-      key: {
-        status: 'none',
-        confirmations: 0,
-        expiration: 0,
-        transactions: [],
-        owner: account,
-        lock: lockAddresses[0],
-      },
-    },
-    [lockAddresses[1]]: {
-      address: lockAddresses[1],
-      name: '1',
-      expirationDuration: 5,
-      currencyContractAddress: addresses[2],
-      keyPrice: '1',
-      key: {
-        status: 'expired',
-        confirmations: 1678234,
-        expiration: 163984,
-        transactions: [
-          {
-            status: TransactionStatus.MINED,
-            confirmations: 1678234,
-            hash: 'hash',
-            type: TransactionType.KEY_PURCHASE,
-            blockNumber: 123,
-          },
-        ],
-        owner: account,
-        lock: lockAddresses[0],
-      },
-    },
+  const lockedLocks: Locks = {
+    [lockAddresses[0]]: firstLockLocked,
+    [lockAddresses[1]]: secondLockLocked,
   }
 
   const submittedLocks: Locks = {
-    [lockAddresses[0]]: {
-      ...lockedLocks[lockAddresses[0]],
-      key: {
-        ...lockedLocks[lockAddresses[0]].key,
-        status: 'submitted',
-        confirmations: 0,
-        expiration: 0,
-        transactions: [
-          {
-            status: TransactionStatus.SUBMITTED,
-            confirmations: 0,
-            hash: 'hash',
-            type: TransactionType.KEY_PURCHASE,
-            blockNumber: Number.MAX_SAFE_INTEGER,
-          },
-        ],
-      },
-    },
+    [lockAddresses[0]]: firstLockSubmitted,
   }
 
   const pendingLocks: Locks = {
@@ -167,6 +117,8 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
       account,
       balance: '0',
       network: 1,
+      keys: {},
+      transactions: {},
     }
     testingMailbox().blockchainData = testingData
   }
