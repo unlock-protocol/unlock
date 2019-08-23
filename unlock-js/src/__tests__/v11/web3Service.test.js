@@ -497,7 +497,8 @@ describe('Web3Service', () => {
         transaction.hash,
         UnlockVersion.Unlock,
         input,
-        web3Service.unlockContractAddress
+        web3Service.unlockContractAddress,
+        'pending'
       )
     })
 

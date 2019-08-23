@@ -312,12 +312,13 @@ export default class Web3Service extends UnlockService {
     transactionHash,
     contract,
     data,
-    contractAddress
+    contractAddress,
+    status = 'pending'
   ) {
     const transactionType = this._getTransactionType(contract, data)
 
     this.emit('transaction.updated', transactionHash, {
-      status: 'pending',
+      status,
       type: transactionType,
       confirmations: 0,
       blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
@@ -378,7 +379,8 @@ export default class Web3Service extends UnlockService {
         transactionHash,
         contract,
         defaults.input,
-        defaults.to
+        defaults.to,
+        'submitted'
       )
     }
 
@@ -411,13 +413,19 @@ export default class Web3Service extends UnlockService {
       blockTransaction.hash,
       contract,
       blockTransaction.data,
-      blockTransaction.to
+      blockTransaction.to,
+      'pending'
     )
   }
 
   /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
+   * There are at least 4 states for a transaction
+   * 1- The node does not know about it
+   * 2- The node knows about it but it has not been mined
+   * 3- The node knows about it and it has been mined but not confirmed (12 blocks)
+   * 4- The node knows about it and it has been mined and confirmed
    * @param {string} transactionHash
    * @param {object} filter
    */
@@ -426,43 +434,55 @@ export default class Web3Service extends UnlockService {
       this.provider.getBlockNumber(),
       this.provider.getTransaction(transactionHash),
     ]).then(async ([blockNumber, blockTransaction]) => {
-      if (!blockTransaction && !defaults) {
-        // transaction is pending, but we have refreshed the page
-        // even though the transaction may not exist, we poll for it
-        // in case it is soon to exist
-        this._watchTransaction(transactionHash)
-        return null
+      if (!blockTransaction) {
+        // Case 1
+        // Here the node does not know about it.
+        // This could either be that the node is "late" (transaction is very recent)
+        // of the transaction was cancelled/dropped.
+        // We should watch just in case this is a "late" transaction
+
+        // If we have defaults, we should parse them
+        if (defaults) {
+          let version
+          // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+          const contractAddress = defaults.to // ethers.js does format addresses in checksum format
+          if (this.unlockContractAddress === contractAddress) {
+            version = await this.unlockContractAbiVersion()
+          } else {
+            version = await this.lockContractAbiVersion(defaults.to)
+          }
+          return this._getSubmittedTransaction(
+            version,
+            transactionHash,
+            blockNumber,
+            defaults
+          )
+        } else {
+          this._watchTransaction(transactionHash)
+          return null
+        }
       }
+
+      // Here we have a block transaction , which means the node knows about it
       // Let's find the type of contract before we can get its version
-      const to = blockTransaction ? blockTransaction.to : defaults.to
       let version
       // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
-      const contractAddress = to // ethers.js does format addresses in checksum format
+      const contractAddress = blockTransaction.to // ethers.js does format addresses in checksum format
       if (this.unlockContractAddress === contractAddress) {
         version = await this.unlockContractAbiVersion()
       } else {
-        version = await this.lockContractAbiVersion(to)
-      }
-
-      // If the block transaction is missing the transacion has been submitted but not
-      // received by all nodes
-      if (!blockTransaction) {
-        return this._getSubmittedTransaction(
-          version,
-          transactionHash,
-          blockNumber,
-          defaults
-        )
+        version = await this.lockContractAbiVersion(contractAddress)
       }
 
       // If the block number is missing the transaction has been received by the node
       // but not mined yet
       if (blockTransaction.blockNumber === null) {
+        // Case 2
+        // Node knows about it and it has not been mined
         return this._getPendingTransaction(version, blockTransaction)
       }
 
       // The transaction has been mined :
-
       const contract =
         this.unlockContractAddress === contractAddress
           ? version.Unlock
@@ -477,6 +497,7 @@ export default class Web3Service extends UnlockService {
         blockNumber - blockTransaction.blockNumber <
         this.requiredConfirmations
       ) {
+        // Case 3
         this._watchTransaction(transactionHash)
       }
 
