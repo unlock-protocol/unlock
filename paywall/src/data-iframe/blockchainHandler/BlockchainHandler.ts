@@ -212,6 +212,8 @@ export default class BlockchainHandler {
       account: this.store.account,
       balance: this.store.balance,
       network: this.store.network,
+      keys: this.store.keys,
+      transactions: this.store.transactions,
     })
   }
 

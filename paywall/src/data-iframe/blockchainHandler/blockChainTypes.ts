@@ -66,6 +66,8 @@ export interface BlockchainData {
   account: string | null
   balance: string
   network: unlockNetworks
+  keys: KeyResults
+  transactions: Transactions
 }
 
 export interface LocksmithTransactionsResult {

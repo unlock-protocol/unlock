@@ -80,6 +80,8 @@ export default class Mailbox {
       account: null,
       balance: '0',
       network: this.constants.defaultNetwork,
+      keys: {},
+      transactions: {},
     }
     // set the defaults
     this.blockchainData = this.defaultBlockchainData
@@ -311,12 +313,15 @@ export default class Mailbox {
    * This is called by the BlockchainHandler when there is an update to chain data
    */
   emitChanges(newData: BlockchainData) {
+    const { keys, transactions } = newData
     const dataToSend = this.getDataToSend(newData)
     // TODO: don't send unchanged values
     this.postMessage(PostMessages.UPDATE_ACCOUNT, dataToSend.account)
     this.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, dataToSend.balance)
     this.postMessage(PostMessages.UPDATE_NETWORK, dataToSend.network)
     this.postMessage(PostMessages.UPDATE_LOCKS, dataToSend.locks)
+    this.postMessage(PostMessages.UPDATE_KEYS, keys)
+    this.postMessage(PostMessages.UPDATE_TRANSACTIONS, transactions)
     const unlockedLocks = this.getUnlockedLockAddresses()
 
     if (unlockedLocks.length) {
@@ -359,11 +364,20 @@ export default class Mailbox {
     if (typeof data !== 'object') return nukeAndReturn()
     const chainData = data as BlockchainData
     const keys = Object.keys(chainData)
-    if (keys.length !== Object.keys(this.defaultBlockchainData).length)
+    if (keys.length !== Object.keys(this.defaultBlockchainData).length) {
       return nukeAndReturn()
+    }
     if (
       keys.filter(
-        key => !['locks', 'account', 'balance', 'network'].includes(key)
+        key =>
+          ![
+            'locks',
+            'account',
+            'balance',
+            'network',
+            'keys',
+            'transactions',
+          ].includes(key)
       ).length
     ) {
       return nukeAndReturn()

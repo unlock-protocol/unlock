@@ -16,10 +16,11 @@ import {
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PostMessages } from '../../../messageTypes'
 import {
-  addresses,
   getWalletService,
   getWeb3Service,
   lockAddresses,
+  blockchainDataLocked,
+  blockchainDataNoLocks,
 } from '../../test-helpers/setupBlockchainHelpers'
 
 let mockWalletService: WalletServiceType
@@ -48,34 +49,8 @@ describe('Mailbox - sendUpdates', () => {
   let fakeWindow: FakeWindow
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
-  const testingData: BlockchainData = {
-    locks: {
-      [lockAddresses[0]]: {
-        name: 'lock 1',
-        address: lockAddresses[0],
-        keyPrice: '1',
-        expirationDuration: 5,
-        currencyContractAddress: null,
-        key: {
-          expiration: 0,
-          status: 'none',
-          confirmations: 0,
-          owner: addresses[1],
-          transactions: [],
-          lock: lockAddresses[0],
-        },
-      },
-    },
-    account: addresses[1],
-    balance: '123',
-    network: 1,
-  }
-  const testingDataWithoutLocks: BlockchainData = {
-    locks: {},
-    account: addresses[1],
-    balance: '123',
-    network: 1,
-  }
+  const testingData: BlockchainData = blockchainDataLocked
+  const testingDataWithoutLocks: BlockchainData = blockchainDataNoLocks
 
   function setupDefaults() {
     defaults = setupTestDefaults()

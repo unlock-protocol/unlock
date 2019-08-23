@@ -16,10 +16,9 @@ import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import {
   getWalletService,
   getWeb3Service,
-  lockAddresses,
   addresses,
+  blockchainDataLocked,
 } from '../../test-helpers/setupBlockchainHelpers'
-import { TransactionType, TransactionStatus } from '../../../unlockTypes'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -40,60 +39,15 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Mailbox - getDataToSend', () => {
+describe('Mailbox - sanitizeBlockchainData', () => {
   let constants: ConstantsType
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
   let fakeWindow: FakeWindow
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
 
-  const account = addresses[1]
   // all locks have had their addresses normalized before arriving
-  const lockedLocks: BlockchainData = {
-    account: addresses[1],
-    balance: '234',
-    network: 1984,
-    locks: {
-      [lockAddresses[0]]: {
-        address: lockAddresses[0],
-        name: '1',
-        expirationDuration: 5,
-        currencyContractAddress: addresses[2],
-        keyPrice: '1',
-        key: {
-          status: 'none',
-          confirmations: 0,
-          expiration: 0,
-          transactions: [],
-          owner: account,
-          lock: lockAddresses[0],
-        },
-      },
-      [lockAddresses[1]]: {
-        address: lockAddresses[1],
-        name: '1',
-        expirationDuration: 5,
-        currencyContractAddress: addresses[2],
-        keyPrice: '1',
-        key: {
-          status: 'expired',
-          confirmations: 1678234,
-          expiration: 163984,
-          transactions: [
-            {
-              status: TransactionStatus.MINED,
-              confirmations: 1678234,
-              hash: 'hash',
-              type: TransactionType.KEY_PURCHASE,
-              blockNumber: 123,
-            },
-          ],
-          owner: account,
-          lock: lockAddresses[0],
-        },
-      },
-    },
-  }
+  const lockedLocks = blockchainDataLocked
 
   function setupDefaults() {
     defaults = setupTestDefaults()
