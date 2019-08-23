@@ -324,6 +324,8 @@ export const blockchainDataNoLocks: BlockchainData = {
   balance: '234',
   network: 1984,
   locks: {},
+  keys: {},
+  transactions: {},
 }
 
 export const blockchainDataLocked: BlockchainData = {
@@ -332,11 +334,24 @@ export const blockchainDataLocked: BlockchainData = {
     [firstLockAddress]: firstLockLocked,
     [secondLockAddress]: secondLockLocked,
   },
+  keys: {
+    [firstLockAddress]: firstLockLocked.key,
+    [secondLockAddress]: secondLockLocked.key,
+  },
+  transactions: {
+    hash: secondLockLocked.key.transactions[0],
+  },
 }
 
 export const blockchainDataUnlocked: BlockchainData = {
   ...blockchainDataNoLocks,
   locks: {
     [firstLockAddress]: firstLockSubmitted,
+  },
+  keys: {
+    [firstLockAddress]: firstLockSubmitted.key,
+  },
+  transactions: {
+    hash: firstLockSubmitted.key.transactions[0],
   },
 }
