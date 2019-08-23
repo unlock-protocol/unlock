@@ -2,7 +2,13 @@ import styled from 'styled-components'
 import React from 'react'
 import { RoundedLogo } from '../interface/Logo'
 
-import { Locks, PaywallConfig, Account } from '../../unlockTypes' // eslint-disable-line no-unused-vars
+import {
+  Locks,
+  PaywallConfig,
+  Account,
+  Key,
+  KeyStatus,
+} from '../../unlockTypes' // eslint-disable-line no-unused-vars
 import CheckoutLock from './CheckoutLock'
 import LoadingLock from '../lock/LoadingLock'
 
@@ -27,7 +33,40 @@ export const Checkout = ({
   )
   const lockAddresses: string[] = Object.keys(locks)
 
-  const callToActionParagraphs = config.callToAction.default
+  // Here we need to pick the right checkout message based on the keys!
+  const lockKeys: Key[] = []
+  lockAddresses.forEach(lockAddress => {
+    const lock = locks[lockAddress]
+    if (lock) {
+      lockKeys.push(lock.key)
+    }
+  })
+
+  // Defaults to config.callToAction.default
+  let callToAction = config.callToAction.default
+
+  if (
+    lockKeys.find(
+      key =>
+        key.status === KeyStatus.VALID || key.status === KeyStatus.CONFIRMING
+    )
+  ) {
+    // If the user has at least one valid key, we should show `confirmed` (default to `default`)
+    callToAction = config.callToAction.confirmed || config.callToAction.default
+  } else if (
+    lockKeys.find(
+      key =>
+        key.status === KeyStatus.PENDING || key.status === KeyStatus.SUBMITTED
+    )
+  ) {
+    // Else if the user has any 'pending' key, we should should `pending` (default to `default`)
+    callToAction = config.callToAction.pending || config.callToAction.default
+  } else if (lockKeys.find(key => key.status === KeyStatus.EXPIRED)) {
+    // Else if the user has any 'expired' key, we should show `expired` (default to `default`)
+    callToAction = config.callToAction.expired || config.callToAction.default
+  }
+
+  const callToActionParagraphs = callToAction
     .split('\n')
     .map((paragraph, index) => {
       // eslint-disable-next-line react/no-array-index-key
