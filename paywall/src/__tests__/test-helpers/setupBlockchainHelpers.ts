@@ -6,6 +6,7 @@ import {
   FetchWindow,
   SetTimeoutWindow,
   ConstantsType,
+  BlockchainData,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { PaywallConfig, Locks } from '../../unlockTypes'
 import FakeWindow from './fakeWindowHelpers'
@@ -73,6 +74,8 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
   }
   return web3Service
 }
+
+export const accountAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 export const addresses = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -248,5 +251,14 @@ export function getDefaultFullLocks(
       expirationDuration: 1,
       currencyContractAddress: null,
     },
+  }
+}
+
+export function makeBlockchainData(): BlockchainData {
+  return {
+    account: accountAddress,
+    balance: '234',
+    network: 1984,
+    locks: {},
   }
 }
