@@ -263,7 +263,7 @@ export function getDefaultFullLocks(
 }
 
 const firstLockAddress = lockAddresses[0]
-const firstLockLocked: Lock = {
+export const firstLockLocked: Lock = {
   address: firstLockAddress,
   name: 'The First Lock',
   expirationDuration: 5,
@@ -279,7 +279,7 @@ const firstLockLocked: Lock = {
   currencyContractAddress: addresses[2],
 }
 
-const firstLockSubmitted: Lock = {
+export const firstLockSubmitted: Lock = {
   ...firstLockLocked,
   key: {
     ...firstLockLocked.key,
@@ -297,7 +297,7 @@ const firstLockSubmitted: Lock = {
 }
 
 const secondLockAddress = lockAddresses[1]
-const secondLockLocked: Lock = {
+export const secondLockLocked: Lock = {
   address: secondLockAddress,
   name: 'The Second Lock',
   expirationDuration: 5,
