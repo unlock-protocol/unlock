@@ -17,6 +17,8 @@ import {
 } from '../../unlockTypes'
 import FakeWindow from './fakeWindowHelpers'
 
+// TODO: this needs a lot of cleanup. Lots of redundancies.
+
 export function getWalletService(listeners: { [key: string]: Function }) {
   const walletService: WalletServiceType = {
     ready: true,
