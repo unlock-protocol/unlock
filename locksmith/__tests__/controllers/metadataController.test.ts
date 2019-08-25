@@ -62,10 +62,22 @@ function generateKeyTypedData(message: any) {
   }
 }
 
+jest.mock('../../src/utils/keyData', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      get: jest.fn().mockResolvedValue({
+        owner: '0xabcd',
+        expiration: 1567190711,
+      }),
+    }
+  })
+})
+
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
   })
+
   describe('token data request', () => {
     describe("when persisted data doesn't exist", () => {
       it('returns wellformed data for Week in Ethereum News', async () => {

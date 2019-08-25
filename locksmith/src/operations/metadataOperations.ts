@@ -1,6 +1,10 @@
 import { KeyMetadata } from '../models/keyMetadata'
 import { LockMetadata } from '../models/lockMetadata'
 import Metadata from '../../config/metadata'
+import KeyData from '../utils/keyData'
+
+const env = process.env.NODE_ENV || 'development'
+const config = require('../../config/config')[env]
 
 export const updateKeyMetadata = async (data: any) => {
   try {
@@ -18,7 +22,7 @@ export const updateDefaultLockMetadata = async (data: any) => {
   }
 }
 
-export const generateKeyMetadata = async (address: string, keyId: string) => {
+const defaultMappings = (address: string) => {
   let defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
@@ -37,8 +41,17 @@ export const generateKeyMetadata = async (address: string, keyId: string) => {
 
   // Append description
   defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
+  return defaultResponse
+}
 
-  let metadata = await LockMetadata.findOne({
+export const generateKeyMetadata = async (address: string, keyId: string) => {
+  let onChainKeyMetadata = await fetchChainData(address, keyId)
+  if (Object.keys(onChainKeyMetadata).length == 0) {
+    return {}
+  }
+
+  let defaultResponse = defaultMappings(address)
+  let persistedBasedMetadata = await LockMetadata.findOne({
     where: { address: address },
   })
 
@@ -50,6 +63,13 @@ export const generateKeyMetadata = async (address: string, keyId: string) => {
   })
 
   let result = keyCentricData ? keyCentricData.data : {}
-  let defaults = metadata ? metadata.data : defaultResponse
-  return Object.assign(result, defaults)
+  let defaults = persistedBasedMetadata
+    ? persistedBasedMetadata.data
+    : defaultResponse
+  return Object.assign(result, defaults, onChainKeyMetadata)
+}
+
+const fetchChainData = async (address: string, keyId: string) => {
+  let kd = new KeyData(config.web3ProviderHost)
+  return await kd.get(address, keyId)
 }
