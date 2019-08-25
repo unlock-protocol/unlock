@@ -8,9 +8,18 @@ namespace MetadataController {
     let address = Normalizer.ethereumAddress(req.params.address)
     let keyId = req.params.keyId.toLowerCase()
 
-    return res.json(
-      await metadataOperations.generateKeyMetadata(address, keyId)
+    let keyMetadata = await metadataOperations.generateKeyMetadata(
+      address,
+      keyId
     )
+
+    if (Object.keys(keyMetadata).length == 0) {
+      res.sendStatus(404)
+    } else {
+      return res.json(
+        await metadataOperations.generateKeyMetadata(address, keyId)
+      )
+    }
   }
 
   export const updateDefaults = async (
