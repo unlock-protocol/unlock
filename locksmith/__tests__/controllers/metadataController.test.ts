@@ -69,6 +69,15 @@ jest.mock('../../src/utils/keyData', () => {
         owner: '0xabcd',
         expiration: 1567190711,
       }),
+      openSeaPresentation: jest.fn().mockReturnValue({
+        attributes: [
+          {
+            trait_type: 'expiration',
+            value: 1567190711,
+            display_type: 'number',
+          },
+        ],
+      }),
     }
   })
 })
