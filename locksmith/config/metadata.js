@@ -132,6 +132,12 @@ module.exports = [
     description: 'A key to the Web3.js Supporters lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/web3js.png',
   },
+  {
+    address: '0x38Ad3BEA0FA53A7Ac63Ba56CAA88ce1DE690E1Ea',
+    name: 'Solidity Supporters',
+    description: 'A key to the Solidity Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/solidity.png',
+  },
   // {
   //   address: '',
   //   name: '',
