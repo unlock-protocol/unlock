@@ -115,6 +115,50 @@ module.exports = [
       "A key to Evan Van Ness's special 3 year anniversary Edition of the Week In Ethereum News!",
     image: 'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
   },
+  {
+    address: '0x7567Ce8bBEb821AA39883f4E80f75DA605FdD394',
+    name: 'WebTorrent Supporters',
+    description: 'A key to the WebTorrent Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/webtorrent.png',
+  },
+  {
+    address: '0x0364c5D9C268a1870f49AD2819801624d8Ce0fF0',
+    name: 'Go Ethereum Supporters',
+    description: 'A key to the Go Ethereum Supporters lock.',
+  },
+  {
+    address: '0xe8846DE6aAF1B50A3e300cc2AB568D544709385B',
+    name: 'Web3.js Supporters',
+    description: 'A key to the Web3.js Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/web3js.png',
+  },
+  {
+    address: '0x38Ad3BEA0FA53A7Ac63Ba56CAA88ce1DE690E1Ea',
+    name: 'Solidity Supporters',
+    description: 'A key to the Solidity Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/solidity.png',
+  },
+  {
+    address: '0x70841C98472553DF984AA033f8D3b8C261d17D82',
+    name: 'Metamask Supporters',
+    description: 'A key to the Metamask Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/metamask.png',
+  },
+  {
+    address: '0x84621384a1E8513181DaA4624aE16533B73dB7E7',
+    name: 'Ethereum Book Donation',
+    description: 'A key to the Ethereum Book Supporters lock.',
+  },
+  {
+    address: '0x75b8F32dd174b7adc759e7d813b953Faf6DD9445',
+    name: 'Remix IDE Donation',
+    description: 'A key to the Remix IDE Supporters lock.',
+  },
+  {
+    address: '0x05d473FEF303a686Edd8A79d9da3BD0a7AE01bB1',
+    name: 'Parity Supporter',
+    description: 'A key to the Parity Supporters lock.',
+  },
   // {
   //   address: '',
   //   name: '',
