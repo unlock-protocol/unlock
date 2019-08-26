@@ -71,5 +71,6 @@ export const generateKeyMetadata = async (address: string, keyId: string) => {
 
 const fetchChainData = async (address: string, keyId: string) => {
   let kd = new KeyData(config.web3ProviderHost)
-  return await kd.get(address, keyId)
+  let data = await kd.get(address, keyId)
+  return kd.openSeaPresentation(data)
 }
