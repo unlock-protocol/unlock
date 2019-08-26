@@ -115,6 +115,12 @@ module.exports = [
       "A key to Evan Van Ness's special 3 year anniversary Edition of the Week In Ethereum News!",
     image: 'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
   },
+  {
+    address: '0x7567Ce8bBEb821AA39883f4E80f75DA605FdD394',
+    name: 'WebTorrent Supporters',
+    description: 'A key to the WebTorrent Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/webtorrent.png',
+  },
   // {
   //   address: '',
   //   name: '',
