@@ -96,17 +96,17 @@ describe('BlockchainHandler class setup', () => {
         [lockAddresses[0]]: {
           lock: lockAddresses[0],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
         [lockAddresses[1]]: {
           lock: lockAddresses[1],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
         [lockAddresses[2]]: {
           lock: lockAddresses[2],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
       }, // default keys for each lock are created
       locks: {},

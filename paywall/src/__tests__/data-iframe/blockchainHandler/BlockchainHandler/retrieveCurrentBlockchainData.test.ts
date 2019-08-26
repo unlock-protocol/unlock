@@ -115,17 +115,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         // These keys are from makeDefaultKeys
         keys: {
           '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
+            expiration: -1,
             lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
             owner: null,
           },
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             owner: null,
           },
           '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
             owner: null,
           },
@@ -163,17 +163,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         network: 1984,
         keys: {
           '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
+            expiration: -1,
             lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
             owner: null,
           },
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             owner: null,
           },
           '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
             owner: null,
           },
@@ -198,17 +198,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         [lockAddresses[0]]: {
           lock: lockAddresses[0],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
         [lockAddresses[1]]: {
           lock: lockAddresses[1],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
         [lockAddresses[2]]: {
           lock: lockAddresses[2],
           owner: null,
-          expiration: 0,
+          expiration: -1,
         },
       })
       expect(store.balance).toBe('0')
@@ -229,17 +229,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         network: 1984,
         keys: {
           '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
+            expiration: -1,
             lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
             owner: null,
           },
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             owner: null,
           },
           '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
             owner: null,
           },
@@ -269,17 +269,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         network: 1984,
         keys: {
           '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
+            expiration: -1,
             lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
           '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
@@ -316,7 +316,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         network: 1984,
         keys: {
           '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
+            expiration: -1,
             lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
@@ -326,7 +326,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
           '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
+            expiration: -1,
             lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
@@ -380,17 +380,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           network: 1984,
           keys: {
             '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-              expiration: 0,
+              expiration: -1,
               lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },
             '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-              expiration: 0,
+              expiration: -1,
               lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },
             '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-              expiration: 0,
+              expiration: -1,
               lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },
@@ -468,17 +468,17 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           network: 1984,
           keys: {
             '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-              expiration: 0,
+              expiration: -1,
               lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },
             '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-              expiration: 0,
+              expiration: -1,
               lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },
             '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-              expiration: 0,
+              expiration: -1,
               lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
               owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
             },

@@ -182,17 +182,17 @@ describe('Mailbox - init', () => {
       // but at least there's a comment now.
       keys: {
         '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-          expiration: 0,
+          expiration: -1,
           lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
           owner: null,
         },
         '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-          expiration: 0,
+          expiration: -1,
           lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
           owner: null,
         },
         '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-          expiration: 0,
+          expiration: -1,
           lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
           owner: null,
         },

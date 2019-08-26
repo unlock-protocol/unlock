@@ -122,6 +122,9 @@ describe('Mailbox - emitChanges', () => {
       'should send the %s to the main window',
       async (_, type: PostMessages, payload: any) => {
         expect.assertions(1)
+        testingMailbox().configuration = {
+          locks: [{ name: 1 }, { name: 2 }],
+        }
 
         mailbox.emitChanges(lockedLocks)
 
@@ -145,7 +148,9 @@ describe('Mailbox - emitChanges', () => {
       'should send the %s to the main window',
       async (_, type: PostMessages, payload: any) => {
         expect.assertions(1)
-
+        testingMailbox().configuration = {
+          locks: [{ name: 1 }],
+        }
         mailbox.emitChanges(submittedLocks)
 
         await fakeWindow.expectPostMessageSent(type, payload)
