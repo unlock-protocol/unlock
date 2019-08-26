@@ -138,6 +138,12 @@ module.exports = [
     description: 'A key to the Solidity Supporters lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/solidity.png',
   },
+  {
+    address: '0x70841C98472553DF984AA033f8D3b8C261d17D82',
+    name: 'Metamask Supporters',
+    description: 'A key to the Metamask Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/metamask.png',
+  },
   // {
   //   address: '',
   //   name: '',
