@@ -110,7 +110,7 @@ module.exports = [
   },
   {
     address: '0x79c91241eff1f119cdf743730f6e6fb2af7fb279',
-    name: 'Week in Ethereum News - 3 year annoversary Edition!',
+    name: 'Week in Ethereum News - 3 year anniversary Edition!',
     description:
       "A key to Evan Van Ness's special 3 year anniversary Edition of the Week In Ethereum News!",
     image: 'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
