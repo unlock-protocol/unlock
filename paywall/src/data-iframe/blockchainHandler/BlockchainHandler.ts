@@ -36,7 +36,8 @@ export function makeDefaultKeys(
     allKeys[address] = {
       lock: address,
       owner: account,
-      expiration: 0,
+      // Negative expiration is invalid, but it distinguishes "default" keys from real results
+      expiration: -1,
     }
     return allKeys
   }, {})

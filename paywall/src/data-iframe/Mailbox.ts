@@ -28,6 +28,12 @@ import {
 } from '../utils/normalizeAddresses'
 import localStorageAvailable from '../utils/localStorage'
 
+enum PaywallState {
+  locked,
+  unlocked,
+  none,
+}
+
 export default class Mailbox {
   private readonly useLocalStorageCache = false
   private readonly cachePrefix = '__unlockProtocol.cache'
@@ -164,6 +170,7 @@ export default class Mailbox {
    */
   getUnlockedLockAddresses() {
     if (!this.blockchainData) return []
+
     const data = this.blockchainData as BlockchainData
     // lock addresses are normalized by here
     return Object.keys(data.locks).filter(lockAddress => {
@@ -176,6 +183,50 @@ export default class Mailbox {
   }
 
   /**
+   * BlockchainHandler uses an expiration of -1 to indicate placeholder keys
+   * before we get results from the chain. We shouldn't decide whether the page
+   * is locked or not until we have a real key response for each lock on the page.
+   */
+  gotAllKeysFromChain = () => {
+    if (!this.blockchainData || !this.configuration) {
+      return false
+    }
+
+    const locks = Object.values(this.configuration.locks)
+    const keys = Object.values(this.blockchainData.keys)
+
+    const haveAKeyForEachLock = keys.length === locks.length
+    const allKeysAreReal = keys.every(key => key.expiration >= 0)
+
+    return haveAKeyForEachLock && allKeysAreReal
+  }
+
+  getPaywallState = (): PaywallState => {
+    if (!this.gotAllKeysFromChain()) {
+      return PaywallState.none
+    }
+
+    const { keys, transactions } = this.blockchainData
+    const now = new Date().getTime()
+    const anyKeyIsValid = Object.values(keys).some(
+      ({ expiration }) => expiration > now
+    )
+
+    if (anyKeyIsValid) {
+      return PaywallState.unlocked
+    }
+
+    const anySubmittedTransactions = Object.values(transactions).some(
+      ({ status }) => status === 'submitted'
+    )
+    if (anySubmittedTransactions) {
+      return PaywallState.unlocked
+    }
+
+    return PaywallState.locked
+  }
+
+  /**
    * When we receive PostMessages.SEND_UPDATES, it is sent here to
    * send data back to the main window
    */
@@ -185,12 +236,16 @@ export default class Mailbox {
     const { locks, account, balance, network } = this
       .blockchainData as BlockchainData
     const unlockedLocks = this.getUnlockedLockAddresses()
+    const paywallStatus = this.getPaywallState()
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(locks).length) {
-      // Don't send LOCKED unless we have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    switch (paywallStatus) {
+      case PaywallState.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallState.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
 
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
@@ -323,12 +378,16 @@ export default class Mailbox {
     this.postMessage(PostMessages.UPDATE_KEYS, keys)
     this.postMessage(PostMessages.UPDATE_TRANSACTIONS, transactions)
     const unlockedLocks = this.getUnlockedLockAddresses()
+    const paywallStatus = this.getPaywallState()
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(dataToSend.locks).length) {
-      // Only send LOCKED if we actually have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    switch (paywallStatus) {
+      case PaywallState.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallState.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
   }
 
