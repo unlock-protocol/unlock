@@ -126,6 +126,12 @@ module.exports = [
     name: 'Go Ethereum Supporters',
     description: 'A key to the Go Ethereum Supporters lock.',
   },
+  {
+    address: '0xe8846DE6aAF1B50A3e300cc2AB568D544709385B',
+    name: 'Web3.js Supporters',
+    description: 'A key to the Web3.js Supporters lock.',
+    image: 'https://assets.unlock-protocol.com/nft-images/web3js.png',
+  },
   // {
   //   address: '',
   //   name: '',
