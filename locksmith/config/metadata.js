@@ -147,7 +147,12 @@ module.exports = [
   {
     address: '0x84621384a1E8513181DaA4624aE16533B73dB7E7',
     name: 'Ethereum Book Donation',
-    description: 'A key to the Ethereum Book Donation Supporters lock.',
+    description: 'A key to the Ethereum Book Supporters lock.',
+  },
+  {
+    address: '0x75b8F32dd174b7adc759e7d813b953Faf6DD9445',
+    name: 'Remix IDE Donation',
+    description: 'A key to the Remix IDE Supporters lock.',
   },
   // {
   //   address: '',
