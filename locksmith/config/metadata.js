@@ -154,6 +154,11 @@ module.exports = [
     name: 'Remix IDE Donation',
     description: 'A key to the Remix IDE Supporters lock.',
   },
+  {
+    address: '0x05d473FEF303a686Edd8A79d9da3BD0a7AE01bB1',
+    name: 'Parity Supporter',
+    description: 'A key to the Parity Supporters lock.',
+  },
   // {
   //   address: '',
   //   name: '',
