@@ -121,6 +121,11 @@ module.exports = [
     description: 'A key to the WebTorrent Supporters lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/webtorrent.png',
   },
+  {
+    address: '0x0364c5D9C268a1870f49AD2819801624d8Ce0fF0',
+    name: 'Go Ethereum Supporters',
+    description: 'A key to the Go Ethereum Supporters lock.',
+  },
   // {
   //   address: '',
   //   name: '',
