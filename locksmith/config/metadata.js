@@ -144,6 +144,11 @@ module.exports = [
     description: 'A key to the Metamask Supporters lock.',
     image: 'https://assets.unlock-protocol.com/nft-images/metamask.png',
   },
+  {
+    address: '0x84621384a1E8513181DaA4624aE16533B73dB7E7',
+    name: 'Ethereum Book Donation',
+    description: 'A key to the Ethereum Book Donation Supporters lock.',
+  },
   // {
   //   address: '',
   //   name: '',
