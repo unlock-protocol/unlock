@@ -36,7 +36,11 @@ export function makeDefaultKeys(
     allKeys[address] = {
       lock: address,
       owner: account,
-      expiration: 0,
+      // Negative expiration is not valid. This is a hack to distinguish
+      // "default" keys from keys returned from Web3Service. In the long term we
+      // will remove the idea of "default" keys because they cause a lot of
+      // problems.
+      expiration: -1,
     }
     return allKeys
   }, {})

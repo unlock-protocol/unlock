@@ -218,7 +218,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[0],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[0]] || 0,
+        expiration: keyExpirations[lockAddresses[0]] || -1,
         lock: lockAddresses[0],
         owner: store.account,
         status: 'none',
@@ -233,7 +233,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[1],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[1]] || 0,
+        expiration: keyExpirations[lockAddresses[1]] || -1,
         lock: lockAddresses[1],
         owner: store.account,
         status: 'none',
@@ -248,7 +248,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[2],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[2]] || 0,
+        expiration: keyExpirations[lockAddresses[2]] || -1,
         lock: lockAddresses[2],
         owner: store.account,
         status: 'none',
