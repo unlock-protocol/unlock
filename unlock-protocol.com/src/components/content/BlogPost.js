@@ -178,6 +178,22 @@ const Body = styled.div`
     background-color: var(--lightgrey);
     padding: 20px;
   }
+
+  blockquote {
+    font-style: italic;
+    margin-left: 0px;
+    padding-left: 20px;
+    border-left: 2px solid var(--lightgrey);
+    color: var(--slate);
+  }
+
+  /* Captions */
+  img + em {
+    display: block;
+    font-size: 0.7em;
+    margin-bottom: 20px;
+    text-align: center;
+  }
 `
 
 export const AuthorName = styled.h3`
