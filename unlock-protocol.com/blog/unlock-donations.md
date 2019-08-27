@@ -3,7 +3,7 @@ title: Unlock Donations
 subTitle: Easily add a sponsorship button to your Github repository, using Unlock!
 authorName: Julien Genestoux
 publishDate: August 26, 2019
-description: "A sponsor or a donor is a member of a very unique club; the club of people and organizations which help someone do their work \"for free\" for the rest of the world. Unlock can easily be used to create sponsorships!"
+description: "A sponsor or a donor is a member of a unique club; the club of people and organizations which help someone do their work \"for free\" for the rest of the world. Unlock can easily be used to create sponsorships!"
 image: /static/images/blog/unlock-donations/supporting-member.jpg
 ---
 
