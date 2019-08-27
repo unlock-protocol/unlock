@@ -82,9 +82,24 @@ jest.mock('../../src/utils/keyData', () => {
   })
 })
 
+let mockOnChainLockOwnership = {
+  owner: jest.fn(() => {
+    return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+  }),
+}
+
+jest.mock('../../src/utils/lockData', () => {
+  return function() {
+    return mockOnChainLockOwnership
+  }
+})
+
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
+    mockOnChainLockOwnership.owner = jest.fn(() => {
+      return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+    })
   })
 
   describe('token data request', () => {
@@ -185,25 +200,19 @@ describe('Metadata Controller', () => {
         },
       })
     })
-    it('stores the provided lock metadata', async () => {
-      expect.assertions(1)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
+
+    describe('when the signee does not own the lock', () => {
+      beforeEach(() => {
+        mockOnChainLockOwnership.owner = jest.fn(() => {
+          return Promise.resolve(
+            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdfegdrtfeghr'
+          )
+        })
       })
 
-      let response = await request(app)
-        .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
-        .set('Accept', 'json')
-        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
-        .send(typedData)
-
-      expect(response.status).toEqual(202)
-    })
-
-    describe('when signature does not match', () => {
-      it('return an Unauthorized status code', async () => {
+      it('returns unauthorized', async () => {
         expect.assertions(1)
-        const sig = sigUtil.signTypedData(privateKey2, {
+        const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
         })
 
@@ -216,9 +225,85 @@ describe('Metadata Controller', () => {
         expect(response.status).toEqual(401)
       })
     })
+
+    describe('when the signee owns the lock', () => {
+      beforeAll(() => {
+        mockOnChainLockOwnership.owner = jest.fn(() => {
+          return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+        })
+      })
+
+      it('stores the provided lock metadata', async () => {
+        expect.assertions(1)
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(202)
+      })
+
+      describe('when signature does not match', () => {
+        it('return an Unauthorized status code', async () => {
+          expect.assertions(1)
+          const sig = sigUtil.signTypedData(privateKey2, {
+            data: typedData,
+          })
+
+          let response = await request(app)
+            .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
+            .set('Accept', 'json')
+            .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+            .send(typedData)
+
+          expect(response.status).toEqual(401)
+        })
+      })
+    })
   })
 
   describe('updateKeyMetadata', () => {
+    describe('when the signee does not own the lock', () => {
+      let typedData: any
+      beforeAll(() => {
+        typedData = generateKeyTypedData({
+          KeyMetaData: {
+            custom_field: 'custom value',
+            owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+          },
+        })
+
+        mockOnChainLockOwnership.owner = jest.fn(() => {
+          return Promise.resolve(
+            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdfegdrtfeghr'
+          )
+        })
+      })
+
+      it('returns unauthorized', async () => {
+        expect.assertions(1)
+
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+        })
+
+        let response = await request(app)
+          .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(401)
+      })
+    })
+  })
+
+  describe('when the signee owns the lock', () => {
     let typedData: any
     beforeAll(() => {
       typedData = generateKeyTypedData({
@@ -226,6 +311,10 @@ describe('Metadata Controller', () => {
           custom_field: 'custom value',
           owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
         },
+      })
+
+      mockOnChainLockOwnership.owner = jest.fn(() => {
+        return Promise.resolve('0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2')
       })
     })
 
