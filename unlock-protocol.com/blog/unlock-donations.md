@@ -7,22 +7,22 @@ description: "A sponsor or a donor is a member of a unique club; the club of peo
 image: /static/images/blog/unlock-donations/supporting-member.jpg
 ---
 
-Today, we're excited to unveil our work on donations. In the last few years, it became clear that the tech industry needed to have a deep reflexion about Open Source: who works on it, how they are being paid, who supports them... Companies like [OpenCollective](https://opencollective.com/) have laid the ground by providing tools for open source developers to raise funding and organize their work. Earlier this year, Github [introduced a new button](https://github.blog/2019-05-23-announcing-github-sponsors-a-new-way-to-contribute-to-open-source/) on repositories to let maintainers show options to support them.
+Today, we're excited to unveil our work on donations. In the last few years, it has become clear that the tech industry needs to have a deep reflection about Open Source: who works on it, how they are being paid, who supports them... Companies like [OpenCollective](https://opencollective.com/) have laid the groundwork by providing tools for open source developers to raise funds and organize their work. Earlier this year, Github [introduced a new button](https://github.blog/2019-05-23-announcing-github-sponsors-a-new-way-to-contribute-to-open-source/) on repositories to let maintainers show options to support them.
 
 ![sponsor unlock](/static/images/blog/unlock-donations/sponsor-unlock.png)
 *Become a member to Unlock from Github, and Unlock comments in this blog!*
 
-As you probably know, by now, Unlock is a **protocol for memberships**. A sponsor is a member of a very unique club: the club of people which help someone do their work "for free" for the rest of the world. Today, with a [simple tool](https://donate.unlock-protocol.com/about.html), creators can easily use their locks to raise funding for their work and create their own membership.
+As you probably know by now, Unlock is a **protocol for memberships**. A sponsor is a member of a unique club: the club of people which help someone do their work "for free" for the rest of the world. Today, with a [simple tool](https://donate.unlock-protocol.com/about.html), creators can easily use their locks to raise funds for their work and create their own membership.
 
 # More than money
 
 Of course, supporting Open Source works _starts_ with financial support, but it does not stop there. With Unlock, members receive their very own Non Fungible Token (a key!) which publicly shows their support (and reminds them of it in their own crypto wallets!). You can find the list of keys I own on [this OpenSea page](https://opensea.io/accounts/0xe5cd62ac8d2ca2a62a04958f07dd239c1ffe1a9e).
 
-Of course, one of the benefits of using Ethereum here rather than a private database is that these tokens have a life of their own and could be displayed anywhere like [our blue checkmark](https://unlock-protocol.com/blog/blue-checkmark-nft/)!
+Of course, one of the benefits of using Ethereum here rather than a private database is that these tokens have a life of their own and can be displayed anywhere like [our blue checkmark](https://unlock-protocol.com/blog/blue-checkmark-nft/)!
 
-Like any non fungible tokens, a supporter may also change their mind, and could ether burn their token or transfer it to someone else.
+Like any non fungible tokens, a supporter may also change their mind, and could either burn their token or transfer it to someone else.
 
-Additionally, the membership itself can also be re-used to eventually limit access to some features. As Taylor from MyCrypto puts it in their [Unlock donation page](https://donate.unlock-protocol.com/?thank-you=VGhhbmsgeW91IGZvciBjaG9vc2luZyB0byBiZSBhIE15Q3J5cHRvIHN1cHBvcnRlciEg4p2k77iPCgpBdCB0aGlzIHRpbWUsIHlvdXIgc3VwcG9ydCBpcyBhIHNpbXBsZSBkb25hdGlvbiB0aGF0IGhlbHBzIHVzIGNvbnRpbnVlIHdvcmtpbmcgdG8gYnJpbmcgeW91IHByb2R1Y3RzLgoKSW4gdGhlIGZ1dHVyZSB3ZSdsbCBiZSBmdXJ0aGVyIGRldmVsb3BpbmcgdGhpcyBmdW5jdGlvbmFsaXR5IHdpdGggdGhlIFVubG9jayBQcm90b2NvbCB0ZWFtIHRvIHJld2FyZCBzdXBwb3J0ZXJzIHdpdGggdGhpbmdzIGxpa2UgY3VzdG9tIHRoZW1lcywgc3dhZywgYW5kIG1vcmUuCgotVGF5bG9yICYgVGVhbSBNeUNyeXB0bw==&config=eyJwZXJzaXN0ZW50Q2hlY2tvdXQiOnRydWUsImljb24iOiJodHRwczovL2Fzc2V0cy51bmxvY2stcHJvdG9jb2wuY29tL3RtcC9teS1jcnlwdG8ucG5nIiwiY2FsbFRvQWN0aW9uIjp7ImRlZmF1bHQiOiJTdXBwb3J0IHRoZSBNeUNyeXB0byB0ZWFtIGFuZCB1bmxvY2sgeW91ciBtZW1iZXJzaGlwIHRvZGF5IVxuXG5Zb3UgY2FuIG1ha2UgYSBkb25hdGlvbiBieSBwdXJjaGFzaW5nIGEga2V5IHVzaW5nIHlvdXIgRXRoZXJldW0gd2FsbGV0LiBUaGUga2V5IGlzIGEgbm9uIGZ1bmdpYmxlIHRva2VuIHdoaWNoIHJlcHJlc2VudHMgeW91ciBtZW1iZXJzaGlwLiAifSwibG9ja3MiOnsiMHgxNGU4MTE5NmU2MGIxMjg1MjdkYjAzZDQwYmRiYTAwNzEwNzc3ODA1Ijp7Im5hbWUiOiJNeUNyeXB0byBNZW1iZXJzIn19fQ==&):
+Additionally, the membership itself can be re-used to eventually limit access to some features. As Taylor from MyCrypto puts it in their [Unlock donation page](https://donate.unlock-protocol.com/?thank-you=VGhhbmsgeW91IGZvciBjaG9vc2luZyB0byBiZSBhIE15Q3J5cHRvIHN1cHBvcnRlciEg4p2k77iPCgpBdCB0aGlzIHRpbWUsIHlvdXIgc3VwcG9ydCBpcyBhIHNpbXBsZSBkb25hdGlvbiB0aGF0IGhlbHBzIHVzIGNvbnRpbnVlIHdvcmtpbmcgdG8gYnJpbmcgeW91IHByb2R1Y3RzLgoKSW4gdGhlIGZ1dHVyZSB3ZSdsbCBiZSBmdXJ0aGVyIGRldmVsb3BpbmcgdGhpcyBmdW5jdGlvbmFsaXR5IHdpdGggdGhlIFVubG9jayBQcm90b2NvbCB0ZWFtIHRvIHJld2FyZCBzdXBwb3J0ZXJzIHdpdGggdGhpbmdzIGxpa2UgY3VzdG9tIHRoZW1lcywgc3dhZywgYW5kIG1vcmUuCgotVGF5bG9yICYgVGVhbSBNeUNyeXB0bw==&config=eyJwZXJzaXN0ZW50Q2hlY2tvdXQiOnRydWUsImljb24iOiJodHRwczovL2Fzc2V0cy51bmxvY2stcHJvdG9jb2wuY29tL3RtcC9teS1jcnlwdG8ucG5nIiwiY2FsbFRvQWN0aW9uIjp7ImRlZmF1bHQiOiJTdXBwb3J0IHRoZSBNeUNyeXB0byB0ZWFtIGFuZCB1bmxvY2sgeW91ciBtZW1iZXJzaGlwIHRvZGF5IVxuXG5Zb3UgY2FuIG1ha2UgYSBkb25hdGlvbiBieSBwdXJjaGFzaW5nIGEga2V5IHVzaW5nIHlvdXIgRXRoZXJldW0gd2FsbGV0LiBUaGUga2V5IGlzIGEgbm9uIGZ1bmdpYmxlIHRva2VuIHdoaWNoIHJlcHJlc2VudHMgeW91ciBtZW1iZXJzaGlwLiAifSwibG9ja3MiOnsiMHgxNGU4MTE5NmU2MGIxMjg1MjdkYjAzZDQwYmRiYTAwNzEwNzc3ODA1Ijp7Im5hbWUiOiJNeUNyeXB0byBNZW1iZXJzIn19fQ==&):
 
 
 > Thank you for choosing to be a MyCrypto supporter! ❤️
@@ -38,17 +38,17 @@ Additionally, the membership itself can also be re-used to eventually limit acce
 
 So, do you want to join [MyCrypto](https://github.com/MyCryptoHQ/mycrypto), [WalletConnect](WalletConnect) or [Eth Gas Reporter](https://github.com/cgewecke/eth-gas-reporter) and receive donations on Github with Unlock? Let's get started.
 
-The first step is to [deploy your first lock](https://unlock-protocol.com/blog/create-first-lock/). We'd recommend starting with a low price (1 DAI) and short duration (30 days), as well as maybe a limited number of member (100!). These early adopters will probably be your biggest fans! You can also, now or later add another lock, more expensive, for more members.
+The first step is to [deploy your first lock](https://unlock-protocol.com/blog/create-first-lock/). We'd recommend starting with a low price (1 DAI) and short duration (30 days), as well as maybe a limited number of members (100!). These early adopters will probably be your biggest fans! You can also, now or later, add another more expensive lock for other members.
 
-Then, hop onto our helper page to generate the right configuration for the donation page. You can pick an URL, set up your own call to action, as well as a think you note that members will be able to see. Add the lock address from the previous step, as well as its name.
+Then, hop onto our helper page to generate the right configuration for the donation page. You can pick an URL, set up your own call to action, as well as a thank you note that members will be able to see. Add the lock address from the previous step, as well as its name.
 
-Once generated you will be a JSON blob that you need to save as file named <code>.unlock-protocol.config.js</code> at the root of your Github repository.
+Once generated you will see a JSON blob that you need to save as file named <code>.unlock-protocol.config.js</code> at the root of your Github repository.
 
-Once it is saved, you need to head over to your project's settings pages. In the features section, there should be a "Sponsorship" section. Make sure it is enabled.
+Once it is saved, you need to head over to your project's settings pages. In the "Features" tab there should be a "Sponsorship" section. Make sure it is enabled.
 
 ![enable sponsorship](/static/images/blog/unlock-donations/enable-sponsorship.png)
 
-After enabled, click on the "Set up sponsor button". This will let you edit a file named `.github/FUNDING.yml` which can also be found in your repository. Replace the last line with
+After enabling sponsorships, click on the "Set up sponsor button". This will let you edit a file named `.github/FUNDING.yml` which can also be found in your repository. Replace the last line with
 
 `custom: https://donate.unlock-protocol.com/?r=<ORG>/<REPO>`
 
