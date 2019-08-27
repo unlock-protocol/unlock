@@ -16,17 +16,17 @@ describe('BlockchainHandler - makeDefaultKeys', () => {
         [lowerAddresses[0].toLowerCase()]: {
           lock: lowerAddresses[0],
           owner: account,
-          expiration: 0,
+          expiration: -1,
         },
         [lowerAddresses[1].toLowerCase()]: {
           lock: lowerAddresses[1],
           owner: account,
-          expiration: 0,
+          expiration: -1,
         },
         [lowerAddresses[2].toLowerCase()]: {
           lock: lowerAddresses[2],
           owner: account,
-          expiration: 0,
+          expiration: -1,
         },
       }
 
