@@ -63,6 +63,11 @@ describe('BlockchainHandler - createTemporaryKey', () => {
     setupDefaults()
   })
 
+  // The times tested here should only ever be off by a fraction of a second
+  const approximatelyEquals = (a: number, b: number, tolerance: number = 1) => {
+    return b - tolerance < a && a < b + tolerance
+  }
+
   it("should create a temporary key based on the lock's expiration", () => {
     expect.assertions(3)
     ;(handler as any).store.locks = {
@@ -83,7 +88,9 @@ describe('BlockchainHandler - createTemporaryKey', () => {
     const temporaryKey = handler.createTemporaryKey(tx)
     expect(temporaryKey.lock).toBe(lockAddresses[0])
     expect(temporaryKey.owner).toBe('0xC0FFEE')
-    expect(temporaryKey.expiration).toBe(expectedExpiration)
+    expect(
+      approximatelyEquals(temporaryKey.expiration, expectedExpiration)
+    ).toBeTruthy()
   })
 
   it('should create a temporary key based on the default value', () => {
@@ -104,6 +111,8 @@ describe('BlockchainHandler - createTemporaryKey', () => {
     const temporaryKey = handler.createTemporaryKey(tx)
     expect(temporaryKey.lock).toBe(lockAddresses[1])
     expect(temporaryKey.owner).toBe('0xDECADE')
-    expect(temporaryKey.expiration).toBe(expectedExpiration)
+    expect(
+      approximatelyEquals(temporaryKey.expiration, expectedExpiration)
+    ).toBeTruthy()
   })
 })

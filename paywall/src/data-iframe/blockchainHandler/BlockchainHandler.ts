@@ -414,22 +414,9 @@ export default class BlockchainHandler {
         if (type === TransactionType.KEY_PURCHASE) {
           // If this is a key purchase, we create a fake key that will be used
           // to unlock the paywall until the transaction is mined.
-          const aDayInSeconds = 60 * 60 * 24
+          const temporaryKey = this.createTemporaryKey(newTransaction)
 
-          // There is a slim chance that we don't have the lock in state yet. So
-          // the default grace period will be 24 hours.
-          const { expirationDuration } = this.store.locks[
-            newTransaction.to
-          ] || { expirationDuration: aDayInSeconds }
-          const currentTimeInSeconds = new Date().getTime() / 1000
-
-          this.store.keys[newTransaction.to] = {
-            lock: newTransaction.to,
-            owner: newTransaction.from,
-            // Placeholder expiration, will write over when we get a real key from
-            // web3Service
-            expiration: currentTimeInSeconds + expirationDuration,
-          }
+          this.store.keys[newTransaction.to] = temporaryKey
         }
 
         mergeUpdate(hash, 'transactions', newTransaction, {
