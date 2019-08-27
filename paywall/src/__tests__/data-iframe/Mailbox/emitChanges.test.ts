@@ -110,6 +110,12 @@ describe('Mailbox - emitChanges', () => {
   describe('with locked locks', () => {
     beforeEach(() => {
       setupDefaults()
+      testingMailbox().configuration = {
+        locks: {
+          [lockAddresses[0]]: { name: '' },
+          [lockAddresses[1]]: { name: '' },
+        },
+      }
     })
 
     it.each(<TestSent[]>[
@@ -133,6 +139,21 @@ describe('Mailbox - emitChanges', () => {
   describe('with unlocked locks', () => {
     beforeEach(() => {
       setupDefaults()
+      testingMailbox().configuration = {
+        locks: {
+          [lockAddresses[0]]: { name: '' },
+        },
+      }
+
+      const theFuture = new Date().getTime() / 1000 + 2000
+
+      testingMailbox().blockchainData = blockchainDataUnlocked
+      testingMailbox().blockchainData.keys[
+        lockAddresses[0]
+      ].expiration = theFuture
+      testingMailbox().blockchainData.locks[lockAddresses[0]].key = {
+        status: 'valid',
+      }
     })
 
     it.each(<TestSent[]>[

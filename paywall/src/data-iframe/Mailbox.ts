@@ -387,11 +387,16 @@ export default class Mailbox {
     this.postMessage(PostMessages.UPDATE_TRANSACTIONS, transactions)
     const unlockedLocks = this.getUnlockedLockAddresses()
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(dataToSend.locks).length) {
-      // Only send LOCKED if we actually have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    const paywallStatus = this.getPaywallStatus()
+
+    switch (paywallStatus) {
+      case PaywallStatus.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallStatus.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
   }
 
