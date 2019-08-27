@@ -212,6 +212,28 @@ export default class Mailbox {
     return haveAKeyForEachLock && allKeysAreReal
   }
 
+  getPaywallState = (): PaywallStatus => {
+    // Too soon for us to say whether the page is locked or unlocked
+    if (!this.gotAllKeysFromChain()) {
+      return PaywallStatus.none
+    }
+
+    const { keys } = this.blockchainData
+    // key expiration timestamps are in seconds, not milliseconds
+    const currentTimeInSeconds = new Date().getTime() / 1000
+    const anyKeyIsValid = Object.values(keys).some(({ expiration }) => {
+      return expiration > currentTimeInSeconds
+    })
+
+    // Submitted/pending transactions are given a longer expiration until they are mined.
+    if (anyKeyIsValid) {
+      return PaywallStatus.unlocked
+    }
+
+    // No valid keys, lock the page
+    return PaywallStatus.locked
+  }
+
   /**
    * When we receive PostMessages.SEND_UPDATES, it is sent here to
    * send data back to the main window
