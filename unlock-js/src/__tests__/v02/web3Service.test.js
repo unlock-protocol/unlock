@@ -474,7 +474,7 @@ describe('Web3Service', () => {
   })
 
   describe('_parseTransactionFromInput', () => {
-    it('should emit transaction.updated with the transaction marked as pending', async done => {
+    it('should emit transaction.updated with the transaction marked with the right state', async done => {
       expect.assertions(2)
       await versionedNockBeforeEach()
       web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
@@ -495,7 +495,8 @@ describe('Web3Service', () => {
         transaction.hash,
         UnlockVersion.Unlock,
         input,
-        web3Service.unlockContractAddress
+        web3Service.unlockContractAddress,
+        'pending'
       )
     })
 

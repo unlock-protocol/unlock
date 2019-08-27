@@ -6,9 +6,18 @@ import {
   FetchWindow,
   SetTimeoutWindow,
   ConstantsType,
+  BlockchainData,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
-import { PaywallConfig, Locks } from '../../unlockTypes'
+import {
+  PaywallConfig,
+  Locks,
+  Lock,
+  TransactionStatus,
+  TransactionType,
+} from '../../unlockTypes'
 import FakeWindow from './fakeWindowHelpers'
+
+// TODO: this needs a lot of cleanup. Lots of redundancies.
 
 export function getWalletService(listeners: { [key: string]: Function }) {
   const walletService: WalletServiceType = {
@@ -73,6 +82,8 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
   }
   return web3Service
 }
+
+export const accountAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
 export const addresses = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -249,4 +260,100 @@ export function getDefaultFullLocks(
       currencyContractAddress: null,
     },
   }
+}
+
+const firstLockAddress = lockAddresses[0]
+export const firstLockLocked: Lock = {
+  address: firstLockAddress,
+  name: 'The First Lock',
+  expirationDuration: 5,
+  keyPrice: '1',
+  key: {
+    status: 'none',
+    confirmations: 0,
+    expiration: 0,
+    transactions: [],
+    owner: accountAddress,
+    lock: firstLockAddress,
+  },
+  currencyContractAddress: addresses[2],
+}
+
+export const firstLockSubmitted: Lock = {
+  ...firstLockLocked,
+  key: {
+    ...firstLockLocked.key,
+    status: 'submitted',
+    transactions: [
+      {
+        status: TransactionStatus.SUBMITTED,
+        confirmations: 0,
+        hash: 'hash',
+        type: TransactionType.KEY_PURCHASE,
+        blockNumber: Number.MAX_SAFE_INTEGER,
+      },
+    ],
+  },
+}
+
+const secondLockAddress = lockAddresses[1]
+export const secondLockLocked: Lock = {
+  address: secondLockAddress,
+  name: 'The Second Lock',
+  expirationDuration: 5,
+  keyPrice: '1',
+  key: {
+    status: 'expired',
+    confirmations: 1678234,
+    expiration: 163984,
+    transactions: [
+      {
+        status: TransactionStatus.MINED,
+        confirmations: 1678234,
+        hash: 'hash',
+        type: TransactionType.KEY_PURCHASE,
+        blockNumber: 123,
+      },
+    ],
+    owner: accountAddress,
+    lock: secondLockAddress,
+  },
+  currencyContractAddress: addresses[2],
+}
+
+export const blockchainDataNoLocks: BlockchainData = {
+  account: accountAddress,
+  balance: '234',
+  network: 1984,
+  locks: {},
+  keys: {},
+  transactions: {},
+}
+
+export const blockchainDataLocked: BlockchainData = {
+  ...blockchainDataNoLocks,
+  locks: {
+    [firstLockAddress]: firstLockLocked,
+    [secondLockAddress]: secondLockLocked,
+  },
+  keys: {
+    [firstLockAddress]: firstLockLocked.key,
+    [secondLockAddress]: secondLockLocked.key,
+  },
+  transactions: {
+    hash: secondLockLocked.key.transactions[0],
+  },
+}
+
+export const blockchainDataUnlocked: BlockchainData = {
+  ...blockchainDataNoLocks,
+  locks: {
+    [firstLockAddress]: firstLockSubmitted,
+  },
+  keys: {
+    [firstLockAddress]: firstLockSubmitted.key,
+  },
+  transactions: {
+    hash: firstLockSubmitted.key.transactions[0],
+  },
 }
