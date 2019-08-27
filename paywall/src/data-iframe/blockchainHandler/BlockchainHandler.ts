@@ -248,6 +248,30 @@ export default class BlockchainHandler {
   }
 
   /**
+   * When we receive new key purchases, we create temporary keys that will be
+   * used to unlock the paywall until the transaction is mined.
+   */
+  createTemporaryKey = (tx: TransactionDefaults) => {
+    // There is a slim chance that we don't have the lock in state yet. So
+    // the default grace period will be 24 hours.
+    const aDayInSeconds = 60 * 60 * 24
+    const expirationDefault = { expirationDuration: aDayInSeconds }
+
+    const { expirationDuration } = this.store.locks[tx.to] || expirationDefault
+    const currentTimeInSeconds = new Date().getTime() / 1000
+
+    const temporaryKey = {
+      lock: tx.to,
+      owner: tx.from,
+      // Placeholder expiration, will write over when we get a real key from
+      // web3Service
+      expiration: currentTimeInSeconds + expirationDuration,
+    }
+
+    return temporaryKey
+  }
+
+  /**
    * Set up the event listeners on walletService and web3Service
    */
   setupListeners() {
