@@ -212,6 +212,11 @@ export default class Mailbox {
     return haveAKeyForEachLock && allKeysAreReal
   }
 
+  /**
+   * getPaywallStatus determines whether the paywall is locked or unlocked based
+   * only on the `keys` in the blockchainData. If we haven't yet got all the
+   * keys, it defers its decision until we do.
+   */
   getPaywallStatus = (): PaywallStatus => {
     // Too soon for us to say whether the page is locked or unlocked
     if (!this.gotAllKeysFromChain()) {
@@ -225,7 +230,6 @@ export default class Mailbox {
       return expiration > currentTimeInSeconds
     })
 
-    // Submitted/pending transactions are given a longer expiration until they are mined.
     if (anyKeyIsValid) {
       return PaywallStatus.unlocked
     }
