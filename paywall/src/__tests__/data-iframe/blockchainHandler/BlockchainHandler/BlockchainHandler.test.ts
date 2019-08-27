@@ -7,7 +7,9 @@ import {
   SetTimeoutWindow,
   LocksmithTransactionsResult,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  makeDefaultKeys,
+} from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import {
   defaultValuesOverride,
   BlockchainTestDefaults,
@@ -92,23 +94,7 @@ describe('BlockchainHandler class setup', () => {
       },
       account: null,
       balance: '0',
-      keys: {
-        [lockAddresses[0]]: {
-          lock: lockAddresses[0],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[1]]: {
-          lock: lockAddresses[1],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[2]]: {
-          lock: lockAddresses[2],
-          owner: null,
-          expiration: 0,
-        },
-      }, // default keys for each lock are created
+      keys: makeDefaultKeys(lockAddresses, null),
       locks: {},
       transactions: {},
       network: 1984, // default network is used for network

@@ -202,12 +202,12 @@ describe('BlockchainHandler - setupListeners', () => {
         [lockAddresses[1]]: {
           lock: lockAddresses[1],
           owner: store.account,
-          expiration: 0,
+          expiration: -1,
         },
         [lockAddresses[2]]: {
           lock: lockAddresses[2],
           owner: store.account,
-          expiration: 0,
+          expiration: -1,
         },
       })
     })

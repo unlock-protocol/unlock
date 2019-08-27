@@ -13,13 +13,16 @@ import {
   setupTestDefaults,
   MailboxTestDefaults,
 } from '../../test-helpers/setupMailboxHelpers'
-import BlockchainHandler from '../../../data-iframe/blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  makeDefaultKeys,
+} from '../../../data-iframe/blockchainHandler/BlockchainHandler'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PostMessages } from '../../../messageTypes'
 import { waitFor } from '../../../utils/promises'
 import {
   getWalletService,
   getWeb3Service,
+  lockAddresses,
 } from '../../test-helpers/setupBlockchainHelpers'
 
 let mockWalletService: WalletServiceType
@@ -180,23 +183,7 @@ describe('Mailbox - init', () => {
       // Even though we are in a null state (just initialized), there
       // are keys here because of makeDefaultKeys. Somewhat confusing,
       // but at least there's a comment now.
-      keys: {
-        '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-          expiration: 0,
-          lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-          owner: null,
-        },
-        '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-          expiration: 0,
-          lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-          owner: null,
-        },
-        '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-          expiration: 0,
-          lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-          owner: null,
-        },
-      },
+      keys: makeDefaultKeys(lockAddresses, null),
       transactions: {},
     })
   })
