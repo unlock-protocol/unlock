@@ -28,6 +28,15 @@ import {
 } from '../utils/normalizeAddresses'
 import localStorageAvailable from '../utils/localStorage'
 
+// This enum is only used internal to the Mailbox. A boolean won't do because
+// there is a state where we are neither locked nor unlocked because we don't
+// have all the data from the chain yet.
+export enum PaywallStatus {
+  locked = 'LOCKED',
+  unlocked = 'UNLOCKED',
+  none = 'NONE',
+}
+
 export default class Mailbox {
   private readonly useLocalStorageCache = false
   private readonly cachePrefix = '__unlockProtocol.cache'
@@ -173,6 +182,34 @@ export default class Mailbox {
         lock.key.status
       )
     })
+  }
+
+  /**
+   * BlockchainHandler uses an expiration of -1 to indicate placeholder keys
+   * before we get results from the chain. We shouldn't decide whether the page
+   * is locked or not until we have a real key response for each lock on the page.
+   */
+  gotAllKeysFromChain = () => {
+    // We can't have gotten data from the chain if there is no data
+    if (!this.blockchainData || !this.configuration) {
+      return false
+    }
+
+    const lockAddresses = Object.keys(this.configuration.locks)
+    const { keys } = this.blockchainData
+
+    // Every lock address in the paywall config must have a matching key
+    // (whether valid or not) for us to have gotten all data from the chain
+    const haveAKeyForEachLock = lockAddresses.every(address => {
+      return keys[address]
+    })
+
+    // All keys that come from web3service have `expiration` >= 0
+    // So if all keys in the blockchain data satisfy that constraint, they all
+    // came from web3Service
+    const allKeysAreReal = Object.values(keys).every(key => key.expiration >= 0)
+
+    return haveAKeyForEachLock && allKeysAreReal
   }
 
   /**
