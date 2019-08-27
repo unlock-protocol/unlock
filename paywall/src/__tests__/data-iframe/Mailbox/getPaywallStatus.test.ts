@@ -77,6 +77,15 @@ const validKeysData = {
   },
 }
 
+const oneValidKeyData = {
+  ...notEnoughKeysData,
+  keys: {
+    [lockAddresses[1]]: {
+      expiration: theFuture,
+    },
+  },
+}
+
 describe('Mailbox - getPaywallState', () => {
   let constants: ConstantsType
   let win: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
@@ -103,7 +112,23 @@ describe('Mailbox - getPaywallState', () => {
     testingMailbox().setConfig(defaults.configuration)
   })
 
-  it('should return PaywallStatus.none when we do not have all keys from chain', () => {
+  it('should return PaywallStatus.none when blockchainData is null', () => {
+    expect.assertions(1)
+
+    testingMailbox().blockchainData = null
+
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.none)
+  })
+
+  it('should return PaywallStatus.none when configuration is null', () => {
+    expect.assertions(1)
+
+    testingMailbox().configuration = null
+
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.none)
+  })
+
+  it('should return PaywallStatus.none when we do not have all keys from chain, and there are no valid keys', () => {
     expect.assertions(1)
 
     testingMailbox().setBlockchainData(notEnoughKeysData)
@@ -119,7 +144,15 @@ describe('Mailbox - getPaywallState', () => {
     expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.locked)
   })
 
-  it('should return PaywallStatus.unlocked when there is a valid key', () => {
+  it('should return PaywallStatus.unlocked when there is a valid key (do not have all data)', () => {
+    expect.assertions(1)
+
+    testingMailbox().setBlockchainData(oneValidKeyData)
+
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.unlocked)
+  })
+
+  it('should return PaywallStatus.unlocked when there is a valid key (have all data)', () => {
     expect.assertions(1)
 
     testingMailbox().setBlockchainData(validKeysData)

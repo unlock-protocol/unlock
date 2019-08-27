@@ -218,11 +218,13 @@ export default class Mailbox {
    * keys, it defers its decision until we do.
    */
   getPaywallStatus = (): PaywallStatus => {
-    // Too soon for us to say whether the page is locked or unlocked
-    if (!this.gotAllKeysFromChain()) {
+    // Can't make a decision if we don't have data
+    if (!this.blockchainData || !this.configuration) {
       return PaywallStatus.none
     }
 
+    // Check the keys first, because if there is a single valid key we can
+    // unlock even if we haven't gotten all keys from the blockchain
     const { keys } = this.blockchainData
     // key expiration timestamps are in seconds, not milliseconds
     const currentTimeInSeconds = new Date().getTime() / 1000
@@ -232,6 +234,11 @@ export default class Mailbox {
 
     if (anyKeyIsValid) {
       return PaywallStatus.unlocked
+    }
+
+    // Too soon for us to say definitively that the page is locked
+    if (!this.gotAllKeysFromChain()) {
+      return PaywallStatus.none
     }
 
     // No valid keys, lock the page
