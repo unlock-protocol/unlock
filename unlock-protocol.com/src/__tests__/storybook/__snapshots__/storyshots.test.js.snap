@@ -1904,6 +1904,21 @@ Object {
   padding: 20px;
 }
 
+.c18 blockquote {
+  font-style: italic;
+  margin-left: 0px;
+  padding-left: 20px;
+  border-left: 2px solid var(--lightgrey);
+  color: var(--slate);
+}
+
+.c18 img + em {
+  display: block;
+  font-size: 0.7em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -2681,7 +2696,7 @@ are intentionally not generated from this file date, in case we want to override
             </div>
           </div>
           <div
-            class="b1qsww-6 llwqIY"
+            class="b1qsww-6 cnhgVH"
           >
             <div>
               <p>
@@ -3931,6 +3946,21 @@ Object {
   padding: 20px;
 }
 
+.c6 blockquote {
+  font-style: italic;
+  margin-left: 0px;
+  padding-left: 20px;
+  border-left: 2px solid var(--lightgrey);
+  color: var(--slate);
+}
+
+.c6 img + em {
+  display: block;
+  font-size: 0.7em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4208,7 +4238,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 llwqIY"
+        class="b1qsww-6 cnhgVH"
       >
         <div>
           <p>
@@ -4533,6 +4563,21 @@ Object {
   padding: 20px;
 }
 
+.c5 blockquote {
+  font-style: italic;
+  margin-left: 0px;
+  padding-left: 20px;
+  border-left: 2px solid var(--lightgrey);
+  color: var(--slate);
+}
+
+.c5 img + em {
+  display: block;
+  font-size: 0.7em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4802,7 +4847,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 llwqIY"
+        class="b1qsww-6 cnhgVH"
       >
         <div>
           <p>
@@ -5127,6 +5172,21 @@ Object {
   padding: 20px;
 }
 
+.c5 blockquote {
+  font-style: italic;
+  margin-left: 0px;
+  padding-left: 20px;
+  border-left: 2px solid var(--lightgrey);
+  color: var(--slate);
+}
+
+.c5 img + em {
+  display: block;
+  font-size: 0.7em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -5396,7 +5456,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 llwqIY"
+        class="b1qsww-6 cnhgVH"
       >
         <div>
           <p>
@@ -5730,6 +5790,21 @@ Object {
   padding: 20px;
 }
 
+.c6 blockquote {
+  font-style: italic;
+  margin-left: 0px;
+  padding-left: 20px;
+  border-left: 2px solid var(--lightgrey);
+  color: var(--slate);
+}
+
+.c6 img + em {
+  display: block;
+  font-size: 0.7em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -6007,7 +6082,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </div>
       </div>
       <div
-        class="b1qsww-6 llwqIY"
+        class="b1qsww-6 cnhgVH"
       >
         <div>
           <p>
