@@ -266,7 +266,7 @@ const firstLockAddress = lockAddresses[0]
 export const firstLockLocked: Lock = {
   address: firstLockAddress,
   name: 'The First Lock',
-  expirationDuration: 5,
+  expirationDuration: 500,
   keyPrice: '1',
   key: {
     status: 'none',
@@ -277,6 +277,26 @@ export const firstLockLocked: Lock = {
     lock: firstLockAddress,
   },
   currencyContractAddress: addresses[2],
+}
+
+export const firstLockMined: Lock = {
+  ...firstLockLocked,
+  key: {
+    status: 'confirming',
+    confirmations: 1,
+    expiration: new Date().getTime() / 1000 + 500,
+    transactions: [
+      {
+        status: TransactionStatus.MINED,
+        confirmations: 1,
+        hash: 'hash',
+        type: TransactionType.KEY_PURCHASE,
+        blockNumber: Number.MAX_SAFE_INTEGER,
+      },
+    ],
+    owner: accountAddress,
+    lock: firstLockAddress,
+  },
 }
 
 export const firstLockSubmitted: Lock = {
@@ -345,7 +365,7 @@ export const blockchainDataLocked: BlockchainData = {
   },
 }
 
-export const blockchainDataUnlocked: BlockchainData = {
+export const blockchainDataUnlockedSubmitted: BlockchainData = {
   ...blockchainDataNoLocks,
   locks: {
     [firstLockAddress]: firstLockSubmitted,
@@ -355,5 +375,18 @@ export const blockchainDataUnlocked: BlockchainData = {
   },
   transactions: {
     hash: firstLockSubmitted.key.transactions[0],
+  },
+}
+
+export const blockchainDataUnlockedMined: BlockchainData = {
+  ...blockchainDataNoLocks,
+  locks: {
+    [firstLockAddress]: firstLockMined,
+  },
+  keys: {
+    [firstLockAddress]: firstLockMined.key,
+  },
+  transactions: {
+    hash: firstLockMined.key.transactions[0],
   },
 }

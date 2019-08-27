@@ -21,7 +21,8 @@ import {
   lockAddresses,
   blockchainDataLocked,
   blockchainDataNoLocks,
-  blockchainDataUnlocked,
+  blockchainDataUnlockedSubmitted,
+  blockchainDataUnlockedMined,
 } from '../../test-helpers/setupBlockchainHelpers'
 
 let mockWalletService: WalletServiceType
@@ -51,7 +52,8 @@ describe('Mailbox - sendUpdates', () => {
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
   const testingData: BlockchainData = blockchainDataLocked
-  const testingDataUnlocked = blockchainDataUnlocked
+  const testingDataUnlockedSubmitted = blockchainDataUnlockedSubmitted
+  const testingDataUnlockedMined = blockchainDataUnlockedMined
   const testingDataWithoutLocks: BlockchainData = blockchainDataNoLocks
 
   function setupDefaults() {
@@ -172,10 +174,22 @@ describe('Mailbox - sendUpdates', () => {
         fakeWindow.expectPostMessageSent(PostMessages.LOCKED, payload)
       })
 
-      it('should send "unlocked" when there are valid keys', async () => {
+      it('should send "unlocked" when there are valid keys (mined)', async () => {
         expect.assertions(1)
         const payload = [lockAddresses[0]]
-        testingMailbox().blockchainData = testingDataUnlocked
+        testingMailbox().blockchainData = testingDataUnlockedMined
+        testingMailbox().configuration.locks = [{ name: 1 }]
+
+        mailbox.sendUpdates('locks')
+        await fakeWindow.waitForPostMessage()
+
+        fakeWindow.expectPostMessageSent(PostMessages.UNLOCKED, payload)
+      })
+
+      it('should send "unlocked" when there are valid keys (submitted)', async () => {
+        expect.assertions(1)
+        const payload = [lockAddresses[0]]
+        testingMailbox().blockchainData = testingDataUnlockedSubmitted
         testingMailbox().configuration.locks = [{ name: 1 }]
 
         mailbox.sendUpdates('locks')

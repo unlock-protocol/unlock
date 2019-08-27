@@ -207,9 +207,9 @@ export default class Mailbox {
     }
 
     const { keys, transactions } = this.blockchainData
-    const now = new Date().getTime()
+    const currentTimeInSeconds = new Date().getTime() / 1000
     const anyKeyIsValid = Object.values(keys).some(
-      ({ expiration }) => expiration > now
+      ({ expiration }) => expiration > currentTimeInSeconds
     )
 
     if (anyKeyIsValid) {

@@ -18,7 +18,7 @@ import {
   lockAddresses,
   blockchainDataNoLocks,
   blockchainDataLocked,
-  blockchainDataUnlocked,
+  blockchainDataUnlockedSubmitted,
 } from '../../test-helpers/setupBlockchainHelpers'
 import { PostMessages, ExtractPayload } from '../../../messageTypes'
 
@@ -51,7 +51,7 @@ describe('Mailbox - emitChanges', () => {
   // all locks have had their addresses normalized before arriving
   const lockedLocks = blockchainDataLocked
 
-  const submittedLocks = blockchainDataUnlocked
+  const submittedLocks = blockchainDataUnlockedSubmitted
 
   const noLocks = blockchainDataNoLocks
 
