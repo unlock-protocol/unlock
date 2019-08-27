@@ -17,13 +17,9 @@ import {
   getWalletService,
   getWeb3Service,
   lockAddresses,
-  addresses,
+  blockchainDataLocked,
 } from '../../test-helpers/setupBlockchainHelpers'
-import {
-  PaywallConfig,
-  TransactionStatus,
-  TransactionType,
-} from '../../../unlockTypes'
+import { PaywallConfig } from '../../../unlockTypes'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -51,53 +47,8 @@ describe('Mailbox - saveCacheInLocalStorage', () => {
   let mailbox: Mailbox
   let defaults: MailboxTestDefaults
 
-  const account = addresses[1]
   // all locks have had their addresses normalized before arriving
-  const blockchainData: BlockchainData = {
-    account: addresses[1],
-    balance: '234',
-    network: 1984,
-    locks: {
-      [lockAddresses[0]]: {
-        address: lockAddresses[0],
-        name: '1',
-        expirationDuration: 5,
-        currencyContractAddress: addresses[2],
-        keyPrice: '1',
-        key: {
-          status: 'none',
-          confirmations: 0,
-          expiration: 0,
-          transactions: [],
-          owner: account,
-          lock: lockAddresses[0],
-        },
-      },
-      [lockAddresses[1]]: {
-        address: lockAddresses[1],
-        name: '1',
-        expirationDuration: 5,
-        currencyContractAddress: addresses[2],
-        keyPrice: '1',
-        key: {
-          status: 'expired',
-          confirmations: 1678234,
-          expiration: 163984,
-          transactions: [
-            {
-              status: TransactionStatus.MINED,
-              confirmations: 1678234,
-              hash: 'hash',
-              type: TransactionType.KEY_PURCHASE,
-              blockNumber: 123,
-            },
-          ],
-          owner: account,
-          lock: lockAddresses[0],
-        },
-      },
-    },
-  }
+  const blockchainData: BlockchainData = blockchainDataLocked
 
   function setupDefaults(killLocalStorage = false) {
     defaults = setupTestDefaults()
