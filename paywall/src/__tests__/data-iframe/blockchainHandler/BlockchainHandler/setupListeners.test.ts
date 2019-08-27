@@ -317,6 +317,25 @@ describe('BlockchainHandler - setupListeners', () => {
         expect(web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
       })
 
+      it('should not retrieve a key if the transaction is not mined', () => {
+        expect.assertions(1)
+        store.transactions = {
+          hash: {
+            hash: 'hash',
+            blockNumber: 5,
+            status: TransactionStatus.SUBMITTED,
+            confirmations: 1,
+            lock: lockAddresses[0], // this address has already been normalized
+            type: TransactionType.KEY_PURCHASE,
+          },
+        }
+        walletService.emit('transaction.updated', 'hash', {
+          to: addresses[1],
+        })
+
+        expect(web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      })
+
       it('should retrieve the key expiry for a key purchase transaction defined by the stored transaction', () => {
         expect.assertions(1)
 
@@ -331,7 +350,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
           to: addresses[1],
         })
 
@@ -354,7 +373,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
           lock: addresses[0], // this address is normalized in the listener
           to: addresses[1],
         })
@@ -379,7 +398,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
         })
 
         expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
@@ -402,7 +421,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
         })
 
         expect(web3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
@@ -424,7 +443,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
           lock: addresses[0], // this address is normalized in the listener
         })
 
@@ -447,7 +466,7 @@ describe('BlockchainHandler - setupListeners', () => {
           },
         }
         walletService.emit('transaction.updated', 'hash', {
-          thing: 1,
+          status: TransactionStatus.MINED,
           to: addresses[0], // this address is normalized in the listener
         })
 

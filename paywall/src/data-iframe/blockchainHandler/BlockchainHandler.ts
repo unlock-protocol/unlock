@@ -4,6 +4,7 @@ import {
   Transactions,
   Locks,
   TransactionType,
+  TransactionStatus,
 } from '../../unlockTypes'
 import linkKeysToLocks from './linkKeysToLocks'
 import { POLLING_INTERVAL } from '../../constants'
@@ -330,10 +331,11 @@ export default class BlockchainHandler {
         },
         update
       )
+      const isMined = update.status && update.status === TransactionStatus.MINED
       const transaction = this.store.transactions[hash]
       const recipient = transaction.lock || transaction.to
       const isKeyPurchase = transaction.type === TransactionType.KEY_PURCHASE
-      if (isKeyPurchase && recipient) {
+      if (isKeyPurchase && recipient && isMined) {
         this.web3Service.getKeyByLockForOwner(recipient, this.store
           .account as string)
       }
@@ -384,6 +386,19 @@ export default class BlockchainHandler {
           blockNumber: Number.MAX_SAFE_INTEGER,
         }
         this.storeTransaction(newTransaction)
+
+        if (type === TransactionType.KEY_PURCHASE) {
+          // If this is a key purchase, we create a fake key that will be used
+          // to unlock the paywall until the transaction is mined.
+          this.store.keys[newTransaction.to] = {
+            lock: newTransaction.to,
+            owner: newTransaction.from,
+            // Placeholder expiration, will write over when we get a real key from
+            // web3Service
+            expiration: Number.MAX_SAFE_INTEGER,
+          }
+        }
+
         mergeUpdate(hash, 'transactions', newTransaction, {
           key: `${to}-${from}`,
           lock: newTransaction.to,
