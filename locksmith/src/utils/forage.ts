@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
 export enum Usage {
   TicketBanner = 'banner',
   TokenDefaultImage = 'default-image',
   TokenSpecificImage = 'token-image',
 }
+/* eslint-enable no-unused-vars */
 
 export class Forage {
   locate(usage: Usage, data: any): string {
