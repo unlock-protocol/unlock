@@ -4,7 +4,7 @@ subTitle: One key can serve many purposes
 authorName: Sascha Mombartz
 publishDate: May 24, 2019
 description: Find out how a single key together with your wallet can unlock anything from tickets to content. 
-image: /static/images/blog/multiuselocks/hero.jpg
+image: https://unlock-protocol.com/static/images/blog/multiuselocks/hero.jpg
 ---
 
 ![Use one Unlock lock for a variety of services and products.](/static/images/blog/multiuselocks/hero.jpg)

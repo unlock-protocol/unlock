@@ -4,7 +4,7 @@ subTitle: Or, why we’re building a business model as an open protocol.
 authorName: Julien Genestoux
 publishDate: February 26, 2019
 description: Why we’re building a business model as an open protocol.
-image: /static/images/blog/whatisunlock.jpg
+image: https://unlock-protocol.com/static/images/blog/whatisunlock.jpg
 ---
 If you’ve read our words, you probably rightfully think that the thing we’re building at Unlock is some kind of new 
 paywall system. This is true, but it is also only the tip of the iceberg: we’re building a protocol to lock and unlock 

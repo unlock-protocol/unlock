@@ -4,7 +4,7 @@ subTitle: Livestream of the NFT Dev Meetup
 authorName: Sascha Mombartz
 publishDate: May 16, 2019
 description: More info and a livestream for registred participants.
-image: /static/images/blog/nftdevmeetup/hero.jpg
+image: https://unlock-protocol.com/static/images/blog/nftdevmeetup/hero.jpg
 paywallLock: "0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4"
 ---
 ![Optimistic Unlocking in action.](/static/images/blog/nftdevmeetup/hero.jpg)

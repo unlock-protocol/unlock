@@ -4,7 +4,7 @@ subTitle: How I added the Unlock protocol to an open source publishing platform 
 authorName: Ben Werdmuller
 publishDate: July 2, 2019
 description: The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.
-image: /static/images/blog/known/known-unlock.png
+image: https://unlock-protocol.com/static/images/blog/known/known-unlock.png
 ---
 Thousands of people participate in the [IndieWeb](https://indieweb.org): a growing movement that encourages people to publish on their own site rather than "silo" networks like Facebook and Twitter. [As The New Yorker put it](https://www.newyorker.com/tech/annals-of-technology/can-indie-social-media-save-us):
 

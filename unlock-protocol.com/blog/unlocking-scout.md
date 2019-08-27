@@ -4,7 +4,7 @@ subTitle: Our friends at Scout have integrated Unlock on the Unlock dashboard. H
 authorName: Julien Genestoux
 publishDate: August 18, 2019
 description: Our friends at Scout have integrated Unlock on the Unlock dashboard. Here's how it works
-image: /static/images/blog/unlocking-scout/scout-cool.png
+image: https://unlock-protocol.com/static/images/blog/unlocking-scout/scout-cool.png
 ---
 
 Unlock is a protocol for memberships. Members of a given community often have access to perks, content or features which are just for them. For example, members (and only them!) of our blog can read and leave comments.

@@ -4,7 +4,7 @@ subTitle: The web needs a better business model — and we believe the techn
 authorName: Julien Genestoux
 publishDate: April 27, 2018
 description: The web needs a better business model — and we believe the technology is finally here to do it.
-image: /static/images/blog/itstimetounlocktheweb/unlocklegacy.jpg
+image: https://unlock-protocol.com/static/images/blog/itstimetounlocktheweb/unlocklegacy.jpg
 ---
 It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
 

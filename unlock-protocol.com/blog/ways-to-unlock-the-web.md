@@ -4,7 +4,7 @@ subTitle: We’re building an open protocol to allow anyone on the web to earn m
 authorName: Ben Werdmuller
 publishDate: March 20, 2019
 description: We’re building an open protocol to allow anyone on the web to earn money from their work. The possibilities are endless. Here are some of them.
-image: /static/images/blog/waystounlocktheweb/hero.jpg
+image: https://unlock-protocol.com/static/images/blog/waystounlocktheweb/hero.jpg
 ---
 ![ocean scene](/static/images/blog/waystounlocktheweb/hero.jpg)
 

@@ -4,7 +4,7 @@ subTitle: Monetizing creation by leveraging membership to communities
 authorName: Julien Genestoux
 publishDate: June 19, 2019
 description: The Unlock protocol provides a way for people to show their support and access exclusive content, features, or even status. It is a web-native way for creators to monetize their work.
-image: /static/images/blog/protocol-for-memberships.png
+image: https://unlock-protocol.com/static/images/blog/protocol-for-memberships.png
 ---
 
 The difference between the web and native applications is the presence of **links**. These links are the reason why the web is a "network", as they connect pages together, making a graph. Google and its PageRank algorithm have leveraged that graph to rank websites, by assuming that the sites which have the most links are the most relevant.
