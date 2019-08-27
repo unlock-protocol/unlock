@@ -163,6 +163,9 @@ describe('Mailbox - sendUpdates', () => {
         expect.assertions(1)
 
         const payload = undefined
+        testingMailbox().blockchainData.keys[lockAddresses[2]] = {
+          expiration: 5,
+        }
         mailbox.sendUpdates('locks')
         await fakeWindow.waitForPostMessage()
 
@@ -174,6 +177,14 @@ describe('Mailbox - sendUpdates', () => {
         ;(testingMailbox().blockchainData as BlockchainData).locks[
           lockAddresses[0]
         ].key.status = 'valid'
+
+        const theFuture = new Date().getTime() / 1000 + 2000
+        testingMailbox().blockchainData.keys[
+          lockAddresses[0]
+        ].expiration = theFuture
+        testingMailbox().blockchainData.keys[lockAddresses[2]] = {
+          expiration: 5,
+        }
 
         const payload = [lockAddresses[0]]
         mailbox.sendUpdates('locks')

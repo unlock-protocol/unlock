@@ -212,7 +212,7 @@ export default class Mailbox {
     return haveAKeyForEachLock && allKeysAreReal
   }
 
-  getPaywallState = (): PaywallStatus => {
+  getPaywallStatus = (): PaywallStatus => {
     // Too soon for us to say whether the page is locked or unlocked
     if (!this.gotAllKeysFromChain()) {
       return PaywallStatus.none
@@ -244,12 +244,16 @@ export default class Mailbox {
     const { locks, account, balance, network } = this
       .blockchainData as BlockchainData
     const unlockedLocks = this.getUnlockedLockAddresses()
+    const paywallStatus = this.getPaywallStatus()
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(locks).length) {
-      // Don't send LOCKED unless we have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    switch (paywallStatus) {
+      case PaywallStatus.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallStatus.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
 
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'

@@ -108,7 +108,7 @@ describe('Mailbox - getPaywallState', () => {
 
     testingMailbox().setBlockchainData(notEnoughKeysData)
 
-    expect(mailbox.getPaywallState()).toBe(PaywallStatus.none)
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.none)
   })
 
   it('should return PaywallStatus.locked when no keys are valid', () => {
@@ -116,7 +116,7 @@ describe('Mailbox - getPaywallState', () => {
 
     testingMailbox().setBlockchainData(invalidKeysData)
 
-    expect(mailbox.getPaywallState()).toBe(PaywallStatus.locked)
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.locked)
   })
 
   it('should return PaywallStatus.unlocked when there is a valid key', () => {
@@ -124,6 +124,6 @@ describe('Mailbox - getPaywallState', () => {
 
     testingMailbox().setBlockchainData(validKeysData)
 
-    expect(mailbox.getPaywallState()).toBe(PaywallStatus.unlocked)
+    expect(mailbox.getPaywallStatus()).toBe(PaywallStatus.unlocked)
   })
 })
