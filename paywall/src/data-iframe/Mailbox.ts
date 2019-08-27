@@ -10,7 +10,7 @@ import {
   isAccount,
   isValidLocks,
   isAccountOrNull,
-  isPositiveNumber,
+  isValidBalance,
 } from '../utils/validators'
 import { PaywallConfig, PurchaseKeyRequest } from '../unlockTypes'
 import {
@@ -78,7 +78,9 @@ export default class Mailbox {
     this.defaultBlockchainData = {
       locks: {},
       account: null,
-      balance: '0',
+      balance: {
+        eth: '0',
+      },
       network: this.constants.defaultNetwork,
       keys: {},
       transactions: {},
@@ -386,7 +388,7 @@ export default class Mailbox {
       !isValidLocks(chainData.locks) ||
       !isAccountOrNull(chainData.account) ||
       ![1, 4, 1984].includes(chainData.network) ||
-      !isPositiveNumber(chainData.balance)
+      !isValidBalance(chainData.balance)
     ) {
       return nukeAndReturn()
     }

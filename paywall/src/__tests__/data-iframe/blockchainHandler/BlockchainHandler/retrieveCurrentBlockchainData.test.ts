@@ -112,7 +112,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
+        balance: {},
         network: 1984,
         keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
@@ -144,7 +144,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
+        balance: {
+          eth: '0',
+        },
         network: 1984,
         keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
@@ -157,14 +159,14 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       setupDefaults({ account: null })
     })
 
-    it('should clear transactions, set up default keys, and set balance to "0"', async () => {
+    it('should clear transactions, set up default keys, and set the eth balance to "0"', async () => {
       expect.assertions(3)
 
       await handler.retrieveCurrentBlockchainData()
 
       expect(store.transactions).toEqual({})
       expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, null))
-      expect(store.balance).toBe('0')
+      expect(store.balance.eth).toBe('0')
     })
 
     it('should call emitChanges with the default store', async () => {
@@ -178,7 +180,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
+        balance: {},
         network: 1984,
         keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
@@ -202,7 +204,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: addresses[2],
-        balance: '0',
+        balance: {},
         network: 1984,
         keys: makeDefaultKeys(lockAddresses, addresses[2]),
         transactions: {},
@@ -233,7 +235,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           [lockAddresses[0]]: 12345, // override key expiration for key on lock 0
         }),
         account: addresses[2],
-        balance: '0',
+        balance: {},
         network: 1984,
         keys: expect.objectContaining({
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
@@ -287,7 +289,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         expect(emitChanges).toHaveBeenCalledWith({
           locks: getDefaultFullLocks(store, configuration, {}),
           account: addresses[2],
-          balance: '0',
+          balance: {},
           network: 1984,
           keys: makeDefaultKeys(lockAddresses, addresses[2]),
           transactions: {},
@@ -359,7 +361,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         expect(emitChanges).toHaveBeenCalledWith({
           locks,
           account: addresses[2],
-          balance: '0',
+          balance: {},
           network: 1984,
           keys: makeDefaultKeys(lockAddresses, addresses[2]),
           transactions: {

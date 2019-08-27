@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import {
+  Balance,
   RawLock,
   PaywallConfig,
   Transactions,
@@ -64,7 +65,7 @@ export interface ConstantsType {
 export interface BlockchainData {
   locks: Locks
   account: string | null
-  balance: string
+  balance: Balance
   network: unlockNetworks
   keys: KeyResults
   transactions: Transactions
@@ -108,5 +109,5 @@ export interface PaywallState {
   transactions: Transactions
   account: string | null
   network: unlockNetworks
-  balance: string
+  balance: Balance
 }

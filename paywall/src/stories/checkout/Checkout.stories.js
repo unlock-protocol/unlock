@@ -63,7 +63,9 @@ const paywallConfigNoNames = {
 
 const account = {
   address: '0x123',
-  balance: '789',
+  balance: {
+    eth: '789',
+  },
 }
 
 const store = createUnlockStore()

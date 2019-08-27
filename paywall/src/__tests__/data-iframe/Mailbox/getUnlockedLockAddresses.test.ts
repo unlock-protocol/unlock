@@ -115,7 +115,9 @@ describe('Mailbox - getUnlockedLockAddresses', () => {
     const testingData: BlockchainData = {
       locks,
       account,
-      balance: '0',
+      balance: {
+        eth: '0',
+      },
       network: 1,
       keys: {},
       transactions: {},

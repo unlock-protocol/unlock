@@ -147,7 +147,7 @@ describe('BlockchainHandler - setupListeners', () => {
       )
 
       expect(handler.dispatchChangesToPostOffice).toHaveBeenCalled()
-      expect(store.balance).toBe('123')
+      expect(store.balance.eth).toBe('123')
     })
 
     it('should not call dispatchChangesToPostOffice on account.updated for another account', () => {
@@ -160,7 +160,7 @@ describe('BlockchainHandler - setupListeners', () => {
       )
 
       expect(handler.dispatchChangesToPostOffice).not.toHaveBeenCalled()
-      expect(store.balance).toBe('0')
+      expect(store.balance.eth).toBe(undefined)
     })
 
     it('should not call dispatchChangesToPostOffice on account.updated if account is not the user account', () => {
@@ -171,7 +171,7 @@ describe('BlockchainHandler - setupListeners', () => {
       })
 
       expect(handler.dispatchChangesToPostOffice).not.toHaveBeenCalled()
-      expect(store.balance).toBe('0')
+      expect(store.balance.eth).toBe(undefined)
     })
   })
 

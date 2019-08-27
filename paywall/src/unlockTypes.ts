@@ -116,6 +116,10 @@ export interface Lock {
   owner?: string
 }
 
+// Mapping if currency: amount
+export interface Balance {
+  [currency: string]: string
+}
 export interface Locks {
   [address: string]: Lock
 }
