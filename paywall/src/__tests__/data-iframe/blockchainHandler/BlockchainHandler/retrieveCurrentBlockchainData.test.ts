@@ -354,15 +354,16 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
 
         await waitFor(() => Object.keys(store.transactions).length)
 
+        const lockAddress = lockAddresses[1]
         const defaultKeys = makeDefaultKeys(lockAddresses, addresses[2])
         const expectedKeys = {
           ...defaultKeys,
           // This test emits a transaction update with pending status,
           // so one of the keys will be a temporary one.
           [lockAddresses[1]]: createTemporaryKey(
-            lockAddresses[1],
+            lockAddress,
             addresses[2],
-            store.locks
+            store.locks[lockAddress]
           ),
         }
 

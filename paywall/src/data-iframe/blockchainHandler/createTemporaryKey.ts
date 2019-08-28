@@ -1,4 +1,4 @@
-import { RawLocks } from '../../unlockTypes'
+import { RawLock } from '../../unlockTypes'
 import { KeyResult } from './blockChainTypes'
 
 // 24 hours, in seconds. Used as the default expiration if we don't know the
@@ -14,17 +14,17 @@ export const currentTimeInSeconds = () => Math.floor(Date.now() / 1000)
  * be used to unlock the paywall until the transaction is mined.
  */
 const createTemporaryKey = (
-  lock: string,
+  lockAddress: string,
   owner: string,
-  locks: RawLocks
+  lock: RawLock | undefined
 ): KeyResult => {
   // Use default expiration if we don't have the lock information.
-  const { expirationDuration } = locks[lock] || defaultExpiration
+  const { expirationDuration } = lock || defaultExpiration
 
   const expiration = currentTimeInSeconds() + expirationDuration
 
   return {
-    lock,
+    lock: lockAddress,
     owner,
     expiration,
   }

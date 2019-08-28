@@ -347,11 +347,8 @@ export default class BlockchainHandler {
       // If we receive a submitted or pending key purchase we should
       // create and store a temporary key.
       if (isKeyPurchase && recipient && !isMined) {
-        const temporaryKey = createTemporaryKey(
-          recipient,
-          accountAddress,
-          this.store.locks
-        )
+        const lock = this.store.locks[recipient]
+        const temporaryKey = createTemporaryKey(recipient, accountAddress, lock)
         this.store.keys[recipient] = temporaryKey
       }
     })
@@ -411,10 +408,11 @@ export default class BlockchainHandler {
         // We submitted a key purchase transaction. Create and store a
         // temporary key until the transaction gets mined.
         if (isKeyPurchase && !isMined) {
+          const lock = this.store.locks[normalizedTo]
           const temporaryKey = createTemporaryKey(
             normalizedTo,
             accountAddress,
-            this.store.locks
+            lock
           )
           this.store.keys[normalizedTo] = temporaryKey
         }
