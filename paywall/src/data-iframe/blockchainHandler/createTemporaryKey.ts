@@ -1,3 +1,4 @@
+import { currentTimeInSeconds } from '../../utils/durations'
 import { RawLock } from '../../unlockTypes'
 import { KeyResult } from './blockChainTypes'
 
@@ -6,8 +7,6 @@ import { KeyResult } from './blockChainTypes'
 export const defaultExpiration = {
   expirationDuration: 60 * 60 * 24,
 }
-
-export const currentTimeInSeconds = () => Math.floor(Date.now() / 1000)
 
 /**
  * When we receive new key purchases, we create temporary valid keys that will
