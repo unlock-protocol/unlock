@@ -667,6 +667,36 @@ describe('BlockchainHandler - setupListeners', () => {
       // Key has non-negative expiration. It is now a valid (but temporary) key
       expect(store.keys[normalizedLockAddress].expiration >= 0).toBeTruthy()
     })
+
+    it('should not create a temporary key for a mined key purchase', () => {
+      expect.assertions(2)
+
+      const owner = 'my account'
+      const lockAddress = addresses[0]
+      const normalizedLockAddress = lockAddresses[0]
+
+      const spy = jest.spyOn(temporaryKeyExports, 'createTemporaryKey')
+
+      walletService.emit('account.changed', owner)
+
+      expect(store.keys[normalizedLockAddress]).toEqual({
+        lock: normalizedLockAddress,
+        owner,
+        expiration: -1, // this is a default key
+      })
+
+      walletService.emit(
+        'transaction.new',
+        'hash',
+        owner,
+        lockAddress /* to */,
+        'input',
+        TransactionType.KEY_PURCHASE,
+        'mined'
+      )
+
+      expect(spy).not.toHaveBeenCalled()
+    })
   })
 
   describe('error', () => {
