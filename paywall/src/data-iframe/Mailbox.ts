@@ -5,6 +5,7 @@ import {
   FetchWindow,
   SetTimeoutWindow,
   KeyResults,
+  KeyResult,
 } from './blockchainHandler/blockChainTypes'
 import {
   isValidPaywallConfig,
@@ -28,6 +29,7 @@ import {
   normalizeLockAddress,
 } from '../utils/normalizeAddresses'
 import localStorageAvailable from '../utils/localStorage'
+import { currentTimeInSeconds } from '../utils/durations'
 
 /**
  * BlockchainHandler uses an expiration of -1 to indicate placeholder keys
@@ -56,6 +58,45 @@ export const gotAllKeysFromChain = (
   const allKeysAreReal = Object.values(keys).every(key => key.expiration >= 0)
 
   return haveAKeyForEachLock && allKeysAreReal
+}
+
+// This enum is only used internal to the Mailbox. A boolean won't do because
+// there is a state where we are neither locked nor unlocked because we don't
+// have all the data from the chain yet.
+export enum PaywallStatus {
+  locked = 'LOCKED',
+  unlocked = 'UNLOCKED',
+  none = 'NONE',
+}
+
+export const isUnexpired = ({ expiration }: KeyResult) => {
+  return expiration > currentTimeInSeconds()
+}
+
+export const getPaywallStatus = (
+  keys: KeyResults,
+  lockAddresses: string[]
+): PaywallStatus => {
+  // No lock addresses means bad or nonexistent paywall config. In any
+  // event, we can't say the paywall is locked or unlocked.
+  if (!lockAddresses.length) {
+    return PaywallStatus.none
+  }
+
+  // Check the keys first, because if there is a single valid key we can
+  // unlock even if we haven't gotten all keys from the blockchain
+  const anyKeyIsUnexpired = Object.values(keys).some(isUnexpired)
+  if (anyKeyIsUnexpired) {
+    return PaywallStatus.unlocked
+  }
+
+  // Too soon for us to say definitively that the page is locked
+  if (!gotAllKeysFromChain(keys, lockAddresses)) {
+    return PaywallStatus.none
+  }
+
+  // No valid keys, lock the page
+  return PaywallStatus.locked
 }
 
 export default class Mailbox {
