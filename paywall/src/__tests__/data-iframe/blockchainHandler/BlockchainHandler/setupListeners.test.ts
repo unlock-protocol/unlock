@@ -23,6 +23,7 @@ import {
   setupTestDefaults,
   lockAddresses,
 } from '../../../test-helpers/setupBlockchainHelpers'
+import temporaryKeyExports from '../../../../data-iframe/blockchainHandler/createTemporaryKey'
 
 describe('BlockchainHandler - setupListeners', () => {
   let walletService: WalletServiceType
@@ -320,6 +321,22 @@ describe('BlockchainHandler - setupListeners', () => {
 
         // Should not fetch a key if transaction is not mined
         expect(web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+      })
+
+      it('should not create a temporary key for a mined key purchase', () => {
+        expect.assertions(1)
+
+        const normalizedLockAddress = lockAddresses[0]
+        const spy = jest.spyOn(temporaryKeyExports, 'createTemporaryKey')
+
+        walletService.emit('transaction.updated', 'hash', {
+          to: normalizedLockAddress,
+          hash: 'hash',
+          status: TransactionStatus.MINED,
+          type: TransactionType.KEY_PURCHASE,
+        })
+
+        expect(spy).not.toHaveBeenCalled()
       })
 
       it('should not retrieve a key for a non-key purchase transaction', () => {

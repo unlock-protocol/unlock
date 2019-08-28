@@ -13,7 +13,7 @@ export const currentTimeInSeconds = () => Math.floor(Date.now() / 1000)
  * When we receive new key purchases, we create temporary valid keys that will
  * be used to unlock the paywall until the transaction is mined.
  */
-const createTemporaryKey = (
+export const createTemporaryKey = (
   lockAddress: string,
   owner: string,
   lock: RawLock | undefined
@@ -30,4 +30,11 @@ const createTemporaryKey = (
   }
 }
 
-export default createTemporaryKey
+// This allows us to use jest.spyOn with the exports
+const main = {
+  createTemporaryKey,
+  currentTimeInSeconds,
+  defaultExpiration,
+}
+
+export default main

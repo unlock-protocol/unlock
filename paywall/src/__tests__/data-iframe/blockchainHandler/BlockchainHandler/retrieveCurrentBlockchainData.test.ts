@@ -11,7 +11,7 @@ import {
 import BlockchainHandler, {
   makeDefaultKeys,
 } from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
-import createTemporaryKey from '../../../../data-iframe/blockchainHandler/createTemporaryKey'
+import { createTemporaryKey } from '../../../../data-iframe/blockchainHandler/createTemporaryKey'
 import {
   TransactionStatus,
   TransactionType,

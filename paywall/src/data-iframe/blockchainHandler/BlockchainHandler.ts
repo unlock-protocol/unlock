@@ -25,7 +25,7 @@ import {
   normalizeAddressKeys,
   normalizeLockAddress,
 } from '../../utils/normalizeAddresses'
-import createTemporaryKey from './createTemporaryKey'
+import { createTemporaryKey } from './createTemporaryKey'
 
 /**
  * Make empty keys for the current account

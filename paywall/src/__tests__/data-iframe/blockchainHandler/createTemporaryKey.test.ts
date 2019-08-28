@@ -1,4 +1,5 @@
-import createTemporaryKey, {
+import {
+  createTemporaryKey,
   currentTimeInSeconds,
 } from '../../../data-iframe/blockchainHandler/createTemporaryKey'
 import {
