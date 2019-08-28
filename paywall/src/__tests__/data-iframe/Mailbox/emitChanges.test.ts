@@ -110,6 +110,12 @@ describe('Mailbox - emitChanges', () => {
   describe('with locked locks', () => {
     beforeEach(() => {
       setupDefaults()
+      testingMailbox().configuration = {
+        locks: {
+          [lockAddresses[0]]: { name: '' },
+          [lockAddresses[1]]: { name: '' },
+        },
+      }
     })
 
     it.each(<TestSent[]>[
@@ -119,7 +125,7 @@ describe('Mailbox - emitChanges', () => {
       ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, lockedLocks.balance],
       ['locked', PostMessages.LOCKED, undefined],
     ])(
-      'should send the %s to the main window',
+      'should send the %s message to the main window',
       async (_, type: PostMessages, payload: any) => {
         expect.assertions(1)
 
@@ -133,6 +139,21 @@ describe('Mailbox - emitChanges', () => {
   describe('with unlocked locks', () => {
     beforeEach(() => {
       setupDefaults()
+      testingMailbox().configuration = {
+        locks: {
+          [lockAddresses[0]]: { name: '' },
+        },
+      }
+
+      const theFuture = new Date().getTime() / 1000 + 2000
+
+      testingMailbox().blockchainData = blockchainDataUnlocked
+      testingMailbox().blockchainData.keys[
+        lockAddresses[0]
+      ].expiration = theFuture
+      testingMailbox().blockchainData.locks[lockAddresses[0]].key = {
+        status: 'valid',
+      }
     })
 
     it.each(<TestSent[]>[
@@ -142,7 +163,7 @@ describe('Mailbox - emitChanges', () => {
       ['balance', PostMessages.UPDATE_ACCOUNT_BALANCE, submittedLocks.balance],
       ['unlocked', PostMessages.UNLOCKED, [lockAddresses[0]]],
     ])(
-      'should send the %s to the main window',
+      'should send the %s message to the main window',
       async (_, type: PostMessages, payload: any) => {
         expect.assertions(1)
 

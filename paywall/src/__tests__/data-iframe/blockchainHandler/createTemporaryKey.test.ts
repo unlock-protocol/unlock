@@ -1,11 +1,9 @@
-import {
-  createTemporaryKey,
-  currentTimeInSeconds,
-} from '../../../data-iframe/blockchainHandler/createTemporaryKey'
+import { createTemporaryKey } from '../../../data-iframe/blockchainHandler/createTemporaryKey'
 import {
   lockAddresses,
   firstLockLocked,
 } from '../../test-helpers/setupBlockchainHelpers'
+import { currentTimeInSeconds } from '../../../utils/durations'
 
 describe('BlockchainHandler - createTemporaryKey', () => {
   const lock = firstLockLocked
