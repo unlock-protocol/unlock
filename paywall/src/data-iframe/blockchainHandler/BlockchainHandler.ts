@@ -400,6 +400,25 @@ export default class BlockchainHandler {
           status,
           blockNumber: Number.MAX_SAFE_INTEGER,
         }
+
+        const accountAddress = this.store.account as string
+        const isKeyPurchase = type === TransactionType.KEY_PURCHASE
+        // We may not have to check for this, because we should
+        // receive `transaction.new` long before the transaction is
+        // mined
+        const isMined = status === TransactionStatus.MINED
+
+        // We submitted a key purchase transaction. Create and store a
+        // temporary key until the transaction gets mined.
+        if (isKeyPurchase && !isMined) {
+          const temporaryKey = createTemporaryKey(
+            normalizedTo,
+            accountAddress,
+            this.store.locks
+          )
+          this.store.keys[normalizedTo] = temporaryKey
+        }
+
         this.storeTransaction(newTransaction)
         mergeUpdate(hash, 'transactions', newTransaction, {
           key: `${to}-${from}`,
