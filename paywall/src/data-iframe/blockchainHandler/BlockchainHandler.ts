@@ -4,6 +4,7 @@ import {
   Transactions,
   Locks,
   TransactionType,
+  TransactionStatus,
 } from '../../unlockTypes'
 import linkKeysToLocks from './linkKeysToLocks'
 import { POLLING_INTERVAL } from '../../constants'
@@ -24,6 +25,7 @@ import {
   normalizeAddressKeys,
   normalizeLockAddress,
 } from '../../utils/normalizeAddresses'
+import { createTemporaryKey } from './createTemporaryKey'
 
 /**
  * Make empty keys for the current account
@@ -331,11 +333,23 @@ export default class BlockchainHandler {
         update
       )
       const transaction = this.store.transactions[hash]
+      const isMined = transaction.status === TransactionStatus.MINED
       const recipient = transaction.lock || transaction.to
       const isKeyPurchase = transaction.type === TransactionType.KEY_PURCHASE
-      if (isKeyPurchase && recipient) {
-        this.web3Service.getKeyByLockForOwner(recipient, this.store
-          .account as string)
+      const accountAddress = this.store.account as string
+
+      // If we receive a mined key purchase, we should query web3Service for the
+      // real key
+      if (isKeyPurchase && recipient && isMined) {
+        this.web3Service.getKeyByLockForOwner(recipient, accountAddress)
+      }
+
+      // If we receive a submitted or pending key purchase we should
+      // create and store a temporary key.
+      if (isKeyPurchase && recipient && !isMined) {
+        const lock = this.store.locks[recipient]
+        const temporaryKey = createTemporaryKey(recipient, accountAddress, lock)
+        this.store.keys[recipient] = temporaryKey
       }
     })
 
@@ -383,6 +397,26 @@ export default class BlockchainHandler {
           status,
           blockNumber: Number.MAX_SAFE_INTEGER,
         }
+
+        const accountAddress = this.store.account as string
+        const isKeyPurchase = type === TransactionType.KEY_PURCHASE
+        // We may not have to check for this, because we should
+        // receive `transaction.new` long before the transaction is
+        // mined
+        const isMined = status === TransactionStatus.MINED
+
+        // We submitted a key purchase transaction. Create and store a
+        // temporary key until the transaction gets mined.
+        if (isKeyPurchase && !isMined) {
+          const lock = this.store.locks[normalizedTo]
+          const temporaryKey = createTemporaryKey(
+            normalizedTo,
+            accountAddress,
+            lock
+          )
+          this.store.keys[normalizedTo] = temporaryKey
+        }
+
         this.storeTransaction(newTransaction)
         mergeUpdate(hash, 'transactions', newTransaction, {
           key: `${to}-${from}`,
