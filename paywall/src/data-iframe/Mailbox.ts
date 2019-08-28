@@ -4,6 +4,7 @@ import {
   BlockchainData,
   FetchWindow,
   SetTimeoutWindow,
+  KeyResults,
 } from './blockchainHandler/blockChainTypes'
 import {
   isValidPaywallConfig,
@@ -34,16 +35,14 @@ import localStorageAvailable from '../utils/localStorage'
  * is locked or not until we have a real key response for each lock on the page.
  */
 export const gotAllKeysFromChain = (
-  blockchainData: BlockchainData,
-  configuration: PaywallConfig | undefined
+  keys: KeyResults,
+  lockAddresses: string[]
 ): boolean => {
-  // We can't have gotten data from the chain without paywall configuration
-  if (!configuration) {
+  // No lock addresses means bad or nonexistent paywall config. In any
+  // event, we haven't gotten data from the chain.
+  if (!lockAddresses.length) {
     return false
   }
-
-  const lockAddresses = Object.keys(configuration.locks)
-  const { keys } = blockchainData
 
   // Every lock address in the paywall config must have a matching key
   // (whether valid or not) for us to have gotten all data from the chain
