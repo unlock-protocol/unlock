@@ -67,7 +67,9 @@ describe('Mailbox - purchaseKey', () => {
       },
     },
     account: addresses[1],
-    balance: '123',
+    balance: {
+      eth: '123',
+    },
     network: 1,
     keys: {},
     transactions: {},

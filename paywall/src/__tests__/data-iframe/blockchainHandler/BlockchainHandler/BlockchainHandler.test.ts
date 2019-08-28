@@ -93,7 +93,7 @@ describe('BlockchainHandler class setup', () => {
         },
       },
       account: null,
-      balance: '0',
+      balance: {},
       keys: makeDefaultKeys(lockAddresses, null),
       locks: {},
       transactions: {},

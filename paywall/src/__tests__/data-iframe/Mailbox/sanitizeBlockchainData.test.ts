@@ -77,18 +77,18 @@ describe('Mailbox - sanitizeBlockchainData', () => {
       ['a cache that is missing keys', { locks: 1, account: 1 }],
       [
         'a cache that has extra keys',
-        { locks: 1, account: 1, balance: 1, network: 3, three: 3 },
+        { locks: 1, account: 1, balance: { eth: '1' }, network: 3, three: 3 },
       ],
       [
         'a cache that has wrong keys',
-        { locks: 1, account: 1, balance: 1, three: 3 },
+        { locks: 1, account: 1, balance: { eth: '1' }, three: 3 },
       ],
       [
         'a cache with invalid locks',
         {
           locks: { hi: 'there' },
           account: addresses[1],
-          balance: '0',
+          balance: {},
           network: 1,
         },
       ],
@@ -97,7 +97,7 @@ describe('Mailbox - sanitizeBlockchainData', () => {
         {
           locks: lockedLocks.locks,
           account: '0x1234',
-          balance: '0',
+          balance: {},
           network: 1,
         },
       ],
@@ -106,7 +106,9 @@ describe('Mailbox - sanitizeBlockchainData', () => {
         {
           locks: lockedLocks.locks,
           account: '0x1234',
-          balance: '0f',
+          balance: {
+            eth: '0f',
+          },
           network: 1,
         },
       ],
@@ -115,7 +117,9 @@ describe('Mailbox - sanitizeBlockchainData', () => {
         {
           locks: lockedLocks.locks,
           account: addresses[0],
-          balance: '17.243',
+          balance: {
+            eth: '17.243',
+          },
           network: 2,
         },
       ],

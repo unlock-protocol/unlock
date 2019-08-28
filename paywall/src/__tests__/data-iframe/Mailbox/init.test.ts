@@ -177,7 +177,9 @@ describe('Mailbox - init', () => {
 
     expect(mailbox.emitChanges).toHaveBeenCalledWith({
       account: null,
-      balance: '0',
+      balance: {
+        eth: '0',
+      },
       locks: {},
       network: 1984,
       // Even though we are in a null state (just initialized), there
