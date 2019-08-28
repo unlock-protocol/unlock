@@ -253,15 +253,21 @@ export default class Mailbox {
   sendUpdates(updateRequest: unknown) {
     if (!this.blockchainData) return
 
-    const { locks, account, balance, network } = this
+    const { locks, account, balance, network, keys } = this
       .blockchainData as BlockchainData
+    const configLockAddresses: string[] =
+      (this.configuration && Object.keys(this.configuration.locks)) || []
     const unlockedLocks = this.getUnlockedLockAddresses()
+    const paywallStatus = getPaywallStatus(keys, configLockAddresses)
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(locks).length) {
-      // Don't send LOCKED unless we have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    switch (paywallStatus) {
+      case PaywallStatus.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallStatus.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
 
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
@@ -393,13 +399,20 @@ export default class Mailbox {
     this.postMessage(PostMessages.UPDATE_LOCKS, dataToSend.locks)
     this.postMessage(PostMessages.UPDATE_KEYS, keys)
     this.postMessage(PostMessages.UPDATE_TRANSACTIONS, transactions)
-    const unlockedLocks = this.getUnlockedLockAddresses()
 
-    if (unlockedLocks.length) {
-      this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
-    } else if (Object.keys(dataToSend.locks).length) {
-      // Only send LOCKED if we actually have locks
-      this.postMessage(PostMessages.LOCKED, undefined)
+    const configLockAddresses: string[] =
+      (this.configuration && Object.keys(this.configuration.locks)) || []
+    const unlockedLocks = this.getUnlockedLockAddresses()
+    const paywallStatus = getPaywallStatus(keys, configLockAddresses)
+
+    switch (paywallStatus) {
+      case PaywallStatus.unlocked:
+        // unlockedLocks may be empty the first time this is sent
+        this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
+        break
+      case PaywallStatus.locked:
+        this.postMessage(PostMessages.LOCKED, undefined)
+        break
     }
   }
 
