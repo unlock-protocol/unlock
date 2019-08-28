@@ -55,7 +55,7 @@ export const NoKeyLock = ({
       lock={lock}
       disabled={disableClick}
       onClick={() => {
-        !disabled && purchaseKey(lockKey)
+        !disableClick && purchaseKey(lockKey)
       }}
     >
       <LockHeader>{lock.name}</LockHeader>
@@ -63,7 +63,7 @@ export const NoKeyLock = ({
         convertCurrency={convertCurrency}
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <Body disabled={disabled}>
+          <Body disabled={disableClick}>
             <EthPrice>
               {ethPrice} {currency}
             </EthPrice>
@@ -73,7 +73,7 @@ export const NoKeyLock = ({
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer disabled={disabled}>{footerMessage}</Footer>
+            <Footer disabled={disableClick}>{footerMessage}</Footer>
           </Body>
         )}
       />
