@@ -124,7 +124,7 @@ export const defaultValuesOverride: OptionalBlockchainValues = {
     },
   },
   account: null,
-  balance: '0',
+  balance: {},
   keys: {},
   locks: {},
   transactions: {},
@@ -148,7 +148,7 @@ export function setupTestDefaults(
       },
     },
     account: null,
-    balance: '0',
+    balance: {},
     keys: {},
     locks: {},
     transactions: {},
@@ -188,7 +188,7 @@ export function setupTestDefaults(
       },
     },
     account: null,
-    balance: '0',
+    balance: {},
     keys: {},
     locks: {},
     transactions: {},
@@ -323,7 +323,9 @@ export const secondLockLocked: Lock = {
 
 export const blockchainDataNoLocks: BlockchainData = {
   account: accountAddress,
-  balance: '234',
+  balance: {
+    eth: '234',
+  },
   network: 1984,
   locks: {},
   keys: {},

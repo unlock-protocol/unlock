@@ -3,6 +3,7 @@ import {
   Locks,
   PurchaseKeyRequest,
   Transactions,
+  Balance,
 } from './unlockTypes'
 import { web3MethodCall, Web3WalletInfo, web3MethodResult } from './windowTypes'
 import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
@@ -106,7 +107,7 @@ export type Message =
     }
   | {
       type: PostMessages.UPDATE_ACCOUNT_BALANCE
-      payload: string
+      payload: Balance
     }
   | {
       type: PostMessages.UPDATE_NETWORK

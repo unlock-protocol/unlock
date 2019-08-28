@@ -90,7 +90,9 @@ export default class BlockchainHandler {
         callToAction: { default: '', expired: '', pending: '', confirmed: '' },
       },
       account: null,
-      balance: '0',
+      balance: {
+        eth: '0',
+      },
       keys: {},
       locks: {},
       transactions: {},
@@ -186,7 +188,9 @@ export default class BlockchainHandler {
       // no account, we need to obliterate all existing keys and transactions and balance
       this.store.keys = makeDefaultKeys(this.lockAddresses, this.store.account)
       this.store.transactions = {}
-      this.store.balance = '0'
+      this.store.balance = {
+        eth: '0',
+      }
       this.dispatchChangesToPostOffice()
       return
     }
@@ -282,8 +286,10 @@ export default class BlockchainHandler {
         // this can be called for locks also
         const address = account && account.address
         if (address !== this.store.account) return
-        if (balance === this.store.balance) return
-        this.store.balance = balance
+        if (balance === this.store.balance.ether) return
+        this.store.balance = {
+          eth: balance,
+        }
         this.dispatchChangesToPostOffice()
       }
     )

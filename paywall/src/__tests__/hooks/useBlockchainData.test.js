@@ -120,7 +120,7 @@ describe('useBlockchainData hook', () => {
     const component = rtl.render(<Wrapper />)
     const account = {
       address,
-      balance: '0',
+      balance: {},
     }
 
     const accountUpdater = getAddressListener()
@@ -157,7 +157,9 @@ describe('useBlockchainData hook', () => {
     const component = rtl.render(<Wrapper />)
     const account = {
       address,
-      balance: '5.3',
+      balance: {
+        eth: '5.3',
+      },
     }
 
     const accountUpdater = getAddressListener()

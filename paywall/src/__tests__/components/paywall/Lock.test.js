@@ -46,6 +46,9 @@ describe('Lock', () => {
         network: {},
         account: {
           address: '0x123',
+          balance: {
+            eth: '0',
+          },
         },
       }
       const config = configure()

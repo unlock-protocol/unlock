@@ -3,10 +3,13 @@ import { TRANSACTION_TYPES } from './constants'
 
 export const address = PropTypes.string
 
+// Object of currency: value
+export const balance = PropTypes.shape({})
+
 export const account = PropTypes.shape({
   address: address,
   privateKey: PropTypes.string,
-  balance: PropTypes.string, // Must be expressed in Eth!
+  balance,
 })
 
 export const lock = PropTypes.shape({

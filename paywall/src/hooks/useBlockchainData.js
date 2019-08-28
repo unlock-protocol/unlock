@@ -33,12 +33,19 @@ export default function useBlockchainData(window, paywallConfig) {
     validator: val => isPositiveInteger(val) && typeof val === 'number',
     local: 'useBlockchainData [network]',
   })
-  // our default account balance is '0' until we hear from the blockchain handler
-  // balance is in eth, we must use isPositiveNumber to validate
+  // our default account balance is {} until we hear from the blockchain handler
+  // balance must use isPositiveNumber to validate
   const balance = useListenForPostMessage({
     type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-    defaultValue: '0',
-    validator: val => isPositiveNumber(val) && typeof val === 'string',
+    defaultValue: {},
+    validator: val => {
+      return Object.keys(val).reduce((accumulator, currency) => {
+        return (
+          accumulator &&
+          (isPositiveNumber(val[currency]) && typeof val[currency] === 'string')
+        )
+      }, true)
+    },
     local: 'useBlockchainData [balance]',
   })
   // retrieve the locks from the data iframe

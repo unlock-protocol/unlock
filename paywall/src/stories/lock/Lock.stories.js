@@ -198,7 +198,9 @@ storiesOf('Lock', module)
   })
   .add('disabled - too expensive for current user', () => {
     const accountWithNotEnoughEth = {
-      balance: '0',
+      balance: {
+        eth: '0',
+      },
       name: 'julien',
     }
     return (
@@ -224,7 +226,9 @@ storiesOf('Lock', module)
         expirationDuration: 5 * 60, // 5 minutes
       }
       const accountWithNotEnoughEth = {
-        balance: '0',
+        balance: {
+          eth: '0',
+        },
         name: 'julien',
       }
       return (
