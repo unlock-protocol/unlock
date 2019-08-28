@@ -10,27 +10,27 @@ export class Forage {
   locate(usage: Usage, data: any): string {
     switch (usage) {
       case Usage.TicketBanner:
-        return this.tickets_banner_image(data)
+        return this.ticketsBannerImage(data)
       case Usage.TokenDefaultImage:
-        return this.token_metadata_default_image(data)
+        return this.tokenMetadataDefaultImage(data)
       case Usage.TokenSpecificImage:
-        return this.token_centric_image(data)
+        return this.tokenCentricImage(data)
     }
   }
 
-  normalizedAddress(address: string) {
+  private normalizedAddress(address: string) {
     return address.toLowerCase()
   }
 
-  token_metadata_default_image(data: any) {
+  private tokenMetadataDefaultImage(data: any) {
     return `${this.normalizedAddress(data.address)}/metadata/default_image`
   }
 
-  token_centric_image(data: any) {
+  private tokenCentricImage(data: any) {
     return `${this.normalizedAddress(data.address)}/metadata/${data.tokenId}`
   }
 
-  tickets_banner_image(data: any) {
+  private ticketsBannerImage(data: any) {
     return `${this.normalizedAddress(data.address)}/tickets/banner`
   }
 }
