@@ -10,6 +10,7 @@ import {
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
 import BlockchainHandler, {
   makeDefaultKeys,
+  createTemporaryKey,
 } from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import {
   TransactionStatus,
@@ -353,6 +354,18 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
 
         await waitFor(() => Object.keys(store.transactions).length)
 
+        const temporaryKey = createTemporaryKey(
+          lockAddresses[1],
+          addresses[2],
+          store.locks
+        )
+
+        const defaultKeys = makeDefaultKeys(lockAddresses, addresses[2])
+        const expectedKeys = {
+          ...defaultKeys,
+          [lockAddresses[1]]: temporaryKey,
+        }
+
         // locks get populated when web3Service.getLock emits 'lock.updated'
         // see the setupListeners function for implementation
         // the end of "setupDefaults" mocks the emit in this test file
@@ -361,7 +374,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           account: addresses[2],
           balance: '0',
           network: 1984,
-          keys: makeDefaultKeys(lockAddresses, addresses[2]),
+          keys: expectedKeys,
           transactions: {
             hash: {
               blockNumber: 9007199254740991,

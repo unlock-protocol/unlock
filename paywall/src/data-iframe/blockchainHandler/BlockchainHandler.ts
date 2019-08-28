@@ -2,6 +2,7 @@ import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import {
   PaywallConfig,
   Transactions,
+  RawLocks,
   Locks,
   TransactionType,
   TransactionStatus,
@@ -45,6 +46,34 @@ export function makeDefaultKeys(
     }
     return allKeys
   }, {})
+}
+
+/**
+ * When we receive new key purchases, we create temporary keys that will be
+ * used to unlock the paywall until the transaction is mined.
+ */
+export const createTemporaryKey = (
+  lock: string,
+  owner: string,
+  locks: RawLocks
+) => {
+  // There is a slim chance that we don't have the lock in state yet. So
+  // the default grace period will be 24 hours.
+  const aDayInSeconds = 60 * 60 * 24
+  const expirationDefault = { expirationDuration: aDayInSeconds }
+
+  const { expirationDuration } = locks[lock] || expirationDefault
+  const currentTimeInSeconds = Math.floor(new Date().getTime() / 1000)
+
+  const temporaryKey = {
+    lock,
+    owner,
+    // Placeholder expiration, will write over when we get a real key from
+    // web3Service
+    expiration: currentTimeInSeconds + expirationDuration,
+  }
+
+  return temporaryKey
 }
 
 interface BlockchainHandlerParams {
@@ -248,30 +277,6 @@ export default class BlockchainHandler {
   }
 
   /**
-   * When we receive new key purchases, we create temporary keys that will be
-   * used to unlock the paywall until the transaction is mined.
-   */
-  createTemporaryKey = (tx: TransactionDefaults) => {
-    // There is a slim chance that we don't have the lock in state yet. So
-    // the default grace period will be 24 hours.
-    const aDayInSeconds = 60 * 60 * 24
-    const expirationDefault = { expirationDuration: aDayInSeconds }
-
-    const { expirationDuration } = this.store.locks[tx.to] || expirationDefault
-    const currentTimeInSeconds = new Date().getTime() / 1000
-
-    const temporaryKey = {
-      lock: tx.to,
-      owner: tx.from,
-      // Placeholder expiration, will write over when we get a real key from
-      // web3Service
-      expiration: currentTimeInSeconds + expirationDuration,
-    }
-
-    return temporaryKey
-  }
-
-  /**
    * Set up the event listeners on walletService and web3Service
    */
   setupListeners() {
@@ -345,6 +350,7 @@ export default class BlockchainHandler {
         // ensure all references to locks are normalized
         update.to = normalizeLockAddress(update.to)
       }
+
       mergeUpdate(
         hash,
         'transactions',
@@ -355,13 +361,27 @@ export default class BlockchainHandler {
         },
         update
       )
+
       const isMined = update.status && update.status === TransactionStatus.MINED
       const transaction = this.store.transactions[hash]
       const recipient = transaction.lock || transaction.to
       const isKeyPurchase = transaction.type === TransactionType.KEY_PURCHASE
+      const accountAddress = this.store.account as string
+
+      // If we receive a mined key purchase, we should query web3Service for the
+      // real key
       if (isKeyPurchase && recipient && isMined) {
-        this.web3Service.getKeyByLockForOwner(recipient, this.store
-          .account as string)
+        this.web3Service.getKeyByLockForOwner(recipient, accountAddress)
+      }
+
+      // If we receive a submitted or pending key purchase
+      if (isKeyPurchase && recipient && !isMined) {
+        const temporaryKey = createTemporaryKey(
+          recipient,
+          accountAddress,
+          this.store.locks
+        )
+        this.store.keys[recipient] = temporaryKey
       }
     })
 
@@ -414,7 +434,11 @@ export default class BlockchainHandler {
         if (type === TransactionType.KEY_PURCHASE) {
           // If this is a key purchase, we create a fake key that will be used
           // to unlock the paywall until the transaction is mined.
-          const temporaryKey = this.createTemporaryKey(newTransaction)
+          const temporaryKey = createTemporaryKey(
+            newTransaction.to,
+            newTransaction.from,
+            this.store.locks
+          )
 
           this.store.keys[newTransaction.to] = temporaryKey
         }
