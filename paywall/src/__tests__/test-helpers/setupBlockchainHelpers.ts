@@ -57,6 +57,7 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
     getTransaction: jest.fn().mockResolvedValue({}),
     getLock: jest.fn().mockResolvedValue({}),
     getKeyByLockForOwner: jest.fn().mockResolvedValue({}),
+    getTokenBalance: jest.fn().mockResolvedValue(''),
 
     addListener: jest.fn(),
     on: (type, listener) => {

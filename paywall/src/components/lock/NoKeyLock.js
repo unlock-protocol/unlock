@@ -7,7 +7,7 @@ import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
-import { currencySymbolForLock } from '../../utils/locks'
+import { currencySymbolForLock, isTooExpensiveForUser } from '../../utils/locks'
 
 // WARNING: if you use any new fields of a lock here
 // it *must* be added to validation in isValidLock
@@ -25,14 +25,7 @@ export const NoKeyLock = ({
     lock.outstandingKeys >= lock.maxNumberOfKeys &&
     lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
 
-  // TODO: add support for balances of ERC20 which could be too low (the wallet actually should show that, so not a huge deal, but good to have!)
-
-  const tooExpensive =
-    account &&
-    !lock.currencyContractAddress &&
-    account.balance && // If we do not have the balance we assume we have not received it yet
-    account.balance.eth && // If we do not have the balance we assume we have not received it yet
-    parseFloat(account.balance.eth) <= parseFloat(lock.keyPrice)
+  const tooExpensive = isTooExpensiveForUser(lock, account)
 
   // When the lock is not disabled for other reasons (pending key on
   // other lock...), we need to ensure that the lock is disabled
