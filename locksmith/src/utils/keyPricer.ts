@@ -1,7 +1,7 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 
-class KeyPricer {
+export default class KeyPricer {
   readOnlyEthereumService: any
 
   constructor(providerURL: string, unlockContractAddress: string) {
@@ -29,9 +29,11 @@ class KeyPricer {
     // Stripe's fee is 30 cents plus 2.9% of the transaction.
     const baseStripeFee = 30
     const stripePercentage = 0.029
-    // This is rounded to an integer number of cents.
-    // TODO: use a library to do this better?
-    const percentageFee = Math.ceil(keyPrice * stripePercentage)
+
+    const subtotal = keyPrice + this.gasFee() + this.unlockServiceFee()
+
+    // This is rounded up to an integer number of cents.
+    const percentageFee = Math.ceil(subtotal * stripePercentage)
 
     return baseStripeFee + percentageFee
   }
@@ -51,5 +53,3 @@ class KeyPricer {
     }
   }
 }
-
-export = KeyPricer
