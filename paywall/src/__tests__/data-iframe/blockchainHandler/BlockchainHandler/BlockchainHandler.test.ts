@@ -15,6 +15,7 @@ import {
   BlockchainTestDefaults,
   lockAddresses,
   setupTestDefaults,
+  addresses,
 } from '../../../test-helpers/setupBlockchainHelpers'
 import { PaywallConfig } from '../../../../unlockTypes'
 import { POLLING_INTERVAL } from '../../../../constants'
@@ -114,6 +115,33 @@ describe('BlockchainHandler class setup', () => {
       'transaction.new',
       'error',
     ])
+  })
+
+  describe('_onLockUpdated', () => {
+    beforeEach(() => {
+      setupDefaults({ account: addresses[1] })
+    })
+
+    it('should load the current user balance if the lock is an ERC20 lock', async () => {
+      expect.assertions(2)
+      const handler = await callSetupBlockchainHandler()
+      const erc20Balance = '1337'
+
+      defaults.web3Service.getTokenBalance = jest.fn(() =>
+        Promise.resolve(erc20Balance)
+      )
+      const update = {
+        currencyContractAddress: '0xErc20Token',
+      }
+      await handler._onLockUpdated(lockAddresses[0], update)
+      expect(defaults.web3Service.getTokenBalance).toHaveBeenCalledWith(
+        update.currencyContractAddress,
+        defaults.store.account
+      )
+      expect(defaults.store.balance[update.currencyContractAddress]).toEqual(
+        erc20Balance
+      )
+    })
   })
 
   describe('account polling', () => {

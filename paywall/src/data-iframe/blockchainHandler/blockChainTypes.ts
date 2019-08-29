@@ -33,6 +33,10 @@ export interface Web3ServiceType extends EventEmitter {
   ) => Promise<void>
   getLock: (address: string) => Promise<RawLock>
   getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
+  getTokenBalance: (
+    tokenAddress: string,
+    accountAddress: string
+  ) => Promise<string>
 }
 
 export interface TransactionDefaults {

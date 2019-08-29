@@ -60,6 +60,7 @@ interface BlockchainHandlerParams {
   store?: PaywallState
 }
 
+// TODO: Why do we export these???
 export { Web3Service, WalletService }
 
 // assumptions:
@@ -359,7 +360,7 @@ export default class BlockchainHandler {
    * @param lockAddress
    * @param update
    */
-  _onLockUpdated(lockAddress: string, update: any) {
+  async _onLockUpdated(lockAddress: string, update: any) {
     const address = normalizeLockAddress(lockAddress)
     if (update.address) {
       update.address = normalizeLockAddress(update.address)
@@ -368,6 +369,17 @@ export default class BlockchainHandler {
       // use the configuration lock name if present
       update.name = this.store.config.locks[address].name
     }
+
+    // If the lock is in a non ethereum currency, we need to get the balance of currency for that user
+    if (update.currencyContractAddress && this.store.account) {
+      const balance = await this.web3Service.getTokenBalance(
+        update.currencyContractAddress,
+        this.store.account
+      )
+      this.store.balance[update.currencyContractAddress] = balance
+      this.dispatchChangesToPostOffice()
+    }
+
     this._mergeUpdate(
       address,
       'locks',

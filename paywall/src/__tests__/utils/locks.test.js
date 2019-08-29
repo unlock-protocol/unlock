@@ -1,4 +1,4 @@
-import { currencySymbolForLock } from '../../utils/locks'
+import { currencySymbolForLock, isTooExpensiveForUser } from '../../utils/locks'
 
 import configure from '../../config'
 
@@ -28,6 +28,62 @@ describe('locks utilities', () => {
         currencyContractAddress: '0xMyERC20',
       }
       expect(currencySymbolForLock(lock, config)).toBe('ERC20')
+    })
+  })
+
+  describe('isTooExpensiveForUser', () => {
+    it('should return true for locks in ether when the user does not have enough', () => {
+      expect.assertions(1)
+      const expensiveLock = {
+        keyPrice: '1000',
+      }
+      const poorUser = {
+        balance: {
+          eth: '10',
+        },
+      }
+      expect(isTooExpensiveForUser(expensiveLock, poorUser)).toBe(true)
+    })
+
+    it('should return true for locks in erc20 when the user does not have enough', () => {
+      expect.assertions(1)
+      const expensiveLock = {
+        currencyContractAddress: '0xErc20',
+        keyPrice: '1000',
+      }
+      const poorUser = {
+        balance: {
+          [expensiveLock.currencyContractAddress]: '1',
+        },
+      }
+      expect(isTooExpensiveForUser(expensiveLock, poorUser)).toBe(true)
+    })
+
+    it('should return false for locks in ether when the user does have enough', () => {
+      expect.assertions(1)
+      const cheapLock = {
+        keyPrice: '10',
+      }
+      const richUser = {
+        balance: {
+          eth: '1000',
+        },
+      }
+      expect(isTooExpensiveForUser(cheapLock, richUser)).toBe(false)
+    })
+
+    it('should return false for locks in erc20 when the user does have enough', () => {
+      expect.assertions(1)
+      const cheapLock = {
+        currencyContractAddress: '0xErc20',
+        keyPrice: '10',
+      }
+      const richUser = {
+        balance: {
+          [cheapLock.currencyContractAddress]: '1000',
+        },
+      }
+      expect(isTooExpensiveForUser(cheapLock, richUser)).toBe(false)
     })
   })
 })
