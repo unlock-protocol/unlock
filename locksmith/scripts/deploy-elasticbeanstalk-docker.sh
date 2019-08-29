@@ -10,6 +10,7 @@ build_id=$9
 message="${10}"
 stripe_secret=${11}
 purchaser_credentials=${12}
+web3_provider_host=${13}
 
 function check_is_forked_pr()
 {
@@ -37,10 +38,10 @@ function deploy()
     environment_name=$1
 
     if eb status ${environment_name}; then
-        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} NODE_ENV=${node_env} STRIPE_SECRET=${stripe_secret} PURCHASER_CREDENTIALS=${purchaser_credentials}
+        eb setenv DB_USERNAME=${db_username} DB_PASSWORD=${db_password} DB_NAME=${db_name} DB_HOSTNAME=${db_hostname} NODE_ENV=${node_env} STRIPE_SECRET=${stripe_secret} PURCHASER_CREDENTIALS=${purchaser_credentials} WEB3_PROVIDER_HOST=${web3_provider_host}
         eb deploy ${environment_name} --label locksmith-${build_id} --message "${message:0:199}"
     else
-        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env},STRIPE_SECRET=${stripe_secret},PURCHASER_CREDENTIALS=${purchaser_credentials} --elb-type classic
+        eb create ${environment_name} --envvars DB_USERNAME=${db_username},DB_PASSWORD=${db_password},DB_NAME=${db_name},DB_HOSTNAME=${db_hostname},NODE_ENV=${node_env},STRIPE_SECRET=${stripe_secret},PURCHASER_CREDENTIALS=${purchaser_credentials},WEB3_PROVIDER_HOST=${web3_provider_host} --elb-type classic
     fi
     
 }
