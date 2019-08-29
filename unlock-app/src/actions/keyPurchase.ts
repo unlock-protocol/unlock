@@ -2,15 +2,22 @@ export const ADD_TO_CART = 'keyPurchase/ADD_TO_CART'
 export const UPDATE_PRICE = 'keyPurchase/UPDATE_PRICE'
 export const DISMISS_PURCHASE_MODAL = 'keyPurchase/DISMISS_MODAL'
 
+export interface Fees {
+  keyPrice: number
+  gasFee: number
+  creditCardProcessing: number
+  unlockServiceFee: number
+}
+
 export const addToCart = ({ lock, tip }: any) => ({
   type: ADD_TO_CART,
   lock,
   tip,
 })
 
-export const updatePrice = (price: number) => ({
+export const updatePrice = (fees: Fees) => ({
   type: UPDATE_PRICE,
-  price,
+  fees,
 })
 
 export const dismissPurchaseModal = () => ({

@@ -179,9 +179,7 @@ const storageMiddleware = config => {
     })
 
     storageService.on(success.getKeyPrice, fees => {
-      // For now just dispatch the sum of these, in the future we may want to be
-      // more granular so we can provide a price breakdown on the checkout page.
-      dispatch(updatePrice(Object.values(fees).reduce((a, b) => a + b)))
+      dispatch(updatePrice(fees))
     })
     storageService.on(failure.getKeyPrice, () => {
       dispatch(

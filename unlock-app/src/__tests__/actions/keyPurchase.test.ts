@@ -23,10 +23,18 @@ describe('keyPurchase actions', () => {
 
   it('should create an action to update the cart with the price of a key to the lock', () => {
     expect.assertions(1)
-    expect(updatePrice(5.5)).toEqual(
+
+    const fees = {
+      creditCardProcessing: 450,
+      gasFee: 30,
+      keyPrice: 100,
+      unlockServiceFee: 20,
+    }
+
+    expect(updatePrice(fees)).toEqual(
       expect.objectContaining({
         type: UPDATE_PRICE,
-        price: 5.5,
+        fees,
       })
     )
   })
