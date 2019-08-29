@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import Link from 'next/link'
+import Svg from '../../interface/svg'
 import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
@@ -49,11 +49,9 @@ export class KeyList extends React.Component {
           />
         ) : (
           <Message>
-            No keys have been purchased yet.{' '}
-            <Link href="https://github.com/unlock-protocol/unlock/wiki/Introduction-to-Unlock#access-permissions-on-the-blockchain">
-              Embed your code snippet
-            </Link>{' '}
-            to sell keys.
+            No keys have been purchased yet. See how you can integrate your lock
+            into an application by clicking on <InlineIcon /> the icon in the
+            bar above.
           </Message>
         )}
       </KeyListWrapper>
@@ -104,6 +102,11 @@ const KeyListWrapper = styled.div`
 
 const Table = styled.div`
   margin-bottom: 10px;
+`
+
+const InlineIcon = styled(Svg.AppStore)`
+  vertical-align: middle;
+  width: 20px;
 `
 
 const Row = styled.div`
