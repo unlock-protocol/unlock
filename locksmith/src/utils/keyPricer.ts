@@ -24,8 +24,13 @@ class KeyPricer {
   }
 
   // Fee denominated in cents
-  creditCardProcessingFee(): number {
-    return 450
+  creditCardProcessingFee(keyPrice: number): number {
+    const baseStripeFee = 30
+    // This is rounded to an integer number of cents.
+    // TODO: use a library to do this better?
+    const percentageFee = Math.ceil(keyPrice * 0.029)
+
+    return baseStripeFee + percentageFee
   }
 
   // Fee denominated in cents
@@ -34,10 +39,11 @@ class KeyPricer {
   }
 
   async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
+    const keyPrice = await this.keyPrice(lockAddress)
     return {
-      keyPrice: await this.keyPrice(lockAddress),
+      keyPrice,
       gasFee: this.gasFee(),
-      creditCardProcessing: this.creditCardProcessingFee(),
+      creditCardProcessing: this.creditCardProcessingFee(keyPrice),
       unlockServiceFee: this.unlockServiceFee(),
     }
   }
