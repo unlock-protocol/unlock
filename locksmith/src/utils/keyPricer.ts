@@ -18,16 +18,19 @@ class KeyPricer {
     return Math.round(Number(lock.keyPrice) * 100)
   }
 
+  // Fee denominated in cents
   gasFee(): number {
     return 30
   }
 
+  // Fee denominated in cents
   creditCardProcessingFee(): number {
     return 450
   }
 
+  // Fee denominated in cents
   unlockServiceFee(): number {
-    return 20
+    return 50
   }
 
   async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
