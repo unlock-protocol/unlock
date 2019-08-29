@@ -256,28 +256,18 @@ export default class BlockchainHandler {
    * Set up the event listeners on walletService and web3Service
    */
   setupListeners() {
-    const reset = () => {
-      // we must have keys for every lock at all times
-      this.store.keys = makeDefaultKeys(this.lockAddresses, this.store.account)
-      this.store.transactions = {}
-      if (this.store.account) {
-        this.web3Service.refreshAccountBalance({ address: this.store.account })
-      }
-      this.retrieveCurrentBlockchainData()
-      this.dispatchChangesToPostOffice()
-    }
     // the event listeners propagate changes to the main window
     // or fetch new data when network or account changes
     this.walletService.on('account.changed', newAccount => {
       if (newAccount === this.store.account) return
       this.store.account = newAccount
-      reset()
+      this._reset()
     })
 
     this.walletService.on('network.changed', networkId => {
       if (networkId === this.store.network) return
       this.store.network = networkId
-      reset()
+      this._reset()
     })
 
     this.web3Service.on(
@@ -542,6 +532,21 @@ export default class BlockchainHandler {
       ...initialValue,
       ...update,
     }
+    this.dispatchChangesToPostOffice()
+  }
+
+  /**
+   * Resets the store
+   * @private
+   */
+  _reset() {
+    // we must have keys for every lock at all times
+    this.store.keys = makeDefaultKeys(this.lockAddresses, this.store.account)
+    this.store.transactions = {}
+    if (this.store.account) {
+      this.web3Service.refreshAccountBalance({ address: this.store.account })
+    }
+    this.retrieveCurrentBlockchainData()
     this.dispatchChangesToPostOffice()
   }
 }
