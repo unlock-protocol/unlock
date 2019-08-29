@@ -99,6 +99,11 @@ export const getPaywallStatus = (
   return PaywallStatus.locked
 }
 
+export const getUnlockedLockAddresses = (keys: KeyResults): string[] => {
+  const unexpiredKeys = Object.values(keys).filter(isUnexpired)
+  return unexpiredKeys.map(k => k.lock)
+}
+
 export default class Mailbox {
   private readonly useLocalStorageCache = false
   private readonly cachePrefix = '__unlockProtocol.cache'
@@ -233,22 +238,6 @@ export default class Mailbox {
   }
 
   /**
-   * Retrieve the addresses of any unlocked locks
-   */
-  getUnlockedLockAddresses() {
-    if (!this.blockchainData) return []
-    const data = this.blockchainData as BlockchainData
-    // lock addresses are normalized by here
-    return Object.keys(data.locks).filter(lockAddress => {
-      const lock = data.locks[lockAddress]
-      // locked states are "none", and "expired"
-      return ['valid', 'pending', 'submitted', 'confirming'].includes(
-        lock.key.status
-      )
-    })
-  }
-
-  /**
    * When we receive PostMessages.SEND_UPDATES, it is sent here to
    * send data back to the main window
    */
@@ -259,17 +248,19 @@ export default class Mailbox {
       .blockchainData as BlockchainData
     const configLockAddresses: string[] =
       (this.configuration && Object.keys(this.configuration.locks)) || []
-    const unlockedLocks = this.getUnlockedLockAddresses()
+
     const paywallStatus = getPaywallStatus(keys, configLockAddresses)
 
     switch (paywallStatus) {
-      case PaywallStatus.unlocked:
-        // unlockedLocks may be empty the first time this is sent
+      case PaywallStatus.unlocked: {
+        const unlockedLocks = getUnlockedLockAddresses(keys)
         this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
         break
-      case PaywallStatus.locked:
+      }
+      case PaywallStatus.locked: {
         this.postMessage(PostMessages.LOCKED, undefined)
         break
+      }
     }
 
     const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
@@ -404,17 +395,18 @@ export default class Mailbox {
 
     const configLockAddresses: string[] =
       (this.configuration && Object.keys(this.configuration.locks)) || []
-    const unlockedLocks = this.getUnlockedLockAddresses()
     const paywallStatus = getPaywallStatus(keys, configLockAddresses)
 
     switch (paywallStatus) {
-      case PaywallStatus.unlocked:
-        // unlockedLocks may be empty the first time this is sent
+      case PaywallStatus.unlocked: {
+        const unlockedLocks = getUnlockedLockAddresses(keys)
         this.postMessage(PostMessages.UNLOCKED, unlockedLocks)
         break
-      case PaywallStatus.locked:
+      }
+      case PaywallStatus.locked: {
         this.postMessage(PostMessages.LOCKED, undefined)
         break
+      }
     }
   }
 
