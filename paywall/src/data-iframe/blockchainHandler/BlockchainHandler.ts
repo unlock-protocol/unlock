@@ -304,21 +304,6 @@ export default class BlockchainHandler {
       this.dispatchChangesToPostOffice()
     })
 
-    const mergeUpdate = (
-      key: string,
-      type: 'transactions' | 'locks',
-      defaults: Object,
-      update: Object = {}
-    ) => {
-      const initialValue = this.store[type][key] || defaults
-
-      this.store[type][key] = {
-        ...initialValue,
-        ...update,
-      }
-      this.dispatchChangesToPostOffice()
-    }
-
     this.web3Service.on('transaction.updated', (hash, update) => {
       if (update.lock) {
         // ensure all references to locks are normalized
@@ -328,7 +313,7 @@ export default class BlockchainHandler {
         // ensure all references to locks are normalized
         update.to = normalizeLockAddress(update.to)
       }
-      mergeUpdate(
+      this._mergeUpdate(
         hash,
         'transactions',
         {
@@ -368,7 +353,7 @@ export default class BlockchainHandler {
         // use the configuration lock name if present
         update.name = this.store.config.locks[address].name
       }
-      mergeUpdate(
+      this._mergeUpdate(
         address,
         'locks',
         {
@@ -424,7 +409,7 @@ export default class BlockchainHandler {
         }
 
         this.storeTransaction(newTransaction)
-        mergeUpdate(hash, 'transactions', newTransaction, {
+        this._mergeUpdate(hash, 'transactions', newTransaction, {
           key: `${to}-${from}`,
           lock: newTransaction.to,
           confirmations: 0,
@@ -535,5 +520,28 @@ export default class BlockchainHandler {
       // eslint-disable-next-line no-console
       console.error(e)
     }
+  }
+
+  /**
+   * Merges the store values
+   * @private
+   * @param key
+   * @param type
+   * @param defaults
+   * @param update
+   */
+  _mergeUpdate(
+    key: string,
+    type: 'transactions' | 'locks',
+    defaults: Object,
+    update: Object = {}
+  ) {
+    const initialValue = this.store[type][key] || defaults
+
+    this.store[type][key] = {
+      ...initialValue,
+      ...update,
+    }
+    this.dispatchChangesToPostOffice()
   }
 }
