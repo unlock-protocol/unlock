@@ -70,8 +70,8 @@ export const KeyPurchaseConfirmation = ({
   )
 }
 
-const presentLock = (price: string, timeRemaining: any) => {
-  let displayedPrice = price || '-'
+const presentLock = (price: string, timeRemaining: any, none: string = '-') => {
+  let displayedPrice = price || none
   return <LockInfo price={displayedPrice} timeRemaining={timeRemaining} />
 }
 
