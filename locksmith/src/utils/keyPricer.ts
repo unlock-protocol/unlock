@@ -25,10 +25,12 @@ class KeyPricer {
 
   // Fee denominated in cents
   creditCardProcessingFee(keyPrice: number): number {
+    // Stripe's fee is 30 cents plus 2.9% of the transaction.
     const baseStripeFee = 30
+    const stripePercentage = 0.029
     // This is rounded to an integer number of cents.
     // TODO: use a library to do this better?
-    const percentageFee = Math.ceil(keyPrice * 0.029)
+    const percentageFee = Math.ceil(keyPrice * stripePercentage)
 
     return baseStripeFee + percentageFee
   }
