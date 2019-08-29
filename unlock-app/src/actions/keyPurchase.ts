@@ -2,8 +2,11 @@ export const ADD_TO_CART = 'keyPurchase/ADD_TO_CART'
 export const UPDATE_PRICE = 'keyPurchase/UPDATE_PRICE'
 export const DISMISS_PURCHASE_MODAL = 'keyPurchase/DISMISS_MODAL'
 
-interface Fees {
-  [name: string]: number
+export interface Fees {
+  keyPrice: number
+  gasFee: number
+  creditCardProcessing: number
+  unlockServiceFee: number
 }
 
 export const addToCart = ({ lock, tip }: any) => ({

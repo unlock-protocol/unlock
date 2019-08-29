@@ -12,13 +12,14 @@ import {
   LockInfo,
   DisabledButton,
 } from './styles'
+import { Fees } from '../../../actions/keyPurchase'
 
 interface KeyPurchaseConfirmationProps {
   address: string
   emailAddress: string
   lock?: Lock
   cards: stripe.Card[]
-  price?: number
+  priceBreakdown: { [name: string]: string }
   signPurchaseData: (d: PurchaseData) => any
 }
 
@@ -30,7 +31,7 @@ export const KeyPurchaseConfirmation = ({
   lock,
   cards,
   signPurchaseData,
-  price,
+  priceBreakdown,
 }: KeyPurchaseConfirmationProps) => {
   const data: PurchaseData = {
     recipient: address,
@@ -55,7 +56,9 @@ export const KeyPurchaseConfirmation = ({
         <Item title="Credit Card" size="full">
           <Value>{card}</Value>
         </Item>
-        <LockInfoWrapper>{presentLock(price, timeRemaining)}</LockInfoWrapper>
+        <LockInfoWrapper>
+          {presentLock(priceBreakdown.total, timeRemaining)}
+        </LockInfoWrapper>
       </Indent>
       {!!lock && (
         <Submit onClick={() => signPurchaseData(data)} roundBottomOnly>
@@ -67,19 +70,32 @@ export const KeyPurchaseConfirmation = ({
   )
 }
 
-const presentLock = (price: any, timeRemaining: any) => {
-  let displayedPrice = price ? presentPrice(price) : '-'
+const presentLock = (price: string, timeRemaining: any) => {
+  let displayedPrice = price || '-'
   return <LockInfo price={displayedPrice} timeRemaining={timeRemaining} />
 }
 
 const presentPrice = (price: number) => {
   var dollars = price / 100
+  // TODO: localize (all values returned from Locksmith are in USD)
   return dollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 }
 
 export const mapDispatchToProps = (dispatch: any) => ({
   signPurchaseData: (d: PurchaseData) => dispatch(signPurchaseData(d)),
 })
+
+export const makePriceBreakdown = (fees: Fees): { [key: string]: string } => {
+  const totalPrice = Object.values(fees).reduce((a, b) => a + b, 0)
+
+  return {
+    keyPrice: presentPrice(fees.keyPrice),
+    gasFee: presentPrice(fees.gasFee),
+    creditCardProcessing: presentPrice(fees.creditCardProcessing),
+    unlockServiceFee: presentPrice(fees.unlockServiceFee),
+    total: presentPrice(totalPrice),
+  }
+}
 
 interface ReduxState {
   account: {
@@ -89,17 +105,21 @@ interface ReduxState {
   }
   cart: {
     lock?: Lock
-    price?: number
+    fees?: Fees
   }
 }
 export const mapStateToProps = (state: ReduxState) => {
   const { account, cart } = state
+  let priceBreakdown = {}
+  if (cart.fees) {
+    priceBreakdown = makePriceBreakdown(cart.fees)
+  }
   return {
     emailAddress: account.emailAddress || '',
     address: account.address || '',
     lock: cart.lock || undefined,
     cards: account.cards || [],
-    price: cart.price,
+    priceBreakdown,
   }
 }
 
