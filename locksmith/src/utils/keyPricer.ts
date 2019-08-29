@@ -20,7 +20,8 @@ class KeyPricer {
 
   // Fee denominated in cents
   gasFee(): number {
-    return 30
+    // For the time being gas fees are covered by the unlockServiceFee
+    return 0
   }
 
   // Fee denominated in cents
