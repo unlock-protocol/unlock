@@ -22,6 +22,7 @@ import {
   blockchainDataLocked,
   blockchainDataNoLocks,
 } from '../../test-helpers/setupBlockchainHelpers'
+import { currentTimeInSeconds } from '../../../utils/durations'
 
 let mockWalletService: WalletServiceType
 let mockWeb3Service: Web3ServiceType
@@ -162,6 +163,17 @@ describe('Mailbox - sendUpdates', () => {
       it('should send "locked" when there are no valid keys', async () => {
         expect.assertions(1)
 
+        const anotherKey = {
+          lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
+          owner: 'me',
+          expiration: 12345,
+        }
+        testingMailbox().blockchainData = blockchainDataLocked
+        testingMailbox().blockchainData.keys = {
+          ...testingMailbox().blockchainData.keys,
+          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': anotherKey,
+        }
+
         const payload = undefined
         mailbox.sendUpdates('locks')
         await fakeWindow.waitForPostMessage()
@@ -171,9 +183,14 @@ describe('Mailbox - sendUpdates', () => {
 
       it('should send "unlocked" when there are valid keys', async () => {
         expect.assertions(1)
+
+        const theFuture = currentTimeInSeconds() + 2000
         ;(testingMailbox().blockchainData as BlockchainData).locks[
           lockAddresses[0]
         ].key.status = 'valid'
+        ;(testingMailbox().blockchainData as BlockchainData).keys[
+          lockAddresses[0]
+        ].expiration = theFuture
 
         const payload = [lockAddresses[0]]
         mailbox.sendUpdates('locks')

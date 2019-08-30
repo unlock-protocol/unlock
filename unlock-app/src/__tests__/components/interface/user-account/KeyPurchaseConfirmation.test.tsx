@@ -5,8 +5,10 @@ import {
   KeyPurchaseConfirmation,
   mapDispatchToProps,
   mapStateToProps,
+  makePriceBreakdown,
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PurchaseData } from '../../../../actions/user'
+import { Fees } from '../../../../actions/keyPurchase'
 
 const cards: stripe.Card[] = [
   {
@@ -55,7 +57,14 @@ const lock: Lock = {
 }
 const emailAddress = 'gaben@valve.hats'
 const address = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
-const price = 1212
+const fees: Fees = {
+  creditCardProcessing: 450,
+  gasFee: 30,
+  keyPrice: 100,
+  unlockServiceFee: 20,
+}
+
+const priceBreakdown = makePriceBreakdown(fees)
 
 describe('KeyPurchaseConfirmation', () => {
   describe('component', () => {
@@ -69,7 +78,7 @@ describe('KeyPurchaseConfirmation', () => {
           signPurchaseData={signPurchaseData}
           cards={cards}
           lock={lock}
-          price={price}
+          priceBreakdown={priceBreakdown}
         />
       )
       const submitButton = wrapper.container.getElementsByTagName('button')[0]
@@ -88,7 +97,7 @@ describe('KeyPurchaseConfirmation', () => {
           emailAddress=""
           cards={cards}
           signPurchaseData={signPurchaseData}
-          price={price}
+          priceBreakdown={priceBreakdown}
         />
       )
 
@@ -125,7 +134,7 @@ describe('KeyPurchaseConfirmation', () => {
         },
         cart: {
           lock,
-          price,
+          fees,
         },
       }
 
@@ -134,7 +143,7 @@ describe('KeyPurchaseConfirmation', () => {
         emailAddress,
         address,
         lock,
-        price,
+        priceBreakdown,
       })
     })
 
@@ -149,7 +158,7 @@ describe('KeyPurchaseConfirmation', () => {
         address: '',
         cards: [],
         lock: undefined,
-        price: undefined,
+        priceBreakdown: {},
       })
     })
   })

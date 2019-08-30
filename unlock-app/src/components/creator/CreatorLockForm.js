@@ -52,6 +52,11 @@ export const lockToFormValues = lockValues => {
     formValues.maxNumberOfKeys = INFINITY
   }
 
+  // ERC20 Locks
+  if (lockValues.currencyContractAddress) {
+    formValues.currency = lockValues.currencyContractAddress
+  }
+
   return formValues
 }
 

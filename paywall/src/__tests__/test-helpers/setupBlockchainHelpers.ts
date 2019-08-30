@@ -57,6 +57,7 @@ export function getWeb3Service(listeners: { [key: string]: Function }) {
     getTransaction: jest.fn().mockResolvedValue({}),
     getLock: jest.fn().mockResolvedValue({}),
     getKeyByLockForOwner: jest.fn().mockResolvedValue({}),
+    getTokenBalance: jest.fn().mockResolvedValue(''),
 
     addListener: jest.fn(),
     on: (type, listener) => {
@@ -124,7 +125,7 @@ export const defaultValuesOverride: OptionalBlockchainValues = {
     },
   },
   account: null,
-  balance: '0',
+  balance: {},
   keys: {},
   locks: {},
   transactions: {},
@@ -148,7 +149,7 @@ export function setupTestDefaults(
       },
     },
     account: null,
-    balance: '0',
+    balance: {},
     keys: {},
     locks: {},
     transactions: {},
@@ -188,7 +189,7 @@ export function setupTestDefaults(
       },
     },
     account: null,
-    balance: '0',
+    balance: {},
     keys: {},
     locks: {},
     transactions: {},
@@ -218,7 +219,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[0],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[0]] || 0,
+        expiration: keyExpirations[lockAddresses[0]] || -1,
         lock: lockAddresses[0],
         owner: store.account,
         status: 'none',
@@ -233,7 +234,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[1],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[1]] || 0,
+        expiration: keyExpirations[lockAddresses[1]] || -1,
         lock: lockAddresses[1],
         owner: store.account,
         status: 'none',
@@ -248,7 +249,7 @@ export function getDefaultFullLocks(
       address: lockAddresses[2],
       key: {
         confirmations: 0,
-        expiration: keyExpirations[lockAddresses[2]] || 0,
+        expiration: keyExpirations[lockAddresses[2]] || -1,
         lock: lockAddresses[2],
         owner: store.account,
         status: 'none',
@@ -323,7 +324,9 @@ export const secondLockLocked: Lock = {
 
 export const blockchainDataNoLocks: BlockchainData = {
   account: accountAddress,
-  balance: '234',
+  balance: {
+    eth: '234',
+  },
   network: 1984,
   locks: {},
   keys: {},

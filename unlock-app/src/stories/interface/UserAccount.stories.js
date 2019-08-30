@@ -2,7 +2,10 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { AccountInfo } from '../../components/interface/user-account/AccountInfo'
 import { ChangePassword } from '../../components/interface/user-account/ChangePassword'
-import { KeyPurchaseConfirmation } from '../../components/interface/user-account/KeyPurchaseConfirmation'
+import {
+  KeyPurchaseConfirmation,
+  makePriceBreakdown,
+} from '../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PaymentMethods } from '../../components/interface/user-account/PaymentMethods'
 import { changePassword, signPurchaseData } from '../../actions/user'
 import { Grid } from '../../components/interface/user-account/styles'
@@ -41,7 +44,14 @@ const lock = {
   key,
 }
 
-const price = 1215
+const fees = {
+  creditCardProcessing: 450,
+  gasFee: 30,
+  keyPrice: 100,
+  unlockServiceFee: 20,
+}
+
+const priceBreakdown = makePriceBreakdown(fees)
 
 storiesOf('User Account/Components', module)
   .add('AccountInfo, no info', () => {
@@ -64,6 +74,7 @@ storiesOf('User Account/Components', module)
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
         cards={[]}
+        priceBreakdown={{}}
       />
     )
   })
@@ -74,7 +85,7 @@ storiesOf('User Account/Components', module)
         signPurchaseData={signPurchaseData}
         lock={lock}
         cards={cards}
-        price={price}
+        priceBreakdown={priceBreakdown}
       />
     )
   })

@@ -669,13 +669,12 @@ describe('Storage middleware', () => {
         keyPrice: 100,
         unlockServiceFee: 20,
       }
-      const price = 600
 
       mockStorageService.emit(success.getKeyPrice, fees)
 
       expect(store.dispatch).toHaveBeenCalledWith({
         type: UPDATE_PRICE,
-        price,
+        fees,
       })
     })
 

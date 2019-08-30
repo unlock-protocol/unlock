@@ -8,7 +8,10 @@ import {
   ConstantsType,
   KeyResult,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  makeDefaultKeys,
+} from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+import { createTemporaryKey } from '../../../../data-iframe/blockchainHandler/createTemporaryKey'
 import {
   TransactionStatus,
   TransactionType,
@@ -110,26 +113,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
+        balance: {},
         network: 1984,
-        // These keys are from makeDefaultKeys
-        keys: {
-          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
-            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-            owner: null,
-          },
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
-            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            owner: null,
-          },
-          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
-            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-            owner: null,
-          },
-        },
+        keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
       })
     })
@@ -159,25 +145,11 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
-        network: 1984,
-        keys: {
-          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
-            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-            owner: null,
-          },
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
-            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            owner: null,
-          },
-          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
-            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-            owner: null,
-          },
+        balance: {
+          eth: '0',
         },
+        network: 1984,
+        keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
       })
     })
@@ -188,30 +160,14 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       setupDefaults({ account: null })
     })
 
-    it('should clear transactions, set up default keys, and set balance to "0"', async () => {
+    it('should clear transactions, set up default keys, and set the eth balance to "0"', async () => {
       expect.assertions(3)
 
       await handler.retrieveCurrentBlockchainData()
 
       expect(store.transactions).toEqual({})
-      expect(store.keys).toEqual({
-        [lockAddresses[0]]: {
-          lock: lockAddresses[0],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[1]]: {
-          lock: lockAddresses[1],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[2]]: {
-          lock: lockAddresses[2],
-          owner: null,
-          expiration: 0,
-        },
-      })
-      expect(store.balance).toBe('0')
+      expect(store.keys).toEqual(makeDefaultKeys(lockAddresses, null))
+      expect(store.balance.eth).toBe('0')
     })
 
     it('should call emitChanges with the default store', async () => {
@@ -225,25 +181,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: null,
-        balance: '0',
+        balance: {},
         network: 1984,
-        keys: {
-          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
-            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-            owner: null,
-          },
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
-            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            owner: null,
-          },
-          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
-            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-            owner: null,
-          },
-        },
+        keys: makeDefaultKeys(lockAddresses, null),
         transactions: {},
       })
     })
@@ -265,25 +205,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
       expect(emitChanges).toHaveBeenCalledWith({
         locks: getDefaultFullLocks(store, configuration),
         account: addresses[2],
-        balance: '0',
+        balance: {},
         network: 1984,
-        keys: {
-          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
-            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-          },
-          '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-            expiration: 0,
-            lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-          },
-          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
-            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-          },
-        },
+        keys: makeDefaultKeys(lockAddresses, addresses[2]),
         transactions: {},
       })
     })
@@ -312,25 +236,15 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           [lockAddresses[0]]: 12345, // override key expiration for key on lock 0
         }),
         account: addresses[2],
-        balance: '0',
+        balance: {},
         network: 1984,
-        keys: {
-          '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-            expiration: 0,
-            lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-          },
+        keys: expect.objectContaining({
           '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
             expiration: 12345,
             lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
           },
-          '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-            expiration: 0,
-            lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-            owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-          },
-        },
+        }),
         transactions: {},
       })
     })
@@ -376,25 +290,9 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         expect(emitChanges).toHaveBeenCalledWith({
           locks: getDefaultFullLocks(store, configuration, {}),
           account: addresses[2],
-          balance: '0',
+          balance: {},
           network: 1984,
-          keys: {
-            '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-              expiration: 0,
-              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-            '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-              expiration: 0,
-              lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-            '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-              expiration: 0,
-              lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-          },
+          keys: makeDefaultKeys(lockAddresses, addresses[2]),
           transactions: {},
         })
       })
@@ -458,31 +356,28 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
 
         await waitFor(() => Object.keys(store.transactions).length)
 
+        const lockAddress = lockAddresses[1]
+        const defaultKeys = makeDefaultKeys(lockAddresses, addresses[2])
+        const expectedKeys = {
+          ...defaultKeys,
+          // This test emits a transaction update with pending status,
+          // so one of the keys will be a temporary one.
+          [lockAddresses[1]]: createTemporaryKey(
+            lockAddress,
+            addresses[2],
+            store.locks[lockAddress]
+          ),
+        }
+
         // locks get populated when web3Service.getLock emits 'lock.updated'
         // see the setupListeners function for implementation
         // the end of "setupDefaults" mocks the emit in this test file
         expect(emitChanges).toHaveBeenCalledWith({
           locks,
           account: addresses[2],
-          balance: '0',
+          balance: {},
           network: 1984,
-          keys: {
-            '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8': {
-              expiration: 0,
-              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-            '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2': {
-              expiration: 0,
-              lock: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-            '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e': {
-              expiration: 0,
-              lock: '0xbf7f1bdb3a2d6c318603ffc8f39974e597b6af5e',
-              owner: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-            },
-          },
+          keys: expectedKeys,
           transactions: {
             hash: {
               blockNumber: 9007199254740991,
