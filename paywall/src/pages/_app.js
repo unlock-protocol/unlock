@@ -18,7 +18,6 @@ import walletMiddleware from '../middlewares/walletMiddleware'
 import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
 import storageMiddleware from '../middlewares/storageMiddleware'
-import providerMiddleware from '../middlewares/providerMiddleware'
 
 const config = configure()
 
@@ -27,7 +26,6 @@ const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 function getOrCreateStore(initialState, history) {
   const middlewares = [
     interWindowCommunicationMiddleware(global),
-    providerMiddleware(config),
     web3Middleware(config),
     currencyConversionMiddleware,
     storageMiddleware(config),
