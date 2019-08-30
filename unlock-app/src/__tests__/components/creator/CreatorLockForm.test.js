@@ -59,6 +59,14 @@ describe('lockToFormValues', () => {
     expect(lockToFormValues(lock).unlimitedKeys).toBe(true)
     expect(lockToFormValues(lock).maxNumberOfKeys).toBe(INFINITY)
   })
+
+  it('should return an object with the right value for the currency', () => {
+    expect.assertions(1)
+    const lock = {
+      currencyContractAddress: '0xerc20',
+    }
+    expect(lockToFormValues(lock).currency).toBe('0xerc20')
+  })
 })
 
 describe('formValuesToLock', () => {
