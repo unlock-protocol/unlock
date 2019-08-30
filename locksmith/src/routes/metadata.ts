@@ -5,7 +5,7 @@ var router = express.Router()
 
 let metaDataConfiguration = {
   name: 'LockMetaData',
-  required: ['address', 'name', 'description', 'owner', 'image'],
+  required: ['name', 'description', 'owner', 'image'],
   signee: 'owner',
 }
 
