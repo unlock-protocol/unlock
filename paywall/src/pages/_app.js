@@ -17,7 +17,6 @@ import currencyConversionMiddleware from '../middlewares/currencyConversionMiddl
 import walletMiddleware from '../middlewares/walletMiddleware'
 import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
-import storageMiddleware from '../middlewares/storageMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
 
 const config = configure()
@@ -30,7 +29,6 @@ function getOrCreateStore(initialState, history) {
     providerMiddleware(config),
     web3Middleware(config),
     currencyConversionMiddleware,
-    storageMiddleware(config),
     walletMiddleware(config),
   ]
 
