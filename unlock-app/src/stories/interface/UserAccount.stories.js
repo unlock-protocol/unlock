@@ -85,7 +85,7 @@ storiesOf('User Account/Components', module)
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
         lock={lock}
-        cards={displayCard(cards[0])}
+        card={displayCard(cards[0])}
         priceBreakdown={priceBreakdown}
       />
     )
