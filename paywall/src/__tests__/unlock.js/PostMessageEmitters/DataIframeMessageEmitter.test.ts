@@ -149,6 +149,11 @@ describe('DataIframeMessageEmitter', () => {
         },
       },
     }
+
+    const keys: ExtractPayload<PostMessages.UPDATE_KEYS> = {}
+
+    const transactions: ExtractPayload<PostMessages.UPDATE_TRANSACTIONS> = {}
+
     it.each(<PayloadMessages>[
       ['UNLOCKED', PostMessages.UNLOCKED, lockAddresses],
       ['ERROR', PostMessages.ERROR, 'error message'],
@@ -158,6 +163,8 @@ describe('DataIframeMessageEmitter', () => {
       ['UPDATE_ACCOUNT_BALANCE', PostMessages.UPDATE_ACCOUNT_BALANCE, '123'],
       ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 4],
       ['UPDATE_LOCKS', PostMessages.UPDATE_LOCKS, locks],
+      ['UPDATE_KEYS', PostMessages.UPDATE_KEYS, keys],
+      ['UPDATE_TRANSACTIONS', PostMessages.UPDATE_TRANSACTIONS, transactions],
     ])(
       'should emit PostMessages.%s upon receiving it',
       (_, message, payload) => {

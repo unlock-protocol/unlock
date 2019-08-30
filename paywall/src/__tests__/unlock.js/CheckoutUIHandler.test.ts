@@ -1,6 +1,7 @@
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import CheckoutUIHandler from '../../unlock.js/CheckoutUIHandler'
-import { PaywallConfig, Locks } from '../../unlockTypes'
+import { PaywallConfig, Locks, Transactions } from '../../unlockTypes'
+import { KeyResults } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import IframeHandler from '../../unlock.js/IframeHandler'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
 
@@ -39,6 +40,11 @@ describe('CheckoutUIHandler', () => {
       },
     },
   }
+
+  const fakeKeys: KeyResults = {}
+
+  const fakeTransactions: Transactions = {}
+
   const config: PaywallConfig = {
     locks: {},
     callToAction: {
@@ -155,6 +161,12 @@ describe('CheckoutUIHandler', () => {
       ['UPDATE_ACCOUNT', PostMessages.UPDATE_ACCOUNT, fakeAccount],
       ['UPDATE_ACCOUNT_BALANCE', PostMessages.UPDATE_ACCOUNT_BALANCE, '123'],
       ['UPDATE_LOCKS', PostMessages.UPDATE_LOCKS, fakeLocks],
+      ['UPDATE_KEYS', PostMessages.UPDATE_KEYS, fakeKeys],
+      [
+        'UPDATE_TRANSACTIONS',
+        PostMessages.UPDATE_TRANSACTIONS,
+        fakeTransactions,
+      ],
       ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 3],
       ['UPDATE_WALLET', PostMessages.UPDATE_WALLET, true],
       ['ERROR', PostMessages.ERROR, 'error message'],
