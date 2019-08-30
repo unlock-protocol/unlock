@@ -6,6 +6,7 @@ import {
   mapDispatchToProps,
   mapStateToProps,
   makePriceBreakdown,
+  displayCard,
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PurchaseData } from '../../../../actions/user'
 import { Fees } from '../../../../actions/keyPurchase'
@@ -76,7 +77,7 @@ describe('KeyPurchaseConfirmation', () => {
           address={address}
           emailAddress={emailAddress}
           signPurchaseData={signPurchaseData}
-          cards={cards}
+          card={displayCard(cards[0])}
           lock={lock}
           priceBreakdown={priceBreakdown}
         />
@@ -85,7 +86,38 @@ describe('KeyPurchaseConfirmation', () => {
       if (submitButton) {
         rtl.fireEvent.click(submitButton)
       }
-      expect(signPurchaseData).toHaveBeenCalled()
+      expect(signPurchaseData).toHaveBeenCalledWith({
+        recipient: address,
+        lock: lock.address,
+      })
+    })
+
+    it('transitions to a loading state after submitting', () => {
+      expect.assertions(1)
+      const signPurchaseData = jest.fn((_: PurchaseData) => true)
+      const wrapper = rtl.render(
+        <KeyPurchaseConfirmation
+          address={address}
+          emailAddress={emailAddress}
+          signPurchaseData={signPurchaseData}
+          card={displayCard(cards[0])}
+          lock={lock}
+          priceBreakdown={priceBreakdown}
+        />
+      )
+
+      const loadingText = 'Submitting Transaction...'
+
+      // We shouldn't already be in the submitted state
+      expect(() => wrapper.getByText(loadingText)).toThrow()
+
+      const submitButton = wrapper.container.getElementsByTagName('button')[0]
+      if (submitButton) {
+        rtl.fireEvent.click(submitButton)
+      }
+
+      // But now we should be
+      wrapper.getByText(loadingText)
     })
 
     it('is disabled when no lock can be found', () => {
@@ -95,7 +127,7 @@ describe('KeyPurchaseConfirmation', () => {
         <KeyPurchaseConfirmation
           address=""
           emailAddress=""
-          cards={cards}
+          card={displayCard(cards[1])}
           signPurchaseData={signPurchaseData}
           priceBreakdown={priceBreakdown}
         />
@@ -139,7 +171,7 @@ describe('KeyPurchaseConfirmation', () => {
       }
 
       expect(mapStateToProps(state)).toEqual({
-        cards,
+        card: 'Visa ending in 4242',
         emailAddress,
         address,
         lock,
@@ -156,7 +188,7 @@ describe('KeyPurchaseConfirmation', () => {
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
         address: '',
-        cards: [],
+        card: '-',
         lock: undefined,
         priceBreakdown: {},
       })

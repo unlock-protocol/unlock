@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import {
   Grid,
   Column,
@@ -142,9 +143,7 @@ export class ChangePassword extends React.Component<
         <Column size="half">
           <Error>{errors.length ? errors[0] : ''}</Error>
           {!submitted && (
-            <SubmitButton onClick={this.handleClick}>
-              Update Password
-            </SubmitButton>
+            <Submit onClick={this.handleClick}>Update Password</Submit>
           )}
           {submitted && <DisabledButton>Submitted</DisabledButton>}
         </Column>
@@ -163,3 +162,8 @@ export default connect(
   null,
   mapDispatchToProps
 )(ChangePassword)
+
+const Submit = styled(SubmitButton)`
+  margin-bottom: 1rem;
+  margin-top: 13px;
+`

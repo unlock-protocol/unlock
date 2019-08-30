@@ -11,63 +11,93 @@ import {
   SubmitButton,
   LockInfo,
   DisabledButton,
+  LoadingButton,
 } from './styles'
 import { Fees } from '../../../actions/keyPurchase'
 
-interface KeyPurchaseConfirmationProps {
+interface Props {
   address: string
   emailAddress: string
   lock?: Lock
-  cards: stripe.Card[]
+  card: string
   priceBreakdown: { [name: string]: string }
   signPurchaseData: (d: PurchaseData) => any
 }
 
-// TODO: get credit card in state, pass in here for use
-// TODO: get lock information, use in here
-export const KeyPurchaseConfirmation = ({
-  address,
-  emailAddress,
-  lock,
-  cards,
-  signPurchaseData,
-  priceBreakdown,
-}: KeyPurchaseConfirmationProps) => {
-  const data: PurchaseData = {
-    recipient: address,
-    lock: (lock && lock.address) || '',
-  }
-  const timeRemaining = (
-    <Duration seconds={(lock && lock.expirationDuration) || null} round />
-  )
-  let card = '-'
-  if (cards.length) {
-    const { brand, last4 } = cards[0]
-    card = `${brand} ending in ${last4}`
+interface State {
+  sentKeyPurchase: boolean
+}
+
+export class KeyPurchaseConfirmation extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      sentKeyPurchase: false,
+    }
   }
 
-  return (
-    <KeyPurchaseWrapper>
-      <Indent>
-        <Heading>Confirm Purchase</Heading>
-        <Item title="Account" size="full">
-          <Value>{emailAddress}</Value>
-        </Item>
-        <Item title="Credit Card" size="full">
-          <Value>{card}</Value>
-        </Item>
-        <LockInfoWrapper>
-          {presentLock(priceBreakdown.total, timeRemaining)}
-        </LockInfoWrapper>
-      </Indent>
-      {!!lock && (
-        <Submit onClick={() => signPurchaseData(data)} roundBottomOnly>
+  submitButton = () => {
+    const { sentKeyPurchase } = this.state
+    const { lock, address } = this.props
+
+    if (sentKeyPurchase) {
+      return (
+        <LoadingButton>
+          <span>Submitting Transaction...</span>
+        </LoadingButton>
+      )
+    } else if (lock) {
+      const data: PurchaseData = {
+        recipient: address,
+        lock: lock.address,
+      }
+      return (
+        <SubmitButton onClick={() => this.handleSubmit(data)} roundBottomOnly>
           Confirm Purchase
-        </Submit>
-      )}
-      {!lock && <Disabled roundBottomOnly>No lock found</Disabled>}
-    </KeyPurchaseWrapper>
-  )
+        </SubmitButton>
+      )
+    }
+
+    return <DisabledButton roundBottomOnly>No lock found</DisabledButton>
+  }
+
+  handleSubmit = (data: PurchaseData) => {
+    const { signPurchaseData } = this.props
+
+    signPurchaseData(data)
+
+    this.setState({
+      sentKeyPurchase: true,
+    })
+  }
+
+  timeRemaining = () => {
+    const { lock } = this.props
+    return (
+      <Duration seconds={(lock && lock.expirationDuration) || null} round />
+    )
+  }
+
+  render = () => {
+    const { emailAddress, card, priceBreakdown } = this.props
+    return (
+      <KeyPurchaseWrapper>
+        <Indent>
+          <Heading>Confirm Purchase</Heading>
+          <Item title="Account" size="full">
+            <Value>{emailAddress}</Value>
+          </Item>
+          <Item title="Credit Card" size="full">
+            <Value>{card}</Value>
+          </Item>
+          <LockInfoWrapper>
+            {presentLock(priceBreakdown.total, this.timeRemaining())}
+          </LockInfoWrapper>
+        </Indent>
+        {this.submitButton()}
+      </KeyPurchaseWrapper>
+    )
+  }
 }
 
 const presentLock = (price: string, timeRemaining: any, none: string = '-') => {
@@ -97,6 +127,11 @@ export const makePriceBreakdown = (fees: Fees): { [key: string]: string } => {
   }
 }
 
+export const displayCard = (card: stripe.Card) => {
+  const { brand, last4 } = card
+  return `${brand} ending in ${last4}`
+}
+
 interface ReduxState {
   account: {
     emailAddress?: string
@@ -109,16 +144,25 @@ interface ReduxState {
   }
 }
 export const mapStateToProps = (state: ReduxState) => {
-  const { account, cart } = state
+  const {
+    account: { emailAddress, address, cards },
+    cart,
+  } = state
+
   let priceBreakdown = {}
   if (cart.fees) {
     priceBreakdown = makePriceBreakdown(cart.fees)
   }
+
+  let card = '-'
+  if (cards && cards.length) {
+    card = displayCard(cards[0])
+  }
   return {
-    emailAddress: account.emailAddress || '',
-    address: account.address || '',
+    emailAddress: emailAddress || '',
+    address: address || '',
     lock: cart.lock || undefined,
-    cards: account.cards || [],
+    card,
     priceBreakdown,
   }
 }
@@ -157,11 +201,4 @@ const Value = styled(ItemValue)`
 
 const LockInfoWrapper = styled.div`
   margin-top: 8px;
-`
-const Submit = styled(SubmitButton)`
-  margin: 0;
-`
-
-const Disabled = styled(DisabledButton)`
-  margin: 0;
 `

@@ -5,6 +5,7 @@ import { ChangePassword } from '../../components/interface/user-account/ChangePa
 import {
   KeyPurchaseConfirmation,
   makePriceBreakdown,
+  displayCard,
 } from '../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PaymentMethods } from '../../components/interface/user-account/PaymentMethods'
 import { changePassword, signPurchaseData } from '../../actions/user'
@@ -73,7 +74,7 @@ storiesOf('User Account/Components', module)
       <KeyPurchaseConfirmation
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
-        cards={[]}
+        card="-"
         priceBreakdown={{}}
       />
     )
@@ -84,7 +85,7 @@ storiesOf('User Account/Components', module)
         emailAddress="jenny@googlemail.com"
         signPurchaseData={signPurchaseData}
         lock={lock}
-        cards={cards}
+        card={displayCard(cards[0])}
         priceBreakdown={priceBreakdown}
       />
     )
