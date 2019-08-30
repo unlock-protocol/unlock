@@ -7,12 +7,15 @@ import {
   SetTimeoutWindow,
   LocksmithTransactionsResult,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
-import BlockchainHandler from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
+import BlockchainHandler, {
+  makeDefaultKeys,
+} from '../../../../data-iframe/blockchainHandler/BlockchainHandler'
 import {
   defaultValuesOverride,
   BlockchainTestDefaults,
   lockAddresses,
   setupTestDefaults,
+  addresses,
 } from '../../../test-helpers/setupBlockchainHelpers'
 import { PaywallConfig } from '../../../../unlockTypes'
 import { POLLING_INTERVAL } from '../../../../constants'
@@ -91,24 +94,8 @@ describe('BlockchainHandler class setup', () => {
         },
       },
       account: null,
-      balance: '0',
-      keys: {
-        [lockAddresses[0]]: {
-          lock: lockAddresses[0],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[1]]: {
-          lock: lockAddresses[1],
-          owner: null,
-          expiration: 0,
-        },
-        [lockAddresses[2]]: {
-          lock: lockAddresses[2],
-          owner: null,
-          expiration: 0,
-        },
-      }, // default keys for each lock are created
+      balance: {},
+      keys: makeDefaultKeys(lockAddresses, null),
       locks: {},
       transactions: {},
       network: 1984, // default network is used for network
@@ -128,6 +115,33 @@ describe('BlockchainHandler class setup', () => {
       'transaction.new',
       'error',
     ])
+  })
+
+  describe('_onLockUpdated', () => {
+    beforeEach(() => {
+      setupDefaults({ account: addresses[1] })
+    })
+
+    it('should load the current user balance if the lock is an ERC20 lock', async () => {
+      expect.assertions(2)
+      const handler = await callSetupBlockchainHandler()
+      const erc20Balance = '1337'
+
+      defaults.web3Service.getTokenBalance = jest.fn(() =>
+        Promise.resolve(erc20Balance)
+      )
+      const update = {
+        currencyContractAddress: '0xErc20Token',
+      }
+      await handler._onLockUpdated(lockAddresses[0], update)
+      expect(defaults.web3Service.getTokenBalance).toHaveBeenCalledWith(
+        update.currencyContractAddress,
+        defaults.store.account
+      )
+      expect(defaults.store.balance[update.currencyContractAddress]).toEqual(
+        erc20Balance
+      )
+    })
   })
 
   describe('account polling', () => {

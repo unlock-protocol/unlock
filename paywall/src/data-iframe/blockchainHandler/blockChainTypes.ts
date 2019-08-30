@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import {
+  Balance,
   RawLock,
   PaywallConfig,
   Transactions,
@@ -32,6 +33,10 @@ export interface Web3ServiceType extends EventEmitter {
   ) => Promise<void>
   getLock: (address: string) => Promise<RawLock>
   getKeyByLockForOwner: (lock: string, owner: string) => Promise<KeyResult>
+  getTokenBalance: (
+    tokenAddress: string,
+    accountAddress: string
+  ) => Promise<string>
 }
 
 export interface TransactionDefaults {
@@ -64,7 +69,7 @@ export interface ConstantsType {
 export interface BlockchainData {
   locks: Locks
   account: string | null
-  balance: string
+  balance: Balance
   network: unlockNetworks
   keys: KeyResults
   transactions: Transactions
@@ -108,5 +113,5 @@ export interface PaywallState {
   transactions: Transactions
   account: string | null
   network: unlockNetworks
-  balance: string
+  balance: Balance
 }

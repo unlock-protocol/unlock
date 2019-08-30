@@ -12,7 +12,7 @@ describe('cartReducer', () => {
     })
   })
 
-  it('should update existing state with a price when receiving UPDATE_PRICE', () => {
+  it('should update existing state with the fees object when receiving UPDATE_PRICE', () => {
     expect.assertions(1)
     const lock = 'a lock'
     const tip = 'a tip'
@@ -20,11 +20,18 @@ describe('cartReducer', () => {
       lock,
       tip,
     }
-    const price = 5.5
-    expect(reducer(currentState, updatePrice(5.5))).toEqual({
+
+    const fees = {
+      creditCardProcessing: 450,
+      gasFee: 30,
+      keyPrice: 100,
+      unlockServiceFee: 20,
+    }
+
+    expect(reducer(currentState, updatePrice(fees))).toEqual({
       lock,
       tip,
-      price,
+      fees,
     })
   })
 

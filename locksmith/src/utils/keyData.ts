@@ -37,4 +37,20 @@ export default class KeyData {
       this.provider
     )
   }
+
+  openSeaPresentation(data: any) {
+    if (data.expiration) {
+      return {
+        attributes: [
+          {
+            trait_type: 'expiration',
+            value: data.expiration,
+            display_type: 'number',
+          },
+        ],
+      }
+    } else {
+      return data
+    }
+  }
 }

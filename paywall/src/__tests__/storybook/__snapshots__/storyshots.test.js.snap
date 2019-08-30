@@ -2348,6 +2348,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -2555,7 +2556,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -2848,6 +2849,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -3137,7 +3139,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -3631,6 +3633,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -3921,7 +3924,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -4416,6 +4419,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -4702,7 +4706,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -5193,6 +5197,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -5479,7 +5484,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -6059,6 +6064,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -6438,7 +6444,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -7089,6 +7095,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -7433,7 +7440,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -8049,6 +8056,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -8426,7 +8434,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -8838,6 +8846,7 @@ Object {
 
 .c3 {
   display: grid;
+  margin-bottom: 20px;
 }
 
 .c3 p {
@@ -9021,7 +9030,7 @@ Object {
         
       </a>
       <header
-        class="sc-ifAKCX btcjqI"
+        class="sc-ifAKCX cABenV"
       >
         <h1
           class="sc-EHOje gaUSBN"
@@ -24876,8 +24885,12 @@ Object {
   border-radius: 0px 0px 4px 4px;
   padding: 0px;
   width: 200px;
-  background-color: var(--green);
+  background-color: var(--lightgrey);
   color: var(--white);
+}
+
+.c10:hover .c8 {
+  background-color: var(--activegreen);
 }
 
 .c4 {
@@ -24904,14 +24917,6 @@ Object {
   padding-top: 13px;
 }
 
-.c4:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c4:hover .c8 {
-  background-color: var(--activegreen);
-}
-
 .c5 {
   font-size: 30px;
   text-transform: uppercase;
@@ -24936,11 +24941,11 @@ Object {
   color: var(--grey);
 }
 
-.c10 .c0 {
+.c11 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c11 .c2 {
   height: 0;
 }
 
@@ -24967,6 +24972,7 @@ Object {
             </header>
             <div
               class="c4"
+              disabled=""
             >
               <div
                 class="price c5"
@@ -24992,6 +24998,7 @@ Object {
               </div>
               <footer
                 class="c8 c9"
+                disabled=""
               >
                 Sold Out
               </footer>
@@ -25023,7 +25030,8 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+            disabled=""
           >
             <div
               class="sc-5sgq84-3 price bIZSQm"
@@ -25048,7 +25056,8 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              disabled=""
             >
               Sold Out
             </footer>
@@ -25119,7 +25128,278 @@ Object {
 }
 `;
 
-exports[`Storyshots Lock disabled - too expensive for current user 1`] = `
+exports[`Storyshots Lock disabled - too expensive for current user in erc20 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
+  font-size: 20px;
+  min-height: 40px;
+  border-radius: 4px 4px 0px 0px;
+  padding: 0px;
+  color: var(--grey);
+}
+
+.c1 {
+  display: grid;
+  justify-items: stretch;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  width: 200px;
+  grid-gap: 8px;
+  background-clip: padding-box;
+  grid-template-rows: 1fr 140px;
+  cursor: not-allowed;
+}
+
+.c8 {
+  display: grid;
+  font-weight: 300;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  font-size: 20px;
+  line-height: 20px;
+  height: 40px;
+  border-radius: 0px 0px 4px 4px;
+  padding: 0px;
+  width: 200px;
+  background-color: var(--lightgrey);
+  color: var(--white);
+}
+
+.c9:hover .c7 {
+  background-color: var(--activegreen);
+}
+
+.c4 {
+  display: grid;
+  height: 140px;
+  width: 200px;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  text-align: center;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  padding: 0px;
+  grid-template-rows: 40px 30px;
+  grid-gap: 8px;
+  padding-top: 0px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: var(--white);
+  padding-top: 13px;
+}
+
+.c5 {
+  font-size: 30px;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: bold;
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--grey);
+}
+
+.c10 .c0 {
+  grid-template-rows: 4px 140px;
+}
+
+.c10 .c2 {
+  height: 0;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        style="width: 100vw; height: 100vh; display: flex; flex-direction: row; place-content: center;"
+      >
+        <div
+          style="height: 200px; display: grid;"
+        >
+          <li
+            class="c0 lock c1"
+            data-address="0x123"
+            disabled=""
+          >
+            <header
+              class="c2 c3"
+            >
+              Monthly
+            </header>
+            <div
+              class="c4"
+              disabled=""
+            >
+              <div
+                class="price c5"
+              >
+                10.00
+                 
+                DEV
+              </div>
+              <div>
+                <span
+                  class="c6"
+                >
+                  <span>
+                    5 minutes
+                  </span>
+                </span>
+              </div>
+              <footer
+                class="c7 c8"
+                disabled=""
+              >
+                Insufficient funds
+              </footer>
+            </div>
+          </li>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      style="width: 100vw; height: 100vh; display: flex; flex-direction: row; place-content: center;"
+    >
+      <div
+        style="height: 200px; display: grid;"
+      >
+        <li
+          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          data-address="0x123"
+          disabled=""
+        >
+          <header
+            class="sc-1549ebs-1 kSQjXI"
+          >
+            Monthly
+          </header>
+          <div
+            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+            disabled=""
+          >
+            <div
+              class="sc-5sgq84-3 price bIZSQm"
+            >
+              10.00
+               
+              DEV
+            </div>
+            <div>
+              <span
+                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+              >
+                <span>
+                  5 minutes
+                </span>
+              </span>
+            </div>
+            <footer
+              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              disabled=""
+            >
+              Insufficient funds
+            </footer>
+          </div>
+        </li>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Lock disabled - too expensive for current user in eth 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -25170,8 +25450,12 @@ Object {
   border-radius: 0px 0px 4px 4px;
   padding: 0px;
   width: 200px;
-  background-color: var(--green);
+  background-color: var(--lightgrey);
   color: var(--white);
+}
+
+.c10:hover .c8 {
+  background-color: var(--activegreen);
 }
 
 .c4 {
@@ -25198,14 +25482,6 @@ Object {
   padding-top: 13px;
 }
 
-.c4:hover {
-  border: 1px solid var(--activegreen);
-}
-
-.c4:hover .c8 {
-  background-color: var(--activegreen);
-}
-
 .c5 {
   font-size: 30px;
   text-transform: uppercase;
@@ -25230,11 +25506,11 @@ Object {
   color: var(--grey);
 }
 
-.c10 .c0 {
+.c11 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c11 .c2 {
   height: 0;
 }
 
@@ -25261,6 +25537,7 @@ Object {
             </header>
             <div
               class="c4"
+              disabled=""
             >
               <div
                 class="price c5"
@@ -25286,6 +25563,7 @@ Object {
               </div>
               <footer
                 class="c8 c9"
+                disabled=""
               >
                 Insufficient funds
               </footer>
@@ -25317,7 +25595,8 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
+            class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
+            disabled=""
           >
             <div
               class="sc-5sgq84-3 price bIZSQm"
@@ -25342,7 +25621,8 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 frvQEr"
+              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              disabled=""
             >
               Insufficient funds
             </footer>

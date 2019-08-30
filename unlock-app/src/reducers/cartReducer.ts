@@ -20,8 +20,8 @@ const cartReducer = (state = initialState, action: Action) => {
     const { lock, tip } = action
     state = { lock, tip }
   } else if (action.type === UPDATE_PRICE) {
-    const { price } = action
-    state = Object.assign({}, state, { price })
+    const { fees } = action
+    state = Object.assign({}, state, { fees })
   }
 
   return state

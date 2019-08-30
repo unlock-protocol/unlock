@@ -7,7 +7,7 @@ import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
-import { currencySymbolForLock } from '../../utils/locks'
+import { currencySymbolForLock, isTooExpensiveForUser } from '../../utils/locks'
 
 // WARNING: if you use any new fields of a lock here
 // it *must* be added to validation in isValidLock
@@ -25,11 +25,7 @@ export const NoKeyLock = ({
     lock.outstandingKeys >= lock.maxNumberOfKeys &&
     lock.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT
 
-  // TODO: add support for balances of ERC20 which could be too low (the wallet actually should show that, so not a huge deal, but good to have!)
-  const tooExpensive =
-    account &&
-    !lock.currencyContractAddress &&
-    parseFloat(account.balance) <= parseFloat(lock.keyPrice)
+  const tooExpensive = isTooExpensiveForUser(lock, account)
 
   // When the lock is not disabled for other reasons (pending key on
   // other lock...), we need to ensure that the lock is disabled
@@ -52,7 +48,7 @@ export const NoKeyLock = ({
       lock={lock}
       disabled={disableClick}
       onClick={() => {
-        !disabled && purchaseKey(lockKey)
+        !disableClick && purchaseKey(lockKey)
       }}
     >
       <LockHeader>{lock.name}</LockHeader>
@@ -60,7 +56,7 @@ export const NoKeyLock = ({
         convertCurrency={convertCurrency}
         amount={lock.keyPrice}
         render={(ethPrice, fiatPrice) => (
-          <Body disabled={disabled}>
+          <Body disabled={disableClick}>
             <EthPrice>
               {ethPrice} {currency}
             </EthPrice>
@@ -70,7 +66,7 @@ export const NoKeyLock = ({
                 <Duration seconds={lock.expirationDuration} round />
               </ExpirationDuration>
             </div>
-            <Footer disabled={disabled}>{footerMessage}</Footer>
+            <Footer disabled={disableClick}>{footerMessage}</Footer>
           </Body>
         )}
       />

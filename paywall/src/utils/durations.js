@@ -188,3 +188,5 @@ export function expirationAsText(timestamp) {
 
   return 'Expires in < 1 Minute'
 }
+
+export const currentTimeInSeconds = () => Math.floor(Date.now() / 1000)

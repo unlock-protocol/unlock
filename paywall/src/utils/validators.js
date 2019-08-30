@@ -248,3 +248,19 @@ export const isValidLocks = locks => {
   if (lockValues.filter(lock => !isValidLock(lock)).length) return false
   return true
 }
+
+/**
+ * validate a balance as an object of currency: balance
+ */
+export const isValidBalance = balance => {
+  if (!balance || typeof balance !== 'object' || Array.isArray(balance)) {
+    return false
+  }
+  return Object.keys(balance).reduce((accumulator, currency) => {
+    return (
+      accumulator &&
+      (isPositiveNumber(balance[currency]) &&
+        typeof balance[currency] === 'string')
+    )
+  }, true)
+}
