@@ -13,7 +13,6 @@ import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
-import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
@@ -29,7 +28,6 @@ function getOrCreateStore(initialState, history) {
     interWindowCommunicationMiddleware(global),
     providerMiddleware(config),
     web3Middleware(config),
-    currencyConversionMiddleware,
     storageMiddleware(config),
     walletMiddleware(config),
   ]
