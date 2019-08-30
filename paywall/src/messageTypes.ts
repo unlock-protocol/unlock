@@ -10,6 +10,7 @@ import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
+// TODO: there is a lot of duplicates from constants.js
 export enum PostMessages {
   LOCKED = 'locked',
   UNLOCKED = 'unlocked',
@@ -149,7 +150,10 @@ export type Message =
       type: PostMessages.UPDATE_KEYS
       payload: KeyResults
     }
-  | { type: PostMessages.UPDATE_TRANSACTIONS; payload: Transactions }
+  | {
+      type: PostMessages.UPDATE_TRANSACTIONS
+      payload: Transactions
+    }
 
 export type MessageTypes = Message['type']
 export type ExtractPayload<TYPE> = Extract<Message, { type: TYPE }>['payload']

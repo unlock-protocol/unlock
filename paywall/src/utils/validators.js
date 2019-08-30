@@ -250,6 +250,22 @@ export const isValidLocks = locks => {
 }
 
 /**
+ * validate the list of keys returned from the data iframe
+ * TODO: consider if validation is actually required
+ */
+export const isValidKeys = () => {
+  return true
+}
+
+/**
+ * validate the list of transactions returned from the data iframe
+ * TODO: consider if validation is actually required
+ */
+export const isValidTransactions = () => {
+  return true
+}
+
+/**
  * validate a balance as an object of currency: balance
  */
 export const isValidBalance = balance => {

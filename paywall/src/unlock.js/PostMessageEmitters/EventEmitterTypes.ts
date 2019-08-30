@@ -32,6 +32,12 @@ export interface DataIframeEvents {
   [PostMessages.UPDATE_LOCKS]: (
     update: ExtractPayload<PostMessages.UPDATE_LOCKS>
   ) => void
+  [PostMessages.UPDATE_KEYS]: (
+    update: ExtractPayload<PostMessages.UPDATE_KEYS>
+  ) => void
+  [PostMessages.UPDATE_TRANSACTIONS]: (
+    update: ExtractPayload<PostMessages.UPDATE_TRANSACTIONS>
+  ) => void
   [PostMessages.UPDATE_NETWORK]: (
     update: ExtractPayload<PostMessages.UPDATE_NETWORK>
   ) => void

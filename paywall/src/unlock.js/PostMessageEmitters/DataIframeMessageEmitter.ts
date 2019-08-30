@@ -118,5 +118,11 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
       }
       this.emit(PostMessages.UPDATE_LOCKS, locks)
     })
+    this.addHandler(PostMessages.UPDATE_TRANSACTIONS, transactions => {
+      this.emit(PostMessages.UPDATE_TRANSACTIONS, transactions)
+    })
+    this.addHandler(PostMessages.UPDATE_KEYS, keys => {
+      this.emit(PostMessages.UPDATE_KEYS, keys)
+    })
   }
 }

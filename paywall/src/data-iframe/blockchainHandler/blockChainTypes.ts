@@ -47,6 +47,7 @@ export interface TransactionDefaults {
   [key: string]: any
 }
 
+// TODO: move these types to unlockTypes with other ones!
 export interface KeyResult {
   lock: string
   owner: string | null

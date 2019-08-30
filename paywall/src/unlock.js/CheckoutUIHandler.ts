@@ -32,6 +32,15 @@ export default class CheckoutUIHandler {
     this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_LOCKS, locks)
     )
+    this.iframes.data.on(PostMessages.UPDATE_KEYS, keys =>
+      this.iframes.checkout.postMessage(PostMessages.UPDATE_KEYS, keys)
+    )
+    this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
+      return this.iframes.checkout.postMessage(
+        PostMessages.UPDATE_TRANSACTIONS,
+        transactions
+      )
+    })
     this.iframes.data.on(PostMessages.UPDATE_NETWORK, network =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_NETWORK, network)
     )
@@ -49,6 +58,8 @@ export default class CheckoutUIHandler {
       this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'account')
       this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'balance')
       this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'network')
+      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'keys')
+      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'transactions')
     })
 
     // pass on any errors
