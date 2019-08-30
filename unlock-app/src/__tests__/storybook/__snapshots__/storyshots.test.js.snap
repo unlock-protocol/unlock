@@ -59996,6 +59996,8 @@ Object {
   -ms-flex-pack: center;
   justify-content: center;
   color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 13px;
 }
 
 @media (min-width:500px) {
@@ -60156,7 +60158,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI icEpzL"
+          class="sc-iwsKbI sc-esjQYD fGpsQB"
         >
           Update Password
         </button>
@@ -61319,6 +61321,8 @@ Object {
   -ms-flex-pack: center;
   justify-content: center;
   color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 13px;
 }
 
 @media (min-width:500px) {
@@ -61613,7 +61617,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI icEpzL"
+            class="sc-iwsKbI sc-esjQYD fGpsQB"
           >
             Update Password
           </button>
