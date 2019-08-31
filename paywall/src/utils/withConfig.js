@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 /**
  * Function which creates higher order component with the config
@@ -22,14 +21,6 @@ export default function withConfig(Component) {
     )
   }
 
-  // We do not overwite existing props if any!
-  function mapStateToProps(state, props) {
-    return {
-      network: props.network || state.network,
-      account: props.account || state.account,
-    }
-  }
-
   componentWithConfig.getInitialProps = async context => {
     return {
       ...(Component.getInitialProps
@@ -38,5 +29,5 @@ export default function withConfig(Component) {
     }
   }
 
-  return connect(mapStateToProps)(componentWithConfig)
+  return componentWithConfig
 }
