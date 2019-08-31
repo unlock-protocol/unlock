@@ -7,6 +7,7 @@ import { Account } from '../../../unlockTypes'
 import SignupSuccess from '../SignupSuccess'
 // eslint-disable-next-line no-unused-vars
 import { loginCredentials, Credentials } from '../../../actions/user'
+import { LoadingButton } from './styles'
 
 interface Props {
   toggleSignup: () => void
@@ -61,6 +62,15 @@ export class LogIn extends React.Component<Props, State> {
     toggleSignup()
   }
 
+  submitButton = () => {
+    const { submitted } = this.state
+    if (submitted) {
+      return <LoadingButton>Logging In...</LoadingButton>
+    }
+
+    return <SubmitButton type="submit" value="Submit" />
+  }
+
   render = () => {
     const { account } = this.props
 
@@ -96,7 +106,7 @@ export class LogIn extends React.Component<Props, State> {
             </Description>
           </Indent>
           <br />
-          <SubmitButton type="submit" value="Submit" />
+          {this.submitButton()}
         </form>
       </LogInWrapper>
     )
@@ -159,6 +169,7 @@ const SubmitButton = styled.input`
   width: 100%;
   border: none;
   background-color: var(--green);
+  color: var(--white);
   border-radius: 0 0 4px;
   font-size: 16px;
   cursor: pointer;

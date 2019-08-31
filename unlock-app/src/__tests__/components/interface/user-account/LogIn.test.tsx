@@ -51,6 +51,22 @@ describe('LogIn', () => {
     )
   })
 
+  it('should transition to a loading state when the form is submitted', () => {
+    expect.assertions(1)
+
+    const { getByText, getByDisplayValue } = rtl.render(
+      <LogIn toggleSignup={() => {}} loginCredentials={loginCredentials} />
+    )
+
+    // Should not already be in the loading state
+    expect(() => getByText('Logging In...')).toThrow()
+
+    const submit = getByDisplayValue('Submit')
+    rtl.fireEvent.click(submit)
+
+    getByText('Logging In...')
+  })
+
   it('should show SignupSuccess when there is an account in state', () => {
     expect.assertions(0)
 

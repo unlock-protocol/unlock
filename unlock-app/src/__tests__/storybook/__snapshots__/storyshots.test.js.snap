@@ -797,6 +797,7 @@ Object {
   width: 100%;
   border: none;
   background-color: var(--green);
+  color: var(--white);
   border-radius: 0 0 4px;
   font-size: 16px;
   cursor: pointer;
@@ -948,10 +949,10 @@ Object {
           
         </a>
         <div
-          class="sc-kpOJdX gCFVZh"
+          class="sc-kpOJdX iMWLHm"
         >
           <h1
-            class="sc-dxgOiQ bjveIj"
+            class="sc-dxgOiQ kCvUDj"
           >
             Log In
           </h1>
@@ -960,13 +961,13 @@ Object {
               class="sc-kkGfuU dTGOmL"
             >
               <label
-                class="sc-hMqMXs hMxlwy"
+                class="sc-hMqMXs boiFZQ"
                 for="emailInput"
               >
                 Email
               </label>
               <input
-                class="sc-jKJlTe kQfwwT"
+                class="sc-jKJlTe iiMoSO"
                 id="emailInput"
                 name="emailAddress"
                 placeholder="Enter your email"
@@ -974,20 +975,20 @@ Object {
               />
               <br />
               <label
-                class="sc-hMqMXs hMxlwy"
+                class="sc-hMqMXs boiFZQ"
                 for="passwordInput"
               >
                 Password
               </label>
               <input
-                class="sc-jKJlTe kQfwwT"
+                class="sc-jKJlTe iiMoSO"
                 id="passwordInput"
                 name="password"
                 placeholder="Enter your password"
                 type="password"
               />
               <p
-                class="sc-ckVGcZ fkiXIW"
+                class="sc-ckVGcZ gDOexU"
               >
                 Don't have an account?
                  
@@ -1000,7 +1001,7 @@ Object {
             </div>
             <br />
             <input
-              class="sc-eNQAEJ jWNVir"
+              class="sc-eNQAEJ fdriJu"
               type="submit"
               value="Submit"
             />
@@ -59976,6 +59977,7 @@ Object {
 
 .c6 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
@@ -60158,7 +60160,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI sc-esjQYD fGpsQB"
+          class="sc-iwsKbI sc-esjQYD jhFzQE"
         >
           Update Password
         </button>
@@ -60302,6 +60304,7 @@ Object {
 
 .c10 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 0 0 4px 4px;
@@ -60517,7 +60520,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-jzJRlG ixbFAk"
+        class="sc-iwsKbI sc-jzJRlG btXmdY"
       >
         No lock found
       </button>
@@ -60630,6 +60633,7 @@ Object {
 
 .c10 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 0 0 4px 4px;
@@ -60873,7 +60877,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI hqCHWS"
+        class="sc-iwsKbI ekNeOx"
       >
         Confirm Purchase
       </button>
@@ -61309,6 +61313,7 @@ Object {
 
 .c7 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
@@ -61625,7 +61630,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI sc-esjQYD fGpsQB"
+            class="sc-iwsKbI sc-esjQYD jhFzQE"
           >
             Update Password
           </button>
