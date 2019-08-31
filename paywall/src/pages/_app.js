@@ -9,8 +9,6 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
-import WalletCheckOverlay from '../components/interface/FullScreenModals'
-
 // Middlewares
 import web3Middleware from '../middlewares/web3Middleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
@@ -104,7 +102,6 @@ The Unlock team
         <GlobalStyle />
         <Provider store={store}>
           <WindowContext.Provider value={global.window}>
-            <WalletCheckOverlay />
             <ConnectedRouter history={history}>
               <ConfigProvider value={config}>
                 <Component {...pageProps} router={router} />
