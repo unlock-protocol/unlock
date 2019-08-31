@@ -949,10 +949,10 @@ Object {
           
         </a>
         <div
-          class="sc-kpOJdX iMWLHm"
+          class="sc-kpOJdX gCFVZh"
         >
           <h1
-            class="sc-dxgOiQ kCvUDj"
+            class="sc-dxgOiQ bjveIj"
           >
             Log In
           </h1>
@@ -961,13 +961,13 @@ Object {
               class="sc-kkGfuU dTGOmL"
             >
               <label
-                class="sc-hMqMXs boiFZQ"
+                class="sc-hMqMXs hMxlwy"
                 for="emailInput"
               >
                 Email
               </label>
               <input
-                class="sc-jKJlTe iiMoSO"
+                class="sc-jKJlTe kQfwwT"
                 id="emailInput"
                 name="emailAddress"
                 placeholder="Enter your email"
@@ -975,20 +975,20 @@ Object {
               />
               <br />
               <label
-                class="sc-hMqMXs boiFZQ"
+                class="sc-hMqMXs hMxlwy"
                 for="passwordInput"
               >
                 Password
               </label>
               <input
-                class="sc-jKJlTe iiMoSO"
+                class="sc-jKJlTe kQfwwT"
                 id="passwordInput"
                 name="password"
                 placeholder="Enter your password"
                 type="password"
               />
               <p
-                class="sc-ckVGcZ gDOexU"
+                class="sc-ckVGcZ fkiXIW"
               >
                 Don't have an account?
                  
@@ -1001,7 +1001,7 @@ Object {
             </div>
             <br />
             <input
-              class="sc-eNQAEJ fdriJu"
+              class="sc-eNQAEJ gnfvLE"
               type="submit"
               value="Submit"
             />
