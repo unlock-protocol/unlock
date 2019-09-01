@@ -1,5 +1,8 @@
 # Changes
 
+## Next Version
+- Approving MAX_UNIT when purchasing key on ERC20 lock and skipping if the approved amount is already high enough
+
 ## 0.3.12
 - fixed a difference between pending transactions (node knows about them) and submitted transactions (which may be transactions that have been cancelled and will never succeed)
 
