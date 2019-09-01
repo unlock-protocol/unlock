@@ -10,7 +10,6 @@ import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
 // Middlewares
-import walletMiddleware from '../middlewares/walletMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
 
 const config = configure()
@@ -18,7 +17,7 @@ const config = configure()
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, history) {
-  const middlewares = [walletMiddleware(config)]
+  const middlewares = []
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
