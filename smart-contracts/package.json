@@ -15,7 +15,7 @@
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.0",
-    "cross-env": "5.2.0",
+    "cross-env": "5.2.1",
     "erc1820": "0.0.2",
     "eth-gas-reporter": "0.2.6",
     "ethereumjs-units": "0.2.0",
