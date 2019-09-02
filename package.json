@@ -35,7 +35,7 @@
     "typescript": "3.5.2"
   },
   "devDependencies": {
-    "bundlesize": "^0.18.0",
+    "bundlesize": "0.18.0",
     "husky": "2.7.0"
   },
   "scripts": {
