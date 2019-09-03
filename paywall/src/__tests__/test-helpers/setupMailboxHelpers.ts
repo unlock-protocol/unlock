@@ -43,3 +43,5 @@ export function setupTestDefaults() {
   }
   return result as MailboxTestDefaults
 }
+
+export default setupTestDefaults
