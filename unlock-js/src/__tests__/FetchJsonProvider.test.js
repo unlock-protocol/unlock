@@ -136,7 +136,7 @@ describe('FetchJsonProvider', () => {
           request: {
             method: 'net_version',
             params: [],
-            id: 42,
+            id: expect.any(Number),
             jsonrpc: '2.0',
           },
           response: 1984,

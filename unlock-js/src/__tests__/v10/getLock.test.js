@@ -82,18 +82,18 @@ describe('v10', () => {
 
       // call the attributes
       nock.ethCallAndYield(
+        contractMethods.name.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
+      )
+
+      nock.ethCallAndYield(
         contractMethods.keyPrice.encode([]),
         checksumLockAddress,
         resultEncoder.encode(
           ['uint256'],
           [utils.toRpcResultNumber('10000000000000000')]
         )
-      )
-
-      nock.ethCallAndYield(
-        contractMethods.name.encode([]),
-        checksumLockAddress,
-        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
       )
 
       nock.ethCallAndYield(
