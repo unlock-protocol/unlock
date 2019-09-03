@@ -44,7 +44,7 @@
     "@types/nock": "10.0.3",
     "@types/node": "12.7.3",
     "@types/sequelize": "4.28.3",
-    "@types/stripe": "6.30.5",
+    "@types/stripe": "6.31.23",
     "@types/supertest": "2.0.7",
     "@typescript-eslint/eslint-plugin": "1.10.2",
     "@unlock-protocol/unlock-js": "0.3.12",
