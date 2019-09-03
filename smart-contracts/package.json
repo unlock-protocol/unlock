@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "remixd": "0.1.8",
-    "truffle-flattener": "1.4.0",
+    "truffle-flattener": "1.4.2",
     "truffle-security": "1.5.2"
   },
   "lint-staged": {
