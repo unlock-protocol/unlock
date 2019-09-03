@@ -57,7 +57,7 @@
     "react-select": "3.0.4",
     "react-test-renderer": "16.8.6",
     "react-testing-library": "6.1.2",
-    "redux": "4.0.1",
+    "redux": "4.0.4",
     "run-script-os": "1.0.7",
     "styled-components": "4.3.2",
     "ts-jest": "24.0.2",
