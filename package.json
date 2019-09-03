@@ -28,7 +28,7 @@
     "eslint-plugin-standard": "4.0.1",
     "jest": "24.8.0",
     "link-parent-bin": "1.0.2",
-    "lint-staged": "9.2.5",
+    "lint-staged": "8.2.1",
     "netlify-cli": "2.11.22",
     "prettier": "1.18.2",
     "ts-jest": "24.0.2",
