@@ -157,3 +157,6 @@ export type Message =
 
 export type MessageTypes = Message['type']
 export type ExtractPayload<TYPE> = Extract<Message, { type: TYPE }>['payload']
+
+// Eslint requires a default export
+export default {}

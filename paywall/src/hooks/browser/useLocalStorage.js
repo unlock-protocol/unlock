@@ -16,7 +16,7 @@ export default function useLocalStorage(key) {
   useEffect(() => {
     if (!available) return // do nothing if localStorage can't be used
     window.localStorage.setItem(key, value)
-  }, [value]) // and not on every update to the component containing the hook // this effect only runs when the value changes
+  }, [available, key, value, window.localStorage]) // and not on every update to the component containing the hook // this effect only runs when the value changes
 
   return [value, setValue]
 }

@@ -233,3 +233,6 @@ export interface UnlockWindow
     ConfigWindow {
   document: FullDocument
 }
+
+// Eslint requires a default export
+export default {}
