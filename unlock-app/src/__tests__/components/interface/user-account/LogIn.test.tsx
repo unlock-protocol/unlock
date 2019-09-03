@@ -3,21 +3,31 @@ import * as rtl from 'react-testing-library'
 import { LogIn } from '../../../../components/interface/user-account/LogIn'
 // eslint-disable-next-line no-unused-vars
 import { Credentials } from '../../../../actions/user'
+import { WarningError } from '../../../../utils/Error'
 
 let loginCredentials: (c: Credentials) => any
+let toggleSignup: () => any
+let close: (e: any) => void
+let errors: WarningError[]
 
 describe('LogIn', () => {
   beforeEach(() => {
     loginCredentials = jest.fn((c: Credentials) => c)
+    toggleSignup = jest.fn()
+    close = jest.fn()
+    errors = []
   })
 
   it('should call toggleSignup when the link is clicked', () => {
     expect.assertions(1)
 
-    const toggleSignup = jest.fn()
-
     const { getByText } = rtl.render(
-      <LogIn toggleSignup={toggleSignup} loginCredentials={loginCredentials} />
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        errors={errors}
+        close={close}
+      />
     )
 
     const signUp = getByText('Sign up here.')
@@ -32,7 +42,12 @@ describe('LogIn', () => {
     const password = 'guest'
 
     const { getByDisplayValue, getByLabelText } = rtl.render(
-      <LogIn toggleSignup={() => {}} loginCredentials={loginCredentials} />
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        errors={errors}
+        close={close}
+      />
     )
 
     const emailInput = getByLabelText('Email')
@@ -55,7 +70,12 @@ describe('LogIn', () => {
     expect.assertions(1)
 
     const { getByText, getByDisplayValue } = rtl.render(
-      <LogIn toggleSignup={() => {}} loginCredentials={loginCredentials} />
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        errors={errors}
+        close={close}
+      />
     )
 
     // Should not already be in the loading state
@@ -70,8 +90,6 @@ describe('LogIn', () => {
   it('should show SignupSuccess when there is an account in state', () => {
     expect.assertions(0)
 
-    const toggleSignup = jest.fn()
-    const loginCredentials = jest.fn()
     const account = {
       address: '0x123abc',
       balance: '0',
@@ -82,6 +100,8 @@ describe('LogIn', () => {
         toggleSignup={toggleSignup}
         loginCredentials={loginCredentials}
         account={account}
+        errors={errors}
+        close={close}
       />
     )
 

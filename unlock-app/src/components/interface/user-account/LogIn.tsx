@@ -7,12 +7,16 @@ import { Account } from '../../../unlockTypes'
 import SignupSuccess from '../SignupSuccess'
 // eslint-disable-next-line no-unused-vars
 import { loginCredentials, Credentials } from '../../../actions/user'
-import { LoadingButton } from './styles'
+import { LoadingButton, SubmitButton } from './styles'
+import { UnlockError, WarningError, isWarningError } from '../../../utils/Error'
+import { resetError } from '../../../actions/error'
 
 interface Props {
   toggleSignup: () => void
   loginCredentials: (credentials: Credentials) => void
   account?: Account
+  errors: WarningError[]
+  close: (e: WarningError) => void
 }
 
 interface State {
@@ -34,10 +38,14 @@ export class LogIn extends React.Component<Props, State> {
   }
 
   handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    this.submitLoginCredentials()
+  }
+
+  submitLoginCredentials = () => {
     // TODO: Validation for empty fields, etc?
     const { loginCredentials } = this.props
     const { emailAddress, password } = this.state
-    e.preventDefault()
     loginCredentials({
       emailAddress,
       password,
@@ -62,13 +70,31 @@ export class LogIn extends React.Component<Props, State> {
     toggleSignup()
   }
 
+  handleReset = () => {
+    const { errors, close } = this.props
+    errors.forEach(e => close(e))
+    this.submitLoginCredentials()
+  }
+
   submitButton = () => {
+    const { errors } = this.props
     const { submitted } = this.state
-    if (submitted) {
+
+    if (errors.length) {
+      return (
+        <SubmitButton
+          backgroundColor="var(--red)"
+          roundBottomOnly
+          onClick={this.handleReset}
+        >
+          Retry Login
+        </SubmitButton>
+      )
+    } else if (submitted) {
       return <LoadingButton>Logging In...</LoadingButton>
     }
 
-    return <SubmitButton type="submit" value="Submit" />
+    return <InputSubmitButton type="submit" value="Submit" />
   }
 
   render = () => {
@@ -116,15 +142,26 @@ export class LogIn extends React.Component<Props, State> {
 const mapDispatchToProps = (dispatch: any) => ({
   loginCredentials: ({ emailAddress, password }: Credentials) =>
     dispatch(loginCredentials({ emailAddress, password })),
+  close: (e: WarningError) => {
+    dispatch(resetError(e))
+  },
 })
 
 interface ReduxState {
   account?: Account
+  errors: UnlockError[]
 }
 
-const mapStateToProps = ({ account }: ReduxState) => ({
-  account,
-})
+const mapStateToProps = ({ account, errors }: ReduxState) => {
+  const logInWarnings = errors.filter(
+    e => isWarningError(e) && e.kind === 'LogIn'
+  )
+
+  return {
+    account,
+    errors: logInWarnings as WarningError[],
+  }
+}
 
 export default connect(
   mapStateToProps,
@@ -164,7 +201,7 @@ const Input = styled.input`
   font-size: 16px;
 `
 
-const SubmitButton = styled.input`
+const InputSubmitButton = styled.input`
   height: 60px;
   width: 100%;
   border: none;
