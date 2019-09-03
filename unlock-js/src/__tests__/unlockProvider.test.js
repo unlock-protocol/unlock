@@ -1,5 +1,8 @@
+import nock from 'nock'
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+
+// TODO: move this to the integration tests directory
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -29,8 +32,13 @@ const emailAddress = 'geoff@bitconnect.gov'
 
 describe('Unlock Provider', () => {
   let provider
-  beforeEach(async () => {
-    const readOnlyProvider = 'http://localhost:8545'
+  beforeAll(async () => {
+    nock.enableNetConnect()
+    
+    const readOnlyProvider = process.env.CI
+          ? 'http://ganache-integration::8545'
+          : 'http://127.0.0.1:8545'
+    
     provider = new UnlockProvider({ readOnlyProvider })
     await provider.connect({ key, password, emailAddress })
   })
