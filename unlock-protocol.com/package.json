@@ -41,7 +41,7 @@
     "rss": "1.2.2",
     "run-script-os": "1.0.7",
     "styled-components": "4.3.2",
-    "terser": "4.0.2",
+    "terser": "4.2.1",
     "ts-jest": "24.0.2",
     "typescript": "3.5.2",
     "yaml-front-matter": "4.0.0"
