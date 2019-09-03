@@ -1,4 +1,4 @@
-import { useEffect, useRef, useReducer } from 'react'
+import { useEffect, useRef, useReducer, useCallback } from 'react'
 
 import useLocksmith from './useLocksmith'
 import { OPTIMISM_POLLING_INTERVAL } from '../constants'
@@ -27,10 +27,10 @@ export default function useOptimism(transaction) {
     { current: locksmithOptimism.willSucceed, past: 0 }
   )
   const timeout = useRef()
-  const reQuery = () => {
+  const reQuery = useCallback(() => {
     reSendQuery()
     setTimeout(reQuery, OPTIMISM_POLLING_INTERVAL)
-  }
+  })
   const endPolling = () => {
     if (timeout.current) {
       clearTimeout(timeout.current)
@@ -56,7 +56,7 @@ export default function useOptimism(transaction) {
         reQuery()
       }, OPTIMISM_POLLING_INTERVAL)
     }
-  }, [hash, status, locksmithOptimism])
+  }, [hash, status, locksmithOptimism, reQuery])
 
   return optimism
 }
