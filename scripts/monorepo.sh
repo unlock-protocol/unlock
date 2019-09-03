@@ -8,7 +8,7 @@ BRANCH=$3
 # current git changes are not relevant to the folder being tested (and not on master)
 
 if [ ! "$BRANCH" = "master" ]; then
-  HAS_CHANGES=$(git show --name-only $COMMIT -- $SERVICE)
+  HAS_CHANGES=$(git show --name-only $COMMIT -- package.json $SERVICE)
   if [ ! -n "$HAS_CHANGES" ]; then
     echo "No change in $SERVICE, skipping job."
     circleci step halt
