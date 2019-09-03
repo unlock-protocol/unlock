@@ -34,7 +34,7 @@
     "react-dom": "16.8.6",
     "react-ga": "2.5.7",
     "react-intercom": "1.0.15",
-    "react-redux": "7.1.0",
+    "react-redux": "7.1.1",
     "react-showdown": "1.6.0",
     "react-test-renderer": "16.8.6",
     "react-testing-library": "6.1.2",
