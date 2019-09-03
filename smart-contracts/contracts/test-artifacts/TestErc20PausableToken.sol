@@ -14,7 +14,7 @@ contract TestErc20PausableToken is
   ERC20Mintable,
   ERC20Pausable
 {
-  constructor() public 
+  constructor() public
   {
     ERC20Pausable.initialize(msg.sender);
     ERC20Mintable.initialize(msg.sender);
