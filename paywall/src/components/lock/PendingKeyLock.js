@@ -26,14 +26,14 @@ export const PendingKeyLock = ({ lock, config }) => {
           convertCurrency={convertCurrency}
           amount={lock.keyPrice}
           render={(ethPrice, fiatPrice) => (
-            <React.Fragment>
+            <>
               <LockDetails>
                 <LockDetail bold>
                   {ethPrice} {currency}
                 </LockDetail>
                 {convertCurrency && <LockDetail>${fiatPrice}</LockDetail>}
               </LockDetails>
-            </React.Fragment>
+            </>
           )}
         />
         <TransactionStatus>Waiting for mining confirmation.</TransactionStatus>

@@ -10,9 +10,9 @@ export function CreatorLockStatus({ config, status, confirmations }) {
       <Status>{status}</Status>
       <Confirmations>
         {confirmations > 0 && (
-          <React.Fragment>
+          <>
             {confirmations} / {config.requiredConfirmations}
-          </React.Fragment>
+          </>
         )}
       </Confirmations>
     </LockStatus>

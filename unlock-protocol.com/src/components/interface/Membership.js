@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
-import { MembershipContext } from '../../membershipContext'
 
 export const MembershipUnlocked = () => (
   <MembersBar>
@@ -28,19 +27,14 @@ MembershipLocked.propTypes = {
   becomeMember: PropTypes.func.isRequired,
 }
 
-export class Membership extends React.Component {
-  static contextType = MembershipContext
-
-  render() {
-    const { isMember, becomeMember } = this.context
-    if (isMember === 'yes') {
-      return <MembershipUnlocked />
-    }
-    if (isMember === 'no') {
-      return <MembershipLocked becomeMember={becomeMember} />
-    }
-    return null
+export const Membership = (_, { isMember, becomeMember }) => {
+  if (isMember === 'yes') {
+    return <MembershipUnlocked />
   }
+  if (isMember === 'no') {
+    return <MembershipLocked becomeMember={becomeMember} />
+  }
+  return null
 }
 
 export default Membership
