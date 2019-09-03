@@ -15,7 +15,7 @@
     "nodemailer": "6.2.1",
     "nodemon": "1.19.1",
     "webpack": "4.35.2",
-    "webpack-cli": "3.3.4",
+    "webpack-cli": "3.3.7",
     "winston": "3.2.1"
   },
   "lint-staged": {
