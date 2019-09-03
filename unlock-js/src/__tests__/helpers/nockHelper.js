@@ -127,8 +127,10 @@ export class NockHelper {
     this.anyRequestSetUp = true // detect http calls made before any mocks setup
     const cb = (...args) => this.logNock(args)
     return this.nockScope
-      .post('/', { jsonrpc: '2.0', id: this._rpcRequestId, method, params })
-      .reply(200, { id: this._rpcRequestId, jsonrpc: '2.0', result, error })
+      .post('/', body => {
+        return body.jsonrpc === '2.0' && body.method === method
+      })
+      .reply(200, {id: this._rpcRequestId, jsonrpc: '2.0', result, error})
       .log(cb)
   }
 
