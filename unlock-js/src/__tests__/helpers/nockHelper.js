@@ -128,6 +128,8 @@ export class NockHelper {
     const cb = (...args) => this.logNock(args)
     return this.nockScope
       .post('/', body => {
+        // This is a matcher function, the nock scope is limited only to calls
+        // that have this jsonrpc version and the exact method being called.
         return body.jsonrpc === '2.0' && body.method === method
       })
       .reply(200, { id: this._rpcRequestId, jsonrpc: '2.0', result, error })
