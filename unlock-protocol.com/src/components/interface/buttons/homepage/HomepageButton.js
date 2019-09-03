@@ -28,7 +28,7 @@ export class HomepageButton extends React.Component {
     const { acceptedTerms } = this.state
 
     return (
-      <React.Fragment>
+      <>
         {acceptedTerms !== true && (
           <Action>
             <DashboardButton onClick={this.acceptTerms}>
@@ -59,7 +59,7 @@ export class HomepageButton extends React.Component {
             </Link>
           </TermsBox>
         )}
-      </React.Fragment>
+      </>
     )
   }
 }

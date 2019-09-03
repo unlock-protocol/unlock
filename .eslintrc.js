@@ -5,24 +5,24 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'prettier/standard',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   env: {
     es6: true,
     node: true,
     browser: true,
-    jest: true
+    jest: true,
   },
   plugins: ['jest', 'promise', 'import', '@typescript-eslint', 'prettier'],
   parser: '@typescript-eslint/parser',
   settings: {
     'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx']
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
       // use <root>/tsconfig.json
-      typescript: {}
-    }
+      typescript: {},
+    },
   },
   rules: {
     'prettier/prettier': 'error',
@@ -30,15 +30,15 @@ module.exports = {
     quotes: [
       'error',
       'single',
-      { avoidEscape: true, allowTemplateLiterals: false }
+      { avoidEscape: true, allowTemplateLiterals: false },
     ],
     'no-multiple-empty-lines': [
       'error',
       {
         max: 1,
         maxEOF: 0,
-        maxBOF: 0
-      }
+        maxBOF: 0,
+      },
     ],
     'brace-style': 0,
     'import/no-named-as-default': 0,
@@ -51,7 +51,8 @@ module.exports = {
     'jest/no-identical-title': 'error',
     'jest/no-focused-tests': 'error',
     'jest/prefer-expect-assertions': 'error',
-    'eol-last': ['error'],
-    semi: ['error', 'never']
-  }
+    'jest/prefer-expect-assertions': 'error',
+    'react/jsx-props-no-spreading': 0, // TODO: consider changing to error to tighten things up
+    semi: ['error', 'never'],
+  },
 }

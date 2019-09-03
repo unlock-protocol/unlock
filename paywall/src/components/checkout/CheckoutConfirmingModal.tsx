@@ -26,7 +26,7 @@ export const CheckoutConfirmingModal = ({
   }
   delete noTitleLock.name
   return (
-    <React.Fragment>
+    <>
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <h2>Thanks for your purchase!</h2>
@@ -53,7 +53,7 @@ export const CheckoutConfirmingModal = ({
         <span>Powered by</span>
         <WordMark alt="Unlock" />
       </Footer>
-    </React.Fragment>
+    </>
   )
 }
 

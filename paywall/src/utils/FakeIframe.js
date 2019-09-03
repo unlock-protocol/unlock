@@ -5,11 +5,11 @@ import '../paywall-builder/iframe.css'
 
 export default function FakeIframe({ children, hide }) {
   return (
-    <React.Fragment>
+    <>
       <div className={`unlock start show hide${hide ? '' : ' optimism'}`}>
         {children}
       </div>
-    </React.Fragment>
+    </>
   )
 }
 
