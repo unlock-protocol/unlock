@@ -79,7 +79,7 @@
     "ts-jest": "24.0.2",
     "typescript": "3.5.2",
     "winston": "3.2.1",
-    "yargs": "13.2.4"
+    "yargs": "14.0.0"
   },
   "devDependencies": {
     "nodemon": "1.19.1",
