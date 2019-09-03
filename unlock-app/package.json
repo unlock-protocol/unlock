@@ -61,7 +61,7 @@
     "validator": "11.0.0"
   },
   "devDependencies": {
-    "@svgr/cli": "4.3.1",
+    "@svgr/cli": "4.3.2",
     "nodemon": "1.19.1",
     "npm-check": "5.9.0"
   },
