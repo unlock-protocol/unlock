@@ -70,7 +70,7 @@
     "rollup": "1.16.3",
     "rollup-plugin-babel": "4.3.2",
     "rollup-plugin-postcss": "2.0.3",
-    "rollup-plugin-terser": "5.0.0",
+    "rollup-plugin-terser": "5.1.1",
     "run-script-os": "1.0.7",
     "shallow-equal": "1.2.0",
     "storybook-react-router": "1.0.5",
