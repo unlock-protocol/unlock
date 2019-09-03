@@ -40,7 +40,12 @@ const loggedInWithCards = {
       keyPrice: '0.2',
       expirationDuration: 12345678,
     },
-    price: 1215,
+    fees: {
+      creditCardProcessing: 450,
+      gasFee: 30,
+      keyPrice: 100,
+      unlockServiceFee: 20,
+    },
   },
 }
 

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import Svg from '../svg'
 
 export const Grid = styled.div`
   max-width: 896px;
@@ -90,15 +91,16 @@ export const Error = styled.span`
 
 interface SubmitButtonProps {
   roundBottomOnly?: boolean
+  backgroundColor?: string
 }
 export const SubmitButton = styled.button`
   height: 60px;
   border: none;
-  background-color: var(--green);
+  background-color: ${(props: SubmitButtonProps) =>
+    props.backgroundColor || 'var(--green)'};
   border-radius: ${(props: SubmitButtonProps) =>
     props.roundBottomOnly ? '0 0 4px 4px' : '4px'};
-  margin-bottom: 1rem;
-  margin-top: 13px;
+  margin: 0;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -106,7 +108,34 @@ export const SubmitButton = styled.button`
   text-align: center;
   text-align: -webkit-center; /* Safari fix  */
   justify-content: center;
-  color: var(--darkgrey);
+  color: var(--white);
+`
+
+export const LoadingButton: React.FunctionComponent = ({
+  children,
+}: {
+  children?: any
+}) => {
+  return (
+    <SubmitButton backgroundColor="var(--blue)" roundBottomOnly>
+      <LoadingTextWrapper>
+        {children}
+        <Svg.Loading title="loading" alt="loading" />
+      </LoadingTextWrapper>
+    </SubmitButton>
+  )
+}
+
+const LoadingTextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 24px;
+  svg {
+    width: 24px;
+    fill: var(--white);
+    margin-left: 16px;
+  }
 `
 
 export const FullWidthButton = styled(SubmitButton)`

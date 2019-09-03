@@ -10,7 +10,13 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import { Key, Locks, PaywallConfig, Account } from '../../unlockTypes'
+import {
+  Key,
+  Locks,
+  PaywallConfig,
+  Account,
+  Transactions,
+} from '../../unlockTypes'
 import {
   POST_MESSAGE_PURCHASE_KEY,
   POST_MESSAGE_DISMISS_CHECKOUT,
@@ -33,6 +39,7 @@ interface blockchainData {
   account: Account | null
   network: number
   locks: Locks
+  transactions: Transactions
 }
 type useBlockchainDataFunc = (
   window: any,
@@ -57,6 +64,7 @@ export default function CheckoutContent() {
     window,
     paywallConfig
   )
+
   const currentNetwork: string = (ETHEREUM_NETWORKS_NAMES as networkNames)[
     network
   ][0]
