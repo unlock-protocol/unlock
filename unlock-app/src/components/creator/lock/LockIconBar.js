@@ -59,13 +59,13 @@ export function LockIconBar({
       </IconBarContainer>
       <SubStatus>
         {withdrawalTransaction && !withdrawalTransaction.confirmations && (
-          <React.Fragment>Submitted to Network...</React.Fragment>
+          <>Submitted to Network...</>
         )}
         {withdrawalTransaction && !!withdrawalTransaction.confirmations && (
-          <React.Fragment>
+          <>
             Confirming Withdrawal {withdrawalTransaction.confirmations}/
             {config.requiredConfirmations}
-          </React.Fragment>
+          </>
         )}
       </SubStatus>
     </StatusBlock>

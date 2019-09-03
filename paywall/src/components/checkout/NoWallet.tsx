@@ -12,7 +12,7 @@ interface Props {
 
 export const NoWallet = ({ config }: Props) => {
   return (
-    <React.Fragment>
+    <>
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <p>
@@ -59,7 +59,7 @@ export const NoWallet = ({ config }: Props) => {
         <span>Powered by</span>
         <NoWalletWordMark alt="Unlock" />
       </Footer>
-    </React.Fragment>
+    </>
   )
 }
 

@@ -116,6 +116,13 @@ export class CreatorLock extends React.Component {
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
 
+    const edit = () =>
+      this.setState({
+        editing: true,
+        showEmbedCode: false,
+        showKeys: false,
+      })
+
     return (
       <LockRow
         className="lock" // Used by integration tests
@@ -145,13 +152,7 @@ export class CreatorLock extends React.Component {
         <LockIconBar
           lock={lock}
           toggleCode={this.toggleEmbedCode}
-          edit={() =>
-            this.setState({
-              editing: true,
-              showEmbedCode: false,
-              showKeys: false,
-            })
-          }
+          edit={edit}
         />
         {showEmbedCode && (
           <LockPanel>

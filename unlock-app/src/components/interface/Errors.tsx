@@ -26,7 +26,7 @@ export const Errors = ({ errors, close }: Props) => {
     return null
   }
 
-  return <React.Fragment>{content}</React.Fragment>
+  return <>{content}</>
 }
 
 interface ReduxState {

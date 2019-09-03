@@ -26,6 +26,29 @@ export class KeyList extends React.Component {
         )
       })
     }
+
+    /*
+      <Pagination> takes a list of items
+      and a function that takes list of items and renders the list.
+      This is so that the Pagination component can be reused across the app
+    */
+    const pagination =
+      keys.length > 0 ? (
+        <Pagination
+          items={keys}
+          currentPage={page + 1}
+          itemCount={lock.outstandingKeys}
+          renderItems={renderItems}
+          goToPage={loadPage}
+        />
+      ) : (
+        <Message>
+          No keys have been purchased yet. See how you can integrate your lock
+          into an application by clicking on <InlineIcon /> the icon in the bar
+          above.
+        </Message>
+      )
+
     return (
       <KeyListWrapper>
         <Table>
@@ -34,26 +57,7 @@ export class KeyList extends React.Component {
             <Cell>Expiration</Cell>
           </Header>
         </Table>
-        {/*
-          <Pagination> takes a list of items
-          and a function that takes list of items and renders the list.
-          This is so that the Pagination component can be reused across the app
-          */
-        keys.length > 0 ? (
-          <Pagination
-            items={keys}
-            currentPage={page + 1}
-            itemCount={lock.outstandingKeys}
-            renderItems={renderItems}
-            goToPage={loadPage}
-          />
-        ) : (
-          <Message>
-            No keys have been purchased yet. See how you can integrate your lock
-            into an application by clicking on <InlineIcon /> the icon in the
-            bar above.
-          </Message>
-        )}
+        {pagination}
       </KeyListWrapper>
     )
   }

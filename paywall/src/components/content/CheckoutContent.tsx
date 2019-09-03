@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 
@@ -165,7 +165,7 @@ export default function CheckoutContent() {
     bgColor = 'var(--lightgrey)'
     // display the "wrong network" error for users who are on an unexpected network
     child = (
-      <Fragment>
+      <>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
@@ -173,23 +173,23 @@ export default function CheckoutContent() {
           currentNetwork={currentNetwork}
           requiredNetworkId={requiredNetworkId}
         />
-      </Fragment>
+      </>
     )
   } else if (!account) {
     child = (
-      <Fragment>
+      <>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
         <NoWallet config={paywallConfig} />
-      </Fragment>
+      </>
     )
   } else if (!userDismissedConfirmingModal && purchasingLocks.length) {
     // for users who just started a key purchase, display the confirming modal
     // unless they have dismissed it. Then we display the checkout component
     // we will use the first confirming lock in the list
     child = (
-      <Fragment>
+      <>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
@@ -199,12 +199,12 @@ export default function CheckoutContent() {
           hideCheckout={hideConfirmingModal}
           confirmingLock={locks[purchasingLocks[0]]}
         />
-      </Fragment>
+      </>
     )
   } else {
     // for everyone else, display the checkout component
     child = (
-      <Fragment>
+      <>
         <Head>
           <title>{pageTitle('Checkout')}</title>
         </Head>
@@ -215,7 +215,7 @@ export default function CheckoutContent() {
           purchase={purchaseKey}
           hideCheckout={hideCheckout}
         />
-      </Fragment>
+      </>
     )
   }
   const Wrapper = () => (

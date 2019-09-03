@@ -13,13 +13,13 @@ export const OpenGraphTags = ({ title, description, image, canonicalPath }) => {
   if (!canonicalPath) canonicalPath = '/'
 
   return (
-    <React.Fragment>
+    <>
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={canonicalPath} />
       <meta property="og:image" content={image} />
-    </React.Fragment>
+    </>
   )
 }
 

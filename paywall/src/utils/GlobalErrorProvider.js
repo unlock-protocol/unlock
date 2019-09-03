@@ -28,24 +28,6 @@ export function mapStateToProps({ router, network, account }) {
 const config = configure()
 
 export class GlobalErrorProvider extends Component {
-  static propTypes = {
-    network: UnlockPropTypes.network.isRequired,
-    // note: account can be empty if we are not logged in. It's not required, but we don't want a default value
-    // so we need to disable eslint to prevent a warning
-    // eslint-disable-next-line
-    account: UnlockPropTypes.account,
-    router: PropTypes.shape({
-      route: PropTypes.string,
-      location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-        search: PropTypes.string.isRequired,
-        hash: PropTypes.string.isRequired,
-      }),
-      action: PropTypes.string,
-    }).isRequired,
-    children: PropTypes.node.isRequired,
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -146,6 +128,24 @@ export class GlobalErrorProvider extends Component {
       </GlobalErrorContext.Provider>
     )
   }
+}
+
+GlobalErrorProvider.propTypes = {
+  network: UnlockPropTypes.network.isRequired,
+  // note: account can be empty if we are not logged in. It's not required, but we don't want a default value
+  // so we need to disable eslint to prevent a warning
+  // eslint-disable-next-line
+  account: UnlockPropTypes.account,
+  router: PropTypes.shape({
+    route: PropTypes.string,
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+      search: PropTypes.string.isRequired,
+      hash: PropTypes.string.isRequired,
+    }),
+    action: PropTypes.string,
+  }).isRequired,
+  children: PropTypes.node.isRequired,
 }
 
 export default connect(mapStateToProps)(GlobalErrorProvider)

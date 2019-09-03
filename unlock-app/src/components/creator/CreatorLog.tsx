@@ -17,7 +17,7 @@ export const CreatorLog = ({
   loading,
 }: Props) => {
   return (
-    <React.Fragment>
+    <>
       <Grid>
         <HeaderItem>Block Number</HeaderItem>
         <HeaderItem>Lock Name/Address</HeaderItem>
@@ -45,7 +45,7 @@ export const CreatorLog = ({
         </DefaultError>
       )}
       {loading && <Loading />}
-    </React.Fragment>
+    </>
   )
 }
 

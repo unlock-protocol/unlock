@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
@@ -21,30 +21,30 @@ export const ValidationIcon = ({
 
   if (valid) {
     return (
-      <Fragment>
+      <>
         <ValidTitle>Ticket Valid</ValidTitle>
         <IconHolder>
           <Checkmark />
         </IconHolder>
-      </Fragment>
+      </>
     )
   } else if (valid === false) {
     return (
-      <Fragment>
+      <>
         <Title>Ticket Not Valid</Title>
         <IconHolder>
           <NoCheckmark />
         </IconHolder>
-      </Fragment>
+      </>
     )
   } else {
     return (
-      <Fragment>
+      <>
         <Title>Ticket Validating</Title>
         <IconHolder>
           <NoCheckmark />
         </IconHolder>
-      </Fragment>
+      </>
     )
   }
 }

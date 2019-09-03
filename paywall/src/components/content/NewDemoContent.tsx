@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 
 import DemoComponent from '../interface/Demo'
@@ -52,12 +52,12 @@ export default function NewDemoContent() {
   }
 
   return (
-    <Fragment>
+    <>
       <Head>
         <title>{pageTitle('Demo')}</title>
         <script src="/static/unlock.1.0.min.js" />
       </Head>
       <DemoComponent locked={locked} checkout={checkout} />
-    </Fragment>
+    </>
   )
 }

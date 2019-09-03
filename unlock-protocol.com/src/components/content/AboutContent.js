@@ -19,7 +19,7 @@ import OpenGraphTags from '../page/OpenGraphTags'
 import UnlockPropTypes from '../../propTypes'
 
 const Post = ({ publishDate, description, slug }) => (
-  <React.Fragment>
+  <>
     <p>{publishDate}</p>
     <p>
       {description}
@@ -28,7 +28,7 @@ const Post = ({ publishDate, description, slug }) => (
         More...
       </a>
     </p>
-  </React.Fragment>
+  </>
 )
 
 Post.propTypes = {
