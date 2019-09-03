@@ -51,7 +51,7 @@
     "react-stripe-elements": "3.0.0",
     "react-test-renderer": "16.8.6",
     "react-testing-library": "6.1.2",
-    "redux": "4.0.1",
+    "redux": "4.0.4",
     "rss": "1.2.2",
     "run-script-os": "1.0.7",
     "storybook-chromatic": "2.1.0",
