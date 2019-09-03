@@ -32,14 +32,18 @@ namespace MetadataController {
   ): Promise<any> => {
     let owner = Normalizer.ethereumAddress(req.owner)
     let address: string = Normalizer.ethereumAddress(req.params.address)
-    let metadata = req.body.message
+    let metadata = req.body.message['LockMetaData']
 
     if ((await evaluateLockOwnership(address, owner)) == false) {
       res.sendStatus(401)
     } else {
       let successfulUpdate = metadataOperations.updateDefaultLockMetadata({
         address,
-        metadata,
+        data: {
+          name: metadata.name,
+          description: metadata.description,
+          image: metadata.image,
+        },
       })
 
       if (successfulUpdate) {
@@ -56,7 +60,7 @@ namespace MetadataController {
   ): Promise<any> => {
     let owner = Normalizer.ethereumAddress(req.owner)
     let address: string = Normalizer.ethereumAddress(req.params.address)
-    let metadata = req.body.message
+    let metadata = req.body.message['KeyMetaData']
     let id = req.params.keyId.toLowerCase()
 
     if ((await evaluateLockOwnership(address, owner)) == false) {
