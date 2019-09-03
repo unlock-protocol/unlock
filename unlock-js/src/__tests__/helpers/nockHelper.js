@@ -130,7 +130,7 @@ export class NockHelper {
       .post('/', body => {
         return body.jsonrpc === '2.0' && body.method === method
       })
-      .reply(200, {id: this._rpcRequestId, jsonrpc: '2.0', result, error})
+      .reply(200, { id: this._rpcRequestId, jsonrpc: '2.0', result, error })
       .log(cb)
   }
 
