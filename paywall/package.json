@@ -81,7 +81,7 @@
     "ts-loader": "6.0.4",
     "typescript": "3.5.2",
     "validator": "11.1.0",
-    "webpack": "4.35.2",
+    "webpack": "4.39.3",
     "webpack-cli": "3.3.7"
   },
   "devDependencies": {
