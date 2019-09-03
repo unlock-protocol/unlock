@@ -17,7 +17,7 @@
     "bignumber.js": "9.0.0",
     "cross-env": "5.2.1",
     "erc1820": "0.0.2",
-    "eth-gas-reporter": "0.2.6",
+    "eth-gas-reporter": "0.2.11",
     "ethereumjs-units": "0.2.0",
     "hardlydifficult-test-helpers": "0.3.0",
     "openzeppelin-eth": "2.2.0",
