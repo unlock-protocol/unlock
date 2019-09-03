@@ -14,7 +14,7 @@ interface IUnlock {
     address indexed lockOwner,
     address indexed newLockAddress
   );
-  
+
   event ConfigUnlock(
     string globalTokenSymbol,
     string globalTokenURI
