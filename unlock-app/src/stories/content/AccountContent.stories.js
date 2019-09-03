@@ -9,6 +9,17 @@ import AccountContent from '../../components/content/AccountContent'
 const baseState = {
   account: {},
 }
+
+const baseStateWithError = {
+  account: {},
+  errors: [
+    {
+      kind: 'LogIn',
+      level: 'Warning',
+      message: 'An error',
+    },
+  ],
+}
 const loggedInState = {
   account: {
     emailAddress: 'jenny@googlemail.com',
@@ -59,6 +70,7 @@ storiesOf('AccountContent (iframe embed for paywall)', module)
     const label = 'Component State'
     const options = {
       'Not logged in yet': baseState,
+      'Not logged in yet (error)': baseStateWithError,
       'Logged in': loggedInState,
       'Logged in with cards': loggedInWithCards,
     }

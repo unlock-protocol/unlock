@@ -95,6 +95,7 @@ interface SubmitButtonProps {
 }
 export const SubmitButton = styled.button`
   height: 60px;
+  width: 100%;
   border: none;
   background-color: ${(props: SubmitButtonProps) =>
     props.backgroundColor || 'var(--green)'};

@@ -760,7 +760,6 @@ Object {
 }
 
 .c4 {
-  max-width: 456px;
   width: 100%;
 }
 
@@ -797,6 +796,7 @@ Object {
   width: 100%;
   border: none;
   background-color: var(--green);
+  color: var(--white);
   border-radius: 0 0 4px;
   font-size: 16px;
   cursor: pointer;
@@ -948,7 +948,7 @@ Object {
           
         </a>
         <div
-          class="sc-kpOJdX gCFVZh"
+          class="sc-kpOJdX LsipW"
         >
           <h1
             class="sc-dxgOiQ bjveIj"
@@ -1000,7 +1000,7 @@ Object {
             </div>
             <br />
             <input
-              class="sc-eNQAEJ jWNVir"
+              class="sc-eNQAEJ gnfvLE"
               type="submit"
               value="Submit"
             />
@@ -59976,6 +59976,7 @@ Object {
 
 .c6 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
@@ -60158,7 +60159,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI sc-esjQYD fGpsQB"
+          class="sc-iwsKbI sc-esjQYD jhFzQE"
         >
           Update Password
         </button>
@@ -60302,6 +60303,7 @@ Object {
 
 .c10 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 0 0 4px 4px;
@@ -60517,7 +60519,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-jzJRlG ixbFAk"
+        class="sc-iwsKbI sc-jzJRlG btXmdY"
       >
         No lock found
       </button>
@@ -60630,6 +60632,7 @@ Object {
 
 .c10 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 0 0 4px 4px;
@@ -60873,7 +60876,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI hqCHWS"
+        class="sc-iwsKbI ekNeOx"
       >
         Confirm Purchase
       </button>
@@ -61309,6 +61312,7 @@ Object {
 
 .c7 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
@@ -61625,7 +61629,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI sc-esjQYD fGpsQB"
+            class="sc-iwsKbI sc-esjQYD jhFzQE"
           >
             Update Password
           </button>
