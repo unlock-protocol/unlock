@@ -3,7 +3,7 @@ import * as rtl from 'react-testing-library'
 import { LogIn } from '../../../../components/interface/user-account/LogIn'
 // eslint-disable-next-line no-unused-vars
 import { Credentials } from '../../../../actions/user'
-import { WarningError } from '../../../../utils/Error'
+import Errors, { WarningError } from '../../../../utils/Error'
 
 let loginCredentials: (c: Credentials) => any
 let toggleSignup: () => any
@@ -106,5 +106,30 @@ describe('LogIn', () => {
     )
 
     getByText('Sign Up')
+  })
+
+  it('should show allow for reset and retry when there is an error', () => {
+    expect.assertions(2)
+
+    const errors = [Errors.LogIn.Warning('Failed to decrypt private key.')]
+
+    const { getByText } = rtl.render(
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        errors={errors}
+        close={close}
+      />
+    )
+
+    // There's an error, so the red button should be visible
+    const resetButton = getByText('Retry Login')
+
+    rtl.fireEvent.click(resetButton)
+
+    // After clicking, it should close the errors
+    expect(close).toHaveBeenCalledWith(errors[0])
+    // And then submit the login request
+    expect(loginCredentials).toHaveBeenCalled()
   })
 })

@@ -169,7 +169,6 @@ export default connect(
 )(LogIn)
 
 const LogInWrapper = styled.div`
-  max-width: 456px;
   width: 100%;
 `
 

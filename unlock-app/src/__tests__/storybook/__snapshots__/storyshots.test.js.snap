@@ -760,7 +760,6 @@ Object {
 }
 
 .c4 {
-  max-width: 456px;
   width: 100%;
 }
 
@@ -949,7 +948,7 @@ Object {
           
         </a>
         <div
-          class="sc-kpOJdX gCFVZh"
+          class="sc-kpOJdX LsipW"
         >
           <h1
             class="sc-dxgOiQ bjveIj"
