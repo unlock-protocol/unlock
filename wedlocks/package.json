@@ -12,7 +12,7 @@
     "babel-loader": "8.0.6",
     "dotenv": "8.0.0",
     "node-forge": "0.8.4",
-    "nodemailer": "6.2.1",
+    "nodemailer": "6.3.0",
     "nodemon": "1.19.1",
     "webpack": "4.35.2",
     "webpack-cli": "3.3.7",
