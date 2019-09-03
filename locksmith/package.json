@@ -83,7 +83,7 @@
   },
   "devDependencies": {
     "nodemon": "1.19.1",
-    "sqlite3": "4.0.9",
+    "sqlite3": "4.1.0",
     "supertest": "4.0.2",
     "tsc-watch": "2.4.0"
   },
