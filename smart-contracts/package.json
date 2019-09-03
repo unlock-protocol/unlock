@@ -19,6 +19,7 @@
     "erc1820": "0.0.2",
     "eth-gas-reporter": "0.2.11",
     "ethereumjs-units": "0.2.0",
+    "ganache-cli": "^6.6.0",
     "hardlydifficult-test-helpers": "0.3.0",
     "openzeppelin-eth": "2.2.0",
     "public-lock-abi-0": "1.0.0",
@@ -51,6 +52,7 @@
     "dev": "npm run lint && npm run build && npm run test",
     "ci": "npm run test && npm run lint",
     "build": "truffle compile --all",
+    "ganache": "ganache-cli --mnemonic \"hello unlock save the web\"",
     "zos": "zos",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
     "verify": "truffle run verify"
