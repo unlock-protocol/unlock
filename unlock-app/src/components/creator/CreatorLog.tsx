@@ -8,7 +8,7 @@ import Loading from '../interface/Loading'
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
-  loading: boolean
+  loading?: boolean
 }
 
 export const CreatorLog = ({
