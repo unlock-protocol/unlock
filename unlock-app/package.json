@@ -31,7 +31,7 @@
     "deep-object-diff": "1.1.0",
     "dotenv": "8.1.0",
     "fork-ts-checker-webpack-plugin": "1.5.0",
-    "jest-dom": "3.5.0",
+    "jest-dom": "4.0.0",
     "jest-mock-axios": "3.1.0",
     "jest-styled-components": "6.3.3",
     "js-base64": "2.5.1",
