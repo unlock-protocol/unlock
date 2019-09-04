@@ -197,6 +197,40 @@ describe('MainWindowHandler - init', () => {
 
       expect(handler.dispatchEvent).toHaveBeenCalledWith('unlocked')
     })
+
+    it('should dispatch locked when receiving a no crypto wallet error', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.init()
+      handler.dispatchEvent = jest.fn()
+
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.ERROR,
+        'no ethereum wallet is available',
+        iframes.data.iframe,
+        dataOrigin
+      )
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('locked')
+    })
+
+    it('should not dispatch anything when receiving other errors', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.init()
+      handler.dispatchEvent = jest.fn()
+
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.ERROR,
+        'angry bees have invaded the datacenter',
+        iframes.data.iframe,
+        dataOrigin
+      )
+
+      expect(handler.dispatchEvent).not.toHaveBeenCalled()
+    })
   })
 
   describe('iframe visibility', () => {
