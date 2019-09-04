@@ -16,7 +16,7 @@
    "author": "",
    "license": "ISC",
    "dependencies": {
-      "@types/jest": "24.0.15",
+      "@types/jest": "24.0.18",
       "@types/node": "8.10.53",
       "dotenv": "8.1.0",
       "ethers": "4.0.36",
