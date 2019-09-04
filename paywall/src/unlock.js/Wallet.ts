@@ -80,6 +80,12 @@ export default class Wallet {
       // if user accounts are explicitly enabled, we use them
       // but only if there is no crypto wallet
       this.setupUserAccountsProxyWallet()
+
+      // We should also tell the checkout iframe that we are in a user account context
+      const { checkout } = this.iframes
+      checkout.once(PostMessages.READY, () => {
+        checkout.postMessage(PostMessages.USING_MANAGED_ACCOUNT, undefined)
+      })
     } else {
       // if we have a wallet, we always use it
       // if we have no wallet, and no use accounts, we use the web3 proxy wallet
