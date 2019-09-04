@@ -12,10 +12,12 @@ import { GridPadding, IframeWrapper } from '../interface/user-account/styles'
 import Close from '../interface/buttons/layout/Close'
 import { dismissPurchaseModal } from '../../actions/keyPurchase'
 
+interface StripeWindow {
+  Stripe?: stripe.StripeStatic
+}
+
 declare global {
-  interface Window {
-    Stripe?: stripe.StripeStatic
-  }
+  interface Window extends StripeWindow {}
 }
 
 interface AccountContentProps {
@@ -80,18 +82,17 @@ export class AccountContent extends React.Component<
     }
   }
 
-  getStripe = () => {
+  setStripe = (s: stripe.StripeStatic) => {
     const {
       config: { stripeApiKey },
     } = this.props
-    if (window.Stripe) {
-      this.setState({
-        stripe: window.Stripe(stripeApiKey),
-      })
-      if (this.interval) {
-        clearInterval(this.interval)
-      }
-    }
+    this.setState({
+      stripe: s(stripeApiKey),
+    })
+  }
+
+  getStripe = () => {
+    getStripeHelper(window, this.interval, this.setStripe)
   }
 
   handleClose = () => {
@@ -148,6 +149,20 @@ export const mapStateToProps = (state: ReduxState) => {
 export const mapDispatchToProps = (dispatch: any) => ({
   dismissPurchaseModal: () => dispatch(dismissPurchaseModal()),
 })
+
+export const getStripeHelper = (
+  window: StripeWindow,
+  interval: number | null,
+  setStripe: (s: stripe.StripeStatic) => void
+) => {
+  const { Stripe } = window
+  if (Stripe) {
+    setStripe(Stripe)
+    if (interval) {
+      clearInterval(interval)
+    }
+  }
+}
 
 export default withConfig(
   connect(
