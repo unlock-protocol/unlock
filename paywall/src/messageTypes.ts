@@ -25,6 +25,7 @@ export enum PostMessages {
   WEB3_RESULT = 'web3', // this is the same as WEB3 because the exchange is 1-way
   READY_WEB3 = 'ready/web3',
   WALLET_INFO = 'walletInfo',
+  USING_MANAGED_ACCOUNT = 'info/managedUserAccount',
 
   UPDATE_LOCKS = 'update/locks',
   UPDATE_ACCOUNT = 'update/account',
@@ -153,6 +154,10 @@ export type Message =
   | {
       type: PostMessages.UPDATE_TRANSACTIONS
       payload: Transactions
+    }
+  | {
+      type: PostMessages.USING_MANAGED_ACCOUNT
+      payload: undefined
     }
 
 export type MessageTypes = Message['type']
