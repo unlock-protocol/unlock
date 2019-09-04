@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { signupCredentials } from '../../actions/user'
+import { LoadingButton } from './user-account/styles'
 
 export interface Credentials {
   emailAddress: string
@@ -18,6 +19,7 @@ interface State {
   passwordConfirmation: string
   errors: string[]
   isValid: boolean
+  submitted: boolean
 }
 
 export const passwordErrors = {
@@ -59,6 +61,7 @@ export class FinishSignup extends React.Component<Props, State> {
       passwordConfirmation: '',
       errors: [],
       isValid: false,
+      submitted: false,
     }
   }
 
@@ -92,11 +95,24 @@ export class FinishSignup extends React.Component<Props, State> {
     if (isValid) {
       signupCredentials({ emailAddress, password })
     }
+
+    this.setState({
+      submitted: true,
+    })
+  }
+
+  submitButton = () => {
+    const { submitted, isValid } = this.state
+    if (submitted) {
+      return <LoadingButton>Creating Account...</LoadingButton>
+    }
+
+    return <SubmitButton type="submit" value="Submit" disabled={!isValid} />
   }
 
   render = () => {
     const { emailAddress } = this.props
-    const { isValid, errors } = this.state
+    const { errors } = this.state
 
     return (
       <div>
@@ -132,7 +148,7 @@ export class FinishSignup extends React.Component<Props, State> {
           <br />
           <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
           <br />
-          <SubmitButton type="submit" value="Submit" disabled={!isValid} />
+          {this.submitButton()}
         </form>
       </div>
     )
