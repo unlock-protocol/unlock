@@ -94,20 +94,28 @@ export class AccountContent extends React.Component<
     }
   }
 
-  render() {
+  handleClose = () => {
     const { dismissPurchaseModal } = this.props
+    dismissPurchaseModal()
+  }
+
+  render() {
     const mode = this.currentPageMode()
+    const showCloseButton =
+      mode === 'CollectPaymentDetails' || mode === 'ConfirmPurchase'
     return (
       <IframeWrapper>
         <Head>
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
-        <Quit
-          backgroundColor="var(--lightgrey)"
-          fillColor="var(--grey)"
-          action={dismissPurchaseModal}
-        />
+        {showCloseButton && (
+          <Quit
+            backgroundColor="var(--lightgrey)"
+            fillColor="var(--grey)"
+            action={this.handleClose}
+          />
+        )}
         <Errors />
         {this.getComponent(mode)}
       </IframeWrapper>
@@ -141,7 +149,12 @@ export const mapDispatchToProps = (dispatch: any) => ({
   dismissPurchaseModal: () => dispatch(dismissPurchaseModal()),
 })
 
-export default withConfig(connect(mapStateToProps)(AccountContent))
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccountContent)
+)
 
 const Quit = styled(Close)`
   position: absolute;
