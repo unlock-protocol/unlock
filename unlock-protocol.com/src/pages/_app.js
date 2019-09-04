@@ -113,11 +113,11 @@ The Unlock team
 
   render() {
     const { Component, pageProps } = this.props
-
+    const { isMember, becomeMember } = this.state
     return (
       <Container>
         <MembershipContext.Provider value={this.state}>
-          <Membership />
+          <Membership isMember={isMember} becomeMember={becomeMember} />
           <GlobalStyle />
           <Component {...pageProps} />
           <Intercom appID={config.intercomAppId} />

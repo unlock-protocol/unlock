@@ -27,7 +27,7 @@ MembershipLocked.propTypes = {
   becomeMember: PropTypes.func.isRequired,
 }
 
-export const Membership = (_, { isMember, becomeMember }) => {
+export const Membership = ({ isMember, becomeMember }) => {
   if (isMember === 'yes') {
     return <MembershipUnlocked />
   }
@@ -37,6 +37,14 @@ export const Membership = (_, { isMember, becomeMember }) => {
   return null
 }
 
+Membership.propTypes = {
+  isMember: PropTypes.string,
+  becomeMember: PropTypes.func.isRequired,
+}
+
+Membership.defaultProps = {
+  isMember: 'pending',
+}
 export default Membership
 
 const MembersBar = styled.div`
