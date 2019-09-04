@@ -12,6 +12,8 @@ export const POST_MESSAGE_READY_WEB3 = 'ready/web3'
 export const POST_MESSAGE_WALLET_INFO = 'walletInfo'
 
 export const POST_MESSAGE_UPDATE_LOCKS = 'update/locks'
+export const POST_MESSAGE_UPDATE_KEYS = 'update/keys'
+export const POST_MESSAGE_UPDATE_TRANSACTIONS = 'update/transactions'
 export const POST_MESSAGE_UPDATE_ACCOUNT = 'update/account'
 export const POST_MESSAGE_UPDATE_ACCOUNT_BALANCE = 'update/accountBalance'
 export const POST_MESSAGE_UPDATE_NETWORK = 'update/network'

@@ -8,7 +8,7 @@ import Loading from '../interface/Loading'
 interface Props {
   transactionFeed: UnlockTypes.Transaction[]
   explorerLinks: { [key: string]: string }
-  loading: boolean
+  loading?: boolean
 }
 
 export const CreatorLog = ({
@@ -17,7 +17,7 @@ export const CreatorLog = ({
   loading,
 }: Props) => {
   return (
-    <React.Fragment>
+    <>
       <Grid>
         <HeaderItem>Block Number</HeaderItem>
         <HeaderItem>Lock Name/Address</HeaderItem>
@@ -45,7 +45,7 @@ export const CreatorLog = ({
         </DefaultError>
       )}
       {loading && <Loading />}
-    </React.Fragment>
+    </>
   )
 }
 

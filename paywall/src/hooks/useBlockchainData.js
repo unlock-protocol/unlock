@@ -3,12 +3,16 @@ import {
   POST_MESSAGE_UPDATE_ACCOUNT,
   POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
   POST_MESSAGE_UPDATE_LOCKS,
+  POST_MESSAGE_UPDATE_KEYS,
+  POST_MESSAGE_UPDATE_TRANSACTIONS,
   POST_MESSAGE_UPDATE_NETWORK,
 } from '../paywall-builder/constants'
 import {
   isAccountOrNull,
   isPositiveInteger,
   isValidLocks,
+  isValidKeys,
+  isValidTransactions,
   isPositiveNumber,
 } from '../utils/validators'
 import useConfig from './utils/useConfig'
@@ -56,6 +60,22 @@ export default function useBlockchainData(window, paywallConfig) {
     local: 'useBlockchainData [locks]',
   })
 
+  // retrieve the keys from the data iframe
+  const keys = useListenForPostMessage({
+    type: POST_MESSAGE_UPDATE_KEYS,
+    defaultValue: {},
+    validator: isValidKeys,
+    local: 'useBlockchainData [keys]',
+  })
+
+  // retrieve the transactions from the data iframe
+  const transactions = useListenForPostMessage({
+    type: POST_MESSAGE_UPDATE_TRANSACTIONS,
+    defaultValue: {},
+    validator: isValidTransactions,
+    local: 'useBlockchainData [transactions]',
+  })
+
   // construct the object format expected by the checkout UI
   const account = address ? { address, balance } : null
 
@@ -92,5 +112,7 @@ export default function useBlockchainData(window, paywallConfig) {
     account,
     network,
     locks,
+    transactions,
+    keys,
   }
 }

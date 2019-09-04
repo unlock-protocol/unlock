@@ -1,4 +1,4 @@
-FROM node:8.11.4-alpine
+FROM node:8.16.1-alpine
 LABEL Unlock <ops@unlock-protocol.com>
 
 # Adding bash which is missing from the based alpine image

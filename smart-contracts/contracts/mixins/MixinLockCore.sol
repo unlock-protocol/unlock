@@ -83,7 +83,7 @@ contract MixinLockCore is
 
   /**
    * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
-   * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually 
+   * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.

@@ -10,6 +10,7 @@ import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
+// TODO: there is a lot of duplicates from constants.js
 export enum PostMessages {
   LOCKED = 'locked',
   UNLOCKED = 'unlocked',
@@ -24,6 +25,7 @@ export enum PostMessages {
   WEB3_RESULT = 'web3', // this is the same as WEB3 because the exchange is 1-way
   READY_WEB3 = 'ready/web3',
   WALLET_INFO = 'walletInfo',
+  USING_MANAGED_ACCOUNT = 'info/managedUserAccount',
 
   UPDATE_LOCKS = 'update/locks',
   UPDATE_ACCOUNT = 'update/account',
@@ -149,7 +151,17 @@ export type Message =
       type: PostMessages.UPDATE_KEYS
       payload: KeyResults
     }
-  | { type: PostMessages.UPDATE_TRANSACTIONS; payload: Transactions }
+  | {
+      type: PostMessages.UPDATE_TRANSACTIONS
+      payload: Transactions
+    }
+  | {
+      type: PostMessages.USING_MANAGED_ACCOUNT
+      payload: undefined
+    }
 
 export type MessageTypes = Message['type']
 export type ExtractPayload<TYPE> = Extract<Message, { type: TYPE }>['payload']
+
+// Eslint requires a default export
+export default {}

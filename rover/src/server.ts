@@ -3,19 +3,21 @@
 import { config } from 'dotenv'
 import { ethers } from 'ethers'
 import { createConnection } from 'typeorm'
+import * as path from 'path'
 import RoverEmitter from './roverEmitter'
 import { Storage } from './storage'
 import transaction from './handler/transaction'
 import { blockHandler } from './handler/block'
-import * as path from 'path'
 
 import Backfiller from './backfill'
 import { Registry } from './registry'
 
 const express = require('express')
+
 const app = express()
 config({ path: path.resolve(process.cwd(), '.env') })
 let configuration = require('../config/config')
+
 let emitter = new RoverEmitter()
 let provider = new ethers.providers.JsonRpcProvider(configuration.provider_uri)
 const port = configuration.serverPort
@@ -43,7 +45,7 @@ async function main(provider, emitter, configuration) {
   })
 }
 
-async function registration(registry, storage, entry){
+async function registration(registry, storage, entry) {
   if (!registry.includes(entry)) {
     await storage.storeRegistree({
       address: entry,
@@ -51,7 +53,6 @@ async function registration(registry, storage, entry){
 
     emitter.emit('registration', entry)
   }
-
 }
 
 main(provider, emitter, configuration)
@@ -67,5 +68,5 @@ createConnection(configuration).then(async connection => {
     res.sendStatus(200)
   })
 
-  app.listen(port, () => console.log(`Rover is up`))
+  app.listen(port, () => console.log('Rover is up'))
 })
