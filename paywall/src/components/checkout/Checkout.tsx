@@ -73,40 +73,42 @@ export const Checkout = ({
       return <p key={index}>{paragraph}</p>
     })
 
+  // the key is lower-cased. The lock address is checksummed, and so case sensitive. This change ensures we map locks to their configuration names
+  const checkoutLocks = lockAddresses.map((lockAddress: string) => {
+    const lock = locks[lockAddress]
+    if (lock) {
+      const lockWithName = {
+        ...lock,
+        name: config.locks[lockAddress].name || lock.name,
+      }
+      return (
+        <CheckoutLock
+          key={lockAddress} // React needs a `key` on each child
+          lock={lockWithName}
+          account={account}
+          disabled={hasValidKey}
+          purchase={purchase}
+          hideCheckout={hideCheckout}
+        />
+      )
+    }
+  })
+
   return (
-    <React.Fragment>
+    <>
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
         {callToActionParagraphs}
       </Header>
       <CheckoutLocks>
         {lockAddresses.length == 0 && <LoadingLock />}
-        {// the key is lower-cased. The lock address is checksummed, and so case sensitive. This change ensures we map locks to their configuration names
-        lockAddresses.map(lockAddress => {
-          const lock = locks[lockAddress]
-          if (lock) {
-            const lockWithName = {
-              ...lock,
-              name: config.locks[lockAddress].name || lock.name,
-            }
-            return (
-              <CheckoutLock
-                key={lockAddress} // React needs a `key` on each child
-                lock={lockWithName}
-                account={account}
-                disabled={hasValidKey}
-                purchase={purchase}
-                hideCheckout={hideCheckout}
-              />
-            )
-          }
-        })}
+        {checkoutLocks}
       </CheckoutLocks>
       <Footer>
         <RoundedLogo />
         Powered by Unlock
       </Footer>
-    </React.Fragment>
+    </>
   )
 }
 

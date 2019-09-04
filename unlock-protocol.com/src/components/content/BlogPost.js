@@ -5,8 +5,6 @@ import PropTypes from 'prop-types'
 import { MembershipContext } from '../../membershipContext'
 
 export class BlogPost extends React.Component {
-  static contextType = MembershipContext
-
   constructor(props) {
     super(props)
     this.commentScript = null
@@ -74,6 +72,8 @@ export class BlogPost extends React.Component {
     )
   }
 }
+
+BlogPost.contextType = MembershipContext
 
 BlogPost.propTypes = {
   title: PropTypes.string.isRequired,

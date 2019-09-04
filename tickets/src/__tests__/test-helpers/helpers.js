@@ -5,12 +5,13 @@ import { ConfigContext } from '../../utils/withConfig'
 const { Provider } = ConfigContext
 
 export class Catcher extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
+  constructor() {
+    super()
+    this.state = {
+      error: '',
+    }
   }
-  state = {
-    error: '',
-  }
+
   componentDidCatch(error) {
     this.setState({ error: error.message })
   }
@@ -19,7 +20,7 @@ export class Catcher extends React.Component {
     const { children } = this.props
     const { error } = this.state
     if (error) return <div>{error}</div>
-    return <React.Fragment>{children}</React.Fragment>
+    return <>{children}</>
   }
 }
 
@@ -48,4 +49,8 @@ export function expectError(cb, err) {
   } finally {
     window.removeEventListener('error', handleTopLevelError)
   }
+}
+
+Catcher.propTypes = {
+  children: PropTypes.node.isRequired,
 }

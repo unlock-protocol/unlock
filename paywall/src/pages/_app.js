@@ -9,30 +9,15 @@ import { createUnlockStore } from '../createUnlockStore'
 import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
-import WalletCheckOverlay from '../components/interface/FullScreenModals'
-
 // Middlewares
-import web3Middleware from '../middlewares/web3Middleware'
-import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
-import walletMiddleware from '../middlewares/walletMiddleware'
-import interWindowCommunicationMiddleware from '../middlewares/interWindowCommunicationMiddleware'
 import { WindowContext } from '../hooks/browser/useWindow'
-import storageMiddleware from '../middlewares/storageMiddleware'
-import providerMiddleware from '../middlewares/providerMiddleware'
 
 const config = configure()
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__'
 
 function getOrCreateStore(initialState, history) {
-  const middlewares = [
-    interWindowCommunicationMiddleware(global),
-    providerMiddleware(config),
-    web3Middleware(config),
-    currencyConversionMiddleware,
-    storageMiddleware(config),
-    walletMiddleware(config),
-  ]
+  const middlewares = []
 
   // Always make a new store if server, otherwise state is shared between requests
   if (config.isServer) {
@@ -106,7 +91,6 @@ The Unlock team
         <GlobalStyle />
         <Provider store={store}>
           <WindowContext.Provider value={global.window}>
-            <WalletCheckOverlay />
             <ConnectedRouter history={history}>
               <ConfigProvider value={config}>
                 <Component {...pageProps} router={router} />

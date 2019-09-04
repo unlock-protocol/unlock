@@ -244,7 +244,7 @@ export default class Mailbox {
   sendUpdates(updateRequest: unknown) {
     if (!this.blockchainData) return
 
-    const { locks, account, balance, network, keys } = this
+    const { locks, account, balance, network, keys, transactions } = this
       .blockchainData as BlockchainData
     const configLockAddresses: string[] =
       (this.configuration && Object.keys(this.configuration.locks)) || []
@@ -262,11 +262,22 @@ export default class Mailbox {
         break
       }
     }
-
-    const type = updateRequest as 'locks' | 'account' | 'balance' | 'network'
+    const type = updateRequest as
+      | 'locks'
+      | 'account'
+      | 'balance'
+      | 'network'
+      | 'transactions'
+      | 'keys'
     switch (type) {
       case 'locks':
         this.postMessage(PostMessages.UPDATE_LOCKS, locks)
+        break
+      case 'transactions':
+        this.postMessage(PostMessages.UPDATE_TRANSACTIONS, transactions)
+        break
+      case 'keys':
+        this.postMessage(PostMessages.UPDATE_KEYS, keys)
         break
       case 'account':
         this.postMessage(PostMessages.UPDATE_ACCOUNT, account)

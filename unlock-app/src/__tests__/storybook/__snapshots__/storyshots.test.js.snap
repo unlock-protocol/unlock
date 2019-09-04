@@ -760,7 +760,6 @@ Object {
 }
 
 .c4 {
-  max-width: 456px;
   width: 100%;
 }
 
@@ -797,6 +796,7 @@ Object {
   width: 100%;
   border: none;
   background-color: var(--green);
+  color: var(--white);
   border-radius: 0 0 4px;
   font-size: 16px;
   cursor: pointer;
@@ -924,13 +924,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-kAzzGY guDuMp"
+      class="sc-chPdSV dMmbvM"
     >
       <div
-        class="sc-cSHVUG bCBeAO"
+        class="sc-kAzzGY cBdfch"
       >
         <a
-          class="sc-fAjcbJ glPBrL sc-850ddk-0 bqpIVT"
+          class="sc-eqIVtm djgdcB sc-850ddk-0 bqpIVT"
           target="_self"
         >
           <svg
@@ -948,25 +948,25 @@ Object {
           
         </a>
         <div
-          class="sc-kGXeez jDuikQ"
+          class="sc-kpOJdX LsipW"
         >
           <h1
-            class="sc-kpOJdX dCdIxA"
+            class="sc-dxgOiQ bjveIj"
           >
             Log In
           </h1>
           <form>
             <div
-              class="sc-kEYyzF QxmEJ"
+              class="sc-kkGfuU dTGOmL"
             >
               <label
-                class="sc-eNQAEJ ctFpdZ"
+                class="sc-hMqMXs hMxlwy"
                 for="emailInput"
               >
                 Email
               </label>
               <input
-                class="sc-ckVGcZ hswieB"
+                class="sc-jKJlTe kQfwwT"
                 id="emailInput"
                 name="emailAddress"
                 placeholder="Enter your email"
@@ -974,25 +974,25 @@ Object {
               />
               <br />
               <label
-                class="sc-eNQAEJ ctFpdZ"
+                class="sc-hMqMXs hMxlwy"
                 for="passwordInput"
               >
                 Password
               </label>
               <input
-                class="sc-ckVGcZ hswieB"
+                class="sc-jKJlTe kQfwwT"
                 id="passwordInput"
                 name="password"
                 placeholder="Enter your password"
                 type="password"
               />
               <p
-                class="sc-dxgOiQ kAemgd"
+                class="sc-ckVGcZ fkiXIW"
               >
                 Don't have an account?
                  
                 <a
-                  class="sc-hMqMXs fQIFOK"
+                  class="sc-kEYyzF jLlbDB"
                 >
                   Sign up here.
                 </a>
@@ -1000,7 +1000,7 @@ Object {
             </div>
             <br />
             <input
-              class="sc-jKJlTe qXKUg"
+              class="sc-eNQAEJ gnfvLE"
               type="submit"
               value="Submit"
             />
@@ -8799,7 +8799,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -8835,7 +8835,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9608,7 +9608,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9644,7 +9644,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10319,7 +10319,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10341,7 +10341,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11136,7 +11136,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11172,7 +11172,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11900,7 +11900,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11936,7 +11936,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12516,7 +12516,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12538,7 +12538,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13308,7 +13308,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13344,7 +13344,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14235,7 +14235,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14271,7 +14271,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15162,7 +15162,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-caSCKo gtJxQE"
+          class="sc-fAjcbJ beAIqu"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15198,7 +15198,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-gisBJw jjeQao"
+          class="sc-caSCKo jYHMmf"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -20794,12 +20794,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
@@ -20943,7 +20943,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -20979,7 +20979,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21241,7 +21241,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21277,7 +21277,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21402,7 +21402,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-ksYbfQ flYwUo"
+        class="sc-cJSrbW jbAcIm"
       >
         <svg
           alt="loading"
@@ -21982,19 +21982,19 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-ksYbfQ flYwUo"
+        class="sc-cJSrbW jbAcIm"
       >
         <svg
           alt="loading"
@@ -23238,12 +23238,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
@@ -23387,7 +23387,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23423,7 +23423,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23685,7 +23685,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23721,7 +23721,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -24170,26 +24170,26 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-TOsTZ fQiXjE"
+        class="sc-cHGsZl bqssFq"
       >
         <img
-          class="sc-kgAjT gRRtHG"
+          class="sc-TOsTZ cBQqVN"
           src="/static/images/illustrations/lock.svg"
         />
         <div
-          class="sc-cJSrbW kpvxRf"
+          class="sc-kgAjT bRDfCi"
         >
           <h1>
             Create a lock to get started
@@ -24834,12 +24834,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
@@ -25793,12 +25793,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             Balance
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             Balance
           </div>
@@ -25942,7 +25942,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-caSCKo gtJxQE"
+            class="sc-fAjcbJ beAIqu"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -25978,7 +25978,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-gisBJw jjeQao"
+            class="sc-caSCKo jYHMmf"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -29435,12 +29435,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 Balance
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 Balance
               </div>
@@ -29584,7 +29584,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29620,7 +29620,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29882,7 +29882,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29918,7 +29918,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30180,7 +30180,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30216,7 +30216,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -32972,12 +32972,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 Balance
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 Balance
               </div>
@@ -33121,7 +33121,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33157,7 +33157,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33419,7 +33419,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33455,7 +33455,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33717,7 +33717,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-caSCKo gtJxQE"
+                class="sc-fAjcbJ beAIqu"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33753,7 +33753,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-gisBJw jjeQao"
+                class="sc-caSCKo jYHMmf"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -34895,14 +34895,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Need account
@@ -35058,14 +35058,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Fatal Error
@@ -35221,14 +35221,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Network mismatch
@@ -35380,13 +35380,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
       />
       <div
-        class="sc-cJSrbW kpvxRf"
+        class="sc-kgAjT bRDfCi"
       >
         <h1>
           Non-critical error
@@ -35539,14 +35539,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Not enabled in provider
@@ -35702,14 +35702,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Unlock not deployed
@@ -35872,14 +35872,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-TOsTZ fQiXjE"
+      class="sc-cHGsZl bqssFq"
     >
       <img
-        class="sc-kgAjT gRRtHG"
+        class="sc-TOsTZ cBQqVN"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-cJSrbW beGvZI"
+        class="sc-kgAjT kdzrqt"
       >
         <h1>
           Wallet missing
@@ -51886,24 +51886,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-hSdWYo jtyQuy"
+        class="sc-eHgmQL ethFFU"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-eHgmQL glqitX"
+        class="sc-cvbbAY jZIfOA"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -51912,13 +51912,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -51926,13 +51926,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -51940,11 +51940,11 @@ Object {
         />
         <br />
         <span
-          class="sc-cMljjf RlOhw"
+          class="sc-jAaTju bgnXvm"
         />
         <br />
         <input
-          class="sc-brqgnP iAIlYA"
+          class="sc-cMljjf dfoIzy"
           disabled=""
           type="submit"
           value="Submit"
@@ -52066,12 +52066,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-kkGfuU jVDEh"
+        class="sc-iAyFgw VebZM"
       >
         Sign Up
       </h1>
       <p
-        class="sc-iAyFgw jGniz"
+        class="sc-hSdWYo gmEejV"
       >
         The link you used is invalid. Please try again.
          
@@ -52679,12 +52679,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-chPdSV dJucRP"
+        class="sc-kgoBCf hHzssk"
       >
         Sign Up
       </h1>
       <p
-        class="sc-kgoBCf bVvQbH"
+        class="sc-kGXeez ccCTgV"
       >
         You are now signed in! Visit
          
@@ -57324,24 +57324,24 @@ Object {
     />
     <div>
       <h1
-        class="sc-hSdWYo jtyQuy"
+        class="sc-eHgmQL ethFFU"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-eHgmQL glqitX"
+        class="sc-cvbbAY jZIfOA"
       >
         Create a password for your account.
       </p>
       <form>
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="emailPlaceholder"
         >
           Email
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -57350,13 +57350,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -57364,13 +57364,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cvbbAY fMCIky"
+          class="sc-jWBwVP NbENL"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-jWBwVP bQrQve"
+          class="sc-brqgnP kblSPY"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -57378,11 +57378,11 @@ Object {
         />
         <br />
         <span
-          class="sc-cMljjf RlOhw"
+          class="sc-jAaTju bgnXvm"
         />
         <br />
         <input
-          class="sc-brqgnP iAIlYA"
+          class="sc-cMljjf dfoIzy"
           disabled=""
           type="submit"
           value="Submit"
@@ -57504,12 +57504,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-kkGfuU jVDEh"
+        class="sc-iAyFgw VebZM"
       >
         Sign Up
       </h1>
       <p
-        class="sc-iAyFgw jGniz"
+        class="sc-hSdWYo gmEejV"
       >
         The link you used is invalid. Please try again.
          
@@ -57883,12 +57883,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-chPdSV dJucRP"
+        class="sc-kgoBCf hHzssk"
       >
         Sign Up
       </h1>
       <p
-        class="sc-kgoBCf bVvQbH"
+        class="sc-kGXeez ccCTgV"
       >
         You are now signed in! Visit
          
@@ -59976,11 +59976,11 @@ Object {
 
 .c6 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-bottom: 1rem;
-  margin-top: 13px;
+  margin: 0;
   font-size: 16px;
   cursor: pointer;
   display: -webkit-box;
@@ -59996,7 +59996,9 @@ Object {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  color: var(--darkgrey);
+  color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 13px;
 }
 
 @media (min-width:500px) {
@@ -60157,7 +60159,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI brlwMR"
+          class="sc-iwsKbI sc-esjQYD jhFzQE"
         >
           Update Password
         </button>
@@ -60299,6 +60301,33 @@ Object {
   flex-direction: column;
 }
 
+.c10 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 0 0 4px 4px;
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+  text-align: -webkit-center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: disabled;
+  background-color: var(--grey);
+}
+
 .c0 {
   max-width: 896px;
   display: grid;
@@ -60343,34 +60372,6 @@ Object {
 
 .c6 {
   margin-top: 8px;
-}
-
-.c10 {
-  height: 60px;
-  border: none;
-  background-color: var(--green);
-  border-radius: 0 0 4px 4px;
-  margin-bottom: 1rem;
-  margin-top: 13px;
-  font-size: 16px;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  text-align: center;
-  text-align: -webkit-center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  color: var(--darkgrey);
-  cursor: disabled;
-  background-color: var(--grey);
-  margin: 0;
 }
 
 @media (min-width:500px) {
@@ -60458,13 +60459,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-bRBYWo dDZIIO"
+      class="sc-htpNat sc-hzDkRC gSuZih"
     >
       <div
-        class="sc-hzDkRC dHXysU"
+        class="sc-jhAzac iROviH"
       >
         <h1
-          class="sc-jhAzac dFHqiG"
+          class="sc-fBuWsC fMjsRx"
         >
           Confirm Purchase
         </h1>
@@ -60477,7 +60478,7 @@ Object {
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-fBuWsC cNNOOx"
+            class="sc-gzVnrw sc-fMiknA cQJdeE"
           >
             jenny@googlemail.com
           </span>
@@ -60491,24 +60492,24 @@ Object {
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-fBuWsC cNNOOx"
+            class="sc-gzVnrw sc-fMiknA cQJdeE"
           >
             -
           </span>
         </div>
         <div
-          class="sc-fMiknA dUzhQz"
+          class="sc-dVhcbM kQgRhm"
         >
           <div
-            class="sc-jTzLTM hPqlUw"
+            class="sc-fjdhpX dvmfyc"
           >
             <span
-              class="sc-gqjmRU KgwZy"
+              class="sc-VigVT glxCYN"
             >
               -
             </span>
             <span
-              class="sc-VigVT ieqVAN"
+              class="sc-jTzLTM ipOgJg"
             >
               <span>
                  - 
@@ -60518,7 +60519,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-fjdhpX sc-eqIVtm bwGNNh"
+        class="sc-iwsKbI sc-jzJRlG btXmdY"
       >
         No lock found
       </button>
@@ -60629,6 +60630,31 @@ Object {
   color: var(--labelgrey);
 }
 
+.c10 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 0 0 4px 4px;
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+  text-align: -webkit-center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: var(--white);
+}
+
 .c8 {
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -60703,32 +60729,6 @@ Object {
 
 .c6 {
   margin-top: 8px;
-}
-
-.c10 {
-  height: 60px;
-  border: none;
-  background-color: var(--green);
-  border-radius: 0 0 4px 4px;
-  margin-bottom: 1rem;
-  margin-top: 13px;
-  font-size: 16px;
-  cursor: pointer;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  text-align: center;
-  text-align: -webkit-center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  color: var(--darkgrey);
-  margin: 0;
 }
 
 @media (min-width:500px) {
@@ -60816,13 +60816,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-bRBYWo dDZIIO"
+      class="sc-htpNat sc-hzDkRC gSuZih"
     >
       <div
-        class="sc-hzDkRC dHXysU"
+        class="sc-jhAzac iROviH"
       >
         <h1
-          class="sc-jhAzac dFHqiG"
+          class="sc-fBuWsC fMjsRx"
         >
           Confirm Purchase
         </h1>
@@ -60835,7 +60835,7 @@ Object {
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-fBuWsC cNNOOx"
+            class="sc-gzVnrw sc-fMiknA cQJdeE"
           >
             jenny@googlemail.com
           </span>
@@ -60849,24 +60849,24 @@ Object {
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-fBuWsC cNNOOx"
+            class="sc-gzVnrw sc-fMiknA cQJdeE"
           >
             Visa ending in 4242
           </span>
         </div>
         <div
-          class="sc-fMiknA dUzhQz"
+          class="sc-dVhcbM kQgRhm"
         >
           <div
-            class="sc-jTzLTM hPqlUw"
+            class="sc-fjdhpX dvmfyc"
           >
             <span
-              class="sc-gqjmRU KgwZy"
+              class="sc-VigVT glxCYN"
             >
               $6.00
             </span>
             <span
-              class="sc-VigVT ieqVAN"
+              class="sc-jTzLTM ipOgJg"
             >
               <span>
                 143 days
@@ -60876,7 +60876,7 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-dVhcbM epkeON"
+        class="sc-iwsKbI ekNeOx"
       >
         Confirm Purchase
       </button>
@@ -61312,11 +61312,11 @@ Object {
 
 .c7 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-bottom: 1rem;
-  margin-top: 13px;
+  margin: 0;
   font-size: 16px;
   cursor: pointer;
   display: -webkit-box;
@@ -61332,7 +61332,9 @@ Object {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  color: var(--darkgrey);
+  color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 13px;
 }
 
 @media (min-width:500px) {
@@ -61627,7 +61629,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI brlwMR"
+            class="sc-iwsKbI sc-esjQYD jhFzQE"
           >
             Update Password
           </button>

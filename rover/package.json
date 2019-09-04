@@ -16,12 +16,12 @@
    "author": "",
    "license": "ISC",
    "dependencies": {
-      "@types/jest": "24.0.15",
-      "@types/node": "8.10.49",
-      "dotenv": "8.0.0",
-      "ethers": "4.0.27",
+      "@types/jest": "24.0.18",
+      "@types/node": "8.10.53",
+      "dotenv": "8.1.0",
+      "ethers": "4.0.36",
       "express": "4.17.1",
-      "pg": "7.11.0",
+      "pg": "7.12.1",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
       "typeorm": "0.2.18"
@@ -35,7 +35,7 @@
       }
    },
    "devDependencies": {
-      "jest": "24.8.0",
+      "jest": "24.9.0",
       "ts-jest": "24.0.2",
       "ts-node": "8.3.0",
       "typescript": "3.5.2"
