@@ -18,7 +18,7 @@
    "dependencies": {
       "@types/jest": "24.0.15",
       "@types/node": "8.10.53",
-      "dotenv": "8.0.0",
+      "dotenv": "8.1.0",
       "ethers": "4.0.36",
       "express": "4.17.1",
       "pg": "7.12.1",

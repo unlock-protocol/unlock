@@ -10,7 +10,7 @@
     "@babel/preset-env": "7.5.5",
     "aws-sdk": "2.521.0",
     "babel-loader": "8.0.6",
-    "dotenv": "8.0.0",
+    "dotenv": "8.1.0",
     "node-forge": "0.8.4",
     "nodemailer": "6.3.0",
     "nodemon": "1.19.1",

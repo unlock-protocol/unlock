@@ -29,7 +29,7 @@
     "connected-next-router": "1.0.2",
     "cross-env": "5.2.1",
     "deep-object-diff": "1.1.0",
-    "dotenv": "8.0.0",
+    "dotenv": "8.1.0",
     "email-validator": "2.0.4",
     "fork-ts-checker-webpack-plugin": "1.5.0",
     "isomorphic-unfetch": "3.0.0",
