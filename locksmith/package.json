@@ -53,7 +53,7 @@
     "cors": "2.8.5",
     "cross-env": "5.2.1",
     "dotenv": "8.1.0",
-    "eth-sig-util": "2.2.0",
+    "eth-sig-util": "2.4.4",
     "ethereumjs-util": "6.1.0",
     "ethers": "4.0.36",
     "express": "4.17.1",

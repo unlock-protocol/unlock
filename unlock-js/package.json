@@ -18,7 +18,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "eth-sig-util": "2.2.0",
+    "eth-sig-util": "2.4.4",
     "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.36"
   },
