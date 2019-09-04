@@ -42,7 +42,7 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 
     if (sentKeyPurchase) {
       return (
-        <LoadingButton>
+        <LoadingButton roundBottomOnly>
           <span>Submitting Transaction...</span>
         </LoadingButton>
       )

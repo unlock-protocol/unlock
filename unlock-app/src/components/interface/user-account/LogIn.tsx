@@ -91,7 +91,7 @@ export class LogIn extends React.Component<Props, State> {
         </SubmitButton>
       )
     } else if (submitted) {
-      return <LoadingButton>Logging In...</LoadingButton>
+      return <LoadingButton roundBottomOnly>Logging In...</LoadingButton>
     }
 
     return <InputSubmitButton type="submit" value="Submit" />

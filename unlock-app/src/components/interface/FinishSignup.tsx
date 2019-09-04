@@ -118,7 +118,7 @@ export class FinishSignup extends React.Component<Props, State> {
       <div>
         <Heading>Create Your Unlock Wallet</Heading>
         <Instructions>Create a password for your account.</Instructions>
-        <form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <Label htmlFor="emailPlaceholder">Email</Label>
           <Input
             name="emailPlaceholder"
@@ -149,7 +149,7 @@ export class FinishSignup extends React.Component<Props, State> {
           <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
           <br />
           {this.submitButton()}
-        </form>
+        </Form>
       </div>
     )
   }
@@ -191,7 +191,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -201,17 +201,22 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: white;
   &[disabled] {
     background-color: var(--grey);
     cursor: not-allowed;
-    color: black;
+    color: white;
   }
+`
+
+const Form = styled.form`
+  max-width: 450px;
 `
 
 const PasswordError = styled.span`
