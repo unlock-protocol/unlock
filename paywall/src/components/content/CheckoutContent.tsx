@@ -29,6 +29,7 @@ import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
+import { PostMessages } from '../../messageTypes'
 
 interface networkNames {
   [key: number]: string[]
@@ -100,6 +101,11 @@ export default function CheckoutContent() {
     defaultValue: false,
     getValue: (val: any) => !!val,
   })
+  const usingManagedAccount = useListenForPostMessage({
+    type: PostMessages.USING_MANAGED_ACCOUNT,
+    defaultValue: false,
+    getValue: () => true,
+  })
 
   // This listener is used only for the side effect of closing the overlay when a purchase is rejected.
   useListenForPostMessage({
@@ -139,6 +145,7 @@ export default function CheckoutContent() {
   // One we have something in purchasingLocks, we can assume that the
   // user approved the transaction in their wallet and dismiss the wallet
   //check overlay.
+  // TODO: handle rejected purchase?
   if (purchasingLocks.length && showWalletCheckOverlay) {
     setShowWalletCheckOverlay(false)
   }
@@ -234,7 +241,9 @@ export default function CheckoutContent() {
   // purchasingLocks is an array of locks for which a transaction has
   // been initiated. Once purchasingLocks is non-empty, we know that the
   // user's wallet is enabled and no longer need to show the overlay.
-  if (showWalletCheckOverlay) {
+  // We should only show the wallet check overlay if there is a browser wallet.
+  // It will not appear when using a managed user account.
+  if (showWalletCheckOverlay && !usingManagedAccount) {
     return (
       <Greyout>
         <MessageBox>
