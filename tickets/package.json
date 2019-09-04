@@ -60,7 +60,7 @@
     "redux": "4.0.4",
     "styled-components": "4.3.2",
     "ts-jest": "24.0.2",
-    "typescript": "3.5.2"
+    "typescript": "3.6.2"
   },
   "devDependencies": {
     "@svgr/cli": "4.3.2",
