@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { signupCredentials } from '../../actions/user'
+import { LoadingButton } from './user-account/styles'
 
 export interface Credentials {
   emailAddress: string
@@ -18,6 +19,7 @@ interface State {
   passwordConfirmation: string
   errors: string[]
   isValid: boolean
+  submitted: boolean
 }
 
 export const passwordErrors = {
@@ -59,6 +61,7 @@ export class FinishSignup extends React.Component<Props, State> {
       passwordConfirmation: '',
       errors: [],
       isValid: false,
+      submitted: false,
     }
   }
 
@@ -92,17 +95,30 @@ export class FinishSignup extends React.Component<Props, State> {
     if (isValid) {
       signupCredentials({ emailAddress, password })
     }
+
+    this.setState({
+      submitted: true,
+    })
+  }
+
+  submitButton = () => {
+    const { submitted, isValid } = this.state
+    if (submitted) {
+      return <LoadingButton>Creating Account...</LoadingButton>
+    }
+
+    return <SubmitButton type="submit" value="Submit" disabled={!isValid} />
   }
 
   render = () => {
     const { emailAddress } = this.props
-    const { isValid, errors } = this.state
+    const { errors } = this.state
 
     return (
       <div>
         <Heading>Create Your Unlock Wallet</Heading>
         <Instructions>Create a password for your account.</Instructions>
-        <form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <Label htmlFor="emailPlaceholder">Email</Label>
           <Input
             name="emailPlaceholder"
@@ -132,8 +148,8 @@ export class FinishSignup extends React.Component<Props, State> {
           <br />
           <PasswordError>{errors.length ? errors[0] : ''}</PasswordError>
           <br />
-          <SubmitButton type="submit" value="Submit" disabled={!isValid} />
-        </form>
+          {this.submitButton()}
+        </Form>
       </div>
     )
   }
@@ -175,7 +191,7 @@ const Label = styled.label`
 
 const Input = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -185,17 +201,22 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: white;
   &[disabled] {
     background-color: var(--grey);
     cursor: not-allowed;
-    color: black;
+    color: white;
   }
+`
+
+const Form = styled.form`
+  max-width: 450px;
 `
 
 const PasswordError = styled.span`
