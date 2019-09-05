@@ -120,151 +120,160 @@ storiesOf('Checkout page', module)
   ))
   .add('Checkout page', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: lockAddress1,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '889',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 1,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })
   .add('Checkout page, wrong network', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 2,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: lockAddress1,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '889',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 2,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })
   .add('Checkout page, no wallet', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: null,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '0',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: null,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '0',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 1,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })
