@@ -21,7 +21,7 @@ describe('FinishSignup', () => {
     const emailAddress = 'geoff@bitconnect.gov'
     const password = 'password1'
 
-    const { getByLabelText, getByDisplayValue } = rtl.render(
+    const { getByLabelText, getByDisplayValue, getByText } = rtl.render(
       <FinishSignup
         emailAddress={emailAddress}
         signupCredentials={signupCredentials}
@@ -45,6 +45,9 @@ describe('FinishSignup', () => {
         password,
       })
     )
+
+    // Also it should go to the loading spinner when you submit
+    getByText('Creating Account...')
   })
 
   it('but not if the password does not match its confirmation', () => {
