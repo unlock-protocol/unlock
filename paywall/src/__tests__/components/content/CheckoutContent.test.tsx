@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { act } from 'react-dom/test-utils'
-import { Provider } from 'react-redux'
 import * as rtl from 'react-testing-library'
 import { EventEmitter } from 'events'
 import CheckoutContent from '../../../components/content/CheckoutContent'
-import { createUnlockStore } from '../../../createUnlockStore'
 import { ConfigContext } from '../../../utils/withConfig'
 
 jest.mock('../../../hooks/utils/useConfig', () => {
@@ -16,7 +14,9 @@ jest.mock('../../../hooks/utils/useConfig', () => {
 jest.mock('../../../hooks/useBlockchainData', () => {
   return () => ({
     account: {
-      balance: '200',
+      balance: {
+        eth: '200',
+      },
       address: '0x123cdc',
     },
     network: 1984,
@@ -73,7 +73,6 @@ jest.mock('../../../hooks/browser/useListenForPostMessage', () => {
   }
 })
 
-const store = createUnlockStore()
 const config = {
   erc20Contract: {
     address: '0xfeedbeef',
@@ -86,11 +85,9 @@ describe('CheckoutContent', () => {
     const walletCheckMessage = 'Please check your browser wallet.'
 
     const { getByText } = rtl.render(
-      <Provider store={store}>
-        <ConfigContext.Provider value={config}>
-          <CheckoutContent />
-        </ConfigContext.Provider>
-      </Provider>
+      <ConfigContext.Provider value={config}>
+        <CheckoutContent />
+      </ConfigContext.Provider>
     )
 
     // The message isn't there at first...
@@ -117,11 +114,9 @@ describe('CheckoutContent', () => {
     const walletCheckMessage = 'Please check your browser wallet.'
 
     const { getByText } = rtl.render(
-      <Provider store={store}>
-        <ConfigContext.Provider value={config}>
-          <CheckoutContent />
-        </ConfigContext.Provider>
-      </Provider>
+      <ConfigContext.Provider value={config}>
+        <CheckoutContent />
+      </ConfigContext.Provider>
     )
     const purchaseButton = getByText('Purchase')
     rtl.fireEvent.click(purchaseButton)
