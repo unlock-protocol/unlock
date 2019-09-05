@@ -1,9 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { actions } from '@storybook/addon-actions'
-import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { WindowContext } from '../../hooks/browser/useWindow'
@@ -50,12 +48,6 @@ const soldOutLock = Object.assign(
   lock
 )
 
-const store = createUnlockStore({
-  currency: {
-    USD: 195.99,
-  },
-})
-
 const ConfigProvider = ConfigContext.Provider
 const WindowProvider = WindowContext.Provider
 
@@ -64,9 +56,7 @@ const storyConfig = configure()
 storiesOf('Lock', module)
   .addDecorator(getStory => (
     <ConfigProvider value={storyConfig}>
-      <WindowProvider value={fakeWindow}>
-        <Provider store={store}>{getStory()}</Provider>
-      </WindowProvider>
+      <WindowProvider value={fakeWindow}>{getStory()}</WindowProvider>
     </ConfigProvider>
   ))
   .addDecorator(getStory => (
