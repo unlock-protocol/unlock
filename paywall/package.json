@@ -33,7 +33,6 @@
     "@types/node": "12.7.3",
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
-    "@types/react-redux": "7.1.2",
     "@types/styled-components": "4.1.18",
     "@unlock-protocol/unlock-js": "0.3.12",
     "@zeit/next-css": "1.0.1",
