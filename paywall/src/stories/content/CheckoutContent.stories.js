@@ -1,9 +1,7 @@
-import { Provider } from 'react-redux'
 import React, { useEffect } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import CheckoutContent from '../../components/content/CheckoutContent'
@@ -110,18 +108,13 @@ const fakeWindow = {
   removeEventListener: (type, cb) =>
     delete fakeWindow.handlers[type].delete(cb),
 }
-const store = createUnlockStore({
-  currency: {
-    USD: '195.99',
-  },
-})
 
 storiesOf('Checkout page', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider value={fakeWindow}>
-        <Provider store={store}>{getStory()}</Provider>
+        {getStory()}
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
