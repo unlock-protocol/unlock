@@ -151,12 +151,8 @@ export class NockHelper {
   }
 
   // eth_call
-  ethCallAndYield(data, to, result, from = null) {
-    const params = [{ data, to }, 'latest']
-    if (from) {
-      params[0].from = from
-    }
-    return this._jsonRpcRequest('eth_call', params, result)
+  ethCallAndYield(data, to, result) {
+    return this._jsonRpcRequest('eth_call', [{ data, to }, 'latest'], result)
   }
 
   // eth_getBalance
