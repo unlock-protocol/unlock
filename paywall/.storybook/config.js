@@ -1,6 +1,5 @@
 import React from 'react'
 import { configure, addDecorator } from '@storybook/react'
-import StoryRouter from 'storybook-react-router'
 import GlobalStyle from '../src/theme/globalStyle'
 import Fonts from '../src/theme/fonts'
 
@@ -27,5 +26,4 @@ const GlobalStyleDecorator = storyFn => (
 )
 
 addDecorator(GlobalStyleDecorator)
-addDecorator(StoryRouter())
 configure(loadStories, module)
