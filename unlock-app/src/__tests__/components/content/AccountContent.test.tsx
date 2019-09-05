@@ -6,6 +6,7 @@ import {
   AccountContent,
   mapStateToProps,
   mapDispatchToProps,
+  getStripeHelper,
 } from '../../../components/content/AccountContent'
 import { DISMISS_PURCHASE_MODAL } from '../../../actions/keyPurchase'
 
@@ -142,6 +143,42 @@ describe('AccountContent', () => {
       expect(dispatch).toHaveBeenCalledWith({
         type: DISMISS_PURCHASE_MODAL,
       })
+    })
+  })
+
+  describe('getStripeHelper', () => {
+    it('should do nothing when window does not contain stripe', () => {
+      expect.assertions(2)
+
+      jest.useFakeTimers()
+      const interval = setInterval(() => {}, 15000)
+      const setStripe = jest.fn()
+
+      getStripeHelper({}, interval, setStripe)
+
+      expect(clearInterval).not.toHaveBeenCalled()
+      expect(setStripe).not.toHaveBeenCalled()
+    })
+
+    it('should setStripe and clearInterval when the window does contain stripe', () => {
+      expect.assertions(2)
+
+      jest.useFakeTimers()
+      const interval = setInterval(() => {}, 15000)
+      const setStripe = jest.fn()
+      const Stripe = jest.fn()
+      ;(Stripe as any).version = 16000
+
+      getStripeHelper(
+        {
+          Stripe: Stripe as any,
+        },
+        interval,
+        setStripe
+      )
+
+      expect(clearInterval).toHaveBeenCalledWith(interval)
+      expect(setStripe).toHaveBeenCalledWith(Stripe)
     })
   })
 })
