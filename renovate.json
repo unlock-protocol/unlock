@@ -6,9 +6,16 @@
     ":pinVersions"
   ],
   "timezone": "America/Los_Angeles",
-  "schedule": ["before 3am on the first day of the month"],
+  "schedule": ["before 3am every weekday"],
   "rebaseStalePrs": false,
   "packageRules": [
+    {
+      "packagePatterns": [
+        "*"
+      ],
+      "groupName": "all dependencies",
+      "groupSlug": "all"
+    },
     {
       "packageNames": ["@unlock-protocol/unlock-js", "hardlydifficult-test-helpers"],
       "schedule": ["at any time"]
