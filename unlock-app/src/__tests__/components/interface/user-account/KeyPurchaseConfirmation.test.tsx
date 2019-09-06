@@ -8,7 +8,7 @@ import {
   makePriceBreakdown,
   displayCard,
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
-import { PurchaseData } from '../../../../actions/user'
+import { PurchaseData, SIGN_PURCHASE_DATA } from '../../../../actions/user'
 import { Fees } from '../../../../actions/keyPurchase'
 
 const cards: stripe.Card[] = [
@@ -144,12 +144,25 @@ describe('KeyPurchaseConfirmation', () => {
 
   describe('mapDispatchToProps', () => {
     it('should produce an object containing a signPurchaseData function', () => {
-      expect.assertions(1)
+      expect.assertions(2)
       const dispatch = jest.fn()
 
-      expect(mapDispatchToProps(dispatch)).toEqual(
+      const dProps = mapDispatchToProps(dispatch)
+
+      expect(dProps).toEqual(
         expect.objectContaining({
           signPurchaseData: expect.any(Function),
+        })
+      )
+
+      dProps.signPurchaseData({
+        recipient: '0x123',
+        lock: '0xabc',
+      })
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SIGN_PURCHASE_DATA,
         })
       )
     })
