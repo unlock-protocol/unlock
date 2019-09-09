@@ -4,6 +4,7 @@ import Wallet from './Wallet'
 import MainWindowHandler from './MainWindowHandler'
 import CheckoutUIHandler from './CheckoutUIHandler'
 import StartupConstants from './startupTypes'
+import { PostMessages } from '../messageTypes'
 
 /**
  * convert all of the lock addresses to lower-case so they are normalized across the app
@@ -29,6 +30,16 @@ export function normalizeConfig(unlockConfig: any) {
     }, {}),
   }
   return normalizedConfig
+}
+
+export function sendDefaultLockedState(
+  useUserAccounts: boolean,
+  hasWallet: boolean,
+  toggleLockState: (message: PostMessages.LOCKED) => void
+) {
+  if (useUserAccounts && !hasWallet) {
+    toggleLockState(PostMessages.LOCKED)
+  }
 }
 
 /**
@@ -77,5 +88,12 @@ export default function startup(
   mainWindow.init()
   wallet.init()
   checkoutIframeHandler.init()
+
+  const { hasWallet, useUserAccounts } = wallet
+  // After Wallet has initialized, we have enough information to determine if we
+  // are in the managed user account scenario. If we are, the paywall defaults
+  // to 'locked'
+  sendDefaultLockedState(useUserAccounts, hasWallet, mainWindow.toggleLockState)
+
   return iframes // this is only useful in testing, it is ignored in the app
 }

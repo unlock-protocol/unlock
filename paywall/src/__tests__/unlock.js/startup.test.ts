@@ -1,4 +1,7 @@
-import startup, { normalizeConfig } from '../../unlock.js/startup'
+import startup, {
+  normalizeConfig,
+  sendDefaultLockedState,
+} from '../../unlock.js/startup'
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import StartupConstants from '../../unlock.js/startupTypes'
 import { PaywallConfig } from '../../unlockTypes'
@@ -45,6 +48,44 @@ describe('unlock.js startup', () => {
       }
 
       expect(normalizeConfig(config)).toEqual(normalizedConfig)
+    })
+  })
+
+  describe('sendDefaultLockedState', () => {
+    it('should call toggleLockState when there is no wallet and we are using managed user accounts', () => {
+      expect.assertions(1)
+
+      const toggleLockState = jest.fn()
+      const useUserAccounts = true
+      const hasWallet = false
+
+      sendDefaultLockedState(useUserAccounts, hasWallet, toggleLockState)
+
+      expect(toggleLockState).toHaveBeenCalledWith('locked')
+    })
+
+    it('should not call toggleLockState when there is a wallet', () => {
+      expect.assertions(1)
+
+      const toggleLockState = jest.fn()
+      const useUserAccounts = true
+      const hasWallet = true
+
+      sendDefaultLockedState(useUserAccounts, hasWallet, toggleLockState)
+
+      expect(toggleLockState).not.toHaveBeenCalled()
+    })
+
+    it('should not call toggleLockState when we cannot use user accounts', () => {
+      expect.assertions(1)
+
+      const toggleLockState = jest.fn()
+      const useUserAccounts = false
+      const hasWallet = false
+
+      sendDefaultLockedState(useUserAccounts, hasWallet, toggleLockState)
+
+      expect(toggleLockState).not.toHaveBeenCalled()
     })
   })
 
