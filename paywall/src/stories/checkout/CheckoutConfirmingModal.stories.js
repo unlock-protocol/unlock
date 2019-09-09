@@ -1,10 +1,8 @@
-import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import CheckoutConfirmingModal from '../../components/checkout/CheckoutConfirmingModal'
 import CheckoutWrapper from '../../components/checkout/CheckoutWrapper'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 
@@ -39,12 +37,6 @@ const account = {
   balance: '789',
 }
 
-const store = createUnlockStore({
-  currency: {
-    USD: 350,
-  },
-})
-
 storiesOf('Checkout/Checkout Confirming modal', module)
   .addDecorator(getStory => (
     <CheckoutWrapper hideCheckout={() => action('hideCheckout')}>
@@ -52,9 +44,7 @@ storiesOf('Checkout/Checkout Confirming modal', module)
     </CheckoutWrapper>
   ))
   .addDecorator(getStory => (
-    <ConfigProvider value={config}>
-      <Provider store={store}>{getStory()}</Provider>
-    </ConfigProvider>
+    <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
   .add('CheckoutConfirmingModal with a submitted key purchase', () => {
     const confirmingLock = {

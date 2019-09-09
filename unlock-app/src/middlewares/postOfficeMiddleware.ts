@@ -7,7 +7,7 @@ import {
 import { setError } from '../actions/error'
 import { KEY_PURCHASE_INITIATED } from '../actions/user'
 import { PostOffice } from '../utils/Error'
-import { addToCart } from '../actions/keyPurchase'
+import { addToCart, DISMISS_PURCHASE_MODAL } from '../actions/keyPurchase'
 import { SET_ACCOUNT } from '../actions/accounts'
 
 const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
@@ -48,6 +48,8 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
           postOfficeService.hideAccountModal()
         } else if (action.type === KEY_PURCHASE_INITIATED) {
           postOfficeService.transactionInitiated()
+          postOfficeService.hideAccountModal()
+        } else if (action.type === DISMISS_PURCHASE_MODAL) {
           postOfficeService.hideAccountModal()
         }
 

@@ -112,13 +112,21 @@ export const SubmitButton = styled.button`
   color: var(--white);
 `
 
-export const LoadingButton: React.FunctionComponent = ({
-  children,
-}: {
+interface LoadingButtonProps {
   children?: any
-}) => {
+  backgroundColor?: string
+  roundBottomOnly?: boolean
+}
+export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
+  children,
+  backgroundColor,
+  roundBottomOnly,
+}: LoadingButtonProps) => {
   return (
-    <SubmitButton backgroundColor="var(--blue)" roundBottomOnly>
+    <SubmitButton
+      backgroundColor={backgroundColor || 'var(--blue)'}
+      roundBottomOnly={!!roundBottomOnly}
+    >
       <LoadingTextWrapper>
         {children}
         <Svg.Loading title="loading" alt="loading" />

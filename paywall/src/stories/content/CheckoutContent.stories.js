@@ -1,9 +1,7 @@
-import { Provider } from 'react-redux'
 import React, { useEffect } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import CheckoutContent from '../../components/content/CheckoutContent'
@@ -110,168 +108,172 @@ const fakeWindow = {
   removeEventListener: (type, cb) =>
     delete fakeWindow.handlers[type].delete(cb),
 }
-const store = createUnlockStore({
-  currency: {
-    USD: '195.99',
-  },
-})
 
 storiesOf('Checkout page', module)
   // pass in a fake window object, to avoid modifying the real body and munging storyshots
   .addDecorator(getStory => (
     <ConfigContext.Provider value={config}>
       <WindowContext.Provider value={fakeWindow}>
-        <Provider store={store}>{getStory()}</Provider>
+        {getStory()}
       </WindowContext.Provider>
     </ConfigContext.Provider>
   ))
   .add('Checkout page', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: lockAddress1,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '889',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 1,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })
   .add('Checkout page, wrong network', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: lockAddress1,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '889',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 2,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: lockAddress1,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '889',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 2,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })
   .add('Checkout page, no wallet', () => {
     // set the data needed to display the checkout
-    useEffect(() => {
-      const messageTemplate = {
-        type: 'message',
-        source: fakeWindow.parent,
-        origin: 'origin',
-      }
-      fakeWindow.handlers.message.forEach(postedMessage => {
-        postedMessage({
-          ...messageTemplate,
-          data: {
-            type: POST_MESSAGE_CONFIG,
-            payload: paywallConfig,
-          },
-        })
-        setTimeout(() => {
+    const Wrapper = () => {
+      useEffect(() => {
+        const messageTemplate = {
+          type: 'message',
+          source: fakeWindow.parent,
+          origin: 'origin',
+        }
+        fakeWindow.handlers.message.forEach(postedMessage => {
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT,
-              payload: null,
+              type: POST_MESSAGE_CONFIG,
+              payload: paywallConfig,
             },
           })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-              payload: '0',
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_LOCKS,
-              payload: locks,
-            },
-          })
-          postedMessage({
-            ...messageTemplate,
-            data: {
-              type: POST_MESSAGE_UPDATE_NETWORK,
-              payload: 1,
-            },
+          setTimeout(() => {
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                payload: null,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                payload: '0',
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_LOCKS,
+                payload: locks,
+              },
+            })
+            postedMessage({
+              ...messageTemplate,
+              data: {
+                type: POST_MESSAGE_UPDATE_NETWORK,
+                payload: 1,
+              },
+            })
           })
         })
       })
-    })
-    return <CheckoutContent />
+      return <CheckoutContent />
+    }
+    return <Wrapper />
   })

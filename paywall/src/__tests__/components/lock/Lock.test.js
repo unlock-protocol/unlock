@@ -1,35 +1,15 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { Provider } from 'react-redux'
 import configure from '../../../config'
 import { ConfigContext } from '../../../utils/withConfig'
-import { mapDispatchToProps, Lock } from '../../../components/lock/Lock'
-import { purchaseKey } from '../../../actions/key'
+import Lock from '../../../components/lock/Lock'
 import usePurchaseKey from '../../../hooks/usePurchaseKey'
-import createUnlockStore from '../../../createUnlockStore'
 
 jest.mock('../../../hooks/usePurchaseKey')
 
 const ConfigProvider = ConfigContext.Provider
 
 describe('Lock', () => {
-  describe('mapDispatchToProps', () => {
-    it('should return a purchaseKey function which when invoked dispatches purchaseKey and invokes showModal', () => {
-      expect.assertions(2)
-      const dispatch = jest.fn()
-      const props = {
-        showModal: jest.fn(),
-      }
-      const key = {}
-
-      const newProps = mapDispatchToProps(dispatch, props)
-
-      newProps.purchaseKey(key)
-      expect(props.showModal).toHaveBeenCalledWith()
-      expect(dispatch).toHaveBeenCalledWith(purchaseKey(key))
-    })
-  })
-
   describe('usePurchaseKey is called for purchases', () => {
     let purchase
 
@@ -42,37 +22,25 @@ describe('Lock', () => {
     }
 
     function renderMockLock(openInNewWindow) {
-      const state = {
-        network: {},
-        account: {
-          address: '0x123',
-          balance: {
-            eth: '0',
-          },
-        },
-      }
       const config = configure()
       config.isInIframe = true
 
-      const store = createUnlockStore(state)
       usePurchaseKey.mockImplementation(() => purchase)
       return rtl.render(
-        <Provider store={store}>
-          <ConfigProvider value={config}>
-            <Lock
-              lock={lock}
-              transaction={null}
-              lockKey={null}
-              purchaseKey={purchaseKey}
-              config={config}
-              hideModal={() => {}}
-              showModal={() => {}}
-              openInNewWindow={openInNewWindow}
-              requiredConfirmations={12}
-              keyStatus="none"
-            />
-          </ConfigProvider>
-        </Provider>
+        <ConfigProvider value={config}>
+          <Lock
+            lock={lock}
+            transaction={null}
+            lockKey={null}
+            purchaseKey={purchase}
+            config={config}
+            hideModal={() => {}}
+            showModal={() => {}}
+            openInNewWindow={openInNewWindow}
+            requiredConfirmations={12}
+            keyStatus="none"
+          />
+        </ConfigProvider>
       )
     }
 
