@@ -378,6 +378,9 @@ describe('postOffice', () => {
         addEventListener(type, handler) {
           handlers[type] = handler
         },
+        // These tests don't actually use localStorage, no need to
+        // mock it properly
+        localStorage: {} as any,
       }
     })
 
