@@ -9,6 +9,7 @@ import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
 import { ADD_TO_CART } from '../../actions/keyPurchase'
 import { KEY_PURCHASE_INITIATED } from '../../actions/user'
 import { SET_ACCOUNT } from '../../actions/accounts'
+import { USER_ACCOUNT_ADDRESS_STORAGE_ID } from '../../constants'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -76,7 +77,38 @@ describe('postOfficeMiddleware', () => {
       location: {
         href: 'http://example.com?origin=origin',
       },
+      localStorage: {
+        getItem: jest.fn(() => null),
+        setItem: jest.fn(),
+        removeItem: jest.fn(),
+        clear: jest.fn(),
+        length: 15,
+        key: jest.fn(),
+      },
     }
+  })
+
+  describe('setting account', () => {
+    it('should set account to null when there is nothing in localStorage', () => {
+      expect.assertions(1)
+
+      makeMiddleware()
+
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+    })
+
+    it('should set account to the value provided by localStorage', () => {
+      expect.assertions(1)
+
+      const anAddress = '0x123abc'
+      fakeWindow.localStorage.getItem = jest.fn(() => anAddress)
+
+      makeMiddleware()
+
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(
+        anAddress
+      )
+    })
   })
 
   describe('Handling emitted PostOfficeEvents', () => {
@@ -121,7 +153,7 @@ describe('postOfficeMiddleware', () => {
 
   describe('handling actions', () => {
     it('should tell the paywall about account changes', () => {
-      expect.assertions(2)
+      expect.assertions(3)
       const { invoke } = makeMiddleware()
       const action = {
         type: SET_ACCOUNT,
@@ -132,6 +164,10 @@ describe('postOfficeMiddleware', () => {
 
       invoke(action)
 
+      expect(fakeWindow.localStorage.setItem).toHaveBeenCalledWith(
+        USER_ACCOUNT_ADDRESS_STORAGE_ID,
+        '0x123abc'
+      )
       expect(mockPostOfficeService.setAccount).toHaveBeenCalledWith('0x123abc')
       expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
     })
