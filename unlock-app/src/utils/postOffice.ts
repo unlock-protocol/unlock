@@ -19,6 +19,8 @@ export interface PostOfficeWindow {
 export interface IframePostOfficeWindow extends PostOfficeWindow {
   parent: PostMessageTarget
   location: location
+  // used to store account address of managed user account for smoother UX
+  localStorage: Storage
 }
 
 export interface PostMessageTarget {
