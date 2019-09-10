@@ -9,10 +9,10 @@ import {
   Item,
   ItemValue,
   SubmitButton,
-  LockInfo,
   DisabledButton,
   LoadingButton,
 } from './styles'
+import LockInfo from './LockInfo'
 import { Fees } from '../../../actions/keyPurchase'
 
 interface Props {
@@ -42,7 +42,7 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 
     if (sentKeyPurchase) {
       return (
-        <LoadingButton>
+        <LoadingButton roundBottomOnly>
           <span>Submitting Transaction...</span>
         </LoadingButton>
       )
@@ -90,19 +90,15 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
           <Item title="Credit Card" size="full">
             <Value>{card}</Value>
           </Item>
-          <LockInfoWrapper>
-            {presentLock(priceBreakdown.total, this.timeRemaining())}
-          </LockInfoWrapper>
+          <LockInfo
+            priceBreakdown={priceBreakdown}
+            timeRemaining={this.timeRemaining()}
+          />
         </Indent>
         {this.submitButton()}
       </KeyPurchaseWrapper>
     )
   }
-}
-
-const presentLock = (price: string, timeRemaining: any, none: string = '-') => {
-  let displayedPrice = price || none
-  return <LockInfo price={displayedPrice} timeRemaining={timeRemaining} />
 }
 
 const presentPrice = (price: number) => {
@@ -197,8 +193,4 @@ const Value = styled(ItemValue)`
   margin-top: 24px;
   margin-bottom: 36px;
   margin-left: 8px;
-`
-
-const LockInfoWrapper = styled.div`
-  margin-top: 8px;
 `

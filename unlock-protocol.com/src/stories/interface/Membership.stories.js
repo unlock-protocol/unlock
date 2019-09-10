@@ -1,18 +1,16 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import {
-  Membership,
-  MembershipUnlocked,
-  MembershipLocked,
-} from '../../components/interface/Membership'
+import Membership from '../../components/interface/Membership'
+
+const becomeMember = () => {}
 
 storiesOf('Membership', module)
   .add('unknown state', () => {
-    return <Membership />
+    return <Membership becomeMember={becomeMember} />
   })
   .add('unlocked state', () => {
-    return <MembershipUnlocked />
+    return <Membership isMember="yes" becomeMember={becomeMember} />
   })
   .add('locked state', () => {
-    return <MembershipLocked becomeMember={() => {}} />
+    return <Membership isMember="no" becomeMember={becomeMember} />
   })
