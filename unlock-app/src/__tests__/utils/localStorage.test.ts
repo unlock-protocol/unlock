@@ -97,9 +97,13 @@ describe('localStorage utils', () => {
     it('should return false if the internal setItem throws', () => {
       expect.assertions(1)
 
-      mockWindow.localStorage.setItem = jest.fn(() => {
-        throw new Error('an error')
-      })
+      // Works on the first check, throws when setting a new value
+      mockWindow.localStorage.setItem = jest
+        .fn()
+        .mockImplementationOnce(() => {})
+        .mockImplementationOnce(() => {
+          throw new Error('an error')
+        })
 
       const result = setItem(mockWindow, 'a key', 'a value')
 
