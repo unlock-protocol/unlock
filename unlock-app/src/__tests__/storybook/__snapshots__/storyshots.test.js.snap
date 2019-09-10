@@ -181,13 +181,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-hmzhuo eRtqMp"
+      class="sc-jbKcbu cWSlbe"
     >
       <div
-        class="sc-kvZOFW ingFMr"
+        class="sc-jqCOkK krgRvQ"
       >
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         >
           <div
             class="paper"
@@ -244,36 +244,36 @@ Object {
           </div>
         </div>
         <div
-          class="sc-jbKcbu lhoDvX"
+          class="sc-bbmXgH dnuzhd"
         >
           Address
           <span
-            class="sc-frDJqD gZGZy"
+            class="sc-dNLxif bBbPUi"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-dNLxif deWPjW"
+          class="sc-gGBfsJ NVphw"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -524,13 +524,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-hmzhuo eRtqMp"
+      class="sc-jbKcbu cWSlbe"
     >
       <div
-        class="sc-kvZOFW ingFMr"
+        class="sc-jqCOkK krgRvQ"
       >
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         >
           <div
             class="paper"
@@ -587,36 +587,36 @@ Object {
           </div>
         </div>
         <div
-          class="sc-jbKcbu lhoDvX"
+          class="sc-bbmXgH dnuzhd"
         >
           Address
           <span
-            class="sc-frDJqD gZGZy"
+            class="sc-dNLxif bBbPUi"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-hqyNC aaURv"
+          class="sc-uJMKN wwmZ"
         />
         <div
-          class="sc-dNLxif deWPjW"
+          class="sc-gGBfsJ NVphw"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -689,37 +689,7 @@ Object {
 exports[`Storyshots AccountContent (iframe embed for paywall) The embed 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c3 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c3 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c3:hover {
-  background-color: var(--link);
-}
-
-.c3:hover > svg {
-  fill: white;
-}
-
-.c3:focus {
-  outline: none;
-}
-
-.c1 {
+  "baseElement": .c1 {
   background-color: var(--offwhite);
   max-height: 100%;
   overflow-y: scroll;
@@ -759,11 +729,11 @@ Object {
   align-items: center;
 }
 
-.c4 {
+.c2 {
   width: 100%;
 }
 
-.c5 {
+.c3 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 15px;
   line-height: 19px;
@@ -772,7 +742,7 @@ Object {
   padding: 24px 32px 24px 32px;
 }
 
-.c9 {
+.c7 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
@@ -781,7 +751,7 @@ Object {
   padding-top: 24px;
 }
 
-.c8 {
+.c6 {
   height: 60px;
   width: 100%;
   border: none;
@@ -791,7 +761,7 @@ Object {
   font-size: 16px;
 }
 
-.c11 {
+.c9 {
   height: 60px;
   width: 100%;
   border: none;
@@ -802,7 +772,7 @@ Object {
   cursor: pointer;
 }
 
-.c7 {
+.c5 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -811,18 +781,12 @@ Object {
   margin-bottom: 5px;
 }
 
-.c10 {
+.c8 {
   cursor: pointer;
 }
 
-.c6 {
+.c4 {
   padding: 0 32px;
-}
-
-.c2 {
-  position: absolute;
-  right: 24px;
-  top: 24px;
 }
 
 <body>
@@ -837,44 +801,26 @@ Object {
         <div
           class="c1"
         >
-          <a
-            class="c2 c3"
-            target="_self"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <title>
-                Close
-              </title>
-              <path
-                clip-rule="evenodd"
-                d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            
-          </a>
           <div
-            class="c4"
+            class="c2"
           >
             <h1
-              class="c5"
+              class="c3"
             >
               Log In
             </h1>
             <form>
               <div
-                class="c6"
+                class="c4"
               >
                 <label
-                  class="c7"
+                  class="c5"
                   for="emailInput"
                 >
                   Email
                 </label>
                 <input
-                  class="c8"
+                  class="c6"
                   id="emailInput"
                   name="emailAddress"
                   placeholder="Enter your email"
@@ -882,25 +828,25 @@ Object {
                 />
                 <br />
                 <label
-                  class="c7"
+                  class="c5"
                   for="passwordInput"
                 >
                   Password
                 </label>
                 <input
-                  class="c8"
+                  class="c6"
                   id="passwordInput"
                   name="password"
                   placeholder="Enter your password"
                   type="password"
                 />
                 <p
-                  class="c9"
+                  class="c7"
                 >
                   Don't have an account?
                    
                   <a
-                    class="c10"
+                    class="c8"
                   >
                     Sign up here.
                   </a>
@@ -908,7 +854,7 @@ Object {
               </div>
               <br />
               <input
-                class="c11"
+                class="c9"
                 type="submit"
                 value="Submit"
               />
@@ -929,24 +875,6 @@ Object {
       <div
         class="sc-kAzzGY cBdfch"
       >
-        <a
-          class="sc-eqIVtm djgdcB sc-850ddk-0 bqpIVT"
-          target="_self"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <title>
-              Close
-            </title>
-            <path
-              clip-rule="evenodd"
-              d="M8.237 7.177a.75.75 0 1 0-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 1 0 1.06 1.06L12 13.061l3.763 3.762a.75.75 0 1 0 1.06-1.06L13.061 12l3.762-3.763a.75.75 0 0 0-1.06-1.06L12 10.939 8.237 7.177z"
-              fill-rule="evenodd"
-            />
-          </svg>
-          
-        </a>
         <div
           class="sc-kpOJdX LsipW"
         >
@@ -6712,242 +6640,6 @@ Object {
 }
 `;
 
-exports[`Storyshots Buttons/Overlay Buttons Confirmed Key 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c2 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c2 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c2:hover {
-  background-color: var(--green);
-}
-
-.c2:hover > svg {
-  fill: white;
-}
-
-.c2:focus {
-  outline: none;
-}
-
-.c1:hover .c6 {
-  display: inline-block;
-}
-
-.c7 .c1 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c7 .c1:nth-child(1) {
-  pointer-events: none;
-}
-
-.c7 .c1:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c7 .c1 > svg {
-  fill: var(--grey);
-}
-
-.c7 .c1:hover > svg {
-  fill: var(--grey);
-}
-
-.c8 .c1 {
-  margin: 24px;
-}
-
-.c8 .c1 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c5 {
-  display: none;
-}
-
-.c0 {
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c0:hover .c4 {
-  display: block;
-}
-
-.c0:hover .c3 {
-  display: none;
-}
-
-.c0:hover ~ .c9 {
-  display: grid;
-}
-
-.c0:hover ~ .c10 {
-  display: none;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <a
-        class="c0 c1 c2"
-        target="_self"
-      >
-        <svg
-          class="c3 "
-          viewBox="0 0 24 24"
-        >
-          <title />
-          <path
-            clip-rule="evenodd"
-            d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-            fill-rule="evenodd"
-          />
-        </svg>
-        <svg
-          class="c4 c5"
-          viewBox="0 0 24 24"
-        >
-          <title />
-          <path
-            clip-rule="evenodd"
-            d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-            fill-rule="evenodd"
-          />
-        </svg>
-        
-      </a>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <a
-      class="nk4431-2 kIuyEq sc-850ddk-0 dMsuy"
-      target="_self"
-    >
-      <svg
-        class="nk4431-0 jIPREr"
-        viewBox="0 0 24 24"
-      >
-        <title />
-        <path
-          clip-rule="evenodd"
-          d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
-          fill-rule="evenodd"
-        />
-      </svg>
-      <svg
-        class="nk4431-1 kqntNs"
-        viewBox="0 0 24 24"
-      >
-        <title />
-        <path
-          clip-rule="evenodd"
-          d="M17.5 12a.5.5 0 0 1-.175.38l-3.5 3a.5.5 0 1 1-.65-.76l2.473-2.12H7a.5.5 0 0 1 0-1h8.648l-2.473-2.12a.5.5 0 1 1 .65-.76l3.5 3a.5.5 0 0 1 .175.38z"
-          fill-rule="evenodd"
-        />
-      </svg>
-      
-    </a>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getAllByValue": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getBySelectText": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "getByValue": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryBySelectText": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "queryByValue": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
@@ -7991,7 +7683,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="sc-jqCOkK sc-9upljg-0 cTMzWy"
+            class="sc-jnlKLf sc-9upljg-0 cTMzWy"
           >
             Go to Your Dashboard
           </button>
@@ -8799,7 +8491,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -8835,7 +8527,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9608,7 +9300,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9644,7 +9336,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10319,7 +10011,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10341,7 +10033,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11136,7 +10828,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11172,7 +10864,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11900,7 +11592,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11936,7 +11628,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12516,7 +12208,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12538,7 +12230,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13308,7 +13000,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13344,7 +13036,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14235,7 +13927,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14271,7 +13963,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15162,7 +14854,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-fAjcbJ beAIqu"
+          class="sc-cHGsZl iEcmKG"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15198,7 +14890,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-caSCKo jYHMmf"
+          class="sc-TOsTZ cCGlbJ"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -20794,12 +20486,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
@@ -20943,7 +20635,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -20979,7 +20671,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21241,7 +20933,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21277,7 +20969,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21402,7 +21094,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-cJSrbW jbAcIm"
+        class="sc-kvZOFW ewgLO"
       >
         <svg
           alt="loading"
@@ -21982,19 +21674,19 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-cJSrbW jbAcIm"
+        class="sc-kvZOFW ewgLO"
       >
         <svg
           alt="loading"
@@ -23238,12 +22930,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
@@ -23387,7 +23079,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23423,7 +23115,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23685,7 +23377,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23721,7 +23413,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -24170,26 +23862,26 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-cHGsZl bqssFq"
+        class="sc-ksYbfQ gYxvKO"
       >
         <img
-          class="sc-TOsTZ cBQqVN"
+          class="sc-hmzhuo iZdZwL"
           src="/static/images/illustrations/lock.svg"
         />
         <div
-          class="sc-kgAjT bRDfCi"
+          class="sc-frDJqD foXtcb"
         >
           <h1>
             Create a lock to get started
@@ -24834,12 +24526,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
@@ -25793,12 +25485,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             Balance
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             Balance
           </div>
@@ -25942,7 +25634,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-fAjcbJ beAIqu"
+            class="sc-cHGsZl iEcmKG"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -25978,7 +25670,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-caSCKo jYHMmf"
+            class="sc-TOsTZ cCGlbJ"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -29291,16 +28983,16 @@ Object {
           />
         </header>
         <div
-          class="sc-bbmXgH hnONkS"
+          class="sc-tilXH dfEhLW"
         >
           <section
-            class="sc-hmzhuo eRtqMp"
+            class="sc-jbKcbu cWSlbe"
           >
             <div
-              class="sc-kvZOFW ingFMr"
+              class="sc-jqCOkK krgRvQ"
             >
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               >
                 <div
                   class="paper"
@@ -29357,36 +29049,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-jbKcbu lhoDvX"
+                class="sc-bbmXgH dnuzhd"
               >
                 Address
                 <span
-                  class="sc-frDJqD gZGZy"
+                  class="sc-dNLxif bBbPUi"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-dNLxif deWPjW"
+                class="sc-gGBfsJ NVphw"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -29394,7 +29086,7 @@ Object {
             </div>
           </section>
           <button
-            class="sc-jqCOkK sc-uJMKN btYuoP"
+            class="sc-jnlKLf sc-fYxtnH hRHTRR"
             id="CreateLockButton"
           >
             Create Lock
@@ -29435,12 +29127,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 Balance
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 Balance
               </div>
@@ -29584,7 +29276,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29620,7 +29312,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29882,7 +29574,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29918,7 +29610,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30180,7 +29872,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30216,7 +29908,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -32571,16 +32263,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hEsumM hOZegb"
+      class="sc-feJyhm kmSPVC"
     >
       <div
-        class="sc-tilXH ksJbiD"
+        class="sc-kafWEX bhqPzK"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-gGBfsJ kjiUUt"
+          class="sc-hEsumM bXOdhp"
         >
           Dismiss
         </button>
@@ -32828,16 +32520,16 @@ Object {
           />
         </header>
         <div
-          class="sc-bbmXgH hnONkS"
+          class="sc-tilXH dfEhLW"
         >
           <section
-            class="sc-hmzhuo eRtqMp"
+            class="sc-jbKcbu cWSlbe"
           >
             <div
-              class="sc-kvZOFW ingFMr"
+              class="sc-jqCOkK krgRvQ"
             >
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               >
                 <div
                   class="paper"
@@ -32894,36 +32586,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-jbKcbu lhoDvX"
+                class="sc-bbmXgH dnuzhd"
               >
                 Address
                 <span
-                  class="sc-frDJqD gZGZy"
+                  class="sc-dNLxif bBbPUi"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-dNLxif deWPjW"
+                class="sc-gGBfsJ NVphw"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -32931,7 +32623,7 @@ Object {
             </div>
           </section>
           <button
-            class="sc-jqCOkK sc-uJMKN btYuoP"
+            class="sc-jnlKLf sc-fYxtnH hRHTRR"
             id="CreateLockButton"
           >
             Create Lock
@@ -32972,12 +32664,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 Balance
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 Balance
               </div>
@@ -33121,7 +32813,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33157,7 +32849,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33419,7 +33111,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33455,7 +33147,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33717,7 +33409,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-fAjcbJ beAIqu"
+                class="sc-cHGsZl iEcmKG"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33753,7 +33445,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-caSCKo jYHMmf"
+                class="sc-TOsTZ cCGlbJ"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -34895,14 +34587,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Need account
@@ -35058,14 +34750,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Fatal Error
@@ -35221,14 +34913,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Network mismatch
@@ -35380,13 +35072,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
       />
       <div
-        class="sc-kgAjT bRDfCi"
+        class="sc-frDJqD foXtcb"
       >
         <h1>
           Non-critical error
@@ -35539,14 +35231,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Not enabled in provider
@@ -35702,14 +35394,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Unlock not deployed
@@ -35872,14 +35564,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-cHGsZl bqssFq"
+      class="sc-ksYbfQ gYxvKO"
     >
       <img
-        class="sc-TOsTZ cBQqVN"
+        class="sc-hmzhuo iZdZwL"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-kgAjT kdzrqt"
+        class="sc-frDJqD oCtjb"
       >
         <h1>
           Wallet missing
@@ -36495,28 +36187,28 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hEsumM hOZegb"
+      class="sc-feJyhm kmSPVC"
     >
       <div
-        class="sc-tilXH ksJbiD"
+        class="sc-kafWEX bhqPzK"
       >
         <p>
           Please enter your password to complete the transaction.
         </p>
         <input
-          class="sc-ktHwxA iYiajs"
+          class="sc-iELTvK ccDrzj"
           placeholder="Password"
           type="password"
           value=""
         />
         <div>
           <button
-            class="sc-gGBfsJ sc-jnlKLf eihVMB"
+            class="sc-hEsumM sc-ktHwxA hgKKji"
           >
             Cancel
           </button>
           <button
-            class="sc-gGBfsJ sc-fYxtnH cuKOuu"
+            class="sc-hEsumM sc-cIShpX jUoVQm"
           >
             Submit
           </button>
@@ -36833,37 +36525,37 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hEsumM hOZegb"
+      class="sc-feJyhm kmSPVC"
     >
       <div
-        class="sc-tilXH ksJbiD"
+        class="sc-kafWEX bhqPzK"
       >
         <p>
           To change your password, please enter your current password and the desired new password.
         </p>
         <input
-          class="sc-ktHwxA iYiajs"
+          class="sc-iELTvK ccDrzj"
           disabled=""
           placeholder="Password"
           type="email"
           value="geoff@bitconnect.gov"
         />
         <input
-          class="sc-ktHwxA iYiajs"
+          class="sc-iELTvK ccDrzj"
           name="currentPassword"
           placeholder="Current Password"
           type="password"
           value=""
         />
         <input
-          class="sc-ktHwxA iYiajs"
+          class="sc-iELTvK ccDrzj"
           name="newPassword"
           placeholder="New Password"
           type="password"
           value=""
         />
         <input
-          class="sc-ktHwxA iYiajs"
+          class="sc-iELTvK ccDrzj"
           name="confirmNewPassword"
           placeholder="Confirm New Password"
           type="password"
@@ -36871,12 +36563,12 @@ Object {
         />
         <div>
           <button
-            class="sc-gGBfsJ sc-jnlKLf eihVMB"
+            class="sc-hEsumM sc-ktHwxA hgKKji"
           >
             Cancel
           </button>
           <button
-            class="sc-gGBfsJ sc-fYxtnH cuKOuu"
+            class="sc-hEsumM sc-cIShpX jUoVQm"
             disabled=""
           >
             Submit
@@ -37123,16 +36815,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hEsumM hOZegb"
+      class="sc-feJyhm kmSPVC"
     >
       <div
-        class="sc-tilXH ksJbiD"
+        class="sc-kafWEX bhqPzK"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-gGBfsJ kjiUUt"
+          class="sc-hEsumM bXOdhp"
         >
           Dismiss
         </button>
@@ -37396,25 +37088,25 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-tilXH ksJbiD"
+      class="sc-kafWEX bhqPzK"
     >
       <p>
         Please enter your password to complete the transaction.
       </p>
       <input
-        class="sc-ktHwxA iYiajs"
+        class="sc-iELTvK ccDrzj"
         placeholder="Password"
         type="password"
         value=""
       />
       <div>
         <button
-          class="sc-gGBfsJ sc-jnlKLf eihVMB"
+          class="sc-hEsumM sc-ktHwxA hgKKji"
         >
           Cancel
         </button>
         <button
-          class="sc-gGBfsJ sc-fYxtnH cuKOuu"
+          class="sc-hEsumM sc-cIShpX jUoVQm"
         >
           Submit
         </button>
@@ -37622,34 +37314,34 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-tilXH ksJbiD"
+      class="sc-kafWEX bhqPzK"
     >
       <p>
         To change your password, please enter your current password and the desired new password.
       </p>
       <input
-        class="sc-ktHwxA iYiajs"
+        class="sc-iELTvK ccDrzj"
         disabled=""
         placeholder="Password"
         type="email"
         value="geoff@bitconnect.gov"
       />
       <input
-        class="sc-ktHwxA iYiajs"
+        class="sc-iELTvK ccDrzj"
         name="currentPassword"
         placeholder="Current Password"
         type="password"
         value=""
       />
       <input
-        class="sc-ktHwxA iYiajs"
+        class="sc-iELTvK ccDrzj"
         name="newPassword"
         placeholder="New Password"
         type="password"
         value=""
       />
       <input
-        class="sc-ktHwxA iYiajs"
+        class="sc-iELTvK ccDrzj"
         name="confirmNewPassword"
         placeholder="Confirm New Password"
         type="password"
@@ -37657,12 +37349,12 @@ Object {
       />
       <div>
         <button
-          class="sc-gGBfsJ sc-jnlKLf eihVMB"
+          class="sc-hEsumM sc-ktHwxA hgKKji"
         >
           Cancel
         </button>
         <button
-          class="sc-gGBfsJ sc-fYxtnH cuKOuu"
+          class="sc-hEsumM sc-cIShpX jUoVQm"
           disabled=""
         >
           Submit
@@ -37800,13 +37492,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-tilXH ksJbiD"
+      class="sc-kafWEX bhqPzK"
     >
       <p>
         Please check your browser wallet.
       </p>
       <button
-        class="sc-gGBfsJ kjiUUt"
+        class="sc-hEsumM bXOdhp"
       >
         Dismiss
       </button>
@@ -39977,7 +39669,7 @@ Object {
         href="/dashboard"
       >
         <button
-          class="sc-jqCOkK sc-9upljg-1 cKpQTs"
+          class="sc-jnlKLf sc-9upljg-1 cKpQTs"
         >
           I Agree
         </button>
@@ -40120,7 +39812,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="sc-jqCOkK sc-9upljg-0 cTMzWy"
+        class="sc-jnlKLf sc-9upljg-0 cTMzWy"
       >
         Go to Your Dashboard
       </button>
@@ -41761,13 +41453,13 @@ Object {
           />
         </header>
         <section
-          class="sc-hmzhuo eRtqMp"
+          class="sc-jbKcbu cWSlbe"
         >
           <div
-            class="sc-kvZOFW ingFMr"
+            class="sc-jqCOkK krgRvQ"
           >
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             >
               <div
                 class="paper"
@@ -41824,36 +41516,36 @@ Object {
               </div>
             </div>
             <div
-              class="sc-jbKcbu lhoDvX"
+              class="sc-bbmXgH dnuzhd"
             >
               Address
               <span
-                class="sc-frDJqD gZGZy"
+                class="sc-dNLxif bBbPUi"
                 id="NetworkName"
               >
                 Winston
               </span>
             </div>
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-hqyNC aaURv"
+              class="sc-uJMKN wwmZ"
             />
             <div
-              class="sc-dNLxif deWPjW"
+              class="sc-gGBfsJ NVphw"
               id="UserAddress"
             >
               0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -42774,22 +42466,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-dqBHgY fvIDWj"
+            class="sc-iyvyFf iwStxs"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-gxMtzJ gneRJU"
+            class="sc-hwwEjo cmjaIi"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-dfVpRl gnCWwO"
+            class="sc-kPVwWT alKfK"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-dfVpRl gnCWwO"
+            class="sc-kPVwWT alKfK"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out
              
@@ -42804,25 +42496,25 @@ Object {
             .
           </p>
           <form
-            class="sc-gzOgki hYYUBv"
+            class="sc-kfGgVZ iDoLNn"
           >
             <input
-              class="sc-iyvyFf hhHxWQ"
+              class="sc-esjQYD cRBEWy"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-hwwEjo gZOTZe"
+              class="sc-kIPQKe jIXzsx"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-dfVpRl gnCWwO"
+              class="sc-kPVwWT alKfK"
             >
               Already have an account? 
               <a
-                class="sc-kfGgVZ dXzXOY"
+                class="sc-ibxdXY fcKYTr"
               >
                 Log in here
               </a>
@@ -51385,19 +51077,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-btzYZH iJkDDz"
+        class="sc-jtRfpW emIWCu"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-jtRfpW fjVeKs"
+          class="sc-dfVpRl fIIBpr"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-bYSBpT kSWlro"
+          class="sc-dqBHgY gtLeGX"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -51405,13 +51097,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jtRfpW fjVeKs"
+          class="sc-dfVpRl fIIBpr"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-bYSBpT kSWlro"
+          class="sc-dqBHgY gtLeGX"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -51419,18 +51111,18 @@ Object {
         />
         <br />
         <input
-          class="sc-elJkPf kDptNr"
+          class="sc-gxMtzJ hpNtTb"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-lhVmIH geQLlZ"
+        class="sc-kTUwUJ kHJehp"
       >
         Don't have an account?
          
         <a
-          class="sc-kTUwUJ dQVZnp"
+          class="sc-gzOgki gzfVVf"
         >
           Sign up here.
         </a>
@@ -51627,22 +51319,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-dqBHgY fvIDWj"
+        class="sc-iyvyFf iwStxs"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-gxMtzJ gneRJU"
+        class="sc-hwwEjo cmjaIi"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -51657,25 +51349,25 @@ Object {
         .
       </p>
       <form
-        class="sc-gzOgki hYYUBv"
+        class="sc-kfGgVZ iDoLNn"
       >
         <input
-          class="sc-iyvyFf hhHxWQ"
+          class="sc-esjQYD cRBEWy"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hwwEjo gZOTZe"
+          class="sc-kIPQKe jIXzsx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dfVpRl gnCWwO"
+          class="sc-kPVwWT alKfK"
         >
           Already have an account? 
           <a
-            class="sc-kfGgVZ dXzXOY"
+            class="sc-ibxdXY fcKYTr"
           >
             Log in here
           </a>
@@ -51765,7 +51457,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c2 {
+.c3 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -51774,9 +51466,9 @@ Object {
   margin-bottom: 5px;
 }
 
-.c3 {
+.c4 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -51784,23 +51476,28 @@ Object {
   font-size: 16px;
 }
 
-.c5 {
+.c6 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: white;
 }
 
-.c5[disabled] {
+.c6[disabled] {
   background-color: var(--grey);
   cursor: not-allowed;
-  color: black;
+  color: white;
 }
 
-.c4 {
+.c2 {
+  max-width: 450px;
+}
+
+.c5 {
   height: 30px;
   line-height: 30px;
 }
@@ -51821,15 +51518,17 @@ Object {
         >
           Create a password for your account.
         </p>
-        <form>
+        <form
+          class="c2"
+        >
           <label
-            class="c2"
+            class="c3"
             for="emailPlaceholder"
           >
             Email
           </label>
           <input
-            class="c3"
+            class="c4"
             disabled=""
             id="emailPlaceholder"
             name="emailPlaceholder"
@@ -51838,13 +51537,13 @@ Object {
           />
           <br />
           <label
-            class="c2"
+            class="c3"
             for="passwordInput"
           >
             Password
           </label>
           <input
-            class="c3"
+            class="c4"
             id="passwordInput"
             name="password"
             placeholder="Password"
@@ -51852,13 +51551,13 @@ Object {
           />
           <br />
           <label
-            class="c2"
+            class="c3"
             for="passwordConfirmationInput"
           >
             Confirm Password
           </label>
           <input
-            class="c3"
+            class="c4"
             id="passwordConfirmationInput"
             name="passwordConfirmation"
             placeholder="Confirm Password"
@@ -51866,11 +51565,11 @@ Object {
           />
           <br />
           <span
-            class="c4"
+            class="c5"
           />
           <br />
           <input
-            class="c5"
+            class="c6"
             disabled=""
             type="submit"
             value="Submit"
@@ -51895,7 +51594,9 @@ Object {
       >
         Create a password for your account.
       </p>
-      <form>
+      <form
+        class="sc-jAaTju cOnipV"
+      >
         <label
           class="sc-jWBwVP NbENL"
           for="emailPlaceholder"
@@ -51903,7 +51604,7 @@ Object {
           Email
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -51918,7 +51619,7 @@ Object {
           Password
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -51932,7 +51633,7 @@ Object {
           Confirm Password
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -51940,11 +51641,11 @@ Object {
         />
         <br />
         <span
-          class="sc-jAaTju bgnXvm"
+          class="sc-jDwBTQ jAKNzC"
         />
         <br />
         <input
-          class="sc-cMljjf dfoIzy"
+          class="sc-cMljjf egitsS"
           disabled=""
           type="submit"
           value="Submit"
@@ -52266,19 +51967,19 @@ Object {
     />
     <div>
       <h1
-        class="sc-btzYZH iJkDDz"
+        class="sc-jtRfpW emIWCu"
       >
         Log In to Your Account
       </h1>
       <form>
         <label
-          class="sc-jtRfpW fjVeKs"
+          class="sc-dfVpRl fIIBpr"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-bYSBpT kSWlro"
+          class="sc-dqBHgY gtLeGX"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -52286,13 +51987,13 @@ Object {
         />
         <br />
         <label
-          class="sc-jtRfpW fjVeKs"
+          class="sc-dfVpRl fIIBpr"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-bYSBpT kSWlro"
+          class="sc-dqBHgY gtLeGX"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -52300,18 +52001,18 @@ Object {
         />
         <br />
         <input
-          class="sc-elJkPf kDptNr"
+          class="sc-gxMtzJ hpNtTb"
           type="submit"
           value="Submit"
         />
       </form>
       <p
-        class="sc-lhVmIH geQLlZ"
+        class="sc-kTUwUJ kHJehp"
       >
         Don't have an account?
          
         <a
-          class="sc-kTUwUJ dQVZnp"
+          class="sc-gzOgki gzfVVf"
         >
           Sign up here.
         </a>
@@ -52508,22 +52209,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-dqBHgY fvIDWj"
+        class="sc-iyvyFf iwStxs"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-gxMtzJ gneRJU"
+        class="sc-hwwEjo cmjaIi"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -52538,25 +52239,25 @@ Object {
         .
       </p>
       <form
-        class="sc-gzOgki hYYUBv"
+        class="sc-kfGgVZ iDoLNn"
       >
         <input
-          class="sc-iyvyFf hhHxWQ"
+          class="sc-esjQYD cRBEWy"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hwwEjo gZOTZe"
+          class="sc-kIPQKe jIXzsx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dfVpRl gnCWwO"
+          class="sc-kPVwWT alKfK"
         >
           Already have an account? 
           <a
-            class="sc-kfGgVZ dXzXOY"
+            class="sc-ibxdXY fcKYTr"
           >
             Log in here
           </a>
@@ -57203,7 +56904,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c2 {
+.c3 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -57212,9 +56913,9 @@ Object {
   margin-bottom: 5px;
 }
 
-.c3 {
+.c4 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -57222,23 +56923,28 @@ Object {
   font-size: 16px;
 }
 
-.c5 {
+.c6 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: white;
 }
 
-.c5[disabled] {
+.c6[disabled] {
   background-color: var(--grey);
   cursor: not-allowed;
-  color: black;
+  color: white;
 }
 
-.c4 {
+.c2 {
+  max-width: 450px;
+}
+
+.c5 {
   height: 30px;
   line-height: 30px;
 }
@@ -57259,15 +56965,17 @@ Object {
         >
           Create a password for your account.
         </p>
-        <form>
+        <form
+          class="c2"
+        >
           <label
-            class="c2"
+            class="c3"
             for="emailPlaceholder"
           >
             Email
           </label>
           <input
-            class="c3"
+            class="c4"
             disabled=""
             id="emailPlaceholder"
             name="emailPlaceholder"
@@ -57276,13 +56984,13 @@ Object {
           />
           <br />
           <label
-            class="c2"
+            class="c3"
             for="passwordInput"
           >
             Password
           </label>
           <input
-            class="c3"
+            class="c4"
             id="passwordInput"
             name="password"
             placeholder="Password"
@@ -57290,13 +56998,13 @@ Object {
           />
           <br />
           <label
-            class="c2"
+            class="c3"
             for="passwordConfirmationInput"
           >
             Confirm Password
           </label>
           <input
-            class="c3"
+            class="c4"
             id="passwordConfirmationInput"
             name="passwordConfirmation"
             placeholder="Confirm Password"
@@ -57304,11 +57012,11 @@ Object {
           />
           <br />
           <span
-            class="c4"
+            class="c5"
           />
           <br />
           <input
-            class="c5"
+            class="c6"
             disabled=""
             type="submit"
             value="Submit"
@@ -57333,7 +57041,9 @@ Object {
       >
         Create a password for your account.
       </p>
-      <form>
+      <form
+        class="sc-jAaTju cOnipV"
+      >
         <label
           class="sc-jWBwVP NbENL"
           for="emailPlaceholder"
@@ -57341,7 +57051,7 @@ Object {
           Email
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           disabled=""
           id="emailPlaceholder"
           name="emailPlaceholder"
@@ -57356,7 +57066,7 @@ Object {
           Password
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -57370,7 +57080,7 @@ Object {
           Confirm Password
         </label>
         <input
-          class="sc-brqgnP kblSPY"
+          class="sc-brqgnP crdftc"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -57378,11 +57088,11 @@ Object {
         />
         <br />
         <span
-          class="sc-jAaTju bgnXvm"
+          class="sc-jDwBTQ jAKNzC"
         />
         <br />
         <input
-          class="sc-cMljjf dfoIzy"
+          class="sc-cMljjf egitsS"
           disabled=""
           type="submit"
           value="Submit"
@@ -57712,22 +57422,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-dqBHgY fvIDWj"
+        class="sc-iyvyFf iwStxs"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-gxMtzJ gneRJU"
+        class="sc-hwwEjo cmjaIi"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-dfVpRl gnCWwO"
+        class="sc-kPVwWT alKfK"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -57742,25 +57452,25 @@ Object {
         .
       </p>
       <form
-        class="sc-gzOgki hYYUBv"
+        class="sc-kfGgVZ iDoLNn"
       >
         <input
-          class="sc-iyvyFf hhHxWQ"
+          class="sc-esjQYD cRBEWy"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hwwEjo gZOTZe"
+          class="sc-kIPQKe jIXzsx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-dfVpRl gnCWwO"
+          class="sc-kPVwWT alKfK"
         >
           Already have an account? 
           <a
-            class="sc-kfGgVZ dXzXOY"
+            class="sc-ibxdXY fcKYTr"
           >
             Log in here
           </a>
@@ -59185,16 +58895,16 @@ Object {
           />
         </header>
         <div
-          class="sc-bbmXgH hnONkS"
+          class="sc-tilXH dfEhLW"
         >
           <section
-            class="sc-hmzhuo eRtqMp"
+            class="sc-jbKcbu cWSlbe"
           >
             <div
-              class="sc-kvZOFW ingFMr"
+              class="sc-jqCOkK krgRvQ"
             >
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               >
                 <div
                   class="paper"
@@ -59251,36 +58961,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-jbKcbu lhoDvX"
+                class="sc-bbmXgH dnuzhd"
               >
                 Address
                 <span
-                  class="sc-frDJqD gZGZy"
+                  class="sc-dNLxif bBbPUi"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-hqyNC aaURv"
+                class="sc-uJMKN wwmZ"
               />
               <div
-                class="sc-dNLxif deWPjW"
+                class="sc-gGBfsJ NVphw"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -59288,80 +58998,80 @@ Object {
             </div>
           </section>
           <button
-            class="sc-jqCOkK sc-uJMKN btYuoP"
+            class="sc-jnlKLf sc-fYxtnH hRHTRR"
             id="CreateLockButton"
           >
             Create Lock
           </button>
         </div>
         <div
-          class="sc-cIShpX fVbkpg"
+          class="sc-cmTdod dsAAoW"
         >
           <div
-            class="sc-kafWEX bwzQmU"
+            class="sc-jwKygS jeUUqy"
           >
             Block Number
           </div>
           <div
-            class="sc-kafWEX bwzQmU"
+            class="sc-jwKygS jeUUqy"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-kafWEX bwzQmU"
+            class="sc-jwKygS jeUUqy"
           >
             Type
           </div>
           <div
-            class="sc-feJyhm sc-iELTvK ghhzew"
+            class="sc-btzYZH sc-lhVmIH cKwnaZ"
           >
             3
           </div>
           <a
-            class="sc-cmTdod iZyKtx"
+            class="sc-bYSBpT kRvPbL"
             href=""
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-feJyhm sc-jwKygS hCUzcd"
+            class="sc-btzYZH sc-elJkPf lkbwOG"
             type="Lock Creation"
           >
             Lock Creation
           </div>
           <div
-            class="sc-feJyhm sc-iELTvK ghhzew"
+            class="sc-btzYZH sc-lhVmIH cKwnaZ"
           >
             2
           </div>
           <a
-            class="sc-cmTdod iZyKtx"
+            class="sc-bYSBpT kRvPbL"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-feJyhm sc-jwKygS cfwLjp"
+            class="sc-btzYZH sc-elJkPf cAWFOu"
             type="Update Key Price"
           >
             Update Key Price
           </div>
           <div
-            class="sc-feJyhm sc-iELTvK ghhzew"
+            class="sc-btzYZH sc-lhVmIH cKwnaZ"
           >
             1
           </div>
           <a
-            class="sc-cmTdod iZyKtx"
+            class="sc-bYSBpT kRvPbL"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-feJyhm sc-jwKygS hCUzcd"
+            class="sc-btzYZH sc-elJkPf lkbwOG"
             type="Lock Creation"
           >
             Lock Creation
@@ -60159,7 +59869,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI sc-esjQYD jhFzQE"
+          class="sc-iwsKbI sc-RefOD iaoVYd"
         >
           Update Password
         </button>
@@ -60271,37 +59981,7 @@ Object {
   color: var(--labelgrey);
 }
 
-.c8 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 39px;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-
-.c9 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
-  color: var(--grey);
-}
-
 .c7 {
-  text-align: center;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-}
-
-.c10 {
   height: 60px;
   width: 100%;
   border: none;
@@ -60326,6 +60006,24 @@ Object {
   color: var(--white);
   cursor: disabled;
   background-color: var(--grey);
+}
+
+.c6 {
+  margin-top: 8px;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+.c6 svg {
+  width: 48px;
+  fill: var(--grey);
+  margin: 0 auto;
 }
 
 .c0 {
@@ -60368,10 +60066,6 @@ Object {
   margin-top: 24px;
   margin-bottom: 36px;
   margin-left: 8px;
-}
-
-.c6 {
-  margin-top: 8px;
 }
 
 @media (min-width:500px) {
@@ -60427,26 +60121,158 @@ Object {
           <div
             class="c6"
           >
-            <div
-              class="c7"
+            <svg
+              viewBox="0 0 32 32"
             >
-              <span
-                class="c8"
+              <title />
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
               >
-                -
-              </span>
-              <span
-                class="c9"
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
               >
-                <span>
-                   - 
-                </span>
-              </span>
-            </div>
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
           </div>
         </div>
         <button
-          class="c10"
+          class="c7"
         >
           No lock found
         </button>
@@ -60459,13 +60285,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-hzDkRC gSuZih"
+      class="sc-htpNat sc-eqIVtm etmZKV"
     >
       <div
-        class="sc-jhAzac iROviH"
+        class="sc-fAjcbJ hlOgwN"
       >
         <h1
-          class="sc-fBuWsC fMjsRx"
+          class="sc-caSCKo lfTrHH"
         >
           Confirm Purchase
         </h1>
@@ -60478,7 +60304,7 @@ Object {
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-fMiknA cQJdeE"
+            class="sc-gzVnrw sc-gisBJw fwuabH"
           >
             jenny@googlemail.com
           </span>
@@ -60492,30 +60318,162 @@ Object {
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-fMiknA cQJdeE"
+            class="sc-gzVnrw sc-gisBJw fwuabH"
           >
             -
           </span>
         </div>
         <div
-          class="sc-dVhcbM kQgRhm"
+          class="sc-jhAzac fzWDej"
         >
-          <div
-            class="sc-fjdhpX dvmfyc"
+          <svg
+            viewBox="0 0 32 32"
           >
-            <span
-              class="sc-VigVT glxCYN"
+            <title />
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
             >
-              -
-            </span>
-            <span
-              class="sc-jTzLTM ipOgJg"
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
             >
-              <span>
-                 - 
-              </span>
-            </span>
-          </div>
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
         </div>
       </div>
       <button
@@ -60655,27 +60613,9 @@ Object {
   color: var(--white);
 }
 
-.c8 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 39px;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-
-.c9 {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
-  color: var(--grey);
-}
-
-.c7 {
-  text-align: center;
+.c6 {
+  margin-top: 8px;
+  margin-bottom: 16px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -60683,6 +60623,38 @@ Object {
   -webkit-flex-direction: column;
   -ms-flex-direction: column;
   flex-direction: column;
+}
+
+.c6 svg {
+  width: 48px;
+  fill: var(--grey);
+  margin: 0 auto;
+}
+
+.c7 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 39px;
+  color: var(--slate);
+  float: left;
+}
+
+.c9 {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.c8 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 30px;
+  line-height: 39px;
+  color: var(--slate);
+  float: left;
+  float: right;
 }
 
 .c0 {
@@ -60725,10 +60697,6 @@ Object {
   margin-top: 24px;
   margin-bottom: 36px;
   margin-left: 8px;
-}
-
-.c6 {
-  margin-top: 8px;
 }
 
 @media (min-width:500px) {
@@ -60784,22 +60752,25 @@ Object {
           <div
             class="c6"
           >
-            <div
-              class="c7"
-            >
+            <div>
               <span
-                class="c8"
-              >
-                $6.00
-              </span>
-              <span
-                class="c9"
+                class="c7"
               >
                 <span>
                   143 days
                 </span>
               </span>
+              <span
+                class="c8"
+              >
+                $6.00
+              </span>
             </div>
+            <p
+              class="c9"
+            >
+              The total price includes the base key price of $1.00, credit card processing fee of $4.50, and the Unlock service fee of $0.20.
+            </p>
           </div>
         </div>
         <button
@@ -60816,13 +60787,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-hzDkRC gSuZih"
+      class="sc-htpNat sc-eqIVtm etmZKV"
     >
       <div
-        class="sc-jhAzac iROviH"
+        class="sc-fAjcbJ hlOgwN"
       >
         <h1
-          class="sc-fBuWsC fMjsRx"
+          class="sc-caSCKo lfTrHH"
         >
           Confirm Purchase
         </h1>
@@ -60835,7 +60806,7 @@ Object {
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-fMiknA cQJdeE"
+            class="sc-gzVnrw sc-gisBJw fwuabH"
           >
             jenny@googlemail.com
           </span>
@@ -60849,30 +60820,33 @@ Object {
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-fMiknA cQJdeE"
+            class="sc-gzVnrw sc-gisBJw fwuabH"
           >
             Visa ending in 4242
           </span>
         </div>
         <div
-          class="sc-dVhcbM kQgRhm"
+          class="sc-jhAzac fzWDej"
         >
-          <div
-            class="sc-fjdhpX dvmfyc"
-          >
+          <div>
             <span
-              class="sc-VigVT glxCYN"
-            >
-              $6.00
-            </span>
-            <span
-              class="sc-jTzLTM ipOgJg"
+              class="sc-fBuWsC OlQRH"
             >
               <span>
                 143 days
               </span>
             </span>
+            <span
+              class="sc-fBuWsC sc-dVhcbM cjokAJ"
+            >
+              $6.00
+            </span>
           </div>
+          <p
+            class="sc-fMiknA fyfLzl"
+          >
+            The total price includes the base key price of $1.00, credit card processing fee of $4.50, and the Unlock service fee of $0.20.
+          </p>
         </div>
       </div>
       <button
@@ -61629,7 +61603,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI sc-esjQYD jhFzQE"
+            class="sc-iwsKbI sc-RefOD iaoVYd"
           >
             Update Password
           </button>

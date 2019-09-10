@@ -4,7 +4,7 @@ subTitle: A fun experiment to show how Non Fungible Tokens can be used to repres
 authorName: Julien Genestoux
 publishDate: August 23, 2019
 description: Locks are the core of the Unlock protocol. They are smart contracts deployed on the Ethereum chain which lets your community become members by purchasing keys to your lock.
-image: https://assets.unlock-protocol.com/nft-images/blue-checkmark.png
+image: /static/images/blog/blue-checkmark-nft/twitter-verified.jpg
 ---
 
 Twitter's blue checkmark has generated a lot of attention over the years. This week, Ethereum's Vitalik Buterin rightfully [noted](https://twitter.com/VitalikButerin/status/1164490401765572611) that the blue checkmark was a status symbol. Last week-end, [Dani Grant](https://twitter.com/thedanigrant) released a [fun Chrome extension](dani.town/nfts) which will show a Twitter users' NFT on their twitter profile.
