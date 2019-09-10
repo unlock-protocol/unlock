@@ -1,9 +1,11 @@
+import { LocalStorageWindow } from '../windowTypes'
+
 // copied from the MDN docs as the best way to detect localStorage presence
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Testing_for_availability
-export default function localStorageAvailable(window) {
+export const localStorageAvailable = (window: LocalStorageWindow) => {
+  const storage = window.localStorage
   try {
-    var storage = window.localStorage,
-      x = '__storage_test__'
+    const x = '__storage_test__'
     storage.setItem(x, x)
     storage.removeItem(x)
     return true
@@ -23,4 +25,35 @@ export default function localStorageAvailable(window) {
       storage.length !== 0
     )
   }
+}
+
+// Get an item from local storage. If not present, or local storage
+// can't be used, return null.
+export const getItem = (
+  window: LocalStorageWindow,
+  keyName: string
+): string | null => {
+  if (localStorageAvailable(window)) {
+    return window.localStorage.getItem(keyName)
+  }
+  return null
+}
+
+// Set an item in local storage. If local storage can't be used or
+// write fails, return false. Otherwise true.
+export const setItem = (
+  window: LocalStorageWindow,
+  keyName: string,
+  keyValue: string
+): boolean => {
+  if (localStorageAvailable(window)) {
+    try {
+      window.localStorage.setItem(keyName, keyValue)
+      return true
+    } catch (_) {
+      return false
+    }
+  }
+
+  return false
 }
