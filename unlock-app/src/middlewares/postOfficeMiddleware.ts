@@ -21,7 +21,8 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   // To reduce need to log in, remember the last user account address
   // logged into. User will need to authenticate again to make any
   // purchases, but they will still be able to access any locks they
-  // have keys to without logging in.
+  // have keys to without logging in. This value should not go into
+  // redux within `unlock-app`. Let the sign-in process handle that.
   const userAccountAddress = getItem(window, USER_ACCOUNT_ADDRESS_STORAGE_ID)
   postOfficeService.setAccount(userAccountAddress)
 
@@ -52,6 +53,8 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
       return (action: Action) => {
         if (action.type === SET_ACCOUNT) {
           postOfficeService.setAccount(action.account.address)
+          // Update the localStorage value for the most recent user
+          // account address signed into.
           setItem(
             window,
             USER_ACCOUNT_ADDRESS_STORAGE_ID,
