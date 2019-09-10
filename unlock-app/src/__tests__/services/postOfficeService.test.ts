@@ -2,7 +2,7 @@ import {
   PostOfficeService,
   PostOfficeEvents,
 } from '../../services/postOfficeService'
-import { IframePostOfficeWindow } from '../../windowTypes'
+import { IframePostOfficeWindow } from '../../utils/postOffice'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
 import { Locks } from '../../unlockTypes'
 
@@ -67,6 +67,8 @@ describe('postOfficeService', () => {
         href: 'http://example.com?origin=http%3a%2f%2ffun.times',
       },
       addEventListener: jest.fn(),
+      // These tests don't rely on localStorage
+      localStorage: {} as any,
     }
   }
 
