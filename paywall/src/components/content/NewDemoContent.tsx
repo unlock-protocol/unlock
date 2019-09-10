@@ -7,19 +7,37 @@ import useWindow from '../../hooks/browser/useWindow'
 import useConfig from '../../hooks/utils/useConfig'
 
 /**
+ * This is a hack only to support this paywall demo page. The whole
+ * paywall codebase is dependent on hooks, so we can't easily convert
+ * NewDemoContent to a class without changing many other things. We want
+ * to set the event listener before the component renders (otherwise it
+ * misses the unlock event, because the script doesn't come over the
+ * network). ComponentWillMount has been deprecated, and without the
+ * ability to use a class, this hook allows us to add the listener first.
+ */
+const useBeforeFirstRender = (fn: any) => {
+  const [didRender, setDidRender] = useState(false)
+  useEffect(() => setDidRender(true), [didRender])
+
+  if (!didRender) {
+    fn()
+  }
+}
+
+/**
  * This is the actual demo page with JS which injects a paywall'ed iframe.
- * @param {*} lock
- * @param {*} domain
  */
 export default function NewDemoContent() {
   const window = useWindow()
   const { isServer } = useConfig()
   const [locked, setLocked] = useState(false)
-  useEffect(() => {
-    window.addEventListener('unlockProtocol', function(event: CustomEvent) {
-      setLocked(event.detail === 'locked')
-    })
-  }, [setLocked, window])
+  useBeforeFirstRender(() => {
+    if (window) {
+      window.addEventListener('unlockProtocol', function(event: CustomEvent) {
+        setLocked(event.detail === 'locked')
+      })
+    }
+  })
 
   if (isServer) return null
   // use any old URL in case href is a relative path
