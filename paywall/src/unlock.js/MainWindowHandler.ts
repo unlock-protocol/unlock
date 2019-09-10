@@ -30,7 +30,6 @@ export default class MainWindowHandler {
   constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
-    this.toggleLockState = this.toggleLockState.bind(this)
   }
 
   init() {
