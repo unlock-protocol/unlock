@@ -24,11 +24,11 @@ import StartupConstants from './startupTypes'
 export default class Wallet {
   private readonly iframes: IframeHandler
   private readonly window: Web3Window
-  readonly hasWallet: boolean = true
+  private readonly hasWallet: boolean = true
   private readonly isMetamask: boolean
   private readonly config: PaywallConfig
   private hasWeb3: boolean = false
-  useUserAccounts: boolean = false
+  private useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: number
