@@ -97,10 +97,21 @@ describe('postOfficeMiddleware', () => {
       expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
     })
 
-    it('should set account to the value provided by localStorage', () => {
+    it('should set account to null when localStorage contains a malformed value', () => {
       expect.assertions(1)
 
-      const anAddress = '0x123abc'
+      const anAddress = 'some random garbage'
+      fakeWindow.localStorage.getItem = jest.fn(() => anAddress)
+
+      makeMiddleware()
+
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+    })
+
+    it('should set account to the value provided by localStorage, if it is a real address', () => {
+      expect.assertions(1)
+
+      const anAddress = '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'
       fakeWindow.localStorage.getItem = jest.fn(() => anAddress)
 
       makeMiddleware()

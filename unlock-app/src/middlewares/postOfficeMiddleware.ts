@@ -11,6 +11,7 @@ import { PostOffice } from '../utils/Error'
 import { addToCart, DISMISS_PURCHASE_MODAL } from '../actions/keyPurchase'
 import { SET_ACCOUNT } from '../actions/accounts'
 import { USER_ACCOUNT_ADDRESS_STORAGE_ID } from '../constants'
+import { isAccount } from '../utils/validators'
 
 const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   const postOfficeService = new PostOfficeService(
@@ -23,8 +24,14 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   // purchases, but they will still be able to access any locks they
   // have keys to without logging in. This value should not go into
   // redux within `unlock-app`. Let the sign-in process handle that.
-  const userAccountAddress = getItem(window, USER_ACCOUNT_ADDRESS_STORAGE_ID)
-  const gotAddressFromStorage = !!userAccountAddress
+  let userAccountAddress = getItem(window, USER_ACCOUNT_ADDRESS_STORAGE_ID)
+  let gotAddressFromStorage = !!userAccountAddress
+  if (!isAccount(userAccountAddress)) {
+    // Value retrieved from storage isn't a real account -- garbage crept in somewhere.
+    userAccountAddress = null
+    gotAddressFromStorage = false
+  }
+
   postOfficeService.setAccount(userAccountAddress)
 
   // Locks on the paywall, keys are lower-cased lock addresses
