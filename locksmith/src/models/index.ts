@@ -9,6 +9,7 @@ import { AuthorizedLock } from './authorizedLock'
 import { EventLink } from './eventLink'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
+import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -26,6 +27,7 @@ sequelize.addModels([
   EventLink,
   LockMetadata,
   KeyMetadata,
+  ParsedBlockForLockCreation,
 ])
 
 User.removeAttribute('id')
