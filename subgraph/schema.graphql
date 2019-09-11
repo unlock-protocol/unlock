@@ -1,0 +1,32 @@
+type UnlockEntity @entity {
+  id: ID!
+  count: BigInt!
+  lockOwner: Bytes! # address
+  newLockAddress: Bytes! # address
+}
+
+type Key @entity {
+  id: ID!
+  lock: Lock!
+  keyId: BigInt!
+  owner: KeyHolder!
+}
+
+type KeyHolder @entity {
+  id: ID!
+  address: Bytes!
+  keys: [Key]! @derivedFrom(field: "owner")
+}
+
+type Lock @entity {
+  id: ID! #lock address
+  address: Bytes!
+  name: String
+  tokenAddress: Bytes!
+  price: BigInt
+  expirationDuration: BigInt
+  totalSupply: BigInt
+  maxNumberOfKeys: BigInt
+  keys: [Key!] @derivedFrom(field: "lock")
+  owner: Bytes!
+}
