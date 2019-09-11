@@ -241,7 +241,7 @@ describe('Web3ProxyProvider', () => {
       })
 
       expect(callback).toHaveBeenCalledWith(null, {
-        id: 42,
+        id: 1,
         jsonrpc: '2.0',
         result: 'foo',
       })
@@ -263,6 +263,17 @@ describe('Web3ProxyProvider', () => {
         },
         undefined
       )
+    })
+
+    it('should do nothing if data is missing', async () => {
+      expect.assertions(1)
+
+      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+        id: 1,
+        jsonrpc: '2.0',
+      })
+
+      expect(callback).not.toHaveBeenCalled()
     })
   })
 })
