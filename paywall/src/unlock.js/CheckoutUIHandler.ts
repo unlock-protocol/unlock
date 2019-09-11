@@ -33,7 +33,7 @@ export default class CheckoutUIHandler {
     this.config = config
   }
 
-  init(usingManagedAccount: boolean) {
+  init({ usingManagedAccount }: { usingManagedAccount: boolean }) {
     // listen for updates to state from the data iframe, and forward them to the checkout UI
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, account =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_ACCOUNT, account)

@@ -77,7 +77,9 @@ describe('CheckoutUIHandler', () => {
     function makeReadyCheckout() {
       fakeWindow = new FakeWindow()
       const handler = makeCheckoutUIHandler(fakeWindow)
-      handler.init(false)
+      handler.init({
+        usingManagedAccount: false,
+      })
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.READY,
@@ -193,7 +195,9 @@ describe('CheckoutUIHandler', () => {
         expect.assertions(1)
 
         const handler = makeCheckoutUIHandler(fakeWindow)
-        handler.init(false)
+        handler.init({
+          usingManagedAccount: false,
+        })
 
         fakeWindow.receivePostMessageFromIframe(
           type,
@@ -221,7 +225,9 @@ describe('CheckoutUIHandler', () => {
       expect.assertions(1)
 
       const handler = makeCheckoutUIHandler(fakeWindow)
-      handler.init(true)
+      handler.init({
+        usingManagedAccount: true,
+      })
 
       const initialPayload = {
         eth: '123.4',
