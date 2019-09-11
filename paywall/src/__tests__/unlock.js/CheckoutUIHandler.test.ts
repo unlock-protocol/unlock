@@ -1,5 +1,8 @@
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
-import CheckoutUIHandler from '../../unlock.js/CheckoutUIHandler'
+import CheckoutUIHandler, {
+  injectDefaultBalance,
+  defaultBalance,
+} from '../../unlock.js/CheckoutUIHandler'
 import { PaywallConfig, Locks, Transactions } from '../../unlockTypes'
 import { KeyResults } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import IframeHandler from '../../unlock.js/IframeHandler'
@@ -74,7 +77,7 @@ describe('CheckoutUIHandler', () => {
     function makeReadyCheckout() {
       fakeWindow = new FakeWindow()
       const handler = makeCheckoutUIHandler(fakeWindow)
-      handler.init()
+      handler.init(false)
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.READY,
@@ -184,7 +187,7 @@ describe('CheckoutUIHandler', () => {
         expect.assertions(1)
 
         const handler = makeCheckoutUIHandler(fakeWindow)
-        handler.init()
+        handler.init(false)
 
         fakeWindow.receivePostMessageFromIframe(
           type,
@@ -201,5 +204,34 @@ describe('CheckoutUIHandler', () => {
         )
       }
     )
+  })
+})
+
+describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
+  it('should return empty object given an empty object', () => {
+    expect.assertions(1)
+    expect(injectDefaultBalance({})).toEqual({})
+  })
+
+  it('should leave eth alone', () => {
+    expect.assertions(1)
+    const balance = {
+      eth: '123.4',
+    }
+    expect(injectDefaultBalance(balance)).toEqual(balance)
+  })
+
+  it('should update any non-eth balances with the default', () => {
+    expect.assertions(1)
+    const balance = {
+      eth: '123.4',
+      '0x123abc': '0',
+      '0xdeadbeef': '0',
+    }
+    expect(injectDefaultBalance(balance)).toEqual({
+      eth: '123.4',
+      '0x123abc': defaultBalance,
+      '0xdeadbeef': defaultBalance,
+    })
   })
 })

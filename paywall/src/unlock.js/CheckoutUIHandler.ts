@@ -1,6 +1,24 @@
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
-import { PaywallConfig } from '../unlockTypes'
+import { PaywallConfig, Balance } from '../unlockTypes'
+
+// Arbitrarily defined number of tokens to assume a managed user
+// account holds for any given stablecoin
+export const defaultBalance = '35'
+
+export const injectDefaultBalance = (oldBalance: Balance): Balance => {
+  const newBalance: Balance = {}
+  const tokens = Object.keys(oldBalance)
+  tokens.forEach(token => {
+    if (token.startsWith('0x')) {
+      newBalance[token] = defaultBalance
+    } else {
+      newBalance[token] = oldBalance[token]
+    }
+  })
+
+  return newBalance
+}
 
 /**
  * This class handles inter-iframe communication between the checkout iframe and data iframe
@@ -18,13 +36,12 @@ export default class CheckoutUIHandler {
     this.config = config
   }
 
-  init(usingUserAccounts: boolean) {
+  init(_: boolean) {
     // listen for updates to state from the data iframe, and forward them to the checkout UI
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, account =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_ACCOUNT, account)
     )
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
-      console.log(usingUserAccounts)
       this.iframes.checkout.postMessage(
         PostMessages.UPDATE_ACCOUNT_BALANCE,
         balance
