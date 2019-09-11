@@ -211,6 +211,43 @@ describe('CheckoutUIHandler', () => {
       }
     )
   })
+
+  describe('relayed messages - managed user account', () => {
+    beforeEach(() => {
+      fakeWindow = new FakeWindow()
+    })
+
+    it('should intercept balance update with injected balances for managed user account', () => {
+      expect.assertions(1)
+
+      const handler = makeCheckoutUIHandler(fakeWindow)
+      handler.init(true)
+
+      const initialPayload = {
+        eth: '123.4',
+        '0xdeadbeef': '0',
+      }
+
+      const expectedPayload = {
+        eth: '123.4',
+        '0xdeadbeef': defaultBalance,
+      }
+
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        initialPayload,
+        iframes.data.iframe,
+        dataOrigin
+      )
+
+      fakeWindow.expectPostMessageSentToIframe(
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        expectedPayload,
+        iframes.checkout.iframe,
+        checkoutOrigin
+      )
+    })
+  })
 })
 
 describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
