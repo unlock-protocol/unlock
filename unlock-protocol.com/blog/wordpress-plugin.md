@@ -38,7 +38,7 @@ Once installed, check the plugin's settings to add the address of the lock that 
 
 ## Writing locked stories
 
-The plugin provides you with "Blocks" which can be used in the [Gutemberg Editor](https://wordpress.org/gutenberg/) (WordPress 5.0 and later), for both posts and pages. We provide 3 different blocks:
+The plugin provides you with "Blocks" which can be used in the [Gutenberg Editor](https://wordpress.org/gutenberg/) (WordPress 5.0 and later), for both posts and pages. We provide 3 different blocks:
 
 - The _locked_ block: a block whose content (rich text) is visible to non-members.
 - The _unlocked_ block: a block whose content (rich text) is visible only to members.
