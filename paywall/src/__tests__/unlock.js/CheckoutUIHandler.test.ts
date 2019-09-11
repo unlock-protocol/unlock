@@ -162,7 +162,13 @@ describe('CheckoutUIHandler', () => {
 
     const data: RelayedMessageTestType = [
       ['UPDATE_ACCOUNT', PostMessages.UPDATE_ACCOUNT, fakeAccount],
-      ['UPDATE_ACCOUNT_BALANCE', PostMessages.UPDATE_ACCOUNT_BALANCE, '123'],
+      [
+        'UPDATE_ACCOUNT_BALANCE',
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        {
+          eth: '123',
+        },
+      ],
       ['UPDATE_LOCKS', PostMessages.UPDATE_LOCKS, fakeLocks],
       ['UPDATE_KEYS', PostMessages.UPDATE_KEYS, fakeKeys],
       [
