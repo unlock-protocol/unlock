@@ -378,6 +378,8 @@ describe('postOffice', () => {
         addEventListener(type, handler) {
           handlers[type] = handler
         },
+        // These tests don't rely on localStorage
+        localStorage: {} as any,
       }
     })
 
