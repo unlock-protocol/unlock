@@ -28,7 +28,7 @@ export default class Wallet {
   private readonly isMetamask: boolean
   private readonly config: PaywallConfig
   private hasWeb3: boolean = false
-  private useUserAccounts: boolean = false
+  useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: number

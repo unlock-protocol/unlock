@@ -118,3 +118,7 @@ export const MAX_UINT =
 export const POLLING_INTERVAL = 2000
 // the length of time to consider an optimistic key purchase to have become pessimistic
 export const OPTIMISM_POLLING_INTERVAL = 15000
+
+// used to provide a default balance for stablecoins so that the paywall does
+// not show "insufficient funds" for managed user accounts
+export const DEFAULT_STABLECOIN_BALANCE = '35'
