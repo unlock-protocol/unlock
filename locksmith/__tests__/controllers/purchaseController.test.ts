@@ -8,6 +8,7 @@ const models = require('../../src/models')
 
 let AuthorizedLock = models.AuthorizedLock
 let participatingLock = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+let nonParticipatingLock = '0xF4906CE8a8E861339F75611c129b9679EDAe7bBD'
 let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
 let privateKey = ethJsUtil.toBuffer(
@@ -120,6 +121,30 @@ describe('Purchase Controller', () => {
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
         expect(response.status).toBe(412)
+      })
+    })
+
+    describe('when the Lock has not been authorized for participation in the purchasing program', () => {
+      let message = {
+        purchaseRequest: {
+          recipient: recipient,
+          lock: nonParticipatingLock,
+          expiry: 16733658026,
+        },
+      }
+
+      let typedData = generateTypedData(message)
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+      })
+      it('rejects the purchase', async () => {
+        expect.assertions(1)
+        let response = await request(app)
+          .post('/purchase')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+        expect(response.status).toBe(451)
       })
     })
   })
