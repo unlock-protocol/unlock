@@ -2,6 +2,7 @@ import {
   createLock,
   getLockByAddress,
   getLocksByOwner,
+  getLockAddresses,
 } from '../../src/operations/lockOperations'
 
 const Sequelize = require('sequelize')
@@ -55,6 +56,33 @@ describe('lockOperations', () => {
       )
       expect(lock.owner).toEqual('0xCA750f9232C1c38e34D27e77534e1631526eC99e')
       expect(Lock.findOne).toHaveBeenCalled()
+    })
+  })
+
+  describe('getLockAddresses', () => {
+    describe('when there are no locks persisted', () => {
+      it('returns an empty collection', async () => {
+        expect.assertions(1)
+        let locks = await getLockAddresses()
+        expect(locks).toEqual([])
+      })
+    })
+
+    describe('when there are locks persisted', () => {
+      it('returns a collection of the persisted Lock addresses', async () => {
+        expect.assertions(1)
+        Lock.findAll = jest.fn(() => {
+          return [
+            {
+              name: 'My Lock',
+              address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
+              owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
+            },
+          ]
+        })
+        let locks = await getLockAddresses()
+        expect(locks).toEqual(['0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'])
+      })
     })
   })
 

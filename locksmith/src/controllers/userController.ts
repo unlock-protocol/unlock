@@ -1,7 +1,10 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
+import * as OwnedKeys from '../utils/ownedKeys'
 
 import UserOperations = require('../operations/userOperations')
+
+const env = process.env.NODE_ENV || 'development'
 
 namespace UserController {
   export const createUser = async (
@@ -124,6 +127,17 @@ namespace UserController {
     let emailAddress = req.params.emailAddress
     let result = await UserOperations.getCards(emailAddress)
     return res.json(result)
+  }
+
+  export const keys = async (req: Request, res: Response) => {
+    if (env == 'development') {
+      return res.sendStatus(406)
+    } else {
+      let address = req.params.ethereumAddress
+      let keys = await OwnedKeys.keys(address)
+
+      return res.json(keys)
+    }
   }
 }
 
