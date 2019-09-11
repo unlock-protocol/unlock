@@ -7,7 +7,7 @@ description: Wordpress.org is the most popular Content Management System. Adding
 image: /static/images/blog/wordpress-plugin/wordpress.png
 ---
 
-The world of publishing is [moving away from ads](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f) as the single way to monetize content. In the last 18 months, most of the largest and most influential publications in the US and Europe have been moving to what they call "direct consumer revenue". This is a great thing because it changes incentives from trying steal their users' attention (click bait, fake news, endless slideshows... etc) to creating value for their members.
+The world of publishing is [moving away from ads](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f) as the single way to monetize content. In the last 18 months, most of the largest and most influential publications in the US and Europe have been moving to what they call "direct consumer revenue." This is a great thing because it changes incentives from trying steal their users' attention (click bait, fake news, endless slideshows... etc) to creating value for their members.
 
 Unfortunately though, unless you're a very large publisher with your own engineering team to build and maintain your own paywall, it's nearly impossible to move to that model.
 
