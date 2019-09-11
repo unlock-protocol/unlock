@@ -1,12 +1,12 @@
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import CheckoutUIHandler, {
   injectDefaultBalance,
-  defaultBalance,
 } from '../../unlock.js/CheckoutUIHandler'
 import { PaywallConfig, Locks, Transactions } from '../../unlockTypes'
 import { KeyResults } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import IframeHandler from '../../unlock.js/IframeHandler'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
+import { DEFAULT_STABLECOIN_BALANCE } from '../../constants'
 
 declare const process: {
   env: {
@@ -230,7 +230,7 @@ describe('CheckoutUIHandler', () => {
 
       const expectedPayload = {
         eth: '123.4',
-        '0xdeadbeef': defaultBalance,
+        '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
       }
 
       fakeWindow.receivePostMessageFromIframe(
@@ -273,8 +273,8 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
     }
     expect(injectDefaultBalance(balance)).toEqual({
       eth: '123.4',
-      '0x123abc': defaultBalance,
-      '0xdeadbeef': defaultBalance,
+      '0x123abc': DEFAULT_STABLECOIN_BALANCE,
+      '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
     })
   })
 })

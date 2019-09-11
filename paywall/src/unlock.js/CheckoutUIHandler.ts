@@ -1,17 +1,14 @@
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { PaywallConfig, Balance } from '../unlockTypes'
-
-// Arbitrarily defined number of tokens to assume a managed user
-// account holds for any given stablecoin
-export const defaultBalance = '35'
+import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
 
 export const injectDefaultBalance = (oldBalance: Balance): Balance => {
   const newBalance: Balance = {}
   const tokens = Object.keys(oldBalance)
   tokens.forEach(token => {
     if (token.startsWith('0x')) {
-      newBalance[token] = defaultBalance
+      newBalance[token] = DEFAULT_STABLECOIN_BALANCE
     } else {
       newBalance[token] = oldBalance[token]
     }
