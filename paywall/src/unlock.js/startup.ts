@@ -76,6 +76,6 @@ export default function startup(
   // go!
   mainWindow.init()
   wallet.init()
-  checkoutIframeHandler.init()
+  checkoutIframeHandler.init(wallet.useUserAccounts)
   return iframes // this is only useful in testing, it is ignored in the app
 }
