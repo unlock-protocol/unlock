@@ -4,9 +4,6 @@
  * Authorize lock: separate from approving the withdrawl of ERC20
  * tokens, this script stores whether Unlock has approved a given
  * lock.
- *
- * approve_erc20_transfer --value <approval amount> --provider <provider uri>
- *
  */
 const yargs = require('yargs')
 const AuthorizedLock = require('../build/src/models/index').AuthorizedLock
