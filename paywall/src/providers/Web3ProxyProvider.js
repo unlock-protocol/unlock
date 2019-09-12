@@ -55,10 +55,6 @@ export default class Web3ProxyProvider {
       const callback = this.requests[id]
       delete this.requests[id]
 
-      if (result) {
-        // only set the id if there isn't an error condition
-        result.id = 42 // ethers needs to not do this...
-      }
       callback(error, result)
     })
 
