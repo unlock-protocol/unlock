@@ -19,7 +19,8 @@
     "predist": "npm run build",
     "dist": "sh ./scripts/dist.sh",
     "prefulfillment:prepare": "npm run build",
-    "fulfillment:prepare": "node ./scripts/fulfillment_prepare"
+    "fulfillment:prepare": "node ./scripts/fulfillment_prepare",
+    "authorize": "./scripts/authorize-lock"
   },
   "lint-staged": {
     "linters": {
