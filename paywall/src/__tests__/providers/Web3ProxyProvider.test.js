@@ -1,10 +1,7 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import Web3ProxyProvider from '../../providers/Web3ProxyProvider'
-import {
-  POST_MESSAGE_READY_WEB3,
-  POST_MESSAGE_WALLET_INFO,
-  POST_MESSAGE_WEB3,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
+
 import { delayPromise, waitFor } from '../../utils/promises'
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 
@@ -40,13 +37,13 @@ describe('Web3ProxyProvider', () => {
     }
   })
 
-  it('posts POST_MESSAGE_READY on init', () => {
+  it('posts PostMessages.READY on init', () => {
     expect.assertions(1)
     new Web3ProxyProvider(fakeWindow)
 
     expect(fakeParent.postMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        type: POST_MESSAGE_READY_WEB3,
+        type: PostMessages.READY_WEB3,
         payload: undefined,
       }),
       'origin'
@@ -56,7 +53,7 @@ describe('Web3ProxyProvider', () => {
   it('throws if the wallet info has not yet been received', async () => {
     expect.assertions(2)
     const provider = new Web3ProxyProvider(fakeWindow)
-    provider.waiting = false // fake the receipt of POST_MESSAGE_WALLET_INFO
+    provider.waiting = false // fake the receipt of PostMessages.WALLET_INFO
     const walletService = new WalletService({ unlockAddress })
 
     try {
@@ -70,10 +67,10 @@ describe('Web3ProxyProvider', () => {
   it('throws if the wallet info says we have no wallet', async () => {
     expect.assertions(2)
     const provider = new Web3ProxyProvider(fakeWindow)
-    provider.waiting = false // fake the receipt of POST_MESSAGE_WALLET_INFO
+    provider.waiting = false // fake the receipt of PostMessages.WALLET_INFO
     const walletService = new WalletService({ unlockAddress })
 
-    fakeEvent(POST_MESSAGE_WALLET_INFO, {
+    fakeEvent(PostMessages.WALLET_INFO, {
       isMetamask: false,
       noWallet: true,
       notEnabled: false,
@@ -89,10 +86,10 @@ describe('Web3ProxyProvider', () => {
   it('throws if the wallet info says we rejected being enabled', async () => {
     expect.assertions(2)
     const provider = new Web3ProxyProvider(fakeWindow)
-    provider.waiting = false // fake the receipt of POST_MESSAGE_WALLET_INFO
+    provider.waiting = false // fake the receipt of PostMessages.WALLET_INFO
     const walletService = new WalletService({ unlockAddress })
 
-    fakeEvent(POST_MESSAGE_WALLET_INFO, {
+    fakeEvent(PostMessages.WALLET_INFO, {
       isMetamask: false,
       noWallet: false,
       notEnabled: true,
@@ -105,14 +102,14 @@ describe('Web3ProxyProvider', () => {
     }
   })
 
-  it('waits for receipt of POST_MESSAGE_WALLET_INFO to attempt actions', async done => {
+  it('waits for receipt of PostMessages.WALLET_INFO to attempt actions', async done => {
     expect.assertions(2)
     const provider = new Web3ProxyProvider(fakeWindow)
     const walletService = new WalletService({ unlockAddress })
 
     fakeParent.postMessage = (data, origin) => {
       expect(data).toEqual({
-        type: POST_MESSAGE_WEB3,
+        type: PostMessages.WEB3,
         payload: {
           method: 'net_version',
           params: [],
@@ -126,7 +123,7 @@ describe('Web3ProxyProvider', () => {
 
     await delayPromise(100)
     // because this is after the call to connect it will wait until receipt to continue
-    fakeEvent(POST_MESSAGE_WALLET_INFO, {
+    fakeEvent(PostMessages.WALLET_INFO, {
       isMetamask: false,
       noWallet: false,
       notEnabled: false,
@@ -138,7 +135,7 @@ describe('Web3ProxyProvider', () => {
     const provider = new Web3ProxyProvider(fakeWindow)
     const walletService = new WalletService({ unlockAddress })
 
-    fakeEvent(POST_MESSAGE_WALLET_INFO, {
+    fakeEvent(PostMessages.WALLET_INFO, {
       isMetamask: false,
       noWallet: false,
       notEnabled: false,
@@ -146,7 +143,7 @@ describe('Web3ProxyProvider', () => {
 
     fakeParent.postMessage = (data, origin) => {
       expect(data).toEqual({
-        type: POST_MESSAGE_WEB3,
+        type: PostMessages.WEB3,
         payload: {
           method: 'net_version',
           params: [],
@@ -166,7 +163,7 @@ describe('Web3ProxyProvider', () => {
     const walletService = new WalletService({ unlockAddress })
 
     let called = false
-    fakeEvent(POST_MESSAGE_WALLET_INFO, {
+    fakeEvent(PostMessages.WALLET_INFO, {
       isMetamask: false,
       noWallet: false,
       notEnabled: false,
@@ -174,7 +171,7 @@ describe('Web3ProxyProvider', () => {
 
     fakeParent.postMessage = (data, origin) => {
       expect(data).toEqual({
-        type: POST_MESSAGE_WEB3,
+        type: PostMessages.WEB3,
         payload: {
           method: 'net_version',
           params: [],
@@ -183,7 +180,7 @@ describe('Web3ProxyProvider', () => {
       })
       expect(origin).toBe('origin')
       setTimeout(() => {
-        fakeEvent(POST_MESSAGE_WEB3, {
+        fakeEvent(PostMessages.WEB3, {
           error: null,
           result: {
             id: 1,
@@ -218,7 +215,7 @@ describe('Web3ProxyProvider', () => {
       callback = jest.fn()
       provider = new Web3ProxyProvider(fakeWindow)
 
-      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WALLET_INFO, {
+      fakeWindow.receivePostMessageFromMainWindow(PostMessages.WALLET_INFO, {
         isMetamask: false,
         noWallet: false,
         notEnabled: false,
@@ -230,7 +227,7 @@ describe('Web3ProxyProvider', () => {
     it('should call the callback with a result and no error', async () => {
       expect.assertions(1)
 
-      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+      fakeWindow.receivePostMessageFromMainWindow(PostMessages.WEB3, {
         id: 1,
         jsonrpc: '2.0',
         result: {
@@ -250,7 +247,7 @@ describe('Web3ProxyProvider', () => {
     it('should call the callback with an error', async () => {
       expect.assertions(1)
 
-      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+      fakeWindow.receivePostMessageFromMainWindow(PostMessages.WEB3, {
         id: 1,
         jsonrpc: '2.0',
         error: { error: 'no foo for you', code: 501 },
@@ -268,7 +265,7 @@ describe('Web3ProxyProvider', () => {
     it('should do nothing if data is missing', async () => {
       expect.assertions(1)
 
-      fakeWindow.receivePostMessageFromMainWindow(POST_MESSAGE_WEB3, {
+      fakeWindow.receivePostMessageFromMainWindow(PostMessages.WEB3, {
         id: 1,
         jsonrpc: '2.0',
       })
