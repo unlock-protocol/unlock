@@ -60,6 +60,9 @@ export interface CheckoutIframeEvents {
   [PostMessages.PURCHASE_KEY]: (
     request: ExtractPayload<PostMessages.PURCHASE_KEY>
   ) => void
+  [PostMessages.UPDATE_WALLET]: (
+    request: ExtractPayload<PostMessages.UPDATE_WALLET>
+  ) => void
 }
 
 /**
