@@ -16,25 +16,11 @@ const fakeLockAddress = 'lockaddress'
 
 describe('buildPaywall', () => {
   let document
-  let eventListener
   let mockIframeImpl
-  function scrollThatPage(window) {
-    window.pageYOffset += 20
-  }
-
-  function lockThatPage(iframe = mockIframeImpl) {
-    eventListener({
-      data: POST_MESSAGE_LOCKED,
-      origin: 'origin',
-      source: iframe.contentWindow,
-    })
-  }
 
   beforeEach(() => {
     document = {
-      documentElement: {
-        scrollHeight: 22293,
-      },
+      documentElement: {},
       body: {
         style: {},
       },
@@ -93,7 +79,6 @@ describe('buildPaywall', () => {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
-          eventListener = listener
         },
         requestAnimationFrame: () => {},
         location: {
@@ -172,19 +157,6 @@ describe('buildPaywall', () => {
       expect(mockAdd).toHaveBeenCalledTimes(2)
     })
 
-    it('passes the correct origin to scrollLoop', () => {
-      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
-
-      scrollThatPage(window)
-
-      buildPaywall(window, document, fakeLockAddress, blocker)
-      lockThatPage()
-
-      // new URL().origin
-      expect(postMessage).toHaveBeenCalled()
-      expect(postMessage.mock.calls[0][1]).toBe('origin')
-    })
-
     it('calls setupReadyListener', () => {
       expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
 
@@ -219,7 +191,7 @@ describe('buildPaywall', () => {
           encodeURIComponent: u => global.encodeURIComponent(u),
           requestAnimationFrame: jest.fn(),
           innerHeight: 266,
-          pageYOffset: 0, // change to "scroll"
+          pageYOffset: 0,
           location: {
             href: 'href',
             hash: '',

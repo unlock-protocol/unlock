@@ -14,7 +14,6 @@ import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 export enum PostMessages {
   LOCKED = 'locked',
   UNLOCKED = 'unlocked',
-  SCROLL_POSITION = 'scrollPosition',
   REDIRECT = 'redirect',
   GET_OPTIMISTIC = 'optimistic',
   GET_PESSIMISTIC = 'pessimistic',
@@ -54,10 +53,6 @@ export type Message =
   | {
       type: PostMessages.UNLOCKED
       payload: string[]
-    }
-  | {
-      type: PostMessages.SCROLL_POSITION
-      payload: number
     }
   | {
       type: PostMessages.REDIRECT
