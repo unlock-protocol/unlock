@@ -5,7 +5,7 @@
   "scripts": {
     "predev": "npm run before",
     "dev": "nodemon src/server.js",
-    "before": "npm run build-paywall && npm run build-checkout",
+    "before": "npm run build-checkout",
     "build": "npm run before && next build src",
     "deploy": "next export src -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
@@ -13,7 +13,6 @@
     "test": "cross-env UNLOCK_ENV=test jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "build-paywall": "cross-env NODE_ENV=production rollup -c rollup.paywall.config.js",
     "build-checkout": "npm run build-unlock.1.0.js && npm run build-data-iframe.1.0.js",
     "build-unlock.1.0.js": "webpack --config unlock.1.0.js.webpack.config.js",
     "build-data-iframe.1.0.js": "webpack --config data-iframe.1.0.webpack.config.js",
