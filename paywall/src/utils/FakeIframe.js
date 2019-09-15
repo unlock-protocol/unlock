@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import '../paywall-builder/iframe.css'
+import '../static/iframe.css'
 
 export default function FakeIframe({ children, hide }) {
   return (

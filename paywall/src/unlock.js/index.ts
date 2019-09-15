@@ -1,5 +1,5 @@
 import startup from './startup'
-import '../paywall-builder/iframe.css'
+import '../static/iframe.css'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import StartupConstants from './startupTypes'
 
