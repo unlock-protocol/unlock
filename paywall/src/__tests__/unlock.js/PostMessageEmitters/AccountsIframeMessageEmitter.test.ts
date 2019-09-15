@@ -47,21 +47,6 @@ describe('AccountsIframeMessageEmitter', () => {
       ).not.toHaveBeenCalled()
     })
 
-    it('should set up postMessage after the iframe is created', () => {
-      expect.assertions(1)
-
-      const emitter = makeEmitterWithIframe(fakeWindow)
-
-      emitter.postMessage(PostMessages.SCROLL_POSITION, 5)
-
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.SCROLL_POSITION,
-        5,
-        emitter.iframe,
-        accountsOrigin // iframe origin
-      )
-    })
-
     it('should set up addHandler after the iframe is created', () => {
       expect.assertions(1)
 
@@ -86,7 +71,7 @@ describe('AccountsIframeMessageEmitter', () => {
       const emitter = makeEmitter(fakeWindow)
       emitter.iframe.contentWindow.postMessage = jest.fn()
 
-      emitter.postMessage(PostMessages.SCROLL_POSITION, 5)
+      emitter.postMessage(PostMessages.READY, undefined)
 
       expect(emitter.iframe.contentWindow.postMessage).not.toHaveBeenCalled()
     })

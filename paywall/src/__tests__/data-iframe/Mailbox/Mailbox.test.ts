@@ -64,8 +64,8 @@ describe('Mailbox - constructor', () => {
   it('should set up postMessage functions', () => {
     expect.assertions(1)
 
-    testingMailbox().postMessage(PostMessages.SCROLL_POSITION, 5)
-    fakeWindow.expectPostMessageSent(PostMessages.SCROLL_POSITION, 5)
+    testingMailbox().postMessage(PostMessages.READY, undefined)
+    fakeWindow.expectPostMessageSent(PostMessages.READY, undefined)
   })
 
   it('should set up addPostMessageListener function', async () => {

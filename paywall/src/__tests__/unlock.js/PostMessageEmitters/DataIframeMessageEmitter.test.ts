@@ -45,11 +45,11 @@ describe('DataIframeMessageEmitter', () => {
 
       const emitter = makeEmitter(fakeWindow)
 
-      emitter.postMessage(PostMessages.SCROLL_POSITION, 5)
+      emitter.postMessage(PostMessages.READY, undefined)
 
       fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.SCROLL_POSITION,
-        5,
+        PostMessages.READY,
+        undefined,
         emitter.iframe,
         dataOrigin // iframe origin
       )
