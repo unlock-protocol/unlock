@@ -176,11 +176,15 @@ function TicketInfo({
 TicketInfo.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
   config: UnlockPropTypes.configuration.isRequired,
-  transaction: UnlockPropTypes.transaction.isRequired,
-  lockKey: UnlockPropTypes.key.isRequired,
+  transaction: UnlockPropTypes.transaction,
+  lockKey: UnlockPropTypes.key,
   account: UnlockPropTypes.account.isRequired,
-  keyStatus: UnlockPropTypes.string.isRequired,
+  keyStatus: PropTypes.string.isRequired,
   purchaseKey: PropTypes.func.isRequired,
+}
+TicketInfo.defaultProps = {
+  lockKey: null,
+  transaction: null,
 }
 
 export class EventContent extends React.Component {
