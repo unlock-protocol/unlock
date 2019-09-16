@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
-import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { googleCalendarLinkBuilder } from '../../utils/links.ts'
 import { Label } from '../interface/EventStyles'
 import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
@@ -23,28 +22,8 @@ import Ticket from './purchase/Ticket'
 import { getTimeString } from '../../utils/dates'
 import { currencySymbolForLock } from '../../utils/locks'
 
-export const EventContent = ({
-  lock,
-  lockKey,
-  purchaseKey,
-  transaction,
-  event,
-  keyStatus,
-  account,
-  config,
-}) => {
-  if (!event.name) return null // Wait for the lock and event to load
-
-  const {
-    name,
-    description,
-    location,
-    date,
-    duration,
-    links = [],
-    image,
-  } = event
-  let dateString =
+function EventDate({ date, duration }) {
+  const dateString =
     MONTH_NAMES[date.getMonth()] +
     ' ' +
     date.getDate() +
@@ -57,17 +36,29 @@ export const EventContent = ({
       ' - ' + getTimeString(new Date(date.getTime() + duration * 1000))
   }
 
-  let currency = currencySymbolForLock(lock, config)
+  return (
+    <DisplayDate>
+      {dateString}
+      <DisplayTime>{timeString}</DisplayTime>
+    </DisplayDate>
+  )
+}
+EventDate.propTypes = {
+  date: PropTypes.instanceOf(Date).isRequired,
+  duration: PropTypes.number.isRequired,
+}
 
-  const convertCurrency = !lock.currencyContractAddress
+function EventLinks({ event }) {
+  const { name, description, links = [], date, duration, location } = event
+  // Start building the info for the GCal link
+  let details = description
 
-  // Sanitize user-provided links
+  // Clean up user-provided links
   const sanitizedLinks = links.map(link => {
     link.href = encodeURI(link.href)
     return link
   })
 
-  let details = description
   if (sanitizedLinks.length) {
     details += '\n\n<strong>Event Website</strong>'
     sanitizedLinks.forEach(link => {
@@ -106,7 +97,27 @@ export const EventContent = ({
     }
   )
 
-  const loadingTicket = (
+  return <Links>{externalLinks}</Links>
+}
+EventLinks.propTypes = {
+  event: UnlockPropTypes.ticketedEvent.isRequired,
+}
+
+function Description({ body }) {
+  return (
+    <DescriptionWrapper>
+      {body.split('\n\n').map(line => {
+        return <DescriptionPara key={line}>{line}</DescriptionPara>
+      })}
+    </DescriptionWrapper>
+  )
+}
+Description.propTypes = {
+  body: PropTypes.string.isRequired,
+}
+
+function LoadingTicket() {
+  return (
     <Column>
       <Label>Loading ticket details...</Label>
       <Loading>
@@ -114,8 +125,22 @@ export const EventContent = ({
       </Loading>
     </Column>
   )
+}
 
-  const ticketInfo = (
+function TicketInfo({
+  lock,
+  config,
+  transaction,
+  lockKey,
+  account,
+  keyStatus,
+  purchaseKey,
+}) {
+  let currency = currencySymbolForLock(lock, config)
+
+  const convertCurrency = !lock.currencyContractAddress
+
+  return (
     <Column>
       <NoPhone>
         <Label>Tickets</Label>
@@ -147,9 +172,59 @@ export const EventContent = ({
       )}
     </Column>
   )
+}
+TicketInfo.propTypes = {
+  lock: UnlockPropTypes.lock.isRequired,
+  config: UnlockPropTypes.configuration.isRequired,
+  transaction: UnlockPropTypes.transaction.isRequired,
+  lockKey: UnlockPropTypes.key.isRequired,
+  account: UnlockPropTypes.account.isRequired,
+  keyStatus: UnlockPropTypes.string.isRequired,
+  purchaseKey: PropTypes.func.isRequired,
+}
 
-  return (
-    <GlobalErrorConsumer>
+export class EventContent extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      locked: true,
+    }
+
+    // Register event listener for Unlock events before the page ever loads
+    if (window) {
+      window.addEventListener('unlockProtocol', this.setLocked)
+    }
+  }
+
+  componentWillUnmount = () => {
+    if (window) {
+      window.removeEventListener('unlockProtocol', this.setLocked)
+    }
+  }
+
+  setLocked = event => {
+    this.setState({
+      locked: event.detail === 'locked',
+    })
+  }
+
+  render = () => {
+    const { locked } = this.state
+    const {
+      event,
+      lock,
+      keyStatus,
+      transaction,
+      config,
+      lockKey,
+      account,
+      purchaseKey,
+    } = this.props
+    const { name, description, location, date, duration, image } = event
+
+    // TODO: dynamic script URL based on env
+    return (
       <BrowserOnly>
         <Layout forContent>
           <Head>
@@ -157,28 +232,32 @@ export const EventContent = ({
           </Head>
           <Header>{image && <Image src={image} />}</Header>
           <Title>{name}</Title>
-          <DisplayDate>
-            {dateString}
-            <DisplayTime>{timeString}</DisplayTime>
-          </DisplayDate>
+          <EventDate date={date} duration={duration} />
           <Location>{location}</Location>
           <Columns count={2}>
             <Column>
-              <Description>
-                {description.split('\n\n').map(line => {
-                  return <DescriptionPara key={line}>{line}</DescriptionPara>
-                })}
-              </Description>
-              <Links>{externalLinks}</Links>
+              <Description body={description} />
+              <EventLinks event={event} />
             </Column>
-            {lock.address && keyStatus && ticketInfo}
-            {(!lock.address || !keyStatus) && loadingTicket}
+            {lock.address && keyStatus && (
+              <TicketInfo
+                lock={lock}
+                config={config}
+                transaction={transaction}
+                lockKey={lockKey}
+                account={account}
+                keyStatus={keyStatus}
+                purchaseKey={purchaseKey}
+                locked={locked}
+              />
+            )}
+            {(!lock.address || !keyStatus) && <LoadingTicket />}
           </Columns>
         </Layout>
         <DeveloperOverlay />
       </BrowserOnly>
-    </GlobalErrorConsumer>
-  )
+    )
+  }
 }
 
 EventContent.propTypes = {
@@ -391,7 +470,7 @@ const DisplayTime = styled.span`
   margin-left: 10px;
 `
 
-const Description = styled.div`
+const DescriptionWrapper = styled.div`
   font-size: 24px;
   font-family: 'IBM Plex Sans', sans-serif;
   p {
