@@ -44,11 +44,11 @@ export const NoWallet = ({ config }: Props) => {
           </div>
         </WalletDescription>
         <WalletDescription
-          href="https://play.google.com/store/apps/details?id=com.opera.browser"
+          href="https://www.opera.com/crypto"
           target="_blank"
           rel="noopener"
         >
-          <span>Mobile Android</span>
+          <span>Mobile iOS &amp; Android</span>
           <div>
             <Opera />
             <Caption>Opera</Caption>
