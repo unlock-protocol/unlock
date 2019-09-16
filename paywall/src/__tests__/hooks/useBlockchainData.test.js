@@ -4,12 +4,7 @@ import React from 'react'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import useBlockchainData from '../../hooks/useBlockchainData'
-import {
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_NETWORK,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
@@ -126,7 +121,7 @@ describe('useBlockchainData hook', () => {
     const accountUpdater = getAddressListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
     })
 
     expect(component.getByTitle('account')).toHaveTextContent(
@@ -143,7 +138,7 @@ describe('useBlockchainData hook', () => {
     const networkUpdater = getNetworkListener()
 
     rtl.act(() => {
-      networkUpdater(getPMEvent(POST_MESSAGE_UPDATE_NETWORK, network))
+      networkUpdater(getPMEvent(PostMessages.UPDATE_NETWORK, network))
     })
 
     expect(component.getByTitle('network')).toHaveTextContent(
@@ -166,9 +161,9 @@ describe('useBlockchainData hook', () => {
     const balanceUpdater = getBalanceListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
       balanceUpdater(
-        getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, account.balance)
+        getPMEvent(PostMessages.UPDATE_ACCOUNT_BALANCE, account.balance)
       )
     })
 
@@ -200,7 +195,7 @@ describe('useBlockchainData hook', () => {
     const locksUpdater = getLocksListener()
 
     rtl.act(() => {
-      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
     })
 
     expect(component.getByTitle('locks')).toHaveTextContent(
@@ -249,7 +244,7 @@ describe('useBlockchainData hook', () => {
     const locksUpdater = getLocksListener()
 
     rtl.act(() => {
-      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
     })
 
     expect(component.getByTitle('locks')).toHaveTextContent(

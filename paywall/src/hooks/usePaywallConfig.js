@@ -1,9 +1,7 @@
 import { useEffect } from 'react'
 
-import {
-  POST_MESSAGE_CONFIG,
-  POST_MESSAGE_READY,
-} from '../paywall-builder/constants'
+import { PostMessages } from '../messageTypes'
+
 import useListenForPostMessage from './browser/useListenForPostMessage'
 import usePostMessage from './browser/usePostMessage'
 import { isValidPaywallConfig } from '../utils/validators'
@@ -51,7 +49,7 @@ export const defaultValue = {
 export default function usePaywallConfig() {
   const { postMessage } = usePostMessage('Checkout UI (usePaywallConfig)')
   const paywallConfig = useListenForPostMessage({
-    type: POST_MESSAGE_CONFIG,
+    type: PostMessages.CONFIG,
     validator: isValidPaywallConfig,
     defaultValue,
     getValue,
@@ -60,7 +58,7 @@ export default function usePaywallConfig() {
   useEffect(() => {
     // this triggers the send of configuration from main window to the paywall
     // payload must be defined for the post office in unlock.min.js to recognize it as valid and from us
-    postMessage({ type: POST_MESSAGE_READY, payload: undefined })
+    postMessage({ type: PostMessages.READY, payload: undefined })
   }, [postMessage]) // only send this once, on startup
   return paywallConfig
 }
