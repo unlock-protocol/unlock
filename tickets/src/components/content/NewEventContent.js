@@ -316,39 +316,6 @@ export const mapStateToProps = (
     }
   }
 
-  if (event) {
-    event.date = new Date(event.date) // TODO: What is this for?
-    // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
-    if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
-      event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
-      event.date = new Date(Date.UTC(2019, 4, 16, 22, 30, 0))
-      event.duration = 60 * 60 * 3
-      event.location = 'Bushwick Generator, 215 Moore St, Brooklyn'
-      event.description = `HEYOOOO!
-
-We’re doing something different! By now you’ve probably been to a few too many after-parties. Let's not even talk about Consensus - did you see how packed the hallways were?
-
-Instead, we’re going to have an informal gameshow party where we pit eight blockchain fanatics against each other to debate fiery topics from within the industry. All in good fun and all for laughs!
-
-Meet us at 6:30PM on May 16th, at the Bushwick Generator.
-
-        If you need any help (or Eth) to purchase your ticket, please get in touch with us via the Telegram group below.`
-      event.image =
-        'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
-      event.links = [
-        {
-          text: '💬 Telegram Group',
-          href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
-        },
-        // {
-        //   title: 'ℹ️ Eventtrite Page',
-        //   href:
-        //     'https://www.eventbrite.com/e/nft-dev-meetup-x-dapper-labs-opensea-quantstamp-superrare-unlock-tickets-61273128577',
-        // },
-      ]
-    }
-  }
-
   let transaction = null
   transaction = Object.values(transactions).find(
     transaction =>
