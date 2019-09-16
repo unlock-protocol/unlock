@@ -4,7 +4,6 @@ import {
   FetchWindow,
   ConstantsType,
   LocksmithTransactionsResult,
-  TransactionDefaults,
   WalletServiceType,
   SetTimeoutWindow,
 } from '../../../../data-iframe/blockchainHandler/blockChainTypes'
@@ -105,6 +104,7 @@ describe('BlockchainHandler - retrieveTransactions', () => {
       } = {
         transactions: [
           {
+            createdAt: '2019-08-23T17:42:24.476Z',
             transactionHash: 'hash1',
             chain: 1984,
             recipient: addresses[0],
@@ -113,6 +113,7 @@ describe('BlockchainHandler - retrieveTransactions', () => {
             for: addresses[2],
           },
           {
+            createdAt: '2019-08-23T16:42:24.476Z',
             transactionHash: 'hash2',
             chain: 1984,
             recipient: addresses[1],
@@ -141,19 +142,19 @@ describe('BlockchainHandler - retrieveTransactions', () => {
 
         const transaction1 = (returnedTransactions.transactions &&
           returnedTransactions.transactions[0]) as LocksmithTransactionsResult
-        const defaults: TransactionDefaults = {
-          to: transaction1.recipient,
-          from: transaction1.sender,
-          for: transaction1.for,
-          input: transaction1.data,
-          hash: 'hash1',
-          network: 1984,
-        }
 
         expect(web3Service.getTransaction).toHaveBeenNthCalledWith(
           1,
           'hash1',
-          defaults
+          expect.objectContaining({
+            to: transaction1.recipient,
+            from: transaction1.sender,
+            for: transaction1.for,
+            input: transaction1.data,
+            hash: 'hash1',
+            network: 1984,
+            createdAt: expect.any(Date),
+          })
         )
         expect(web3Service.getTransaction).toHaveBeenNthCalledWith(
           2,

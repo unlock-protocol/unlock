@@ -152,6 +152,7 @@ function isValidKeyStatus(status) {
       'submitted',
       'pending',
       'failed',
+      'stale',
     ].includes(status)
   ) {
     return false

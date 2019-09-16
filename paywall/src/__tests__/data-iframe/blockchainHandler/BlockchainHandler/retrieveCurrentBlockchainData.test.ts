@@ -305,6 +305,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
           {
             transactions: [
               {
+                createdAt: '2019-08-23T17:42:24.476Z',
                 transactionHash: 'hash',
                 chain: constants.defaultNetwork,
                 recipient: addresses[1], // locksmith returns checksummed addresses
@@ -338,19 +339,23 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         expect.assertions(2)
 
         const locks: Locks = getDefaultFullLocks(store, configuration)
+        const expectedTransaction = {
+          blockNumber: Number.MAX_SAFE_INTEGER,
+          confirmations: 0,
+          for: store.account as string,
+          from: store.account as string,
+          input: 'data',
+          hash: 'hash',
+          network: 1984,
+          lock: lockAddresses[1], // normalized lock value
+          status: TransactionStatus.PENDING,
+          to: lockAddresses[1], // normalized lock value
+          type: TransactionType.KEY_PURCHASE,
+          createdAt: expect.any(Date),
+        }
+
         locks[lockAddresses[1]].key.status = 'pending'
-        locks[lockAddresses[1]].key.transactions = [
-          {
-            blockNumber: Number.MAX_SAFE_INTEGER,
-            confirmations: 0,
-            for: store.account as string,
-            hash: 'hash',
-            lock: lockAddresses[1], // normalized lock value
-            status: TransactionStatus.PENDING,
-            to: lockAddresses[1], // normalized lock value
-            type: TransactionType.KEY_PURCHASE,
-          },
-        ]
+        locks[lockAddresses[1]].key.transactions = [expectedTransaction]
 
         await handler.retrieveCurrentBlockchainData()
 
@@ -358,6 +363,7 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
 
         const lockAddress = lockAddresses[1]
         const defaultKeys = makeDefaultKeys(lockAddresses, addresses[2])
+
         const expectedKeys = {
           ...defaultKeys,
           // This test emits a transaction update with pending status,
@@ -372,27 +378,20 @@ describe('BlockchainHandler - retrieveCurrentBlockchainData', () => {
         // locks get populated when web3Service.getLock emits 'lock.updated'
         // see the setupListeners function for implementation
         // the end of "setupDefaults" mocks the emit in this test file
-        expect(emitChanges).toHaveBeenCalledWith({
-          locks,
-          account: addresses[2],
-          balance: {},
-          network: 1984,
-          keys: expectedKeys,
-          transactions: {
-            hash: {
-              blockNumber: 9007199254740991,
-              confirmations: 0,
-              for: '0xBF7F1bdB3a2D6c318603FFc8f39974e597b6af5e',
-              hash: 'hash',
-              lock: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-              status: 'pending',
-              to: '0x15b87bdc4b3ecb783f56f735653332ead3bca5f8',
-              type: 'KEY_PURCHASE',
+        expect(emitChanges).toHaveBeenLastCalledWith(
+          expect.objectContaining({
+            locks,
+            account: addresses[2],
+            balance: {},
+            network: 1984,
+            keys: expectedKeys,
+            transactions: {
+              hash: expectedTransaction,
             },
-          },
-        })
+          })
+        )
         // once for each lock (3), once for the transaction
-        expect(emitChanges).toHaveBeenCalledTimes(4)
+        expect(emitChanges).toHaveBeenCalledTimes(5)
       })
     })
   })
