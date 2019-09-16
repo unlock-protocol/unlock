@@ -339,6 +339,32 @@ describe('BlockchainHandler - setupListeners', () => {
         expect(spy).not.toHaveBeenCalled()
       })
 
+      it('should not create a temporary key for a stale key purchase', () => {
+        expect.assertions(3)
+        const hash = 'hash'
+        const now = new Date().getTime()
+        store.transactions[hash] = {
+          status: TransactionStatus.SUBMITTED,
+          type: TransactionType.KEY_PURCHASE,
+          confirmations: 0,
+          hash,
+          blockNumber: Number.MAX_SAFE_INTEGER,
+          createdAt: new Date(now - 1000 * 60 * 60 * 3), // 3 hours ago
+        }
+        const normalizedLockAddress = lockAddresses[0]
+        const spy = jest.spyOn(temporaryKeyExports, 'createTemporaryKey')
+
+        walletService.emit('transaction.updated', hash, {
+          to: normalizedLockAddress,
+          hash,
+          status: TransactionStatus.SUBMITTED,
+          type: TransactionType.KEY_PURCHASE,
+        })
+        expect(spy).not.toHaveBeenCalled()
+        expect(store.keys[normalizedLockAddress].expiration >= 0).toBeFalsy()
+        expect(store.transactions[hash].status).toBe(TransactionStatus.STALE)
+      })
+
       it('should not retrieve a key for a non-key purchase transaction', () => {
         expect.assertions(1)
 
