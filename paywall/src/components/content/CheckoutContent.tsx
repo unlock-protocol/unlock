@@ -17,19 +17,14 @@ import {
   Account,
   Transactions,
 } from '../../unlockTypes'
-import {
-  POST_MESSAGE_PURCHASE_KEY,
-  POST_MESSAGE_DISMISS_CHECKOUT,
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
-  POST_MESSAGE_ERROR,
-} from '../../paywall-builder/constants'
+
+import { PostMessages } from '../../messageTypes'
+
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
-import { PostMessages } from '../../messageTypes'
 
 interface networkNames {
   [key: number]: string[]
@@ -84,7 +79,7 @@ export default function CheckoutContent() {
     // TODO: how does this perform with user accounts?
     setShowWalletCheckOverlay(true)
     postMessage({
-      type: POST_MESSAGE_PURCHASE_KEY,
+      type: PostMessages.PURCHASE_KEY,
       payload: {
         lock: key.lock,
         extraTip: '0',
@@ -92,12 +87,12 @@ export default function CheckoutContent() {
     })
   }
   const isLocked = useListenForPostMessage({
-    type: POST_MESSAGE_LOCKED,
+    type: PostMessages.LOCKED,
     defaultValue: false,
     getValue: () => true,
   })
   const isUnlocked = useListenForPostMessage({
-    type: POST_MESSAGE_UNLOCKED,
+    type: PostMessages.UNLOCKED,
     defaultValue: false,
     getValue: (val: any) => !!val,
   })
@@ -109,7 +104,7 @@ export default function CheckoutContent() {
 
   // This listener is used only for the side effect of closing the overlay when a purchase is rejected.
   useListenForPostMessage({
-    type: POST_MESSAGE_ERROR,
+    type: PostMessages.ERROR,
     defaultValue: undefined,
     getValue: () => {
       // Purchase failed (likely because transaction was rejected in MetaMask),
@@ -129,7 +124,7 @@ export default function CheckoutContent() {
   // hide the checkout iframe
   const hideCheckout = useCallback(() => {
     postMessage({
-      type: POST_MESSAGE_DISMISS_CHECKOUT,
+      type: PostMessages.DISMISS_CHECKOUT,
       payload: undefined, // this must be set to trigger a response in unlock.min.js
     })
   }, [postMessage])
