@@ -187,34 +187,43 @@ TicketInfo.defaultProps = {
   transaction: null,
 }
 
+const paywallLocked = 'locked'
+const paywallUnlocked = 'unlocked'
+
 export class EventContent extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      locked: true,
+      paywallStatus: null,
     }
 
     // Register event listener for Unlock events before the page ever loads
     if (window) {
-      window.addEventListener('unlockProtocol', this.setLocked)
+      window.addEventListener('unlockProtocol', this.setPaywallStatus)
     }
   }
 
   componentWillUnmount = () => {
     if (window) {
-      window.removeEventListener('unlockProtocol', this.setLocked)
+      window.removeEventListener('unlockProtocol', this.setPaywallStatus)
     }
   }
 
-  setLocked = event => {
-    this.setState({
-      locked: event.detail === 'locked',
-    })
+  setPaywallStatus = event => {
+    const d = event.detail
+
+    // Making sure we only set state to expected values, since it's possible for
+    // someone to manually send a CustomEvent
+    if (d === paywallLocked || d === paywallUnlocked) {
+      this.setState({
+        paywallStatus: d,
+      })
+    }
   }
 
   render = () => {
-    const { locked } = this.state
+    const { paywallStatus } = this.state
     const {
       event,
       lock,
@@ -252,11 +261,11 @@ export class EventContent extends React.Component {
                 account={account}
                 keyStatus={keyStatus}
                 purchaseKey={purchaseKey}
-                locked={locked}
               />
             )}
             {(!lock.address || !keyStatus) && <LoadingTicket />}
           </Columns>
+          <span>The paywall status is {paywallStatus}</span>
         </Layout>
         <DeveloperOverlay />
       </BrowserOnly>
