@@ -137,7 +137,9 @@ export default class Wallet {
     if (!wallet.enable) {
       return
     }
+    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
     await wallet.enable()
+    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
   }
 
   /**

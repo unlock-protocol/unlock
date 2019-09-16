@@ -64,11 +64,6 @@ export default class CheckoutUIHandler {
       this.iframes.checkout.postMessage(PostMessages.UPDATE_NETWORK, network)
     )
 
-    // listen for wallet action
-    this.iframes.data.on(PostMessages.UPDATE_WALLET, update =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, update)
-    )
-
     // pass on the configuration and request the latest data
     this.iframes.checkout.on(PostMessages.READY, () => {
       this.iframes.checkout.postMessage(PostMessages.CONFIG, this.config)
