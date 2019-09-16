@@ -42,6 +42,11 @@ const getLocksByOwner = async owner => {
   })
 }
 
+const getLockAddresses = async () => {
+  let lockAddresses = await Lock.findAll({ attributes: ['address'] })
+  return lockAddresses.map(lockAddress => lockAddress.address)
+}
+
 const updateLockOwnership = async (address, owner) => {
   return Lock.upsert(
     {
@@ -58,5 +63,6 @@ module.exports = {
   createLock,
   getLocksByOwner,
   getLockByAddress,
+  getLockAddresses,
   updateLockOwnership,
 }

@@ -103,3 +103,5 @@ export const MAX_UINT =
 export const POLLING_INTERVAL = 2000
 
 export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
+
+export const USER_ACCOUNT_ADDRESS_STORAGE_ID = 'managedUserAccountAddress'

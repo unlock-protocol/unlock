@@ -19,7 +19,8 @@
     "predist": "npm run build",
     "dist": "sh ./scripts/dist.sh",
     "prefulfillment:prepare": "npm run build",
-    "fulfillment:prepare": "node ./scripts/fulfillment_prepare"
+    "fulfillment:prepare": "node ./scripts/fulfillment_prepare",
+    "authorize": "./scripts/authorize-lock"
   },
   "lint-staged": {
     "linters": {
@@ -43,6 +44,7 @@
     "@types/jest": "24.0.18",
     "@types/nock": "10.0.3",
     "@types/node": "12.7.3",
+    "@types/request-promise-native": "1.0.16",
     "@types/sequelize": "4.28.4",
     "@types/stripe": "6.31.23",
     "@types/supertest": "2.0.8",
@@ -78,6 +80,7 @@
     "truffle-hdwallet-provider": "1.0.17",
     "ts-jest": "24.0.2",
     "typescript": "3.6.2",
+    "unlock-abi-1-1": "1.0.0",
     "winston": "3.2.1",
     "yargs": "14.0.0"
   },

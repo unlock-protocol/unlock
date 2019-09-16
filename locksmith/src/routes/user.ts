@@ -39,6 +39,7 @@ router.get(
 )
 
 router.get('/:emailAddress/cards', userController.cards)
+router.get('/:ethereumAddress/keys', userController.keys)
 router.put('/:emailAddress', userController.updateUser)
 router.put('/:emailAddress/paymentdetails', userController.updatePaymentDetails)
 router.put(
