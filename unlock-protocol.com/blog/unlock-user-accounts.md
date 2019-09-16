@@ -2,8 +2,8 @@
 title: Unlock User Accounts
 subTitle: Providing an on-ramp for those who are new to crypto
 authorName: Christopher Nascone
+publishDate: September 15, 2019
 description: Unlock Inc. provides a way for users without crypto wallets to buy keys to locks on the Unlock protocol.
-image: TBD
 ---
 
 The decentralized web is great, but we want it to be available for those who aren't early
@@ -41,9 +41,18 @@ history.
 
 ## Availability
 
-We're enabling user accounts for our partners on select locks (reach
-out to us!), keys for which are denominated in DAI. We charge a small
-fee to facilitate the transaction, which is added to the price at
-checkout and clearly broken down so people know what we're charging
-and why. The final price in dollars is computed as the conversion of
-DAI to dollars, credit card fees, and our service fee.
+We're enabling user accounts for our partners on select locks (reach out to
+us!), keys for which are denominated in DAI. We charge a small fee to facilitate
+the transaction, which is added to the price at checkout and clearly broken down
+so people know what we're charging and why. The final price in dollars is
+computed as the conversion of DAI to dollars, credit card fees, and our service
+fee.
+
+For example, consider a 10DAI lock. The fee structure will be approximately as follows:
+
+| Fee | Amount Charged |
+| :-- | -------------: |
+| Base lock price | `$10.00` |
+| Credit card processing fee | `$0.61` |
+| Unlock service fee | `$0.50` |
+| | Total: `$11.11` |

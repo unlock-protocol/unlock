@@ -52,7 +52,7 @@ export class BlogPost extends React.Component {
           <PublishDate>On {publishDate}</PublishDate>
         </Byline>
         <Body>
-          <Markdown markup={body} />
+          <Markdown tables markup={body} />
           {isMember === 'yes' && <Markdown markup={membersOnly} />}
           {isMember === 'no' && (
             <Button onClick={becomeMember}>
