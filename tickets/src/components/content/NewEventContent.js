@@ -227,12 +227,12 @@ export class EventContent extends React.Component {
     } = this.props
     const { name, description, location, date, duration, image } = event
 
-    // TODO: dynamic script URL based on env
     return (
       <BrowserOnly>
         <Layout forContent>
           <Head>
             <title>{pageTitle(name)}</title>
+            <script src={paywallScriptUrl(config.env)} />
           </Head>
           <Header>{image && <Image src={image} />}</Header>
           <Title>{name}</Title>
@@ -342,6 +342,19 @@ export default withConfig(
     mapDispatchToProps
   )(EventContent)
 )
+
+function paywallScriptUrl(env) {
+  const extension = '/static/unlock.1.0.min.js'
+
+  // TODO: add test url?
+  const baseUrls = {
+    dev: 'http://localhost:3001',
+    staging: 'https://staging-paywall.unlock-protocol.com',
+    prod: 'https://paywall.unlock-protocol.com',
+  }
+
+  return baseUrls[env] + extension
+}
 
 const Columns = styled.section`
   margin-top: 10px;
