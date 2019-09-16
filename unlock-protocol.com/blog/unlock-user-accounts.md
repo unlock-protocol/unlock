@@ -32,10 +32,6 @@ our main site. After entering your email, you will receive a confirmation email 
 with a link to finish setting up the account with a password. After that, you can set up a
 payment method through Stripe so that you can make key purchases!
 
-## Recovery
-
-(This is relevant but I don't know if we should mention it in this blog post)
-
 ## In The Longer Term
 
 We're not fans of lock-in, so don't think that this is an attempt to get hooks into naive
@@ -45,7 +41,9 @@ history.
 
 ## Availability
 
-We're enabling user accounts for our partners on select locks (reach out to us!), keys for
-which are denominated in stablecoins. We charge a small fee to facilitate the transaction,
-which is added to the price at checkout and clearly broken down so people know what we're
-charging and why.
+We're enabling user accounts for our partners on select locks (reach
+out to us!), keys for which are denominated in DAI. We charge a small
+fee to facilitate the transaction, which is added to the price at
+checkout and clearly broken down so people know what we're charging
+and why. The final price in dollars is computed as the conversion of
+DAI to dollars, credit card fees, and our service fee.
