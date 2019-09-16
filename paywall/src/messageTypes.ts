@@ -30,7 +30,7 @@ export enum PostMessages {
   UPDATE_ACCOUNT = 'update/account',
   UPDATE_ACCOUNT_BALANCE = 'update/accountBalance',
   UPDATE_NETWORK = 'update/network',
-  UPDATE_WALLET = 'update/walletmodal',
+  UPDATE_WALLET = 'update/walletModal',
   UPDATE_KEYS = 'update/keys',
   UPDATE_TRANSACTIONS = 'update/transactions',
 

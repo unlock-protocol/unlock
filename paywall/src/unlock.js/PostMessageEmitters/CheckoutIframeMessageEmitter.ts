@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import { PostMessages } from '../../messageTypes'
+
 import {
   PostMessageResponder,
   mainWindowPostOffice,
@@ -42,17 +43,21 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
 
   public readonly postMessage: PostMessageResponder<PostMessages>
   public readonly iframe: IframeType
+  private buffer: Array<any>
+  private isReady: boolean
 
   constructor(
     window: IframeManagingWindow & PostOfficeWindow & OriginWindow,
     checkoutIframeUrl: string
   ) {
     super()
-
+    this.isReady = false
     this.window = window
     this.iframe = makeIframe(window, checkoutIframeUrl, 'unlock checkout')
     const url = new URL(this.iframe.src)
     addIframeToDocument(window, this.iframe)
+
+    this.buffer = []
 
     const { postMessage, addHandler } = mainWindowPostOffice(
       window,
@@ -61,8 +66,24 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
       'main window',
       'Checkout UI iframe'
     )
-    this.postMessage = postMessage
+    // We want to only post message when we're ready!
+    this.postMessage = (type, payload) => {
+      if (!this.isReady) {
+        this.buffer.push([type, payload])
+      } else {
+        postMessage(type, payload)
+      }
+    }
     this.addHandler = addHandler
+  }
+
+  flushBuffer() {
+    if (!this.isReady) {
+      return
+    }
+    this.buffer.forEach(([type, payload]) => {
+      this.postMessage(type, payload)
+    })
   }
 
   showIframe() {
@@ -73,8 +94,12 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
     hideIframe(this.window, this.iframe)
   }
 
-  async setupListeners() {
-    this.addHandler(PostMessages.READY, () => this.emit(PostMessages.READY))
+  setupListeners() {
+    this.addHandler(PostMessages.READY, () => {
+      this.isReady = true
+      this.flushBuffer()
+      this.emit(PostMessages.READY)
+    })
     this.addHandler(PostMessages.DISMISS_CHECKOUT, () =>
       this.emit(PostMessages.DISMISS_CHECKOUT)
     )

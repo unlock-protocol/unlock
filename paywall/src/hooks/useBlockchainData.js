@@ -18,6 +18,15 @@ import useConfig from './utils/useConfig'
 export default function useBlockchainData(window, paywallConfig) {
   // this is our default network value until we hear otherwise from the data iframe
   const { requiredNetworkId } = useConfig(window)
+
+  // by default, checkWallet is false
+  const checkWallet = useListenForPostMessage({
+    type: PostMessages.UPDATE_WALLET,
+    defaultValue: false,
+    validator: () => true, // Let's assume it's always valid
+    local: 'useBlockchainData [checkWallet]',
+  })
+
   // by default, we have no address until we hear otherwise
   const address = useListenForPostMessage({
     type: PostMessages.UPDATE_ACCOUNT,
@@ -25,12 +34,14 @@ export default function useBlockchainData(window, paywallConfig) {
     validator: isAccountOrNull,
     local: 'useBlockchainData [account]',
   })
+
   const network = useListenForPostMessage({
     type: PostMessages.UPDATE_NETWORK,
     defaultValue: requiredNetworkId,
     validator: val => isPositiveInteger(val) && typeof val === 'number',
     local: 'useBlockchainData [network]',
   })
+
   // our default account balance is {} until we hear from the blockchain handler
   // balance must use isPositiveNumber to validate
   const balance = useListenForPostMessage({
@@ -46,6 +57,7 @@ export default function useBlockchainData(window, paywallConfig) {
     },
     local: 'useBlockchainData [balance]',
   })
+
   // retrieve the locks from the data iframe
   const blockChainLocks = useListenForPostMessage({
     type: PostMessages.UPDATE_LOCKS,
@@ -103,6 +115,7 @@ export default function useBlockchainData(window, paywallConfig) {
   )
 
   return {
+    checkWallet,
     account,
     network,
     locks,

@@ -179,7 +179,6 @@ describe('CheckoutUIHandler', () => {
         fakeTransactions,
       ],
       ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 3],
-      ['UPDATE_WALLET', PostMessages.UPDATE_WALLET, true],
       ['ERROR', PostMessages.ERROR, 'error message'],
       ['LOCKED', PostMessages.LOCKED, undefined],
       ['UNLOCKED', PostMessages.UNLOCKED, [fakeAccount]],
@@ -195,6 +194,15 @@ describe('CheckoutUIHandler', () => {
         expect.assertions(1)
 
         const handler = makeCheckoutUIHandler(fakeWindow)
+
+        // iframe is ready!
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          iframes.checkout.iframe,
+          checkoutOrigin
+        )
+
         handler.init({
           usingManagedAccount: false,
         })
@@ -228,6 +236,14 @@ describe('CheckoutUIHandler', () => {
       handler.init({
         usingManagedAccount: true,
       })
+
+      // iframe is ready!
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.READY,
+        undefined,
+        iframes.checkout.iframe,
+        checkoutOrigin
+      )
 
       const initialPayload = {
         eth: '123.4',
