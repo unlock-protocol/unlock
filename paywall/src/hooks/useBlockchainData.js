@@ -1,12 +1,6 @@
 import useListenForPostMessage from './browser/useListenForPostMessage'
-import {
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-  POST_MESSAGE_UPDATE_KEYS,
-  POST_MESSAGE_UPDATE_TRANSACTIONS,
-  POST_MESSAGE_UPDATE_NETWORK,
-} from '../paywall-builder/constants'
+import { PostMessages } from '../messageTypes'
+
 import {
   isAccountOrNull,
   isPositiveInteger,
@@ -24,23 +18,34 @@ import useConfig from './utils/useConfig'
 export default function useBlockchainData(window, paywallConfig) {
   // this is our default network value until we hear otherwise from the data iframe
   const { requiredNetworkId } = useConfig(window)
+
+  // by default, checkWallet is false
+  const checkWallet = useListenForPostMessage({
+    type: PostMessages.UPDATE_WALLET,
+    defaultValue: false,
+    validator: () => true, // Let's assume it's always valid
+    local: 'useBlockchainData [checkWallet]',
+  })
+
   // by default, we have no address until we hear otherwise
   const address = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_ACCOUNT,
+    type: PostMessages.UPDATE_ACCOUNT,
     defaultValue: null,
     validator: isAccountOrNull,
     local: 'useBlockchainData [account]',
   })
+
   const network = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_NETWORK,
+    type: PostMessages.UPDATE_NETWORK,
     defaultValue: requiredNetworkId,
     validator: val => isPositiveInteger(val) && typeof val === 'number',
     local: 'useBlockchainData [network]',
   })
+
   // our default account balance is {} until we hear from the blockchain handler
   // balance must use isPositiveNumber to validate
   const balance = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+    type: PostMessages.UPDATE_ACCOUNT_BALANCE,
     defaultValue: {},
     validator: val => {
       return Object.keys(val).reduce((accumulator, currency) => {
@@ -52,9 +57,10 @@ export default function useBlockchainData(window, paywallConfig) {
     },
     local: 'useBlockchainData [balance]',
   })
+
   // retrieve the locks from the data iframe
   const blockChainLocks = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_LOCKS,
+    type: PostMessages.UPDATE_LOCKS,
     defaultValue: {},
     validator: isValidLocks,
     local: 'useBlockchainData [locks]',
@@ -62,7 +68,7 @@ export default function useBlockchainData(window, paywallConfig) {
 
   // retrieve the keys from the data iframe
   const keys = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_KEYS,
+    type: PostMessages.UPDATE_KEYS,
     defaultValue: {},
     validator: isValidKeys,
     local: 'useBlockchainData [keys]',
@@ -70,7 +76,7 @@ export default function useBlockchainData(window, paywallConfig) {
 
   // retrieve the transactions from the data iframe
   const transactions = useListenForPostMessage({
-    type: POST_MESSAGE_UPDATE_TRANSACTIONS,
+    type: PostMessages.UPDATE_TRANSACTIONS,
     defaultValue: {},
     validator: isValidTransactions,
     local: 'useBlockchainData [transactions]',
@@ -109,6 +115,7 @@ export default function useBlockchainData(window, paywallConfig) {
   )
 
   return {
+    checkWallet,
     account,
     network,
     locks,

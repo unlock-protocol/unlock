@@ -14,7 +14,6 @@ import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 export enum PostMessages {
   LOCKED = 'locked',
   UNLOCKED = 'unlocked',
-  SCROLL_POSITION = 'scrollPosition',
   REDIRECT = 'redirect',
   GET_OPTIMISTIC = 'optimistic',
   GET_PESSIMISTIC = 'pessimistic',
@@ -31,7 +30,7 @@ export enum PostMessages {
   UPDATE_ACCOUNT = 'update/account',
   UPDATE_ACCOUNT_BALANCE = 'update/accountBalance',
   UPDATE_NETWORK = 'update/network',
-  UPDATE_WALLET = 'update/walletmodal',
+  UPDATE_WALLET = 'update/walletModal',
   UPDATE_KEYS = 'update/keys',
   UPDATE_TRANSACTIONS = 'update/transactions',
 
@@ -54,10 +53,6 @@ export type Message =
   | {
       type: PostMessages.UNLOCKED
       payload: string[]
-    }
-  | {
-      type: PostMessages.SCROLL_POSITION
-      payload: number
     }
   | {
       type: PostMessages.REDIRECT

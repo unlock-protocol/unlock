@@ -19,6 +19,7 @@ export interface PostOfficeWindow {
 export interface IframePostOfficeWindow extends PostOfficeWindow {
   parent: PostMessageTarget
   location: location
+  localStorage: Storage
 }
 
 export interface PostMessageTarget {

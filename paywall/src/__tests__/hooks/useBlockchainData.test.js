@@ -4,12 +4,7 @@ import React from 'react'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import useBlockchainData from '../../hooks/useBlockchainData'
-import {
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_NETWORK,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
@@ -30,20 +25,24 @@ describe('useBlockchainData hook', () => {
     )
   }
 
-  function getAddressListener() {
+  function getCheckWalletListener() {
     return fakeWindow.addEventListener.mock.calls[0][1]
   }
 
-  function getNetworkListener() {
+  function getAddressListener() {
     return fakeWindow.addEventListener.mock.calls[1][1]
   }
 
-  function getBalanceListener() {
+  function getNetworkListener() {
     return fakeWindow.addEventListener.mock.calls[2][1]
   }
 
-  function getLocksListener() {
+  function getBalanceListener() {
     return fakeWindow.addEventListener.mock.calls[3][1]
+  }
+
+  function getLocksListener() {
+    return fakeWindow.addEventListener.mock.calls[4][1]
   }
 
   function getPMEvent(type, payload) {
@@ -58,12 +57,14 @@ describe('useBlockchainData hook', () => {
   }
 
   function MockBlockchainData() {
-    const { account, network, locks } = useBlockchainData(
+    const { checkWallet, account, network, locks } = useBlockchainData(
       fakeWindow,
       paywallConfig
     )
+
     return (
       <div>
+        <div title="checkWallet">{JSON.stringify(checkWallet)}</div>
         <div title="account">{JSON.stringify(account)}</div>
         <div title="network">{JSON.stringify(network)}</div>
         <div title="locks">{JSON.stringify(locks)}</div>
@@ -96,13 +97,17 @@ describe('useBlockchainData hook', () => {
   })
 
   it('should return default values', () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
     const component = rtl.render(<Wrapper />)
     const account = null
     const network = 3
     const locks = {}
+    const checkWallet = false
 
+    expect(component.getByTitle('checkWallet')).toHaveTextContent(
+      JSON.stringify(checkWallet)
+    )
     expect(component.getByTitle('account')).toHaveTextContent(
       JSON.stringify(account)
     )
@@ -111,6 +116,22 @@ describe('useBlockchainData hook', () => {
     )
     expect(component.getByTitle('locks')).toHaveTextContent(
       JSON.stringify(locks)
+    )
+  })
+
+  it('should update when checkWallet status is changed', () => {
+    expect.assertions(1)
+
+    const component = rtl.render(<Wrapper />)
+
+    const checkWalletUpdater = getCheckWalletListener()
+
+    rtl.act(() => {
+      checkWalletUpdater(getPMEvent(PostMessages.UPDATE_WALLET, true))
+    })
+
+    expect(component.getByTitle('checkWallet')).toHaveTextContent(
+      JSON.stringify(true)
     )
   })
 
@@ -126,7 +147,7 @@ describe('useBlockchainData hook', () => {
     const accountUpdater = getAddressListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
     })
 
     expect(component.getByTitle('account')).toHaveTextContent(
@@ -143,7 +164,7 @@ describe('useBlockchainData hook', () => {
     const networkUpdater = getNetworkListener()
 
     rtl.act(() => {
-      networkUpdater(getPMEvent(POST_MESSAGE_UPDATE_NETWORK, network))
+      networkUpdater(getPMEvent(PostMessages.UPDATE_NETWORK, network))
     })
 
     expect(component.getByTitle('network')).toHaveTextContent(
@@ -166,9 +187,9 @@ describe('useBlockchainData hook', () => {
     const balanceUpdater = getBalanceListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
       balanceUpdater(
-        getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, account.balance)
+        getPMEvent(PostMessages.UPDATE_ACCOUNT_BALANCE, account.balance)
       )
     })
 
@@ -200,7 +221,7 @@ describe('useBlockchainData hook', () => {
     const locksUpdater = getLocksListener()
 
     rtl.act(() => {
-      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
     })
 
     expect(component.getByTitle('locks')).toHaveTextContent(
@@ -249,7 +270,7 @@ describe('useBlockchainData hook', () => {
     const locksUpdater = getLocksListener()
 
     rtl.act(() => {
-      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
     })
 
     expect(component.getByTitle('locks')).toHaveTextContent(
