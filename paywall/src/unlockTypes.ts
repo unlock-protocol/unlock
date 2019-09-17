@@ -17,6 +17,7 @@ export enum TransactionStatus {
   SUBMITTED = 'submitted',
   PENDING = 'pending',
   MINED = 'mined',
+  STALE = 'stale',
   NONE = '', // for testing purposes
 }
 /* eslint-enable no-unused-vars */
@@ -28,6 +29,7 @@ export interface Transaction {
   type: TransactionType
   blockNumber: number
 
+  createdAt?: Date
   to?: string
   for?: string
   from?: string

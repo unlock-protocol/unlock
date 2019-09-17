@@ -40,19 +40,82 @@ describe('CheckoutIframeMessageEmitter', () => {
       ).toHaveBeenCalledWith('afterbegin', emitter.iframe)
     })
 
-    it('should set up postMessage', () => {
-      expect.assertions(1)
+    describe('when the iframe is ready', () => {
+      it('should set up postMessage', () => {
+        expect.assertions(1)
 
-      const emitter = makeEmitter(fakeWindow)
+        const emitter = makeEmitter(fakeWindow)
 
-      emitter.postMessage(PostMessages.SCROLL_POSITION, 5)
+        // Indicate that the iframe is ready
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin
+        )
 
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.SCROLL_POSITION,
-        5,
-        emitter.iframe,
-        checkoutOrigin // iframe origin
-      )
+        emitter.postMessage(PostMessages.READY, undefined)
+
+        fakeWindow.expectPostMessageSentToIframe(
+          PostMessages.READY,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin // iframe origin
+        )
+      })
+    })
+
+    describe('when the iframe is not ready', () => {
+      it('should not post messages', () => {
+        expect.assertions(2)
+
+        const emitter = makeEmitter(fakeWindow)
+
+        // Indicate that the iframe is ready
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin
+        )
+
+        emitter.postMessage(PostMessages.LOCKED, undefined)
+
+        fakeWindow.expectPostMessageNotSent(PostMessages.LOCKED, undefined)
+
+        // Indicate that the iframe is now ready
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin
+        )
+
+        fakeWindow.expectPostMessageSentToIframe(
+          PostMessages.LOCKED,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin // iframe origin
+        )
+      })
+
+      it('should flush message after the iframe is ready', () => {
+        expect.assertions(1)
+
+        const emitter = makeEmitter(fakeWindow)
+
+        // Indicate that the iframe is ready
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          emitter.iframe,
+          checkoutOrigin
+        )
+
+        emitter.postMessage(PostMessages.READY, undefined)
+
+        fakeWindow.expectPostMessageNotSent(PostMessages.READY, undefined)
+      })
     })
 
     it('should set up addHandler', () => {

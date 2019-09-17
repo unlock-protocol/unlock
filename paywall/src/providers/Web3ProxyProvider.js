@@ -1,9 +1,5 @@
 import { iframePostOffice } from '../utils/postOffice'
-import {
-  POST_MESSAGE_WEB3,
-  POST_MESSAGE_READY_WEB3,
-  POST_MESSAGE_WALLET_INFO,
-} from '../paywall-builder/constants'
+import { PostMessages } from '../messageTypes'
 import { waitFor } from '../utils/promises'
 
 /**
@@ -28,7 +24,7 @@ export default class Web3ProxyProvider {
     this.waiting = true
 
     // this is the postMessage version of connecting to the wallet
-    addHandler(POST_MESSAGE_WALLET_INFO, walletInfo => {
+    addHandler(PostMessages.WALLET_INFO, walletInfo => {
       if (!walletInfo || typeof walletInfo !== 'object') {
         return
       }
@@ -40,7 +36,7 @@ export default class Web3ProxyProvider {
     })
 
     // this is the postMessage version of the callback for sendAsync
-    addHandler(POST_MESSAGE_WEB3, web3Result => {
+    addHandler(PostMessages.WEB3, web3Result => {
       if (
         !web3Result.hasOwnProperty('error') &&
         !web3Result.hasOwnProperty('result')
@@ -55,10 +51,6 @@ export default class Web3ProxyProvider {
       const callback = this.requests[id]
       delete this.requests[id]
 
-      if (result) {
-        // only set the id if there isn't an error condition
-        result.id = 42 // ethers needs to not do this...
-      }
       callback(error, result)
     })
 
@@ -66,7 +58,7 @@ export default class Web3ProxyProvider {
     this.requests = {}
 
     this.noWallet = true // until we hear back from the main window
-    this.postMessage(POST_MESSAGE_READY_WEB3)
+    this.postMessage(PostMessages.READY_WEB3)
   }
 
   /**
@@ -87,6 +79,6 @@ export default class Web3ProxyProvider {
     }
     this.requests[id] = callback
     const payload = { method, params, id }
-    this.postMessage(POST_MESSAGE_WEB3, payload)
+    this.postMessage(PostMessages.WEB3, payload)
   }
 }

@@ -2,13 +2,7 @@ import buildPaywall, { redirect } from '../../paywall-builder/build'
 import * as script from '../../paywall-builder/script'
 import * as config from '../../paywall-builder/config'
 import * as iframeManager from '../../paywall-builder/iframe'
-import {
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
-  POST_MESSAGE_REDIRECT,
-  POST_MESSAGE_GET_OPTIMISTIC,
-  POST_MESSAGE_GET_PESSIMISTIC,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 jest.mock('../../paywall-builder/config')
 
@@ -16,25 +10,11 @@ const fakeLockAddress = 'lockaddress'
 
 describe('buildPaywall', () => {
   let document
-  let eventListener
   let mockIframeImpl
-  function scrollThatPage(window) {
-    window.pageYOffset += 20
-  }
-
-  function lockThatPage(iframe = mockIframeImpl) {
-    eventListener({
-      data: POST_MESSAGE_LOCKED,
-      origin: 'origin',
-      source: iframe.contentWindow,
-    })
-  }
 
   beforeEach(() => {
     document = {
-      documentElement: {
-        scrollHeight: 22293,
-      },
+      documentElement: {},
       body: {
         style: {},
       },
@@ -93,7 +73,6 @@ describe('buildPaywall', () => {
         addEventListener(type, listener) {
           expect(type).toBe('message')
           expect(listener).not.toBe(null)
-          eventListener = listener
         },
         requestAnimationFrame: () => {},
         location: {
@@ -172,19 +151,6 @@ describe('buildPaywall', () => {
       expect(mockAdd).toHaveBeenCalledTimes(2)
     })
 
-    it('passes the correct origin to scrollLoop', () => {
-      expect.assertions(4) // 2 are in the addEventListener in the mock window (see beforeEach)
-
-      scrollThatPage(window)
-
-      buildPaywall(window, document, fakeLockAddress, blocker)
-      lockThatPage()
-
-      // new URL().origin
-      expect(postMessage).toHaveBeenCalled()
-      expect(postMessage.mock.calls[0][1]).toBe('origin')
-    })
-
     it('calls setupReadyListener', () => {
       expect.assertions(3) // 2 are in the addEventListener in the mock window (see beforeEach)
 
@@ -219,7 +185,7 @@ describe('buildPaywall', () => {
           encodeURIComponent: u => global.encodeURIComponent(u),
           requestAnimationFrame: jest.fn(),
           innerHeight: 266,
-          pageYOffset: 0, // change to "scroll"
+          pageYOffset: 0,
           location: {
             href: 'href',
             hash: '',
@@ -259,7 +225,7 @@ describe('buildPaywall', () => {
         })
         expect(() => {
           callbacks.message({
-            data: POST_MESSAGE_LOCKED,
+            data: PostMessages.LOCKED,
             origin: 'origin',
             source: iframe.contentWindow,
           })
@@ -271,7 +237,7 @@ describe('buildPaywall', () => {
       it('triggers show on locked event', () => {
         expect.assertions(2)
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -283,7 +249,7 @@ describe('buildPaywall', () => {
       it('closes the blocker on locked event', () => {
         expect.assertions(1)
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -298,12 +264,12 @@ describe('buildPaywall', () => {
         })
         expect(() => {
           callbacks.message({
-            data: POST_MESSAGE_LOCKED,
+            data: PostMessages.LOCKED,
             origin: 'origin',
             source: iframe.contentWindow,
           })
           callbacks.message({
-            data: POST_MESSAGE_UNLOCKED,
+            data: PostMessages.UNLOCKED,
             origin: 'origin',
             source: iframe.contentWindow,
           })
@@ -315,12 +281,12 @@ describe('buildPaywall', () => {
       it('closes the blocker on unlocked event', () => {
         expect.assertions(1)
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_UNLOCKED,
+          data: PostMessages.UNLOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -331,12 +297,12 @@ describe('buildPaywall', () => {
       it('does not trigger show on locked event if already unlocked', () => {
         expect.assertions(2)
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -348,17 +314,17 @@ describe('buildPaywall', () => {
       it('triggers hide on unlock event', () => {
         expect.assertions(3)
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_UNLOCKED,
+          data: PostMessages.UNLOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_UNLOCKED,
+          data: PostMessages.UNLOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -372,12 +338,12 @@ describe('buildPaywall', () => {
         expect.assertions(1)
 
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_GET_OPTIMISTIC,
+          data: PostMessages.GET_OPTIMISTIC,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -389,12 +355,12 @@ describe('buildPaywall', () => {
         expect.assertions(1)
 
         callbacks.message({
-          data: POST_MESSAGE_LOCKED,
+          data: PostMessages.LOCKED,
           origin: 'origin',
           source: iframe.contentWindow,
         })
         callbacks.message({
-          data: POST_MESSAGE_GET_PESSIMISTIC,
+          data: PostMessages.GET_PESSIMISTIC,
           origin: 'origin',
           source: iframe.contentWindow,
         })
@@ -409,7 +375,7 @@ describe('buildPaywall', () => {
         }
         expect(() => {
           callbacks.message({
-            data: POST_MESSAGE_REDIRECT,
+            data: PostMessages.REDIRECT,
             origin: 'origin',
             source: iframe.contentWindow,
           })
@@ -421,7 +387,7 @@ describe('buildPaywall', () => {
       it('calls redirect on redirect event', () => {
         expect.assertions(1)
         callbacks.message({
-          data: POST_MESSAGE_REDIRECT,
+          data: PostMessages.REDIRECT,
           origin: 'origin',
           source: iframe.contentWindow,
         })

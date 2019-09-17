@@ -3,7 +3,7 @@ import * as rtl from 'react-testing-library'
 
 import usePostMessage from '../../hooks/browser/usePostMessage'
 import usePurchaseKey from '../../hooks/usePurchaseKey'
-import { POST_MESSAGE_REDIRECT } from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 jest.mock('../../hooks/browser/usePostMessage')
 describe('usePurchaseKey hook', () => {
@@ -52,7 +52,7 @@ describe('usePurchaseKey hook', () => {
       })
 
       expect(purchaseKey).not.toHaveBeenCalled()
-      expect(postMessage).toHaveBeenCalledWith(POST_MESSAGE_REDIRECT)
+      expect(postMessage).toHaveBeenCalledWith(PostMessages.REDIRECT)
     })
   })
 })

@@ -1,4 +1,4 @@
-import './iframe.css'
+import '../static/iframe.css'
 import listenForNewLocks from './mutationObserver'
 import { getBlocker, addBlocker, removeBlocker } from './blocker'
 import buildPaywall from './build'

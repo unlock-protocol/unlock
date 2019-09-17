@@ -1,9 +1,12 @@
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
-import CheckoutUIHandler from '../../unlock.js/CheckoutUIHandler'
+import CheckoutUIHandler, {
+  injectDefaultBalance,
+} from '../../unlock.js/CheckoutUIHandler'
 import { PaywallConfig, Locks, Transactions } from '../../unlockTypes'
 import { KeyResults } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import IframeHandler from '../../unlock.js/IframeHandler'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
+import { DEFAULT_STABLECOIN_BALANCE } from '../../constants'
 
 declare const process: {
   env: {
@@ -74,7 +77,9 @@ describe('CheckoutUIHandler', () => {
     function makeReadyCheckout() {
       fakeWindow = new FakeWindow()
       const handler = makeCheckoutUIHandler(fakeWindow)
-      handler.init()
+      handler.init({
+        usingManagedAccount: false,
+      })
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.READY,
@@ -159,7 +164,13 @@ describe('CheckoutUIHandler', () => {
 
     const data: RelayedMessageTestType = [
       ['UPDATE_ACCOUNT', PostMessages.UPDATE_ACCOUNT, fakeAccount],
-      ['UPDATE_ACCOUNT_BALANCE', PostMessages.UPDATE_ACCOUNT_BALANCE, '123'],
+      [
+        'UPDATE_ACCOUNT_BALANCE',
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        {
+          eth: '123',
+        },
+      ],
       ['UPDATE_LOCKS', PostMessages.UPDATE_LOCKS, fakeLocks],
       ['UPDATE_KEYS', PostMessages.UPDATE_KEYS, fakeKeys],
       [
@@ -168,7 +179,6 @@ describe('CheckoutUIHandler', () => {
         fakeTransactions,
       ],
       ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 3],
-      ['UPDATE_WALLET', PostMessages.UPDATE_WALLET, true],
       ['ERROR', PostMessages.ERROR, 'error message'],
       ['LOCKED', PostMessages.LOCKED, undefined],
       ['UNLOCKED', PostMessages.UNLOCKED, [fakeAccount]],
@@ -184,7 +194,18 @@ describe('CheckoutUIHandler', () => {
         expect.assertions(1)
 
         const handler = makeCheckoutUIHandler(fakeWindow)
-        handler.init()
+
+        // iframe is ready!
+        fakeWindow.receivePostMessageFromIframe(
+          PostMessages.READY,
+          undefined,
+          iframes.checkout.iframe,
+          checkoutOrigin
+        )
+
+        handler.init({
+          usingManagedAccount: false,
+        })
 
         fakeWindow.receivePostMessageFromIframe(
           type,
@@ -201,5 +222,81 @@ describe('CheckoutUIHandler', () => {
         )
       }
     )
+  })
+
+  describe('relayed messages - managed user account', () => {
+    beforeEach(() => {
+      fakeWindow = new FakeWindow()
+    })
+
+    it('should intercept balance update with injected balances for managed user account', () => {
+      expect.assertions(1)
+
+      const handler = makeCheckoutUIHandler(fakeWindow)
+      handler.init({
+        usingManagedAccount: true,
+      })
+
+      // iframe is ready!
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.READY,
+        undefined,
+        iframes.checkout.iframe,
+        checkoutOrigin
+      )
+
+      const initialPayload = {
+        eth: '123.4',
+        '0xdeadbeef': '0',
+      }
+
+      const expectedPayload = {
+        eth: '123.4',
+        '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
+      }
+
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        initialPayload,
+        iframes.data.iframe,
+        dataOrigin
+      )
+
+      fakeWindow.expectPostMessageSentToIframe(
+        PostMessages.UPDATE_ACCOUNT_BALANCE,
+        expectedPayload,
+        iframes.checkout.iframe,
+        checkoutOrigin
+      )
+    })
+  })
+})
+
+describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
+  it('should return empty object given an empty object', () => {
+    expect.assertions(1)
+    expect(injectDefaultBalance({})).toEqual({})
+  })
+
+  it('should leave eth alone', () => {
+    expect.assertions(1)
+    const balance = {
+      eth: '123.4',
+    }
+    expect(injectDefaultBalance(balance)).toEqual(balance)
+  })
+
+  it('should update any non-eth balances with the default', () => {
+    expect.assertions(1)
+    const balance = {
+      eth: '123.4',
+      '0x123abc': '0',
+      '0xdeadbeef': '0',
+    }
+    expect(injectDefaultBalance(balance)).toEqual({
+      eth: '123.4',
+      '0x123abc': DEFAULT_STABLECOIN_BALANCE,
+      '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
+    })
   })
 })

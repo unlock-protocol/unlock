@@ -46,23 +46,17 @@ describe('iframeManager', () => {
     expect(window.document.body.insertAdjacentElement).toHaveBeenCalledTimes(2)
   })
 
-  it('shows the iframe and stops scroll on body when calling showIframe', () => {
-    expect.assertions(2)
+  it('shows the iframe', () => {
+    expect.assertions(1)
     const iframe = makeIframe(window, 'http://example.com')
-
     showIframe(window, iframe)
-
-    expect(window.document.body.style.overflow).toBe('hidden')
     expect(iframe.className).toBe('unlock start show')
   })
 
-  it('hides the iframe and restores scroll on calling hideIframe', () => {
-    expect.assertions(2)
+  it('hides the iframe', () => {
+    expect.assertions(1)
     const iframe = makeIframe(window, 'http://example.com')
-
     hideIframe(window, iframe)
-
-    expect(window.document.body.style.overflow).toBe('')
     expect(iframe.className).toBe('unlock start')
   })
 })
