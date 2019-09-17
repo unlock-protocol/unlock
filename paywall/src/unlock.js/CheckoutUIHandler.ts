@@ -1,6 +1,21 @@
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
-import { PaywallConfig } from '../unlockTypes'
+import { PaywallConfig, Balance } from '../unlockTypes'
+import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
+
+export const injectDefaultBalance = (oldBalance: Balance): Balance => {
+  const newBalance: Balance = {}
+  const tokens = Object.keys(oldBalance)
+  tokens.forEach(token => {
+    if (token.startsWith('0x')) {
+      newBalance[token] = DEFAULT_STABLECOIN_BALANCE
+    } else {
+      newBalance[token] = oldBalance[token]
+    }
+  })
+
+  return newBalance
+}
 
 /**
  * This class handles inter-iframe communication between the checkout iframe and data iframe
@@ -18,17 +33,21 @@ export default class CheckoutUIHandler {
     this.config = config
   }
 
-  init() {
+  init({ usingManagedAccount }: { usingManagedAccount: boolean }) {
     // listen for updates to state from the data iframe, and forward them to the checkout UI
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, account =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_ACCOUNT, account)
     )
-    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance =>
+    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
+      let balanceUpdate = balance
+      if (usingManagedAccount) {
+        balanceUpdate = injectDefaultBalance(balance)
+      }
       this.iframes.checkout.postMessage(
         PostMessages.UPDATE_ACCOUNT_BALANCE,
-        balance
+        balanceUpdate
       )
-    )
+    })
     this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_LOCKS, locks)
     )
@@ -43,11 +62,6 @@ export default class CheckoutUIHandler {
     })
     this.iframes.data.on(PostMessages.UPDATE_NETWORK, network =>
       this.iframes.checkout.postMessage(PostMessages.UPDATE_NETWORK, network)
-    )
-
-    // listen for wallet action
-    this.iframes.data.on(PostMessages.UPDATE_WALLET, update =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, update)
     )
 
     // pass on the configuration and request the latest data

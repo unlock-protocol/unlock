@@ -5,13 +5,8 @@ import { action } from '@storybook/addon-actions'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import CheckoutContent from '../../components/content/CheckoutContent'
-import {
-  POST_MESSAGE_CONFIG,
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-  POST_MESSAGE_UPDATE_NETWORK,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
+
 import configure from '../../config'
 
 const lockAddress1 = '0x1234567890123456789012345678901234567890'
@@ -131,7 +126,7 @@ storiesOf('Checkout page', module)
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_CONFIG,
+              type: PostMessages.CONFIG,
               payload: paywallConfig,
             },
           })
@@ -139,28 +134,28 @@ storiesOf('Checkout page', module)
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                type: PostMessages.UPDATE_ACCOUNT,
                 payload: lockAddress1,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                type: PostMessages.UPDATE_ACCOUNT_BALANCE,
                 payload: '889',
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_LOCKS,
+                type: PostMessages.UPDATE_LOCKS,
                 payload: locks,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_NETWORK,
+                type: PostMessages.UPDATE_NETWORK,
                 payload: 1,
               },
             })
@@ -184,7 +179,7 @@ storiesOf('Checkout page', module)
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_CONFIG,
+              type: PostMessages.CONFIG,
               payload: paywallConfig,
             },
           })
@@ -192,28 +187,28 @@ storiesOf('Checkout page', module)
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                type: PostMessages.UPDATE_ACCOUNT,
                 payload: lockAddress1,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                type: PostMessages.UPDATE_ACCOUNT_BALANCE,
                 payload: '889',
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_LOCKS,
+                type: PostMessages.UPDATE_LOCKS,
                 payload: locks,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_NETWORK,
+                type: PostMessages.UPDATE_NETWORK,
                 payload: 2,
               },
             })
@@ -237,7 +232,7 @@ storiesOf('Checkout page', module)
           postedMessage({
             ...messageTemplate,
             data: {
-              type: POST_MESSAGE_CONFIG,
+              type: PostMessages.CONFIG,
               payload: paywallConfig,
             },
           })
@@ -245,28 +240,28 @@ storiesOf('Checkout page', module)
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT,
+                type: PostMessages.UPDATE_ACCOUNT,
                 payload: null,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
+                type: PostMessages.UPDATE_ACCOUNT_BALANCE,
                 payload: '0',
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_LOCKS,
+                type: PostMessages.UPDATE_LOCKS,
                 payload: locks,
               },
             })
             postedMessage({
               ...messageTemplate,
               data: {
-                type: POST_MESSAGE_UPDATE_NETWORK,
+                type: PostMessages.UPDATE_NETWORK,
                 payload: 1,
               },
             })

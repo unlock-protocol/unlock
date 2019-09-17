@@ -28,7 +28,7 @@ export default class Wallet {
   private readonly isMetamask: boolean
   private readonly config: PaywallConfig
   private hasWeb3: boolean = false
-  private useUserAccounts: boolean = false
+  useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: number
@@ -137,7 +137,9 @@ export default class Wallet {
     if (!wallet.enable) {
       return
     }
+    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
     await wallet.enable()
+    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
   }
 
   /**

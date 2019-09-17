@@ -46,6 +46,10 @@ export class SettingsContent extends React.Component<
     this.interval = setInterval(this.getStripe, 500)
   }
 
+  componentWillUnmount() {
+    this.removeInterval()
+  }
+
   getStripe = () => {
     const {
       config: { stripeApiKey },
@@ -54,15 +58,20 @@ export class SettingsContent extends React.Component<
       this.setState({
         stripe: window.Stripe(stripeApiKey),
       })
-      if (this.interval) {
-        clearInterval(this.interval)
-      }
+      this.removeInterval()
+    }
+  }
+
+  removeInterval() {
+    if (this.interval) {
+      clearInterval(this.interval)
     }
   }
 
   render() {
     const { stripe } = this.state
     const { cards } = this.props
+
     return (
       <Layout title="Account Settings">
         <Head>
@@ -73,7 +82,7 @@ export class SettingsContent extends React.Component<
         <AccountInfo />
         <ChangePassword />
         {cards.length > 0 && <PaymentMethods cards={cards} />}
-        {!cards.length && <PaymentDetails stripe={stripe} />}
+        {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
       </Layout>
     )
   }

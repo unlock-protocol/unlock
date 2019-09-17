@@ -17,19 +17,14 @@ import {
   Account,
   Transactions,
 } from '../../unlockTypes'
-import {
-  POST_MESSAGE_PURCHASE_KEY,
-  POST_MESSAGE_DISMISS_CHECKOUT,
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
-  POST_MESSAGE_ERROR,
-} from '../../paywall-builder/constants'
+
+import { PostMessages } from '../../messageTypes'
+
 import useConfig from '../../hooks/utils/useConfig'
 import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
-import { PostMessages } from '../../messageTypes'
 
 interface networkNames {
   [key: number]: string[]
@@ -41,6 +36,7 @@ interface blockchainData {
   network: number
   locks: Locks
   transactions: Transactions
+  checkWallet: boolean
 }
 type useBlockchainDataFunc = (
   window: any,
@@ -61,17 +57,24 @@ export default function CheckoutContent() {
     account,
     network,
     locks,
+    checkWallet,
   }: blockchainData = (useBlockchainData as useBlockchainDataFunc)(
     window,
     paywallConfig
   )
+
+  const [showWalletCheckOverlay, setShowWalletCheckOverlay] = useState(false)
+  const [walletOverlayDismissed, setWalletOverlayDismissed] = useState(false)
+  const dismissWalletOverlay = () => {
+    setShowWalletCheckOverlay(false)
+    setWalletOverlayDismissed(true)
+  }
 
   const currentNetwork: string = (ETHEREUM_NETWORKS_NAMES as networkNames)[
     network
   ][0]
   // for sending purchase requests, hiding the checkout iframe
   const { postMessage } = usePostMessage('Checkout UI')
-  const [showWalletCheckOverlay, setShowWalletCheckOverlay] = useState(false)
   const [userInitiatedPurchase, initiatePurchase] = useState(false)
   // purchase a key with this callback
   const purchaseKey = (key: Key) => {
@@ -84,7 +87,7 @@ export default function CheckoutContent() {
     // TODO: how does this perform with user accounts?
     setShowWalletCheckOverlay(true)
     postMessage({
-      type: POST_MESSAGE_PURCHASE_KEY,
+      type: PostMessages.PURCHASE_KEY,
       payload: {
         lock: key.lock,
         extraTip: '0',
@@ -92,12 +95,12 @@ export default function CheckoutContent() {
     })
   }
   const isLocked = useListenForPostMessage({
-    type: POST_MESSAGE_LOCKED,
+    type: PostMessages.LOCKED,
     defaultValue: false,
     getValue: () => true,
   })
   const isUnlocked = useListenForPostMessage({
-    type: POST_MESSAGE_UNLOCKED,
+    type: PostMessages.UNLOCKED,
     defaultValue: false,
     getValue: (val: any) => !!val,
   })
@@ -109,7 +112,7 @@ export default function CheckoutContent() {
 
   // This listener is used only for the side effect of closing the overlay when a purchase is rejected.
   useListenForPostMessage({
-    type: POST_MESSAGE_ERROR,
+    type: PostMessages.ERROR,
     defaultValue: undefined,
     getValue: () => {
       // Purchase failed (likely because transaction was rejected in MetaMask),
@@ -129,7 +132,7 @@ export default function CheckoutContent() {
   // hide the checkout iframe
   const hideCheckout = useCallback(() => {
     postMessage({
-      type: POST_MESSAGE_DISMISS_CHECKOUT,
+      type: PostMessages.DISMISS_CHECKOUT,
       payload: undefined, // this must be set to trigger a response in unlock.min.js
     })
   }, [postMessage])
@@ -168,6 +171,13 @@ export default function CheckoutContent() {
   let child: React.ReactNode
   let bgColor = 'var(--offwhite)'
 
+  // We want to show the overlay only:
+  // if checkWallet is true AND walletOverlayDismissed is false.
+  // OR if we have showWalletCheckOverlay
+  const shouldShowWalletOverlay =
+    (showWalletCheckOverlay || (checkWallet && !walletOverlayDismissed)) &&
+    !usingManagedAccount
+
   if (requiredNetworkId !== network) {
     bgColor = 'var(--lightgrey)'
     // display the "wrong network" error for users who are on an unexpected network
@@ -181,6 +191,15 @@ export default function CheckoutContent() {
           requiredNetworkId={requiredNetworkId}
         />
       </>
+    )
+  } else if (shouldShowWalletOverlay) {
+    return (
+      <Greyout>
+        <MessageBox>
+          <p>Please check your browser wallet.</p>
+          <Dismiss onClick={() => dismissWalletOverlay()}>Dismiss</Dismiss>
+        </MessageBox>
+      </Greyout>
     )
   } else if (!account) {
     child = (
@@ -238,23 +257,6 @@ export default function CheckoutContent() {
     </CheckoutWrapper>
   )
 
-  // purchasingLocks is an array of locks for which a transaction has
-  // been initiated. Once purchasingLocks is non-empty, we know that the
-  // user's wallet is enabled and no longer need to show the overlay.
-  // We should only show the wallet check overlay if there is a browser wallet.
-  // It will not appear when using a managed user account.
-  if (showWalletCheckOverlay && !usingManagedAccount) {
-    return (
-      <Greyout>
-        <MessageBox>
-          <p>Please check your browser wallet.</p>
-          <Dismiss onClick={() => setShowWalletCheckOverlay(false)}>
-            Dismiss
-          </Dismiss>
-        </MessageBox>
-      </Greyout>
-    )
-  }
   return (
     <Greyout onClick={allowClosingCheckout ? hideCheckout : () => {}}>
       <Wrapper />

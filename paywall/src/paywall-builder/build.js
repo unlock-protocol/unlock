@@ -1,13 +1,8 @@
 import { getIframe, add, show, hide } from './iframe'
 import { findPaywallUrl } from './script'
-import {
-  POST_MESSAGE_LOCKED,
-  POST_MESSAGE_UNLOCKED,
-  POST_MESSAGE_REDIRECT,
-  POST_MESSAGE_GET_OPTIMISTIC,
-  POST_MESSAGE_GET_PESSIMISTIC,
-} from './constants'
-import { disableScrollPolling, enableScrollPolling, scrollLoop } from './scroll'
+
+import { PostMessages } from '../messageTypes'
+
 import { setupReadyListener } from './config'
 
 export function redirect(window, paywallUrl) {
@@ -59,33 +54,24 @@ export default function buildPaywall(window, document, lockAddress, blocker) {
             // nice try, hackers
             return
           }
-          if (event.data === POST_MESSAGE_LOCKED && !locked) {
+          if (event.data === PostMessages.LOCKED && !locked) {
             locked = true
-            enableScrollPolling()
 
-            scrollLoop(window, document, iframe, origin)
             show(iframe, document)
             blocker.remove()
           }
-          if (event.data === POST_MESSAGE_GET_OPTIMISTIC && locked) {
-            disableScrollPolling()
-
+          if (event.data === PostMessages.GET_OPTIMISTIC && locked) {
             hide(iframe, document, false)
           }
-          if (event.data === POST_MESSAGE_GET_PESSIMISTIC && locked) {
-            enableScrollPolling()
-
-            scrollLoop(window, document, iframe, origin)
+          if (event.data === PostMessages.GET_PESSIMISTIC && locked) {
             show(iframe, document)
           }
-          if (event.data === POST_MESSAGE_UNLOCKED && locked) {
+          if (event.data === PostMessages.UNLOCKED && locked) {
             locked = false
-            disableScrollPolling()
-
             hide(iframe, document)
             blocker.remove()
           }
-          if (event.data === POST_MESSAGE_REDIRECT) {
+          if (event.data === PostMessages.REDIRECT) {
             redirect(window, paywallUrl)
           }
         } catch (e) {

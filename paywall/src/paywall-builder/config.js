@@ -1,15 +1,11 @@
-import {
-  POST_MESSAGE_READY,
-  POST_MESSAGE_CONFIG,
-  POST_MESSAGE_ACCOUNT,
-} from './constants'
+import { PostMessages } from '../messageTypes'
 
 export function sendConfig(config, iframe, origin) {
   const payload = config
   if (!payload) return
   iframe.contentWindow.postMessage(
     {
-      type: POST_MESSAGE_CONFIG,
+      type: PostMessages.CONFIG,
       payload,
     },
     origin
@@ -45,7 +41,7 @@ function getAccount(window, iframe, origin) {
     (error, result) => {
       if (error) return
       iframe.contentWindow.postMessage(
-        { type: POST_MESSAGE_ACCOUNT, payload: result.result[0] },
+        { type: PostMessages.ACCOUNT, payload: result.result[0] },
         origin
       )
     }
@@ -59,7 +55,7 @@ export function setupReadyListener(window, iframe, origin) {
       return
     }
 
-    if (event.data === POST_MESSAGE_READY) {
+    if (event.data === PostMessages.READY) {
       // we were ready first, send the paywall configuration now
       // this script assumes that the metadata is set in a script tag like:
       // <script type="text/javascript">window.unlockProtocolConfig = {...}</script>
