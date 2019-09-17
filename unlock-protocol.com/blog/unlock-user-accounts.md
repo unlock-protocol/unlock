@@ -4,7 +4,10 @@ subTitle: Providing an on-ramp for those who are new to crypto
 authorName: Christopher Nascone
 publishDate: September 15, 2019
 description: Unlock Inc. provides a way for users without crypto wallets to buy keys to locks on the Unlock protocol.
+image: /static/images/blog/unlock-user-accounts/user-accounts.jpg
 ---
+
+![User accounts let you easily pay with crypto.](/static/images/blog/unlock-user-accounts/user-accounts.jpg)
 
 The decentralized web is great, but we want it to be available for those who aren't early
 adopters. Currently interacting with Dapps like Unlock requires the use of a Web3 wallet
