@@ -92,6 +92,11 @@ export class AppStore extends React.Component {
         icon: <Svg.Heart />,
         href: 'https://donate.unlock-protocol.com/generate.html',
       },
+      wordpress: {
+        name: 'Wordpress',
+        icon: <Svg.Wordpress />,
+        href: 'https://wordpress.org/plugins/unlock-protocol/',
+      },
     }
 
     this.state = {

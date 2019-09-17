@@ -33,6 +33,7 @@ import Twitter from './Twitter'
 import Bars from './Bars'
 import ChevronUp from './ChevronUp'
 import Home from './Home'
+import Wordpress from './Wordpress'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = props => <WrappedComponent viewBox={viewBox} {...props} />
@@ -74,4 +75,5 @@ export default {
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
   Home: wrapViewBox(Home, '0 0 24 24'),
+  Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
 }
