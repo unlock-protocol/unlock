@@ -11,6 +11,7 @@ import EventInfo from '../interface/EventInfo'
 import EventLinks from '../interface/EventLinks'
 import EventDescription from '../interface/EventDescription'
 import PurchaseTicket from '../interface/PurchaseTicket'
+import EventTicket from '../interface/EventTicket'
 import Media from '../../theme/media'
 
 interface UnlockWindow extends Window {
@@ -132,9 +133,7 @@ export class EventContent extends Component<
                 keyPrice="0.01"
               />
             )}
-            {paywallStatus === PaywallStatus.Unlocked && (
-              <span>You already have a key.</span>
-            )}
+            {paywallStatus === PaywallStatus.Unlocked && <EventTicket />}
           </Column>
         </Columns>
       </Layout>

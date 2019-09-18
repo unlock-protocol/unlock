@@ -157,3 +157,39 @@ export const DescriptionWrapper = styled.div`
     margin: 0px;
   }
 `
+
+export const Form = styled.form`
+  display: grid;
+  grid-gap: 10px;
+`
+
+export const SendButton = styled.input`
+  background-color: ${props =>
+    props.disabled ? 'var(--grey)' : 'var(--green)'};
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 200ms ease;
+  & :hover {
+    background-color: ${props =>
+      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+  }
+  height: 60px;
+  ${Media.phone`
+width: 100%;
+`};
+`
+
+export const TicketInfo = styled.div`
+  display: grid;
+  grid-gap: 20px;
+
+  ${Media.phone`
+justify-content: center;
+`}
+`
