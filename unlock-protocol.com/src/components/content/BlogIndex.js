@@ -29,8 +29,8 @@ export const BlogIndex = ({ posts }) => (
             </Title>
             <Description>{description}</Description>
             <IndexByline>
-              <AuthorName>{authorName}</AuthorName>
-              <PublishDate>On {publishDate}</PublishDate>
+              <AuthorName>{authorName}</AuthorName>&nbsp;
+              <PublishDate>on {publishDate}</PublishDate>
             </IndexByline>
           </Details>
         </Post>
