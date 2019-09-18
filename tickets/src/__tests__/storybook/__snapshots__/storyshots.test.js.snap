@@ -1763,14 +1763,12 @@ Object {
 }
 
 .c7 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
 }
 
 .c15 {
@@ -1861,9 +1859,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:736px) {
   .c7 {
-    margin-top: 20px;
+    padding-left: 20px;
   }
 }
 
@@ -2521,7 +2519,7 @@ Object {
             class="sc-1yqikln-2 hqtdMF"
           >
             <h1
-              class="sc-1yqikln-8 fNAhUa"
+              class="sc-1yqikln-8 fYjfY"
             >
               Select your Lock
             </h1>
@@ -2631,7 +2629,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Set Your Events Preferences
               </h1>
@@ -3069,7 +3067,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Share Your RSVP Page
               </h1>
@@ -3363,14 +3361,12 @@ Object {
 }
 
 .c7 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
 }
 
 .c15 {
@@ -3461,9 +3457,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:736px) {
   .c7 {
-    margin-top: 20px;
+    padding-left: 20px;
   }
 }
 
@@ -4120,7 +4116,7 @@ Object {
             class="sc-1yqikln-2 hqtdMF"
           >
             <h1
-              class="sc-1yqikln-8 fNAhUa"
+              class="sc-1yqikln-8 fYjfY"
             >
               Select your Lock
             </h1>
@@ -4230,7 +4226,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Set Your Events Preferences
               </h1>
@@ -4668,7 +4664,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Share Your RSVP Page
               </h1>
@@ -4962,14 +4958,12 @@ Object {
 }
 
 .c7 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
 }
 
 .c15 {
@@ -5060,9 +5054,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:736px) {
   .c7 {
-    margin-top: 20px;
+    padding-left: 20px;
   }
 }
 
@@ -5719,7 +5713,7 @@ Object {
             class="sc-1yqikln-2 hqtdMF"
           >
             <h1
-              class="sc-1yqikln-8 fNAhUa"
+              class="sc-1yqikln-8 fYjfY"
             >
               Select your Lock
             </h1>
@@ -5829,7 +5823,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Set Your Events Preferences
               </h1>
@@ -6267,7 +6261,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Share Your RSVP Page
               </h1>
@@ -6561,14 +6555,12 @@ Object {
 }
 
 .c7 {
-  margin-bottom: 20px;
+  font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
-  font-weight: 500;
-  font-size: 24px;
-  font-style: light;
-  line-height: 47px;
-  grid-column: 1 3;
-  color: var(--darkgrey);
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
 }
 
 .c15 {
@@ -6659,9 +6651,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
+@media only screen and (min-width:736px) {
   .c7 {
-    margin-top: 20px;
+    padding-left: 20px;
   }
 }
 
@@ -7318,7 +7310,7 @@ Object {
             class="sc-1yqikln-2 hqtdMF"
           >
             <h1
-              class="sc-1yqikln-8 fNAhUa"
+              class="sc-1yqikln-8 fYjfY"
             >
               Select your Lock
             </h1>
@@ -7428,7 +7420,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Set Your Events Preferences
               </h1>
@@ -7866,7 +7858,7 @@ Object {
               class="sc-1yqikln-2 hqtdMF"
             >
               <h1
-                class="sc-1yqikln-8 fNAhUa"
+                class="sc-1yqikln-8 fYjfY"
               >
                 Share Your RSVP Page
               </h1>
@@ -16280,14 +16272,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with confirmed key 1`] =
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c28 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c28 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -16306,7 +16298,7 @@ Object {
   height: 24px;
 }
 
-.c27 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -16338,121 +16330,7 @@ Object {
   height: 100%;
 }
 
-.c18 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
-}
-
-.c24 {
-  display: grid;
-  grid-gap: 10px;
-}
-
-.c26 {
-  background-color: var(--grey);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-}
-
-.c26:hover {
-  background-color: var(--grey);
-}
-
-.c23 {
-  display: grid;
-  grid-gap: 20px;
-}
-
-.c25 {
-  height: 60px;
-  border: none;
-  background-color: var(--offwhite);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  color: var(--darkgrey);
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -16461,30 +16339,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -16494,42 +16349,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
+}
+
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
+}
+
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c17 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c28 {
     height: 16px;
     width: 16px;
   }
@@ -16553,13 +16436,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c29 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c27 {
+  .c16 {
     display: none;
   }
 }
@@ -16570,48 +16453,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c26 {
-    width: 100%;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
 @media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -16622,7 +16466,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -16651,54 +16502,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -16709,7 +16559,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -16722,66 +16572,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <div
-                class="c17"
-              >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
-              <div
-                class="c19"
-              >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Confirmed
-              </div>
-              <div
-                class="c23"
-              >
-                <form
-                  class="c24"
-                >
-                  <input
-                    class="c25"
-                    placeholder="Enter your email address"
-                    type="email"
-                    value=""
-                  />
-                  <input
-                    class="c26"
-                    disabled=""
-                    type="submit"
-                    value="Send"
-                  />
-                </form>
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c27"
+            class="c16"
           >
             <div
-              class="c28"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -16798,7 +16596,7 @@ Object {
           </div>
         </div>
         <div
-          class="c29"
+          class="c18"
         />
       </div>
     </div>
@@ -16827,54 +16625,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -16885,7 +16682,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -16898,60 +16695,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <div
-              class="sc-8fuwpj-0 btHddm"
-            >
-              <label
-                class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-              >
-                Tickets
-              </label>
-            </div>
-            <div
-              class="roc9w1-7 eMddKH"
-            >
-              <div
-                class="roc9w1-8 hhBzTo"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="roc9w1-9 iFtaxw"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Confirmed
-            </div>
-            <div
-              class="sc-1fqykqp-2 grXdRD"
-            >
-              <form
-                class="sc-1fqykqp-0 jdvlGS"
-              >
-                <input
-                  class="sc-1fqykqp-3 fwEAhV"
-                  placeholder="Enter your email address"
-                  type="email"
-                  value=""
-                />
-                <input
-                  class="sc-1fqykqp-1 cKtfMx"
-                  disabled=""
-                  type="submit"
-                  value="Send"
-                />
-              </form>
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -17044,14 +16789,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with confirmed key and Q
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c28 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c28 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -17070,7 +16815,7 @@ Object {
   height: 24px;
 }
 
-.c27 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -17102,121 +16847,7 @@ Object {
   height: 100%;
 }
 
-.c18 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
-}
-
-.c24 {
-  display: grid;
-  grid-gap: 10px;
-}
-
-.c26 {
-  background-color: var(--grey);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-}
-
-.c26:hover {
-  background-color: var(--grey);
-}
-
-.c23 {
-  display: grid;
-  grid-gap: 20px;
-}
-
-.c25 {
-  height: 60px;
-  border: none;
-  background-color: var(--offwhite);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  color: var(--darkgrey);
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -17225,30 +16856,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -17258,42 +16866,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
+}
+
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
+}
+
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c17 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c28 {
     height: 16px;
     width: 16px;
   }
@@ -17317,13 +16953,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c29 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c27 {
+  .c16 {
     display: none;
   }
 }
@@ -17334,48 +16970,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c26 {
-    width: 100%;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
 @media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -17386,7 +16983,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -17415,54 +17019,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -17473,7 +17076,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -17486,66 +17089,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <div
-                class="c17"
-              >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
-              <div
-                class="c19"
-              >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Confirmed
-              </div>
-              <div
-                class="c23"
-              >
-                <form
-                  class="c24"
-                >
-                  <input
-                    class="c25"
-                    placeholder="Enter your email address"
-                    type="email"
-                    value=""
-                  />
-                  <input
-                    class="c26"
-                    disabled=""
-                    type="submit"
-                    value="Send"
-                  />
-                </form>
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c27"
+            class="c16"
           >
             <div
-              class="c28"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -17562,7 +17113,7 @@ Object {
           </div>
         </div>
         <div
-          class="c29"
+          class="c18"
         />
       </div>
     </div>
@@ -17591,54 +17142,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -17649,7 +17199,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -17662,60 +17212,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <div
-              class="sc-8fuwpj-0 btHddm"
-            >
-              <label
-                class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-              >
-                Tickets
-              </label>
-            </div>
-            <div
-              class="roc9w1-7 eMddKH"
-            >
-              <div
-                class="roc9w1-8 hhBzTo"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="roc9w1-9 iFtaxw"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Confirmed
-            </div>
-            <div
-              class="sc-1fqykqp-2 grXdRD"
-            >
-              <form
-                class="sc-1fqykqp-0 jdvlGS"
-              >
-                <input
-                  class="sc-1fqykqp-3 fwEAhV"
-                  placeholder="Enter your email address"
-                  type="email"
-                  value=""
-                />
-                <input
-                  class="sc-1fqykqp-1 cKtfMx"
-                  disabled=""
-                  type="submit"
-                  value="Send"
-                />
-              </form>
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -17808,14 +17306,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with confirmed key trans
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -17834,7 +17332,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -17866,53 +17364,7 @@ Object {
   height: 100%;
 }
 
-.c17 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -17921,7 +17373,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -17931,48 +17383,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
 }
 
-.c18 {
-  display: grid;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
 }
 
-.c18 img {
-  width: 30px;
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -17996,13 +17470,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c16 {
     display: none;
   }
 }
@@ -18014,26 +17488,8 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -18044,7 +17500,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -18073,54 +17536,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -18131,7 +17593,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -18144,28 +17606,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <label
-                class="c17"
-              >
-                Loading ticket details...
-              </label>
-              <div
-                class="5 c18"
-              >
-                <img
-                  alt="loading"
-                  src="/static/images/loading.svg"
-                />
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c19"
+            class="c16"
           >
             <div
-              class="c20"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -18182,7 +17630,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c18"
         />
       </div>
     </div>
@@ -18211,54 +17659,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -18269,7 +17716,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -18282,22 +17729,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <label
-              class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-            >
-              Loading ticket details...
-            </label>
-            <div
-              class="roc9w1-15 eAPOQi"
-            >
-              <img
-                alt="loading"
-                src="/static/images/loading.svg"
-              />
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -18390,14 +17823,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with confirming key 1`] 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c24 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c24 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -18416,7 +17849,7 @@ Object {
   height: 24px;
 }
 
-.c23 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -18448,82 +17881,7 @@ Object {
   height: 100%;
 }
 
-.c18 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c22 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--white);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  height: 60px;
-  text-align: center;
-  padding-top: 20px;
-  border: 2px solid var(--green);
-  color: var(--green);
-  border-radius: 4px;
-  background-color: var(--white);
-}
-
-.c22:hover {
-  background-color: var(--activegreen);
-}
-
-.c22:hover {
-  background-color: var(--white);
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -18532,30 +17890,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c19 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-}
-
-.c21 {
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
-}
-
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -18565,42 +17900,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
+}
+
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
+}
+
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
   .c17 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c24 {
     height: 16px;
     width: 16px;
   }
@@ -18624,13 +17987,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c25 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c23 {
+  .c16 {
     display: none;
   }
 }
@@ -18641,33 +18004,9 @@ Object {
   }
 }
 
-@media only screen and (min-width:135px) and (max-width:736px) {
-  .c22 {
-    margin-bottom: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
 @media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -18678,7 +18017,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -18707,54 +18053,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -18765,7 +18110,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -18778,49 +18123,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <div
-                class="c17"
-              >
-                <label
-                  class="c18"
-                >
-                  Tickets
-                </label>
-              </div>
-              <div
-                class="c19"
-              >
-                <div
-                  class="c20"
-                >
-                  0.01
-                   
-                  Eth
-                </div>
-                <div
-                  class="c21"
-                >
-                  $
-                  ---
-                </div>
-              </div>
-              <div
-                class="c22"
-              >
-                Confirming Payment
-              </div>
-              <small>
-                The transaction may take a couple minutes to go through... You can close this page safely and come back later to see your ticket!
-              </small>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c23"
+            class="c16"
           >
             <div
-              class="c24"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -18837,7 +18147,7 @@ Object {
           </div>
         </div>
         <div
-          class="c25"
+          class="c18"
         />
       </div>
     </div>
@@ -18866,54 +18176,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -18924,7 +18233,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -18937,43 +18246,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <div
-              class="sc-8fuwpj-0 btHddm"
-            >
-              <label
-                class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-              >
-                Tickets
-              </label>
-            </div>
-            <div
-              class="roc9w1-7 eMddKH"
-            >
-              <div
-                class="roc9w1-8 hhBzTo"
-              >
-                0.01
-                 
-                Eth
-              </div>
-              <div
-                class="roc9w1-9 iFtaxw"
-              >
-                $
-                ---
-              </div>
-            </div>
-            <div
-              class="sc-1uk9h2s-0 sc-1uk9h2s-1 jXrtxI"
-            >
-              Confirming Payment
-            </div>
-            <small>
-              The transaction may take a couple minutes to go through... You can close this page safely and come back later to see your ticket!
-            </small>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -19066,14 +18340,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with confirming key tran
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -19092,7 +18366,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -19124,53 +18398,7 @@ Object {
   height: 100%;
 }
 
-.c17 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -19179,7 +18407,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -19189,48 +18417,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
 }
 
-.c18 {
-  display: grid;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
 }
 
-.c18 img {
-  width: 30px;
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -19254,13 +18504,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c16 {
     display: none;
   }
 }
@@ -19272,26 +18522,8 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -19302,7 +18534,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -19331,54 +18570,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -19389,7 +18627,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -19402,28 +18640,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <label
-                class="c17"
-              >
-                Loading ticket details...
-              </label>
-              <div
-                class="5 c18"
-              >
-                <img
-                  alt="loading"
-                  src="/static/images/loading.svg"
-                />
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c19"
+            class="c16"
           >
             <div
-              class="c20"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -19440,7 +18664,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c18"
         />
       </div>
     </div>
@@ -19469,54 +18693,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -19527,7 +18750,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -19540,22 +18763,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <label
-              class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-            >
-              Loading ticket details...
-            </label>
-            <div
-              class="roc9w1-15 eAPOQi"
-            >
-              <img
-                alt="loading"
-                src="/static/images/loading.svg"
-              />
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -19648,14 +18857,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with submitted key 1`] =
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -19674,7 +18883,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -19706,53 +18915,7 @@ Object {
   height: 100%;
 }
 
-.c17 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -19761,7 +18924,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -19771,48 +18934,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
 }
 
-.c18 {
-  display: grid;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
 }
 
-.c18 img {
-  width: 30px;
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -19836,13 +19021,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c16 {
     display: none;
   }
 }
@@ -19854,26 +19039,8 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -19884,7 +19051,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -19913,54 +19087,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -19971,7 +19144,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -19984,28 +19157,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <label
-                class="c17"
-              >
-                Loading ticket details...
-              </label>
-              <div
-                class="5 c18"
-              >
-                <img
-                  alt="loading"
-                  src="/static/images/loading.svg"
-                />
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c19"
+            class="c16"
           >
             <div
-              class="c20"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -20022,7 +19181,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c18"
         />
       </div>
     </div>
@@ -20051,54 +19210,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -20109,7 +19267,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -20122,22 +19280,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <label
-              class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-            >
-              Loading ticket details...
-            </label>
-            <div
-              class="roc9w1-15 eAPOQi"
-            >
-              <img
-                alt="loading"
-                src="/static/images/loading.svg"
-              />
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -20230,14 +19374,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with unpurchased key 1`]
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -20256,7 +19400,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -20288,53 +19432,7 @@ Object {
   height: 100%;
 }
 
-.c17 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -20343,7 +19441,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -20353,48 +19451,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
 }
 
-.c18 {
-  display: grid;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
 }
 
-.c18 img {
-  width: 30px;
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -20418,13 +19538,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c16 {
     display: none;
   }
 }
@@ -20436,26 +19556,8 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -20466,7 +19568,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -20495,54 +19604,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -20553,7 +19661,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -20566,28 +19674,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <label
-                class="c17"
-              >
-                Loading ticket details...
-              </label>
-              <div
-                class="5 c18"
-              >
-                <img
-                  alt="loading"
-                  src="/static/images/loading.svg"
-                />
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c19"
+            class="c16"
           >
             <div
-              class="c20"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -20604,7 +19698,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c18"
         />
       </div>
     </div>
@@ -20633,54 +19727,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -20691,7 +19784,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -20704,22 +19797,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <label
-              class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-            >
-              Loading ticket details...
-            </label>
-            <div
-              class="roc9w1-15 eAPOQi"
-            >
-              <img
-                alt="loading"
-                src="/static/images/loading.svg"
-              />
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
@@ -20812,14 +19891,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page with unpurchased key for
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c20 {
+    .c17 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c20 > svg {
+.c17 > svg {
   fill: white;
 }
 
@@ -20838,7 +19917,7 @@ Object {
   height: 24px;
 }
 
-.c19 {
+.c16 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -20870,53 +19949,7 @@ Object {
   height: 100%;
 }
 
-.c17 {
-  font-size: 13px;
-  color: var(--darkgrey);
-  text-transform: uppercase;
-}
-
-.c10 {
-  margin-top: 10px;
-}
-
-.c11 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  grid-gap: 10px;
-}
-
 .c5 {
-  padding: 0px 20px;
-  border: none;
-  max-width: 800px;
-}
-
-.c15 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/link.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c16 {
-  margin-top: 15px;
-  font-weight: 200;
-  list-style: none;
-  background: url(/static/images/illustrations/calendar.svg) no-repeat;
-  padding-left: 40px;
-}
-
-.c14 {
-  font-size: 24px;
-  padding: 0px;
-}
-
-.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -20925,7 +19958,7 @@ Object {
   margin-bottom: 0px;
 }
 
-.c7 {
+.c6 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-style: normal;
   font-weight: 600;
@@ -20935,48 +19968,70 @@ Object {
   margin-bottom: 0px;
 }
 
-.c8 {
+.c7 {
   border: 0;
   border-left: var(--grey) solid 2px;
   padding-left: 10px;
   margin-left: 10px;
 }
 
-.c12 {
-  font-size: 24px;
-  font-family: 'IBM Plex Sans',sans-serif;
-}
-
-.c12 p {
-  padding: 0.5em 0;
-  margin: 0px;
-}
-
-.c9 {
+.c8 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
   margin: 0px;
   padding-left: 20px;
 }
 
+.c14 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/link.svg) no-repeat;
+  padding-left: 40px;
+}
+
+.c15 {
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(/static/images/illustrations/calendar.svg) no-repeat;
+  padding-left: 40px;
+}
+
 .c13 {
+  font-size: 24px;
+  padding: 0px;
+}
+
+.c12 {
   margin-bottom: 1em;
 }
 
-.c18 {
-  display: grid;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+.c11 {
+  font-size: 24px;
+  font-family: 'IBM Plex Sans',sans-serif;
 }
 
-.c18 img {
-  width: 30px;
+.c11 p {
+  padding: 0.5em 0;
+  margin: 0px;
+}
+
+.c9 {
+  margin-top: 10px;
+}
+
+.c10 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  grid-gap: 10px;
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c20 {
+  .c17 {
     height: 16px;
     width: 16px;
   }
@@ -21000,13 +20055,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c21 {
+  .c18 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c16 {
     display: none;
   }
 }
@@ -21018,26 +20073,8 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c10 {
-    display: grid;
-    grid-gap: 40px;
-    grid-template-columns: repeat(2,1fr);
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    padding-left: 20px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c5 {
-    display: grid;
-    grid-gap: 30px;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
+    padding-left: 20px;
   }
 }
 
@@ -21048,7 +20085,14 @@ Object {
 }
 
 @media only screen and (min-width:736px) {
-  .c7 {
+  .c9 {
+    display: grid;
+    grid-gap: 40px;
+    grid-template-columns: repeat(2,1fr);
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
     padding-left: 20px;
   }
 }
@@ -21077,54 +20121,53 @@ Object {
               Unlock Tickets
             </span>
           </div>
-          <section
-            class="c5"
-          />
-          <h1
-            class="c6"
-          >
-            My Doctor Who party
-          </h1>
-          <h2
-            class="0 c7"
-          >
-            Nov 23, 2063
-            <span
-              class="1 c8"
+          <div>
+            <h1
+              class="c5"
             >
-              6:30pm - 7:30pm
-            </span>
-          </h2>
-          <p
-            class="3 c9"
-          >
-            Totters Lane, London
-          </p>
+              My Doctor Who party
+            </h1>
+            <h2
+              class="1 c6"
+            >
+              Nov 23, 2063
+              <span
+                class="2 c7"
+              >
+                6:30pm - 7:30pm
+              </span>
+            </h2>
+            <p
+              class="3 c8"
+            >
+              Totters Lane, London
+            </p>
+          </div>
           <section
-            class="c10"
+            class="c9"
           >
             <div
-              class="c11"
+              class="c10"
             >
               <div
-                class="2 c12"
+                class="7 c11"
               >
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Unbelievably, it's been 100 years since it first came to our screens.
                 </p>
                 <p
-                  class="4 c13"
+                  class="6 c12"
                 >
                   Join us for an hour or two of fine entertainment.
                 </p>
               </div>
               <ul
-                class="c14"
+                class="5 c13"
               >
                 <li
-                  class="c15"
+                  class="4 c14"
                 >
                   <a
                     href="https://party.com/fun"
@@ -21135,7 +20178,7 @@ Object {
                   </a>
                 </li>
                 <li
-                  class="c16"
+                  class="4 c15"
                 >
                   <a
                     href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -21148,28 +20191,14 @@ Object {
               </ul>
             </div>
             <div
-              class="c11"
-            >
-              <label
-                class="c17"
-              >
-                Loading ticket details...
-              </label>
-              <div
-                class="5 c18"
-              >
-                <img
-                  alt="loading"
-                  src="/static/images/loading.svg"
-                />
-              </div>
-            </div>
+              class="c10"
+            />
           </section>
           <div
-            class="c19"
+            class="c16"
           >
             <div
-              class="c20"
+              class="c17"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -21186,7 +20215,7 @@ Object {
           </div>
         </div>
         <div
-          class="c21"
+          class="c18"
         />
       </div>
     </div>
@@ -21215,54 +20244,53 @@ Object {
             Unlock Tickets
           </span>
         </div>
-        <section
-          class="roc9w1-2 dPcmQG"
-        />
-        <h1
-          class="roc9w1-6 jgutHM"
-        >
-          My Doctor Who party
-        </h1>
-        <h2
-          class="roc9w1-10 nAaaj"
-        >
-          Nov 23, 2063
-          <span
-            class="roc9w1-11 bWpFMU"
+        <div>
+          <h1
+            class="sc-1yqikln-8 fYjfY"
           >
-            6:30pm - 7:30pm
-          </span>
-        </h2>
-        <p
-          class="roc9w1-13 jrPgSk"
-        >
-          Totters Lane, London
-        </p>
+            My Doctor Who party
+          </h1>
+          <h2
+            class="sc-1yqikln-11 dTMVbR"
+          >
+            Nov 23, 2063
+            <span
+              class="sc-1yqikln-12 fLyOMX"
+            >
+              6:30pm - 7:30pm
+            </span>
+          </h2>
+          <p
+            class="sc-1yqikln-13 epxzlt"
+          >
+            Totters Lane, London
+          </p>
+        </div>
         <section
-          class="roc9w1-0 chEQCl"
+          class="sc-ifAKCX buhloV"
         >
           <div
-            class="roc9w1-1 fFMaji"
+            class="sc-EHOje kXPRgG"
           >
             <div
-              class="roc9w1-12 jKjZJm"
+              class="sc-1yqikln-17 kqTvmk"
             >
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Unbelievably, it's been 100 years since it first came to our screens.
               </p>
               <p
-                class="roc9w1-14 kdMDeF"
+                class="sc-1yqikln-16 cIvFCH"
               >
                 Join us for an hour or two of fine entertainment.
               </p>
             </div>
             <ul
-              class="roc9w1-5 jkPyDw"
+              class="sc-1yqikln-15 eMcFrv"
             >
               <li
-                class="roc9w1-4 gOdrBg"
+                class="sc-1yqikln-14 iUnKIj"
               >
                 <a
                   href="https://party.com/fun"
@@ -21273,7 +20301,7 @@ Object {
                 </a>
               </li>
               <li
-                class="roc9w1-4 cYqtle"
+                class="sc-1yqikln-14 dcBCRo"
               >
                 <a
                   href="https://calendar.google.com/calendar/r/eventedit?&text=My%20Doctor%20Who%20party&dates=20631123T183000/20631123T193000&details=Unbelievably%2C%20it's%20been%20100%20years%20since%20it%20first%20came%20to%20our%20screens.%0A%0AJoin%20us%20for%20an%20hour%20or%20two%20of%20fine%20entertainment.%0A%0A%3Cstrong%3EEvent%20Website%3C%2Fstrong%3E%0Ahttps%3A%2F%2Fparty.com%2Ffun%0A%0A%3Cstrong%3ETicket%20Details%3C%2Fstrong%3E%0Ahttp%3A%2F%2Flocalhost%2F&location=Totters%20Lane%2C%20London&sf=true&output=xml"
@@ -21286,22 +20314,8 @@ Object {
             </ul>
           </div>
           <div
-            class="roc9w1-1 fFMaji"
-          >
-            <label
-              class="sc-1yqikln-5 sc-1yqikln-6 cqiaJy"
-            >
-              Loading ticket details...
-            </label>
-            <div
-              class="roc9w1-15 eAPOQi"
-            >
-              <img
-                alt="loading"
-                src="/static/images/loading.svg"
-              />
-            </div>
-          </div>
+            class="sc-EHOje kXPRgG"
+          />
         </section>
         <div
           class="b9ke0k-3 cuDZYN"
