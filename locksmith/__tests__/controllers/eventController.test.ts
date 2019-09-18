@@ -156,6 +156,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -174,6 +175,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -206,6 +208,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -223,6 +226,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(badOwnerMessage)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -253,6 +257,7 @@ describe('adding event links', () => {
     let typedData = generateTypedData2(newLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
+      from: '',
     })
 
     let response = await request(app)
@@ -272,6 +277,7 @@ describe('overwritting event links', () => {
     let typedData = generateTypedData(overWritingLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
+      from: '',
     })
 
     let response = await request(app)
