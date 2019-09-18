@@ -241,8 +241,7 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c22 {
@@ -251,8 +250,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 .c13 {
@@ -278,8 +275,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
   margin-top: 16px;
@@ -675,12 +670,13 @@ should pay great attention.
                   >
                     Unlock team
                   </h3>
-                  <div
+                   
+                  <span
                     class="c22"
                   >
-                    On 
+                    on 
                     Tuesday, March 5, 2019
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
@@ -724,12 +720,13 @@ Short description.
                   >
                     Julien Genestoux
                   </h3>
-                  <div
+                   
+                  <span
                     class="c22"
                   >
-                    On 
+                    on 
                     Friday, March 1, 2019
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
@@ -773,12 +770,13 @@ Look at us! We're posting on our very own blog! How exciting!
                   >
                     Unlock team
                   </h3>
-                  <div
+                   
+                  <span
                     class="c22"
                   >
-                    On 
+                    on 
                     Monday, August 20, 2018
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
@@ -1226,19 +1224,20 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
               </div>
               <div
-                class="b1qsww-4 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 biwGBX"
               >
                 <h3
-                  class="b1qsww-7 fdicQS"
+                  class="b1qsww-7 dXLEyv"
                 >
                   Unlock team
                 </h3>
-                <div
-                  class="b1qsww-8 egiKhD"
+                 
+                <span
+                  class="b1qsww-8 hGbFbH"
                 >
-                  On 
+                  on 
                   Tuesday, March 5, 2019
-                </div>
+                </span>
               </div>
             </div>
           </div>
@@ -1275,19 +1274,20 @@ should pay great attention.
 Short description.
               </div>
               <div
-                class="b1qsww-4 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 biwGBX"
               >
                 <h3
-                  class="b1qsww-7 fdicQS"
+                  class="b1qsww-7 dXLEyv"
                 >
                   Julien Genestoux
                 </h3>
-                <div
-                  class="b1qsww-8 egiKhD"
+                 
+                <span
+                  class="b1qsww-8 hGbFbH"
                 >
-                  On 
+                  on 
                   Friday, March 1, 2019
-                </div>
+                </span>
               </div>
             </div>
           </div>
@@ -1324,19 +1324,20 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
               </div>
               <div
-                class="b1qsww-4 fbx9r2-2 ddbCV"
+                class="b1qsww-4 fbx9r2-2 biwGBX"
               >
                 <h3
-                  class="b1qsww-7 fdicQS"
+                  class="b1qsww-7 dXLEyv"
                 >
                   Unlock team
                 </h3>
-                <div
-                  class="b1qsww-8 egiKhD"
+                 
+                <span
+                  class="b1qsww-8 hGbFbH"
                 >
-                  On 
+                  on 
                   Monday, August 20, 2018
-                </div>
+                </span>
               </div>
             </div>
           </div>
@@ -1851,8 +1852,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 }
@@ -1919,14 +1918,18 @@ Object {
   text-align: center;
 }
 
+.c18 th,
+.c18 td {
+  padding: 5px;
+}
+
 .c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c17 {
@@ -1935,8 +1938,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -2230,12 +2231,13 @@ Object {
               >
                 Alice "Storybook" Bob
               </h3>
-              <div
+               
+              <span
                 class="c17"
               >
                 On 
                 August 20, 2018
-              </div>
+              </span>
             </div>
             <div
               class="c18"
@@ -2681,22 +2683,23 @@ are intentionally not generated from this file date, in case we want to override
             Some advice from the field
           </h2>
           <div
-            class="b1qsww-4 hTAVQP"
+            class="b1qsww-4 bwCYuK"
           >
             <h3
-              class="b1qsww-7 fdicQS"
+              class="b1qsww-7 dXLEyv"
             >
               Alice "Storybook" Bob
             </h3>
-            <div
-              class="b1qsww-8 egiKhD"
+             
+            <span
+              class="b1qsww-8 hGbFbH"
             >
               On 
               August 20, 2018
-            </div>
+            </span>
           </div>
           <div
-            class="b1qsww-6 cnhgVH"
+            class="b1qsww-6 jZJUsM"
           >
             <div>
               <p>
@@ -2988,8 +2991,7 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c9 {
@@ -2998,8 +3000,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 .c0 {
@@ -3025,8 +3025,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
   margin-top: 16px;
@@ -3127,12 +3125,13 @@ should pay great attention.
               >
                 Unlock team
               </h3>
-              <div
+               
+              <span
                 class="c9"
               >
-                On 
+                on 
                 Tuesday, March 5, 2019
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -3176,12 +3175,13 @@ Short description.
               >
                 Julien Genestoux
               </h3>
-              <div
+               
+              <span
                 class="c9"
               >
-                On 
+                on 
                 Friday, March 1, 2019
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -3225,12 +3225,13 @@ Look at us! We're posting on our very own blog! How exciting!
               >
                 Unlock team
               </h3>
-              <div
+               
+              <span
                 class="c9"
               >
-                On 
+                on 
                 Monday, August 20, 2018
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -3284,19 +3285,20 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-4 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 biwGBX"
           >
             <h3
-              class="b1qsww-7 fdicQS"
+              class="b1qsww-7 dXLEyv"
             >
               Unlock team
             </h3>
-            <div
-              class="b1qsww-8 egiKhD"
+             
+            <span
+              class="b1qsww-8 hGbFbH"
             >
-              On 
+              on 
               Tuesday, March 5, 2019
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -3333,19 +3335,20 @@ should pay great attention.
 Short description.
           </div>
           <div
-            class="b1qsww-4 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 biwGBX"
           >
             <h3
-              class="b1qsww-7 fdicQS"
+              class="b1qsww-7 dXLEyv"
             >
               Julien Genestoux
             </h3>
-            <div
-              class="b1qsww-8 egiKhD"
+             
+            <span
+              class="b1qsww-8 hGbFbH"
             >
-              On 
+              on 
               Friday, March 1, 2019
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -3382,19 +3385,20 @@ Short description.
 Look at us! We're posting on our very own blog! How exciting!
           </div>
           <div
-            class="b1qsww-4 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 biwGBX"
           >
             <h3
-              class="b1qsww-7 fdicQS"
+              class="b1qsww-7 dXLEyv"
             >
               Unlock team
             </h3>
-            <div
-              class="b1qsww-8 egiKhD"
+             
+            <span
+              class="b1qsww-8 hGbFbH"
             >
-              On 
+              on 
               Monday, August 20, 2018
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -3584,8 +3588,7 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c9 {
@@ -3594,8 +3597,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 .c0 {
@@ -3621,8 +3622,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
   margin-top: 16px;
@@ -3723,12 +3722,13 @@ should pay great attention.
               >
                 Unlock team
               </h3>
-              <div
+               
+              <span
                 class="c9"
               >
-                On 
+                on 
                 Tuesday, March 5, 2019
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -3782,19 +3782,20 @@ This post was published most recently. It is an important post about a great man
 should pay great attention.
           </div>
           <div
-            class="b1qsww-4 fbx9r2-2 ddbCV"
+            class="b1qsww-4 fbx9r2-2 biwGBX"
           >
             <h3
-              class="b1qsww-7 fdicQS"
+              class="b1qsww-7 dXLEyv"
             >
               Unlock team
             </h3>
-            <div
-              class="b1qsww-8 egiKhD"
+             
+            <span
+              class="b1qsww-8 hGbFbH"
             >
-              On 
+              on 
               Tuesday, March 5, 2019
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -3893,8 +3894,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 }
@@ -3961,14 +3960,18 @@ Object {
   text-align: center;
 }
 
+.c6 th,
+.c6 td {
+  padding: 5px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c5 {
@@ -3977,8 +3980,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 <div>
@@ -4007,12 +4008,13 @@ Object {
           >
             Reginald Pianoforte
           </h3>
-          <div
+           
+          <span
             class="c5"
           >
             On 
             August 20, 2018
-          </div>
+          </span>
         </div>
         <div
           class="c6"
@@ -4223,22 +4225,23 @@ genuinely collaborative ecosystem, where many companies and services can operate
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-4 hTAVQP"
+        class="b1qsww-4 bwCYuK"
       >
         <h3
-          class="b1qsww-7 fdicQS"
+          class="b1qsww-7 dXLEyv"
         >
           Reginald Pianoforte
         </h3>
-        <div
-          class="b1qsww-8 egiKhD"
+         
+        <span
+          class="b1qsww-8 hGbFbH"
         >
           On 
           August 20, 2018
-        </div>
+        </span>
       </div>
       <div
-        class="b1qsww-6 cnhgVH"
+        class="b1qsww-6 jZJUsM"
       >
         <div>
           <p>
@@ -4519,8 +4522,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 }
@@ -4578,14 +4579,18 @@ Object {
   text-align: center;
 }
 
+.c5 th,
+.c5 td {
+  padding: 5px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c4 {
@@ -4594,8 +4599,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 <div>
@@ -4620,12 +4623,13 @@ Object {
           >
             Reginald Pianoforte
           </h3>
-          <div
+           
+          <span
             class="c4"
           >
             On 
             August 20, 2018
-          </div>
+          </span>
         </div>
         <div
           class="c5"
@@ -4832,22 +4836,23 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </h1>
       
       <div
-        class="b1qsww-4 hTAVQP"
+        class="b1qsww-4 bwCYuK"
       >
         <h3
-          class="b1qsww-7 fdicQS"
+          class="b1qsww-7 dXLEyv"
         >
           Reginald Pianoforte
         </h3>
-        <div
-          class="b1qsww-8 egiKhD"
+         
+        <span
+          class="b1qsww-8 hGbFbH"
         >
           On 
           August 20, 2018
-        </div>
+        </span>
       </div>
       <div
-        class="b1qsww-6 cnhgVH"
+        class="b1qsww-6 jZJUsM"
       >
         <div>
           <p>
@@ -5128,8 +5133,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 }
@@ -5187,14 +5190,18 @@ Object {
   text-align: center;
 }
 
+.c5 th,
+.c5 td {
+  padding: 5px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c4 {
@@ -5203,8 +5210,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 <div>
@@ -5229,12 +5234,13 @@ Object {
           >
             Unlock team
           </h3>
-          <div
+           
+          <span
             class="c4"
           >
             On 
             August 20, 2018
-          </div>
+          </span>
         </div>
         <div
           class="c5"
@@ -5441,22 +5447,23 @@ genuinely collaborative ecosystem, where many companies and services can operate
       </h1>
       
       <div
-        class="b1qsww-4 hTAVQP"
+        class="b1qsww-4 bwCYuK"
       >
         <h3
-          class="b1qsww-7 fdicQS"
+          class="b1qsww-7 dXLEyv"
         >
           Unlock team
         </h3>
-        <div
-          class="b1qsww-8 egiKhD"
+         
+        <span
+          class="b1qsww-8 hGbFbH"
         >
           On 
           August 20, 2018
-        </div>
+        </span>
       </div>
       <div
-        class="b1qsww-6 cnhgVH"
+        class="b1qsww-6 jZJUsM"
       >
         <div>
           <p>
@@ -5737,8 +5744,6 @@ Object {
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 }
@@ -5805,14 +5810,18 @@ Object {
   text-align: center;
 }
 
+.c6 th,
+.c6 td {
+  padding: 5px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 }
 
 .c5 {
@@ -5821,8 +5830,6 @@ Object {
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 }
 
 <div>
@@ -5851,12 +5858,13 @@ Object {
           >
             Unlock team
           </h3>
-          <div
+           
+          <span
             class="c5"
           >
             On 
             August 20, 2018
-          </div>
+          </span>
         </div>
         <div
           class="c6"
@@ -6067,22 +6075,23 @@ genuinely collaborative ecosystem, where many companies and services can operate
         Unlock enables creators to monetize their work directly - without relying on a middleman.
       </h2>
       <div
-        class="b1qsww-4 hTAVQP"
+        class="b1qsww-4 bwCYuK"
       >
         <h3
-          class="b1qsww-7 fdicQS"
+          class="b1qsww-7 dXLEyv"
         >
           Unlock team
         </h3>
-        <div
-          class="b1qsww-8 egiKhD"
+         
+        <span
+          class="b1qsww-8 hGbFbH"
         >
           On 
           August 20, 2018
-        </div>
+        </span>
       </div>
       <div
-        class="b1qsww-6 cnhgVH"
+        class="b1qsww-6 jZJUsM"
       >
         <div>
           <p>
