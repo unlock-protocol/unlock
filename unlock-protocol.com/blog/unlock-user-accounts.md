@@ -42,6 +42,6 @@ You may (rightfully) consider that this is a fairly high cost for using credit c
 
 # Next!
 
-We believe we're now providing a way for non crypto users to purchase Non Fungible Tokens to access their favorite content or software, without requiring them to go through the hassle of purcchasing crypto currencies first.
+We believe we're now providing a way for non crypto users to purchase Non Fungible Tokens to access their favorite content or software, without requiring them to go through the hassle of purchasing crypto currencies first.
 
 Let us know what you think!
