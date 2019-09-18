@@ -1,7 +1,7 @@
 import React from 'react'
 import { MONTH_NAMES } from '../../constants'
 import { getTimeString } from '../../utils/dates'
-import { Title, Date, Time, Location } from './EventStyles'
+import { Title, Date as DateComponent, Time, Location } from './EventStyles'
 
 export const EventInfo = ({ event }: any) => {
   return (
@@ -31,10 +31,10 @@ function EventDate({ date, duration }: any) {
   }
 
   return (
-    <Date>
+    <DateComponent>
       {dateString}
       <Time>{timeString}</Time>
-    </Date>
+    </DateComponent>
   )
 }
 

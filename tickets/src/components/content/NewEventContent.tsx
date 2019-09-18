@@ -10,6 +10,7 @@ import { pageTitle } from '../../constants'
 import EventInfo from '../interface/EventInfo'
 import EventLinks from '../interface/EventLinks'
 import EventDescription from '../interface/EventDescription'
+import PurchaseTicket from '../interface/PurchaseTicket'
 import Media from '../../theme/media'
 
 interface UnlockWindow extends Window {
@@ -102,6 +103,7 @@ export class EventContent extends Component<
     const { paywallStatus } = this.state
     const { event } = this.props
 
+    // TODO: make this better (get event faster? SSR?)
     if (Object.keys(event).length === 0) {
       return <Layout>Loading...</Layout>
     }
@@ -118,9 +120,23 @@ export class EventContent extends Component<
             <EventDescription body={event.description || ''} />
             <EventLinks event={event} />
           </Column>
-          <Column></Column>
+          <Column>
+            {paywallStatus === PaywallStatus.Locked && (
+              <PurchaseTicket
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.unlockProtocol &&
+                      window.unlockProtocol.loadCheckoutModal()
+                  }
+                }}
+                keyPrice="0.01"
+              />
+            )}
+            {paywallStatus === PaywallStatus.Unlocked && (
+              <span>You already have a key.</span>
+            )}
+          </Column>
         </Columns>
-        <span>{paywallStatus}</span>
       </Layout>
     )
   }
