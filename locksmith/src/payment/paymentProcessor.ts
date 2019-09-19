@@ -86,6 +86,7 @@ export class PaymentProcessor {
           amount: await this.price(lock),
           currency: 'USD',
           customer: user.stripe_customer_id,
+          metadata: { lock: lock, publicKey: publicKey },
         })
         return charge
       } else {
