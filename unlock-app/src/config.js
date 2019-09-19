@@ -62,6 +62,8 @@ export default function configure(
   // developing.
   let stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
+  let subgraphURI =
+    'http://localhost:8000/subgraphs/name/unlock-protocol/unlock'
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -193,5 +195,6 @@ export default function configure(
     unlockStaticUrl,
     chainExplorerUrlBuilders,
     stripeApiKey,
+    subgraphURI,
   }
 }

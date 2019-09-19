@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
+import 'cross-fetch/polyfill'
+import { useQuery } from '@apollo/react-hooks'
 import BrowserOnly from '../helpers/BrowserOnly'
 import UnlockPropTypes from '../../propTypes'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
@@ -8,6 +10,7 @@ import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
+import keyHolderQuery from '../../queries/keyHolder'
 
 export const KeyChainContent = ({ account, network, router }) => {
   const { hash } = router.location
@@ -21,6 +24,7 @@ export const KeyChainContent = ({ account, network, router }) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
+          {keyDetails(account.address.toLowerCase())}
           <DeveloperOverlay />
         </BrowserOnly>
       )}
@@ -49,6 +53,27 @@ export const mapStateToProps = ({ account, network, router }) => {
     network,
     router,
   }
+}
+
+const keyDetails = address => {
+  const { loading, error, data } = useQuery(keyHolderQuery(), {
+    variables: { address },
+  })
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
+
+  return data.keyHolders[0].keys
+    .map(ownedKeys => ownedKeys.lock)
+    .map(({ id, name, expirationDuration, price }) => {
+      return (
+        <div key={id}>
+          <p>{name}</p>
+          <p>{expirationDuration}</p>
+          <p>{price}</p>
+        </div>
+      )
+    })
 }
 
 export default connect(mapStateToProps)(KeyChainContent)
