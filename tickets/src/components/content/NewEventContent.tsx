@@ -102,7 +102,7 @@ export class EventContent extends Component<
 
   render() {
     const { paywallStatus } = this.state
-    const { event } = this.props
+    const { event, lockAddress } = this.props
 
     // TODO: make this better (get event faster? SSR?)
     if (Object.keys(event).length === 0) {
@@ -133,7 +133,7 @@ export class EventContent extends Component<
                 keyPrice="0.01"
               />
             )}
-            {paywallStatus === PaywallStatus.Unlocked && <EventTicket />}
+            {paywallStatus === PaywallStatus.Unlocked && <EventTicket lockAddress={lockAddress} />}
           </Column>
         </Columns>
       </Layout>
