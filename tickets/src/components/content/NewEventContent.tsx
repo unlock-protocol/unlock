@@ -133,7 +133,9 @@ export class EventContent extends Component<
                 keyPrice="0.01"
               />
             )}
-            {paywallStatus === PaywallStatus.Unlocked && <EventTicket lockAddress={lockAddress} />}
+            {paywallStatus === PaywallStatus.Unlocked && (
+              <EventTicket lockAddress={lockAddress} />
+            )}
           </Column>
         </Columns>
       </Layout>
