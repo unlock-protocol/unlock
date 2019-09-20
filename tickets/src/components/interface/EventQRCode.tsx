@@ -7,14 +7,7 @@ interface Props {
   payload: { [key: string]: string }
 }
 export const EventQRCode = ({ payload }: Props) => {
-  return (
-    <QR
-      value={JSON.stringify(payload)}
-      size={200}
-      renderAs="canvas"
-      includeMargin
-    />
-  )
+  return <QR value={JSON.stringify(payload)} size={200} renderAs="canvas" />
 }
 
 export default EventQRCode
