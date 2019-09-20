@@ -19,6 +19,7 @@ import {
   Column,
   Grid,
   SubmitButton,
+  LoadingButton,
 } from './styles'
 import { signPaymentData } from '../../../actions/user'
 
@@ -35,6 +36,7 @@ interface PaymentFormState {
   cardHolderName: string
   addressCountry: string
   addressZip: string
+  submitted: boolean
 }
 
 // Memoized because it would constantly rerender (which cleared the Stripe form)
@@ -62,6 +64,7 @@ export class PaymentForm extends React.Component<
       cardHolderName: '',
       addressCountry: '',
       addressZip: '',
+      submitted: false,
     }
   }
 
@@ -83,6 +86,11 @@ export class PaymentForm extends React.Component<
 
     const { stripe, signPaymentData } = this.props
     const { addressCountry, addressZip, cardHolderName } = this.state
+
+    this.setState({
+      submitted: true,
+    })
+
     if (stripe) {
       const result = await stripe.createToken({
         address_country: addressCountry,
@@ -94,10 +102,18 @@ export class PaymentForm extends React.Component<
       if (result.token) {
         signPaymentData(result.token.id)
       }
+
+      if (result.error) {
+        this.setState({
+          submitted: false,
+        })
+      }
     }
   }
 
   render() {
+    const { submitted } = this.state
+
     const stripeElementStyles = {
       base: { fontSize: '16px', lineHeight: '40px' },
     }
@@ -152,9 +168,12 @@ export class PaymentForm extends React.Component<
           </CardContainer>
         </Column>
         <Column size="half">
-          <SubmitButton onClick={this.handleSubmit}>
-            Add Payment Method
-          </SubmitButton>
+          {submitted && <LoadingButton>Submitting...</LoadingButton>}
+          {!submitted && (
+            <SubmitButton onClick={this.handleSubmit}>
+              Add Payment Method
+            </SubmitButton>
+          )}
         </Column>
       </Grid>
     )
