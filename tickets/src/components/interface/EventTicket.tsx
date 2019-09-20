@@ -2,9 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { sendConfirmation } from '../../actions/email'
 import { TicketInfo, Form, Input, SendButton } from './EventStyles'
+import EventQRCode from './EventQRCode'
 
 interface Props {
   sendConfirmation: typeof sendConfirmation
+  lockAddress: string
 }
 interface State {
   email: string
@@ -52,11 +54,17 @@ export class EventTicket extends React.Component<Props, State> {
   }
 
   render = () => {
+    const { lockAddress } = this.props
     const { email, sent } = this.state
     return (
       <TicketInfo>
         <Form onSubmit={this.handleSubmit}>
-          <h2>A QR Code</h2>
+          <h2>Your Ticket</h2>
+          <EventQRCode
+            payload={{
+              lockAddress,
+            }}
+          />
           <Input
             disabled={sent}
             placeholder="Enter your email address"
