@@ -6,7 +6,7 @@ interface Props {
   // For now we'll just JSON.Stringify arbitrary objects as the payload
   payload: { [key: string]: string }
 }
-export const EventQRCode = ({ payload }) => {
+export const EventQRCode = ({ payload }: Props) => {
   return (
     <QR
       value={JSON.stringify(payload)}
