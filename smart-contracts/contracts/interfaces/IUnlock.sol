@@ -16,6 +16,7 @@ interface IUnlock {
   );
 
   event ConfigUnlock(
+    address publicLockAddress,
     string globalTokenSymbol,
     string globalTokenURI
   );

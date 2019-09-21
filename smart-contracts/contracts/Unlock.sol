@@ -30,6 +30,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
+import './mixins/CloneFactory.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -37,7 +38,8 @@ import './interfaces/IUnlock.sol';
 contract Unlock is
   IUnlock,
   Initializable,
-  Ownable
+  Ownable,
+  CloneFactory
 {
   /**
    * The struct for a lock
@@ -71,6 +73,8 @@ contract Unlock is
   // Used by locks where the owner has not set a custom symbol
   string public globalTokenSymbol;
 
+  address public publicLockAddress;
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
     address _owner
@@ -96,7 +100,7 @@ contract Unlock is
   ) public
   {
     // create lock
-    address newLock = address(new PublicLock());
+    address newLock = createClone(publicLockAddress);
     PublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -184,13 +188,16 @@ contract Unlock is
 
   // function for the owner to update configuration variables
   function configUnlock(
+    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   ) external
     onlyOwner
   {
+    publicLockAddress = _publicLockAddress;
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
-    emit ConfigUnlock(_symbol, _URI);
+
+    emit ConfigUnlock(_publicLockAddress, _symbol, _URI);
   }
 }
