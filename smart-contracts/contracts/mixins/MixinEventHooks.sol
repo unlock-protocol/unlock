@@ -12,7 +12,7 @@ import '@openzeppelin/contracts/introspection/IERC1820Registry.sol';
 contract MixinEventHooks is
   MixinLockCore
 {
-  IERC1820Registry public erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
+  IERC1820Registry public constant erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
 
   // `keccak256("IUnlockEventHooks_keySold")`
   bytes32 public constant keySoldInterfaceId = 0x4d99da10ff5120f726d35edd8dbd417bbe55d90453b8432acd284e650ee2c6f0;

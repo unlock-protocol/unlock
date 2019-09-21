@@ -54,16 +54,17 @@ contract PublicLock is
   ) public
     initializer()
   {
+    Ownable.initialize(_owner);
     MixinFunds.initialize(_tokenAddress);
     MixinDisableAndDestroy.initialize();
     MixinLockCore.initialize(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata.initialize(_lockName);
     MixinERC721Enumerable.initialize();
+    MixinTransfer.initialize();
+    MixinRefunds.initialize();
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
-    // We must manually initialize Ownable.sol
-    Ownable.initialize(_owner);
   }
 
   // The version number of the current implementation on this network
