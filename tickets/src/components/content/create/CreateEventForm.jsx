@@ -6,7 +6,7 @@ import EventUrl from '../../helpers/EventUrl'
 import CreateEventButton from './CreateEventButton'
 import TimePicker from '../../interface/TimePicker'
 import {
-  Title,
+  CreateTitle,
   Step,
   Fieldset,
   Field,
@@ -118,7 +118,7 @@ export class CreateEventForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <Step>
-          <Title>Set Your Events Preferences</Title>
+          <CreateTitle>Set Your Events Preferences</CreateTitle>
           <Fieldset>
             <Field>
               <Label>Event Name</Label>
@@ -178,7 +178,7 @@ export class CreateEventForm extends Component {
           </Fieldset>
         </Step>
         <Step>
-          <Title>Share Your RSVP Page</Title>
+          <CreateTitle>Share Your RSVP Page</CreateTitle>
           <Fieldset>
             <CreateEventButton
               submitted={submitted}
