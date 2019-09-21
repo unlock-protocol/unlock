@@ -47,16 +47,7 @@ contract MixinRefunds is
     onlyOwner
     hasValidKey(_keyOwner)
   {
-    Key storage key = _getKeyFor(_keyOwner);
-
-    emit CancelKey(key.tokenId, _keyOwner, msg.sender, amount);
-
-    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
-    // of 0 so that we can still differentiate hasKey from hasValidKey.
-    key.expirationTimestamp = block.timestamp;
-
-    // Security: doing this last to avoid re-entrancy concerns
-    _transfer(tokenAddress, _keyOwner, amount);
+    _cancelAndRefund(_keyOwner, amount);
   }
 
   /**
@@ -65,7 +56,9 @@ contract MixinRefunds is
   function cancelAndRefund()
     external
   {
-    _cancelAndRefund(msg.sender);
+    uint refund = _getCancelAndRefundValue(msg.sender);
+
+    _cancelAndRefund(msg.sender, refund);
   }
 
   /**
@@ -88,7 +81,9 @@ contract MixinRefunds is
     );
 
     keyOwnerToNonce[_keyOwner]++;
-    _cancelAndRefund(_keyOwner);
+    uint refund = _getCancelAndRefundValue(_keyOwner);
+
+    _cancelAndRefund(_keyOwner, refund);
   }
 
   /**
@@ -163,12 +158,11 @@ contract MixinRefunds is
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    */
   function _cancelAndRefund(
-    address _keyOwner
+    address _keyOwner,
+    uint refund
   ) internal
   {
     Key storage key = _getKeyFor(_keyOwner);
-
-    uint refund = _getCancelAndRefundValue(_keyOwner);
 
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
@@ -177,7 +171,7 @@ contract MixinRefunds is
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
-      _transfer(tokenAddress, msg.sender, refund);
+      _transfer(tokenAddress, _keyOwner, refund);
     }
   }
 
