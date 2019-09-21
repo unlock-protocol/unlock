@@ -15,7 +15,7 @@ contract MixinFunds
    */
   address public tokenAddress;
 
-  constructor(
+  function initialize(
     address _tokenAddress
   ) public
   {
