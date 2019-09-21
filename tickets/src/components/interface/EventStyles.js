@@ -71,6 +71,20 @@ export const Cta = styled.a`
   color: var(--link);
 `
 
+export const CreateTitle = styled.h1`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: light;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 47px;
+  margin-bottom: 20px;
+  grid-column: 1 3;
+  color: var(--darkgrey);
+  ${Media.phone`
+margin-top: 20px;
+  `}
+`
+
 export const Title = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
   font-style: normal;
