@@ -22,6 +22,19 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
+    async fullRefund(keyOwner, amount, lockOwner) {
+      const call = web3.eth.abi.encodeFunctionCall(
+        lockContract.abi.find(e => e.name === 'fullRefund'),
+        [keyOwner, amount]
+      )
+      return web3.eth.sendTransaction({
+        to: lockContract.address,
+        data: call,
+        from: lockOwner,
+        gas: walletService.gasAmountConstants().fullRefund,
+      })
+    },
+
     async cancelAndRefund(from) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'cancelAndRefund'),

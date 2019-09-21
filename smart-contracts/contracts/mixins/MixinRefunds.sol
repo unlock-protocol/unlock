@@ -39,6 +39,27 @@ contract MixinRefunds is
   );
 
   /**
+   * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
+   * of the key
+   */
+  function fullRefund(address _keyOwner, uint amount)
+    external
+    onlyOwner
+    hasValidKey(_keyOwner)
+  {
+    Key storage key = _getKeyFor(_keyOwner);
+
+    emit CancelKey(key.tokenId, _keyOwner, msg.sender, amount);
+
+    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
+    // of 0 so that we can still differentiate hasKey from hasValidKey.
+    key.expirationTimestamp = block.timestamp;
+
+    // Security: doing this last to avoid re-entrancy concerns
+    _transfer(tokenAddress, _keyOwner, amount);
+  }
+
+  /**
    * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
    */
   function cancelAndRefund()
