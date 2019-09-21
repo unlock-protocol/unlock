@@ -89,7 +89,8 @@ contract MixinLockCore is
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    *
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` use case.
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   * use cases.
    */
   function withdraw(
     address _tokenAddress,

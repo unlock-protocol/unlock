@@ -22,9 +22,10 @@ contract('Lock / erc20', accounts => {
   })
 
   describe('creating ERC20 priced locks', () => {
-    let keyPrice
+    let keyPrice, refundAmount
     const keyOwner = accounts[1]
     const keyOwner2 = accounts[2]
+    const keyOwner3 = accounts[3]
     const defaultBalance = new BigNumber(100000000000000000)
 
     before(async () => {
@@ -35,12 +36,15 @@ contract('Lock / erc20', accounts => {
       // Mint some tokens for testing
       await token.mint(keyOwner, defaultBalance)
       await token.mint(keyOwner2, defaultBalance)
+      await token.mint(keyOwner3, defaultBalance)
 
       // Approve the lock to make transfers
       await token.approve(lock.address, -1, { from: keyOwner })
       await token.approve(lock.address, -1, { from: keyOwner2 })
+      await token.approve(lock.address, -1, { from: keyOwner3 })
 
       keyPrice = new BigNumber(await lock.keyPrice.call())
+      refundAmount = keyPrice.toFixed()
     })
 
     describe('users can purchase keys', () => {
@@ -59,6 +63,35 @@ contract('Lock / erc20', accounts => {
       it('transfered the tokens to the contract', async () => {
         const balance = new BigNumber(await token.balanceOf(lock.address))
         assert.equal(balance.toFixed(), keyPrice.toFixed())
+      })
+
+      it('when a lock owner refunds a key, tokens are fully refunded', async () => {
+        await lockApi.purchase(keyOwner3, web3.utils.padLeft(0, 40))
+
+        const balanceOwnerBefore = new BigNumber(
+          await token.balanceOf(keyOwner3)
+        )
+        const balanceLockBefore = new BigNumber(
+          await token.balanceOf(lock.address)
+        )
+
+        await lockApi.fullRefund(keyOwner3, refundAmount, accounts[0])
+        const balanceOwnerAfter = new BigNumber(
+          await token.balanceOf(keyOwner3)
+        )
+        const balanceLockAfter = new BigNumber(
+          await token.balanceOf(lock.address)
+        )
+
+        assert.equal(
+          balanceLockBefore.minus(keyPrice).toFixed(),
+          balanceLockAfter.toFixed()
+        )
+
+        assert.equal(
+          balanceOwnerBefore.plus(keyPrice).toFixed(),
+          balanceOwnerAfter.toFixed()
+        )
       })
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
@@ -104,7 +137,7 @@ contract('Lock / erc20', accounts => {
     })
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
-      const account = accounts[3]
+      const account = accounts[4]
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
       await shouldFail(
