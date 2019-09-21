@@ -201,7 +201,7 @@ contract MixinRefunds is
     }
 
     // Apply the penalty if this is not a free trial
-    if(freeTrialLength > 0 && timeRemaining + freeTrialLength < expirationDuration)
+    if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
     {
       uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
       if (refund > penalty) {
