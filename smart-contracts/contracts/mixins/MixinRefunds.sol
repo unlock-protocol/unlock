@@ -21,6 +21,8 @@ contract MixinRefunds is
   uint public refundPenaltyNumerator = 1;
   uint public refundPenaltyDenominator = 10;
 
+  uint public freeTrialLength;
+
   // Stores a nonce per user to use for signed messages
   mapping(address => uint) public keyOwnerToNonce;
 
