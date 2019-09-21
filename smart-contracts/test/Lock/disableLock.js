@@ -103,7 +103,8 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owners can still fully refund keys', async () => {
-      await lock.fullRefund(keyOwner3, {
+      const refundAmount = Units.convert('0.01', 'eth', 'wei')
+      await lock.fullRefund(keyOwner3, refundAmount, {
         from: lockOwner,
       })
     })

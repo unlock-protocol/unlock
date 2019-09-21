@@ -22,7 +22,7 @@ contract('Lock / erc20', accounts => {
   })
 
   describe('creating ERC20 priced locks', () => {
-    let keyPrice
+    let keyPrice, refundAmount
     const keyOwner = accounts[1]
     const keyOwner2 = accounts[2]
     const keyOwner3 = accounts[3]
@@ -44,6 +44,7 @@ contract('Lock / erc20', accounts => {
       await token.approve(lock.address, -1, { from: keyOwner3 })
 
       keyPrice = new BigNumber(await lock.keyPrice.call())
+      refundAmount = keyPrice.toFixed()
     })
 
     describe('users can purchase keys', () => {
@@ -74,7 +75,7 @@ contract('Lock / erc20', accounts => {
           await token.balanceOf(lock.address)
         )
 
-        await lockApi.fullRefund(keyOwner3, accounts[0])
+        await lockApi.fullRefund(keyOwner3, refundAmount, accounts[0])
         const balanceOwnerAfter = new BigNumber(
           await token.balanceOf(keyOwner3)
         )

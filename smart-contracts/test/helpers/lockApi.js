@@ -22,10 +22,10 @@ module.exports = function lockApi(lockContract) {
       })
     },
 
-    async fullRefund(keyOwner, lockOwner) {
+    async fullRefund(keyOwner, amount, lockOwner) {
       const call = web3.eth.abi.encodeFunctionCall(
         lockContract.abi.find(e => e.name === 'fullRefund'),
-        [keyOwner]
+        [keyOwner, amount]
       )
       return web3.eth.sendTransaction({
         to: lockContract.address,

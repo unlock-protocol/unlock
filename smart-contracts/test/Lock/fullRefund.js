@@ -18,6 +18,7 @@ contract('Lock / fullRefund', accounts => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
+  const refundAmount = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
   let lockOwner
 
   before(async () => {
@@ -42,7 +43,7 @@ contract('Lock / fullRefund', accounts => {
       initialKeyOwnerBalance = new BigNumber(
         await web3.eth.getBalance(keyOwners[0])
       )
-      txObj = await lock.fullRefund(keyOwners[0], {
+      txObj = await lock.fullRefund(keyOwners[0], refundAmount, {
         from: lockOwner,
       })
     })
@@ -90,20 +91,10 @@ contract('Lock / fullRefund', accounts => {
     })
   })
 
-  it('can cancel a free key', async () => {
-    await locks['FREE'].grantKeys([accounts[1]], [999999999999], {
-      from: lockOwner,
-    })
-    const txObj = await locks['FREE'].fullRefund(accounts[1], {
-      from: lockOwner,
-    })
-    assert.equal(txObj.logs[0].event, 'CancelKey')
-  })
-
   describe('should fail when', () => {
     it('should fail if invoked by the key owner', async () => {
       await shouldFail(
-        lock.fullRefund(keyOwners[3], {
+        lock.fullRefund(keyOwners[3], refundAmount, {
           from: keyOwners[3],
         }),
         ''
@@ -112,7 +103,7 @@ contract('Lock / fullRefund', accounts => {
 
     it('should fail if invoked by another user', async () => {
       await shouldFail(
-        lock.fullRefund(accounts[7], {
+        lock.fullRefund(accounts[7], refundAmount, {
           from: keyOwners[3],
         }),
         ''
@@ -124,7 +115,7 @@ contract('Lock / fullRefund', accounts => {
         from: lockOwner,
       })
       await shouldFail(
-        lock.fullRefund(keyOwners[3], {
+        lock.fullRefund(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
         ''
@@ -136,7 +127,7 @@ contract('Lock / fullRefund', accounts => {
         from: lockOwner,
       })
       await shouldFail(
-        lock.fullRefund(keyOwners[3], {
+        lock.fullRefund(keyOwners[3], refundAmount, {
           from: lockOwner,
         }),
         'KEY_NOT_VALID'
@@ -145,7 +136,7 @@ contract('Lock / fullRefund', accounts => {
 
     it('the owner does not have a key', async () => {
       await shouldFail(
-        lock.fullRefund(accounts[7], {
+        lock.fullRefund(accounts[7], refundAmount, {
           from: lockOwner,
         }),
         'KEY_NOT_VALID'
