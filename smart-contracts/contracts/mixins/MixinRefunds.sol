@@ -1,8 +1,8 @@
 pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/math/SafeMath.sol';
-import 'openzeppelin-eth/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/cryptography/ECDSA.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';

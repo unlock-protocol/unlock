@@ -1,6 +1,6 @@
 pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';

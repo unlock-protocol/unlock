@@ -4,7 +4,7 @@ import './MixinERC721Enumerable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '../interfaces/IERC721Enumerable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 
 
 /**
