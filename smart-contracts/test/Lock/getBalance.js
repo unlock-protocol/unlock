@@ -3,7 +3,6 @@ const Web3Utils = require('web3-utils')
 const deployLocks = require('../helpers/deployLocks')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
-const LockApi = require('../helpers/lockApi')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -36,12 +35,11 @@ contract('Lock / getBalance', accounts => {
         await testToken.approve(lock.address, '1000000000000000000', {
           from: accounts[2],
         })
-        const lockApi = new LockApi(locks['FIRST'])
-        await lockApi.purchase(
+        await lock.purchase(
           accounts[2],
           web3.utils.padLeft(0, 40),
-          accounts[2],
-          keyPrice
+          [],
+          { from: accounts[2], value: isErc20 ? 0 : keyPrice.toString() }
         )
       })
 

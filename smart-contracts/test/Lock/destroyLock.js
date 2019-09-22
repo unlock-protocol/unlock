@@ -4,7 +4,6 @@ const BigNumber = require('bignumber.js')
 const Web3Utils = require('web3-utils')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const LockApi = require('../helpers/lockApi')
 const getTokenBalance = require('../helpers/getTokenBalance')
 
 const unlockContract = artifacts.require('../Unlock.sol')
@@ -16,7 +15,6 @@ let unlock, locks
 
 contract('Lock / destroyLock', accounts => {
   let lock
-  let lockApi
   let testToken
   const scenarios = [false, true]
 
@@ -38,7 +36,6 @@ contract('Lock / destroyLock', accounts => {
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
         lock = locks['FIRST']
-        lockApi = new LockApi(lock)
 
         for (let i = 0; i < accounts.length; i++) {
           await testToken.approve(lock.address, -1, { from: accounts[i] })
@@ -46,16 +43,19 @@ contract('Lock / destroyLock', accounts => {
 
         // Add ETH to the lock, even if it's priced in ERC20
         // TODO: should we block this from happening instead?
-        await lockApi.purchase(
+        await lock.purchase(
           accounts[9],
           web3.utils.padLeft(0, 40),
-          accounts[9],
-          Units.convert('0.01', 'eth', 'wei')
+          [],
+          {
+            from: accounts[9],
+            value: Units.convert('0.01', 'eth', 'wei')
+          }
         )
       })
 
       it('should fail if called by the wrong account', async () => {
-        await shouldFail(lockApi.destroyLock(accounts[1]), '')
+        await shouldFail(lock.destroyLock({from: accounts[1]}), '')
       })
 
       describe('when called by the owner', () => {
@@ -67,18 +67,21 @@ contract('Lock / destroyLock', accounts => {
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
 
-          await lockApi.purchase(
+          await lock.purchase(
             accounts[1],
             web3.utils.padLeft(0, 40),
-            accounts[1],
-            value
+            [],
+            {
+              from: accounts[1],
+              value
+            }
           )
           assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
           initialLockBalance = await getTokenBalance(lock.address, tokenAddress)
           initialOwnerBalance = await getTokenBalance(accounts[0], tokenAddress)
           await lock.disableLock() // We can't destroy a lock without first disabling it
-          txObj = await lockApi.destroyLock(accounts[0])
+          txObj = await lock.destroyLock({from: accounts[0]})
           event = txObj.logs[0]
         })
 
@@ -151,11 +154,14 @@ contract('Lock / destroyLock', accounts => {
                 : 0
 
             // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-            await lockApi.purchase(
+            await lock.purchase(
               accounts[1],
               web3.utils.padLeft(0, 40),
-              accounts[1],
-              value
+              [],
+              {
+                from: accounts[1],
+                value
+              }
             )
 
             let finalLockBalance = await getTokenBalance(
@@ -172,7 +178,7 @@ contract('Lock / destroyLock', accounts => {
             // assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
           } else {
             try {
-              await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), {
+              await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
                 value: Units.convert('0.01', 'eth', 'wei'),
               })
             } catch (e) {
