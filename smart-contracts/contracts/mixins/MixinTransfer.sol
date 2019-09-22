@@ -60,8 +60,8 @@ contract MixinTransfer is
     require(_recipient != address(0), 'INVALID_ADDRESS');
     _chargeAtLeast(getTransferFee(_from));
 
-    Key storage fromKey = _getKeyFor(_from);
-    Key storage toKey = _getKeyFor(_recipient);
+    Key storage fromKey = keyByOwner[_from];
+    Key storage toKey = keyByOwner[_recipient];
 
     uint previousExpiration = toKey.expirationTimestamp;
 
@@ -182,7 +182,7 @@ contract MixinTransfer is
     hasValidKey(_owner)
     returns (uint)
   {
-    Key storage key = _getKeyFor(_owner);
+    Key storage key = keyByOwner[_owner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     uint fee;

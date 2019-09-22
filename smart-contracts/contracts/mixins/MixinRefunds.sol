@@ -162,7 +162,7 @@ contract MixinRefunds is
     uint refund
   ) internal
   {
-    Key storage key = _getKeyFor(_keyOwner);
+    Key storage key = keyByOwner[_keyOwner];
 
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
@@ -187,7 +187,7 @@ contract MixinRefunds is
     hasValidKey(_owner)
     returns (uint refund)
   {
-    Key storage key = _getKeyFor(_owner);
+    Key storage key = keyByOwner[_owner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     if(timeRemaining >= expirationDuration) {
