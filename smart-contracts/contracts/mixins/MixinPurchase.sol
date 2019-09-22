@@ -27,11 +27,13 @@ contract MixinPurchase is
   * @dev Purchase function
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _value the price to pay for this purchase >=keyPrice
   * @param _data arbitrary data populated by the front-end which initiated the sale
   */
   function purchase(
     address _recipient,
     address _referrer,
+    uint256 _value,
     bytes calldata _data
   ) external payable
     onlyIfAlive
@@ -86,6 +88,7 @@ contract MixinPurchase is
     // We explicitly allow for greater amounts of ETH to allow 'donations'
     // Security: after state changes to minimize risk of re-entrancy
     uint pricePaid = _chargeAtLeast(inMemoryKeyPrice);
+    require(_value >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
 
     // Security: last line to minimize risk of re-entrancy
     _onKeySold(_recipient, _referrer, pricePaid, _data);

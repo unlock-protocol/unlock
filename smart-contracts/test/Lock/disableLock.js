@@ -9,6 +9,8 @@ const getProxy = require('../helpers/proxy')
 
 let unlock, locks, ID
 
+const keyPrice = Units.convert('0.01', 'eth', 'wei')
+
 contract('Lock / disableLock', accounts => {
   let lock
   let keyOwner = accounts[1]
@@ -19,14 +21,14 @@ contract('Lock / disableLock', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
-    await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+    await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), keyPrice, [], {
+      value: keyPrice,
     })
-    await lock.purchase(keyOwner2, web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+    await lock.purchase(keyOwner2, web3.utils.padLeft(0, 40), keyPrice, [], {
+      value: keyPrice,
     })
-    await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
+    await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), keyPrice, [], {
+      value: keyPrice,
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
   })
@@ -56,8 +58,8 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key', async () => {
       await shouldFail(
-        lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
-          value: Units.convert('0.01', 'eth', 'wei'),
+        lock.purchase(keyOwner, web3.utils.padLeft(0, 40), keyPrice, [], {
+          value: keyPrice,
         }),
         'LOCK_DEPRECATED'
       )
@@ -65,8 +67,8 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
-        lock.purchase(keyOwner, accounts[3], [], {
-          value: Units.convert('0.01', 'eth', 'wei'),
+        lock.purchase(keyOwner, accounts[3], keyPrice, [], {
+          value: keyPrice,
         }),
         'LOCK_DEPRECATED'
       )
