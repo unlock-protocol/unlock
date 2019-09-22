@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import '../interfaces/IUnlockEventHooks.sol';
 import '@openzeppelin/contracts/introspection/IERC1820Registry.sol';
