@@ -32,7 +32,8 @@ contract('Lock / getBalance', accounts => {
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
 
         // Purchase 1 key
-        await testToken.approve(locks['FIRST'].address, '1000000000000000000', {
+        const lock = locks['FIRST']
+        await testToken.approve(lock.address, '1000000000000000000', {
           from: accounts[2],
         })
         const lockApi = new LockApi(locks['FIRST'])
