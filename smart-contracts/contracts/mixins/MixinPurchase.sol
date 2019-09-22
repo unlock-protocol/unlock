@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
