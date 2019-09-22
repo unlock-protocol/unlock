@@ -19,7 +19,7 @@
       }
     },
     {
-      "packageNames": ["@unlock-protocol/unlock-js", "hardlydifficult-test-helpers"],
+      "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
       "groupName": null
     }
