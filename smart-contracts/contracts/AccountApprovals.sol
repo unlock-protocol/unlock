@@ -6,7 +6,7 @@ import 'openzeppelin-eth/contracts/access/roles/WhitelistedRole.sol';
 contract AccountApprovals is
   WhitelistedRole
 {
-  mapping(address => bytes) accountData;
+  mapping(address => bytes) public accountData;
 
   event Approve(address operator, address account, bytes data);
 
