@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
