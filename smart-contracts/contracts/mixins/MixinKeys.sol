@@ -27,7 +27,7 @@ contract MixinKeys is
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
-  mapping (address => Key) internal keyByOwner;
+  mapping (address => Key) public keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
