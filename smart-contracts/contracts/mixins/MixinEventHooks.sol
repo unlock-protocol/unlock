@@ -38,7 +38,7 @@ contract MixinEventHooks is
   }
 
   /**
-   * @dev called anytime a key is sold in order to inform the hook if there is one registered.
+   * @dev called anytime a key is canceled in order to inform the hook if there is one registered.
    */
   function _onKeyCancel(
     address _to,
