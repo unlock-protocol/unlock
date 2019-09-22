@@ -48,7 +48,7 @@ contract('Lock / erc20', accounts => {
     describe('users can purchase keys', () => {
       it('can purchase', async () => {
         await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
-          from: keyOwner
+          from: keyOwner,
         })
       })
 
@@ -67,7 +67,7 @@ contract('Lock / erc20', accounts => {
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
         await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), [], {
-          from: keyOwner3
+          from: keyOwner3,
         })
 
         const balanceOwnerBefore = new BigNumber(
@@ -98,7 +98,7 @@ contract('Lock / erc20', accounts => {
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        await lock.cancelAndRefund({from: keyOwner})
+        await lock.cancelAndRefund({ from: keyOwner })
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 
@@ -106,7 +106,9 @@ contract('Lock / erc20', accounts => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        await lock.withdraw(await lock.tokenAddress.call(), 0, {from: accounts[0]})
+        await lock.withdraw(await lock.tokenAddress.call(), 0, {
+          from: accounts[0],
+        })
 
         assert.equal(await token.balanceOf(lock.address), 0)
         assert.equal(
@@ -117,7 +119,9 @@ contract('Lock / erc20', accounts => {
 
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], { from: keyOwner })
+        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+          from: keyOwner,
+        })
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
         await lock.purchase(keyOwner2, keyOwner, [], { from: keyOwner2 })

@@ -43,19 +43,14 @@ contract('Lock / destroyLock', accounts => {
 
         // Add ETH to the lock, even if it's priced in ERC20
         // TODO: should we block this from happening instead?
-        await lock.purchase(
-          accounts[9],
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            from: accounts[9],
-            value: Units.convert('0.01', 'eth', 'wei')
-          }
-        )
+        await lock.purchase(accounts[9], web3.utils.padLeft(0, 40), [], {
+          from: accounts[9],
+          value: Units.convert('0.01', 'eth', 'wei'),
+        })
       })
 
       it('should fail if called by the wrong account', async () => {
-        await shouldFail(lock.destroyLock({from: accounts[1]}), '')
+        await shouldFail(lock.destroyLock({ from: accounts[1] }), '')
       })
 
       describe('when called by the owner', () => {
@@ -67,21 +62,16 @@ contract('Lock / destroyLock', accounts => {
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
 
-          await lock.purchase(
-            accounts[1],
-            web3.utils.padLeft(0, 40),
-            [],
-            {
-              from: accounts[1],
-              value
-            }
-          )
+          await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
+            from: accounts[1],
+            value,
+          })
           assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
           initialLockBalance = await getTokenBalance(lock.address, tokenAddress)
           initialOwnerBalance = await getTokenBalance(accounts[0], tokenAddress)
           await lock.disableLock() // We can't destroy a lock without first disabling it
-          txObj = await lock.destroyLock({from: accounts[0]})
+          txObj = await lock.destroyLock({ from: accounts[0] })
           event = txObj.logs[0]
         })
 
@@ -154,15 +144,10 @@ contract('Lock / destroyLock', accounts => {
                 : 0
 
             // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-            await lock.purchase(
-              accounts[1],
-              web3.utils.padLeft(0, 40),
-              [],
-              {
-                from: accounts[1],
-                value
-              }
-            )
+            await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
+              from: accounts[1],
+              value,
+            })
 
             let finalLockBalance = await getTokenBalance(
               lock.address,
