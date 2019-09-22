@@ -14,7 +14,7 @@ contract('Lock / erc721 / ownerOf', accounts => {
   })
 
   it('should return 0 when there is no owner', async () => {
-    const owner = await locks['FIRST'].ownerOf.call(accounts[3]);
+    const owner = await locks['FIRST'].ownerOf.call(accounts[3])
     assert.equal(owner, web3.utils.padLeft(0, 40))
   })
 
