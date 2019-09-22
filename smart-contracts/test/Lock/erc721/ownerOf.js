@@ -1,7 +1,6 @@
 const Units = require('ethereumjs-units')
 
 const deployLocks = require('../../helpers/deployLocks')
-const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
