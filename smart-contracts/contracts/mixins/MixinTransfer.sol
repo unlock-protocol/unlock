@@ -58,7 +58,7 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
-    _chargeAtLeast(getTransferFee(_from));
+    uint fee = getTransferFee(_from);
 
     Key storage fromKey = _getKeyFor(_from);
     Key storage toKey = _getKeyFor(_recipient);
@@ -99,6 +99,8 @@ contract MixinTransfer is
       _recipient,
       _tokenId
     );
+
+    _chargeAtLeast(fee);
   }
 
   /**
