@@ -6,13 +6,15 @@ import 'openzeppelin-eth/contracts/cryptography/ECDSA.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
+import './MixinEventHooks.sol';
 
 
 contract MixinRefunds is
   Ownable,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinEventHooks
 {
   using SafeMath for uint;
 
@@ -173,6 +175,8 @@ contract MixinRefunds is
       // Security: doing this last to avoid re-entrancy concerns
       _transfer(tokenAddress, _keyOwner, refund);
     }
+
+    _onKeyCancel(_keyOwner, refund);
   }
 
   /**
