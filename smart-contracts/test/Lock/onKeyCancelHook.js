@@ -22,7 +22,7 @@ contract('Lock / onKeyCancelHook', accounts => {
       from,
       value: keyPrice,
     })
-    await lock.cancelAndRefund({from: to})
+    await lock.cancelAndRefund({ from: to })
   })
 
   it('key cancels should log the hook event', async () => {
