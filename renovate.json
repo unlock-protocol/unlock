@@ -20,13 +20,8 @@
     },
     {
       "packageNames": ["@unlock-protocol/unlock-js", "hardlydifficult-test-helpers"],
-      "schedule": ["at any time"]
-    },
-    {
-      "packagePatterns": ["^hardlydifficult", "^openzeppelin", "^truffle", "^zos"],
-      "reviewers": [
-        "NickCuso"
-      ]
+      "schedule": ["at any time"],
+      "groupName": null
     }
   ]
 }
