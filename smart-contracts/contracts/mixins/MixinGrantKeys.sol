@@ -35,8 +35,8 @@ contract MixinGrantKeys is
       Key storage toKey = _getKeyFor(recipient);
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
-      _assignNewTokenId(toKey);
-      _recordOwner(recipient, toKey.tokenId);
+      _assignNewTokenId(toKey, toKey.tokenId == 0);
+      ownerByTokenId[toKey.tokenId] = recipient;
       toKey.expirationTimestamp = expirationTimestamp;
 
       // trigger event

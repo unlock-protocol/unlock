@@ -57,8 +57,8 @@ contract MixinPurchase is
 
     if (toKey.tokenId == 0) {
       // Assign a new tokenId (if a new owner or previously transfered)
-      _assignNewTokenId(toKey);
-      _recordOwner(_recipient, toKey.tokenId);
+      _assignNewTokenId(toKey, true);
+      ownerByTokenId[toKey.tokenId] = _recipient;
     }
 
     if (toKey.expirationTimestamp >= block.timestamp) {

@@ -45,15 +45,18 @@ contract MixinLockCore is
   // Max number of keys sold if the keyReleaseMechanism is public
   uint public maxNumberOfKeys;
 
-  // A count of how many new key purchases there have been
+  // A count of how many unique key owners there have been
   uint public totalSupply;
+
+  // A count of how many new key purchases there have been
+  uint public numberOfOwners;
 
   // The account which will receive funds on withdrawal
   address public beneficiary;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > totalSupply, 'LOCK_SOLD_OUT');
+    require(maxNumberOfKeys > numberOfOwners, 'LOCK_SOLD_OUT');
     _;
   }
 

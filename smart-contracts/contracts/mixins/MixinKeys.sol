@@ -33,11 +33,7 @@ contract MixinKeys is
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with totalSupply into an array instead.
-  mapping (uint => address) private ownerByTokenId;
-
-  // Addresses of owners are also stored in an array.
-  // Addresses are never removed by design to avoid abuses around referals
-  address[] public owners;
+  mapping (uint => address) public ownerByTokenId;
 
   // Ensures that an owner owns or has owned a key in the past
   modifier ownsOrHasOwnedKey(
@@ -146,14 +142,14 @@ contract MixinKeys is
     view
     returns (address[] memory)
   {
-    require(owners.length > 0, 'NO_OUTSTANDING_KEYS');
+    require(totalSupply > 0, 'NO_OUTSTANDING_KEYS');
     uint pageSize = _pageSize;
     uint _startIndex = _page * pageSize;
     uint endOfPageIndex;
 
-    if (_startIndex + pageSize > owners.length) {
-      endOfPageIndex = owners.length;
-      pageSize = owners.length - _startIndex;
+    if (_startIndex + pageSize > totalSupply) {
+      endOfPageIndex = totalSupply;
+      pageSize = totalSupply - _startIndex;
     } else {
       endOfPageIndex = (_startIndex + pageSize);
     }
@@ -164,7 +160,7 @@ contract MixinKeys is
 
     // Build the requested set of owners into a new temporary array:
     for (uint i = _startIndex; i < endOfPageIndex; i++) {
-      ownersByPage[pageIndex] = owners[i];
+      ownersByPage[pageIndex] = ownerByTokenId[i];
       pageIndex++;
     }
 
@@ -198,18 +194,6 @@ contract MixinKeys is
   }
 
   /**
-   * Public function which returns the total number of unique owners (both expired
-   * and valid).  This may be larger than totalSupply.
-   */
-  function numberOfOwners()
-    public
-    view
-    returns (uint)
-  {
-    return owners.length;
-  }
-
-  /**
    * @notice ERC721: Find the owner of an NFT
    * @return The address of the owner of the NFT, if applicable
   */
@@ -228,31 +212,19 @@ contract MixinKeys is
    * one assigned.
    */
   function _assignNewTokenId(
-    Key storage _key
+    Key storage _key,
+    bool isPurchase
   ) internal
   {
     if (_key.tokenId == 0) {
+      if(isPurchase) {
+        numberOfOwners++;
+      }
       // This is a brand new owner, else an owner of an expired key buying an extension.
       // We increment the tokenId counter
       totalSupply++;
       // we assign the incremented `totalSupply` as the tokenId for the new key
       _key.tokenId = totalSupply;
-    }
-  }
-
-  /**
-   * Records the owner of a given tokenId
-   */
-  function _recordOwner(
-    address _owner,
-    uint _tokenId
-  ) internal
-  {
-    if (ownerByTokenId[_tokenId] != _owner) {
-      // TODO: this may include duplicate entries
-      owners.push(_owner);
-      // We register the owner of the tokenID
-      ownerByTokenId[_tokenId] = _owner;
     }
   }
 

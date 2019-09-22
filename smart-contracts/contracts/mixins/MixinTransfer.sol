@@ -66,8 +66,8 @@ contract MixinTransfer is
     uint previousExpiration = toKey.expirationTimestamp;
 
     if (toKey.tokenId == 0) {
-      _assignNewTokenId(toKey);
-      _recordOwner(_recipient, toKey.tokenId);
+      _assignNewTokenId(toKey, false);
+      ownerByTokenId[toKey.tokenId] = _recipient;
     }
 
     if (previousExpiration <= block.timestamp) {
