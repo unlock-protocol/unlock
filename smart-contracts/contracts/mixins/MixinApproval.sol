@@ -83,17 +83,16 @@ contract MixinApproval is
   }
 
   /**
-   * external version
    * Will return the approved recipient for a key, if any.
    */
   function getApproved(
     uint _tokenId
-  )
-    external
-    view
+  ) external view
     returns (address)
   {
-    return _getApproved(_tokenId);
+    address approvedRecipient = approved[_tokenId];
+    require(approvedRecipient != address(0), 'NONE_APPROVED');
+    return approvedRecipient;
   }
 
   /**
@@ -121,23 +120,6 @@ contract MixinApproval is
     returns (bool)
   {
     return approved[_tokenId] == _user;
-  }
-
-  /**
-   * Will return the approved recipient for a key transfer or ownership.
-   * Note: this does not check that a corresponding key
-   * actually exists.
-   */
-  function _getApproved(
-    uint _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
-    address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), 'NONE_APPROVED');
-    return approvedRecipient;
   }
 
   /**
