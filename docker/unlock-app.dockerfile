@@ -16,7 +16,7 @@ WORKDIR /home/unlock/unlock-app
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
 RUN npm run build
 
-# Copy the .git stuff which is required by chromatic.
+# Copy the .git stuff
 # We do this last because this can never be cached (every commit will change it...)
 WORKDIR /home/unlock/
 COPY --chown=node .git/ /home/unlock/.git/.
