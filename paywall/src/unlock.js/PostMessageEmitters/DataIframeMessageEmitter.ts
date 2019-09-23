@@ -11,7 +11,10 @@ import {
   PostOfficeWindow,
 } from '../../windowTypes'
 import { makeIframe, addIframeToDocument } from '../iframeManager'
-import { DataIframeEventEmitter, DataIframeEvents } from './EventEmitterTypes'
+import {
+  DataIframeEventEmitter,
+  DataIframeEvents,
+} from '../../EventEmitterTypes'
 
 interface UnvalidatedPayload {
   method?: any

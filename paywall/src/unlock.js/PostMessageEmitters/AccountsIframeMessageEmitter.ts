@@ -20,7 +20,7 @@ import {
 import {
   UserAccountsIframeEventEmitter,
   UserAccountsIframeEvents,
-} from './EventEmitterTypes'
+} from '../../EventEmitterTypes'
 
 // eslint is too stupid to parse this if the extends is in the class declaration below, so we extract it
 class FancyEmitter extends (EventEmitter as {

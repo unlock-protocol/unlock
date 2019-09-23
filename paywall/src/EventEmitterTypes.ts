@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import StrictEventEmitter from 'strict-event-emitter-types'
-import { PostMessages, ExtractPayload } from '../../messageTypes'
-import { web3MethodCall } from '../../windowTypes'
+import { PostMessages, ExtractPayload } from './messageTypes'
+import { web3MethodCall } from './windowTypes'
 
 /**
  * These are the event definitions for the data iframe. They correspond directly with the post message events

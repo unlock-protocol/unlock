@@ -21,7 +21,7 @@ import {
 import {
   CheckoutIframeEventEmitter,
   CheckoutIframeEvents,
-} from './EventEmitterTypes'
+} from '../../EventEmitterTypes'
 
 class FancyEmitter extends (EventEmitter as {
   new (): CheckoutIframeEventEmitter
