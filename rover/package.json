@@ -17,14 +17,14 @@
    "license": "ISC",
    "dependencies": {
       "@types/jest": "24.0.18",
-      "@types/node": "8.10.53",
+      "@types/node": "8.10.54",
       "dotenv": "8.1.0",
-      "ethers": "4.0.36",
+      "ethers": "4.0.37",
       "express": "4.17.1",
       "pg": "7.12.1",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
-      "typeorm": "0.2.18"
+      "typeorm": "0.2.19"
    },
    "lint-staged": {
       "linters": {
@@ -36,8 +36,8 @@
    },
    "devDependencies": {
       "jest": "24.9.0",
-      "ts-jest": "24.0.2",
-      "ts-node": "8.3.0",
-      "typescript": "3.6.2"
+      "ts-jest": "24.1.0",
+      "ts-node": "8.4.1",
+      "typescript": "3.6.3"
    }
 }

@@ -8193,7 +8193,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0x123456abc"
       >
         <div
@@ -8273,24 +8273,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0x123456abc
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           0/42
         </div>
@@ -8298,7 +8298,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -8313,7 +8313,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -8336,7 +8336,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -8351,7 +8351,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -8372,7 +8372,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -8412,7 +8412,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0x123456abc"
     >
       <div
@@ -8492,24 +8492,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0x123456abc
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         0/42
       </div>
@@ -8517,7 +8517,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -8532,7 +8532,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -8555,7 +8555,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -8570,7 +8570,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -8591,7 +8591,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -8911,7 +8911,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
       >
         <div
@@ -8991,24 +8991,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           5/42
         </div>
@@ -9016,7 +9016,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -9031,7 +9031,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -9054,7 +9054,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -9069,7 +9069,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -9090,7 +9090,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -9221,7 +9221,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
     >
       <div
@@ -9301,24 +9301,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         5/42
       </div>
@@ -9326,7 +9326,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -9341,7 +9341,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -9364,7 +9364,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -9379,7 +9379,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -9400,7 +9400,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -9758,7 +9758,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xabcdef123"
       >
         <div
@@ -9838,24 +9838,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xabcdef123
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           5/42
         </div>
@@ -9863,7 +9863,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -9887,7 +9887,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -9909,7 +9909,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -9946,7 +9946,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xabcdef123"
     >
       <div
@@ -10026,24 +10026,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xabcdef123
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         5/42
       </div>
@@ -10051,7 +10051,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-4 kkumAc"
@@ -10075,7 +10075,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-4 kkumAc"
@@ -10097,7 +10097,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-4 kkumAc"
@@ -10444,7 +10444,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
@@ -10524,24 +10524,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           New Lock
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             2 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           3/240
         </div>
@@ -10549,7 +10549,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -10564,7 +10564,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -10587,7 +10587,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -10602,7 +10602,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -10623,7 +10623,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -10749,7 +10749,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <div
@@ -10829,24 +10829,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         New Lock
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           2 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         3/240
       </div>
@@ -10854,7 +10854,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -10869,7 +10869,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -10892,7 +10892,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -10907,7 +10907,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -10928,7 +10928,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -11298,7 +11298,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xabcdef123"
       >
         <div
@@ -11378,24 +11378,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xabcdef123
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           0/42
         </div>
@@ -11403,7 +11403,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -11418,7 +11418,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -11441,7 +11441,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -11456,7 +11456,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -11477,7 +11477,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -11513,7 +11513,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xabcdef123"
     >
       <div
@@ -11593,24 +11593,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xabcdef123
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         0/42
       </div>
@@ -11618,7 +11618,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -11633,7 +11633,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -11656,7 +11656,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -11671,7 +11671,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -11692,7 +11692,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -11955,7 +11955,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xabcdef123"
       >
         <div
@@ -12035,24 +12035,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xabcdef123
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           5/42
         </div>
@@ -12060,7 +12060,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -12084,7 +12084,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -12106,7 +12106,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -12143,7 +12143,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xabcdef123"
     >
       <div
@@ -12223,24 +12223,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xabcdef123
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         5/42
       </div>
@@ -12248,7 +12248,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-4 dAbamW"
@@ -12272,7 +12272,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-4 dAbamW"
@@ -12294,7 +12294,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-4 dAbamW"
@@ -12611,7 +12611,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
       >
         <div
@@ -12691,24 +12691,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           3/42
         </div>
@@ -12716,7 +12716,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -12731,7 +12731,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -12754,7 +12754,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -12769,7 +12769,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -12790,7 +12790,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -12921,7 +12921,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B"
     >
       <div
@@ -13001,24 +13001,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         3/42
       </div>
@@ -13026,7 +13026,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -13041,7 +13041,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -13064,7 +13064,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -13079,7 +13079,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -13100,7 +13100,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -13541,7 +13541,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xdefcab445"
       >
         <div
@@ -13621,24 +13621,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xdefcab445
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           5/42
         </div>
@@ -13646,7 +13646,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -13661,7 +13661,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -13684,7 +13684,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -13699,7 +13699,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -13720,7 +13720,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -13848,7 +13848,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xdefcab445"
     >
       <div
@@ -13928,24 +13928,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xdefcab445
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         5/42
       </div>
@@ -13953,7 +13953,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -13968,7 +13968,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -13991,7 +13991,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -14006,7 +14006,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -14027,7 +14027,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -14465,7 +14465,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lock c0"
+        class="c0 lock"
         data-address="0xfeedbabe"
       >
         <div
@@ -14545,24 +14545,24 @@ Object {
           </svg>
         </div>
         <div
-          class="name c2"
+          class="c2 name"
         >
           Lock Robster
           <div
-            class="address c3"
+            class="c3 address"
           >
             0xfeedbabe
           </div>
         </div>
         <div
-          class="duration "
+          class="duration"
         >
           <span>
             30 days
           </span>
         </div>
         <div
-          class="keys "
+          class="keys"
         >
           5/42
         </div>
@@ -14570,7 +14570,7 @@ Object {
           class="c4"
         >
           <span
-            class="currency c5"
+            class="c5 currency"
           >
             <span
               class="c6"
@@ -14585,7 +14585,7 @@ Object {
             class="c8"
           >
             <span
-              class="currency c5"
+              class="c5 currency"
             >
               <span
                 class="c9"
@@ -14608,7 +14608,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -14623,7 +14623,7 @@ Object {
                 class="c8"
               >
                 <span
-                  class="currency c5"
+                  class="c5 currency"
                 >
                   <span
                     class="c9"
@@ -14644,7 +14644,7 @@ Object {
               class="c4"
             >
               <span
-                class="currency c5"
+                class="c5 currency"
               >
                 <span
                   class="c6"
@@ -14775,7 +14775,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="lock mlglvd-0 jpUcBv"
+      class="mlglvd-0 jpUcBv lock"
       data-address="0xfeedbabe"
     >
       <div
@@ -14855,24 +14855,24 @@ Object {
         </svg>
       </div>
       <div
-        class="mlglvd-4 name kEFfnq"
+        class="mlglvd-4 kEFfnq name"
       >
         Lock Robster
         <div
-          class="mlglvd-5 address dUQSRx"
+          class="mlglvd-5 dUQSRx address"
         >
           0xfeedbabe
         </div>
       </div>
       <div
-        class="mlglvd-6 duration hNoahq"
+        class="mlglvd-6 hNoahq duration"
       >
         <span>
           30 days
         </span>
       </div>
       <div
-        class="mlglvd-7 keys EehSr"
+        class="mlglvd-7 EehSr keys"
       >
         5/42
       </div>
@@ -14880,7 +14880,7 @@ Object {
         class="buwkmd-0 bYclZI"
       >
         <span
-          class="buwkmd-1 currency jZYwNd"
+          class="buwkmd-1 jZYwNd currency"
         >
           <span
             class="buwkmd-2 buwkmd-3 itlNMk"
@@ -14895,7 +14895,7 @@ Object {
           class="buwkmd-7 bYErrz"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-5 GpMuN"
@@ -14918,7 +14918,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -14933,7 +14933,7 @@ Object {
               class="buwkmd-7 bYErrz"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-5 GpMuN"
@@ -14954,7 +14954,7 @@ Object {
             class="buwkmd-0 bYclZI"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-3 itlNMk"
@@ -15370,7 +15370,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -15445,7 +15445,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -15456,7 +15456,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -15471,7 +15471,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -15502,7 +15502,7 @@ Object {
             value="0.01"
           />
           <div
-            class="currency c7"
+            class="c7 currency"
           >
             Use DEV
           </div>
@@ -15533,7 +15533,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
     >
       <svg
         viewBox="0 0 216 216"
@@ -15608,7 +15608,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -15619,7 +15619,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -15634,7 +15634,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -15665,7 +15665,7 @@ Object {
           value="0.01"
         />
         <div
-          class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+          class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
         >
           Use DEV
         </div>
@@ -15966,7 +15966,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <svg
@@ -16042,7 +16042,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -16053,7 +16053,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -16068,7 +16068,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -16120,7 +16120,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
       data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <svg
@@ -16196,7 +16196,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -16207,7 +16207,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -16222,7 +16222,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -16544,7 +16544,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <svg
@@ -16620,7 +16620,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -16631,7 +16631,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -16646,7 +16646,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -16699,7 +16699,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
       data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
     >
       <svg
@@ -16775,7 +16775,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -16786,7 +16786,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -16801,7 +16801,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -17139,7 +17139,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -17214,7 +17214,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -17225,7 +17225,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="false"
@@ -17240,7 +17240,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -17271,7 +17271,7 @@ Object {
             value="0.01"
           />
           <div
-            class="currency c7"
+            class="c7 currency"
           >
             Use DEV
           </div>
@@ -17302,7 +17302,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
     >
       <svg
         viewBox="0 0 216 216"
@@ -17377,7 +17377,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -17388,7 +17388,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="false"
@@ -17403,7 +17403,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -17434,7 +17434,7 @@ Object {
           value="0.01"
         />
         <div
-          class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+          class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
         >
           Use DEV
         </div>
@@ -17750,7 +17750,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -17825,7 +17825,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -17836,7 +17836,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -17851,7 +17851,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -17882,7 +17882,7 @@ Object {
             value="-1"
           />
           <div
-            class="currency c7"
+            class="c7 currency"
           >
             Use DEV
           </div>
@@ -17913,7 +17913,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
     >
       <svg
         viewBox="0 0 216 216"
@@ -17988,7 +17988,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -17999,7 +17999,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -18014,7 +18014,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -18045,7 +18045,7 @@ Object {
           value="-1"
         />
         <div
-          class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+          class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
         >
           Use DEV
         </div>
@@ -18361,7 +18361,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -18436,7 +18436,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="true"
@@ -18447,7 +18447,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -18462,7 +18462,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="false"
@@ -18493,7 +18493,7 @@ Object {
             value="0.01"
           />
           <div
-            class="currency c7"
+            class="c7 currency"
           >
             Use DEV
           </div>
@@ -18524,7 +18524,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
     >
       <svg
         viewBox="0 0 216 216"
@@ -18599,7 +18599,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="true"
@@ -18610,7 +18610,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -18625,7 +18625,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="false"
@@ -18656,7 +18656,7 @@ Object {
           value="0.01"
         />
         <div
-          class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+          class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
         >
           Use DEV
         </div>
@@ -18972,7 +18972,7 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="lockForm c0"
+        class="c0 lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -19047,7 +19047,7 @@ Object {
           </g>
         </svg>
         <div
-          class="name c1"
+          class="c1 name"
         >
           <input
             data-valid="false"
@@ -19058,7 +19058,7 @@ Object {
           />
         </div>
         <div
-          class="duration c2"
+          class="c2 duration"
         >
           <input
             data-valid="true"
@@ -19073,7 +19073,7 @@ Object {
           days
         </div>
         <div
-          class="keys c3"
+          class="c3 keys"
         >
           <input
             data-valid="true"
@@ -19104,7 +19104,7 @@ Object {
             value="0.01"
           />
           <div
-            class="currency c7"
+            class="c7 currency"
           >
             Use DEV
           </div>
@@ -19135,7 +19135,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+      class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
     >
       <svg
         viewBox="0 0 216 216"
@@ -19210,7 +19210,7 @@ Object {
         </g>
       </svg>
       <div
-        class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+        class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
       >
         <input
           data-valid="false"
@@ -19221,7 +19221,7 @@ Object {
         />
       </div>
       <div
-        class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+        class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
       >
         <input
           data-valid="true"
@@ -19236,7 +19236,7 @@ Object {
         days
       </div>
       <div
-        class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+        class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
       >
         <input
           data-valid="true"
@@ -19267,7 +19267,7 @@ Object {
           value="0.01"
         />
         <div
-          class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+          class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
         >
           Use DEV
         </div>
@@ -19751,7 +19751,7 @@ Object {
           </div>
         </div>
         <div
-          class="lock c7"
+          class="c7 lock"
           data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
@@ -19831,24 +19831,24 @@ Object {
             </svg>
           </div>
           <div
-            class="name c9"
+            class="c9 name"
           >
             First Lock
             <div
-              class="address c10"
+              class="c10 address"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
           </div>
           <div
-            class="duration "
+            class="duration"
           >
             <span>
               2 days
             </span>
           </div>
           <div
-            class="keys "
+            class="keys"
           >
             3/240
           </div>
@@ -19856,7 +19856,7 @@ Object {
             class="c11"
           >
             <span
-              class="currency c12"
+              class="c12 currency"
             >
               <span
                 class="c13"
@@ -19871,7 +19871,7 @@ Object {
               class="c15"
             >
               <span
-                class="currency c12"
+                class="c12 currency"
               >
                 <span
                   class="c16"
@@ -19894,7 +19894,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -19909,7 +19909,7 @@ Object {
                   class="c15"
                 >
                   <span
-                    class="currency c12"
+                    class="c12 currency"
                   >
                     <span
                       class="c16"
@@ -19930,7 +19930,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -20049,7 +20049,7 @@ Object {
           </div>
         </div>
         <div
-          class="lock c7"
+          class="c7 lock"
           data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
@@ -20129,24 +20129,24 @@ Object {
             </svg>
           </div>
           <div
-            class="name c9"
+            class="c9 name"
           >
             Another Lock
             <div
-              class="address c10"
+              class="c10 address"
             >
               0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
             </div>
           </div>
           <div
-            class="duration "
+            class="duration"
           >
             <span>
               365 days
             </span>
           </div>
           <div
-            class="keys "
+            class="keys"
           >
             1234/∞
           </div>
@@ -20154,7 +20154,7 @@ Object {
             class="c11"
           >
             <span
-              class="currency c12"
+              class="c12 currency"
             >
               <span
                 class="c13"
@@ -20169,7 +20169,7 @@ Object {
               class="c15"
             >
               <span
-                class="currency c12"
+                class="c12 currency"
               >
                 <span
                   class="c16"
@@ -20192,7 +20192,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -20207,7 +20207,7 @@ Object {
                   class="c15"
                 >
                   <span
-                    class="currency c12"
+                    class="c12 currency"
                   >
                     <span
                       class="c16"
@@ -20228,7 +20228,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -20556,7 +20556,7 @@ Object {
         </div>
       </div>
       <div
-        class="lock mlglvd-0 jpUcBv"
+        class="mlglvd-0 jpUcBv lock"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
@@ -20636,24 +20636,24 @@ Object {
           </svg>
         </div>
         <div
-          class="mlglvd-4 name kEFfnq"
+          class="mlglvd-4 kEFfnq name"
         >
           First Lock
           <div
-            class="mlglvd-5 address dUQSRx"
+            class="mlglvd-5 dUQSRx address"
           >
             0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
           </div>
         </div>
         <div
-          class="mlglvd-6 duration hNoahq"
+          class="mlglvd-6 hNoahq duration"
         >
           <span>
             2 days
           </span>
         </div>
         <div
-          class="mlglvd-7 keys EehSr"
+          class="mlglvd-7 EehSr keys"
         >
           3/240
         </div>
@@ -20661,7 +20661,7 @@ Object {
           class="buwkmd-0 bYclZI"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-3 itlNMk"
@@ -20676,7 +20676,7 @@ Object {
             class="buwkmd-7 bYErrz"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-5 GpMuN"
@@ -20699,7 +20699,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -20714,7 +20714,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -20735,7 +20735,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -20854,7 +20854,7 @@ Object {
         </div>
       </div>
       <div
-        class="lock mlglvd-0 jpUcBv"
+        class="mlglvd-0 jpUcBv lock"
         data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
       >
         <div
@@ -20934,24 +20934,24 @@ Object {
           </svg>
         </div>
         <div
-          class="mlglvd-4 name kEFfnq"
+          class="mlglvd-4 kEFfnq name"
         >
           Another Lock
           <div
-            class="mlglvd-5 address dUQSRx"
+            class="mlglvd-5 dUQSRx address"
           >
             0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
           </div>
         </div>
         <div
-          class="mlglvd-6 duration hNoahq"
+          class="mlglvd-6 hNoahq duration"
         >
           <span>
             365 days
           </span>
         </div>
         <div
-          class="mlglvd-7 keys EehSr"
+          class="mlglvd-7 EehSr keys"
         >
           1234/∞
         </div>
@@ -20959,7 +20959,7 @@ Object {
           class="buwkmd-0 bYclZI"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-3 itlNMk"
@@ -20974,7 +20974,7 @@ Object {
             class="buwkmd-7 bYErrz"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-5 GpMuN"
@@ -20997,7 +20997,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -21012,7 +21012,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -21033,7 +21033,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -22350,7 +22350,7 @@ Object {
           </div>
         </div>
         <div
-          class="lock c7"
+          class="c7 lock"
           data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
@@ -22430,24 +22430,24 @@ Object {
             </svg>
           </div>
           <div
-            class="name c9"
+            class="c9 name"
           >
             First Lock
             <div
-              class="address c10"
+              class="c10 address"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
           </div>
           <div
-            class="duration "
+            class="duration"
           >
             <span>
               2 days
             </span>
           </div>
           <div
-            class="keys "
+            class="keys"
           >
             3/240
           </div>
@@ -22455,7 +22455,7 @@ Object {
             class="c11"
           >
             <span
-              class="currency c12"
+              class="c12 currency"
             >
               <span
                 class="c13"
@@ -22470,7 +22470,7 @@ Object {
               class="c15"
             >
               <span
-                class="currency c12"
+                class="c12 currency"
               >
                 <span
                   class="c16"
@@ -22493,7 +22493,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -22508,7 +22508,7 @@ Object {
                   class="c15"
                 >
                   <span
-                    class="currency c12"
+                    class="c12 currency"
                   >
                     <span
                       class="c16"
@@ -22529,7 +22529,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -22648,7 +22648,7 @@ Object {
           </div>
         </div>
         <div
-          class="lock c7"
+          class="c7 lock"
           data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
         >
           <div
@@ -22728,24 +22728,24 @@ Object {
             </svg>
           </div>
           <div
-            class="name c9"
+            class="c9 name"
           >
             Another Lock
             <div
-              class="address c10"
+              class="c10 address"
             >
               0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
             </div>
           </div>
           <div
-            class="duration "
+            class="duration"
           >
             <span>
               365 days
             </span>
           </div>
           <div
-            class="keys "
+            class="keys"
           >
             1234/∞
           </div>
@@ -22753,7 +22753,7 @@ Object {
             class="c11"
           >
             <span
-              class="currency c12"
+              class="c12 currency"
             >
               <span
                 class="c13"
@@ -22768,7 +22768,7 @@ Object {
               class="c15"
             >
               <span
-                class="currency c12"
+                class="c12 currency"
               >
                 <span
                   class="c16"
@@ -22791,7 +22791,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -22806,7 +22806,7 @@ Object {
                   class="c15"
                 >
                   <span
-                    class="currency c12"
+                    class="c12 currency"
                   >
                     <span
                       class="c16"
@@ -22827,7 +22827,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -23000,7 +23000,7 @@ Object {
         </div>
       </div>
       <div
-        class="lock mlglvd-0 jpUcBv"
+        class="mlglvd-0 jpUcBv lock"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
@@ -23080,24 +23080,24 @@ Object {
           </svg>
         </div>
         <div
-          class="mlglvd-4 name kEFfnq"
+          class="mlglvd-4 kEFfnq name"
         >
           First Lock
           <div
-            class="mlglvd-5 address dUQSRx"
+            class="mlglvd-5 dUQSRx address"
           >
             0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
           </div>
         </div>
         <div
-          class="mlglvd-6 duration hNoahq"
+          class="mlglvd-6 hNoahq duration"
         >
           <span>
             2 days
           </span>
         </div>
         <div
-          class="mlglvd-7 keys EehSr"
+          class="mlglvd-7 EehSr keys"
         >
           3/240
         </div>
@@ -23105,7 +23105,7 @@ Object {
           class="buwkmd-0 bYclZI"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-3 itlNMk"
@@ -23120,7 +23120,7 @@ Object {
             class="buwkmd-7 bYErrz"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-5 GpMuN"
@@ -23143,7 +23143,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -23158,7 +23158,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -23179,7 +23179,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -23298,7 +23298,7 @@ Object {
         </div>
       </div>
       <div
-        class="lock mlglvd-0 jpUcBv"
+        class="mlglvd-0 jpUcBv lock"
         data-address="0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83"
       >
         <div
@@ -23378,24 +23378,24 @@ Object {
           </svg>
         </div>
         <div
-          class="mlglvd-4 name kEFfnq"
+          class="mlglvd-4 kEFfnq name"
         >
           Another Lock
           <div
-            class="mlglvd-5 address dUQSRx"
+            class="mlglvd-5 dUQSRx address"
           >
             0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83
           </div>
         </div>
         <div
-          class="mlglvd-6 duration hNoahq"
+          class="mlglvd-6 hNoahq duration"
         >
           <span>
             365 days
           </span>
         </div>
         <div
-          class="mlglvd-7 keys EehSr"
+          class="mlglvd-7 EehSr keys"
         >
           1234/∞
         </div>
@@ -23403,7 +23403,7 @@ Object {
           class="buwkmd-0 bYclZI"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-3 itlNMk"
@@ -23418,7 +23418,7 @@ Object {
             class="buwkmd-7 bYErrz"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-5 GpMuN"
@@ -23441,7 +23441,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -23456,7 +23456,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -23477,7 +23477,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -24386,7 +24386,7 @@ Object {
           </div>
         </div>
         <div
-          class="lockForm c7"
+          class="c7 lockForm"
         >
           <svg
             viewBox="0 0 216 216"
@@ -24461,7 +24461,7 @@ Object {
             </g>
           </svg>
           <div
-            class="name c8"
+            class="c8 name"
           >
             <input
               data-valid="true"
@@ -24472,7 +24472,7 @@ Object {
             />
           </div>
           <div
-            class="duration c9"
+            class="c9 duration"
           >
             <input
               data-valid="true"
@@ -24487,7 +24487,7 @@ Object {
             days
           </div>
           <div
-            class="keys c10"
+            class="c10 keys"
           >
             <input
               data-valid="true"
@@ -24518,7 +24518,7 @@ Object {
               value="0.01"
             />
             <div
-              class="currency c14"
+              class="c14 currency"
             >
               Use DEV
             </div>
@@ -24596,7 +24596,7 @@ Object {
         </div>
       </div>
       <div
-        class="mlglvd-0 lockForm sc-1u8ov25-2 CBkUh"
+        class="mlglvd-0 sc-1u8ov25-2 CBkUh lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -24671,7 +24671,7 @@ Object {
           </g>
         </svg>
         <div
-          class="mlglvd-4 sc-1u8ov25-4 name itDxYs"
+          class="mlglvd-4 sc-1u8ov25-4 itDxYs name"
         >
           <input
             data-valid="true"
@@ -24682,7 +24682,7 @@ Object {
           />
         </div>
         <div
-          class="mlglvd-6 sc-1u8ov25-5 duration eSaaUO"
+          class="mlglvd-6 sc-1u8ov25-5 eSaaUO duration"
         >
           <input
             data-valid="true"
@@ -24697,7 +24697,7 @@ Object {
           days
         </div>
         <div
-          class="mlglvd-7 sc-1u8ov25-6 keys grStlN"
+          class="mlglvd-7 sc-1u8ov25-6 grStlN keys"
         >
           <input
             data-valid="true"
@@ -24728,7 +24728,7 @@ Object {
             value="0.01"
           />
           <div
-            class="mlglvd-1 sc-1u8ov25-1 currency wqxwA"
+            class="mlglvd-1 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -25203,7 +25203,7 @@ Object {
           </div>
         </div>
         <div
-          class="lock c7"
+          class="c7 lock"
           data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
         >
           <div
@@ -25283,24 +25283,24 @@ Object {
             </svg>
           </div>
           <div
-            class="name c9"
+            class="c9 name"
           >
             First Lock
             <div
-              class="address c10"
+              class="c10 address"
             >
               0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
             </div>
           </div>
           <div
-            class="duration "
+            class="duration"
           >
             <span>
               2 days
             </span>
           </div>
           <div
-            class="keys "
+            class="keys"
           >
             3/240
           </div>
@@ -25308,7 +25308,7 @@ Object {
             class="c11"
           >
             <span
-              class="currency c12"
+              class="c12 currency"
             >
               <span
                 class="c13"
@@ -25323,7 +25323,7 @@ Object {
               class="c15"
             >
               <span
-                class="currency c12"
+                class="c12 currency"
               >
                 <span
                   class="c16"
@@ -25346,7 +25346,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -25361,7 +25361,7 @@ Object {
                   class="c15"
                 >
                   <span
-                    class="currency c12"
+                    class="c12 currency"
                   >
                     <span
                       class="c16"
@@ -25382,7 +25382,7 @@ Object {
                 class="c11"
               >
                 <span
-                  class="currency c12"
+                  class="c12 currency"
                 >
                   <span
                     class="c13"
@@ -25555,7 +25555,7 @@ Object {
         </div>
       </div>
       <div
-        class="lock mlglvd-0 jpUcBv"
+        class="mlglvd-0 jpUcBv lock"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <div
@@ -25635,24 +25635,24 @@ Object {
           </svg>
         </div>
         <div
-          class="mlglvd-4 name kEFfnq"
+          class="mlglvd-4 kEFfnq name"
         >
           First Lock
           <div
-            class="mlglvd-5 address dUQSRx"
+            class="mlglvd-5 dUQSRx address"
           >
             0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e
           </div>
         </div>
         <div
-          class="mlglvd-6 duration hNoahq"
+          class="mlglvd-6 hNoahq duration"
         >
           <span>
             2 days
           </span>
         </div>
         <div
-          class="mlglvd-7 keys EehSr"
+          class="mlglvd-7 EehSr keys"
         >
           3/240
         </div>
@@ -25660,7 +25660,7 @@ Object {
           class="buwkmd-0 bYclZI"
         >
           <span
-            class="buwkmd-1 currency jZYwNd"
+            class="buwkmd-1 jZYwNd currency"
           >
             <span
               class="buwkmd-2 buwkmd-3 itlNMk"
@@ -25675,7 +25675,7 @@ Object {
             class="buwkmd-7 bYErrz"
           >
             <span
-              class="buwkmd-1 currency jZYwNd"
+              class="buwkmd-1 jZYwNd currency"
             >
               <span
                 class="buwkmd-2 buwkmd-5 GpMuN"
@@ -25698,7 +25698,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -25713,7 +25713,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -25734,7 +25734,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -27893,7 +27893,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c32"
+              class="c32 lock"
               data-address="0x9abcdef0"
             >
               <div
@@ -27973,24 +27973,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c34"
+                class="c34 name"
               >
                 Infinite Lock
                 <div
-                  class="address c35"
+                  class="c35 address"
                 >
                   0x9abcdef0
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   2 days
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 10/0
               </div>
@@ -27998,7 +27998,7 @@ Object {
                 class="c36"
               >
                 <span
-                  class="currency c37"
+                  class="c37 currency"
                 >
                   <span
                     class="c38"
@@ -28013,7 +28013,7 @@ Object {
                   class="c40"
                 >
                   <span
-                    class="currency c37"
+                    class="c37 currency"
                   >
                     <span
                       class="c41"
@@ -28036,7 +28036,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -28051,7 +28051,7 @@ Object {
                       class="c40"
                     >
                       <span
-                        class="currency c37"
+                        class="c37 currency"
                       >
                         <span
                           class="c41"
@@ -28072,7 +28072,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -28191,7 +28191,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c32"
+              class="c32 lock"
               data-address="0x56781234a"
             >
               <div
@@ -28271,24 +28271,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c34"
+                class="c34 name"
               >
                 New Lock
                 <div
-                  class="address c35"
+                  class="c35 address"
                 >
                   0x56781234a
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   1 day
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 32/800
               </div>
@@ -28296,7 +28296,7 @@ Object {
                 class="c36"
               >
                 <span
-                  class="currency c37"
+                  class="c37 currency"
                 >
                   <span
                     class="c38"
@@ -28311,7 +28311,7 @@ Object {
                   class="c40"
                 >
                   <span
-                    class="currency c37"
+                    class="c37 currency"
                   >
                     <span
                       class="c41"
@@ -28334,7 +28334,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -28349,7 +28349,7 @@ Object {
                       class="c40"
                     >
                       <span
-                        class="currency c37"
+                        class="c37 currency"
                       >
                         <span
                           class="c41"
@@ -28370,7 +28370,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -28489,7 +28489,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c32"
+              class="c32 lock"
               data-address="0x12345678a"
             >
               <div
@@ -28569,24 +28569,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c34"
+                class="c34 name"
               >
                 My Blog
                 <div
-                  class="address c35"
+                  class="c35 address"
                 >
                   0x12345678a
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   2 days
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 3/240
               </div>
@@ -28594,7 +28594,7 @@ Object {
                 class="c36"
               >
                 <span
-                  class="currency c37"
+                  class="c37 currency"
                 >
                   <span
                     class="c38"
@@ -28609,7 +28609,7 @@ Object {
                   class="c40"
                 >
                   <span
-                    class="currency c37"
+                    class="c37 currency"
                   >
                     <span
                       class="c41"
@@ -28632,7 +28632,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -28647,7 +28647,7 @@ Object {
                       class="c40"
                     >
                       <span
-                        class="currency c37"
+                        class="c37 currency"
                       >
                         <span
                           class="c41"
@@ -28668,7 +28668,7 @@ Object {
                     class="c36"
                   >
                     <span
-                      class="currency c37"
+                      class="c37 currency"
                     >
                       <span
                         class="c38"
@@ -29197,7 +29197,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x9abcdef0"
           >
             <div
@@ -29277,24 +29277,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               Infinite Lock
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x9abcdef0
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 2 days
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               10/0
             </div>
@@ -29302,7 +29302,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29317,7 +29317,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29340,7 +29340,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29355,7 +29355,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29376,7 +29376,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29495,7 +29495,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x56781234a"
           >
             <div
@@ -29575,24 +29575,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               New Lock
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x56781234a
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 1 day
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               32/800
             </div>
@@ -29600,7 +29600,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29615,7 +29615,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29638,7 +29638,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29653,7 +29653,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29674,7 +29674,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29793,7 +29793,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x12345678a"
           >
             <div
@@ -29873,24 +29873,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               My Blog
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x12345678a
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 2 days
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               3/240
             </div>
@@ -29898,7 +29898,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29913,7 +29913,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29936,7 +29936,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -29951,7 +29951,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -29972,7 +29972,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -31414,7 +31414,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c35"
+              class="c35 lock"
               data-address="0x9abcdef0"
             >
               <div
@@ -31494,24 +31494,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c37"
+                class="c37 name"
               >
                 Infinite Lock
                 <div
-                  class="address c38"
+                  class="c38 address"
                 >
                   0x9abcdef0
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   2 days
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 10/0
               </div>
@@ -31519,7 +31519,7 @@ Object {
                 class="c39"
               >
                 <span
-                  class="currency c40"
+                  class="c40 currency"
                 >
                   <span
                     class="c41"
@@ -31534,7 +31534,7 @@ Object {
                   class="c43"
                 >
                   <span
-                    class="currency c40"
+                    class="c40 currency"
                   >
                     <span
                       class="c44"
@@ -31557,7 +31557,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -31572,7 +31572,7 @@ Object {
                       class="c43"
                     >
                       <span
-                        class="currency c40"
+                        class="c40 currency"
                       >
                         <span
                           class="c44"
@@ -31593,7 +31593,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -31712,7 +31712,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c35"
+              class="c35 lock"
               data-address="0x56781234a"
             >
               <div
@@ -31792,24 +31792,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c37"
+                class="c37 name"
               >
                 New Lock
                 <div
-                  class="address c38"
+                  class="c38 address"
                 >
                   0x56781234a
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   1 day
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 32/800
               </div>
@@ -31817,7 +31817,7 @@ Object {
                 class="c39"
               >
                 <span
-                  class="currency c40"
+                  class="c40 currency"
                 >
                   <span
                     class="c41"
@@ -31832,7 +31832,7 @@ Object {
                   class="c43"
                 >
                   <span
-                    class="currency c40"
+                    class="c40 currency"
                   >
                     <span
                       class="c44"
@@ -31855,7 +31855,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -31870,7 +31870,7 @@ Object {
                       class="c43"
                     >
                       <span
-                        class="currency c40"
+                        class="c40 currency"
                       >
                         <span
                           class="c44"
@@ -31891,7 +31891,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -32010,7 +32010,7 @@ Object {
               </div>
             </div>
             <div
-              class="lock c35"
+              class="c35 lock"
               data-address="0x12345678a"
             >
               <div
@@ -32090,24 +32090,24 @@ Object {
                 </svg>
               </div>
               <div
-                class="name c37"
+                class="c37 name"
               >
                 My Blog
                 <div
-                  class="address c38"
+                  class="c38 address"
                 >
                   0x12345678a
                 </div>
               </div>
               <div
-                class="duration "
+                class="duration"
               >
                 <span>
                   2 days
                 </span>
               </div>
               <div
-                class="keys "
+                class="keys"
               >
                 3/240
               </div>
@@ -32115,7 +32115,7 @@ Object {
                 class="c39"
               >
                 <span
-                  class="currency c40"
+                  class="c40 currency"
                 >
                   <span
                     class="c41"
@@ -32130,7 +32130,7 @@ Object {
                   class="c43"
                 >
                   <span
-                    class="currency c40"
+                    class="c40 currency"
                   >
                     <span
                       class="c44"
@@ -32153,7 +32153,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -32168,7 +32168,7 @@ Object {
                       class="c43"
                     >
                       <span
-                        class="currency c40"
+                        class="c40 currency"
                       >
                         <span
                           class="c44"
@@ -32189,7 +32189,7 @@ Object {
                     class="c39"
                   >
                     <span
-                      class="currency c40"
+                      class="c40 currency"
                     >
                       <span
                         class="c41"
@@ -32734,7 +32734,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x9abcdef0"
           >
             <div
@@ -32814,24 +32814,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               Infinite Lock
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x9abcdef0
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 2 days
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               10/0
             </div>
@@ -32839,7 +32839,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -32854,7 +32854,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -32877,7 +32877,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -32892,7 +32892,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -32913,7 +32913,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33032,7 +33032,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x56781234a"
           >
             <div
@@ -33112,24 +33112,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               New Lock
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x56781234a
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 1 day
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               32/800
             </div>
@@ -33137,7 +33137,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33152,7 +33152,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -33175,7 +33175,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33190,7 +33190,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -33211,7 +33211,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33330,7 +33330,7 @@ Object {
             </div>
           </div>
           <div
-            class="lock mlglvd-0 jpUcBv"
+            class="mlglvd-0 jpUcBv lock"
             data-address="0x12345678a"
           >
             <div
@@ -33410,24 +33410,24 @@ Object {
               </svg>
             </div>
             <div
-              class="mlglvd-4 name kEFfnq"
+              class="mlglvd-4 kEFfnq name"
             >
               My Blog
               <div
-                class="mlglvd-5 address dUQSRx"
+                class="mlglvd-5 dUQSRx address"
               >
                 0x12345678a
               </div>
             </div>
             <div
-              class="mlglvd-6 duration hNoahq"
+              class="mlglvd-6 hNoahq duration"
             >
               <span>
                 2 days
               </span>
             </div>
             <div
-              class="mlglvd-7 keys EehSr"
+              class="mlglvd-7 EehSr keys"
             >
               3/240
             </div>
@@ -33435,7 +33435,7 @@ Object {
               class="buwkmd-0 bYclZI"
             >
               <span
-                class="buwkmd-1 currency jZYwNd"
+                class="buwkmd-1 jZYwNd currency"
               >
                 <span
                   class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33450,7 +33450,7 @@ Object {
                 class="buwkmd-7 bYErrz"
               >
                 <span
-                  class="buwkmd-1 currency jZYwNd"
+                  class="buwkmd-1 jZYwNd currency"
                 >
                   <span
                     class="buwkmd-2 buwkmd-5 GpMuN"
@@ -33473,7 +33473,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"
@@ -33488,7 +33488,7 @@ Object {
                     class="buwkmd-7 bYErrz"
                   >
                     <span
-                      class="buwkmd-1 currency jZYwNd"
+                      class="buwkmd-1 jZYwNd currency"
                     >
                       <span
                         class="buwkmd-2 buwkmd-5 GpMuN"
@@ -33509,7 +33509,7 @@ Object {
                   class="buwkmd-0 bYclZI"
                 >
                   <span
-                    class="buwkmd-1 currency jZYwNd"
+                    class="buwkmd-1 jZYwNd currency"
                   >
                     <span
                       class="buwkmd-2 buwkmd-3 itlNMk"

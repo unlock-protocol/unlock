@@ -12046,7 +12046,7 @@ Object {
             </p>
             <form
               action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-              class="subscribe c26"
+              class="c26 subscribe"
               method="post"
               rel="noopener noreferrer"
               target="_blank"
@@ -12546,7 +12546,7 @@ Object {
           </p>
           <form
             action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-            class="subscribe sc-1jockd9-0 bqGIyg"
+            class="sc-1jockd9-0 bqGIyg subscribe"
             method="post"
             rel="noopener noreferrer"
             target="_blank"
