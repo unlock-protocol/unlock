@@ -19,11 +19,11 @@ contract MixinFunds
     address _tokenAddress
   ) public
   {
+    tokenAddress = _tokenAddress;
     require(
       _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
       'INVALID_TOKEN'
     );
-    tokenAddress = _tokenAddress;
   }
 
   /**
