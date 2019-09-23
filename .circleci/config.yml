@@ -39,21 +39,6 @@ jobs:
           name: unlock-app tests
           command: scripts/tests.sh unlock-app
 
-  unlock-app-chromatic:
-    machine: true
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - checkout
-      - run:
-          name: Build unlock-app Image
-          command: scripts/build-image.sh unlock-app
-      - run:
-          name: Creator Dashboard stories
-          command: scripts/storybook.sh unlock-app "$CIRCLE_BRANCH" $CIRCLE_SHA1
-          environment:
-            UNLOCK_APP_CHROMATIC_APP_CODE: swpc6wf70qp
-
   unlock-js-tests:
     machine: true
     environment:
@@ -346,12 +331,6 @@ workflows:
       - unlock-app-tests
       - unlock-js-tests
       - rover-tests
-      - unlock-app-chromatic:
-          filters:
-            branches:
-              ignore: /production.*/
-          requires:
-            - unlock-app-tests
       - integration-tests:
           requires:
             - smart-contracts-tests
