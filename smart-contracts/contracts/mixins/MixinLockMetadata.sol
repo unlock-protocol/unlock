@@ -77,7 +77,7 @@ contract MixinLockMetadata is
     returns(string memory)
   {
     if(bytes(lockSymbol).length == 0) {
-      return unlockProtocol.getGlobalTokenSymbol();
+      return unlockProtocol.globalTokenSymbol();
     } else {
       return lockSymbol;
     }
@@ -109,7 +109,7 @@ contract MixinLockMetadata is
   {
     string memory URI;
     if(bytes(baseTokenURI).length == 0) {
-      URI = unlockProtocol.getGlobalBaseTokenURI();
+      URI = unlockProtocol.globalBaseTokenURI();
     } else {
       URI = baseTokenURI;
     }

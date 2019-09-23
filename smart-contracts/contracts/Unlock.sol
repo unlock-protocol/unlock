@@ -65,11 +65,11 @@ contract Unlock is
 
   // global base token URI
   // Used by locks where the owner has not set a custom base URI.
-  string private globalBaseTokenURI;
+  string public globalBaseTokenURI;
 
    // global base token symbol
   // Used by locks where the owner has not set a custom symbol
-  string private globalTokenSymbol;
+  string public globalTokenSymbol;
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
@@ -181,24 +181,6 @@ contract Unlock is
     returns (uint16)
   {
     return 5;
-  }
-
-  // function to read the globalTokenURI field.
-  function getGlobalBaseTokenURI()
-    external
-    view
-    returns (string memory)
-  {
-    return globalBaseTokenURI;
-  }
-
-  // function to read the globalTokenSymbol field.
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory)
-  {
-    return globalTokenSymbol;
   }
 
   // function for the owner to update configuration variables
