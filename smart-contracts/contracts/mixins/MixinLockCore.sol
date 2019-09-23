@@ -1,6 +1,6 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
@@ -66,7 +66,7 @@ contract MixinLockCore is
     _;
   }
 
-  constructor(
+  function initialize(
     address _beneficiary,
     uint _expirationDuration,
     uint _keyPrice,
@@ -89,7 +89,8 @@ contract MixinLockCore is
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    *
    * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` use case.
+   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
+   * use cases.
    */
   function withdraw(
     address _tokenAddress,

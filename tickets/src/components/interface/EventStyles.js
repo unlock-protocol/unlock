@@ -71,19 +71,30 @@ export const Cta = styled.a`
   color: var(--link);
 `
 
-export const Title = styled.h1`
-  ${Media.phone`
-    margin-top 20px;
-  `};
-
-  margin-bottom: 20px;
-  font-style: normal;
+export const CreateTitle = styled.h1`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: light;
   font-weight: 500;
   font-size: 24px;
-  font-style: light;
   line-height: 47px;
+  margin-bottom: 20px;
   grid-column: 1 3;
   color: var(--darkgrey);
+  ${Media.phone`
+margin-top: 20px;
+  `}
+`
+
+export const Title = styled.h1`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+  margin-bottom: 0px;
+  ${Media.nophone`
+    padding-left: 20px;
+  `}
 `
 
 export const TextArea = styled.textarea`
@@ -106,4 +117,93 @@ export const Input = styled.input`
   padding: 10px;
   font-size: 16px;
   color: var(--darkgrey);
+`
+
+export const Date = styled.h2`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--red);
+  margin-top: 0px;
+  margin-bottom: 0px;
+  ${Media.nophone`
+    padding-left: 20px;
+  `}
+`
+
+export const Time = styled.span`
+  border: 0;
+  border-left: var(--grey) solid 2px;
+  padding-left: 10px;
+  margin-left: 10px;
+`
+
+export const Location = styled.p`
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 16px;
+  margin: 0px;
+  padding-left: 20px;
+`
+
+export const Link = styled.li`
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(${props => props.icon}) no-repeat;
+  padding-left: 40px;
+`
+
+export const Links = styled.ul`
+  font-size: 24px;
+  padding: 0px;
+`
+
+export const DescriptionPara = styled.p`
+  margin-bottom: 1em;
+`
+
+export const DescriptionWrapper = styled.div`
+  font-size: 24px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  p {
+    padding: 0.5em 0;
+    margin: 0px;
+  }
+`
+
+export const Form = styled.form`
+  display: grid;
+  grid-gap: 10px;
+`
+
+export const SendButton = styled.input`
+  background-color: ${props =>
+    props.disabled ? 'var(--grey)' : 'var(--green)'};
+  border: none;
+  font-size: 16px;
+  color: var(--white);
+  font-family: 'IBM Plex Sans', sans-serif;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 200ms ease;
+  & :hover {
+    background-color: ${props =>
+      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+  }
+  height: 60px;
+  ${Media.phone`
+width: 100%;
+`};
+`
+
+export const TicketInfo = styled.div`
+  display: grid;
+  grid-gap: 20px;
+
+  ${Media.phone`
+justify-content: center;
+`}
 `

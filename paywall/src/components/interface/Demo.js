@@ -38,6 +38,7 @@ const Demo = ({ checkout, locked }) => {
                 it’s feeding our democracies with more misinformation and fake
                 news.
               </p>
+
               <Locked locked={locked} overlay>
                 The thing is, plenty of publishers and creators have been ahead
                 of the curve on this one, even if we don’t give them much credit
@@ -83,11 +84,11 @@ const Demo = ({ checkout, locked }) => {
 
 Demo.propTypes = {
   checkout: PropTypes.func.isRequired,
-  locked: PropTypes.bool,
+  locked: PropTypes.string,
 }
 
 Demo.defaultProps = {
-  locked: true,
+  locked: 'loading',
 }
 
 export default Demo
@@ -174,7 +175,7 @@ const Illustration = styled.div`
 const CallToAction = styled.p`
   text-align: center;
   font-size: 1.2em;
-  display: ${props => (props.locked ? 'block' : 'none')};
+  display: ${props => (props.locked === 'locked' ? 'block' : 'none')};
 `
 
 const Button = styled.button`
@@ -191,15 +192,16 @@ const Button = styled.button`
   margin-right: auto;
 `
 
-const Locked = styled.div`
-  display: ${props => (props.locked && !props.overlay ? 'none' : 'block')};
+const Locked = styled.p`
+  display: ${props =>
+    props.locked === 'unlocked' || props.overlay ? 'block' : 'none'};
   position: relative; // Important to make the overlay work
 `
 
-const Overlay = styled.div`
-  display: ${props => (props.locked ? 'block' : 'none')};
+const Overlay = styled.span`
+  display: ${props => (props.locked === 'unlocked' ? 'none' : 'block')};
   position: absolute;
-  background: linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 80%);
+  background: linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 70%);
   top: 0;
   width: 100%;
   height: 100%;

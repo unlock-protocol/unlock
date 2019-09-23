@@ -214,6 +214,7 @@ describe('Metadata Controller', () => {
         expect.assertions(1)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -237,6 +238,7 @@ describe('Metadata Controller', () => {
         expect.assertions(1)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -253,6 +255,7 @@ describe('Metadata Controller', () => {
           expect.assertions(1)
           const sig = sigUtil.signTypedData(privateKey2, {
             data: typedData,
+            from: '',
           })
 
           let response = await request(app)
@@ -290,6 +293,7 @@ describe('Metadata Controller', () => {
 
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -337,6 +341,7 @@ describe('Metadata Controller', () => {
 
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)

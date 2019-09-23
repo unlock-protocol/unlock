@@ -20,7 +20,7 @@ contract('Lock / erc721 / approve', accounts => {
         locks['FIRST'].approve(accounts[2], 42, {
           from: accounts[1],
         }),
-        'NO_SUCH_KEY'
+        'ONLY_KEY_OWNER_OR_APPROVED'
       )
     })
   })

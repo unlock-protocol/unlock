@@ -1,7 +1,7 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import '../interfaces/IERC721.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
@@ -22,7 +22,7 @@ contract MixinLockMetadata is
   MixinKeys
 {
   /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
-  string private lockName;
+  string public name;
 
   /// An abbreviated name for NFTs in this contract. Defaults to "KEY" but is settable by lock owner
   string private lockSymbol;
@@ -34,12 +34,12 @@ contract MixinLockMetadata is
     string symbol
   );
 
-  constructor(
+  function initialize(
     string memory _lockName
   ) internal
   {
     ERC165.initialize();
-    lockName = _lockName;
+    name = _lockName;
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x5b5e139f);
@@ -53,18 +53,7 @@ contract MixinLockMetadata is
   ) external
     onlyOwner
   {
-    lockName = _lockName;
-  }
-
-  /**
-    * @dev Gets the token name
-    * @return string representing the token name
-    */
-  function name(
-  ) external view
-    returns (string memory)
-  {
-    return lockName;
+    name = _lockName;
   }
 
   /**
@@ -88,7 +77,7 @@ contract MixinLockMetadata is
     returns(string memory)
   {
     if(bytes(lockSymbol).length == 0) {
-      return unlockProtocol.getGlobalTokenSymbol();
+      return unlockProtocol.globalTokenSymbol();
     } else {
       return lockSymbol;
     }
@@ -120,7 +109,7 @@ contract MixinLockMetadata is
   {
     string memory URI;
     if(bytes(baseTokenURI).length == 0) {
-      URI = unlockProtocol.getGlobalBaseTokenURI();
+      URI = unlockProtocol.globalBaseTokenURI();
     } else {
       URI = baseTokenURI;
     }

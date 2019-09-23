@@ -1,6 +1,6 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol';
 
 
 /**
@@ -15,15 +15,15 @@ contract MixinFunds
    */
   address public tokenAddress;
 
-  constructor(
+  function initialize(
     address _tokenAddress
   ) public
   {
+    tokenAddress = _tokenAddress;
     require(
       _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
       'INVALID_TOKEN'
     );
-    tokenAddress = _tokenAddress;
   }
 
   /**
