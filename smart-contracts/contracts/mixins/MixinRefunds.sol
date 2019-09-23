@@ -20,8 +20,8 @@ contract MixinRefunds is
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyNumerator / refundPenaltyDenominator`.
-  uint public refundPenaltyNumerator = 1;
-  uint public refundPenaltyDenominator = 10;
+  uint public refundPenaltyNumerator;
+  uint public refundPenaltyDenominator;
 
   uint public freeTrialLength;
 
@@ -40,6 +40,12 @@ contract MixinRefunds is
     uint refundPenaltyNumerator,
     uint refundPenaltyDenominator
   );
+
+  function initialize() public
+  {
+    refundPenaltyNumerator = 1;
+    refundPenaltyDenominator = 10;
+  }
 
   /**
    * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation

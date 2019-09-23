@@ -26,8 +26,8 @@ contract MixinDisableAndDestroy is
 
   event Disable();
 
-  constructor(
-  ) internal
+  function initialize(
+  ) public
   {
     isAlive = true;
   }

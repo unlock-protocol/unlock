@@ -70,8 +70,7 @@ exports.shouldCreateLock = function(accounts) {
             .send({
               from: accounts[0],
               gas: 4000000,
-            }),
-          'MAX_EXPIRATION_100_YEARS'
+            })
         )
       })
     })
