@@ -27,7 +27,7 @@ contract MixinKeys is
   // Each owner can have at most exactly one key
   // TODO: could we use public here? (this could be confusing though because it getter will
   // return 0 values when missing a key)
-  mapping (address => Key) private keyByOwner;
+  mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
   // Returns 0 if the token does not exist
@@ -240,16 +240,5 @@ contract MixinKeys is
       // We register the owner of the tokenID
       ownerOf[_tokenId] = _owner;
     }
-  }
-
-  /**
-   * Returns the Key struct for the given owner.
-   */
-  function _getKeyFor(
-    address _owner
-  ) internal view
-    returns (Key storage)
-  {
-    return keyByOwner[_owner];
   }
 }
