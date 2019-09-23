@@ -34,7 +34,7 @@ export function normalizeConfig(unlockConfig: any) {
 /**
  * Start the unlock app!
  */
-export default function startup(
+export function startup(
   window: UnlockWindowNoProtocolYet,
   constants: StartupConstants
 ) {
@@ -80,4 +80,30 @@ export default function startup(
     usingManagedAccount: wallet.useUserAccounts,
   })
   return iframes // this is only useful in testing, it is ignored in the app
+}
+
+// Make sure the page is ready before we try to start the app!
+export default function startupWhenReady(
+  window: Window,
+  startupConstants: StartupConstants
+) {
+  let started = false
+  if (document.readyState !== 'loading') {
+    // in most cases, we will start up after the document is interactive
+    // so listening for the DOMContentLoaded or load events is superfluous
+    startup((window as unknown) as UnlockWindowNoProtocolYet, startupConstants)
+    started = true
+  } else {
+    const begin = () => {
+      if (!started)
+        startup(
+          (window as unknown) as UnlockWindowNoProtocolYet,
+          startupConstants
+        )
+      started = true
+    }
+    // if we reach here, the page is still loading
+    window.addEventListener('DOMContentLoaded', begin)
+    window.addEventListener('load', begin)
+  }
 }
