@@ -11,6 +11,7 @@
 # production
 /build
 /dist
+/src/unlock.js/dist
 .next/
 out/
 *.min.js*

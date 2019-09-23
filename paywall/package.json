@@ -15,6 +15,7 @@
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "build-checkout": "npm run build-unlock.1.0.js && npm run build-data-iframe.1.0.js",
     "build-unlock.1.0.js": "webpack --config unlock.1.0.js.webpack.config.js",
+    "build-unlock-web": "webpack --config unlock-web-module.webpack.config.js",
     "build-data-iframe.1.0.js": "webpack --config data-iframe.1.0.webpack.config.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
     "ci": "npm run lint && npm test"
