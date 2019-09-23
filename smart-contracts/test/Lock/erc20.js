@@ -6,10 +6,9 @@ const TestNoop = artifacts.require('TestNoop.sol')
 const getProxy = require('../helpers/proxy')
 const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
-const LockApi = require('../helpers/lockApi')
 
 contract('Lock / erc20', accounts => {
-  let unlock, token, lock, lockApi
+  let unlock, token, lock
 
   before(async () => {
     token = await TestErc20Token.new()
@@ -18,7 +17,6 @@ contract('Lock / erc20', accounts => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks['FIRST']
-    lockApi = new LockApi(lock)
   })
 
   describe('creating ERC20 priced locks', () => {
@@ -49,7 +47,9 @@ contract('Lock / erc20', accounts => {
 
     describe('users can purchase keys', () => {
       it('can purchase', async () => {
-        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
+        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+          from: keyOwner,
+        })
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -66,7 +66,9 @@ contract('Lock / erc20', accounts => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        await lockApi.purchase(keyOwner3, web3.utils.padLeft(0, 40))
+        await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), [], {
+          from: keyOwner3,
+        })
 
         const balanceOwnerBefore = new BigNumber(
           await token.balanceOf(keyOwner3)
@@ -75,7 +77,7 @@ contract('Lock / erc20', accounts => {
           await token.balanceOf(lock.address)
         )
 
-        await lockApi.fullRefund(keyOwner3, refundAmount, accounts[0])
+        await lock.fullRefund(keyOwner3, refundAmount, { from: accounts[0] })
         const balanceOwnerAfter = new BigNumber(
           await token.balanceOf(keyOwner3)
         )
@@ -96,7 +98,7 @@ contract('Lock / erc20', accounts => {
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        await lockApi.cancelAndRefund(keyOwner)
+        await lock.cancelAndRefund({ from: keyOwner })
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 
@@ -104,7 +106,9 @@ contract('Lock / erc20', accounts => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        await lockApi.withdraw(await lock.tokenAddress.call(), 0, accounts[0])
+        await lock.withdraw(await lock.tokenAddress.call(), 0, {
+          from: accounts[0],
+        })
 
         assert.equal(await token.balanceOf(lock.address), 0)
         assert.equal(
@@ -115,10 +119,12 @@ contract('Lock / erc20', accounts => {
 
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
-        await lockApi.purchase(keyOwner, web3.utils.padLeft(0, 40))
+        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+          from: keyOwner,
+        })
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
-        await lockApi.purchase(keyOwner2, keyOwner)
+        await lock.purchase(keyOwner2, keyOwner, [], { from: keyOwner2 })
 
         const balance = new BigNumber(await token.balanceOf(keyOwner2))
         assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
