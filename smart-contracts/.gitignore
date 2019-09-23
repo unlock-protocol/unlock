@@ -1,7 +1,10 @@
 # Solidity coverage
 /scTopics
 /coverageEnv/
+/coverage/
+coverage.json
 
 mnemonic.*
 .openzeppelin/.session
 .openzeppelin/dev-*
+allFiredEvents

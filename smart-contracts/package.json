@@ -25,6 +25,7 @@
     "ganache-cli": "6.7.0",
     "hardlydifficult-test-helpers": "0.4.0",
     "public-lock-abi-0": "1.0.0",
+    "solidity-coverage": "0.6.7",
     "solium": "1.2.5",
     "truffle": "5.0.37",
     "truffle-assertions": "0.9.1",
@@ -62,7 +63,8 @@
     "zos": "openzeppelin",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
     "verify": "truffle run verify",
-    "debug": "truffle debug"
+    "debug": "truffle debug",
+    "coverage": "solidity-coverage"
   },
   "author": "",
   "license": "ISC"

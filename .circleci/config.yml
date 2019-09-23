@@ -83,6 +83,9 @@ jobs:
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
+      - run:
+          name: Smart Contract Test Coverage
+          command: cd smart-contracts && npm run coverage
 
   locksmith-tests:
     machine: true
