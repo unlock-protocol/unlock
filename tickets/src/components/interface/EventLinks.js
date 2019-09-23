@@ -46,13 +46,15 @@ export const EventLinks = ({ event }) => {
 
   const externalLinks = eventLinks.map(
     ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
-      return (
-        <Link key={href} icon={icon}>
-          <a target="_blank" rel="noopener noreferrer" href={href}>
-            {text}
-          </a>
-        </Link>
-      )
+      if (href) {
+        return (
+          <Link key={href} icon={icon}>
+            <a target="_blank" rel="noopener noreferrer" href={href}>
+              {text}
+            </a>
+          </Link>
+        )
+      }
     }
   )
 
