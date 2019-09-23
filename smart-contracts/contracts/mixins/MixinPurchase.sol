@@ -39,19 +39,6 @@ contract MixinPurchase is
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
-    // Let's get the actual price for the key from the Unlock smart contract
-    uint discount;
-    uint tokens;
-    uint inMemoryKeyPrice = keyPrice;
-    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
-
-    if (discount > inMemoryKeyPrice) {
-      inMemoryKeyPrice = 0;
-    } else {
-      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
-      inMemoryKeyPrice -= discount;
-    }
-
     // Assign the key
     Key storage toKey = keyByOwner[_recipient];
 
@@ -68,6 +55,19 @@ contract MixinPurchase is
       // SafeAdd is not required here since expirationDuration is capped to a tiny value
       // (relative to the size of a uint)
       toKey.expirationTimestamp = block.timestamp + expirationDuration;
+    }
+
+    // Let's get the actual price for the key from the Unlock smart contract
+    uint discount;
+    uint tokens;
+    uint inMemoryKeyPrice = keyPrice;
+    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
+
+    if (discount > inMemoryKeyPrice) {
+      inMemoryKeyPrice = 0;
+    } else {
+      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
+      inMemoryKeyPrice -= discount;
     }
 
     if (discount > 0) {
