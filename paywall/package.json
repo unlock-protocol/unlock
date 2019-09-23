@@ -17,7 +17,8 @@
     "build-unlock.1.0.js": "webpack --config unlock.1.0.js.webpack.config.js",
     "build-data-iframe.1.0.js": "webpack --config data-iframe.1.0.webpack.config.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
-    "ci": "npm run lint && npm test"
+    "ci": "npm run lint && npm test",
+    "build-paywall-module": "webpack --config unlock-paywall-module.webpack.config.js"
   },
   "dependencies": {
     "@babel/core": "7.5.5",
