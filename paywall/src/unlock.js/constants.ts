@@ -1,5 +1,16 @@
 import StartupConstants from './startupTypes'
 
+// Typechecking fails in CI (but not locally) unless we assert that process.env
+// will always be set to one of these values
+declare const process: {
+  env: {
+    UNLOCK_ENV: 'dev' | 'test' | 'staging' | 'prod'
+    DEBUG: any
+    PAYWALL_URL: string
+    USER_IFRAME_URL: string
+  }
+}
+
 const constants: { [key: string]: StartupConstants } = {
   dev: {
     network: 1984,
