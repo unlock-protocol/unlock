@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
@@ -33,7 +33,7 @@ contract MixinKeys is
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with totalSupply into an array instead.
-  mapping (uint => address) private ownerByTokenId;
+  mapping (uint => address) public ownerOf;
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
@@ -64,7 +64,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      ownerByTokenId[_tokenId] != address(0), 'NO_SUCH_KEY'
+      ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
     );
     _;
   }
@@ -180,7 +180,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    return ownerByTokenId[_tokenId] == _owner;
+    return ownerOf[_tokenId] == _owner;
   }
 
   /**
@@ -210,20 +210,6 @@ contract MixinKeys is
   }
 
   /**
-   * @notice ERC721: Find the owner of an NFT
-   * @return The address of the owner of the NFT, if applicable
-  */
-  function ownerOf(
-    uint _tokenId
-  )
-    public view
-    isKey(_tokenId)
-    returns (address)
-  {
-    return ownerByTokenId[_tokenId];
-  }
-
-  /**
    * Assigns the key a new tokenId (from totalSupply) if it does not already have
    * one assigned.
    */
@@ -248,11 +234,11 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (ownerByTokenId[_tokenId] != _owner) {
+    if (ownerOf[_tokenId] != _owner) {
       // TODO: this may include duplicate entries
       owners.push(_owner);
       // We register the owner of the tokenID
-      ownerByTokenId[_tokenId] = _owner;
+      ownerOf[_tokenId] = _owner;
     }
   }
 

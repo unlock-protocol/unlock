@@ -6,25 +6,22 @@
     ":pinVersions"
   ],
   "timezone": "America/Los_Angeles",
-  "schedule": ["before 3am every weekday"],
+  "schedule": ["before 3am on monday"],
   "rebaseStalePrs": false,
   "packageRules": [
     {
       "packagePatterns": [
         "*"
       ],
-      "groupName": "all dependencies",
-      "groupSlug": "all"
+      "minor": {
+        "groupName": "all non-major dependencies",
+        "groupSlug": "all-minor-patch"
+      }
     },
     {
-      "packageNames": ["@unlock-protocol/unlock-js", "hardlydifficult-test-helpers"],
-      "schedule": ["at any time"]
-    },
-    {
-      "packagePatterns": ["^hardlydifficult", "^openzeppelin", "^truffle", "^zos"],
-      "reviewers": [
-        "NickCuso"
-      ]
+      "packageNames": ["@unlock-protocol/unlock-js"],
+      "schedule": ["at any time"],
+      "groupName": null
     }
   ]
 }
