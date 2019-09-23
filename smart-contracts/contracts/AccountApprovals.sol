@@ -8,7 +8,7 @@ contract AccountApprovals is
 {
   mapping(address => bytes) public accountData;
 
-  event Approve(address operator, address account, bytes data);
+  event Approve(address indexed operator, address indexed account, bytes data);
 
   function approve(
     address _account,
