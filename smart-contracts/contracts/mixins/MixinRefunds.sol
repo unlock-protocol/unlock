@@ -23,6 +23,8 @@ contract MixinRefunds is
   uint public refundPenaltyNumerator = 1;
   uint public refundPenaltyDenominator = 10;
 
+  uint public freeTrialLength;
+
   // Stores a nonce per user to use for signed messages
   mapping(address => uint) public keyOwnerToNonce;
 
@@ -34,8 +36,7 @@ contract MixinRefunds is
   );
 
   event RefundPenaltyChanged(
-    uint oldRefundPenaltyNumerator,
-    uint oldRefundPenaltyDenominator,
+    uint freeTrialLength,
     uint refundPenaltyNumerator,
     uint refundPenaltyDenominator
   );
@@ -102,6 +103,7 @@ contract MixinRefunds is
    * Allow the owner to change the refund penalty.
    */
   function updateRefundPenalty(
+    uint _freeTrialLength,
     uint _refundPenaltyNumerator,
     uint _refundPenaltyDenominator
   )
@@ -111,11 +113,12 @@ contract MixinRefunds is
     require(_refundPenaltyDenominator != 0, 'INVALID_RATE');
 
     emit RefundPenaltyChanged(
-      refundPenaltyNumerator,
-      refundPenaltyDenominator,
+      _freeTrialLength,
       _refundPenaltyNumerator,
       _refundPenaltyDenominator
     );
+
+    freeTrialLength = _freeTrialLength;
     refundPenaltyNumerator = _refundPenaltyNumerator;
     refundPenaltyDenominator = _refundPenaltyDenominator;
   }
@@ -194,18 +197,23 @@ contract MixinRefunds is
     Key storage key = _getKeyFor(_owner);
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
-    if(timeRemaining >= expirationDuration) {
+    if(timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {
       // Math: using safeMul in case keyPrice or timeRemaining is very large
       refund = keyPrice.mul(timeRemaining) / expirationDuration;
     }
-    uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
-    if (refund > penalty) {
-      // Math: safeSub is not required since the if confirms this won't underflow
-      refund -= penalty;
-    } else {
-      refund = 0;
+
+    // Apply the penalty if this is not a free trial
+    if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
+    {
+      uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
+      if (refund > penalty) {
+        // Math: safeSub is not required since the if confirms this won't underflow
+        refund -= penalty;
+      } else {
+        refund = 0;
+      }
     }
   }
 }
