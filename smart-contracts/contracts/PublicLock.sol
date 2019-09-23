@@ -4,7 +4,7 @@ import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import 'zos-lib/contracts/Initializable.sol';
+import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinERC721Enumerable.sol';
