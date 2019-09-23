@@ -40,7 +40,7 @@
     "babel-loader": "8.0.6",
     "babel-plugin-require-context-hook": "1.0.0",
     "connected-react-router": "6.5.2",
-    "cross-env": "5.2.1",
+    "cross-env": "6.0.0",
     "dotenv": "8.1.0",
     "fork-ts-checker-webpack-plugin": "1.5.0",
     "history": "4.9.0",

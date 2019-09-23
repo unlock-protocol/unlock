@@ -20,7 +20,7 @@
     "babel-loader": "8.0.6",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "1.10.6",
-    "cross-env": "5.2.1",
+    "cross-env": "6.0.0",
     "dotenv": "8.1.0",
     "fork-ts-checker-webpack-plugin": "1.5.0",
     "jest-dom": "3.5.0",
