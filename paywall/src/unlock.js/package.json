@@ -1,5 +1,5 @@
 {
-  "name": "unlock-web",
+  "name": "@unlock-protocol/unlock-web",
   "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
