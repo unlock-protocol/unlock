@@ -1,4 +1,4 @@
-import startup, { normalizeConfig } from '../../unlock.js/startup'
+import { startup, normalizeConfig } from '../../unlock.js/startup'
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import StartupConstants from '../../unlock.js/startupTypes'
 import { PaywallConfig } from '../../unlockTypes'
