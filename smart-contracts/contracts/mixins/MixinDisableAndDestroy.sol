@@ -1,7 +1,7 @@
 pragma solidity 0.5.11;
 
 import '../interfaces/IERC721.sol';
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinFunds.sol';
 
 /**

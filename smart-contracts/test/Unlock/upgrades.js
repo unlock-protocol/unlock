@@ -1,8 +1,8 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
-const { TestHelper } = require('zos')
+const { TestHelper } = require('@openzeppelin/cli')
 const BigNumber = require('bignumber.js')
-const { ZWeb3, Contracts } = require('zos-lib')
+const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
 // Path is relative to `build/contracts/` directory
