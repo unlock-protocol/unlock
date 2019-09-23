@@ -30,11 +30,11 @@ const useBeforeFirstRender = (fn: any) => {
 export default function NewDemoContent() {
   const window = useWindow()
   const { isServer } = useConfig()
-  const [locked, setLocked] = useState(false)
+  const [locked, setLocked] = useState('loading')
   useBeforeFirstRender(() => {
     if (window) {
       window.addEventListener('unlockProtocol', function(event: CustomEvent) {
-        setLocked(event.detail === 'locked')
+        setLocked(event.detail)
       })
     }
   })
