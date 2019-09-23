@@ -3,3 +3,5 @@
 /coverageEnv/
 
 mnemonic.*
+.openzeppelin/.session
+.openzeppelin/dev-*

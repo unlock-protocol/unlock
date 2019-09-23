@@ -5,9 +5,9 @@ import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
-import 'openzeppelin-eth/contracts/utils/Address.sol';
-import 'openzeppelin-eth/contracts/token/ERC721/IERC721Receiver.sol';
-import 'openzeppelin-eth/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Receiver.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721

@@ -1,5 +1,5 @@
 // Load zos scripts and truffle wrapper function
-const { scripts, ConfigManager } = require('zos')
+const { scripts, ConfigManager } = require('@openzeppelin/cli')
 
 const { add, push } = scripts
 const Unlock = artifacts.require('Unlock')

@@ -26,8 +26,8 @@ pragma solidity 0.5.11;
  *  b. Keeping track of GNP
  */
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'zos-lib/contracts/Initializable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
 

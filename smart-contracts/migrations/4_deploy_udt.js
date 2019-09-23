@@ -1,4 +1,4 @@
-const { scripts, ConfigManager } = require('zos')
+const { scripts, ConfigManager } = require('@openzeppelin/cli')
 
 const { add, create, push } = scripts
 

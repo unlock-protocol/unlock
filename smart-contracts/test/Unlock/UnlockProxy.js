@@ -1,5 +1,5 @@
-const Zos = require('zos')
-const { ZWeb3, Contracts } = require('zos-lib')
+const Zos = require('@openzeppelin/cli')
+const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 const TestHelper = Zos.TestHelper
 const shared = require('./behaviors/shared')
