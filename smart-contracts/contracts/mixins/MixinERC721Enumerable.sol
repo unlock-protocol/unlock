@@ -1,10 +1,10 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import './MixinERC721Enumerable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '../interfaces/IERC721Enumerable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 
 
 /**
@@ -16,7 +16,7 @@ contract MixinERC721Enumerable is
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
-  constructor() public
+  function initialize() public
   {
     /**
      * register the supported interface to conform to ERC721Enumerable via ERC165

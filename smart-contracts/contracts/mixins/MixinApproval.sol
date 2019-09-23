@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
@@ -40,7 +40,7 @@ contract MixinApproval is
     require(
       isKeyOwner(_tokenId, msg.sender) ||
         _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(ownerOf(_tokenId), msg.sender),
+        isApprovedForAll(ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
@@ -62,7 +62,7 @@ contract MixinApproval is
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
-    emit Approval(ownerOf(_tokenId), _approved, _tokenId);
+    emit Approval(ownerOf[_tokenId], _approved, _tokenId);
   }
 
   /**
@@ -83,17 +83,16 @@ contract MixinApproval is
   }
 
   /**
-   * external version
    * Will return the approved recipient for a key, if any.
    */
   function getApproved(
     uint _tokenId
-  )
-    external
-    view
+  ) external view
     returns (address)
   {
-    return _getApproved(_tokenId);
+    address approvedRecipient = approved[_tokenId];
+    require(approvedRecipient != address(0), 'NONE_APPROVED');
+    return approvedRecipient;
   }
 
   /**
@@ -121,23 +120,6 @@ contract MixinApproval is
     returns (bool)
   {
     return approved[_tokenId] == _user;
-  }
-
-  /**
-   * Will return the approved recipient for a key transfer or ownership.
-   * Note: this does not check that a corresponding key
-   * actually exists.
-   */
-  function _getApproved(
-    uint _tokenId
-  )
-    internal
-    view
-    returns (address)
-  {
-    address approvedRecipient = approved[_tokenId];
-    require(approvedRecipient != address(0), 'NONE_APPROVED');
-    return approvedRecipient;
   }
 
   /**

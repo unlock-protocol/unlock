@@ -48,11 +48,11 @@ export class BlogPost extends React.Component {
         <Title>{title}</Title>
         {subTitle && <SubTitle>{subTitle}</SubTitle>}
         <Byline>
-          <AuthorName>{authorName}</AuthorName>
+          <AuthorName>{authorName}</AuthorName>&nbsp;
           <PublishDate>On {publishDate}</PublishDate>
         </Byline>
         <Body>
-          <Markdown markup={body} />
+          <Markdown tables markup={body} />
           {isMember === 'yes' && <Markdown markup={membersOnly} />}
           {isMember === 'no' && (
             <Button onClick={becomeMember}>
@@ -127,8 +127,6 @@ export const Byline = styled.div`
   color: var(--darkgrey);
   font-size: 12px;
   line-height: 12px;
-  display: grid;
-  grid-template-columns: 140px auto;
   margin-top: 0px;
   margin-bottom: 35px;
 `
@@ -194,6 +192,11 @@ const Body = styled.div`
     margin-bottom: 20px;
     text-align: center;
   }
+
+  th,
+  td {
+    padding: 5px;
+  }
 `
 
 export const AuthorName = styled.h3`
@@ -202,18 +205,15 @@ export const AuthorName = styled.h3`
   font-size: 16px;
   line-height: 22px;
   color: var(--link);
-  margin: 0;
-  padding: 0;
+  display: inline;
 `
 
-export const PublishDate = styled.div`
+export const PublishDate = styled.span`
   font-family: 'IBM Plex Mono';
   font-weight: 300;
   font-size: 16px;
   line-height: 22px;
   color: var(--grey);
-  margin: 0;
-  padding: 0;
 `
 
 const Button = styled.a`

@@ -80,16 +80,18 @@ describe('BlockchainHandler - setupListeners', () => {
   })
 
   it('should set a timeout if the key valid', () => {
-    expect.assertions(1)
+    expect.assertions(3)
 
     const validTimestamp = new Date().getTime() + 100 * 1000
     const validTimestampInSeconds = validTimestamp / 1000
     handler.sendDataWhenKeyExpires(validTimestampInSeconds)
 
     const rightNow = new Date().getTime()
-    expect(fakeWindow.setTimeout).toHaveBeenCalledWith(
-      expect.any(Function),
-      validTimestamp - rightNow + 1000
+    expect(fakeWindow.setTimeout).toHaveBeenCalled()
+    const call = (fakeWindow.setTimeout as any).mock.calls[0]
+    expect(call[0]).toBeInstanceOf(Function) // Function
+    expect(call[1] / 1000).toBeCloseTo(
+      (validTimestamp - rightNow + 1000) / 1000
     )
   })
 

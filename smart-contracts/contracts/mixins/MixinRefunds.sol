@@ -1,25 +1,29 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/math/SafeMath.sol';
-import 'openzeppelin-eth/contracts/cryptography/ECDSA.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/cryptography/ECDSA.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
+import './MixinEventHooks.sol';
 
 
 contract MixinRefunds is
   Ownable,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinEventHooks
 {
   using SafeMath for uint;
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyNumerator / refundPenaltyDenominator`.
-  uint public refundPenaltyNumerator = 1;
-  uint public refundPenaltyDenominator = 10;
+  uint public refundPenaltyNumerator;
+  uint public refundPenaltyDenominator;
+
+  uint public freeTrialLength;
 
   // Stores a nonce per user to use for signed messages
   mapping(address => uint) public keyOwnerToNonce;
@@ -32,11 +36,28 @@ contract MixinRefunds is
   );
 
   event RefundPenaltyChanged(
-    uint oldRefundPenaltyNumerator,
-    uint oldRefundPenaltyDenominator,
+    uint freeTrialLength,
     uint refundPenaltyNumerator,
     uint refundPenaltyDenominator
   );
+
+  function initialize() public
+  {
+    refundPenaltyNumerator = 1;
+    refundPenaltyDenominator = 10;
+  }
+
+  /**
+   * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
+   * of the key
+   */
+  function fullRefund(address _keyOwner, uint amount)
+    external
+    onlyOwner
+    hasValidKey(_keyOwner)
+  {
+    _cancelAndRefund(_keyOwner, amount);
+  }
 
   /**
    * @dev Destroys the user's key and sends a refund based on the amount of time remaining.
@@ -44,7 +65,9 @@ contract MixinRefunds is
   function cancelAndRefund()
     external
   {
-    _cancelAndRefund(msg.sender);
+    uint refund = _getCancelAndRefundValue(msg.sender);
+
+    _cancelAndRefund(msg.sender, refund);
   }
 
   /**
@@ -67,7 +90,9 @@ contract MixinRefunds is
     );
 
     keyOwnerToNonce[_keyOwner]++;
-    _cancelAndRefund(_keyOwner);
+    uint refund = _getCancelAndRefundValue(_keyOwner);
+
+    _cancelAndRefund(_keyOwner, refund);
   }
 
   /**
@@ -84,6 +109,7 @@ contract MixinRefunds is
    * Allow the owner to change the refund penalty.
    */
   function updateRefundPenalty(
+    uint _freeTrialLength,
     uint _refundPenaltyNumerator,
     uint _refundPenaltyDenominator
   )
@@ -93,11 +119,12 @@ contract MixinRefunds is
     require(_refundPenaltyDenominator != 0, 'INVALID_RATE');
 
     emit RefundPenaltyChanged(
-      refundPenaltyNumerator,
-      refundPenaltyDenominator,
+      _freeTrialLength,
       _refundPenaltyNumerator,
       _refundPenaltyDenominator
     );
+
+    freeTrialLength = _freeTrialLength;
     refundPenaltyNumerator = _refundPenaltyNumerator;
     refundPenaltyDenominator = _refundPenaltyDenominator;
   }
@@ -142,12 +169,11 @@ contract MixinRefunds is
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    */
   function _cancelAndRefund(
-    address _keyOwner
+    address _keyOwner,
+    uint refund
   ) internal
   {
-    Key storage key = _getKeyFor(_keyOwner);
-
-    uint refund = _getCancelAndRefundValue(_keyOwner);
+    Key storage key = keyByOwner[_keyOwner];
 
     emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
@@ -156,8 +182,10 @@ contract MixinRefunds is
 
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
-      _transfer(tokenAddress, msg.sender, refund);
+      _transfer(tokenAddress, _keyOwner, refund);
     }
+
+    _onKeyCancel(_keyOwner, refund);
   }
 
   /**
@@ -172,21 +200,26 @@ contract MixinRefunds is
     hasValidKey(_owner)
     returns (uint refund)
   {
-    Key storage key = _getKeyFor(_owner);
+    Key storage key = keyByOwner[_owner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
-    if(timeRemaining >= expirationDuration) {
+    if(timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {
       // Math: using safeMul in case keyPrice or timeRemaining is very large
       refund = keyPrice.mul(timeRemaining) / expirationDuration;
     }
-    uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
-    if (refund > penalty) {
-      // Math: safeSub is not required since the if confirms this won't underflow
-      refund -= penalty;
-    } else {
-      refund = 0;
+
+    // Apply the penalty if this is not a free trial
+    if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
+    {
+      uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
+      if (refund > penalty) {
+        // Math: safeSub is not required since the if confirms this won't underflow
+        refund -= penalty;
+      } else {
+        refund = 0;
+      }
     }
   }
 }

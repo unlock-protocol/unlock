@@ -1,9 +1,10 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
-import 'openzeppelin-eth/contracts/introspection/ERC165.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
+import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import './mixins/MixinApproval.sol';
 import './mixins/MixinDisableAndDestroy.sol';
 import './mixins/MixinERC721Enumerable.sol';
@@ -27,6 +28,7 @@ import './mixins/MixinTransfer.sol';
 contract PublicLock is
   IERC721Enumerable,
   IERC721,
+  Initializable,
   ERC165,
   Ownable,
   MixinFunds,
@@ -42,25 +44,27 @@ contract PublicLock is
   MixinTransfer,
   MixinRefunds
 {
-  constructor(
+  function initialize(
     address _owner,
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys,
     string memory _lockName
-  )
-    public
-    MixinFunds(_tokenAddress)
-    MixinLockCore(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys)
-    MixinLockMetadata(_lockName)
+  ) public
+    initializer()
   {
-    ERC165.initialize();
+    Ownable.initialize(_owner);
+    MixinFunds.initialize(_tokenAddress);
+    MixinDisableAndDestroy.initialize();
+    MixinLockCore.initialize(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
+    MixinLockMetadata.initialize(_lockName);
+    MixinERC721Enumerable.initialize();
+    MixinTransfer.initialize();
+    MixinRefunds.initialize();
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
-    // We must manually initialize Ownable.sol
-    Ownable.initialize(_owner);
   }
 
   // The version number of the current implementation on this network

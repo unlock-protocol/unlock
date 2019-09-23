@@ -1,4 +1,4 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 
 /**
@@ -76,13 +76,13 @@ interface IUnlock {
     returns (uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
-  function getGlobalBaseTokenURI()
+  function globalBaseTokenURI()
     external
     view
     returns (string memory);
 
   // Function to read the globalTokenSymbol field.
-  function getGlobalTokenSymbol()
+  function globalTokenSymbol()
     external
     view
     returns (string memory);

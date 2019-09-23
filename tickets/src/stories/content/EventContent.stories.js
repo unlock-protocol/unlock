@@ -77,6 +77,33 @@ storiesOf('Event RSVP page', module)
       </ConfigProvider>
     )
   })
+  .add('Event RSVP page with no website', () => {
+    const transaction = null
+    const eventNoWebsite = {
+      ...event,
+    }
+
+    eventNoWebsite.links = [
+      {
+        href: '',
+      },
+    ]
+
+    return (
+      <ConfigProvider value={config}>
+        <EventContent
+          event={eventNoWebsite}
+          lock={lock}
+          config={config}
+          purchaseKey={purchaseKey}
+          loadEvent={dummyFunc}
+          signAddress={dummyFunc}
+          transaction={transaction}
+          account={account}
+        />
+      </ConfigProvider>
+    )
+  })
   .add('Event RSVP page with unpurchased key for ERC20 lock', () => {
     const transaction = null
 
