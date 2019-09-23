@@ -2213,7 +2213,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -2225,17 +2225,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -2393,7 +2393,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -2431,7 +2431,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -2469,7 +2469,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -2481,7 +2481,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 0.1
                  
@@ -2539,7 +2539,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -2577,7 +2577,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -2589,7 +2589,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.1
                
@@ -2714,7 +2714,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -2726,17 +2726,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -2894,7 +2894,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -2932,7 +2932,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -2970,7 +2970,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -2982,7 +2982,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 0.1
                  
@@ -3011,7 +3011,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x456"
           >
             <header
@@ -3023,7 +3023,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 0.3
                  
@@ -3052,7 +3052,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x789"
           >
             <header
@@ -3064,7 +3064,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 3.00
                  
@@ -3122,7 +3122,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -3160,7 +3160,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -3172,7 +3172,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.1
                
@@ -3201,7 +3201,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x456"
         >
           <header
@@ -3213,7 +3213,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.3
                
@@ -3242,7 +3242,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x789"
         >
           <header
@@ -3254,7 +3254,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -3379,7 +3379,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -3391,17 +3391,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -3678,7 +3678,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -3716,7 +3716,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -3751,7 +3751,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -3796,7 +3796,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c15"
+            class="c15 lock"
             data-address="0x456"
           >
             <header
@@ -3808,7 +3808,7 @@ Object {
               class="c16"
             >
               <div
-                class="price c17"
+                class="c17 price"
               >
                 0.3
                  
@@ -3837,7 +3837,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c15"
+            class="c15 lock"
             data-address="0x789"
           >
             <header
@@ -3849,7 +3849,7 @@ Object {
               class="c16"
             >
               <div
-                class="price c17"
+                class="c17 price"
               >
                 3.00
                  
@@ -3907,7 +3907,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -3942,7 +3942,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -3987,7 +3987,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x456"
         >
           <header
@@ -3999,7 +3999,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.3
                
@@ -4028,7 +4028,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x789"
         >
           <header
@@ -4040,7 +4040,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -4165,7 +4165,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -4177,17 +4177,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -4464,7 +4464,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -4502,7 +4502,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -4537,7 +4537,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -4578,7 +4578,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c15"
+            class="c15 lock"
             data-address="0x456"
           >
             <header
@@ -4590,7 +4590,7 @@ Object {
               class="c16"
             >
               <div
-                class="price c17"
+                class="c17 price"
               >
                 0.3
                  
@@ -4619,7 +4619,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c15"
+            class="c15 lock"
             data-address="0x789"
           >
             <header
@@ -4631,7 +4631,7 @@ Object {
               class="c16"
             >
               <div
-                class="price c17"
+                class="c17 price"
               >
                 3.00
                  
@@ -4689,7 +4689,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -4724,7 +4724,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -4765,7 +4765,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x456"
         >
           <header
@@ -4777,7 +4777,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.3
                
@@ -4806,7 +4806,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x789"
         >
           <header
@@ -4818,7 +4818,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -4943,7 +4943,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -4955,17 +4955,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -5242,7 +5242,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -5280,7 +5280,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -5315,7 +5315,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -5327,7 +5327,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 0.1
                  
@@ -5356,7 +5356,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c15"
+            class="c15 lock"
             data-address="0x456"
           >
             <header
@@ -5397,7 +5397,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x789"
           >
             <header
@@ -5409,7 +5409,7 @@ Object {
               class="c9"
             >
               <div
-                class="price c10"
+                class="c10 price"
               >
                 3.00
                  
@@ -5467,7 +5467,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -5502,7 +5502,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -5514,7 +5514,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.1
                
@@ -5543,7 +5543,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -5584,7 +5584,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x789"
         >
           <header
@@ -5596,7 +5596,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -5721,7 +5721,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -5733,21 +5733,21 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -5759,17 +5759,17 @@ Object {
   line-height: 50px;
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--green);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
@@ -5807,17 +5807,17 @@ Object {
   display: none;
 }
 
-.c17 {
+.c18 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c17:hover .c20 {
+.c18:hover .c20 {
   display: block;
 }
 
-.c17:hover .c19 {
+.c18:hover .c19 {
   display: none;
 }
 
@@ -5927,7 +5927,7 @@ Object {
   color: var(--green);
 }
 
-.c9 .c16 {
+.c9 .c17 {
   display: none;
 }
 
@@ -5935,15 +5935,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   background-color: var(--green);
 }
 
-.c9:hover .c16 svg {
+.c9:hover .c17 svg {
   fill: var(--white);
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   display: block;
 }
 
@@ -6109,7 +6109,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -6147,7 +6147,7 @@ Object {
     display: none;
   }
 
-  .c9 .c16 {
+  .c9 .c17 {
     display: block;
   }
 
@@ -6169,7 +6169,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -6204,7 +6204,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -6216,7 +6216,7 @@ Object {
               class="c9"
             >
               <div
-                class="c10 price c11"
+                class="c10 c11 price"
               >
                 0.1
                  
@@ -6279,7 +6279,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x456"
           >
             <header
@@ -6291,7 +6291,7 @@ Object {
               class="c9"
             >
               <div
-                class="c10 price c11"
+                class="c10 c11 price"
               >
                 0.3
                  
@@ -6354,7 +6354,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c26"
+            class="c26 lock"
             data-address="0x789"
             disabled=""
           >
@@ -6368,7 +6368,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c28"
+                class="c28 price"
               >
                 3.00
                  
@@ -6427,7 +6427,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -6462,7 +6462,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -6474,7 +6474,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.1
                
@@ -6498,7 +6498,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -6537,7 +6537,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -6549,7 +6549,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.3
                
@@ -6573,7 +6573,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -6612,7 +6612,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x789"
           disabled=""
         >
@@ -6626,7 +6626,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -6752,7 +6752,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -6764,21 +6764,21 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -6790,17 +6790,17 @@ Object {
   line-height: 50px;
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--green);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
@@ -6838,17 +6838,17 @@ Object {
   display: none;
 }
 
-.c17 {
+.c18 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c17:hover .c20 {
+.c18:hover .c20 {
   display: block;
 }
 
-.c17:hover .c19 {
+.c18:hover .c19 {
   display: none;
 }
 
@@ -6958,7 +6958,7 @@ Object {
   color: var(--green);
 }
 
-.c9 .c16 {
+.c9 .c17 {
   display: none;
 }
 
@@ -6966,15 +6966,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   background-color: var(--green);
 }
 
-.c9:hover .c16 svg {
+.c9:hover .c17 svg {
   fill: var(--white);
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   display: block;
 }
 
@@ -7140,7 +7140,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -7178,7 +7178,7 @@ Object {
     display: none;
   }
 
-  .c9 .c16 {
+  .c9 .c17 {
     display: block;
   }
 
@@ -7200,7 +7200,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -7235,7 +7235,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -7247,7 +7247,7 @@ Object {
               class="c9"
             >
               <div
-                class="c10 price c11"
+                class="c10 c11 price"
               >
                 0.1
                  
@@ -7310,7 +7310,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c26"
+            class="c26 lock"
             data-address="0x456"
             disabled=""
           >
@@ -7322,7 +7322,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c28"
+                class="c28 price"
               >
                 0.3
                  
@@ -7352,7 +7352,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c26"
+            class="c26 lock"
             data-address="0x789"
             disabled=""
           >
@@ -7364,7 +7364,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c28"
+                class="c28 price"
               >
                 3.00
                  
@@ -7423,7 +7423,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -7458,7 +7458,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -7470,7 +7470,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.1
                
@@ -7494,7 +7494,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -7533,7 +7533,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x456"
           disabled=""
         >
@@ -7545,7 +7545,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.3
                
@@ -7575,7 +7575,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x789"
           disabled=""
         >
@@ -7587,7 +7587,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -7713,7 +7713,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -7725,21 +7725,21 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
-.c18 {
+.c16 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -7751,17 +7751,17 @@ Object {
   line-height: 50px;
 }
 
-.c18 > svg {
+.c16 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c18:hover {
+.c16:hover {
   background-color: var(--green);
 }
 
-.c18:hover > svg {
+.c16:hover > svg {
   fill: white;
 }
 
@@ -7799,17 +7799,17 @@ Object {
   display: none;
 }
 
-.c17 {
+.c18 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c17:hover .c20 {
+.c18:hover .c20 {
   display: block;
 }
 
-.c17:hover .c19 {
+.c18:hover .c19 {
   display: none;
 }
 
@@ -7919,7 +7919,7 @@ Object {
   color: var(--green);
 }
 
-.c9 .c16 {
+.c9 .c17 {
   display: none;
 }
 
@@ -7927,15 +7927,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   background-color: var(--green);
 }
 
-.c9:hover .c16 svg {
+.c9:hover .c17 svg {
   fill: var(--white);
 }
 
-.c9:hover .c16 {
+.c9:hover .c17 {
   display: block;
 }
 
@@ -8101,7 +8101,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -8139,7 +8139,7 @@ Object {
     display: none;
   }
 
-  .c9 .c16 {
+  .c9 .c17 {
     display: block;
   }
 
@@ -8161,7 +8161,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -8196,7 +8196,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x123"
           >
             <header
@@ -8208,7 +8208,7 @@ Object {
               class="c9"
             >
               <div
-                class="c10 price c11"
+                class="c10 c11 price"
               >
                 0.1
                  
@@ -8271,7 +8271,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address="0x456"
           >
             <header
@@ -8281,7 +8281,7 @@ Object {
               class="c9"
             >
               <div
-                class="c10 price c11"
+                class="c10 c11 price"
               >
                 0.3
                  
@@ -8344,7 +8344,7 @@ Object {
             </div>
           </li>
           <li
-            class="lock c26"
+            class="c26 lock"
             data-address="0x789"
             disabled=""
           >
@@ -8358,7 +8358,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c28"
+                class="c28 price"
               >
                 3.00
                  
@@ -8417,7 +8417,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -8452,7 +8452,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -8464,7 +8464,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.1
                
@@ -8488,7 +8488,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -8527,7 +8527,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -8537,7 +8537,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.3
                
@@ -8561,7 +8561,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -8600,7 +8600,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x789"
           disabled=""
         >
@@ -8614,7 +8614,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               3.00
                
@@ -8740,7 +8740,7 @@ Object {
   fill: white;
 }
 
-.c2 {
+.c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -8752,17 +8752,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -8891,7 +8891,7 @@ Object {
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -8929,7 +8929,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -8967,7 +8967,7 @@ Object {
           class="c6"
         >
           <li
-            class="lock c7"
+            class="c7 lock"
             data-address=""
           >
             <header
@@ -9013,7 +9013,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -9051,7 +9051,7 @@ Object {
         class="sc-htoDjs ekOEwM"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address=""
         >
           <header
@@ -9153,7 +9153,7 @@ exports[`Storyshots Checkout page Checkout page 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
+    .c2 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -9165,21 +9165,21 @@ Object {
   line-height: 24px;
 }
 
-.c3 > svg {
+.c2 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c3:hover {
+.c2:hover {
   background-color: var(--link);
 }
 
-.c3:hover > svg {
+.c2:hover > svg {
   fill: white;
 }
 
-.c2 {
+.c3 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -9201,14 +9201,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9219,7 +9219,7 @@ Object {
   height: 210px;
 }
 
-.c8 span {
+.c7 span {
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -9235,7 +9235,7 @@ Object {
   width: 160px;
 }
 
-.c8 div {
+.c7 div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -9258,15 +9258,15 @@ Object {
   padding-bottom: 13px;
 }
 
-.c8 div svg {
+.c7 div svg {
   padding-top: 20px;
 }
 
-.c8 div:hover {
+.c7 div:hover {
   border: 1px solid var(--link);
 }
 
-.c8 div .c10 {
+.c7 div .c9 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -9279,15 +9279,15 @@ Object {
   color: var(--link);
 }
 
-.c9 {
+.c8 {
+  width: 120px;
+}
+
+.c10 {
   width: 120px;
 }
 
 .c11 {
-  width: 120px;
-}
-
-.c12 {
   width: 120px;
 }
 
@@ -9305,21 +9305,17 @@ Object {
   vertical-align: middle;
 }
 
-.c6 {
-  height: 30px;
-}
-
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -9327,7 +9323,7 @@ Object {
   height: 20px;
 }
 
-.c7 {
+.c6 {
   display: grid;
   list-style: none;
   margin: 0px;
@@ -9340,8 +9336,8 @@ Object {
   padding-top: 24px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -9376,11 +9372,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -9397,7 +9393,7 @@ Object {
           class="c1"
         >
           <a
-            class="closeButton c2 c3"
+            class="c2 c3 closeButton"
           >
             <svg
               viewBox="0 0 24 24"
@@ -9418,21 +9414,16 @@ Object {
           >
             <h1
               class="c5"
-            >
-              <img
-                class="c6"
-                src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-              />
-            </h1>
+            />
             <p>
               To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
             </p>
           </header>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
@@ -9442,7 +9433,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c9"
+                  class="c8"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -9533,14 +9524,14 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
@@ -9550,7 +9541,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c10"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -9584,14 +9575,14 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
@@ -9601,7 +9592,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -10917,7 +10908,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Opera
                 </span>
@@ -10925,14 +10916,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -10957,7 +10948,7 @@ Object {
         class="sc-iwsKbI gtsSOj"
       >
         <a
-          class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+          class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -10978,12 +10969,7 @@ Object {
         >
           <h1
             class="sc-hMqMXs iChWxV"
-          >
-            <img
-              class="sc-kEYyzF jNhvDd"
-              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-            />
-          </h1>
+          />
           <p>
             To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
           </p>
@@ -12570,7 +12556,7 @@ exports[`Storyshots Checkout page Checkout page, no wallet 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
+    .c2 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -12582,21 +12568,21 @@ Object {
   line-height: 24px;
 }
 
-.c3 > svg {
+.c2 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c3:hover {
+.c2:hover {
   background-color: var(--link);
 }
 
-.c3:hover > svg {
+.c2:hover > svg {
   fill: white;
 }
 
-.c2 {
+.c3 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -12618,14 +12604,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12636,7 +12622,7 @@ Object {
   height: 210px;
 }
 
-.c8 span {
+.c7 span {
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -12652,7 +12638,7 @@ Object {
   width: 160px;
 }
 
-.c8 div {
+.c7 div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -12675,15 +12661,15 @@ Object {
   padding-bottom: 13px;
 }
 
-.c8 div svg {
+.c7 div svg {
   padding-top: 20px;
 }
 
-.c8 div:hover {
+.c7 div:hover {
   border: 1px solid var(--link);
 }
 
-.c8 div .c10 {
+.c7 div .c9 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -12696,15 +12682,15 @@ Object {
   color: var(--link);
 }
 
-.c9 {
+.c8 {
+  width: 120px;
+}
+
+.c10 {
   width: 120px;
 }
 
 .c11 {
-  width: 120px;
-}
-
-.c12 {
   width: 120px;
 }
 
@@ -12722,21 +12708,17 @@ Object {
   vertical-align: middle;
 }
 
-.c6 {
-  height: 30px;
-}
-
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -12744,7 +12726,7 @@ Object {
   height: 20px;
 }
 
-.c7 {
+.c6 {
   display: grid;
   list-style: none;
   margin: 0px;
@@ -12757,8 +12739,8 @@ Object {
   padding-top: 24px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -12793,11 +12775,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -12814,7 +12796,7 @@ Object {
           class="c1"
         >
           <a
-            class="closeButton c2 c3"
+            class="c2 c3 closeButton"
           >
             <svg
               viewBox="0 0 24 24"
@@ -12835,21 +12817,16 @@ Object {
           >
             <h1
               class="c5"
-            >
-              <img
-                class="c6"
-                src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-              />
-            </h1>
+            />
             <p>
               To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
             </p>
           </header>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
@@ -12859,7 +12836,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c9"
+                  class="c8"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -12950,14 +12927,14 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
@@ -12967,7 +12944,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c10"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -13001,14 +12978,14 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
@@ -13018,7 +12995,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -14334,7 +14311,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Opera
                 </span>
@@ -14342,14 +14319,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -14374,7 +14351,7 @@ Object {
         class="sc-iwsKbI gtsSOj"
       >
         <a
-          class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+          class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -14395,12 +14372,7 @@ Object {
         >
           <h1
             class="sc-hMqMXs iChWxV"
-          >
-            <img
-              class="sc-kEYyzF jNhvDd"
-              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-            />
-          </h1>
+          />
           <p>
             To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
           </p>
@@ -15987,7 +15959,7 @@ exports[`Storyshots Checkout page Checkout page, wrong network 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c3 {
+    .c2 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -15999,21 +15971,21 @@ Object {
   line-height: 24px;
 }
 
-.c3 > svg {
+.c2 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c3:hover {
+.c2:hover {
   background-color: var(--link);
 }
 
-.c3:hover > svg {
+.c2:hover > svg {
   fill: white;
 }
 
-.c2 {
+.c3 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -16035,14 +16007,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -16053,7 +16025,7 @@ Object {
   height: 210px;
 }
 
-.c8 span {
+.c7 span {
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -16069,7 +16041,7 @@ Object {
   width: 160px;
 }
 
-.c8 div {
+.c7 div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -16092,15 +16064,15 @@ Object {
   padding-bottom: 13px;
 }
 
-.c8 div svg {
+.c7 div svg {
   padding-top: 20px;
 }
 
-.c8 div:hover {
+.c7 div:hover {
   border: 1px solid var(--link);
 }
 
-.c8 div .c10 {
+.c7 div .c9 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -16113,15 +16085,15 @@ Object {
   color: var(--link);
 }
 
-.c9 {
+.c8 {
+  width: 120px;
+}
+
+.c10 {
   width: 120px;
 }
 
 .c11 {
-  width: 120px;
-}
-
-.c12 {
   width: 120px;
 }
 
@@ -16139,21 +16111,17 @@ Object {
   vertical-align: middle;
 }
 
-.c6 {
-  height: 30px;
-}
-
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -16161,7 +16129,7 @@ Object {
   height: 20px;
 }
 
-.c7 {
+.c6 {
   display: grid;
   list-style: none;
   margin: 0px;
@@ -16174,8 +16142,8 @@ Object {
   padding-top: 24px;
 }
 
-.c7 a,
-.c7 a:visited {
+.c6 a,
+.c6 a:visited {
   color: var(--mediumgrey);
 }
 
@@ -16210,11 +16178,11 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c8 {
+  .c7 {
     padding-top: 24px;
   }
 
-  .c8 div {
+  .c7 div {
     padding-bottom: 0;
   }
 }
@@ -16231,7 +16199,7 @@ Object {
           class="c1"
         >
           <a
-            class="closeButton c2 c3"
+            class="c2 c3 closeButton"
           >
             <svg
               viewBox="0 0 24 24"
@@ -16252,21 +16220,16 @@ Object {
           >
             <h1
               class="c5"
-            >
-              <img
-                class="c6"
-                src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-              />
-            </h1>
+            />
             <p>
               To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
             </p>
           </header>
           <ul
-            class="c7"
+            class="c6"
           >
             <a
-              class="c8"
+              class="c7"
               href="https://metamask.io/"
               rel="noopener"
               target="_blank"
@@ -16276,7 +16239,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c9"
+                  class="c8"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -16367,14 +16330,14 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Metamask
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://wallet.coinbase.com/"
               rel="noopener"
               target="_blank"
@@ -16384,7 +16347,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c11"
+                  class="c10"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -16418,14 +16381,14 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Coinbase Wallet
                 </span>
               </div>
             </a>
             <a
-              class="c8"
+              class="c7"
               href="https://www.opera.com/crypto"
               rel="noopener"
               target="_blank"
@@ -16435,7 +16398,7 @@ Object {
               </span>
               <div>
                 <svg
-                  class="c12"
+                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -17751,7 +17714,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c9 "
                 >
                   Opera
                 </span>
@@ -17759,14 +17722,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -17791,7 +17754,7 @@ Object {
         class="sc-iwsKbI gtsSOj"
       >
         <a
-          class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+          class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -17812,12 +17775,7 @@ Object {
         >
           <h1
             class="sc-hMqMXs iChWxV"
-          >
-            <img
-              class="sc-kEYyzF jNhvDd"
-              src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
-            />
-          </h1>
+          />
           <p>
             To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
           </p>
@@ -19404,7 +19362,7 @@ exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal w
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -19416,17 +19374,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -19567,7 +19525,7 @@ Object {
   margin-top: 13px;
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -19746,7 +19704,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -19781,7 +19739,7 @@ Object {
           class="c6"
         >
           <li
-            class="c7 lock c8"
+            class="c7 c8 lock"
             data-address="0x456"
           >
             <header
@@ -19868,7 +19826,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -19903,7 +19861,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -20046,7 +20004,7 @@ exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal w
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -20058,17 +20016,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -20209,7 +20167,7 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -20388,7 +20346,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -20423,7 +20381,7 @@ Object {
           class="c6"
         >
           <li
-            class="c7 lock c8"
+            class="c7 c8 lock"
             data-address="0x456"
           >
             <header
@@ -20506,7 +20464,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -20541,7 +20499,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -20680,7 +20638,7 @@ exports[`Storyshots Checkout/Checkout Confirming modal CheckoutConfirmingModal w
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c2 {
+    .c1 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -20692,17 +20650,17 @@ Object {
   line-height: 24px;
 }
 
-.c2 > svg {
+.c1 > svg {
   fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c2:hover {
+.c1:hover {
   background-color: var(--link);
 }
 
-.c2:hover > svg {
+.c1:hover > svg {
   fill: white;
 }
 
@@ -20843,7 +20801,7 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c1 {
+.c2 {
   position: absolute;
   top: 24px;
   right: 24px;
@@ -21022,7 +20980,7 @@ Object {
         class="c0"
       >
         <a
-          class="closeButton c1 c2"
+          class="c1 c2 closeButton"
         >
           <svg
             viewBox="0 0 24 24"
@@ -21057,7 +21015,7 @@ Object {
           class="c6"
         >
           <li
-            class="c7 lock c8"
+            class="c7 c8 lock"
             data-address="0x456"
           >
             <header
@@ -21140,7 +21098,7 @@ Object {
       class="sc-iwsKbI gtsSOj"
     >
       <a
-        class="sc-dnqmqq closeButton hlAVVM is925m-0 bYsUmJ"
+        class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
       >
         <svg
           viewBox="0 0 24 24"
@@ -21175,7 +21133,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x456"
         >
           <header
@@ -24415,7 +24373,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
             disabled=""
           >
@@ -24429,7 +24387,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -24474,7 +24432,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x123"
           disabled=""
         >
@@ -24488,7 +24446,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -24709,7 +24667,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
             disabled=""
           >
@@ -24723,7 +24681,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -24768,7 +24726,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x123"
           disabled=""
         >
@@ -24782,7 +24740,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -24992,7 +24950,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
             disabled=""
           >
@@ -25006,7 +24964,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 10.00
                  
@@ -25045,7 +25003,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x123"
           disabled=""
         >
@@ -25059,7 +25017,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               10.00
                
@@ -25274,7 +25232,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
             disabled=""
           >
@@ -25288,7 +25246,7 @@ Object {
               disabled=""
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -25333,7 +25291,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock ccttpN"
+          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
           data-address="0x123"
           disabled=""
         >
@@ -25347,7 +25305,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -25561,7 +25519,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -25573,7 +25531,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 66.00
                  
@@ -25611,7 +25569,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -25623,7 +25581,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               66.00
                
@@ -25841,7 +25799,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -25853,7 +25811,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -25897,7 +25855,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -25909,7 +25867,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -26163,7 +26121,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -26223,7 +26181,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -26336,7 +26294,7 @@ exports[`Storyshots Lock with a mined key for an know ERC20 Lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
+    .c10 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -26348,25 +26306,25 @@ Object {
   line-height: 50px;
 }
 
-.c12 > svg {
+.c10 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c12:hover {
+.c10:hover {
   background-color: var(--green);
 }
 
-.c12:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:hover .c20 {
+.c9:hover .c20 {
   display: inline-block;
 }
 
-.c21 .c11 {
+.c21 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -26377,28 +26335,28 @@ Object {
   align-self: center;
 }
 
-.c21 .c11:nth-child(1) {
+.c21 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c21 .c11:nth-child(2) {
+.c21 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c21 .c11 > svg {
+.c21 .c9 > svg {
   fill: var(--grey);
 }
 
-.c21 .c11:hover > svg {
+.c21 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c22 .c11 {
+.c22 .c9 {
   margin: 24px;
 }
 
-.c22 .c11 small {
+.c22 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -26441,17 +26399,17 @@ Object {
   display: none;
 }
 
-.c10 {
+.c12 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c10:hover .c14 {
+.c12:hover .c14 {
   display: block;
 }
 
-.c10:hover .c13 {
+.c12:hover .c13 {
   display: none;
 }
 
@@ -26550,7 +26508,7 @@ Object {
   color: var(--green);
 }
 
-.c4 .c9 {
+.c4 .c11 {
   display: none;
 }
 
@@ -26558,15 +26516,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c4:hover .c9 {
+.c4:hover .c11 {
   background-color: var(--green);
 }
 
-.c4:hover .c9 svg {
+.c4:hover .c11 svg {
   fill: var(--white);
 }
 
-.c4:hover .c9 {
+.c4:hover .c11 {
   display: block;
 }
 
@@ -26617,7 +26575,7 @@ Object {
     display: none;
   }
 
-  .c4 .c9 {
+  .c4 .c11 {
     display: block;
   }
 
@@ -26642,7 +26600,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -26654,7 +26612,7 @@ Object {
               class="c4"
             >
               <div
-                class="c5 price c6"
+                class="c5 c6 price"
               >
                 66.00
                  
@@ -26726,7 +26684,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -26738,7 +26696,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               66.00
                
@@ -26756,7 +26714,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -27006,7 +26964,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -27060,7 +27018,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -27167,7 +27125,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c14 {
+    .c12 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -27179,25 +27137,25 @@ Object {
   line-height: 50px;
 }
 
-.c14 > svg {
+.c12 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c14:hover {
+.c12:hover {
   background-color: var(--green);
 }
 
-.c14:hover > svg {
+.c12:hover > svg {
   fill: white;
 }
 
-.c13:hover .c22 {
+.c11:hover .c22 {
   display: inline-block;
 }
 
-.c23 .c13 {
+.c23 .c11 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -27208,28 +27166,28 @@ Object {
   align-self: center;
 }
 
-.c23 .c13:nth-child(1) {
+.c23 .c11:nth-child(1) {
   pointer-events: none;
 }
 
-.c23 .c13:nth-child(2) {
+.c23 .c11:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c23 .c13 > svg {
+.c23 .c11 > svg {
   fill: var(--grey);
 }
 
-.c23 .c13:hover > svg {
+.c23 .c11:hover > svg {
   fill: var(--grey);
 }
 
-.c24 .c13 {
+.c24 .c11 {
   margin: 24px;
 }
 
-.c24 .c13 small {
+.c24 .c11 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -27272,17 +27230,17 @@ Object {
   display: none;
 }
 
-.c12 {
+.c14 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c12:hover .c16 {
+.c14:hover .c16 {
   display: block;
 }
 
-.c12:hover .c15 {
+.c14:hover .c15 {
   display: none;
 }
 
@@ -27392,7 +27350,7 @@ Object {
   color: var(--green);
 }
 
-.c4 .c11 {
+.c4 .c13 {
   display: none;
 }
 
@@ -27400,15 +27358,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c4:hover .c11 {
+.c4:hover .c13 {
   background-color: var(--green);
 }
 
-.c4:hover .c11 svg {
+.c4:hover .c13 svg {
   fill: var(--white);
 }
 
-.c4:hover .c11 {
+.c4:hover .c13 {
   display: block;
 }
 
@@ -27459,7 +27417,7 @@ Object {
     display: none;
   }
 
-  .c4 .c11 {
+  .c4 .c13 {
     display: block;
   }
 
@@ -27484,7 +27442,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -27496,7 +27454,7 @@ Object {
               class="c4"
             >
               <div
-                class="c5 price c6"
+                class="c5 c6 price"
               >
                 0.23
                  
@@ -27574,7 +27532,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -27586,7 +27544,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 price WzAoK"
+              class="ynhyps-1 WzAoK price"
             >
               0.23
                
@@ -27610,7 +27568,7 @@ Object {
               </span>
             </div>
             <a
-              class="sc-1hzn3pu-2 jZYYLs is925m-0 kmZaWo"
+              class="is925m-0 kmZaWo sc-1hzn3pu-2 jZYYLs"
             >
               <svg
                 class="sc-1hzn3pu-0 dozNUb"
@@ -27874,7 +27832,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -27930,7 +27888,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -28182,7 +28140,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -28232,7 +28190,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 lock uyDPU"
+          class="sc-1549ebs-0 uyDPU lock"
           data-address="0x123"
         >
           <header
@@ -28462,7 +28420,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -28474,7 +28432,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -28518,7 +28476,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -28530,7 +28488,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -28754,7 +28712,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -28766,7 +28724,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -28810,7 +28768,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -28822,7 +28780,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -29035,7 +28993,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -29047,7 +29005,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 10.00
                  
@@ -29085,7 +29043,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -29097,7 +29055,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               10.00
                
@@ -29304,7 +29262,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -29316,7 +29274,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 66.00
                  
@@ -29354,7 +29312,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -29366,7 +29324,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               66.00
                
@@ -29584,7 +29542,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -29596,7 +29554,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -29640,7 +29598,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -29652,7 +29610,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
@@ -29876,7 +29834,7 @@ Object {
           style="height: 200px; display: grid;"
         >
           <li
-            class="c0 lock c1"
+            class="c0 c1 lock"
             data-address="0x123"
           >
             <header
@@ -29888,7 +29846,7 @@ Object {
               class="c4"
             >
               <div
-                class="price c5"
+                class="c5 price"
               >
                 0.23
                  
@@ -29932,7 +29890,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 lock gdICwj"
+          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
           data-address="0x123"
         >
           <header
@@ -29944,7 +29902,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 price bIZSQm"
+              class="sc-5sgq84-3 bIZSQm price"
             >
               0.23
                
