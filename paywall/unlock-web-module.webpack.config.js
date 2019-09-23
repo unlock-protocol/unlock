@@ -36,7 +36,7 @@ module.exports = () => {
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'src', 'unlock.js', 'module.ts'),
     output: {
-      library: 'unlock-checkout-builder',
+      library: 'unlock-web',
       libraryTarget: 'commonjs2',
       path: path.resolve(__dirname, 'src', 'unlock.js', 'dist'),
       filename: 'index.js',
