@@ -18,9 +18,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "eth-sig-util": "2.2.0",
+    "eth-sig-util": "2.4.4",
     "ethereumjs-utils": "5.2.5",
-    "ethers": "4.0.36"
+    "ethers": "4.0.37"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -32,9 +32,9 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "7.5.5",
-    "@babel/core": "7.5.5",
-    "@babel/preset-env": "7.5.5",
+    "@babel/cli": "7.6.0",
+    "@babel/core": "7.6.0",
+    "@babel/preset-env": "7.6.0",
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
     "nock": "11.3.5",
