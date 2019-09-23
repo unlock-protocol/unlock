@@ -5,10 +5,7 @@ const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
-// Path is relative to `build/contracts/` directory
-const UnlockV0 = Contracts.getFromLocal(
-  '../../node_modules/unlock-abi-0/Unlock'
-)
+const UnlockV0 = Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock')
 const PublicLockV0 = require('public-lock-abi-0/abi_V0')
 
 const UnlockV1 = Contracts.getFromLocal('Unlock')
