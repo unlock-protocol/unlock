@@ -144,21 +144,13 @@ contract('Lock / cancelAndRefund', accounts => {
     let tx
 
     before(async () => {
-      tx = await lock.updateRefundPenalty(2, 10) // 20%
+      tx = await lock.updateRefundPenalty(0, 2, 10) // 20%
     })
 
     it('should trigger an event', async () => {
       const event = tx.logs.find(log => {
         return log.event === 'RefundPenaltyChanged'
       })
-      assert.equal(
-        new BigNumber(event.args.oldRefundPenaltyNumerator).toFixed(),
-        1
-      )
-      assert.equal(
-        new BigNumber(event.args.oldRefundPenaltyDenominator).toFixed(),
-        10
-      )
       assert.equal(
         new BigNumber(event.args.refundPenaltyNumerator).toFixed(),
         2
@@ -219,7 +211,7 @@ contract('Lock / cancelAndRefund', accounts => {
     })
 
     it('attempt to set the denominator to 0', async () => {
-      await shouldFail(lock.updateRefundPenalty(1, 0), 'INVALID_RATE')
+      await shouldFail(lock.updateRefundPenalty(0, 1, 0), 'INVALID_RATE')
     })
   })
 })

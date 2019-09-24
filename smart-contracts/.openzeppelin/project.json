@@ -1,0 +1,13 @@
+{
+  "manifestVersion": "2.2",
+  "contracts": {
+    "Unlock": "Unlock",
+    "UnlockDiscountToken": "UnlockDiscountToken"
+  },
+  "dependencies": {},
+  "name": "unlock-protocol",
+  "version": "0.5.0",
+  "compiler": {
+    "manager": "truffle"
+  }
+}

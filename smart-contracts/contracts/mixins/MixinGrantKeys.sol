@@ -1,7 +1,7 @@
-pragma solidity 0.5.10;
+pragma solidity 0.5.11;
 
 import '../interfaces/IERC721.sol';
-import 'openzeppelin-eth/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
 
 
@@ -32,7 +32,7 @@ contract MixinGrantKeys is
 
       require(recipient != address(0), 'INVALID_ADDRESS');
 
-      Key storage toKey = _getKeyFor(recipient);
+      Key storage toKey = keyByOwner[recipient];
       require(expirationTimestamp > toKey.expirationTimestamp, 'ALREADY_OWNS_KEY');
 
       _assignNewTokenId(toKey);

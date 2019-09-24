@@ -13,15 +13,19 @@ contract('Lock / disableLock', accounts => {
   let lock
   let keyOwner = accounts[1]
   let keyOwner2 = accounts[2]
-
+  let keyOwner3 = accounts[3]
+  let lockOwner = accounts[0]
   before(async () => {
     unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
     await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
     await lock.purchase(keyOwner2, web3.utils.padLeft(0, 40), [], {
+      value: Units.convert('0.01', 'eth', 'wei'),
+    })
+    await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
@@ -38,7 +42,7 @@ contract('Lock / disableLock', accounts => {
   describe('when the lock has been disabled', () => {
     let txObj, event
     before(async () => {
-      txObj = await lock.disableLock({ from: accounts[0] })
+      txObj = await lock.disableLock({ from: lockOwner })
       event = txObj.logs[0]
     })
 
@@ -98,6 +102,13 @@ contract('Lock / disableLock', accounts => {
       })
     })
 
+    it('Lock owners can still fully refund keys', async () => {
+      const refundAmount = Units.convert('0.01', 'eth', 'wei')
+      await lock.fullRefund(keyOwner3, refundAmount, {
+        from: lockOwner,
+      })
+    })
+
     it('Lock owner can still withdraw', async () => {
       await lock.withdraw(await lock.tokenAddress.call(), 0)
     })
@@ -111,7 +122,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('Lock owner can still updateRefundPenaltyDenominator', async () => {
-      await lock.updateRefundPenalty(5, 100)
+      await lock.updateRefundPenalty(0, 5, 100)
     })
 
     it('should fail to setApprovalForAll', async () => {

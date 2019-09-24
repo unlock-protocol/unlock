@@ -15,7 +15,7 @@ import {
   Step,
   Fieldset,
   Field,
-  Title,
+  CreateTitle,
   Label,
   StyledSelect,
   Text,
@@ -56,7 +56,7 @@ export class CreateContent extends Component {
             </Head>
             <Steps>
               <Step>
-                <Title>Select your Lock</Title>
+                <CreateTitle>Select your Lock</CreateTitle>
                 <Fieldset>
                   <Field>
                     <Label>Lock</Label>
