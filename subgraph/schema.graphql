@@ -22,7 +22,7 @@ type Lock @entity {
   id: ID! #lock address
   address: Bytes!
   name: String
-  tokenAddress: Bytes!
+  tokenAddress: Bytes
   price: BigInt
   expirationDuration: BigInt
   totalSupply: BigInt

@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, Address } from "@graphprotocol/graph-ts";
 import {
   Contract,
   NewLock,
@@ -36,21 +36,38 @@ export function handleNewLock(event: NewLock): void {
   PublicLockTemplate.create(event.params.newLockAddress);
 
   let chainPublicLock = PublicLock.bind(event.params.newLockAddress);
-  let tokenAddress = chainPublicLock.tokenAddress();
   entity.save();
 
   let lock = new Lock(event.params.newLockAddress.toHex());
-  lock.address = event.params.newLockAddress 
-  lock.tokenAddress = tokenAddress;
-  lock.name = chainPublicLock.name();
+  lock.address = event.params.newLockAddress;
   lock.price = chainPublicLock.keyPrice();
   lock.expirationDuration = chainPublicLock.expirationDuration();
-  lock.totalSupply = chainPublicLock.totalSupply();
   lock.maxNumberOfKeys = chainPublicLock.maxNumberOfKeys();
   lock.owner = chainPublicLock.owner();
+  let tokenAddress = chainPublicLock.try_tokenAddress();
+
+  if (!tokenAddress.reverted) {
+    lock.tokenAddress = tokenAddress.value;
+  } else {
+    lock.tokenAddress = Address.fromString(
+      "0000000000000000000000000000000000000000"
+    );
+  }
+
+  let tokenName = chainPublicLock.try_name();
+  if (!tokenName.reverted) {
+    lock.name = tokenName.value;
+  } else {
+    lock.name = "";
+  }
+
+  let totalSupply = chainPublicLock.try_totalSupply();
+  if (!totalSupply.reverted) {
+    lock.totalSupply = totalSupply.value;
+  }
+
   lock.save();
 
-  // .create(event.params.newLockAddress)
 
   // Note: If a handler doesn't require existing field values, it is faster
   // _not_ to load the entity from the store. Instead, create it fresh with
