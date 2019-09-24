@@ -1,5 +1,8 @@
 # Changes
 
+## Next version
+ - TODO cleanup in web3Service tests
+
 ## 0.3.13
 
 - Returning the token symbol when retrieving an ERC20 lock.

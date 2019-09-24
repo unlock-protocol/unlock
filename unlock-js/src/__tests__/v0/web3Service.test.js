@@ -60,32 +60,12 @@ describe('Web3Service', () => {
     it('should return the right transaction type on lock creation', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      // TODO Since this test is version specific it does not belong here.
-      // Removing it will make things easier/cleaner to handle in the future
-      let data
-      const currencyAddress = ethers.constants.AddressZero // Token address (ERC20 support). null is for Eth
-      if (version === 'v0') {
-        data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
-          '1000',
-          '1000000000',
-          '1',
-        ])
-      } else if (version === 'v10') {
-        data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
-          '1000', // _expirationDuration
-          currencyAddress, // _tokenAddress
-          '1000000000', // _keyPrice
-          '1', //_maxNumberOfKeys
-          'Lock name', // _lockName
-        ])
-      } else {
-        data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
-          '1000',
-          currencyAddress,
-          '1000000000',
-          '1',
-        ])
-      }
+      const data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
+        '1000',
+        '1000000000',
+        '1',
+      ])
+
       const type = web3Service._getTransactionType(UnlockVersion.Unlock, data)
       expect(type).toBe(TransactionTypes.LOCK_CREATION)
     })
