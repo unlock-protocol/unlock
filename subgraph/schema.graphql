@@ -10,6 +10,7 @@ type Key @entity {
   lock: Lock!
   keyId: BigInt!
   owner: KeyHolder!
+  expiration: BigInt!
 }
 
 type KeyHolder @entity {

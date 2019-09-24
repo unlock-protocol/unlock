@@ -56,4 +56,9 @@ templates:
           handler: handleLockTransfer
         - event: PriceChanged(uint256,uint256)
           handler: handlePriceChanged
+        - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleCancelKey
+        - event: ExpireKey(uint256)
+          handler: handleExpireKey
+
       file: ./src/lockMapping.ts
