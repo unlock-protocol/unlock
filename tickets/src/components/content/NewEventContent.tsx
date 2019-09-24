@@ -54,8 +54,7 @@ export class EventContent extends Component<
       window.addEventListener('unlockProtocol', this.setPaywallStatus)
 
       const url = new URL(
-        window.location.href,
-        'https://tickets.unlock-protocol.com'
+        window.location.href
       )
       const unlockUserAccounts =
         url.searchParams.get('unlockUserAccounts') === 'true'
