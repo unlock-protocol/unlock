@@ -25,6 +25,17 @@ export async function getErc20Decimals(erc20ContractAddress, provider) {
   return utils.toNumber(decimals)
 }
 
+/**
+ * yields the symbole for the ERC20 contract
+ * @param {*} erc20ContractAddress
+ * @param {*} provider
+ */
+export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
+  const symbolPromise = await contract.symbol()
+  return symbolPromise
+}
+
 export async function approveTransfer(
   erc20ContractAddress,
   lockContractAddress,
@@ -44,4 +55,5 @@ export default {
   approveTransfer,
   getErc20BalanceForAddress,
   getErc20Decimals,
+  getErc20TokenSymbol,
 }
