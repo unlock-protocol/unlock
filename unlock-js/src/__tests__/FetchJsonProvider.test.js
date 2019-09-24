@@ -1,148 +1,85 @@
-import NockHelper from './helpers/nockHelper'
+import { providers } from 'ethers'
 import FetchJsonProvider from '../FetchJsonProvider'
 
-const endpoint = 'http://127.0.0.1:8545'
-const nock = new NockHelper(endpoint, false /** debug */)
+jest.mock('ethers')
+
+const url = 'providerUrl'
+const method = 'method'
+const params = []
 
 describe('FetchJsonProvider', () => {
-  const originalFetch = global.fetch
-  describe('verify parameters passed in', () => {
-    let fetch
-
-    function fakeFetchSuccess(returnValue) {
-      fetch = jest.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () =>
-            Promise.resolve({
-              error: null,
-              result: returnValue,
-            }),
-        })
-      )
-      global.fetch = fetch
-    }
-
-    afterEach(() => {
-      global.fetch = originalFetch
-    })
-
-    it('should set cors mode, POST, and content-type', async () => {
-      expect.assertions(1)
-      const result = { id: 42, jsonrpc: '2.0', result: 123, error: null }
-
-      fakeFetchSuccess(result)
-
-      const provider = new FetchJsonProvider(endpoint)
-
-      await provider.send('net_version', [])
-
-      expect(fetch).toHaveBeenCalledWith(
-        endpoint,
-        expect.objectContaining({
-          body: JSON.stringify({
-            method: 'net_version',
-            params: [],
-            id: 42,
-            jsonrpc: '2.0',
-          }),
-          mode: 'cors',
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            // "Content-Type": "application/x-www-form-urlencoded",
-          },
-        })
-      )
-      await new Promise(resolve => setTimeout(resolve, 1)) // this ensures our test finishes after the provider requests net_version
-    })
+  beforeEach(() => {
+    providers.JsonRpcProvider.prototype.send.call = jest.fn()
   })
 
-  describe('failures', () => {
-    beforeEach(() => {
-      global.fetch = originalFetch
-      nock.cleanAll()
-    })
+  it('should return the response from JsonRpcProvider if successful', async () => {
+    expect.assertions(2)
+    const provider = new FetchJsonProvider(url)
 
-    afterEach(() => {
-      nock.cleanAll()
-    })
-
-    it('if request fails, should throw', async () => {
-      expect.assertions(2)
-
-      nock.do404('net_version', [])
-      nock.do404('net_version', [])
-
-      try {
-        const provider = new FetchJsonProvider(endpoint)
-        await provider.send('net_version', [])
-      } catch (e) {
-        expect(e).toBeInstanceOf(Error)
-        expect(e.message).toBe('invalid response - 404')
-      }
-      await new Promise(resolve => setTimeout(resolve, 1)) // this ensures our test finishes after the provider requests net_version
-    })
-
-    it('if json-rpc fails, should throw', async () => {
-      expect.assertions(2)
-
-      nock.ethCallAndFail('data', 'to', { code: 404, message: 'nope' })
-      nock.netVersionAndYield(1984)
-
-      try {
-        const provider = new FetchJsonProvider(endpoint)
-        await provider.send('eth_call', [{ data: 'data', to: 'to' }, 'latest'])
-      } catch (e) {
-        expect(e).toBeInstanceOf(Error)
-        expect(e.message).toBe('nope')
-      }
-      await new Promise(resolve => setTimeout(resolve, 1)) // this ensures our test finishes after the provider requests net_version
-    })
+    providers.JsonRpcProvider.prototype.send.call = jest.fn(() =>
+      Promise.resolve('response')
+    )
+    const response = await provider.send(method, params)
+    expect(providers.JsonRpcProvider.prototype.send.call).toHaveBeenCalledWith(
+      provider,
+      method,
+      params
+    )
+    expect(response).toEqual('response')
   })
 
-  describe('success', () => {
-    afterEach(() => {
-      nock.cleanAll()
+  describe('if JsonRpcProvider failed', () => {
+    it('should retry if the error is 429 and there has not been too many retries', async () => {
+      expect.assertions(2)
+      const provider = new FetchJsonProvider(url, 1, 3)
+      let callCounter = 0
+      providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
+        callCounter += 1
+        if (callCounter === 3) {
+          return Promise.resolve('response')
+        } else {
+          return Promise.reject({
+            statusCode: 429,
+          })
+        }
+      })
+      const response = await provider.send(method, params)
+      expect(response).toEqual('response')
+      expect(callCounter).toEqual(3)
     })
 
-    it('should return the JSON value', async () => {
+    it('should throw and not retry if the error is not 429', async () => {
       expect.assertions(1)
-
-      nock.netVersionAndYield(1984)
-      nock.netVersionAndYield(1984)
-
-      const provider = new FetchJsonProvider(endpoint)
-      const value = await provider.send('net_version', [])
-
-      expect(value).toBe(1984)
-      await new Promise(resolve => setTimeout(resolve, 1)) // this ensures our test finishes after the provider requests net_version
+      const error = {
+        statusCode: 404,
+      }
+      const provider = new FetchJsonProvider(url, 1, 3)
+      providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
+        return Promise.reject(error)
+      })
+      try {
+        await provider.send(method, params)
+      } catch (e) {
+        expect(e).toEqual(error)
+      }
     })
 
-    it('should emit a debug event', async () => {
-      expect.assertions(1)
-
-      nock.netVersionAndYield(1984)
-      nock.netVersionAndYield(1984)
-
-      const provider = new FetchJsonProvider(endpoint)
-      provider.emit = jest.fn()
-      await provider.send('net_version', [])
-      await new Promise(resolve => setTimeout(resolve, 1)) // this ensures our test finishes after the provider requests net_version
-      expect(provider.emit).toHaveBeenCalledWith(
-        'debug',
-        expect.objectContaining({
-          action: 'send',
-          request: {
-            method: 'net_version',
-            params: [],
-            id: expect.any(Number),
-            jsonrpc: '2.0',
-          },
-          response: 1984,
-          provider,
+    it('should retry if the error is 429 and there has been too many retries', async () => {
+      expect.assertions(2)
+      const provider = new FetchJsonProvider(url, 1, 3)
+      let callCounter = 0
+      providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
+        callCounter += 1
+        return Promise.reject({
+          statusCode: 429,
         })
-      )
+      })
+      try {
+        await provider.send(method, params)
+      } catch (e) {
+        expect(e.statusCode).toEqual(429)
+      }
+      expect(callCounter).toEqual(3)
     })
   })
 })
