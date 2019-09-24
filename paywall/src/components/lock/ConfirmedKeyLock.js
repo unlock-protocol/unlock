@@ -65,7 +65,6 @@ const EthPrice = styled.div.attrs({
   className: 'price',
 })`
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 `

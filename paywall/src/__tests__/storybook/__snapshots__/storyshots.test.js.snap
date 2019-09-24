@@ -2324,7 +2324,6 @@ Object {
 
 .c10 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -2589,7 +2588,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.1
                
@@ -2825,7 +2824,6 @@ Object {
 
 .c10 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -3066,7 +3064,7 @@ Object {
               <div
                 class="c10 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -3172,7 +3170,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.1
                
@@ -3213,7 +3211,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.3
                
@@ -3254,9 +3252,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -3609,7 +3607,6 @@ Object {
 
 .c17 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -3851,7 +3848,7 @@ Object {
               <div
                 class="c17 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -3999,7 +3996,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.3
                
@@ -4040,9 +4037,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -4395,7 +4392,6 @@ Object {
 
 .c17 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -4633,7 +4629,7 @@ Object {
               <div
                 class="c17 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -4777,7 +4773,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.3
                
@@ -4818,9 +4814,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -5173,7 +5169,6 @@ Object {
 
 .c10 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -5411,7 +5406,7 @@ Object {
               <div
                 class="c10 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -5514,7 +5509,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.1
                
@@ -5596,9 +5591,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -5870,7 +5865,6 @@ Object {
 
 .c11 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -6040,7 +6034,6 @@ Object {
 
 .c28 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -6370,7 +6363,7 @@ Object {
               <div
                 class="c28 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -6474,7 +6467,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.1
                
@@ -6549,7 +6542,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.3
                
@@ -6626,9 +6619,9 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -6901,7 +6894,6 @@ Object {
 
 .c11 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -7071,7 +7063,6 @@ Object {
 
 .c28 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -7366,7 +7357,7 @@ Object {
               <div
                 class="c28 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -7470,7 +7461,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.1
                
@@ -7545,7 +7536,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.3
                
@@ -7587,9 +7578,9 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -7862,7 +7853,6 @@ Object {
 
 .c11 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -8032,7 +8022,6 @@ Object {
 
 .c28 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -8360,7 +8349,7 @@ Object {
               <div
                 class="c28 price"
               >
-                3.00
+                3
                  
                 Eth
               </div>
@@ -8464,7 +8453,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.1
                
@@ -8537,7 +8526,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.3
                
@@ -8614,9 +8603,9 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              3.00
+              3
                
               Eth
             </div>
@@ -24373,7 +24362,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -24488,7 +24476,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -24667,7 +24655,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -24782,7 +24769,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -24961,7 +24948,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -25008,7 +24994,7 @@ Object {
               <div
                 class="c5 price"
               >
-                10.00
+                10
                  
                 DEV
               </div>
@@ -25059,9 +25045,9 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              10.00
+              10
                
               DEV
             </div>
@@ -25232,7 +25218,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -25347,7 +25332,7 @@ Object {
             disabled=""
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -25530,7 +25515,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -25575,7 +25559,7 @@ Object {
               <div
                 class="c5 price"
               >
-                66.00
+                66
                  
                 DEV
               </div>
@@ -25623,9 +25607,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              66.00
+              66
                
               DEV
             </div>
@@ -25799,7 +25783,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -25909,7 +25892,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -26504,7 +26487,6 @@ Object {
 
 .c6 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -26656,7 +26638,7 @@ Object {
               <div
                 class="c5 c6 price"
               >
-                66.00
+                66
                  
                 DEV
               </div>
@@ -26738,9 +26720,9 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
-              66.00
+              66
                
               DEV
             </div>
@@ -27023,7 +27005,7 @@ Object {
                 <div
                   class="c6"
                 >
-                  66.00
+                  66
                    
                   DEV
                 </div>
@@ -27077,7 +27059,7 @@ Object {
               <div
                 class="sc-1549ebs-4 cXGnbO"
               >
-                66.00
+                66
                  
                 DEV
               </div>
@@ -27335,7 +27317,6 @@ Object {
 
 .c6 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -27586,7 +27567,7 @@ Object {
             class="sc-1549ebs-3 ynhyps-5 fUiyRE"
           >
             <div
-              class="ynhyps-1 WzAoK price"
+              class="ynhyps-1 foCVaf price"
             >
               0.23
                
@@ -28199,7 +28180,7 @@ Object {
                 <div
                   class="c6"
                 >
-                  66.00
+                  66
                    
                   DEV
                 </div>
@@ -28249,7 +28230,7 @@ Object {
               <div
                 class="sc-1549ebs-4 cXGnbO"
               >
-                66.00
+                66
                  
                 DEV
               </div>
@@ -28420,7 +28401,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -28530,7 +28510,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -28712,7 +28692,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -28822,7 +28801,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -29004,7 +28983,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -29049,7 +29027,7 @@ Object {
               <div
                 class="c5 price"
               >
-                10.00
+                10
                  
                 DEV
               </div>
@@ -29097,9 +29075,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              10.00
+              10
                
               DEV
             </div>
@@ -29273,7 +29251,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -29318,7 +29295,7 @@ Object {
               <div
                 class="c5 price"
               >
-                66.00
+                66
                  
                 ERC20
               </div>
@@ -29366,9 +29343,9 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
-              66.00
+              66
                
               ERC20
             </div>
@@ -29542,7 +29519,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -29652,7 +29628,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                
@@ -29834,7 +29810,6 @@ Object {
 
 .c5 {
   font-size: 30px;
-  text-transform: uppercase;
   color: var(--slate);
   font-weight: bold;
 }
@@ -29944,7 +29919,7 @@ Object {
             class="sc-1549ebs-3 sc-5sgq84-2 dyJsTl"
           >
             <div
-              class="sc-5sgq84-3 bIZSQm price"
+              class="sc-5sgq84-3 jSlcrK price"
             >
               0.23
                

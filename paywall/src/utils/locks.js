@@ -3,6 +3,10 @@
  */
 export function currencySymbolForLock(lock, config) {
   let currency = 'Eth'
+  if (lock.currencySymbol) {
+    return lock.currencySymbol
+  }
+  // TODO: remove me, as we now get the currency symbol from the contract
   if (lock.currencyContractAddress === config.erc20Contract.address) {
     currency = config.erc20Contract.name
   } else if (lock.currencyContractAddress) {
