@@ -1,54 +1,46 @@
 import { providers } from 'ethers'
 
-const whoAmI = global || self
-
-function getResult(payload) {
-  if (payload.error) {
-    const error = new Error(payload.error.message)
-    error.code = payload.error.code
-    error.data = payload.error.data
-    throw error
+export default class FetchJsonProvider extends providers.JsonRpcProvider {
+  constructor(endpoint, rateLimit = 1000, maxRetries = 30) {
+    super(endpoint)
+    this.rateLimit = rateLimit
+    this.maxRetries = maxRetries
+    /**
+     * https://docs.alchemyapi.io/docs/rate-limits#section-what-is-a-rate-limit
+     * When you see a 429 response, retry the request with a small delay. We suggest waiting a random interval between 1000 and 1250 milliseconds and sending the request again, up to some maximum number of attempts you are willing to wait.
+     */
   }
 
-  return payload.result
-}
-
-export default class FetchJsonProvider extends providers.JsonRpcProvider {
+  /**
+   * This wraps ether's JsonRpcProvider, with 2 pruposes:
+   * - handling retries
+   * - eventually support ServiceWorkers by using another Fetch library
+   * We retry up to maxRetries times with a rateLimit interval between each try
+   * @param {*} method
+   * @param {*} params
+   */
   async send(method, params) {
-    if (!whoAmI.fetch) {
-      return providers.JsonRpcProvider.prototype.send.call(this, method, params)
-    }
-    const request = {
-      method: method,
-      params: params,
-      id: 42,
-      jsonrpc: '2.0',
-    }
-
-    const toFetch =
-      this.connection.url.indexOf('http') !== -1
-        ? this.connection.url
-        : whoAmI.location.protocol + '//' + this.connection.url
-    const response = await fetch(toFetch, {
-      body: JSON.stringify(request),
-      mode: 'cors',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // "Content-Type": "application/x-www-form-urlencoded",
-      },
+    return new Promise(async (resolve, reject) => {
+      const sendOnce = async tries => {
+        let response
+        try {
+          response = await providers.JsonRpcProvider.prototype.send.call(
+            this,
+            method,
+            params
+          )
+        } catch (error) {
+          if (error.statusCode === 429 && tries < this.maxRetries) {
+            return setTimeout(() => {
+              sendOnce(tries + 1)
+            }, this.rateLimit)
+          } else {
+            return reject(error) // If not a timeout we bubble up the error.
+          }
+        }
+        return resolve(response)
+      }
+      sendOnce(1)
     })
-    if (!response.ok) {
-      throw new Error(`Fetch failed: ${response.status} ${response.statusText}`)
-    }
-    const processed = await response.json()
-    const result = getResult(processed)
-    this.emit('debug', {
-      action: 'send',
-      request: request,
-      response: result,
-      provider: this,
-    })
-    return result
   }
 }
