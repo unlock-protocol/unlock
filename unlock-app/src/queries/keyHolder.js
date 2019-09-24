@@ -8,6 +8,7 @@ export default function keyHolderQuery() {
         address
         keys {
           id
+          expiration
           keyId
           lock {
             name
