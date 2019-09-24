@@ -12,6 +12,14 @@ describe('locks utilities', () => {
       expect(currencySymbolForLock(lock, config)).toBe('Eth')
     })
 
+    it('should returnt the symbol if one exists', () => {
+      expect.assertions(1)
+      const lock = {
+        currencySymbol: 'cDAI',
+      }
+      expect(currencySymbolForLock(lock, config)).toBe('cDAI')
+    })
+
     it('should return the configs symbold if this is an ERC20 matching the config', () => {
       expect.assertions(1)
       const lock = {
