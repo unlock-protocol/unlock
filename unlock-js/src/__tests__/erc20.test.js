@@ -3,9 +3,11 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
   approveTransfer,
+  getErc20TokenSymbol,
 } from '../erc20'
 import NockHelper from './helpers/nockHelper'
 import utils from '../utils'
+import erc20abi from '../erc20abi'
 
 const endpoint = 'http://0.0.0.0:8545'
 const nock = new NockHelper(endpoint, false /** debug */, false /** record */)
@@ -16,10 +18,7 @@ const callerAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
 
 const provider = new ethers.providers.JsonRpcProvider(endpoint)
 
-const erc20Contract = new ethers.utils.Interface([
-  'function balanceOf(address tokenOwner) public view returns (uint)',
-  'function decimals() public view returns (uint)',
-])
+const erc20Contract = new ethers.utils.Interface(erc20abi)
 
 describe('erc20', () => {
   describe('getErc20Decimals', () => {
@@ -70,6 +69,29 @@ describe('erc20', () => {
         provider
       )
       expect(balance).toEqual('1337')
+    })
+  })
+
+  describe('getErc20TokenSymbol', () => {
+    it('should return the symbol', async () => {
+      expect.assertions(1)
+      nock.netVersionAndYield(0)
+
+      // Ethers is not actually using the ABI it retrieves
+      nock.ethGetCodeAndYield(erc20ContractAddress, '0x0')
+
+      // Actual code to get the balance
+      nock.ethCallAndYield(
+        erc20Contract.functions.symbol.encode([]),
+        erc20ContractAddress,
+        ethers.utils.defaultAbiCoder.encode(
+          ['string'],
+          [utils.toRpcResultString('TICKER')]
+        )
+      )
+
+      const balance = await getErc20TokenSymbol(erc20ContractAddress, provider)
+      expect(balance).toEqual('TICKER')
     })
   })
 
