@@ -1,6 +1,10 @@
 import utils from '../utils'
 import { UNLIMITED_KEYS_COUNT, ZERO } from '../constants'
-import { getErc20BalanceForAddress, getErc20Decimals } from '../erc20'
+import {
+  getErc20BalanceForAddress,
+  getErc20Decimals,
+  getErc20TokenSymbol,
+} from '../erc20'
 
 /**
  * Refresh the lock's data.
@@ -46,7 +50,8 @@ export default async function(address) {
     update.keyPrice = utils.fromWei(update.keyPrice, 'ether')
     update.balance = await this.getAddressBalance(address)
   } else {
-    // Otherwise need to get the erc20's decimal and convert from there
+    // Otherwise need to get the erc20's decimal and convert from there, as well as the symbol
+    // TODO : make these calls in parallel
     const erc20Decimals = await getErc20Decimals(
       update.tokenAddress,
       this.provider
@@ -56,8 +61,14 @@ export default async function(address) {
       address,
       this.provider
     )
+    const erc20Symbol = await getErc20TokenSymbol(
+      update.tokenAddress,
+      this.provider
+    )
+
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
+    update.currencySymbol = erc20Symbol
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility

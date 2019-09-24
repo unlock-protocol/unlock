@@ -1,20 +1,29 @@
 # Changes
 
+## 0.3.13
+
+- Returning the token symbol when retrieving an ERC20 lock.
+
 ## 0.3.12
+
 - fixed a difference between pending transactions (node knows about them) and submitted transactions (which may be transactions that have been cancelled and will never succeed)
 
 ## 0.3.11
+
 - add `getTokenSymbol` method to web3Service to identify arbitrary ERC20 tokens (#4481)
 - add `getTokenBalance` method to web3Service to get the user's balance of arbitrary ERC20 tokens (#4431)
 
 ## 0.3.10
+
 - Add "for" field for pending/submitted key purchase transactions (#4190)
 - ignore events from other contracts (erc20 for instance) (#4187)
 
 ## 0.3.9
+
 - If a transaction is unknown poll immediately for it (#4149)
 
 ## 0.3.8
+
 - Moved scrypt/N back to the default from Web3 for speed of account interaction
 
 ## 0.3.7
