@@ -32,7 +32,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 module.exports = () => {
   return {
     cache: false,
-    mode: 'production',
+    mode: 'none',
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'src', 'unlock.js', 'module.ts'),
     output: {
