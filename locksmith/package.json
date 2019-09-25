@@ -77,7 +77,7 @@
     "sequelize-typescript": "1.0.0",
     "stripe": "7.9.1",
     "supertest": "4.0.2",
-    "truffle-hdwallet-provider": "1.0.17",
+    "@truffle/hdwallet-provider": "1.0.18",
     "ts-jest": "24.1.0",
     "typescript": "3.6.3",
     "unlock-abi-1-1": "1.0.0",
