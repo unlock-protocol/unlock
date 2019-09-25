@@ -33,7 +33,7 @@ export default class FetchJsonProvider extends providers.JsonRpcProvider {
           if (error.statusCode === 429 && tries < this.maxRetries) {
             return setTimeout(() => {
               sendOnce(tries + 1)
-            }, this.rateLimit)
+            }, Math.floor(this.rateLimit + (Math.random() * this.rateLimit) / 4))
           } else {
             return reject(error) // If not a timeout we bubble up the error.
           }
