@@ -21,7 +21,13 @@ export async function getErc20BalanceForAddress(
  */
 export async function getErc20Decimals(erc20ContractAddress, provider) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
-  const decimals = await contract.decimals()
+  let decimals
+  try {
+    decimals = await contract.decimals()
+  } catch (e) {
+    /** Some ERC20 contracts do not have the right decimals method. Defaults to 18 */
+    return 18
+  }
   return utils.toNumber(decimals)
 }
 
@@ -32,8 +38,14 @@ export async function getErc20Decimals(erc20ContractAddress, provider) {
  */
 export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
-  const symbolPromise = await contract.symbol()
-  return symbolPromise
+  let symbol
+  try {
+    symbol = await contract.symbol()
+  } catch (e) {
+    /** Some ERC20 contracts, including DAI do not have the right symbol method. */
+    return null
+  }
+  return symbol
 }
 
 export async function approveTransfer(
