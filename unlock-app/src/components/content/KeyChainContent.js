@@ -60,8 +60,11 @@ const keyDetails = address => {
     variables: { address },
   })
 
+  
+
   if (loading) return <p>Loading...</p>
-  if (error) return <p>Error :(</p>
+  if (error) return( <p>Error :c</p>)
+  console.log(data.keyHolders)
 
   return data.keyHolders[0].keys
     .map(ownedKeys => ownedKeys.lock)
