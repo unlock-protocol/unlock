@@ -1,7 +1,10 @@
 # Changes
 
-## Next version
- - TODO cleanup in web3Service tests
+## 0.3.15
+
+- TODO cleanup in web3Service tests
+- Randomizing retries on error 419 (rate limiting)
+- Hanlding missing ERC20 methods
 
 ## 0.3.14
 
