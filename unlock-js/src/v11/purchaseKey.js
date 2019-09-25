@@ -22,12 +22,12 @@ export default async function(
   keyPrice,
   account,
   data,
-  erc20Address
+  erc20Address,
+  decimals = 18
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  // TODO, use the actual decimals from the contract. We assume 18 here because it is the most frequent default.
 
-  const actualAmount = utils.toDecimal(keyPrice, 18)
+  const actualAmount = utils.toDecimal(keyPrice, decimals)
 
   const purchaseForOptions = {
     gasLimit: GAS_AMOUNTS.purchaseFor, // overrides default value for transaction gas price

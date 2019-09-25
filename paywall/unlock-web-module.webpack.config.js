@@ -32,7 +32,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
 module.exports = () => {
   return {
     cache: false,
-    mode: 'production',
+    mode: 'none',
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'src', 'unlock.js', 'module.ts'),
     output: {
@@ -45,7 +45,10 @@ module.exports = () => {
       rules: [
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader'],
+          use: [
+            { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+            'css-loader',
+          ],
         },
         {
           test: /\.tsx?$/,

@@ -4,6 +4,7 @@ import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
+import { getErc20TokenSymbol } from './erc20'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -695,10 +696,7 @@ export default class Web3Service extends UnlockService {
    * @returns {Promise<string>}
    */
   async getTokenSymbol(contractAddress) {
-    const abi = ['function symbol() view returns (string)']
-    const contract = new ethers.Contract(contractAddress, abi, this.provider)
-    const symbolPromise = contract.symbol()
-
+    const symbolPromise = getErc20TokenSymbol(contractAddress, this.provider)
     this.emitTokenSymbol(contractAddress, symbolPromise)
     return symbolPromise
   }
