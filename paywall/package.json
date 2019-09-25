@@ -34,7 +34,7 @@
     "@types/react": "16.9.2",
     "@types/react-dom": "16.9.0",
     "@types/styled-components": "4.1.19",
-    "@unlock-protocol/unlock-js": "0.3.14",
+    "@unlock-protocol/unlock-js": "0.3.15",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
