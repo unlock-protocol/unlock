@@ -53,6 +53,10 @@ export class EventContent extends Component<
     if (typeof window !== 'undefined') {
       window.addEventListener('unlockProtocol', this.setPaywallStatus)
 
+      const url = new URL(window.location.href)
+      const unlockUserAccounts =
+        url.searchParams.get('unlockUserAccounts') === 'true'
+
       // TODO: Make this nicer
       window.unlockProtocolConfig = {
         persistentCheckout: false,
@@ -62,6 +66,7 @@ export class EventContent extends Component<
         callToAction: {
           default: 'Buy a ticket',
         },
+        unlockUserAccounts,
       }
     }
   }

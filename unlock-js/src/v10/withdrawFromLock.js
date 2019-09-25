@@ -5,7 +5,6 @@ import Errors from '../errors'
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
  * @param {PropTypes.address} lock
- * @param {Function} callback TODO: implement...
  */
 export default async function(lockAddress) {
   const lockContract = await this.getLockContract(lockAddress)
