@@ -21,6 +21,7 @@ const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 
 jest.mock('../../erc20.js', () => {
   return {
+    getErc20TokenSymbol: jest.fn(() => Promise.resolve('TICKER')),
     getErc20BalanceForAddress: jest.fn(() => Promise.resolve(0)),
     getErc20Decimals: jest.fn(() => Promise.resolve(18)), // 18 is the most frequent default for ERC20
   }
@@ -170,12 +171,16 @@ describe('v10', () => {
     })
 
     it('should successfully yield a lock with an ERC20 currency, with the right balance', async () => {
-      expect.assertions(3)
+      expect.assertions(4)
       await nockBeforeEach()
       nockGetErc20Lock({ erc20ContractAddress })
       const balance = 1929
       erc20.getErc20BalanceForAddress = jest.fn(() => {
         return Promise.resolve(balance)
+      })
+      const symbol = 'SYMBOL'
+      erc20.getErc20TokenSymbol = jest.fn(() => {
+        return Promise.resolve(symbol)
       })
       const decimals = 3
       erc20.getErc20Decimals = jest.fn(() => {
@@ -190,6 +195,7 @@ describe('v10', () => {
           keyPrice: utils.fromDecimal('10000000000000000', decimals),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
+          currencySymbol: symbol,
           owner,
           outstandingKeys: 17,
           asOf: 1337,
@@ -202,6 +208,10 @@ describe('v10', () => {
       expect(erc20.getErc20BalanceForAddress).toHaveBeenCalledWith(
         erc20ContractAddress,
         lockAddress,
+        web3Service.provider
+      )
+      expect(erc20.getErc20TokenSymbol).toHaveBeenCalledWith(
+        erc20ContractAddress,
         web3Service.provider
       )
     })
