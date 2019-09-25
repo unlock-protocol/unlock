@@ -1,5 +1,8 @@
 # Changes
 
+## Next version
+ - TODO cleanup in web3Service tests
+
 ## 0.3.14
 
 - Adding retries on error 419 (rate limiting)
