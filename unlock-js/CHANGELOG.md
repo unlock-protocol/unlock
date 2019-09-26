@@ -1,5 +1,9 @@
 # Changes
 
+## 0.3.16
+
+- Using the right decimals number for ERC20 balances
+
 ## 0.3.15
 
 - TODO cleanup in web3Service tests
