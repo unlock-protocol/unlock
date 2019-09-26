@@ -72,7 +72,6 @@ export class SettingsContent extends React.Component<
     }
   }
 
-  // SettingsContent is only relevant to managed account users, so this will only ever render a LogInSignUp for crypto users
   render() {
     const { stripe } = this.state
     const { cards, account } = this.props
