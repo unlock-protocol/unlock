@@ -18,6 +18,7 @@ export enum TransactionStatus {
   PENDING = 'pending',
   MINED = 'mined',
   STALE = 'stale',
+  FAILED = 'failed',
   NONE = '', // for testing purposes
 }
 /* eslint-enable no-unused-vars */
