@@ -4,7 +4,11 @@ import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
-import { getErc20TokenSymbol } from './erc20'
+import {
+  getErc20TokenSymbol,
+  getErc20BalanceForAddress,
+  getErc20Decimals,
+} from './erc20'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -721,13 +725,19 @@ export default class Web3Service extends UnlockService {
    * @returns {Promise<string>}
    */
   async getTokenBalance(contractAddress, userWalletAddress) {
-    const abi = ['function balanceOf(address owner) view returns (uint)']
-    const contract = new ethers.Contract(contractAddress, abi, this.provider)
+    let balance, decimals
+    let result
     try {
-      const rawBalance = await contract.balanceOf(userWalletAddress)
-      return ethers.utils.formatEther(rawBalance)
+      balance = await getErc20BalanceForAddress(
+        contractAddress,
+        userWalletAddress,
+        this.provider
+      )
+      decimals = await getErc20Decimals(contractAddress, this.provider)
+      result = utils.fromDecimal(balance, decimals)
     } catch (e) {
       this.emit('error', e)
     }
+    return result
   }
 }
