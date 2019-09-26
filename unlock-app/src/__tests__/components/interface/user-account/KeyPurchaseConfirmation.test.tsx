@@ -10,6 +10,7 @@ import {
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PurchaseData, SIGN_PURCHASE_DATA } from '../../../../actions/user'
 import { Fees } from '../../../../actions/keyPurchase'
+import { resetError } from '../../../../actions/error'
 
 const cards: stripe.Card[] = [
   {
@@ -80,6 +81,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[0])}
           lock={lock}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
       const submitButton = wrapper.container.getElementsByTagName('button')[0]
@@ -103,6 +106,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[0])}
           lock={lock}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
 
@@ -130,6 +135,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[1])}
           signPurchaseData={signPurchaseData}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
 
@@ -181,6 +188,7 @@ describe('KeyPurchaseConfirmation', () => {
           lock,
           fees,
         },
+        errors: [],
       }
 
       expect(mapStateToProps(state)).toEqual({
@@ -189,6 +197,7 @@ describe('KeyPurchaseConfirmation', () => {
         address,
         lock,
         priceBreakdown,
+        errors: [],
       })
     })
 
@@ -197,6 +206,7 @@ describe('KeyPurchaseConfirmation', () => {
       const state = {
         account: {},
         cart: {},
+        errors: [],
       }
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
@@ -204,6 +214,7 @@ describe('KeyPurchaseConfirmation', () => {
         card: '-',
         lock: undefined,
         priceBreakdown: {},
+        errors: [],
       })
     })
   })
