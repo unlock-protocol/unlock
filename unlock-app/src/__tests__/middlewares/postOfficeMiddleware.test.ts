@@ -9,7 +9,10 @@ import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
 import { ADD_TO_CART } from '../../actions/keyPurchase'
 import { KEY_PURCHASE_INITIATED } from '../../actions/user'
 import { SET_ACCOUNT } from '../../actions/accounts'
-import { USER_ACCOUNT_ADDRESS_STORAGE_ID } from '../../constants'
+import {
+  USER_ACCOUNT_ADDRESS_STORAGE_ID,
+  DEFAULT_USER_ACCOUNT_ADDRESS,
+} from '../../constants'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -89,15 +92,17 @@ describe('postOfficeMiddleware', () => {
   })
 
   describe('setting account', () => {
-    it('should set account to null when there is nothing in localStorage', () => {
+    it('should set account to the default address when there is nothing in localStorage', () => {
       expect.assertions(1)
 
       makeMiddleware()
 
-      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(
+        DEFAULT_USER_ACCOUNT_ADDRESS
+      )
     })
 
-    it('should set account to null when localStorage contains a malformed value', () => {
+    it('should set account to the default address when localStorage contains a malformed value', () => {
       expect.assertions(1)
 
       const anAddress = 'some random garbage'
@@ -105,7 +110,9 @@ describe('postOfficeMiddleware', () => {
 
       makeMiddleware()
 
-      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(
+        DEFAULT_USER_ACCOUNT_ADDRESS
+      )
     })
 
     it('should set account to the value provided by localStorage, if it is a real address', () => {
@@ -164,7 +171,7 @@ describe('postOfficeMiddleware', () => {
 
   describe('handling actions', () => {
     it('should tell the paywall about account changes', () => {
-      expect.assertions(3)
+      expect.assertions(2)
       const { invoke } = makeMiddleware()
       const action = {
         type: SET_ACCOUNT,
@@ -180,7 +187,6 @@ describe('postOfficeMiddleware', () => {
         '0x123abc'
       )
       expect(mockPostOfficeService.setAccount).toHaveBeenCalledWith('0x123abc')
-      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
     })
 
     it('should tell the paywall about a purchase and dismiss itself when receiving KEY_PURCHASE_INITIATED', () => {
