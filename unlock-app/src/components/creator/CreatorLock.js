@@ -25,17 +25,12 @@ import {
   BalanceContainer,
 } from './LockStyles'
 import { updateKeyPrice, updateLock } from '../../actions/lock'
-
+import { currencySymbol } from '../../utils/lock'
 import { INFINITY } from '../../constants'
 
 const BalanceOnLock = withConfig(
   ({ lock, attribute, skipConversion, config }) => {
-    let currency = ''
-    if (lock.currencyContractAddress === config.ERC20Contract.address) {
-      currency = config.ERC20Contract.name
-    } else if (lock.currencyContractAddress) {
-      currency = 'ERC20' // Default
-    }
+    const currency = currencySymbol(lock, config.ERC20Contract)
     return (
       <Balance
         amount={lock[attribute]}
