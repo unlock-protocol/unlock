@@ -31,7 +31,7 @@ export default class DatePicker extends Component {
 
     this.state = {
       ...getDaysMonthsAndYearsForSelect(now),
-      date: date < now ? date : now,
+      date: date,
     }
     this.onChange = this.onChange.bind(this)
   }
@@ -47,17 +47,15 @@ export default class DatePicker extends Component {
         // Change the date based on the selected value
         date[method](selected.value)
 
-        // If the day is in the past, we default to today's date
         if (date < now) {
           date = new Date(now)
         }
+        onChange(date)
 
         const newState = {
           ...state,
           date,
         }
-
-        onChange(date)
 
         // Get the new possible days, months and years
         const dateState = getDaysMonthsAndYearsForSelect(
@@ -65,6 +63,7 @@ export default class DatePicker extends Component {
           newState.date.getFullYear(),
           newState.date.getMonth() + 1
         )
+
         return Object.assign(newState, dateState)
       })
     }
