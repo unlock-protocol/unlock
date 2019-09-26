@@ -10,7 +10,10 @@ import { KEY_PURCHASE_INITIATED } from '../actions/user'
 import { PostOffice } from '../utils/Error'
 import { addToCart, DISMISS_PURCHASE_MODAL } from '../actions/keyPurchase'
 import { SET_ACCOUNT } from '../actions/accounts'
-import { USER_ACCOUNT_ADDRESS_STORAGE_ID } from '../constants'
+import {
+  USER_ACCOUNT_ADDRESS_STORAGE_ID,
+  DEFAULT_USER_ACCOUNT_ADDRESS,
+} from '../constants'
 import { isAccount } from '../utils/validators'
 
 const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
@@ -25,11 +28,12 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   // have keys to without logging in. This value should not go into
   // redux within `unlock-app`. Let the sign-in process handle that.
   let userAccountAddress = getItem(window, USER_ACCOUNT_ADDRESS_STORAGE_ID)
-  let gotAddressFromStorage = !!userAccountAddress
   if (!isAccount(userAccountAddress)) {
-    // Value retrieved from storage isn't a real account -- garbage crept in somewhere.
-    userAccountAddress = null
-    gotAddressFromStorage = false
+    // Value retrieved from storage isn't a real account -- either it was null
+    // or an invalid address was somehow stored.  We pass an address that will
+    // never own any keys, this way user account login is deferred until
+    // actually necessary.
+    userAccountAddress = DEFAULT_USER_ACCOUNT_ADDRESS
   }
 
   postOfficeService.setAccount(userAccountAddress)
@@ -68,22 +72,6 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
             USER_ACCOUNT_ADDRESS_STORAGE_ID,
             action.account.address
           )
-          // There are two paths for logging in:
-          //
-          // 1. The user had previously logged in, and we pulled their address
-          // from localStorage and "optimistically" browsed the page without
-          // logging in. Then, by attempting to purchase a key, they submitted a
-          // login. In that case, we should not hide the account modal, since
-          // they will need it open for the next step (key purchase
-          // confirmation).
-          //
-          // 2. The user had not previously logged in (address was null in
-          // localStorage). In this case, they were confronted with the login
-          // modal immediately upon visiting the page and will need it to get
-          // out of the way so that they can interact with the checkout.
-          if (!gotAddressFromStorage) {
-            postOfficeService.hideAccountModal()
-          }
         } else if (action.type === KEY_PURCHASE_INITIATED) {
           postOfficeService.transactionInitiated()
           postOfficeService.hideAccountModal()
