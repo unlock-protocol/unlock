@@ -6,11 +6,11 @@ import erc20abi from './erc20abi'
 // This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
   erc20ContractAddress,
-  lockContractAddress,
+  address,
   provider
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
-  const balance = await contract.balanceOf(lockContractAddress)
+  const balance = await contract.balanceOf(address)
   return utils.hexToNumberString(balance)
 }
 

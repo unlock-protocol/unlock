@@ -106,7 +106,7 @@ describe('Web3 Service Integration', () => {
         '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
       )
 
-      expect(balance).toBe('500.0')
+      expect(balance).toBe('500')
     })
 
     it('emits an error when balance cannot be retrieved', async () => {
