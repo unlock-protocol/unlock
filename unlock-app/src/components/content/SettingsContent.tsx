@@ -9,6 +9,7 @@ import AccountInfo from '../interface/user-account/AccountInfo'
 import ChangePassword from '../interface/user-account/ChangePassword'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
+import LogInSignUp from '../interface/LogInSignUp'
 
 // TODO: tighten up this type
 declare global {
@@ -21,6 +22,9 @@ interface SettingsContentProps {
   config: {
     stripeApiKey: string
   }
+  account: {
+    emailAddress?: string
+  } | null
   cards: stripe.Card[]
 }
 interface SettingsContentState {
@@ -70,7 +74,7 @@ export class SettingsContent extends React.Component<
 
   render() {
     const { stripe } = this.state
-    const { cards } = this.props
+    const { cards, account } = this.props
 
     return (
       <Layout title="Account Settings">
@@ -79,19 +83,30 @@ export class SettingsContent extends React.Component<
           <script id="stripe-js" src="https://js.stripe.com/v3/" async></script>
         </Head>
         <Errors />
-        <AccountInfo />
-        <ChangePassword />
-        {cards.length > 0 && <PaymentMethods cards={cards} />}
-        {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
+        {account && account.emailAddress && (
+          <>
+            <AccountInfo />
+            <ChangePassword />
+            {cards.length > 0 && <PaymentMethods cards={cards} />}
+            {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
+          </>
+        )}
+        {!account && <LogInSignUp />}
+        {account && !account.emailAddress && (
+          <p>
+            This page contains settings for managed account users. Crypto users
+            (like you!) don&apos;t need it.
+          </p>
+        )}
       </Layout>
     )
   }
 }
 
 interface ReduxState {
-  account?: {
+  account: {
     cards?: stripe.Card[]
-  }
+  } | null
 }
 
 export const mapStateToProps = ({ account }: ReduxState) => {
@@ -101,6 +116,7 @@ export const mapStateToProps = ({ account }: ReduxState) => {
   }
 
   return {
+    account,
     cards,
   }
 }
