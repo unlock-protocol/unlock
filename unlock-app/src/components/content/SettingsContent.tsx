@@ -22,9 +22,9 @@ interface SettingsContentProps {
   config: {
     stripeApiKey: string
   }
-  account?: {
+  account: {
     emailAddress?: string
-  }
+  } | null
   cards: stripe.Card[]
 }
 interface SettingsContentState {
@@ -104,9 +104,9 @@ export class SettingsContent extends React.Component<
 }
 
 interface ReduxState {
-  account?: {
+  account: {
     cards?: stripe.Card[]
-  }
+  } | null
 }
 
 export const mapStateToProps = ({ account }: ReduxState) => {
