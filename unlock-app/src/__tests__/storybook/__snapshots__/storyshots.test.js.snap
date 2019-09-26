@@ -16341,7 +16341,7 @@ Object {
 }
 
 .c5:before {
-  content: 'DEV';
+  content: '';
 }
 
 .c0 {
@@ -16661,7 +16661,7 @@ Object {
         >
           <span
             class="c5"
-            name="DEV"
+            name=""
           />
           <input
             data-valid="true"
@@ -16815,8 +16815,8 @@ Object {
         class="buwkmd-6 sc-1u8ov25-7 hWoykt"
       >
         <span
-          class="buwkmd-2 buwkmd-4 kkumAc"
-          name="DEV"
+          class="buwkmd-2 buwkmd-4 jkDgJn"
+          name=""
         />
         <input
           data-valid="true"

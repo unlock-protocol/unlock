@@ -1,6 +1,6 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
-const HDWalletProvider = require('truffle-hdwallet-provider')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
 const {
   findOrCreateTransaction,
 } = require('../operations/transactionOperations')
