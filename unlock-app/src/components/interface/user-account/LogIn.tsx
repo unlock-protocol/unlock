@@ -154,7 +154,7 @@ interface ReduxState {
 
 const mapStateToProps = ({ account, errors }: ReduxState) => {
   const logInWarnings = errors.filter(
-    e => isWarningError(e) && e.kind === 'LogIn'
+    e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
   )
 
   return {
