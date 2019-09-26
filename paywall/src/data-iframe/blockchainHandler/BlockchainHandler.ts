@@ -331,7 +331,7 @@ export default class BlockchainHandler {
       {
         hash,
         blockNumber: Number.MAX_SAFE_INTEGER,
-        status: 'submitted',
+        status: TransactionStatus.SUBMITTED,
       },
       update
     )
@@ -352,6 +352,7 @@ export default class BlockchainHandler {
 
     const isMined = transaction.status === TransactionStatus.MINED
     const isStale = transaction.status === TransactionStatus.STALE
+    const isFailed = transaction.status === TransactionStatus.FAILED
     const recipient = transaction.lock || transaction.to
     const isKeyPurchase = transaction.type === TransactionType.KEY_PURCHASE
     const accountAddress = this.store.account as string
@@ -364,7 +365,7 @@ export default class BlockchainHandler {
 
     // If we receive a submitted or pending key purchase we should
     // create and store a temporary key.
-    if (isKeyPurchase && recipient && !isMined && !isStale) {
+    if (isKeyPurchase && recipient && !isMined && !isStale && !isFailed) {
       const lock = this.store.locks[recipient]
       const temporaryKey = createTemporaryKey(recipient, accountAddress, lock)
       this.store.keys[recipient] = temporaryKey
