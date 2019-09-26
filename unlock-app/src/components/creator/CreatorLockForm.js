@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 import withConfig from '../../utils/withConfig'
+import { currencySymbol } from '../../utils/lock'
 
 import Icon from '../lock/Icon'
 import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
@@ -275,6 +276,11 @@ export class CreatorLockForm extends React.Component {
     } = this.state
     const lockAddress = lock ? lock.address : ''
     // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
+
+    const symbol = currencySymbol(lock, this.ERC20Contract)
+
+    this.ERC20Contract.name
+
     return (
       <FormLockRow className="lockForm" data-address={lockAddress}>
         <Icon />
@@ -321,7 +327,7 @@ export class CreatorLockForm extends React.Component {
         </FormLockKeys>
         <FormBalanceWithUnit>
           {!currency && <Eth />}
-          {!!currency && <ERC20 name={this.ERC20Contract.name} />}
+          {!!currency && <ERC20 name={symbol} />}
           <input
             type="number"
             step="0.00001"
