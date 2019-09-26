@@ -102,21 +102,17 @@ export class AccountContent extends React.Component<
 
   render() {
     const mode = this.currentPageMode()
-    const showCloseButton =
-      mode === 'CollectPaymentDetails' || mode === 'ConfirmPurchase'
     return (
       <IframeWrapper>
         <Head>
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
-        {showCloseButton && (
-          <Quit
-            backgroundColor="var(--lightgrey)"
-            fillColor="var(--grey)"
-            action={this.handleClose}
-          />
-        )}
+        <Quit
+          backgroundColor="var(--lightgrey)"
+          fillColor="var(--grey)"
+          action={this.handleClose}
+        />
         <Errors />
         {this.getComponent(mode)}
       </IframeWrapper>

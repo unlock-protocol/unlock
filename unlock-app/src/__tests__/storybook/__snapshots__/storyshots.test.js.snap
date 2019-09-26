@@ -689,7 +689,37 @@ Object {
 exports[`Storyshots AccountContent (iframe embed for paywall) The embed 1`] = `
 Object {
   "asFragment": [Function],
-  "baseElement": .c1 {
+  "baseElement": .c2 {
+  background-color: var(--lightgrey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c2 > svg {
+  fill: var(--grey);
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c2:focus {
+  outline: none;
+}
+
+.c1 {
   background-color: var(--offwhite);
   max-height: 100%;
   overflow-y: scroll;
@@ -729,11 +759,11 @@ Object {
   align-items: center;
 }
 
-.c2 {
+.c4 {
   width: 100%;
 }
 
-.c3 {
+.c5 {
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 15px;
   line-height: 19px;
@@ -742,7 +772,7 @@ Object {
   padding: 24px 32px 24px 32px;
 }
 
-.c7 {
+.c9 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
@@ -751,7 +781,7 @@ Object {
   padding-top: 24px;
 }
 
-.c6 {
+.c8 {
   height: 60px;
   width: 100%;
   border: none;
@@ -761,7 +791,7 @@ Object {
   font-size: 16px;
 }
 
-.c9 {
+.c11 {
   height: 60px;
   width: 100%;
   border: none;
@@ -772,7 +802,7 @@ Object {
   cursor: pointer;
 }
 
-.c5 {
+.c7 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -781,12 +811,18 @@ Object {
   margin-bottom: 5px;
 }
 
-.c8 {
+.c10 {
   cursor: pointer;
 }
 
-.c4 {
+.c6 {
   padding: 0 32px;
+}
+
+.c3 {
+  position: absolute;
+  right: 24px;
+  top: 24px;
 }
 
 <body>
@@ -801,26 +837,44 @@ Object {
         <div
           class="c1"
         >
+          <a
+            class="c2 c3"
+            target="_self"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
           <div
-            class="c2"
+            class="c4"
           >
             <h1
-              class="c3"
+              class="c5"
             >
               Log In
             </h1>
             <form>
               <div
-                class="c4"
+                class="c6"
               >
                 <label
-                  class="c5"
+                  class="c7"
                   for="emailInput"
                 >
                   Email
                 </label>
                 <input
-                  class="c6"
+                  class="c8"
                   id="emailInput"
                   name="emailAddress"
                   placeholder="Enter your email"
@@ -828,25 +882,25 @@ Object {
                 />
                 <br />
                 <label
-                  class="c5"
+                  class="c7"
                   for="passwordInput"
                 >
                   Password
                 </label>
                 <input
-                  class="c6"
+                  class="c8"
                   id="passwordInput"
                   name="password"
                   placeholder="Enter your password"
                   type="password"
                 />
                 <p
-                  class="c7"
+                  class="c9"
                 >
                   Don't have an account?
                    
                   <a
-                    class="c8"
+                    class="c10"
                   >
                     Sign up here.
                   </a>
@@ -854,7 +908,7 @@ Object {
               </div>
               <br />
               <input
-                class="c9"
+                class="c11"
                 type="submit"
                 value="Submit"
               />
@@ -875,6 +929,24 @@ Object {
       <div
         class="sc-kAzzGY cBdfch"
       >
+        <a
+          class="sc-850ddk-0 bqpIVT sc-TOsTZ gxNkKK"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
         <div
           class="sc-kpOJdX LsipW"
         >
