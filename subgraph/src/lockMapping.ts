@@ -60,7 +60,7 @@ function newKeyPurchase(
     event.params._to,
     event.address,
     event.block.timestamp,
-    lockContract.tokenAddress(),
+    lock.tokenAddress as Address,
     lockContract.keyPrice()
   );
 }
