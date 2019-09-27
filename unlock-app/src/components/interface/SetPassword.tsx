@@ -8,6 +8,7 @@ export interface Credentials {
 }
 
 interface Props {
+  buttonLabel: string
   emailAddress: string
   onSubmit: (credentials: Credentials) => any
 }
@@ -100,9 +101,10 @@ export class SetPassword extends React.Component<Props, State> {
   }
 
   submitButton = () => {
+    const { buttonLabel } = this.props
     const { submitted, isValid } = this.state
     if (submitted) {
-      return <LoadingButton>Creating Account...</LoadingButton>
+      return <LoadingButton>{buttonLabel}...</LoadingButton>
     }
 
     return <SubmitButton type="submit" value="Submit" disabled={!isValid} />
