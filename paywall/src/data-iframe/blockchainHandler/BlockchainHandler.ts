@@ -172,6 +172,14 @@ export default class BlockchainHandler {
     )
   }
 
+  async signData(data: any, callback: any) {
+    return this.walletService.signDataPersonal(
+      '', // account address -- not actually used, param retained for BC
+      data,
+      callback
+    )
+  }
+
   /**
    * used to retrieve new values from the chain
    *

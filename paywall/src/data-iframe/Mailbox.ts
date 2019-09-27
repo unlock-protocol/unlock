@@ -145,6 +145,8 @@ export default class Mailbox {
     )
     this.emitChanges = this.emitChanges.bind(this)
     this.emitError = this.emitError.bind(this)
+    this.signData = this.signData.bind(this)
+
     const { postMessage, addHandler } = iframePostOffice(
       this.window,
       'data iframe'
@@ -174,6 +176,7 @@ export default class Mailbox {
       PostMessages.INITIATED_TRANSACTION,
       this.refreshBlockchainTransactions
     )
+    this.addPostMessageListener(PostMessages.SIGN_DATA, this.signData)
     this.postMessage(PostMessages.READY, undefined)
   }
 
@@ -358,6 +361,24 @@ export default class Mailbox {
       lockAddress: details.lock,
       amountToSend: lock.keyPrice,
       erc20Address: lock.currencyContractAddress,
+    })
+  }
+
+  /**
+   * When we receive PostMessages.SIGN_DATA, it is sent here to generate a
+   * signature for the typed data. The data must be in the json-schema specified
+   * for EIP-712 TypedData.
+   */
+  signData(data: any) {
+    if (!this.handler) {
+      return
+    }
+    this.handler.signData(data, (error: Error, signedAddress: string) => {
+      if (error) {
+        this.emitError(error)
+      } else if (signedAddress) {
+        this.postMessage(PostMessages.SIGNED_DATA, signedAddress)
+      }
     })
   }
 
