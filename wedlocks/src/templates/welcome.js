@@ -3,7 +3,7 @@ export default {
   text: params =>
     `Welcome to Unlock! We're excited to have you with us!
 
-Unlock is designed to make sure we can never access your data: it's encrypted by your password. Because of that, we can't reset your password like other services that you're used to.
+Unlock is designed to make sure we can never access your data: it's encrypted with your password. Because of that, we can't reset your password like other services that you're used to.
 
 We know that sometimes things happen, and you may find that you need to reset your password in the future. To do that, you will need to use the following link:
 
