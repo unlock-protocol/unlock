@@ -131,6 +131,12 @@ export default class MainWindowHandler {
     }
     const getState = () => this.lockStatus
 
+    // Data must be compliant with the json-scheme for EIP-712 TypedData
+    // TODO: consider using type definitions from https://github.com/dicether/eip712/blob/master/src/eip712.ts
+    const signData = (data: any) => {
+      this.iframes.data.postMessage(PostMessages.SIGN_DATA, data)
+    }
+
     const unlockProtocol: hasPrototype = {}
 
     const immutable = {
@@ -146,6 +152,10 @@ export default class MainWindowHandler {
       },
       getState: {
         value: getState,
+        ...immutable,
+      },
+      signData: {
+        value: signData,
         ...immutable,
       },
     })
