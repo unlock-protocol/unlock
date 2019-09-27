@@ -7,6 +7,7 @@ import { Account } from '../../unlockTypes'
 import SignupSuccess from './SignupSuccess'
 // eslint-disable-next-line no-unused-vars
 import { loginCredentials, Credentials } from '../../actions/user'
+import { LoadingButton } from './user-account/styles'
 
 interface Props {
   toggleSignup: () => void
@@ -61,6 +62,16 @@ export class LogIn extends React.Component<Props, State> {
     toggleSignup()
   }
 
+  submitButton = () => {
+    const { submitted } = this.state
+
+    if (submitted) {
+      return <LoadingButton>Logging In...</LoadingButton>
+    }
+
+    return <SubmitButton type="submit" value="Submit" />
+  }
+
   render = () => {
     const { account } = this.props
 
@@ -71,7 +82,7 @@ export class LogIn extends React.Component<Props, State> {
     return (
       <div>
         <Heading>Log In to Your Account</Heading>
-        <form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <Label htmlFor="emailInput">Email Address</Label>
           <Input
             name="emailAddress"
@@ -90,8 +101,8 @@ export class LogIn extends React.Component<Props, State> {
             onChange={this.handleInputChange}
           />
           <br />
-          <SubmitButton type="submit" value="Submit" />
-        </form>
+          <SubmitContainer>{this.submitButton()}</SubmitContainer>
+        </Form>
         <Description>
           Don&#39;t have an account?{' '}
           <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
@@ -146,13 +157,21 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
+`
+
+const Form = styled.form`
+  max-width: 385px;
+`
+
+const SubmitContainer = styled.div`
+  margin-top: 25px;
 `
 
 const Label = styled.label`
