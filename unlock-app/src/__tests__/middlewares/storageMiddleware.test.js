@@ -1,8 +1,6 @@
 import { EventEmitter } from 'events'
 import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
-import storageMiddleware, {
-  changePassword,
-} from '../../middlewares/storageMiddleware'
+import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
@@ -13,7 +11,6 @@ import {
   SIGNUP_CREDENTIALS,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   setEncryptedPrivateKey,
-  SIGN_USER_DATA,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
@@ -499,56 +496,6 @@ describe('Storage middleware', () => {
         setError(Storage.Warning('Could not find this user account.'))
       )
       expect(store.dispatch).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('CHANGE_PASSWORD', () => {
-    const encryptedPrivateKey = {
-      version: 3,
-      id: 'edbe0942-593b-4027-8688-07b7d3ec56c5',
-      address: '0272742cbe9b4d4c81cffe8dfc0c33b5fb8893e5',
-      crypto: {
-        ciphertext:
-          '6f2a3ed499a2962cc48e6f7f0a90a0c817c83024cc4878f624ad251fccd0b706',
-        cipherparams: { iv: '69f031944591eed34c4d4f5841d283b0' },
-        cipher: 'aes-128-ctr',
-        kdf: 'scrypt',
-        kdfparams: {
-          dklen: 32,
-          salt:
-            '5ac866336768f9613a505acd18dab463f4d10152ffefba5772125f5807539c36',
-          n: 8192,
-          r: 8,
-          p: 1,
-        },
-        mac: 'cc8efad3b534336ecffc0dbf6f51fd558301873d322edc6cbc1c9398ee0953ec',
-      },
-    }
-    const oldPassword = 'guest'
-
-    it('should dispatch a new user object to be signed', async () => {
-      expect.assertions(1)
-      const dispatch = jest.fn()
-      const emailAddress = 'zapp@brannigan.io'
-      const storageService = {
-        getUserPrivateKey: async () => {
-          return encryptedPrivateKey
-        },
-      }
-
-      await changePassword({
-        oldPassword,
-        newPassword: 'visitor',
-        emailAddress,
-        storageService,
-        dispatch,
-      })
-
-      expect(dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: SIGN_USER_DATA,
-        })
-      )
     })
   })
 
