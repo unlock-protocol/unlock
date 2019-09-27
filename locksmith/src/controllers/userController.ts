@@ -15,14 +15,18 @@ namespace UserController {
 
     try {
       if (user) {
-        let creationStatus: Boolean = await UserOperations.createUser({
+        let recoveryPhrase:
+          | String
+          | undefined = await UserOperations.createUser({
           emailAddress: user.emailAddress,
           publicKey: user.publicKey,
           passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
         })
 
-        let status = creationStatus ? 200 : 400
-        return res.sendStatus(status)
+        let status = recoveryPhrase ? 200 : 400
+        return res.status(status).json({
+          recoveryPhrase,
+        })
       }
     } catch (e) {
       return res.sendStatus(400)

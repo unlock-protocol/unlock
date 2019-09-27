@@ -102,7 +102,7 @@ describe('User creation', () => {
       })
 
       let result = await UserOperations.createUser(userCreationDetails)
-      expect(result).toBe(true)
+      expect(result).toBe(RecoveryPhrase.generate())
     })
   })
 
@@ -114,7 +114,7 @@ describe('User creation', () => {
       })
 
       let result = await UserOperations.createUser(userCreationDetails)
-      expect(result).toBe(false)
+      expect(result).toBe(undefined)
     })
   })
 })

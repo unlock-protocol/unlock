@@ -17,7 +17,7 @@ const Op = Sequelize.Op
 namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
-  ): Promise<Boolean> => {
+  ): Promise<String | undefined> => {
     let recoveryPhrase = RecoveryPhrase.generate()
     let userReference = await UserReference.create(
       {
@@ -34,9 +34,9 @@ namespace UserOperations {
     )
 
     if (userReference) {
-      return true
+      return recoveryPhrase
     } else {
-      return false
+      return
     }
   }
 
