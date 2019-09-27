@@ -89,7 +89,7 @@ export class SettingsContent extends React.Component<
             {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
           </>
         )}
-        {!account && <LogInSignUp />}
+        {!account && <LogInSignUp login />}
         {account && !account.emailAddress && (
           <p>
             This page contains settings for managed account users. Crypto users

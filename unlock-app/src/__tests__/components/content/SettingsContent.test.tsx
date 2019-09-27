@@ -43,7 +43,7 @@ describe('SettingsContent', () => {
           </ConfigContext.Provider>
         </Provider>
       )
-      getByText('Pay For Content Seamlessly')
+      getByText('Log In to Your Account')
     })
 
     it('should tell crypto users that they do not need the settings page', () => {
