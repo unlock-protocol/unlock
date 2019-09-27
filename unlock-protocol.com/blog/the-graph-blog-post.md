@@ -4,6 +4,7 @@ subTitle: Leveraging the Graph Protocol to improve user experience and rapidly i
 authorName: Akeem Adeniji
 publishDate: September 25, 2019
 description: 'Using the Graph Protocol for faster iteration on Ethereum based products'
+image: /static/images/blog/the-graph-blog-post/thegraphlogo.png
 ---
 
 We've started using [The Graph](https://thegraph.com/) to provide us with a faster way of iterating on user facing ideas; leveraging the ability to utilized aggregated on chain data.
