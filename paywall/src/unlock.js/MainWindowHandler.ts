@@ -160,6 +160,7 @@ export default class MainWindowHandler {
       this.showCheckoutIframe()
     }
     const getState = () => this.lockStatus
+    const blockchainData = () => this.blockchainData
 
     const unlockProtocol: hasPrototype = {}
 
@@ -176,6 +177,10 @@ export default class MainWindowHandler {
       },
       getState: {
         value: getState,
+        ...immutable,
+      },
+      blockchainData: {
+        value: blockchainData,
         ...immutable,
       },
     })
