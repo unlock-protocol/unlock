@@ -29,7 +29,7 @@ Here is a few to get started:
 
 ```json
 {
-    keyHolders(where : {address: $address}){
+    keyHolders(where : {address: "0x3CA206264762Caf81a8F0A843bbB850987B41e16"}){
         keys{
             lock{
             address
@@ -44,10 +44,10 @@ Here is a few to get started:
 
 ```json
 {
-  locks(where: {address: $address}){
+  locks(where: {address: "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F"}){
     name
     address
-    keys(where: {expiration_gt: $timestamp }){
+    keys(where: {expiration_gt: 1566791565 }){
       expiration
     }
   }
