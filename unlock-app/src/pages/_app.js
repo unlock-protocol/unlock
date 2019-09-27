@@ -2,6 +2,9 @@ import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-next-router'
+import 'cross-fetch/polyfill'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
@@ -117,20 +120,26 @@ The Unlock team
     } = this.props
     const store = getOrCreateStore({}, asPath)
 
+    const client = new ApolloClient({
+      uri: config.subgraphURI,
+    })
+
     return (
-      <Container>
-        <GlobalStyle />
-        <Provider store={store}>
-          <FullScreenModal />
-          <ConnectedRouter>
-            <ConfigProvider value={config}>
-              <GlobalErrorConsumer>
-                <Component {...pageProps} />
-              </GlobalErrorConsumer>
-            </ConfigProvider>
-          </ConnectedRouter>
-        </Provider>
-      </Container>
+      <ApolloProvider client={client}>
+        <Container>
+          <GlobalStyle />
+          <Provider store={store}>
+            <FullScreenModal />
+            <ConnectedRouter>
+              <ConfigProvider value={config}>
+                <GlobalErrorConsumer>
+                  <Component {...pageProps} />
+                </GlobalErrorConsumer>
+              </ConfigProvider>
+            </ConnectedRouter>
+          </Provider>
+        </Container>
+      </ApolloProvider>
     )
   }
 }
