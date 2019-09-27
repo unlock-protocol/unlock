@@ -19,6 +19,15 @@ type KeyHolder @entity {
   keys: [Key]! @derivedFrom(field: "owner")
 }
 
+type KeyPurchase @entity {
+  id: ID!
+  lock: Bytes!
+  purchaser: Bytes!
+  price: BigInt!
+  timestamp: BigInt!
+  tokenAddress: Bytes!
+}
+
 type Lock @entity {
   id: ID! #lock address
   address: Bytes!
