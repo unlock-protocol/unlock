@@ -41468,22 +41468,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-kPVwWT icWkGi"
+            class="sc-kIPQKe gyqrNG"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-kfGgVZ fiTlEd"
+            class="sc-eXEjpC hDlNcK"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-esjQYD kYphjO"
+            class="sc-ibxdXY uQQTo"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-esjQYD kYphjO"
+            class="sc-ibxdXY uQQTo"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out
              
@@ -41498,25 +41498,25 @@ Object {
             .
           </p>
           <form
-            class="sc-kIPQKe gAYXZX"
+            class="sc-RefOD bgbFdH"
           >
             <input
-              class="sc-eXEjpC gLxbse"
+              class="sc-iQKALj fRKOyc"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-ibxdXY jZqBTQ"
+              class="sc-bwCtUz bBEKpN"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-esjQYD kYphjO"
+              class="sc-ibxdXY uQQTo"
             >
               Already have an account? 
               <a
-                class="sc-iQKALj ipOsjL"
+                class="sc-eTuwsz lamcv"
               >
                 Log in here
               </a>
@@ -49959,7 +49959,7 @@ Object {
 }
 `;
 
-exports[`Storyshots LogInSignUp LogIn 1`] = `
+exports[`Storyshots LogInSignUp Login (error) 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
@@ -49971,14 +49971,14 @@ Object {
   color: var(--darkgrey);
 }
 
-.c4 {
+.c6 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
   color: var(--darkgrey);
 }
 
-.c2 {
+.c3 {
   height: 60px;
   width: 385px;
   border: none;
@@ -49988,18 +49988,27 @@ Object {
   font-size: 16px;
 }
 
-.c3 {
+.c5 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
+  background-color: var(--red);
 }
 
 .c1 {
+  max-width: 385px;
+}
+
+.c4 {
+  margin-top: 25px;
+}
+
+.c2 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -50008,7 +50017,7 @@ Object {
   margin-bottom: 5px;
 }
 
-.c5 {
+.c7 {
   cursor: pointer;
 }
 
@@ -50023,15 +50032,17 @@ Object {
         >
           Log In to Your Account
         </h1>
-        <form>
+        <form
+          class="c1"
+        >
           <label
-            class="c1"
+            class="c2"
             for="emailInput"
           >
             Email Address
           </label>
           <input
-            class="c2"
+            class="c3"
             id="emailInput"
             name="emailAddress"
             placeholder="Enter your email"
@@ -50039,32 +50050,36 @@ Object {
           />
           <br />
           <label
-            class="c1"
+            class="c2"
             for="passwordInput"
           >
             Password
           </label>
           <input
-            class="c2"
+            class="c3"
             id="passwordInput"
             name="password"
             placeholder="Enter your password"
             type="password"
           />
           <br />
-          <input
-            class="c3"
-            type="submit"
-            value="Submit"
-          />
+          <div
+            class="c4"
+          >
+            <input
+              class="c5"
+              type="submit"
+              value="Retry"
+            />
+          </div>
         </form>
         <p
-          class="c4"
+          class="c6"
         >
           Don't have an account?
            
           <a
-            class="c5"
+            class="c7"
           >
             Sign up here.
           </a>
@@ -50083,9 +50098,11 @@ Object {
       >
         Log In to Your Account
       </h1>
-      <form>
+      <form
+        class="sc-hwwEjo fpyntm"
+      >
         <label
-          class="sc-iyvyFf cVqTlm"
+          class="sc-kfGgVZ kUmSoh"
           for="emailInput"
         >
           Email Address
@@ -50099,7 +50116,7 @@ Object {
         />
         <br />
         <label
-          class="sc-iyvyFf cVqTlm"
+          class="sc-kfGgVZ kUmSoh"
           for="passwordInput"
         >
           Password
@@ -50112,11 +50129,15 @@ Object {
           type="password"
         />
         <br />
-        <input
-          class="sc-gzOgki fssmuW"
-          type="submit"
-          value="Submit"
-        />
+        <div
+          class="sc-kPVwWT fQuuyM"
+        >
+          <input
+            class="sc-gzOgki sc-iyvyFf cSqVnz"
+            type="submit"
+            value="Retry"
+          />
+        </div>
       </form>
       <p
         class="sc-gxMtzJ QhmNN"
@@ -50124,7 +50145,261 @@ Object {
         Don't have an account?
          
         <a
-          class="sc-hwwEjo jxtZVM"
+          class="sc-esjQYD jDmHan"
+        >
+          Sign up here.
+        </a>
+      </p>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots LogInSignUp Login 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c6 {
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c3 {
+  height: 60px;
+  width: 385px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c5 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--white);
+}
+
+.c1 {
+  max-width: 385px;
+}
+
+.c4 {
+  margin-top: 25px;
+}
+
+.c2 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c7 {
+  cursor: pointer;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div>
+        <h1
+          class="c0"
+        >
+          Log In to Your Account
+        </h1>
+        <form
+          class="c1"
+        >
+          <label
+            class="c2"
+            for="emailInput"
+          >
+            Email Address
+          </label>
+          <input
+            class="c3"
+            id="emailInput"
+            name="emailAddress"
+            placeholder="Enter your email"
+            type="email"
+          />
+          <br />
+          <label
+            class="c2"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="c3"
+            id="passwordInput"
+            name="password"
+            placeholder="Enter your password"
+            type="password"
+          />
+          <br />
+          <div
+            class="c4"
+          >
+            <input
+              class="c5"
+              type="submit"
+              value="Submit"
+            />
+          </div>
+        </form>
+        <p
+          class="c6"
+        >
+          Don't have an account?
+           
+          <a
+            class="c7"
+          >
+            Sign up here.
+          </a>
+        </p>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div>
+      <h1
+        class="sc-dqBHgY fvIDWj"
+      >
+        Log In to Your Account
+      </h1>
+      <form
+        class="sc-hwwEjo fpyntm"
+      >
+        <label
+          class="sc-kfGgVZ kUmSoh"
+          for="emailInput"
+        >
+          Email Address
+        </label>
+        <input
+          class="sc-dfVpRl hhwYgQ"
+          id="emailInput"
+          name="emailAddress"
+          placeholder="Enter your email"
+          type="email"
+        />
+        <br />
+        <label
+          class="sc-kfGgVZ kUmSoh"
+          for="passwordInput"
+        >
+          Password
+        </label>
+        <input
+          class="sc-dfVpRl hhwYgQ"
+          id="passwordInput"
+          name="password"
+          placeholder="Enter your password"
+          type="password"
+        />
+        <br />
+        <div
+          class="sc-kPVwWT fQuuyM"
+        >
+          <input
+            class="sc-gzOgki fHngjd"
+            type="submit"
+            value="Submit"
+          />
+        </div>
+      </form>
+      <p
+        class="sc-gxMtzJ QhmNN"
+      >
+        Don't have an account?
+         
+        <a
+          class="sc-esjQYD jDmHan"
         >
           Sign up here.
         </a>
@@ -50321,22 +50596,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-kPVwWT icWkGi"
+        class="sc-kIPQKe gyqrNG"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-kfGgVZ fiTlEd"
+        class="sc-eXEjpC hDlNcK"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -50351,25 +50626,25 @@ Object {
         .
       </p>
       <form
-        class="sc-kIPQKe gAYXZX"
+        class="sc-RefOD bgbFdH"
       >
         <input
-          class="sc-eXEjpC gLxbse"
+          class="sc-iQKALj fRKOyc"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-ibxdXY jZqBTQ"
+          class="sc-bwCtUz bBEKpN"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-esjQYD kYphjO"
+          class="sc-ibxdXY uQQTo"
         >
           Already have an account? 
           <a
-            class="sc-iQKALj ipOsjL"
+            class="sc-eTuwsz lamcv"
           >
             Log in here
           </a>
@@ -50879,14 +51154,14 @@ Object {
   color: var(--darkgrey);
 }
 
-.c4 {
+.c6 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
   color: var(--darkgrey);
 }
 
-.c2 {
+.c3 {
   height: 60px;
   width: 385px;
   border: none;
@@ -50896,18 +51171,26 @@ Object {
   font-size: 16px;
 }
 
-.c3 {
+.c5 {
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
 }
 
 .c1 {
+  max-width: 385px;
+}
+
+.c4 {
+  margin-top: 25px;
+}
+
+.c2 {
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -50916,7 +51199,7 @@ Object {
   margin-bottom: 5px;
 }
 
-.c5 {
+.c7 {
   cursor: pointer;
 }
 
@@ -50931,15 +51214,17 @@ Object {
         >
           Log In to Your Account
         </h1>
-        <form>
+        <form
+          class="c1"
+        >
           <label
-            class="c1"
+            class="c2"
             for="emailInput"
           >
             Email Address
           </label>
           <input
-            class="c2"
+            class="c3"
             id="emailInput"
             name="emailAddress"
             placeholder="Enter your email"
@@ -50947,32 +51232,36 @@ Object {
           />
           <br />
           <label
-            class="c1"
+            class="c2"
             for="passwordInput"
           >
             Password
           </label>
           <input
-            class="c2"
+            class="c3"
             id="passwordInput"
             name="password"
             placeholder="Enter your password"
             type="password"
           />
           <br />
-          <input
-            class="c3"
-            type="submit"
-            value="Submit"
-          />
+          <div
+            class="c4"
+          >
+            <input
+              class="c5"
+              type="submit"
+              value="Submit"
+            />
+          </div>
         </form>
         <p
-          class="c4"
+          class="c6"
         >
           Don't have an account?
            
           <a
-            class="c5"
+            class="c7"
           >
             Sign up here.
           </a>
@@ -50991,9 +51280,11 @@ Object {
       >
         Log In to Your Account
       </h1>
-      <form>
+      <form
+        class="sc-hwwEjo fpyntm"
+      >
         <label
-          class="sc-iyvyFf cVqTlm"
+          class="sc-kfGgVZ kUmSoh"
           for="emailInput"
         >
           Email Address
@@ -51007,7 +51298,7 @@ Object {
         />
         <br />
         <label
-          class="sc-iyvyFf cVqTlm"
+          class="sc-kfGgVZ kUmSoh"
           for="passwordInput"
         >
           Password
@@ -51020,11 +51311,15 @@ Object {
           type="password"
         />
         <br />
-        <input
-          class="sc-gzOgki fssmuW"
-          type="submit"
-          value="Submit"
-        />
+        <div
+          class="sc-kPVwWT fQuuyM"
+        >
+          <input
+            class="sc-gzOgki fHngjd"
+            type="submit"
+            value="Submit"
+          />
+        </div>
       </form>
       <p
         class="sc-gxMtzJ QhmNN"
@@ -51032,7 +51327,7 @@ Object {
         Don't have an account?
          
         <a
-          class="sc-hwwEjo jxtZVM"
+          class="sc-esjQYD jDmHan"
         >
           Sign up here.
         </a>
@@ -51229,22 +51524,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-kPVwWT icWkGi"
+        class="sc-kIPQKe gyqrNG"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-kfGgVZ fiTlEd"
+        class="sc-eXEjpC hDlNcK"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -51259,25 +51554,25 @@ Object {
         .
       </p>
       <form
-        class="sc-kIPQKe gAYXZX"
+        class="sc-RefOD bgbFdH"
       >
         <input
-          class="sc-eXEjpC gLxbse"
+          class="sc-iQKALj fRKOyc"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-ibxdXY jZqBTQ"
+          class="sc-bwCtUz bBEKpN"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-esjQYD kYphjO"
+          class="sc-ibxdXY uQQTo"
         >
           Already have an account? 
           <a
-            class="sc-iQKALj ipOsjL"
+            class="sc-eTuwsz lamcv"
           >
             Log in here
           </a>
@@ -56512,22 +56807,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-kPVwWT icWkGi"
+        class="sc-kIPQKe gyqrNG"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-kfGgVZ fiTlEd"
+        class="sc-eXEjpC hDlNcK"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-esjQYD kYphjO"
+        class="sc-ibxdXY uQQTo"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -56542,25 +56837,25 @@ Object {
         .
       </p>
       <form
-        class="sc-kIPQKe gAYXZX"
+        class="sc-RefOD bgbFdH"
       >
         <input
-          class="sc-eXEjpC gLxbse"
+          class="sc-iQKALj fRKOyc"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-ibxdXY jZqBTQ"
+          class="sc-bwCtUz bBEKpN"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-esjQYD kYphjO"
+          class="sc-ibxdXY uQQTo"
         >
           Already have an account? 
           <a
-            class="sc-iQKALj ipOsjL"
+            class="sc-eTuwsz lamcv"
           >
             Log in here
           </a>
@@ -58959,7 +59254,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI sc-bwCtUz leYmsx"
+          class="sc-iwsKbI sc-gwVKww coKfju"
         >
           Update Password
         </button>
@@ -60693,7 +60988,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI sc-bwCtUz leYmsx"
+            class="sc-iwsKbI sc-gwVKww coKfju"
           >
             Update Password
           </button>
