@@ -43,6 +43,9 @@ export interface DataIframeEvents {
   ) => void
   // this has to be more specific because WEB3 is overloaded
   [PostMessages.WEB3]: (request: web3MethodCall) => void
+  [PostMessages.SIGNED_DATA]: (
+    update: ExtractPayload<PostMessages.SIGNED_DATA>
+  ) => void
 }
 
 /**

@@ -127,5 +127,8 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
     this.addHandler(PostMessages.UPDATE_KEYS, keys => {
       this.emit(PostMessages.UPDATE_KEYS, keys)
     })
+    this.addHandler(PostMessages.SIGNED_DATA, data => {
+      this.emit(PostMessages.SIGNED_DATA, data)
+    })
   }
 }

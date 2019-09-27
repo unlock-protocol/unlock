@@ -59,6 +59,12 @@ export default class MainWindowHandler {
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
       this.toggleLockState(PostMessages.UNLOCKED)
     })
+    this.iframes.data.on(PostMessages.SIGNED_DATA, signedData => {
+      console.log({
+        signedData,
+        location: 'main window',
+      })
+    })
     this.iframes.data.on(PostMessages.ERROR, e => {
       if (e === 'no ethereum wallet is available') {
         this.toggleLockState(PostMessages.LOCKED)
