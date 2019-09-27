@@ -39,6 +39,7 @@ export enum PostMessages {
 
   PURCHASE_KEY = 'purchaseKey',
   SIGN_DATA = 'signData',
+  SIGNED_DATA = 'signedData',
   DISMISS_CHECKOUT = 'dismiss/checkout',
   INITIATED_TRANSACTION = 'initiated/transaction',
 
@@ -159,6 +160,10 @@ export type Message =
       type: PostMessages.SIGN_DATA
       // payload must be compliant with the json-schema for EIP-712 TypedData
       payload: any
+    }
+  | {
+      type: PostMessages.SIGNED_DATA
+      payload: string
     }
 
 export type MessageTypes = Message['type']
