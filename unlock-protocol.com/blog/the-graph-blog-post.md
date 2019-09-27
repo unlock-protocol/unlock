@@ -57,7 +57,7 @@ Here is a few to get started:
 
 Real talk, so what was the proof of concept and what did we build? We built a keychain, a centralized place where people can manage their Unlock KEYS (Nonfungible Tokens ): review, request refunds, etc.
 
-** Image Place Holder ** 
+![keychain screenshot](/static/images/blog/the-graph-blog-post/screenshot.png)
 
 Without a caching layer, requesting this data would have been a bit I/O intensive as it would require the traversal either events or transactions between the user and all of the the locks in the wild.
 
