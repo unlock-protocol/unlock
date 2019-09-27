@@ -3,6 +3,7 @@ import axios from 'axios'
 /* eslint-disable no-unused-vars */
 export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
+  welcome = 'welcome',
 }
 /* eslint-enable no-unused-vars */
 
@@ -44,6 +45,13 @@ export default class WedlockService {
         encrypt: true,
       },
       confirmLink,
+    })
+  }
+
+  welcomeEmail = (recipient: string, recoveryLink: string) => {
+    return this.sendEmail(emailTemplate.welcome, recipient, {
+      email: encodeURIComponent(recipient),
+      recoveryLink,
     })
   }
 }
