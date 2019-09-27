@@ -6,7 +6,6 @@ import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import Errors from '../interface/Errors'
 import AccountInfo from '../interface/user-account/AccountInfo'
-import ChangePassword from '../interface/user-account/ChangePassword'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
 import LogInSignUp from '../interface/LogInSignUp'
@@ -86,7 +85,6 @@ export class SettingsContent extends React.Component<
         {account && account.emailAddress && (
           <>
             <AccountInfo />
-            <ChangePassword />
             {cards.length > 0 && <PaymentMethods cards={cards} />}
             {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
           </>
