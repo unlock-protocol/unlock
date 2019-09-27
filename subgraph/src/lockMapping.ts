@@ -1,11 +1,11 @@
-import { Lock, KeyHolder, Key } from "../generated/schema";
+import { Lock, KeyHolder, Key, KeyPurchase } from "../generated/schema";
 import {
   Transfer,
   OwnershipTransferred,
   PriceChanged,
   PublicLock
 } from "../generated/templates/PublicLock/PublicLock";
-import { Address } from "@graphprotocol/graph-ts";
+import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts";
 import { CancelKey, ExpireKey } from "../generated/Contract/PublicLock";
 
 export function handleLockTransfer(event: OwnershipTransferred): void {
@@ -22,31 +22,47 @@ export function handlePriceChanged(event: PriceChanged): void {
 }
 
 export function handleTransfer(event: Transfer): void {
-  let lockAddress = event.address;
-  let lock = Lock.load(lockAddress.toHex());
+  let lock = Lock.load(event.address.toHex()) as Lock;
   let zeroAddress = "0x0000000000000000000000000000000000000000";
-  let keyID = genKeyID(event.address, event.params._tokenId.toString());
   let lockContract = PublicLock.bind(event.address);
 
   if (event.params._from.toHex() == zeroAddress) {
-    newlyMintedKey(lock as Lock, event);
-    let key = new Key(keyID);
-    key.lock = event.address.toHex();
-    key.keyId = event.params._tokenId;
-    key.owner = event.params._to.toHex();
-    key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
-    key.save();
+    newKeyPurchase(event, lock, lockContract);
   } else {
-    let keyHolder = loadKeyHolder(event.params._to.toHex());
-    keyHolder.save();
-
-    let key = Key.load(keyID);
-    key.owner = event.params._to.toHex();
-
-    let lockContract = PublicLock.bind(event.address);
-    key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
-    key.save();
+    existingKeyTransfer(event);
   }
+}
+
+function existingKeyTransfer(event: Transfer): void {
+  let lockContract = PublicLock.bind(event.address);
+  let keyID = genKeyID(event.address, event.params._tokenId.toString());
+  let key = Key.load(keyID);
+
+  let keyHolder = loadKeyHolder(event.params._to.toHex());
+  keyHolder.save();
+
+  key.owner = event.params._to.toHex();
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
+  key.save();
+}
+
+function newKeyPurchase(
+  event: Transfer,
+  lock: Lock,
+  lockContract: PublicLock
+): void {
+  let keyID = genKeyID(event.address, event.params._tokenId.toString());
+  let keyPurchaseID = keyID + "-" + event.block.number.toString()
+
+  genKey(event, lock, lockContract);
+  genKeyPurchase(
+    keyPurchaseID,
+    event.params._to,
+    event.address,
+    event.block.timestamp,
+    lockContract.tokenAddress(),
+    lockContract.keyPrice()
+  );
 }
 
 export function handleCancelKey(event: CancelKey): void {
@@ -65,6 +81,35 @@ export function handleExpireKey(event: ExpireKey): void {
     Address.fromString(key.owner)
   );
   key.save();
+}
+
+function genKey(event: Transfer, lock: Lock, lockContract: PublicLock): void {
+  let keyID = genKeyID(event.address, event.params._tokenId.toString());
+
+  newlyMintedKey(event);
+  let key = new Key(keyID);
+  key.lock = event.address.toHex();
+  key.keyId = event.params._tokenId;
+  key.owner = event.params._to.toHex();
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params._to);
+  key.save();
+}
+
+function genKeyPurchase(
+  keyID: string,
+  purchaser: Bytes,
+  lock: Bytes,
+  timestamp: BigInt,
+  tokenAddress: Bytes,
+  price: BigInt
+): void {
+  let keyPurchase = new KeyPurchase(keyID);
+  keyPurchase.purchaser = purchaser;
+  keyPurchase.lock = lock;
+  keyPurchase.timestamp = timestamp;
+  keyPurchase.tokenAddress = tokenAddress;
+  keyPurchase.price = price;
+  keyPurchase.save();
 }
 
 function genKeyID(lockAddress: Address, tokenId: string): string {
@@ -86,7 +131,7 @@ function loadKeyHolder(id: string): KeyHolder {
   }
 }
 
-function newlyMintedKey(lock: Lock, event: Transfer): void {
+function newlyMintedKey(event: Transfer): void {
   let keyHolder = loadKeyHolder(event.params._to.toHex());
   keyHolder.save();
 }
