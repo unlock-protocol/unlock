@@ -22,7 +22,11 @@ export const FinishSignup = ({ emailAddress, signupCredentials }: Props) => {
         value={emailAddress}
         disabled
       />
-      <SetPassword emailAddress={emailAddress} onSubmit={signupCredentials} />
+      <SetPassword
+        buttonLabel="Creating Account"
+        emailAddress={emailAddress}
+        onSubmit={signupCredentials}
+      />
     </div>
   )
 }
@@ -37,7 +41,7 @@ export default connect(
   mapDispatchToProps
 )(FinishSignup)
 
-const Heading = styled.h1`
+export const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 36px;
   line-height: 47px;
@@ -45,14 +49,14 @@ const Heading = styled.h1`
   color: var(--darkgrey);
 `
 
-const Instructions = styled.p`
+export const Instructions = styled.p`
   font-family: 'IBM Plex Sans', sans-serif;
   font-weight: 300;
   font-size: 20px;
   color: var(--darkgrey);
 `
 
-const Label = styled.label`
+export const Label = styled.label`
   display: block;
   text-transform: uppercase;
   font-size: 10px;
@@ -61,7 +65,7 @@ const Label = styled.label`
   margin-bottom: 5px;
 `
 
-const Input = styled.input`
+export const Input = styled.input`
   height: 60px;
   width: 100%;
   max-width: 450px;
