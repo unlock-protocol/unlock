@@ -7,6 +7,7 @@ import { Action, EncryptedPrivateKey } from '../unlockTypes'
 type State = { key: EncryptedPrivateKey; email: string } | null
 export const initialState: State = null
 
+// TODO: this is not used: cleanup!
 const privateKeyReducer = (
   state: State = initialState,
   action: Action

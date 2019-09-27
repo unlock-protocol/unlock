@@ -1,9 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
-import {
-  createAccountAndPasswordEncryptKey,
-  reEncryptPrivateKey,
-} from '@unlock-protocol/unlock-js'
+import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -15,10 +12,8 @@ import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
-  CHANGE_PASSWORD,
   gotEncryptedPrivateKeyPayload,
   setEncryptedPrivateKey,
-  signUserData,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
@@ -29,41 +24,6 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
-
-export async function changePassword({
-  oldPassword,
-  newPassword,
-  emailAddress,
-  storageService,
-  dispatch,
-}) {
-  let passwordEncryptedPrivateKey
-  try {
-    passwordEncryptedPrivateKey = await storageService.getUserPrivateKey(
-      emailAddress
-    )
-  } catch (e) {
-    dispatch(
-      setError(Storage.Warning('Could not retrieve encrypted private key.'))
-    )
-    return
-  }
-  try {
-    const newEncryptedKey = await reEncryptPrivateKey(
-      passwordEncryptedPrivateKey,
-      oldPassword,
-      newPassword
-    )
-
-    dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
-  } catch (e) {
-    dispatch(
-      setError(
-        Storage.Warning('Could not re-encrypt private key -- bad password?')
-      )
-    )
-  }
-}
 
 const storageMiddleware = config => {
   const { services } = config
@@ -272,22 +232,6 @@ const storageMiddleware = config => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
           })
         }
-
-        if (action.type === CHANGE_PASSWORD) {
-          const { oldPassword, newPassword } = action
-          const {
-            account: { emailAddress },
-          } = getState()
-
-          changePassword({
-            oldPassword,
-            newPassword,
-            emailAddress,
-            storageService,
-            dispatch,
-          })
-        }
-
         if (action.type === GET_STORED_PAYMENT_DETAILS) {
           const { emailAddress } = action
           storageService.getCards(emailAddress)

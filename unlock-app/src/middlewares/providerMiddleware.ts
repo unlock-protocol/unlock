@@ -1,3 +1,4 @@
+import { reEncryptPrivateKey } from '@unlock-protocol/unlock-js'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
@@ -11,10 +12,12 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
   signedUserData,
+  signUserData,
   SIGN_PAYMENT_DATA,
   signedPaymentData,
   SIGN_PURCHASE_DATA,
   signedPurchaseData,
+  CHANGE_PASSWORD,
 } from '../actions/user'
 
 interface Provider {
@@ -49,6 +52,36 @@ export function initializeProvider(provider: Provider, dispatch: any) {
   } else {
     // Default case, provider doesn't have an enable method, so it must already be ready
     dispatch(providerReady())
+  }
+}
+
+interface ChangePasswordArgs {
+  oldPassword: string
+  newPassword: string
+  passwordEncryptedPrivateKey: any
+  dispatch: (action: any) => void
+}
+
+export async function changePassword({
+  oldPassword,
+  newPassword,
+  passwordEncryptedPrivateKey,
+  dispatch,
+}: ChangePasswordArgs) {
+  try {
+    const newEncryptedKey = await reEncryptPrivateKey(
+      passwordEncryptedPrivateKey,
+      oldPassword,
+      newPassword
+    )
+
+    dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
+  } catch (e) {
+    dispatch(
+      setError(
+        LogIn.Warning('Could not re-encrypt private key -- bad password?')
+      )
+    )
   }
 }
 
@@ -104,6 +137,18 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_PURCHASE_DATA) {
           const payload = provider.signKeyPurchaseRequestData(action.data)
           dispatch(signedPurchaseData(payload))
+        }
+
+        if (action.type === CHANGE_PASSWORD) {
+          const { oldPassword, newPassword } = action
+          const passwordEncryptedPrivateKey =
+            provider.passwordEncryptedPrivateKey
+          changePassword({
+            passwordEncryptedPrivateKey,
+            oldPassword,
+            newPassword,
+            dispatch,
+          })
         }
 
         next(action)
