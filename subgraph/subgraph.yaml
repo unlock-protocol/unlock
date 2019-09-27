@@ -46,6 +46,7 @@ templates:
       entities:
         - PublicLock
         - KeyHolder
+        - KeyPurchase
       abis:
         - name: PublicLock
           file: ./abis/PublicLock.json
