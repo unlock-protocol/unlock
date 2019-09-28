@@ -1,8 +1,11 @@
-import axios from 'axios'
 import wedlocksMiddleware from '../../middlewares/wedlocksMiddleware'
-import { SIGNUP_EMAIL } from '../../actions/user'
+import { SIGNUP_EMAIL, WELCOME_EMAIL } from '../../actions/user'
 
-jest.mock('axios')
+const wedlocksService = {
+  welcomeEmail: jest.fn(),
+  confirmEmail: jest.fn(),
+}
+jest.mock('../../services/wedlockService', () => () => wedlocksService)
 
 const config = {
   services: {
@@ -23,11 +26,33 @@ describe('Wedlocks Middleware', () => {
 
   it('should send a confirmation email on receiving SIGNUP_EMAIL', () => {
     expect.assertions(1)
+    const emailAddress = 'tim@cern.ch'
     wedlocksMiddleware(config)({ dispatch })(next)({
       type: SIGNUP_EMAIL,
-      emailAddress: 'tim@cern.ch',
+      emailAddress,
     })
 
-    expect(axios.post).toHaveBeenCalled()
+    expect(wedlocksService.confirmEmail).toHaveBeenCalledWith(
+      emailAddress,
+      'http://localhost/signup'
+    )
+  })
+
+  it('should send a confirmation email on receiving WELCOME_EMAIL', () => {
+    expect.assertions(1)
+    const emailAddress = 'tim@cern.ch'
+    const recoveryKey = {}
+    wedlocksMiddleware(config)({ dispatch })(next)({
+      type: WELCOME_EMAIL,
+      emailAddress,
+      recoveryKey,
+    })
+
+    expect(wedlocksService.welcomeEmail).toHaveBeenCalledWith(
+      emailAddress,
+      `http://localhost/recover/?email=tim@cern.ch&recoveryKey=${encodeURIComponent(
+        JSON.stringify(recoveryKey)
+      )}`
+    )
   })
 })
