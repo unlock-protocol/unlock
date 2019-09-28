@@ -1155,6 +1155,47 @@ Object {
   display: inline-block;
 }
 
+.c12 .c3 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c12 .c3:nth-child(1) {
+  pointer-events: none;
+}
+
+.c12 .c3:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c12 .c3 > svg {
+  fill: var(--grey);
+}
+
+.c12 .c3:hover > svg {
+  fill: var(--grey);
+}
+
+.c13 .c3 {
+  margin: 24px;
+}
+
+.c13 .c3 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
 .c0 {
   padding-top: 20px;
   padding-left: 50px;
@@ -1217,47 +1258,6 @@ Object {
   -moz-letter-spacing: 1px;
   -ms-letter-spacing: 1px;
   letter-spacing: 1px;
-  text-align: center;
-}
-
-.c12 .c3 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c12 .c3:nth-child(1) {
-  pointer-events: none;
-}
-
-.c12 .c3:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c12 .c3 > svg {
-  fill: var(--grey);
-}
-
-.c12 .c3:hover > svg {
-  fill: var(--grey);
-}
-
-.c13 .c3 {
-  margin: 24px;
-}
-
-.c13 .c3 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
   text-align: center;
 }
 
@@ -8812,6 +8812,47 @@ Object {
   display: inline-block;
 }
 
+.c18 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c18 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c18 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c18 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c18 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14 {
+  margin: 24px;
+}
+
+.c19 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
 .c12 {
   display: grid;
   justify-items: end;
@@ -10343,6 +10384,47 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
 }
 
 .c12 {
@@ -12512,6 +12594,47 @@ Object {
   display: inline-block;
 }
 
+.c18 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c18 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c18 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c18 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c18 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14 {
+  margin: 24px;
+}
+
+.c19 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
 .c12 {
   display: grid;
   justify-items: end;
@@ -13442,6 +13565,47 @@ Object {
   display: inline-block;
 }
 
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
 .c12 {
   display: grid;
   justify-items: end;
@@ -14364,6 +14528,47 @@ Object {
 
 .c14:hover .c17 {
   display: inline-block;
+}
+
+.c19 .c14 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c19 .c14:nth-child(1) {
+  pointer-events: none;
+}
+
+.c19 .c14:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c19 .c14 > svg {
+  fill: var(--grey);
+}
+
+.c19 .c14:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 .c14 {
+  margin: 24px;
+}
+
+.c20 .c14 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
 }
 
 .c12 {
@@ -19509,6 +19714,57 @@ Object {
   display: inline-block;
 }
 
+.c25 .c19 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c25 .c19:nth-child(1) {
+  pointer-events: none;
+}
+
+.c25 .c19:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c25 .c19 > svg {
+  fill: var(--grey);
+}
+
+.c25 .c19:hover > svg {
+  fill: var(--grey);
+}
+
+.c26 .c19 {
+  margin: 24px;
+}
+
+.c26 .c19 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c24 {
+  display: grid;
+  justify-items: center;
+}
+
+.c24 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c17 {
   display: grid;
   justify-items: end;
@@ -19632,16 +19888,6 @@ Object {
   font-size: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.c24 {
-  display: grid;
-  justify-items: center;
-}
-
-.c24 svg {
-  fill: var(--lightgrey);
-  width: 60px;
 }
 
 .c0 {
@@ -21224,7 +21470,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-jbKcbu jTaqCC"
+        class="sc-frDJqD bsGyPC"
       >
         <svg
           alt="loading"
@@ -21816,7 +22062,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-jbKcbu jTaqCC"
+        class="sc-frDJqD bsGyPC"
       >
         <svg
           alt="loading"
@@ -22116,6 +22362,47 @@ Object {
 
 .c19:hover .c22 {
   display: inline-block;
+}
+
+.c24 .c19 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c24 .c19:nth-child(1) {
+  pointer-events: none;
+}
+
+.c24 .c19:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c24 .c19 > svg {
+  fill: var(--grey);
+}
+
+.c24 .c19:hover > svg {
+  fill: var(--grey);
+}
+
+.c25 .c19 {
+  margin: 24px;
+}
+
+.c25 .c19 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
 }
 
 .c17 {
@@ -24004,14 +24291,14 @@ Object {
         </div>
       </div>
       <section
-        class="sc-frDJqD dOtJWb"
+        class="sc-hqyNC cCRKzF"
       >
         <img
-          class="sc-kvZOFW DmWXz"
+          class="sc-jbKcbu jqfSbX"
           src="/static/images/illustrations/lock.svg"
         />
         <div
-          class="sc-hqyNC cHHSyc"
+          class="sc-dNLxif iisOWx"
         >
           <h1>
             Create a lock to get started
@@ -24969,6 +25256,47 @@ Object {
 
 .c19:hover .c22 {
   display: inline-block;
+}
+
+.c24 .c19 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c24 .c19:nth-child(1) {
+  pointer-events: none;
+}
+
+.c24 .c19:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c24 .c19 > svg {
+  fill: var(--grey);
+}
+
+.c24 .c19:hover > svg {
+  fill: var(--grey);
+}
+
+.c25 .c19 {
+  margin: 24px;
+}
+
+.c25 .c19 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
 }
 
 .c17 {
@@ -26824,66 +27152,6 @@ Object {
   outline: none;
 }
 
-.c44 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c44 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c44:hover {
-  background-color: white;
-}
-
-.c44:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c44:focus {
-  outline: none;
-}
-
-.c10 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c10 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c10:focus {
-  outline: none;
-}
-
 .c14 {
   background-color: var(--grey);
   cursor: pointer;
@@ -26944,6 +27212,66 @@ Object {
   outline: none;
 }
 
+.c44 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c44 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c44:hover {
+  background-color: white;
+}
+
+.c44:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c44:focus {
+  outline: none;
+}
+
+.c10 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c10 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c10:hover {
+  background-color: var(--link);
+}
+
+.c10:hover > svg {
+  fill: white;
+}
+
+.c10:focus {
+  outline: none;
+}
+
 .c11 {
   display: none;
   position: relative;
@@ -26962,6 +27290,170 @@ Object {
 
 .c9:hover .c11 {
   display: inline-block;
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c13 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c15 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c15 .c9 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c15 .c9:nth-child(1) {
+  pointer-events: none;
+}
+
+.c15 .c9:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c15 .c9 > svg {
+  fill: var(--grey);
+}
+
+.c15 .c9:hover > svg {
+  fill: var(--grey);
+}
+
+.c17 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c17 .c9 {
+  margin: 24px;
+}
+
+.c17 .c9 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
 }
 
 .c42 {
@@ -27152,170 +27644,6 @@ Object {
   color: var(--darkgrey);
 }
 
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
-}
-
-.c4 {
-  display: grid;
-  grid-gap: 0;
-  grid-template-columns: 256px 1fr auto;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 70px;
-}
-
-.c5 {
-  color: var(--grey);
-}
-
-.c13 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-}
-
-.c8 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c15 {
-  display: none;
-  height: auto;
-  grid-column: second;
-}
-
-.c15 .c9 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c15 .c9:nth-child(1) {
-  pointer-events: none;
-}
-
-.c15 .c9:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c15 .c9 > svg {
-  fill: var(--grey);
-}
-
-.c15 .c9:hover > svg {
-  fill: var(--grey);
-}
-
-.c17 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 0px;
-  grid-row: second;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c17 .c9 {
-  margin: 24px;
-}
-
-.c17 .c9 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c6 {
-  padding-top: 2px;
-}
-
-.c0 {
-  display: grid;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
-}
-
-.c1 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  height: 24px;
-}
-
-.c3 {
-  color: var(--darkgrey);
-  display: grid;
-  row-gap: 24px;
-  width: 100%;
-}
-
 .c22 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
@@ -27410,58 +27738,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c42 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c32 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
-    grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c26 {
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    grid-gap: 4px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c27 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -27539,6 +27815,58 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c46 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c42 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c32 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c32 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c34 {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c26 {
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-gap: 4px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c27 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c29 {
+    grid-row: span 2;
   }
 }
 
@@ -30265,66 +30593,6 @@ Object {
   outline: none;
 }
 
-.c47 {
-  background-color: white;
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c47 > svg {
-  fill: var(--lightgrey);
-  height: 24px;
-  width: 24px;
-}
-
-.c47:hover {
-  background-color: white;
-}
-
-.c47:hover > svg {
-  fill: var(--lightgrey);
-}
-
-.c47:focus {
-  outline: none;
-}
-
-.c13 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c13 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c13:hover {
-  background-color: var(--link);
-}
-
-.c13:hover > svg {
-  fill: white;
-}
-
-.c13:focus {
-  outline: none;
-}
-
 .c17 {
   background-color: var(--grey);
   cursor: pointer;
@@ -30385,6 +30653,66 @@ Object {
   outline: none;
 }
 
+.c47 {
+  background-color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c47 > svg {
+  fill: var(--lightgrey);
+  height: 24px;
+  width: 24px;
+}
+
+.c47:hover {
+  background-color: white;
+}
+
+.c47:hover > svg {
+  fill: var(--lightgrey);
+}
+
+.c47:focus {
+  outline: none;
+}
+
+.c13 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c13 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c13:hover {
+  background-color: var(--link);
+}
+
+.c13:hover > svg {
+  fill: white;
+}
+
+.c13:focus {
+  outline: none;
+}
+
 .c14 {
   display: none;
   position: relative;
@@ -30403,6 +30731,170 @@ Object {
 
 .c12:hover .c14 {
   display: inline-block;
+}
+
+.c5 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c5 > svg {
+  fill: white;
+}
+
+.c10 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c10 > svg {
+  fill: white;
+}
+
+.c7 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c8 {
+  color: var(--grey);
+}
+
+.c16 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c11 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c18 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c18 .c12 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c18 .c12:nth-child(1) {
+  pointer-events: none;
+}
+
+.c18 .c12:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c18 .c12 > svg {
+  fill: var(--grey);
+}
+
+.c18 .c12:hover > svg {
+  fill: var(--grey);
+}
+
+.c20 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c20 .c12 {
+  margin: 24px;
+}
+
+.c20 .c12 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c9 {
+  padding-top: 2px;
+}
+
+.c3 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c4 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c6 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
 }
 
 .c45 {
@@ -30593,170 +31085,6 @@ Object {
   color: var(--darkgrey);
 }
 
-.c5 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c5 > svg {
-  fill: white;
-}
-
-.c10 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c10 > svg {
-  fill: white;
-}
-
-.c7 {
-  display: grid;
-  grid-gap: 0;
-  grid-template-columns: 256px 1fr auto;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 70px;
-}
-
-.c8 {
-  color: var(--grey);
-}
-
-.c16 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-}
-
-.c11 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-  grid-template-columns: repeat(3,24px);
-}
-
-.c18 {
-  display: none;
-  height: auto;
-  grid-column: second;
-}
-
-.c18 .c12 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c18 .c12:nth-child(1) {
-  pointer-events: none;
-}
-
-.c18 .c12:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c18 .c12 > svg {
-  fill: var(--grey);
-}
-
-.c18 .c12:hover > svg {
-  fill: var(--grey);
-}
-
-.c20 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 0px;
-  grid-row: second;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c20 .c12 {
-  margin: 24px;
-}
-
-.c20 .c12 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c9 {
-  padding-top: 2px;
-}
-
-.c3 {
-  display: grid;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
-}
-
-.c4 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  height: 24px;
-}
-
-.c6 {
-  color: var(--darkgrey);
-  display: grid;
-  row-gap: 24px;
-  width: 100%;
-}
-
 .c25 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
@@ -30915,58 +31243,6 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c45 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c35 {
-    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
-    grid-template-rows: 84px;
-    grid-column-gap: 16px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
-    grid-column-gap: 4px;
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c37 {
-    grid-column: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
-    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
-    grid-auto-flow: column;
-    -webkit-align-items: start;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: start;
-    grid-gap: 4px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
-    grid-row: span 2;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
   .c7 {
     grid-template-columns: [first] 1fr [second] 48px;
     grid-template-rows: [first] auto;
@@ -31044,6 +31320,58 @@ Object {
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c49 {
     display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c45 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c35 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(174px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c35 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c37 {
+    grid-column: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c29 {
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+    -webkit-align-items: start;
+    -webkit-box-align: start;
+    -ms-flex-align: start;
+    align-items: start;
+    grid-gap: 4px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c30 {
+    grid-row: span 2;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c32 {
+    grid-row: span 2;
   }
 }
 
@@ -34717,14 +35045,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Need account
@@ -34880,14 +35208,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Fatal Error
@@ -35043,14 +35371,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Network mismatch
@@ -35202,13 +35530,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
       />
       <div
-        class="sc-hqyNC cHHSyc"
+        class="sc-dNLxif iisOWx"
       >
         <h1>
           Non-critical error
@@ -35361,14 +35689,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Not enabled in provider
@@ -35524,14 +35852,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Unlock not deployed
@@ -35694,14 +36022,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-frDJqD dOtJWb"
+      class="sc-hqyNC cCRKzF"
     >
       <img
-        class="sc-kvZOFW DmWXz"
+        class="sc-jbKcbu jqfSbX"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-hqyNC cDyRdc"
+        class="sc-dNLxif iMzMEO"
       >
         <h1>
           Wallet missing
@@ -47499,28 +47827,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -47560,6 +47866,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -47941,28 +48269,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48002,6 +48308,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -48373,28 +48701,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48434,6 +48740,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -48805,28 +49133,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48866,6 +49172,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -49237,28 +49565,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -49298,6 +49604,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -49959,28 +50287,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -50020,6 +50326,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -50685,28 +51013,6 @@ Object {
   display: inline-block;
 }
 
-.c0 {
-  display: grid;
-  justify-items: end;
-  padding-right: 24px;
-}
-
-.c1 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-}
-
-.c6 {
-  margin-top: 13px;
-  font-size: 10px;
-  font-family: 'IBM Plex Sans',sans-serif;
-  font-weight: normal;
-  color: var(--green);
-  text-align: right;
-  padding-right: 24px;
-}
-
 .c7 .c2 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -50746,6 +51052,28 @@ Object {
   top: 5px;
   width: 100%;
   text-align: center;
+}
+
+.c0 {
+  display: grid;
+  justify-items: end;
+  padding-right: 24px;
+}
+
+.c1 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+}
+
+.c6 {
+  margin-top: 13px;
+  font-size: 10px;
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: normal;
+  color: var(--green);
+  text-align: right;
+  padding-right: 24px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -55304,6 +55632,3920 @@ Object {
 }
 `;
 
+exports[`Storyshots RecoverContent Link is missing email 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c11 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c14 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c12 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c10:hover .c12 {
+  display: inline-block;
+}
+
+.c16 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c17 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c9 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c13 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c13 .c10 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c13 .c10:nth-child(1) {
+  pointer-events: none;
+}
+
+.c13 .c10:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c13 .c10 > svg {
+  fill: var(--grey);
+}
+
+.c13 .c10:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c15 .c10 {
+  margin: 24px;
+}
+
+.c15 .c10 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c18 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Recover
+            </h1>
+            <div
+              class="c8"
+            />
+            <div
+              class="c9"
+            >
+              <a
+                class="c10 c11"
+                href="undefined/about"
+                target="_self"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="undefined/jobs"
+                target="_self"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://github.com/unlock-protocol/unlock"
+                target="_self"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://t.me/unlockprotocol"
+                target="_self"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c15"
+            />
+          </header>
+          <div>
+            <h1
+              class="c16"
+            >
+              Recover your Unlock Account
+            </h1>
+            <p
+              class="c17"
+            >
+              Your recovery link is not valid. Please try again.
+            </p>
+          </div>
+        </div>
+        <div
+          class="c18"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iMlWOh"
+    >
+      <div
+        class="hm3mhg-1 iBEace"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dmdEhu"
+        >
+          <h1
+            class="sc-1glv5oz-1 kBUdQa"
+          >
+            <div
+              class="sc-1glv5oz-6 gMXOkk"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Recover
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+          />
+          <div
+            class="sc-1glv5oz-2 bwZQqD"
+          >
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/about"
+              target="_self"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/jobs"
+              target="_self"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://github.com/unlock-protocol/unlock"
+              target="_self"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://t.me/unlockprotocol"
+              target="_self"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 fkpKLc"
+          >
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bjHPyP"
+          />
+        </header>
+        <div>
+          <h1
+            class="sc-jAaTju kNpzMJ"
+          >
+            Recover your Unlock Account
+          </h1>
+          <p
+            class="sc-jDwBTQ hyFtCE"
+          >
+            Your recovery link is not valid. Please try again.
+          </p>
+        </div>
+      </div>
+      <div
+        class="hm3mhg-2 dBxAQT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots RecoverContent No account set yet 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c11 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c14 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c12 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c10:hover .c12 {
+  display: inline-block;
+}
+
+.c16 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c17 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c18 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c9 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c13 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c13 .c10 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c13 .c10:nth-child(1) {
+  pointer-events: none;
+}
+
+.c13 .c10:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c13 .c10 > svg {
+  fill: var(--grey);
+}
+
+.c13 .c10:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c15 .c10 {
+  margin: 24px;
+}
+
+.c15 .c10 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c19 {
+  display: grid;
+  justify-items: center;
+}
+
+.c19 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c20 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Recover
+            </h1>
+            <div
+              class="c8"
+            />
+            <div
+              class="c9"
+            >
+              <a
+                class="c10 c11"
+                href="undefined/about"
+                target="_self"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="undefined/jobs"
+                target="_self"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://github.com/unlock-protocol/unlock"
+                target="_self"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://t.me/unlockprotocol"
+                target="_self"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c15"
+            />
+          </header>
+          <div>
+            <h1
+              class="c16"
+            >
+              Recover your Unlock Account
+            </h1>
+            <p
+              class="c17"
+            >
+              Please, set a new password for your account.
+            </p>
+            <label
+              class="c18"
+              for="emailPlaceholder"
+            >
+              Email
+            </label>
+            <p>
+              julien@unlock-protocol.com
+            </p>
+          </div>
+          <div>
+            <section
+              class="c19"
+            >
+              <svg
+                alt="loading"
+                viewBox="0 0 32 32"
+              >
+                <title>
+                  loading
+                </title>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(45 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.125s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(90 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.25s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(135 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.375s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(180 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.5s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(225 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.625s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(270 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.75s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(315 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.875s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(180 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.5s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+              </svg>
+            </section>
+            <p>
+              Checking your recovery key... This may take a couple seconds.
+            </p>
+          </div>
+        </div>
+        <div
+          class="c20"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iMlWOh"
+    >
+      <div
+        class="hm3mhg-1 iBEace"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dmdEhu"
+        >
+          <h1
+            class="sc-1glv5oz-1 kBUdQa"
+          >
+            <div
+              class="sc-1glv5oz-6 gMXOkk"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Recover
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+          />
+          <div
+            class="sc-1glv5oz-2 bwZQqD"
+          >
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/about"
+              target="_self"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/jobs"
+              target="_self"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://github.com/unlock-protocol/unlock"
+              target="_self"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://t.me/unlockprotocol"
+              target="_self"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 fkpKLc"
+          >
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bjHPyP"
+          />
+        </header>
+        <div>
+          <h1
+            class="sc-jAaTju kNpzMJ"
+          >
+            Recover your Unlock Account
+          </h1>
+          <p
+            class="sc-jDwBTQ hyFtCE"
+          >
+            Please, set a new password for your account.
+          </p>
+          <label
+            class="sc-gPEVay cqKage"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <p>
+            julien@unlock-protocol.com
+          </p>
+        </div>
+        <div>
+          <section
+            class="sc-frDJqD bsGyPC"
+          >
+            <svg
+              alt="loading"
+              viewBox="0 0 32 32"
+            >
+              <title>
+                loading
+              </title>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
+          </section>
+          <p>
+            Checking your recovery key... This may take a couple seconds.
+          </p>
+        </div>
+      </div>
+      <div
+        class="hm3mhg-2 dBxAQT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots RecoverContent No recovery phrase 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c11 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c14 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c12 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c10:hover .c12 {
+  display: inline-block;
+}
+
+.c16 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c17 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c18 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c9 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c13 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c13 .c10 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c13 .c10:nth-child(1) {
+  pointer-events: none;
+}
+
+.c13 .c10:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c13 .c10 > svg {
+  fill: var(--grey);
+}
+
+.c13 .c10:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c15 .c10 {
+  margin: 24px;
+}
+
+.c15 .c10 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c19 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Recover
+            </h1>
+            <div
+              class="c8"
+            />
+            <div
+              class="c9"
+            >
+              <a
+                class="c10 c11"
+                href="undefined/about"
+                target="_self"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="undefined/jobs"
+                target="_self"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://github.com/unlock-protocol/unlock"
+                target="_self"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://t.me/unlockprotocol"
+                target="_self"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c15"
+            />
+          </header>
+          <div>
+            <h1
+              class="c16"
+            >
+              Recover your Unlock Account
+            </h1>
+            <p
+              class="c17"
+            >
+              Please, set a new password for your account.
+            </p>
+            <label
+              class="c18"
+              for="emailPlaceholder"
+            >
+              Email
+            </label>
+            <p>
+              julien@unlock-protocol.com
+            </p>
+          </div>
+          <div>
+            <p>
+              Your password was changed!
+            </p>
+          </div>
+        </div>
+        <div
+          class="c19"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iMlWOh"
+    >
+      <div
+        class="hm3mhg-1 iBEace"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dmdEhu"
+        >
+          <h1
+            class="sc-1glv5oz-1 kBUdQa"
+          >
+            <div
+              class="sc-1glv5oz-6 gMXOkk"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Recover
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+          />
+          <div
+            class="sc-1glv5oz-2 bwZQqD"
+          >
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/about"
+              target="_self"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/jobs"
+              target="_self"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://github.com/unlock-protocol/unlock"
+              target="_self"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://t.me/unlockprotocol"
+              target="_self"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 fkpKLc"
+          >
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bjHPyP"
+          />
+        </header>
+        <div>
+          <h1
+            class="sc-jAaTju kNpzMJ"
+          >
+            Recover your Unlock Account
+          </h1>
+          <p
+            class="sc-jDwBTQ hyFtCE"
+          >
+            Please, set a new password for your account.
+          </p>
+          <label
+            class="sc-gPEVay cqKage"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <p>
+            julien@unlock-protocol.com
+          </p>
+        </div>
+        <div>
+          <p>
+            Your password was changed!
+          </p>
+        </div>
+      </div>
+      <div
+        class="hm3mhg-2 dBxAQT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots RecoverContent show the password reset form 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c11 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c14 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c12 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c10:hover .c12 {
+  display: inline-block;
+}
+
+.c20 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c21 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.c23 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+}
+
+.c23[disabled] {
+  background-color: var(--grey);
+  cursor: not-allowed;
+  color: white;
+}
+
+.c19 {
+  max-width: 450px;
+}
+
+.c22 {
+  height: 30px;
+  line-height: 30px;
+}
+
+.c16 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-size: 36px;
+  line-height: 47px;
+  font-weight: bold;
+  color: var(--darkgrey);
+}
+
+.c17 {
+  font-family: 'IBM Plex Sans',sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+  color: var(--darkgrey);
+}
+
+.c18 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c9 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c13 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c13 .c10 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c13 .c10:nth-child(1) {
+  pointer-events: none;
+}
+
+.c13 .c10:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c13 .c10 > svg {
+  fill: var(--grey);
+}
+
+.c13 .c10:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c15 .c10 {
+  margin: 24px;
+}
+
+.c15 .c10 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c24 {
+    display: none;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Recover
+            </h1>
+            <div
+              class="c8"
+            />
+            <div
+              class="c9"
+            >
+              <a
+                class="c10 c11"
+                href="undefined/about"
+                target="_self"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="undefined/jobs"
+                target="_self"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://github.com/unlock-protocol/unlock"
+                target="_self"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://t.me/unlockprotocol"
+                target="_self"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c15"
+            />
+          </header>
+          <div>
+            <h1
+              class="c16"
+            >
+              Recover your Unlock Account
+            </h1>
+            <p
+              class="c17"
+            >
+              Please, set a new password for your account.
+            </p>
+            <label
+              class="c18"
+              for="emailPlaceholder"
+            >
+              Email
+            </label>
+            <p>
+              julien@unlock-protocol.com
+            </p>
+          </div>
+          <form
+            class="c19"
+          >
+            <label
+              class="c20"
+              for="passwordInput"
+            >
+              Password
+            </label>
+            <input
+              class="c21"
+              id="passwordInput"
+              name="password"
+              placeholder="Password"
+              type="password"
+            />
+            <br />
+            <label
+              class="c20"
+              for="passwordConfirmationInput"
+            >
+              Confirm Password
+            </label>
+            <input
+              class="c21"
+              id="passwordConfirmationInput"
+              name="passwordConfirmation"
+              placeholder="Confirm Password"
+              type="password"
+            />
+            <br />
+            <span
+              class="c22"
+            />
+            <br />
+            <input
+              class="c23"
+              disabled=""
+              type="submit"
+              value="Submit"
+            />
+          </form>
+        </div>
+        <div
+          class="c24"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iMlWOh"
+    >
+      <div
+        class="hm3mhg-1 iBEace"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dmdEhu"
+        >
+          <h1
+            class="sc-1glv5oz-1 kBUdQa"
+          >
+            <div
+              class="sc-1glv5oz-6 gMXOkk"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Recover
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+          />
+          <div
+            class="sc-1glv5oz-2 bwZQqD"
+          >
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/about"
+              target="_self"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="undefined/jobs"
+              target="_self"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://github.com/unlock-protocol/unlock"
+              target="_self"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://t.me/unlockprotocol"
+              target="_self"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 fkpKLc"
+          >
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bjHPyP"
+          />
+        </header>
+        <div>
+          <h1
+            class="sc-jAaTju kNpzMJ"
+          >
+            Recover your Unlock Account
+          </h1>
+          <p
+            class="sc-jDwBTQ hyFtCE"
+          >
+            Please, set a new password for your account.
+          </p>
+          <label
+            class="sc-gPEVay cqKage"
+            for="emailPlaceholder"
+          >
+            Email
+          </label>
+          <p>
+            julien@unlock-protocol.com
+          </p>
+        </div>
+        <form
+          class="sc-brqgnP jcXrgR"
+        >
+          <label
+            class="sc-eHgmQL iuyghs"
+            for="passwordInput"
+          >
+            Password
+          </label>
+          <input
+            class="sc-cvbbAY kZWFpu"
+            id="passwordInput"
+            name="password"
+            placeholder="Password"
+            type="password"
+          />
+          <br />
+          <label
+            class="sc-eHgmQL iuyghs"
+            for="passwordConfirmationInput"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="sc-cvbbAY kZWFpu"
+            id="passwordConfirmationInput"
+            name="passwordConfirmation"
+            placeholder="Confirm Password"
+            type="password"
+          />
+          <br />
+          <span
+            class="sc-cMljjf RlOhw"
+          />
+          <br />
+          <input
+            class="sc-jWBwVP iGzEEB"
+            disabled=""
+            type="submit"
+            value="Submit"
+          />
+        </form>
+      </div>
+      <div
+        class="hm3mhg-2 dBxAQT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots SVG Icons 1`] = `
 Object {
   "asFragment": [Function],
@@ -58170,36 +62412,6 @@ Object {
   outline: none;
 }
 
-.c12 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c12 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
-  fill: white;
-}
-
-.c12:focus {
-  outline: none;
-}
-
 .c14 {
   background-color: var(--grey);
   cursor: pointer;
@@ -58257,6 +62469,36 @@ Object {
 }
 
 .c16:focus {
+  outline: none;
+}
+
+.c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
   outline: none;
 }
 
