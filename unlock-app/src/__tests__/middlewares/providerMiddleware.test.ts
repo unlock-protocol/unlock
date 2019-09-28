@@ -1,4 +1,5 @@
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
+import * as unlockJs from '@unlock-protocol/unlock-js'
+
 import providerMiddleware, {
   changePassword,
   initializeUnlockProvider,
@@ -7,13 +8,17 @@ import { SET_PROVIDER, providerReady } from '../../actions/provider'
 import { setError } from '../../actions/error'
 import { FATAL_MISSING_PROVIDER } from '../../errors'
 import { Application, LogIn } from '../../utils/Error'
-
 import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
   SIGN_PAYMENT_DATA,
   SIGN_PURCHASE_DATA,
+  signUserData,
 } from '../../actions/user'
+import { resetRecoveryPhrase } from '../../actions/recovery'
+import { EncryptedPrivateKey } from '../../unlockTypes'
+
+jest.mock('@unlock-protocol/unlock-js')
 
 const config = {
   providers: {
@@ -78,14 +83,8 @@ describe('provider middleware', () => {
   describe('initializeUnlockProvider', () => {
     const emailAddress = 'test@us.er'
     const password = 'guest'
-    let key: any
-    let address: string
-
-    beforeEach(async () => {
-      const info = await createAccountAndPasswordEncryptKey(password)
-      key = info.passwordEncryptedPrivateKey
-      address = info.address
-    })
+    let key: any = {}
+    let address: string = 'address'
 
     it('should dispatch an error if it cannot decrypt', async () => {
       expect.assertions(1)
@@ -291,5 +290,71 @@ describe('provider middleware', () => {
         })
       )
     })
+  })
+})
+
+describe('changePassword', () => {
+  let oldPassword = 'oldPassword'
+  let newPassword = 'newPassword'
+  let passwordEncryptedPrivateKey: EncryptedPrivateKey = {
+    version: 1,
+  }
+  let newEncryptedKey: EncryptedPrivateKey = {
+    version: 1,
+  }
+  let dispatch = jest.fn()
+
+  describe('success', () => {
+    beforeEach(async () => {
+      unlockJs.reEncryptPrivateKey = jest.fn(() =>
+        Promise.resolve(newEncryptedKey)
+      )
+      await changePassword({
+        oldPassword,
+        newPassword,
+        passwordEncryptedPrivateKey,
+        dispatch,
+      })
+    })
+
+    it('should reEncryptPrivateKey', () => {
+      expect.assertions(1)
+      expect(unlockJs.reEncryptPrivateKey).toHaveBeenCalledWith(
+        passwordEncryptedPrivateKey,
+        oldPassword,
+        newPassword
+      )
+    })
+
+    it('should dispatch signUserData', () => {
+      expect.assertions(1)
+      const expectedAction = signUserData({
+        passwordEncryptedPrivateKey: newEncryptedKey,
+      })
+      expect(dispatch).toHaveBeenCalledWith(expectedAction)
+    })
+
+    it('should dispatch resetRecoveryPhrase', () => {
+      expect.assertions(1)
+      const expectedAction = resetRecoveryPhrase()
+      expect(dispatch).toHaveBeenCalledWith(expectedAction)
+    })
+  })
+
+  it('should dispatch a warning when the private could not be re-encrypted', async () => {
+    expect.assertions(1)
+    unlockJs.reEncryptPrivateKey = jest.fn(() =>
+      Promise.reject('failed to decrypt key')
+    )
+    await changePassword({
+      oldPassword,
+      newPassword,
+      passwordEncryptedPrivateKey,
+      dispatch,
+    })
+    const expectedAction = setError(
+      LogIn.Warning('Could not re-encrypt private key -- bad password?')
+    )
+    expect(dispatch).toHaveBeenCalledWith(expectedAction)
   })
 })

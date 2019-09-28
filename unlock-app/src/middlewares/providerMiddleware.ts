@@ -1,6 +1,7 @@
 import { reEncryptPrivateKey } from '@unlock-protocol/unlock-js'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
+import { resetRecoveryPhrase } from '../actions/recovery'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import {
   FATAL_MISSING_PROVIDER,
@@ -76,6 +77,7 @@ export async function changePassword({
     )
 
     dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
+    dispatch(resetRecoveryPhrase()) // We unset the recovery phrase
   } catch (e) {
     dispatch(
       setError(
