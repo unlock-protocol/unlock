@@ -44,12 +44,12 @@ export class EventTicket extends React.Component<Props, State> {
     const { email, sent } = this.state
     const { sendConfirmation, event } = this.props
 
-    /* let qrDataUri: string = ''
+    let qrDataUri: string = ''
 
-     * const canvas = document.querySelector('canvas')
-     * if (canvas) {
-     *   qrDataUri = canvas.toDataURL()
-     * } */
+    const canvas = document.querySelector('canvas')
+    if (canvas) {
+      qrDataUri = canvas.toDataURL()
+    }
 
     if (!sent && email) {
       // We could do email validation but since we use type="email" the browser
@@ -57,7 +57,7 @@ export class EventTicket extends React.Component<Props, State> {
 
       sendConfirmation(
         email,
-        null, // data uri for QR code
+        qrDataUri, // data uri for QR code
         event.name, // event name
         event.date.toDateString(), // event date toDateString()
         window.location.toString() // window location.toString()
