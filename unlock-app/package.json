@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "3.1.1",
-    "@apollo/react-testing": "^3.1.1",
+    "@apollo/react-testing": "3.1.1",
     "@babel/core": "7.6.0",
     "@storybook/addon-actions": "5.2.1",
     "@storybook/addon-knobs": "5.2.1",
@@ -31,7 +31,7 @@
     "color-scheme": "1.0.1",
     "connected-next-router": "1.0.2",
     "cross-env": "6.0.0",
-    "cross-fetch": "^3.0.4",
+    "cross-fetch": "3.0.4",
     "deep-object-diff": "1.1.0",
     "dotenv": "8.1.0",
     "fork-ts-checker-webpack-plugin": "1.5.0",
