@@ -45,30 +45,14 @@ interface PaymentFormState {
   submitted: boolean
 }
 
-const areEqual = (
-  prevProps: PaymentDetailsProps,
-  nextProps: PaymentDetailsProps
-) => {
-  // If this function returns false, PaymentDetails will re-render
-  // The only thing that should change here is the length of `errors`
-  const prevErrors = prevProps.errors
-  const nextErrors = nextProps.errors
-
-  if (prevErrors.length === nextErrors.length) {
-    return true
-  }
-  return false
-}
-
 // Memoized because it would constantly rerender (which cleared the Stripe form)
 // because it couldn't tell the props were the same
 export const PaymentDetails = React.memo(
   ({ stripe, signPaymentData, close, errors }: PaymentDetailsProps) => {
-    const Form = injectStripe(PaymentForm)
     return (
       <StripeProvider stripe={stripe}>
         <Elements>
-          <Form
+          <InjectedForm
             signPaymentData={signPaymentData}
             close={close}
             errors={errors}
@@ -76,8 +60,7 @@ export const PaymentDetails = React.memo(
         </Elements>
       </StripeProvider>
     )
-  },
-  areEqual
+  }
 )
 
 export class PaymentForm extends React.Component<
@@ -225,6 +208,8 @@ export class PaymentForm extends React.Component<
     )
   }
 }
+
+const InjectedForm = injectStripe(PaymentForm)
 
 const mapDispatchToProps = (dispatch: any) => ({
   signPaymentData: (stripeTokenId: string) =>
