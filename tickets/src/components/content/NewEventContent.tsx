@@ -138,7 +138,7 @@ export class EventContent extends Component<
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
-              <EventTicket lockAddress={lockAddress} />
+              <EventTicket lockAddress={lockAddress} event={event} />
             )}
           </Column>
         </Columns>

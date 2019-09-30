@@ -7,6 +7,10 @@ import EventQRCode from './EventQRCode'
 interface Props {
   sendConfirmation: typeof sendConfirmation
   lockAddress: string
+  event: {
+    name: string
+    date: Date
+  }
 }
 interface State {
   email: string
@@ -34,7 +38,14 @@ export class EventTicket extends React.Component<Props, State> {
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { email, sent } = this.state
-    const { sendConfirmation } = this.props
+    const { sendConfirmation, event } = this.props
+
+    let qrDataUri: string = ''
+
+    const canvas = document.querySelector('canvas')
+    if (canvas) {
+      qrDataUri = canvas.toDataURL()
+    }
 
     if (!sent && email) {
       // We could do email validation but since we use type="email" the browser
@@ -42,10 +53,10 @@ export class EventTicket extends React.Component<Props, State> {
 
       sendConfirmation(
         email,
-        '', // data uri for QR code
-        '', // event name
-        '', // event date toDateString()
-        '' // window location.toString()
+        qrDataUri, // data uri for QR code
+        event.name, // event name
+        event.date.toDateString(), // event date toDateString()
+        window.location.toString() // window location.toString()
       )
 
       this.setState({
