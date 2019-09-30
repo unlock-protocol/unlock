@@ -12,17 +12,19 @@ export const PurchaseTicket = ({ onClick, keyPrice }: PurchaseTicketProps) => {
   const convertCurrency = true
   return (
     <div>
-      <BalanceProvider
-        amount={keyPrice}
-        render={(ethWithPresentation: string, convertedUSDValue: string) => (
-          <Price>
-            <Eth>
-              {ethWithPresentation} {currency}
-            </Eth>
-            {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
-          </Price>
-        )}
-      />
+      {keyPrice && (
+        <BalanceProvider
+          amount={keyPrice}
+          render={(ethWithPresentation: string, convertedUSDValue: string) => (
+            <Price>
+              <Eth>
+                {ethWithPresentation} {currency}
+              </Eth>
+              {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
+            </Price>
+          )}
+        />
+      )}
       <PayButton onClick={onClick}>Pay &amp; Register for This Event</PayButton>
     </div>
   )

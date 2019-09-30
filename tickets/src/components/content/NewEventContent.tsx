@@ -135,7 +135,6 @@ export class EventContent extends Component<
                       window.unlockProtocol.loadCheckoutModal()
                   }
                 }}
-                keyPrice="0.01"
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
