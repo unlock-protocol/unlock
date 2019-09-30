@@ -26,8 +26,7 @@ describe('EventTicket component', () => {
 
     rtl.fireEvent.change(emailInput, { target: { value: emailAddress } })
     rtl.fireEvent.click(submitButton)
-    // We can't fully test this because there is no canvas for the QR code to be in,
-    // but this way we know the correct function is called.
+
     expect(sendConfirmation).toHaveBeenCalledWith(
       emailAddress,
       null, // No canvas in tests, it returns null (TODO: explore use of node canvas package)
