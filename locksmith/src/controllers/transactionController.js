@@ -22,6 +22,23 @@ const transactionCreate = async (req, res) => {
   }
 }
 
+const transactionCreateLinkdrop = async (req, res) => {
+  let transaction = req.body
+
+  if (
+    transaction.transactionHash &&
+    transaction.sender &&
+    transaction.recipient
+  ) {
+    try {
+      await findOrCreateTransaction(transaction)
+      res.sendStatus(202)
+    } catch (e) {
+      res.sendStatus(400)
+    }
+  }
+}
+
 const transactionsGet = async (req, res) => {
   let transactions = []
 
@@ -64,4 +81,9 @@ const transactionGetOdds = async (req, res) => {
   res.json({ willSucceed: 1 })
 }
 
-module.exports = { transactionCreate, transactionsGet, transactionGetOdds }
+module.exports = {
+  transactionCreate,
+  transactionsGet,
+  transactionGetOdds,
+  transactionCreateLinkdrop,
+}
