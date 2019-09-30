@@ -102,24 +102,22 @@ export class AccountContent extends React.Component<
 
   render() {
     const mode = this.currentPageMode()
-    const showCloseButton =
-      mode === 'CollectPaymentDetails' || mode === 'ConfirmPurchase'
     return (
-      <IframeWrapper>
+      <StyledIframeWrapper>
         <Head>
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
-        {showCloseButton && (
-          <Quit
-            backgroundColor="var(--lightgrey)"
-            fillColor="var(--grey)"
-            action={this.handleClose}
-          />
-        )}
-        <Errors />
+        <Quit
+          backgroundColor="var(--lightgrey)"
+          fillColor="var(--grey)"
+          action={this.handleClose}
+        />
+        <ErrorContainer>
+          <Errors />
+        </ErrorContainer>
         {this.getComponent(mode)}
-      </IframeWrapper>
+      </StyledIframeWrapper>
     )
   }
 }
@@ -173,6 +171,14 @@ export default withConfig(
 
 const Quit = styled(Close)`
   position: absolute;
-  right: 24px;
-  top: 24px;
+  right: 16px;
+  top: 16px;
+`
+
+const ErrorContainer = styled.div`
+  margin: 32px 48px 0 32px;
+`
+
+const StyledIframeWrapper = styled(IframeWrapper)`
+  max-width: 456px;
 `

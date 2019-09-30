@@ -221,7 +221,7 @@ export const IframeLayout = styled.div`
   background-color: var(--offwhite);
   max-height: 100%;
   overflow-y: scroll;
-  max-width: 800px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;

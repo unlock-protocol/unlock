@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import { MONTH_NAMES } from '../../constants'
 import { getTimeString } from '../../utils/dates'
 import { Title, Date as DateComponent, Time, Location } from './EventStyles'
@@ -6,6 +7,7 @@ import { Title, Date as DateComponent, Time, Location } from './EventStyles'
 export const EventInfo = ({ event }: any) => {
   return (
     <div>
+      {event.image && <Banner src={event.image} />}
       <Title>{event.name}</Title>
       <EventDate date={event.date} duration={event.duration} />
       <Location>{event.location}</Location>
@@ -37,5 +39,9 @@ function EventDate({ date, duration }: any) {
     </DateComponent>
   )
 }
+
+const Banner = styled.img`
+  max-width: 100%;
+`
 
 export default EventInfo
