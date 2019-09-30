@@ -14,6 +14,8 @@ import {
 } from './styles'
 import LockInfo from './LockInfo'
 import { Fees } from '../../../actions/keyPurchase'
+import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
+import { resetError } from '../../../actions/error'
 
 interface Props {
   address: string
@@ -22,6 +24,8 @@ interface Props {
   card: string
   priceBreakdown: { [name: string]: string }
   signPurchaseData: (d: PurchaseData) => any
+  errors: WarningError[]
+  close: (e: WarningError) => void
 }
 
 interface State {
@@ -38,9 +42,19 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 
   submitButton = () => {
     const { sentKeyPurchase } = this.state
-    const { lock, address } = this.props
+    const { lock, address, errors } = this.props
 
-    if (sentKeyPurchase) {
+    if (errors.length) {
+      return (
+        <SubmitButton
+          backgroundColor="var(--red)"
+          roundBottomOnly
+          onClick={this.handleReset}
+        >
+          Retry Key Purchase
+        </SubmitButton>
+      )
+    } else if (sentKeyPurchase) {
       return (
         <LoadingButton roundBottomOnly>
           <span>Submitting Transaction...</span>
@@ -69,6 +83,11 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
     this.setState({
       sentKeyPurchase: true,
     })
+  }
+
+  handleReset = () => {
+    const { errors, close } = this.props
+    errors.forEach(e => close(e))
   }
 
   timeRemaining = () => {
@@ -109,6 +128,7 @@ const presentPrice = (price: number) => {
 
 export const mapDispatchToProps = (dispatch: any) => ({
   signPurchaseData: (d: PurchaseData) => dispatch(signPurchaseData(d)),
+  close: (e: WarningError) => dispatch(resetError(e)),
 })
 
 export const makePriceBreakdown = (fees: Fees): { [key: string]: string } => {
@@ -138,12 +158,18 @@ interface ReduxState {
     lock?: Lock
     fees?: Fees
   }
+  errors: UnlockError[]
 }
 export const mapStateToProps = (state: ReduxState) => {
   const {
     account: { emailAddress, address, cards },
     cart,
+    errors,
   } = state
+
+  const storageErrors = errors.filter(
+    e => isWarningError(e) && e.kind === 'Storage'
+  )
 
   let priceBreakdown = {}
   if (cart.fees) {
@@ -160,6 +186,7 @@ export const mapStateToProps = (state: ReduxState) => {
     lock: cart.lock || undefined,
     card,
     priceBreakdown,
+    errors: storageErrors as WarningError[],
   }
 }
 
@@ -169,7 +196,6 @@ export default connect(
 )(KeyPurchaseConfirmation)
 
 const KeyPurchaseWrapper = styled(Grid)`
-  max-width: 456px;
   padding: 0;
   padding-top: 24px;
 `

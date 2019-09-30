@@ -76,6 +76,7 @@ storiesOf('User Account/Components', module)
         signPurchaseData={signPurchaseData}
         card="-"
         priceBreakdown={{}}
+        errors={[]}
       />
     )
   })
@@ -87,6 +88,7 @@ storiesOf('User Account/Components', module)
         lock={lock}
         card={displayCard(cards[0])}
         priceBreakdown={priceBreakdown}
+        errors={[]}
       />
     )
   })

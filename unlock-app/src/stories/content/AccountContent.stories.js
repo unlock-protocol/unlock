@@ -25,6 +25,17 @@ const loggedInState = {
     emailAddress: 'jenny@googlemail.com',
   },
 }
+
+const loggedInWithError = {
+  ...loggedInState,
+  errors: [
+    {
+      kind: 'Storage',
+      level: 'Warning',
+      message: 'An error',
+    },
+  ],
+}
 const loggedInWithCards = {
   account: {
     emailAddress: 'jenny@googlemail.com',
@@ -60,6 +71,17 @@ const loggedInWithCards = {
   },
 }
 
+const loggedInWithCardsAndError = {
+  ...loggedInWithCards,
+  errors: [
+    {
+      kind: 'Storage',
+      level: 'Warning',
+      message: 'An error',
+    },
+  ],
+}
+
 const config = {
   stripeApiKey: 'pk_this_is_not_a_real_key',
 }
@@ -72,7 +94,9 @@ storiesOf('AccountContent (iframe embed for paywall)', module)
       'Not logged in yet': baseState,
       'Not logged in yet (error)': baseStateWithError,
       'Logged in': loggedInState,
+      'Logged in (error)': loggedInWithError,
       'Logged in with cards': loggedInWithCards,
+      'Logged in with cards (error)': loggedInWithCardsAndError,
     }
     const defaultValue = baseState
     const groupId = 'Group1'

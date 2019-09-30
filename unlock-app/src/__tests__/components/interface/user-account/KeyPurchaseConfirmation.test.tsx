@@ -10,6 +10,8 @@ import {
 } from '../../../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PurchaseData, SIGN_PURCHASE_DATA } from '../../../../actions/user'
 import { Fees } from '../../../../actions/keyPurchase'
+import { resetError } from '../../../../actions/error'
+import { WarningError, UnlockError } from '../../../../utils/Error'
 
 const cards: stripe.Card[] = [
   {
@@ -80,6 +82,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[0])}
           lock={lock}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
       const submitButton = wrapper.container.getElementsByTagName('button')[0]
@@ -103,6 +107,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[0])}
           lock={lock}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
 
@@ -130,6 +136,8 @@ describe('KeyPurchaseConfirmation', () => {
           card={displayCard(cards[1])}
           signPurchaseData={signPurchaseData}
           priceBreakdown={priceBreakdown}
+          errors={[]}
+          close={resetError}
         />
       )
 
@@ -140,20 +148,48 @@ describe('KeyPurchaseConfirmation', () => {
       }
       expect(signPurchaseData).not.toHaveBeenCalled()
     })
+
+    it('shows an error button when there is an error', () => {
+      expect.assertions(1)
+      const signPurchaseData = jest.fn((_: PurchaseData) => true)
+      const resetError = jest.fn()
+      const { container, getByText } = rtl.render(
+        <KeyPurchaseConfirmation
+          address=""
+          emailAddress=""
+          card={displayCard(cards[1])}
+          signPurchaseData={signPurchaseData}
+          priceBreakdown={priceBreakdown}
+          errors={[
+            {
+              level: 'Warning',
+              kind: 'Storage',
+              message: 'An error occurred',
+            },
+          ]}
+          close={resetError}
+        />
+      )
+
+      getByText('Retry Key Purchase')
+      const submitButton = container.getElementsByTagName('button')[0]
+      if (submitButton) {
+        rtl.fireEvent.click(submitButton)
+      }
+      expect(resetError).toHaveBeenCalled()
+    })
   })
 
   describe('mapDispatchToProps', () => {
+    let dispatch = jest.fn()
+    let dProps = mapDispatchToProps(dispatch)
+    beforeEach(() => {
+      dispatch = jest.fn()
+      dProps = mapDispatchToProps(dispatch)
+    })
+
     it('should produce an object containing a signPurchaseData function', () => {
-      expect.assertions(2)
-      const dispatch = jest.fn()
-
-      const dProps = mapDispatchToProps(dispatch)
-
-      expect(dProps).toEqual(
-        expect.objectContaining({
-          signPurchaseData: expect.any(Function),
-        })
-      )
+      expect.assertions(1)
 
       dProps.signPurchaseData({
         recipient: '0x123',
@@ -165,6 +201,23 @@ describe('KeyPurchaseConfirmation', () => {
           type: SIGN_PURCHASE_DATA,
         })
       )
+    })
+
+    it('should produce an object containing a close function', () => {
+      expect.assertions(1)
+
+      const error: WarningError = {
+        level: 'Warning',
+        kind: 'Storage',
+        message: 'An error occurred',
+      }
+
+      dProps.close(error)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        type: 'error/RESET_ERROR',
+        error,
+      })
     })
   })
 
@@ -181,6 +234,7 @@ describe('KeyPurchaseConfirmation', () => {
           lock,
           fees,
         },
+        errors: [],
       }
 
       expect(mapStateToProps(state)).toEqual({
@@ -189,7 +243,47 @@ describe('KeyPurchaseConfirmation', () => {
         address,
         lock,
         priceBreakdown,
+        errors: [],
       })
+    })
+
+    it('only passes storage warning errors', () => {
+      expect.assertions(1)
+
+      const errors: UnlockError[] = [
+        {
+          level: 'Warning',
+          kind: 'Storage',
+          message: 'An error ocurred',
+        },
+        {
+          level: 'Warning',
+          kind: 'Web3',
+          message: 'This should not be in the props',
+        },
+        {
+          level: 'Diagnostic',
+          kind: 'FormValidation',
+          message: 'This should not be in the props',
+        },
+      ]
+
+      const state = {
+        account: {
+          emailAddress,
+          address,
+          cards,
+        },
+        cart: {
+          lock,
+          fees,
+        },
+        errors,
+      }
+
+      const props = mapStateToProps(state)
+
+      expect(props.errors).toEqual([errors[0]])
     })
 
     it('provides defaults when values are not available', () => {
@@ -197,6 +291,7 @@ describe('KeyPurchaseConfirmation', () => {
       const state = {
         account: {},
         cart: {},
+        errors: [],
       }
       expect(mapStateToProps(state)).toEqual({
         emailAddress: '',
@@ -204,6 +299,7 @@ describe('KeyPurchaseConfirmation', () => {
         card: '-',
         lock: undefined,
         priceBreakdown: {},
+        errors: [],
       })
     })
   })
