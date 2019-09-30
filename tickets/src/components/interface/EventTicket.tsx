@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { sendConfirmation } from '../../actions/email'
 import { TicketInfo, Form, Input, SendButton } from './EventStyles'
 import EventQRCode from './EventQRCode'
+import withConfig from '../../utils/withConfig'
 
 interface Props {
   sendConfirmation: typeof sendConfirmation
@@ -10,6 +11,9 @@ interface Props {
   event: {
     name: string
     date: Date
+  }
+  config?: {
+    unlockTicketsUrl: string
   }
 }
 interface State {
@@ -40,12 +44,12 @@ export class EventTicket extends React.Component<Props, State> {
     const { email, sent } = this.state
     const { sendConfirmation, event } = this.props
 
-    let qrDataUri: string = ''
+    /* let qrDataUri: string = ''
 
-    const canvas = document.querySelector('canvas')
-    if (canvas) {
-      qrDataUri = canvas.toDataURL()
-    }
+     * const canvas = document.querySelector('canvas')
+     * if (canvas) {
+     *   qrDataUri = canvas.toDataURL()
+     * } */
 
     if (!sent && email) {
       // We could do email validation but since we use type="email" the browser
@@ -53,7 +57,7 @@ export class EventTicket extends React.Component<Props, State> {
 
       sendConfirmation(
         email,
-        qrDataUri, // data uri for QR code
+        null, // data uri for QR code
         event.name, // event name
         event.date.toDateString(), // event date toDateString()
         window.location.toString() // window location.toString()
@@ -66,17 +70,18 @@ export class EventTicket extends React.Component<Props, State> {
   }
 
   render = () => {
-    const { lockAddress } = this.props
+    const { lockAddress, config } = this.props
     const { email, sent } = this.state
+
+    let validateUri = ''
+    if (config) {
+      validateUri = config.unlockTicketsUrl + '/checkin/' + lockAddress
+    }
     return (
       <TicketInfo>
         <Form onSubmit={this.handleSubmit}>
           <h2>Your Ticket</h2>
-          <EventQRCode
-            payload={{
-              lockAddress,
-            }}
-          />
+          <EventQRCode payload={validateUri} />
           <Input
             disabled={sent}
             placeholder="Enter your email address"
@@ -100,4 +105,4 @@ export default connect(
   {
     sendConfirmation: sendConfirmation,
   }
-)(EventTicket)
+)(withConfig(EventTicket))
