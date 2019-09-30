@@ -1,6 +1,9 @@
 /* eslint promise/prefer-await-to-then: 0 */
-
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
+import queryString from 'query-string'
+import {
+  createAccountAndPasswordEncryptKey,
+  reEncryptPrivateKey,
+} from '@unlock-protocol/unlock-js'
 import { UPDATE_LOCK, updateLock, getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -9,6 +12,7 @@ import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
+import { gotRecoveryPhrase } from '../actions/recovery'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
@@ -19,6 +23,7 @@ import {
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
   keyPurchaseInitiated,
+  welcomeEmail,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
@@ -65,7 +70,19 @@ const storageMiddleware = config => {
     // SIGNUP_CREDENTIALS
     storageService.on(
       success.createUser,
-      ({ passwordEncryptedPrivateKey, emailAddress, password }) => {
+      async ({
+        passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+        recoveryPhrase,
+      }) => {
+        // Build a recovery key with the private key and recovery phrase
+        const recoveryKey = await reEncryptPrivateKey(
+          passwordEncryptedPrivateKey,
+          password,
+          recoveryPhrase
+        )
+        dispatch(welcomeEmail(emailAddress, recoveryKey))
         dispatch(
           gotEncryptedPrivateKeyPayload(
             passwordEncryptedPrivateKey,
@@ -141,6 +158,7 @@ const storageMiddleware = config => {
     storageService.on(success.getKeyPrice, fees => {
       dispatch(updatePrice(fees))
     })
+
     storageService.on(failure.getKeyPrice, () => {
       dispatch(
         setError(
@@ -154,9 +172,42 @@ const storageMiddleware = config => {
     storageService.on(success.keyPurchase, () => {
       dispatch(keyPurchaseInitiated())
     })
+
     storageService.on(failure.keyPurchase, () => {
       dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
+
+    const { router } = getState()
+    if (router && router.location && router.location.pathname === '/recover/') {
+      // Let's get the user's recovery key from locksmith
+      // And log the user in with the recoveryKey (submitted by user thru email) and the recoveryPhase,
+      // from locksmith
+      const query = queryString.parse(router.location.search)
+      if (query && query.email && query.recoveryKey) {
+        storageService.once(
+          success.getUserRecoveryPhrase,
+          ({ recoveryPhrase }) => {
+            dispatch(gotRecoveryPhrase(recoveryPhrase))
+            dispatch(
+              gotEncryptedPrivateKeyPayload(
+                JSON.parse(query.recoveryKey),
+                query.email,
+                recoveryPhrase
+              )
+            )
+          }
+        )
+        storageService.once(failure.getUserRecoveryPhrase, () => {
+          dispatch(
+            setError(Storage.Warning('Could not initiate account recovery.'))
+          )
+        })
+        // We must put in state the email, and the recoveryKey
+        storageService.getUserRecoveryPhrase(query.email)
+      } else {
+        setError(Storage.Warning('Could not initiate account recovery.'))
+      }
+    }
 
     return next => {
       return action => {
