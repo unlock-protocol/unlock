@@ -37,6 +37,8 @@ import {
   signedPurchaseData,
   KEY_PURCHASE_INITIATED,
   keyPurchaseInitiated,
+  WELCOME_EMAIL,
+  welcomeEmail,
 } from '../../actions/user'
 
 const key = {
@@ -179,6 +181,19 @@ describe('user account actions', () => {
       }
 
       expect(signupSucceeded()).toEqual(expectedAction)
+    })
+
+    it('should create an action to send a welcome email with the recovery key', () => {
+      expect.assertions(1)
+      const recoveryKey = 'do not lose this'
+      const emailAddress = 'julien@unlock-protocol.com'
+      const expectedAction = {
+        type: WELCOME_EMAIL,
+        emailAddress,
+        recoveryKey,
+      }
+
+      expect(welcomeEmail(emailAddress, recoveryKey)).toEqual(expectedAction)
     })
   })
 

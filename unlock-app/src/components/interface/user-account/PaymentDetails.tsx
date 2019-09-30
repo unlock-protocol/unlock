@@ -22,14 +22,20 @@ import {
   LoadingButton,
 } from './styles'
 import { signPaymentData } from '../../../actions/user'
+import { UnlockError, isWarningError, WarningError } from '../../../utils/Error'
+import { resetError } from '../../../actions/error'
 
 interface PaymentDetailsProps {
   stripe: stripe.Stripe | null
   signPaymentData: (stripeTokenId: string) => any
+  close: (e: WarningError) => void
+  errors: WarningError[]
 }
 
 interface PaymentFormProps {
   signPaymentData: (stripeTokenId: string) => any
+  close: (e: WarningError) => void
+  errors: WarningError[]
 }
 
 interface PaymentFormState {
@@ -42,12 +48,16 @@ interface PaymentFormState {
 // Memoized because it would constantly rerender (which cleared the Stripe form)
 // because it couldn't tell the props were the same
 export const PaymentDetails = React.memo(
-  ({ stripe, signPaymentData }: PaymentDetailsProps) => {
+  ({ stripe, signPaymentData, close, errors }: PaymentDetailsProps) => {
     const Form = injectStripe(PaymentForm)
     return (
       <StripeProvider stripe={stripe}>
         <Elements>
-          <Form signPaymentData={signPaymentData} />
+          <Form
+            signPaymentData={signPaymentData}
+            close={close}
+            errors={errors}
+          />
         </Elements>
       </StripeProvider>
     )
@@ -81,8 +91,10 @@ export class PaymentForm extends React.Component<
     })
   }
 
-  handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+  handleSubmit = async (event?: React.FormEvent) => {
+    if (event) {
+      event.preventDefault()
+    }
 
     const { stripe, signPaymentData } = this.props
     const { addressCountry, addressZip, cardHolderName } = this.state
@@ -111,9 +123,34 @@ export class PaymentForm extends React.Component<
     }
   }
 
-  render() {
+  handleReset = () => {
+    const { errors, close } = this.props
+    errors.forEach(e => close(e))
+    this.handleSubmit()
+  }
+
+  submitButton = () => {
+    const { errors } = this.props
     const { submitted } = this.state
 
+    if (errors.length) {
+      return (
+        <SubmitButton backgroundColor="var(--red)" onClick={this.handleReset}>
+          Clear Errors and Retry
+        </SubmitButton>
+      )
+    } else if (submitted) {
+      return <LoadingButton>Submitting...</LoadingButton>
+    }
+
+    return (
+      <SubmitButton onClick={this.handleSubmit}>
+        Add Payment Method
+      </SubmitButton>
+    )
+  }
+
+  render() {
     const stripeElementStyles = {
       base: { fontSize: '16px', lineHeight: '40px' },
     }
@@ -167,25 +204,37 @@ export class PaymentForm extends React.Component<
             </div>
           </CardContainer>
         </Column>
-        <Column size="half">
-          {submitted && <LoadingButton>Submitting...</LoadingButton>}
-          {!submitted && (
-            <SubmitButton onClick={this.handleSubmit}>
-              Add Payment Method
-            </SubmitButton>
-          )}
-        </Column>
+        <Column size="half">{this.submitButton()}</Column>
       </Grid>
     )
   }
 }
 
-export const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   signPaymentData: (stripeTokenId: string) =>
     dispatch(signPaymentData(stripeTokenId)),
+  close: (e: WarningError) => {
+    dispatch(resetError(e))
+  },
 })
 
+interface ReduxState {
+  account?: Account
+  errors: UnlockError[]
+}
+
+const mapStateToProps = ({ account, errors }: ReduxState) => {
+  const storageWarnings = errors.filter(
+    e => isWarningError(e) && e.kind === 'Storage'
+  )
+
+  return {
+    account,
+    errors: storageWarnings as WarningError[],
+  }
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(PaymentDetails)

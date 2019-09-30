@@ -262,8 +262,13 @@ describe('StorageService', () => {
   describe('Create user', () => {
     describe('When a user can be created', () => {
       it('emits a success', done => {
-        expect.assertions(4)
-        axios.post.mockReturnValue({})
+        expect.assertions(5)
+        const recoveryPhrase = 'recoveryPhrase'
+        axios.post.mockReturnValue({
+          data: {
+            recoveryPhrase,
+          },
+        })
 
         const emailAddress = 'johnnyapple@seed.ly'
         const password = 'password123'
@@ -274,6 +279,7 @@ describe('StorageService', () => {
           )
           expect(result.emailAddress).toEqual(emailAddress)
           expect(result.password).toEqual(password)
+          expect(result.recoveryPhrase).toEqual(recoveryPhrase)
           done()
         })
         storageService.createUser(user, emailAddress, password)
