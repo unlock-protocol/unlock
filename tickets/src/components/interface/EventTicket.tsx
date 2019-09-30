@@ -34,6 +34,7 @@ export class EventTicket extends React.Component<Props, State> {
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const { email, sent } = this.state
+    const { sendConfirmation } = this.props
 
     if (!sent && email) {
       // We could do email validation but since we use type="email" the browser
