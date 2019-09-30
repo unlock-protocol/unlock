@@ -4,10 +4,10 @@ import styled from 'styled-components'
 
 interface Props {
   // For now we'll just JSON.Stringify arbitrary objects as the payload
-  payload: { [key: string]: string }
+  payload: string
 }
 export const EventQRCode = ({ payload }: Props) => {
-  return <QR value={JSON.stringify(payload)} size={200} renderAs="canvas" />
+  return <QR value={payload} size={200} renderAs="canvas" />
 }
 
 export default EventQRCode
