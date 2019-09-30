@@ -49,11 +49,10 @@ interface PaymentFormState {
 // because it couldn't tell the props were the same
 export const PaymentDetails = React.memo(
   ({ stripe, signPaymentData, close, errors }: PaymentDetailsProps) => {
-    const Form = injectStripe(PaymentForm)
     return (
       <StripeProvider stripe={stripe}>
         <Elements>
-          <Form
+          <InjectedForm
             signPaymentData={signPaymentData}
             close={close}
             errors={errors}
@@ -209,6 +208,8 @@ export class PaymentForm extends React.Component<
     )
   }
 }
+
+const InjectedForm = injectStripe(PaymentForm)
 
 const mapDispatchToProps = (dispatch: any) => ({
   signPaymentData: (stripeTokenId: string) =>
