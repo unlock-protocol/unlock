@@ -64,7 +64,7 @@ export class EventContent extends Component<
           [lockAddress]: {},
         },
         callToAction: {
-          default: 'Buy a ticket',
+          default: 'Purchase a ticket using the Unlock Protocol',
         },
         unlockUserAccounts,
       }
