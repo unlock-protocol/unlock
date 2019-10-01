@@ -6,30 +6,9 @@ describe('transactionController', () => {
   beforeEach(async () => {
     await Transaction.bulkCreate([
       {
-        transactionHash: '0x345546565',
+        transactionHash: '0x345546567',
         sender: '0xcAFe',
         recipient: '0xBeeFE',
-      },
-      {
-        transactionHash: '0x445546565',
-        sender: '0xcAFe',
-        recipient: '0xBeeFE',
-      },
-      {
-        transactionHash: '0x545546565',
-        sender: '0xcAFe2',
-        recipient: '0xBeeFE',
-      },
-      {
-        transactionHash: '0x645546565',
-        sender: '0xcAFe2',
-        recipient: '0xBEefb',
-      },
-      {
-        transactionHash: '0x645546567',
-        sender: '0xcAFe2',
-        recipient: '0xBEefb',
-        for: '0xcAFe2',
       },
     ])
   })
@@ -49,7 +28,7 @@ describe('transactionController', () => {
           .post('/api/linkdrop/transaction')
           .set('Accept', /json/)
           .send({
-            transactionHash: '0xsdbegjkbg,egf',
+            transactionHash: '0xsdbegjkbg,egfzz',
             sender: '0xSDgErGR',
             recipient: '0xSdaG433r',
             data: transactionData,
@@ -73,7 +52,7 @@ describe('transactionController', () => {
           .post('/api/linkdrop/transaction')
           .set('Accept', /json/)
           .send({
-            transactionHash: '0x345546565',
+            transactionHash: '0x345546567',
             sender: '0xcAFe',
             recipient: '0xBeeFE',
           })
