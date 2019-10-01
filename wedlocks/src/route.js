@@ -42,6 +42,7 @@ export const route = (args, callback) => {
   logger.debug(email)
 
   nodemailer.createTransport(config).sendMail(email, (err, info) => {
+    logger.info(JSON.stringify({ recipient: email.to, subject: email.subject }))
     return callback(err, info)
   })
 }
