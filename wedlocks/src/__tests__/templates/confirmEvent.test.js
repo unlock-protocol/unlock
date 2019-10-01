@@ -3,7 +3,9 @@ import confirmEvent from '../../templates/confirmEvent'
 describe('confirmEvent', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
-    expect(confirmEvent.subject()).toBe('You are attending an event!')
+    expect(confirmEvent.subject({
+      eventName: 'The Tupperware Party',
+    })).toBe('You are attending The Tupperware Party!')
   })
 
   it('should have the right text', () => {
