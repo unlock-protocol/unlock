@@ -13,9 +13,9 @@ This is just a reminder that you are attending the event ${
       params.eventName === 'ETHWaterloo' ? ethWaterlooMessage : ''
     }
 
-When you're asked for your ticket at the door, simply show the QR code attached to this email. Alternately, you can click <a href="${
-      params.ticketLink
-    }">here</a> and open it using your crypto-enabled web browser or Unlock user account.
+When you're asked for your ticket at the door, simply show the QR code attached to this email. Alternately, you can click the following link and open it using your crypto-enabled web browser or Unlock user account.
+
+${params.ticketLink}
 
 Enjoy!
 
