@@ -3,9 +3,11 @@ import confirmEvent from '../../templates/confirmEvent'
 describe('confirmEvent', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
-    expect(confirmEvent.subject({
-      eventName: 'The Tupperware Party',
-    })).toBe("You've got your ticket for The Tupperware Party!")
+    expect(
+      confirmEvent.subject({
+        eventName: 'The Tupperware Party',
+      })
+    ).toBe("You've got your ticket for The Tupperware Party!")
   })
 
   it('should have the right text', () => {
