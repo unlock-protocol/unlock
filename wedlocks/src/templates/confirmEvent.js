@@ -1,5 +1,5 @@
 export default {
-  subject: params => `You are attending ${params.eventName}!`,
+  subject: params => `You've got your ticket for ${params.eventName}!`,
   text: params =>
     `Hello,
 

@@ -5,7 +5,7 @@ describe('confirmEvent', () => {
     expect.assertions(1)
     expect(confirmEvent.subject({
       eventName: 'The Tupperware Party',
-    })).toBe('You are attending The Tupperware Party!')
+    })).toBe("You've got your ticket for The Tupperware Party!")
   })
 
   it('should have the right text', () => {
