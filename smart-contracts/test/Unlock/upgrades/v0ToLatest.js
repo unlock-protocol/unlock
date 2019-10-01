@@ -8,7 +8,7 @@ ZWeb3.initialize(web3.currentProvider)
 const UnlockV0 = Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock')
 const PublicLockV0 = require('public-lock-abi-0/abi_V0')
 
-const UnlockV1 = Contracts.getFromLocal('Unlock')
+const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockV1 = Contracts.getFromLocal('PublicLock')
 
 let project, proxy, unlock
@@ -65,14 +65,14 @@ contract('Unlock / upgrades', accounts => {
     assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
   })
 
-  it('the versions V0 and V1 have different bytecode', async () => {
-    assert.notEqual(UnlockV1.schema.bytecode, UnlockV0.schema.bytecode)
+  it('the versions V0 and latest version have different bytecode', async () => {
+    assert.notEqual(UnlockLatest.schema.bytecode, UnlockV0.schema.bytecode)
   })
 
   describe('v1', () => {
     before(async () => {
-      project.upgradeProxy(proxy.address, UnlockV1)
-      unlock = UnlockV1.at(proxy.address)
+      project.upgradeProxy(proxy.address, UnlockLatest)
+      unlock = UnlockLatest.at(proxy.address)
     })
 
     describe('Lock created with UnlockV0 is still available', () => {
@@ -133,7 +133,7 @@ contract('Unlock / upgrades', accounts => {
       })
     })
 
-    describe('Using v1 after an upgrade', () => {
+    describe('Using latest version after an upgrade', () => {
       let lockV1
 
       before(async () => {
@@ -174,7 +174,7 @@ contract('Unlock / upgrades', accounts => {
         )
       })
 
-      it('v1 Key is owned', async () => {
+      it('Latest Key is owned', async () => {
         const id = new BigNumber(
           await lockV1.methods.getTokenIdFor(keyOwner).call()
         )
