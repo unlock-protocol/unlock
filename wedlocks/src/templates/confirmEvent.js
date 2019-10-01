@@ -7,7 +7,11 @@ export default {
   text: params =>
     `Hello,
 
-This is just a reminder that you are attending the event ${params.eventName} on ${params.eventDate}!${params.eventName === 'ETHWaterloo' ? ethWaterlooMessage : ''}
+This is just a reminder that you are attending the event ${
+      params.eventName
+    } on ${params.eventDate}!${
+      params.eventName === 'ETHWaterloo' ? ethWaterlooMessage : ''
+    }
 
 When you're asked for your ticket at the door, just click on the following link and open it using your crypto enabled web browser:
 

@@ -41,7 +41,7 @@ The Unlock team
     expect.assertions(1)
     expect(
       confirmEvent.text({
-        eventName: "ETHWaterloo",
+        eventName: 'ETHWaterloo',
         eventDate: 'June 6th 2019',
         ticketLink:
           'https://tickets.unlock-protocol.com/event/0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4',
