@@ -3,16 +3,15 @@ import addMetadata from '../../src/operations/userMetadataOperations'
 
 const models = require('../../src/models')
 
-let UserMetadata: any = models.UserMetadata
+const { UserTokenMetadata } = models
 
 describe('userMetadataOperations', () => {
-  afterAll(async () => {
-    await UserMetadata.truncate()
+  beforeAll(async () => {
+    await UserTokenMetadata.truncate()
   })
-
   describe('addMetadata', () => {
     describe('adding new metadata', () => {
-      it('should return true', async () => {
+      it('should persist the changes', async () => {
         expect.assertions(1)
         let metadataUpdate = addMetadata({
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
@@ -35,7 +34,7 @@ describe('userMetadataOperations', () => {
     })
 
     describe('updating existing metadata', () => {
-      it('should return true', async () => {
+      it('should persist the changes', async () => {
         expect.assertions(1)
         let metadataUpdate = addMetadata({
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
