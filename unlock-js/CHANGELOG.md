@@ -2,6 +2,7 @@
 
 ## Next Version (minor!)
 
+- Removed the 'owner' param on createLock since it is not really used (just emitted back)
 - Refactored signature to accept objects to be more flexible (this is a breaking change)
 
 ## 0.3.16
