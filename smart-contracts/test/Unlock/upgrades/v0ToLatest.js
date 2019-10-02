@@ -3,7 +3,6 @@ const Web3Utils = require('web3-utils')
 const { TestHelper } = require('@openzeppelin/cli')
 const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
-// const LatestVersionNumber = require('latestVersion.js')
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockV0 = Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock')
@@ -11,6 +10,7 @@ const PublicLockV0 = require('public-lock-abi-0/abi_V0')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
+const LatestVersionNumber = require('./latestVersion.js')
 
 let project, proxy, unlock
 
@@ -189,14 +189,14 @@ contract('Unlock / upgrades', accounts => {
 
       it('Latest Unlock version is correct', async () => {
         const unlockVersion = await unlock.methods.unlockVersion().call()
-        assert.equal(unlockVersion, 5)
+        assert.equal(unlockVersion, LatestVersionNumber)
       })
 
       it('Latest publicLock version is correct', async () => {
         const publicLockVersion = await lockLatest.methods
           .publicLockVersion()
           .call()
-        assert.equal(publicLockVersion, 5)
+        assert.equal(publicLockVersion, LatestVersionNumber)
       })
     })
   })
