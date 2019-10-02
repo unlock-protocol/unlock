@@ -500,7 +500,11 @@ describe('WalletService (ethers)', () => {
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async method => {
-        const args = []
+        const args = [
+          {
+            lockAddress: '0x123',
+          },
+        ]
         const result = {}
         const version = {
           [method]: function(_args) {

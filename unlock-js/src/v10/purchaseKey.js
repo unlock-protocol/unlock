@@ -5,34 +5,32 @@ import Errors from '../errors'
 import { approveTransfer } from '../erc20'
 
 /**
- * Purchase a key to a lock by account.
- * The key object is passed so we can kepe track of it from the application
- * The lock object is required to get the price data
- * We pass both the owner and the account because at some point, these may be different (someone
- * purchases a key for someone else)
- * @param {PropTypes.address} lock
- * @param {PropTypes.address} owner
- * @param {string} keyPrice
- * @param {string} data
- * @param {string} account
+ * Purchase key function. This implementation requires the following
+ * @param {object} params:
+ * - {PropTypes.address} lockAddress
+ * - {PropTypes.address} owner
+ * - {string} keyPrice
+ * - {PropTypes.address} erc20Address
+ * - {number} decimals
  */
-export default async function(
+export default async function({
   lockAddress,
   owner,
   keyPrice,
-  account,
-  data,
   erc20Address,
-  decimals = 18
-) {
+  decimals = 18,
+}) {
   const lockContract = await this.getLockContract(lockAddress)
 
+  // TODO: if the erc20Address is missing, retrieve it from chain
+  // TODO: if the decimals is missing, retrieve it from chain
   const actualAmount = utils.toDecimal(keyPrice, decimals)
 
   const purchaseForOptions = {
-    gasLimit: GAS_AMOUNTS.purchaseFor, // overrides default value for transaction gas price
+    gasLimit: GAS_AMOUNTS.purchaseFor,
   }
 
+  // first, we need to apprive the transfer
   if (erc20Address) {
     await approveTransfer(
       erc20Address,
