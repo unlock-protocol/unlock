@@ -5,6 +5,10 @@ import {
 } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
+import {
+  BlockchainData,
+  unlockNetworks,
+} from '../data-iframe/blockchainHandler/blockChainTypes'
 
 interface hasPrototype {
   prototype?: any
@@ -26,6 +30,14 @@ export default class MainWindowHandler {
   private showingCheckout: boolean = false
   private showingAccountsIframe: boolean = false
   private lockStatus: LockStatus = undefined
+  private blockchainData: BlockchainData = {
+    locks: {},
+    account: null,
+    balance: {},
+    network: 1,
+    keys: {},
+    transactions: {},
+  }
 
   constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
@@ -63,6 +75,26 @@ export default class MainWindowHandler {
       if (e === 'no ethereum wallet is available') {
         this.toggleLockState(PostMessages.LOCKED)
       }
+    })
+
+    // When the data iframe sends updates, store them in the mirror
+    this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
+      this.blockchainData.locks = locks
+    })
+    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, address => {
+      this.blockchainData.account = address
+    })
+    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
+      this.blockchainData.balance = balance
+    })
+    this.iframes.data.on(PostMessages.UPDATE_NETWORK, network => {
+      this.blockchainData.network = network as unlockNetworks
+    })
+    this.iframes.data.on(PostMessages.UPDATE_KEYS, keys => {
+      this.blockchainData.keys = keys
+    })
+    this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
+      this.blockchainData.transactions = transactions
     })
 
     // handle display of checkout and account UI
@@ -130,6 +162,7 @@ export default class MainWindowHandler {
       this.showCheckoutIframe()
     }
     const getState = () => this.lockStatus
+    const blockchainData = () => this.blockchainData
 
     const unlockProtocol: hasPrototype = {}
 
@@ -146,6 +179,10 @@ export default class MainWindowHandler {
       },
       getState: {
         value: getState,
+        ...immutable,
+      },
+      blockchainData: {
+        value: blockchainData,
         ...immutable,
       },
     })
