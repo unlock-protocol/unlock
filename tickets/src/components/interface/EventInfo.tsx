@@ -10,7 +10,7 @@ export const EventInfo = ({ event }: any) => {
       {event.image && <Banner src={event.image} />}
       <Title>{event.name}</Title>
       {event.name === 'EthWaterloo' ? (
-        <DateComponent>November 8 - 10, 2019</DateComponent>
+        <DateComponent>Nov 8 - 10, 2019</DateComponent>
       ) : (
         <EventDate date={event.date} duration={event.duration} />
       )}
