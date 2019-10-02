@@ -72,7 +72,7 @@ describe('v11', () => {
 
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -111,14 +111,12 @@ describe('v11', () => {
 
       const amountToApprove = Web3Utils.toDecimal(keyPrice, 18)
 
-      await walletService.purchaseKey(
+      await walletService.purchaseKey({
         lockAddress,
         owner,
         keyPrice,
-        null,
-        null,
-        erc20Address
-      )
+        erc20Address,
+      })
 
       expect(erc20.approveTransfer).toHaveBeenCalledWith(
         erc20Address,
@@ -149,7 +147,7 @@ describe('v11', () => {
         }
       )
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
       expect(erc20.approveTransfer).not.toHaveBeenCalled()
       await nock.resolveWhenAllNocksUsed()
@@ -166,7 +164,7 @@ describe('v11', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
       await nock.resolveWhenAllNocksUsed()
     })
   })

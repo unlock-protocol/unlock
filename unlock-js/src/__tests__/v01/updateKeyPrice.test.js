@@ -18,7 +18,6 @@ let setupFail
 describe('v01', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const account = '0xdeadbeef'
     const price = '100000000'
 
     async function nockBeforeEach() {
@@ -60,7 +59,7 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.updateKeyPrice({ lockAddress, price })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -86,7 +85,7 @@ describe('v01', () => {
         expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
       })
 
-      await walletService.updateKeyPrice(lockAddress, account, price)
+      await walletService.updateKeyPrice({ lockAddress, price })
       await nock.resolveWhenAllNocksUsed()
     })
   })
