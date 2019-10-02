@@ -71,6 +71,13 @@ export default class MainWindowHandler {
     this.iframes.data.on(PostMessages.UNLOCKED, () => {
       this.toggleLockState(PostMessages.UNLOCKED)
     })
+    this.iframes.data.on(PostMessages.ERROR, e => {
+      if (e === 'no ethereum wallet is available') {
+        this.toggleLockState(PostMessages.LOCKED)
+      }
+    })
+
+    // When the data iframe sends updates, store them in the mirror
     this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
       this.blockchainData.locks = locks
     })
@@ -88,11 +95,6 @@ export default class MainWindowHandler {
     })
     this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
       this.blockchainData.transactions = transactions
-    })
-    this.iframes.data.on(PostMessages.ERROR, e => {
-      if (e === 'no ethereum wallet is available') {
-        this.toggleLockState(PostMessages.LOCKED)
-      }
     })
 
     // handle display of checkout and account UI
