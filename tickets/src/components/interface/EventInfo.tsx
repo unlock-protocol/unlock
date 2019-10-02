@@ -12,7 +12,7 @@ export const EventInfo = ({ event }: any) => {
       {event.name === 'EthWaterloo' ? (
         <DateComponent>November 8 - 10, 2019</DateComponent>
       ) : (
-        <EventDate date={event.date} duration={6400} />
+        <EventDate date={event.date} duration={event.duration} />
       )}
       <Location>{event.location}</Location>
     </div>
