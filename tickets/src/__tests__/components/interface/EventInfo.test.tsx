@@ -2,6 +2,13 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import { EventInfo } from '../../../components/interface/EventInfo'
 
+const getTimezoneOffset = Date.prototype.getTimezoneOffset
+
+Date.prototype.getTimezoneOffset = function() {
+  // These tests will always be EST
+  return 240
+}
+
 describe('EventInfo component', () => {
   it('should render the time for an event', () => {
     expect.assertions(0)
@@ -62,3 +69,5 @@ describe('EventInfo component', () => {
     getByText('Nov 8 - 10, 2019')
   })
 })
+
+Date.prototype.getTimezoneOffset = getTimezoneOffset
