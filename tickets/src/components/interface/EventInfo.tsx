@@ -5,11 +5,19 @@ import { getTimeString } from '../../utils/dates'
 import { Title, Date as DateComponent, Time, Location } from './EventStyles'
 
 export const EventInfo = ({ event }: any) => {
+  let normalizedName = ''
+  if (event.name) {
+    normalizedName = event.name.toLowerCase()
+  }
   return (
     <div>
       {event.image && <Banner src={event.image} />}
       <Title>{event.name}</Title>
-      <EventDate date={event.date} duration={event.duration} />
+      {normalizedName === 'ethwaterloo' ? (
+        <DateComponent>Nov 8 - 10, 2019</DateComponent>
+      ) : (
+        <EventDate date={event.date} duration={event.duration} />
+      )}
       <Location>{event.location}</Location>
     </div>
   )
