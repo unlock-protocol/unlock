@@ -139,11 +139,19 @@ storiesOf('Checkout', module)
         },
       },
     }
+    const singleLockConfig = {
+      ...paywallConfig,
+      locks: {
+        '0x123': {
+          name: 'One Week',
+        },
+      },
+    }
 
     return (
       <Checkout
         locks={locks}
-        config={paywallConfig}
+        config={singleLockConfig}
         account={account}
         purchase={purchaseKey}
         hideCheckout={hideCheckout}
@@ -347,6 +355,31 @@ storiesOf('Checkout', module)
   .add('Checkout with no lock loaded yet', () => {
     const locks = {}
 
+    return (
+      <Checkout
+        locks={locks}
+        config={paywallConfigNoNames}
+        account={account}
+        purchase={purchaseKey}
+        hideCheckout={hideCheckout}
+      />
+    )
+  })
+  .add('Checkout with locks partially loaded', () => {
+    const locks = {
+      '0x123': {
+        name: '',
+        address: '0x123',
+        keyPrice: '0.1',
+        expirationDuration: 60 * 60 * 24 * 7,
+        key: {
+          status: 'valid',
+          transactions: [{}],
+          // expiration in hours
+          expiration: new Date().getTime() / 1000 + 60 * 60 + 300,
+        },
+      },
+    }
     return (
       <Checkout
         locks={locks}
