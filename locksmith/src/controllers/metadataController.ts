@@ -3,6 +3,8 @@ import Normalizer from '../utils/normalizer'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
 
+import addMetadata from '../operations/userMetadataOperations'
+
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
 const metadataOperations = require('../operations/metadataOperations')
@@ -77,6 +79,29 @@ namespace MetadataController {
       } else {
         res.sendStatus(400)
       }
+    }
+  }
+
+  export const updateUserMetadata = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    let userAddress = Normalizer.ethereumAddress(req.params.userAddress)
+    let tokenAddress = Normalizer.ethereumAddress(req.params.address)
+
+    let metadata = req.body.message['UserMetaData']
+    let data = metadata.data
+
+    if (req.owner == userAddress) {
+      await addMetadata({
+        userAddress,
+        tokenAddress,
+        data,
+      })
+
+      res.sendStatus(202)
+    } else {
+      res.sendStatus(401)
     }
   }
 

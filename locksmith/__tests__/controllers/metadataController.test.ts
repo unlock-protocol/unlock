@@ -307,6 +307,94 @@ describe('Metadata Controller', () => {
     })
   })
 
+  describe('updating address holder metadata', () => {
+    it('stores the passed data', async () => {
+      expect.assertions(1)
+
+      let typedData = generateKeyTypedData({
+        UserMetaData: {
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          data: {
+            emailAddress: 'emailAddress@example.com',
+          },
+        },
+      })
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+        from: '',
+      })
+
+      let response = await request(app)
+        .put(
+          '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+        .set('Accept', 'json')
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.status).toEqual(202)
+    })
+
+    it('should update existing data if it already exists', async () => {
+      expect.assertions(1)
+
+      let typedData = generateKeyTypedData({
+        UserMetaData: {
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          data: {
+            emailAddress: 'updatedEmailAddress@example.com',
+          },
+        },
+      })
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+        from: '',
+      })
+
+      let response = await request(app)
+        .put(
+          '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+        .set('Accept', 'json')
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.status).toEqual(202)
+    })
+
+    describe('when an invalid signature is passed', () => {
+      it('', async () => {
+        expect.assertions(1)
+
+        let typedData = generateKeyTypedData({
+          UserMetaData: {
+            owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+            data: {
+              emailAddress: 'updatedEmailAddress@example.com',
+            },
+          },
+        })
+
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+          from: '',
+        })
+
+        let response = await request(app)
+          .put(
+            '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c'
+          )
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(401)
+      })
+    })
+  })
+
   describe('when the signee owns the lock', () => {
     let typedData: any
     beforeAll(() => {

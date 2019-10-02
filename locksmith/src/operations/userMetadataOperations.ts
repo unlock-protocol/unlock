@@ -10,7 +10,7 @@ interface UserTokenMetadataInput {
   data: any
 }
 
-const addMetadata = async (metadata: UserTokenMetadataInput) => {
+export default async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {
       tokenAddress: Normalizer.ethereumAddress(metadata.tokenAddress),
@@ -25,5 +25,3 @@ const addMetadata = async (metadata: UserTokenMetadataInput) => {
     }
   )
 }
-
-export default addMetadata
