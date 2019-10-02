@@ -20,7 +20,6 @@ describe('v0', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const account = '0xdeadbeef'
     const data = 'key data'
 
     async function nockBeforeEach(sendData = true) {
@@ -64,13 +63,12 @@ describe('v0', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(
+      await walletService.purchaseKey({
         lockAddress,
         owner,
         keyPrice,
-        account,
-        data
-      )
+        data,
+      })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -96,13 +94,12 @@ describe('v0', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.purchaseKey(
+      await walletService.purchaseKey({
         lockAddress,
         owner,
         keyPrice,
-        account,
-        data
-      )
+        data,
+      })
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -112,12 +109,11 @@ describe('v0', () => {
       await nockBeforeEach(false)
       setupSuccess()
 
-      const result = await walletService.purchaseKey(
+      const result = await walletService.purchaseKey({
         lockAddress,
         owner,
         keyPrice,
-        account
-      )
+      })
       await nock.resolveWhenAllNocksUsed()
       expect(result).toBe(transaction.hash)
     })
