@@ -28,9 +28,8 @@ async function _getKeyPrice(lock, provider) {
 /**
  * Creates a lock on behalf of the user, using version v11
  * @param {PropTypes.lock} lock
- * @param {PropTypes.address} owner
  */
-export default async function(lock, owner) {
+export default async function(lock) {
   const unlockContract = await this.getUnlockContract()
   let maxNumberOfKeys = lock.maxNumberOfKeys
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -68,7 +67,6 @@ export default async function(lock, owner) {
       expirationDuration: lock.expirationDuration,
       keyPrice: lock.keyPrice, // Must be expressed in Eth!
       maxNumberOfKeys: lock.maxNumberOfKeys,
-      owner: owner,
       outstandingKeys: 0,
       balance: '0',
       transaction: hash,

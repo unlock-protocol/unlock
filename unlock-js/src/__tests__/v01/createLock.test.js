@@ -22,7 +22,6 @@ const lock = {
   keyPrice: '0.1', // 0.1 Eth
   maxNumberOfKeys: 100,
 }
-const owner = '0xdeadfeed'
 
 describe('v01', () => {
   describe('createLock', () => {
@@ -71,7 +70,7 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -101,11 +100,10 @@ describe('v01', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: lock.maxNumberOfKeys,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -126,17 +124,13 @@ describe('v01', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(
-        {
-          ...lock,
-          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-        },
-        owner
-      )
+      await walletService.createLock({
+        ...lock,
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      })
 
       await nock.resolveWhenAllNocksUsed()
     })
@@ -152,7 +146,7 @@ describe('v01', () => {
         expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
   })
