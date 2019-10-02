@@ -24,7 +24,7 @@ export default async function(lock, owner) {
       ethersUtils.toWei(lock.keyPrice, 'ether'),
       maxNumberOfKeys,
       {
-        gasLimit: GAS_AMOUNTS.createLock, // overrides default value for transaction gas price
+        gasLimit: GAS_AMOUNTS.createLock,
       }
     )
     const hash = await this._handleMethodCall(

@@ -1,5 +1,9 @@
 # Changes
 
+## Next Version (minor!)
+
+- Refactored signature to accept objects to be more flexible (this is a breaking change)
+
 ## 0.3.16
 
 - Using the right decimals number for ERC20 balances
