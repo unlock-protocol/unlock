@@ -5,7 +5,10 @@ import { getTimeString } from '../../utils/dates'
 import { Title, Date as DateComponent, Time, Location } from './EventStyles'
 
 export const EventInfo = ({ event }: any) => {
-  const normalizedName = event.name.toLowerCase()
+  let normalizedName = ''
+  if (event.name) {
+    normalizedName = event.name.toLowerCase()
+  }
   return (
     <div>
       {event.image && <Banner src={event.image} />}
