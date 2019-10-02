@@ -1,13 +1,7 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import { EventInfo } from '../../../components/interface/EventInfo'
-
-const getTimezoneOffset = Date.prototype.getTimezoneOffset
-
-Date.prototype.getTimezoneOffset = function() {
-  // These tests will always be EST
-  return 240
-}
+import { getTimeString } from '../../../utils/dates'
 
 describe('EventInfo component', () => {
   it('should render the time for an event', () => {
@@ -22,7 +16,7 @@ describe('EventInfo component', () => {
 
     getByText('A fun event')
     getByText('Oct 2, 2019')
-    getByText('2:31pm')
+    getByText(getTimeString(event.date))
   })
 
   it('should render the time for an event with a duration', () => {
@@ -35,10 +29,14 @@ describe('EventInfo component', () => {
     }
 
     const { getByText } = rtl.render(<EventInfo event={event} />)
+    const endDate = new Date(event.date.getTime() + event.duration * 1000)
+
+    const timeString =
+      getTimeString(event.date) + ' - ' + getTimeString(endDate)
 
     getByText('A fun event')
     getByText('Oct 2, 2019')
-    getByText('2:31pm - 4:17pm')
+    getByText(timeString)
   })
 
   it('should also handle events with no date', () => {
@@ -69,5 +67,3 @@ describe('EventInfo component', () => {
     getByText('Nov 8 - 10, 2019')
   })
 })
-
-Date.prototype.getTimezoneOffset = getTimezoneOffset
