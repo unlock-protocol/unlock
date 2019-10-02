@@ -4,18 +4,14 @@ import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'
 
 /**
- * Purchase a key to a lock by account.
- * The key object is passed so we can kepe track of it from the application
- * The lock object is required to get the price data
- * We pass both the owner and the account because at some point, these may be different (someone
- * purchases a key for someone else)
- * @param {PropTypes.address} lock
- * @param {PropTypes.address} owner
- * @param {string} keyPrice
- * @param {string} data
- * @param {string} account
+ * Purchase key function. This implementation requires the following
+ * @param {object} params:
+ * - {PropTypes.address} lockAddress
+ * - {PropTypes.address} owner
+ * - {string} keyPrice
+ * - {string} data
  */
-export default async function(lockAddress, owner, keyPrice, account, data) {
+export default async function({ lockAddress, owner, keyPrice, data }) {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   try {
@@ -23,8 +19,8 @@ export default async function(lockAddress, owner, keyPrice, account, data) {
       owner,
       utils.utf8ToHex(data || ''),
       {
-        gasLimit: GAS_AMOUNTS.purchaseFor, // overrides default value for transaction gas price
-        value: utils.toWei(keyPrice, 'ether'), // overrides default value
+        gasLimit: GAS_AMOUNTS.purchaseFor,
+        value: utils.toWei(keyPrice, 'ether'),
       }
     )
     const ret = await this._handleMethodCall(
