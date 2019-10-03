@@ -23,6 +23,46 @@ describe('AccountsIframeMessageEmitter', () => {
     return emitter
   }
 
+  describe('message buffer', () => {
+    beforeEach(() => {
+      fakeWindow = new FakeWindow()
+    })
+
+    it('should buffer messages before the iframe is created', () => {
+      expect.assertions(5)
+
+      const emitter = makeEmitter(fakeWindow)
+
+      emitter.postMessage(PostMessages.LOCKED, undefined)
+      expect(emitter.buffer).toHaveLength(1)
+
+      emitter.postMessage(PostMessages.HIDE_ACCOUNTS_MODAL, undefined)
+      expect(emitter.buffer).toHaveLength(2)
+
+      // Note that postMessage is mocked now -- the previous 2 calls
+      // haven't happened as far as it is concerned.
+      emitter.postMessage = jest.fn()
+      // createIframe will call sendBufferedMessages, which will send
+      // the buffered calls back through
+      emitter.createIframe()
+
+      expect(emitter.postMessage).toHaveBeenNthCalledWith(
+        1,
+        PostMessages.LOCKED,
+        undefined
+      )
+      expect(emitter.postMessage).toHaveBeenNthCalledWith(
+        2,
+        PostMessages.HIDE_ACCOUNTS_MODAL,
+        undefined
+      )
+
+      // The buffer should be cleared after the messages are sent for
+      // real
+      expect(emitter.buffer).toHaveLength(0)
+    })
+  })
+
   describe('emitter construction', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()

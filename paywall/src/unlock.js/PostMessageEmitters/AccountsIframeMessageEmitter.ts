@@ -22,6 +22,14 @@ import {
   UserAccountsIframeEvents,
 } from '../../EventEmitterTypes'
 
+// This just keeps the typechecker happy. It may not be possible to
+// represent an array of heterogeneous generic types in TS, but this
+// gets the job done.
+interface Message {
+  type: any
+  payload: any
+}
+
 // eslint is too stupid to parse this if the extends is in the class declaration below, so we extract it
 class FancyEmitter extends (EventEmitter as {
   new (): UserAccountsIframeEventEmitter
@@ -47,6 +55,8 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     listener: PostMessageListener
   ) => void
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
+
+  buffer: Message[] = []
 
   private _postMessage?: PostMessageResponder<PostMessages>
   public iframe: IframeType
@@ -88,6 +98,7 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     this._postMessage = postMessage
     this._addHandler = addHandler
     this.setupListeners()
+    this.sendBufferedMessages()
   }
 
   /**
@@ -123,6 +134,13 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     )
   }
 
+  private sendBufferedMessages() {
+    this.buffer.forEach(({ type, payload }: Message) => {
+      this.postMessage(type, payload)
+    })
+    this.buffer = []
+  }
+
   /**
    * This is a proxy that ignores requests if the account iframe is not active yet
    */
@@ -135,13 +153,20 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
   }
 
   /**
-   * This is a proxy that ignores requests if the account iframe is not active yet
+   * This is a proxy that buffers requests if the account iframe is not active yet
    */
   async postMessage<T extends MessageTypes = MessageTypes>(
     type: T,
     payload: ExtractPayload<T>
   ) {
-    if (!this._postMessage) return
+    if (!this._postMessage) {
+      // Add message to the buffer, it will be called when _postMessage is set.
+      this.buffer.push({
+        type,
+        payload,
+      })
+      return
+    }
     this._postMessage(type, payload)
   }
 }
