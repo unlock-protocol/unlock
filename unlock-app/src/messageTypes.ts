@@ -41,7 +41,7 @@ export type Message =
     }
   | {
       type: PostMessages.UNLOCKED
-      payload: string[]
+      payload: undefined
     }
   | {
       type: PostMessages.SCROLL_POSITION
