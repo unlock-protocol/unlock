@@ -5,8 +5,8 @@ const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
-const UnlockV5 = Contracts.getFromNodeModules('unlock-abi-1-1', '../../Unlock')
-const PublicLockV5 = require('unlock-abi-1-1/PublicLock')
+const UnlockV5 = Contracts.getFromNodeModules('unlock-abi-1-2', '../../Unlock')
+const PublicLockV5 = require('unlock-abi-1-2/PublicLock')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
@@ -53,11 +53,13 @@ contract('Unlock / upgrades', accounts => {
     )
 
     // Buy Key
-    await lockV5.methods.purchaseFor(keyOwner).send({
-      value: keyPrice,
-      from: keyOwner,
-      gas: 4000000,
-    })
+    await lockV5.methods
+      .purchase(keyOwner, web3.utils.padLeft(0, 40), [])
+      .send({
+        value: keyPrice,
+        from: keyOwner,
+        gas: 4000000,
+      })
 
     // Record sample lock data
     V5LockData = await unlock.methods.locks(lockV5._address).call()
@@ -87,20 +89,24 @@ contract('Unlock / upgrades', accounts => {
       })
 
       it('New keys may still be purchased', async () => {
-        const tx = await lockV5.methods.purchaseFor(accounts[6]).send({
-          value: keyPrice,
-          from: accounts[6],
-          gas: 4000000,
-        })
+        const tx = await lockV5.methods
+          .purchase(accounts[6], web3.utils.padLeft(0, 40), [])
+          .send({
+            value: keyPrice,
+            from: accounts[6],
+            gas: 4000000,
+          })
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
 
       it('Keys may still be transfered', async () => {
-        await lockV5.methods.purchaseFor(accounts[7]).send({
-          value: keyPrice,
-          from: accounts[7],
-          gas: 4000000,
-        })
+        await lockV5.methods
+          .purchase(accounts[7], web3.utils.padLeft(0, 40), [])
+          .send({
+            value: keyPrice,
+            from: accounts[7],
+            gas: 4000000,
+          })
         const tx = await lockV5.methods
           .transferFrom(
             accounts[7],

@@ -10,7 +10,7 @@ const PublicLockV0 = require('public-lock-abi-0/abi_V0')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
-const LatestVersionNumber = require('./latestVersion.js')
+const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
@@ -189,14 +189,14 @@ contract('Unlock / upgrades', accounts => {
 
       it('Latest Unlock version is correct', async () => {
         const unlockVersion = await unlock.methods.unlockVersion().call()
-        assert.equal(unlockVersion, LatestVersionNumber)
+        assert.equal(unlockVersion, LatestUnlockVersion)
       })
 
       it('Latest publicLock version is correct', async () => {
         const publicLockVersion = await lockLatest.methods
           .publicLockVersion()
           .call()
-        assert.equal(publicLockVersion, LatestVersionNumber)
+        assert.equal(publicLockVersion, LatestLockVersion)
       })
     })
   })
