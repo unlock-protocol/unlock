@@ -8,10 +8,11 @@ import AccountContent from '../../components/content/AccountContent'
 
 const baseState = {
   account: {},
+  pageIsLocked: true,
 }
 
 const baseStateWithError = {
-  account: {},
+  ...baseState,
   errors: [
     {
       kind: 'LogIn',
@@ -21,6 +22,7 @@ const baseStateWithError = {
   ],
 }
 const loggedInState = {
+  ...baseState,
   account: {
     emailAddress: 'jenny@googlemail.com',
   },
@@ -37,6 +39,7 @@ const loggedInWithError = {
   ],
 }
 const loggedInWithCards = {
+  ...baseState,
   account: {
     emailAddress: 'jenny@googlemail.com',
     cards: [
@@ -82,6 +85,11 @@ const loggedInWithCardsAndError = {
   ],
 }
 
+const loggedInWithCardsAndUnlocked = {
+  ...loggedInWithCards,
+  pageIsLocked: false,
+}
+
 const config = {
   stripeApiKey: 'pk_this_is_not_a_real_key',
 }
@@ -97,6 +105,7 @@ storiesOf('AccountContent (iframe embed for paywall)', module)
       'Logged in (error)': loggedInWithError,
       'Logged in with cards': loggedInWithCards,
       'Logged in with cards (error)': loggedInWithCardsAndError,
+      'Logged in with cards (unlocked page)': loggedInWithCardsAndUnlocked,
     }
     const defaultValue = baseState
     const groupId = 'Group1'
