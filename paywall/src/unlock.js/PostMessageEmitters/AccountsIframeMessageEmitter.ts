@@ -57,6 +57,7 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
 
   buffer: Message[] = []
+  private ready: boolean = false
 
   private _postMessage?: PostMessageResponder<PostMessages>
   public iframe: IframeType
@@ -98,7 +99,6 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     this._postMessage = postMessage
     this._addHandler = addHandler
     this.setupListeners()
-    this.sendBufferedMessages()
   }
 
   /**
@@ -116,7 +116,14 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
   }
 
   private setupListeners() {
-    this.addHandler(PostMessages.READY, () => this.emit(PostMessages.READY))
+    this.addHandler(PostMessages.READY, () => {
+      this.ready = true
+      // When we receive READY, the iframe exists and the postOffice
+      // is set up. Now we can be confident that the buffered messages
+      // have been received.
+      this.sendBufferedMessages()
+      this.emit(PostMessages.READY)
+    })
     this.addHandler(PostMessages.UPDATE_ACCOUNT, account =>
       this.emit(PostMessages.UPDATE_ACCOUNT, account)
     )
@@ -159,14 +166,22 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     type: T,
     payload: ExtractPayload<T>
   ) {
-    if (!this._postMessage) {
-      // Add message to the buffer, it will be called when _postMessage is set.
-      this.buffer.push({
-        type,
-        payload,
-      })
+    if (this.ready) {
+      // if ready === true, then we necessarily have _postMessage, but
+      // the linter can't statically determine that so we have to
+      // check.
+      if (this._postMessage) {
+        this._postMessage(type, payload)
+      }
+
       return
     }
-    this._postMessage(type, payload)
+
+    // We're not ready yet: add message to the buffer, it will be
+    // called when _postMessage is set.
+    this.buffer.push({
+      type,
+      payload,
+    })
   }
 }

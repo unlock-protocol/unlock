@@ -81,6 +81,14 @@ describe('Wallet.setupUserAccounts()', () => {
       dataOrigin
     )
 
+    // messages to the accounts iframe are buffered until it is ready
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.READY,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+
     fakeWindow.expectPostMessageSentToIframe(
       PostMessages.UPDATE_LOCKS,
       locks,
