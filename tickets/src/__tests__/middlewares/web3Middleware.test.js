@@ -17,6 +17,7 @@ import {
   VERIFY_SIGNED_ADDRESS,
   signedAddressVerified,
 } from '../../actions/ticket'
+import { success } from '../../services/storageService'
 
 /**
  * Fake state
@@ -81,12 +82,33 @@ jest.mock('@unlock-protocol/unlock-js', () => {
     },
   }
 })
-
 UnlockJs.mockImplementation = MockWebService
+
+class MockStorageService extends EventEmitter {
+  constructor() {
+    super()
+  }
+}
+
+let mockStorageService = new MockStorageService()
+jest.mock('../../services/storageService.js', () => {
+  return {
+    success: {
+      getLockAddressesForUser: 'getLockAddressesForUser.success',
+    },
+    StorageService: function() {
+      return mockStorageService
+    },
+  }
+})
 
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()
+  mockWeb3Service = new MockStorageService()
+  mockStorageService.getLockAddressesForUser = jest.fn(() =>
+    Promise.resolve([])
+  )
 
   // Reset state!
   account = {
@@ -128,6 +150,18 @@ beforeEach(() => {
 })
 
 describe('Web3 middleware', () => {
+  describe('success.getLockAddressesForUser', () => {
+    it('should get all of the locks returned', () => {
+      expect.assertions(2)
+      create()
+      const lockAddresses = ['0xa', '0xb']
+      mockWeb3Service.getLock = jest.fn()
+      mockStorageService.emit(success.getLockAddressesForUser, lockAddresses)
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(1, '0xa')
+      expect(mockWeb3Service.getLock).toHaveBeenNthCalledWith(2, '0xb')
+    })
+  })
+
   describe('lock.updated events triggered by the web3Service', () => {
     it('should dispatch addLock if the lock does not exist yet', () => {
       expect.assertions(1)
@@ -479,7 +513,7 @@ describe('Web3 middleware', () => {
   })
 
   it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', async () => {
-    expect.assertions(4)
+    expect.assertions(5)
     const mockTx = {
       transactionHash: '0x123',
     }
@@ -501,6 +535,11 @@ describe('Web3 middleware', () => {
     expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
       newAccount
     )
+
+    expect(mockStorageService.getLockAddressesForUser).toHaveBeenCalledWith(
+      newAccount.address
+    )
+
     expect(
       mockWeb3Service.getPastLockCreationsTransactionsForUser
     ).toHaveBeenCalledWith(newAccount.address)
