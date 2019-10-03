@@ -212,6 +212,32 @@ describe('postOfficeService', () => {
       })
     })
 
+    it('should add a handler for PostMessages.LOCKED', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      mockService.on(PostOfficeEvents.Locked, () => {
+        // Just verifying that this event is triggered
+        expect(true).toBeTruthy()
+      })
+
+      triggerListener<PostMessages.LOCKED>(PostMessages.LOCKED, undefined)
+    })
+
+    it('should add a handler for PostMessages.UNLOCKED', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      mockService.on(PostOfficeEvents.Unlocked, () => {
+        // Just verifying that this event is triggered
+        expect(true).toBeTruthy()
+      })
+
+      triggerListener<PostMessages.UNLOCKED>(PostMessages.UNLOCKED, undefined)
+    })
+
     it('should error if an invalid lock address is passed to PostMessages.PURCHASE_KEY', () => {
       expect.assertions(1)
 
