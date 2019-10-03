@@ -23,6 +23,7 @@ declare global {
 interface AccountContentProps {
   emailAddress?: string
   cards?: stripe.Card[]
+  pageIsLocked: boolean
 }
 
 interface FullAccountContentProps extends AccountContentProps {
@@ -127,16 +128,19 @@ interface ReduxState {
     emailAddress?: string
     cards?: stripe.Card[]
   }
+  pageIsLocked: boolean
 }
-export const mapStateToProps = (state: ReduxState) => {
-  let props: AccountContentProps = {}
+export const mapStateToProps = ({ account, pageIsLocked }: ReduxState) => {
+  let props: AccountContentProps = {
+    pageIsLocked,
+  }
 
-  if (state.account) {
-    const { emailAddress, cards } = state.account
+  if (account) {
+    const { emailAddress, cards } = account
     if (emailAddress) {
       props.emailAddress = emailAddress
     }
-    if (state.account.cards) {
+    if (account.cards) {
       props.cards = cards
     }
   }

@@ -40,7 +40,11 @@ describe('AccountContent', () => {
       expect.assertions(0)
       const { getByText } = rtl.render(
         <Provider store={store}>
-          <AccountContent config={config} dismissPurchaseModal={() => true} />
+          <AccountContent
+            config={config}
+            dismissPurchaseModal={() => true}
+            pageIsLocked={false}
+          />
         </Provider>
       )
       getByText((_, node) => {
@@ -58,6 +62,7 @@ describe('AccountContent', () => {
             emailAddress="john@smi.th"
             cards={[]}
             dismissPurchaseModal={() => true}
+            pageIsLocked={false}
           />
         </Provider>
       )
@@ -75,6 +80,7 @@ describe('AccountContent', () => {
             emailAddress="john@smi.th"
             cards={[mockCard]}
             dismissPurchaseModal={() => true}
+            pageIsLocked={false}
           />
         </Provider>
       )
@@ -94,6 +100,7 @@ describe('AccountContent', () => {
             emailAddress="john@smi.th"
             cards={[mockCard]}
             dismissPurchaseModal={dismissPurchaseModal}
+            pageIsLocked={false}
           />
         </Provider>
       )
@@ -109,11 +116,24 @@ describe('AccountContent', () => {
   })
 
   describe('mapStateToProps', () => {
-    it('should return empty object if no account in state', () => {
+    it('should return object without account if no account in state', () => {
       expect.assertions(2)
-      expect(mapStateToProps({})).toEqual({})
+      expect(
+        mapStateToProps({
+          pageIsLocked: false,
+        })
+      ).toEqual({
+        pageIsLocked: false,
+      })
       // or if state has an account with no contents
-      expect(mapStateToProps({ account: {} })).toEqual({})
+      expect(
+        mapStateToProps({
+          account: {},
+          pageIsLocked: false,
+        })
+      ).toEqual({
+        pageIsLocked: false,
+      })
     })
 
     it('should grab and pass email and cards from account if available', () => {
@@ -125,11 +145,13 @@ describe('AccountContent', () => {
           emailAddress,
           cards,
         },
+        pageIsLocked: true,
       }
 
       expect(mapStateToProps(state)).toEqual({
         emailAddress,
         cards,
+        pageIsLocked: true,
       })
     })
   })
