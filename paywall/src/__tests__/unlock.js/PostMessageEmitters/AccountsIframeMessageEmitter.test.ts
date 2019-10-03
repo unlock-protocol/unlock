@@ -39,19 +39,24 @@ describe('AccountsIframeMessageEmitter', () => {
       emitter.postMessage(PostMessages.HIDE_ACCOUNTS_MODAL, undefined)
       expect(emitter.buffer).toHaveLength(2)
 
-      // Note that postMessage is mocked now -- the previous 2 calls
-      // haven't happened as far as it is concerned.
-      emitter.postMessage = jest.fn()
-      // createIframe will call sendBufferedMessages, which will send
-      // the buffered calls back through
+      // createIframe will set up the listeners, including the one for ready
       emitter.createIframe()
+      ;(emitter as any)._postMessage = jest.fn()
 
-      expect(emitter.postMessage).toHaveBeenNthCalledWith(
+      // After this fires, the buffer will start to drain
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.READY,
+        undefined,
+        emitter.iframe,
+        accountsOrigin
+      )
+
+      expect((emitter as any)._postMessage).toHaveBeenNthCalledWith(
         1,
         PostMessages.LOCKED,
         undefined
       )
-      expect(emitter.postMessage).toHaveBeenNthCalledWith(
+      expect((emitter as any)._postMessage).toHaveBeenNthCalledWith(
         2,
         PostMessages.HIDE_ACCOUNTS_MODAL,
         undefined
