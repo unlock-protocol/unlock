@@ -13,6 +13,7 @@ import {
   USER_ACCOUNT_ADDRESS_STORAGE_ID,
   DEFAULT_USER_ACCOUNT_ADDRESS,
 } from '../../constants'
+import { SET_LOCKED_STATE } from '../../actions/pageStatus'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -165,6 +166,30 @@ describe('postOfficeMiddleware', () => {
         type: ADD_TO_CART,
         lock: 'this is the lock payload',
         tip,
+      })
+    })
+
+    it('should set locked state when receiving Locked', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      mockPostOfficeService.emit(PostOfficeEvents.Locked)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_LOCKED_STATE,
+        isLocked: true,
+      })
+    })
+
+    it('should set unlocked state when receiving Unlocked', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      mockPostOfficeService.emit(PostOfficeEvents.Unlocked)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_LOCKED_STATE,
+        isLocked: false,
       })
     })
   })

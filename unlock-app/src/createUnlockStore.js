@@ -54,6 +54,9 @@ import cartReducer, {
 import recoveryReducer, {
   initialState as defaultRecoveryPhrase,
 } from './reducers/recoveryReducer'
+import pageStatusReducer, {
+  initialState as defaultPageStatus,
+} from './reducers/pageStatusReducer'
 
 const config = configure()
 
@@ -79,6 +82,7 @@ export const createUnlockStore = (
     userDetails: privateKeyReducer,
     cart: cartReducer,
     recoveryPhrase: recoveryReducer,
+    pageIsLocked: pageStatusReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -107,6 +111,7 @@ export const createUnlockStore = (
       userDetails: defaultPrivateKeyState,
       recoveryPhrase: defaultRecoveryPhrase,
       cart: defaultCartState,
+      pageIsLocked: defaultPageStatus,
     },
     {
       provider: Object.keys(config.providers)[0],
