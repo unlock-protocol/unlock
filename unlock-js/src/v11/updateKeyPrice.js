@@ -22,7 +22,7 @@ export default async function({
 
   if (decimals == null) {
     // Get the decimals address from the contract
-    if (!erc20Address || erc20Address !== ZERO) {
+    if (!erc20Address) {
       erc20Address = await lockContract.tokenAddress()
     }
 
@@ -32,7 +32,6 @@ export default async function({
       decimals = 18
     }
   }
-
   const actualAmount = utils.toDecimal(keyPrice, decimals)
 
   let transactionPromise

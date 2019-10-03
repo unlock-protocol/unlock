@@ -2,6 +2,7 @@
 
 ## Next Version (minor!)
 
+- updateKeyPrice now uses the right decimals for erc20 contracts
 - Removed the 'owner' param on createLock since it is not really used (just emitted back)
 - Refactored signature to accept objects to be more flexible (this is a breaking change)
 
