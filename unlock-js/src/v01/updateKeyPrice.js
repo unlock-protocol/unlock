@@ -7,14 +7,14 @@ import Errors from '../errors'
  *
  * @param {object} params
  * - {PropTypes.address} lock : address of the lock for which we update the price
- * - {string} price : new price for the lock
+ * - {string} keyPrice : new price for the lock
  */
-export default async function({ lockAddress, price }) {
+export default async function({ lockAddress, keyPrice }) {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   try {
     transactionPromise = lockContract['updateKeyPrice(uint256)'](
-      utils.toWei(price, 'ether'),
+      utils.toWei(keyPrice, 'ether'),
       {
         gasLimit: GAS_AMOUNTS.updateKeyPrice,
       }
