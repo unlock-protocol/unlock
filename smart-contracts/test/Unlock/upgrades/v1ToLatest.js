@@ -6,11 +6,11 @@ const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockV1 = Contracts.getFromNodeModules('unlock-abi-0-1', '../../Unlock')
-const PublicLockV1 = require('../../../published-npm-modules/V1.0/PublicLock.json')
+const PublicLockV1 = require('unlock-abi-0-1/PublicLock')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
-const LatestVersionNumber = require('./latestVersion.js')
+const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
@@ -19,8 +19,8 @@ contract('Unlock / upgrades', accounts => {
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
   const keyPrice = Units.convert('0.01', 'eth', 'wei')
-  let lockV0
-  let v0LockData
+  let lockV1
+  let V1LockData
 
   before(async () => {
     project = await TestHelper({ from: unlockOwner })
@@ -42,33 +42,33 @@ contract('Unlock / upgrades', accounts => {
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
         5 // maxNumberOfKeys
-        // 'upgradeTestLock' //lock name
       )
       .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
     const evt = lockTx.events.NewLock
-    lockV0 = new web3.eth.Contract(
+    lockV1 = new web3.eth.Contract(
       PublicLockV1.abi,
       evt.returnValues.newLockAddress
     )
 
     // Buy Key
-    await lockV0.methods.purchaseFor(keyOwner, Web3Utils.toHex('Julien')).send({
+    await lockV1.methods.purchaseFor(keyOwner).send({
       value: keyPrice,
       from: keyOwner,
       gas: 4000000,
     })
 
     // Record sample lock data
-    v0LockData = await unlock.methods.locks(lockV0._address).call()
+    V1LockData = await unlock.methods.locks(lockV1._address).call()
   })
 
-  it('v0 Key is owned', async () => {
-    const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
-    assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
+  it('V1 Key is owned', async () => {
+    const id = await lockV1.methods.getTokenIdFor(keyOwner).call()
+    const bool = await lockV1.methods.isKeyOwner(id, keyOwner).call()
+    assert.equal(bool, true)
   })
 
-  it('the versions V0 and latest version have different bytecode', async () => {
+  it('the versions V1 and latest version have different bytecode', async () => {
     assert.notEqual(UnlockLatest.schema.bytecode, UnlockV1.schema.bytecode)
   })
 
@@ -79,35 +79,32 @@ contract('Unlock / upgrades', accounts => {
     })
 
     describe('Lock created with UnlockV1 is still available', () => {
-      it('v0 Key is still owned', async () => {
-        const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
-        assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
+      it('V1 Key is still owned', async () => {
+        const id = await lockV1.methods.getTokenIdFor(keyOwner).call()
+        const bool = await lockV1.methods.isKeyOwner(id, keyOwner).call()
+        assert.equal(bool, true)
       })
 
       it('New keys may still be purchased', async () => {
-        const tx = await lockV0.methods
-          .purchaseFor(accounts[6], Web3Utils.toHex('Julien'))
-          .send({
-            value: keyPrice,
-            from: accounts[6],
-            gas: 4000000,
-          })
+        const tx = await lockV1.methods.purchaseFor(accounts[6]).send({
+          value: keyPrice,
+          from: accounts[6],
+          gas: 4000000,
+        })
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
 
       it('Keys may still be transfered', async () => {
-        await lockV0.methods
-          .purchaseFor(accounts[7], Web3Utils.toHex('Julien'))
-          .send({
-            value: keyPrice,
-            from: accounts[7],
-            gas: 4000000,
-          })
-        const tx = await lockV0.methods
+        await lockV1.methods.purchaseFor(accounts[7]).send({
+          value: keyPrice,
+          from: accounts[7],
+          gas: 4000000,
+        })
+        const tx = await lockV1.methods
           .transferFrom(
             accounts[7],
             accounts[8],
-            await lockV0.methods.getTokenIdFor(accounts[7]).call()
+            await lockV1.methods.getTokenIdFor(accounts[7]).call()
           )
           .send({
             from: accounts[7],
@@ -127,11 +124,11 @@ contract('Unlock / upgrades', accounts => {
       })
 
       it('lock data should persist state between upgrades', async function() {
-        const resultsAfter = await unlock.methods.locks(lockV0._address).call()
-        assert.equal(resultsAfter.deployed, v0LockData.deployed)
+        const resultsAfter = await unlock.methods.locks(lockV1._address).call()
+        assert.equal(resultsAfter.deployed, V1LockData.deployed)
         assert.equal(
           resultsAfter.yieldedDiscountTokens,
-          v0LockData.yieldedDiscountTokens
+          V1LockData.yieldedDiscountTokens
         )
       })
     })
@@ -184,21 +181,22 @@ contract('Unlock / upgrades', accounts => {
         assert.equal(id.toFixed(), 1)
       })
 
-      it('v0 Key is still owned', async () => {
-        const id = await lockV0.methods.getTokenIdFor(keyOwner).call()
-        assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
+      it('V1 Key is still owned', async () => {
+        const id = await lockV1.methods.getTokenIdFor(keyOwner).call()
+        const bool = await lockV1.methods.isKeyOwner(id, keyOwner).call()
+        assert.equal(bool, true)
       })
 
       it('Latest Unlock version is correct', async () => {
         const unlockVersion = await unlock.methods.unlockVersion().call()
-        assert.equal(unlockVersion, LatestVersionNumber)
+        assert.equal(unlockVersion, LatestUnlockVersion)
       })
 
       it('Latest publicLock version is correct', async () => {
         const publicLockVersion = await lockLatest.methods
           .publicLockVersion()
           .call()
-        assert.equal(publicLockVersion, LatestVersionNumber)
+        assert.equal(publicLockVersion, LatestLockVersion)
       })
     })
   })
