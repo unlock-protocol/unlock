@@ -11,6 +11,7 @@ import KeyPurchaseConfirmation from '../interface/user-account/KeyPurchaseConfir
 import { GridPadding, IframeWrapper } from '../interface/user-account/styles'
 import Close from '../interface/buttons/layout/Close'
 import { dismissPurchaseModal } from '../../actions/keyPurchase'
+import svg from '../interface/svg'
 
 interface StripeWindow {
   Stripe?: stripe.StripeStatic
@@ -36,7 +37,11 @@ interface AccountContentState {
   stripe: stripe.Stripe | null
 }
 
-type PageMode = 'LogIn' | 'CollectPaymentDetails' | 'ConfirmPurchase'
+type PageMode =
+  | 'LogIn'
+  | 'CollectPaymentDetails'
+  | 'ConfirmPurchase'
+  | 'Unlocked'
 
 export class AccountContent extends React.Component<
   FullAccountContentProps,
@@ -67,15 +72,18 @@ export class AccountContent extends React.Component<
         </GridPadding>
       ),
       ConfirmPurchase: <KeyPurchaseConfirmation />,
+      Unlocked: <AlreadyOwned />,
     }
 
     return components[mode]
   }
 
   currentPageMode = (): PageMode => {
-    const { emailAddress, cards } = this.props
+    const { emailAddress, cards, pageIsLocked } = this.props
     if (!emailAddress) {
       return 'LogIn'
+    } else if (!pageIsLocked) {
+      return 'Unlocked'
     } else if (!cards || !cards.length) {
       return 'CollectPaymentDetails'
     } else {
@@ -186,3 +194,27 @@ const ErrorContainer = styled.div`
 const StyledIframeWrapper = styled(IframeWrapper)`
   max-width: 456px;
 `
+
+const AlreadyOwnedWrapper = styled.div`
+  color: var(--slate);
+  margin: 16px 32px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+const CircleCheck = styled(svg.Checkmark)`
+  width: 48px;
+  border: thin var(--slate) solid;
+  border-radius: 48px;
+  margin-right: 16px;
+`
+
+const AlreadyOwned = () => {
+  return (
+    <AlreadyOwnedWrapper>
+      <CircleCheck />
+      You already own a key to this lock!
+    </AlreadyOwnedWrapper>
+  )
+}

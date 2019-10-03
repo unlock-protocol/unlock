@@ -52,7 +52,7 @@ describe('AccountContent', () => {
       })
     })
 
-    it('Should collect payment details if there are no cards in account', () => {
+    it('Should collect payment details if there are no cards in account and the page is locked', () => {
       expect.assertions(0)
 
       const { getByText } = rtl.render(
@@ -62,7 +62,7 @@ describe('AccountContent', () => {
             emailAddress="john@smi.th"
             cards={[]}
             dismissPurchaseModal={() => true}
-            pageIsLocked={false}
+            pageIsLocked
           />
         </Provider>
       )
@@ -70,7 +70,7 @@ describe('AccountContent', () => {
       getByText('Card Details')
     })
 
-    it('Should prompt to confirm purchase if we have an account with cards', () => {
+    it('Should prompt to confirm purchase if we have an account with cards and the page is locked', () => {
       expect.assertions(0)
 
       const { getByText } = rtl.render(
@@ -80,7 +80,7 @@ describe('AccountContent', () => {
             emailAddress="john@smi.th"
             cards={[mockCard]}
             dismissPurchaseModal={() => true}
-            pageIsLocked={false}
+            pageIsLocked
           />
         </Provider>
       )
