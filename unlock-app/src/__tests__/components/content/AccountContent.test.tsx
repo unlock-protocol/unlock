@@ -52,6 +52,24 @@ describe('AccountContent', () => {
       })
     })
 
+    it('Should show the message about already having a key if the page is unlocked after logging in', () => {
+      expect.assertions(0)
+
+      const { getByText } = rtl.render(
+        <Provider store={store}>
+          <AccountContent
+            config={config}
+            emailAddress="john@smi.th"
+            cards={[]}
+            dismissPurchaseModal={() => true}
+            pageIsLocked={false}
+          />
+        </Provider>
+      )
+
+      getByText('You already own a key to this lock!')
+    })
+
     it('Should collect payment details if there are no cards in account and the page is locked', () => {
       expect.assertions(0)
 
