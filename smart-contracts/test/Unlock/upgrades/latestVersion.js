@@ -1,2 +1,5 @@
-// replace value with current latest version number
-module.exports = 5
+// replace value with current latest version numbers
+module.exports = {
+  LatestUnlockVersion: 5,
+  LatestLockVersion: 5,
+}
