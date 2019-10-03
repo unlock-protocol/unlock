@@ -5,12 +5,12 @@ const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
-const UnlockV3 = Contracts.getFromNodeModules('unlock-abi-0-1', '../../Unlock')
-const PublicLockV3 = require('../../../published-npm-modules/V1.0/PublicLock.json')
+const UnlockV3 = Contracts.getFromNodeModules('unlock-abi-1-0', '../../Unlock')
+const PublicLockV3 = require('unlock-abi-1-0/PublicLock')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
-const LatestVersionNumber = require('./latestVersion.js')
+const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
@@ -20,7 +20,7 @@ contract('Unlock / upgrades', accounts => {
   const keyOwner = accounts[2]
   const keyPrice = Units.convert('0.01', 'eth', 'wei')
   let lockV3
-  let v0LockData
+  let v3LockData
 
   before(async () => {
     project = await TestHelper({ from: unlockOwner })
@@ -41,8 +41,8 @@ contract('Unlock / upgrades', accounts => {
         60 * 60 * 24, // expirationDuration 1 day
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
-        5 // maxNumberOfKeys
-        // 'upgradeTestLock' //lock name
+        5, // maxNumberOfKeys
+        'UpgradeTestingLock'
       )
       .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
@@ -60,7 +60,7 @@ contract('Unlock / upgrades', accounts => {
     })
 
     // Record sample lock data
-    v0LockData = await unlock.methods.locks(lockV3._address).call()
+    v3LockData = await unlock.methods.locks(lockV3._address).call()
   })
 
   it('V3 Key is owned', async () => {
@@ -126,10 +126,10 @@ contract('Unlock / upgrades', accounts => {
 
       it('lock data should persist state between upgrades', async function() {
         const resultsAfter = await unlock.methods.locks(lockV3._address).call()
-        assert.equal(resultsAfter.deployed, v0LockData.deployed)
+        assert.equal(resultsAfter.deployed, v3LockData.deployed)
         assert.equal(
           resultsAfter.yieldedDiscountTokens,
-          v0LockData.yieldedDiscountTokens
+          v3LockData.yieldedDiscountTokens
         )
       })
     })
@@ -190,14 +190,14 @@ contract('Unlock / upgrades', accounts => {
 
       it('Latest Unlock version is correct', async () => {
         const unlockVersion = await unlock.methods.unlockVersion().call()
-        assert.equal(unlockVersion, LatestVersionNumber)
+        assert.equal(unlockVersion, LatestUnlockVersion)
       })
 
       it('Latest publicLock version is correct', async () => {
         const publicLockVersion = await lockLatest.methods
           .publicLockVersion()
           .call()
-        assert.equal(publicLockVersion, LatestVersionNumber)
+        assert.equal(publicLockVersion, LatestLockVersion)
       })
     })
   })
