@@ -91,6 +91,8 @@ export default class MainWindowHandler {
       this.setCachedLockedState(isLocked)
       // Update the user-facing status with locked/unlocked updates
       this.lockStatus = message
+      // Let the user account iframe know the status by propagating the message
+      this.iframes.accounts.postMessage(message, undefined)
     }
   }
 
