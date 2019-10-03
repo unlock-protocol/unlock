@@ -3,6 +3,7 @@ import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
 import { LockMetadata } from '../../src/models/lockMetadata'
 import { KeyMetadata } from '../../src/models/keyMetadata'
+import { addMetadata } from '../../src/operations/userMetadataOperations'
 
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
@@ -180,6 +181,34 @@ describe('Metadata Controller', () => {
               'https://assets.unlock-protocol.com/nft-images/week-in-ethereum.png',
             name: 'Unlock Key to Week in Ethereum News',
             custom_item: 'custom value',
+          })
+        )
+      })
+    })
+
+    describe('when the user has provided metadata', () => {
+      beforeAll(async () => {
+        await addMetadata({
+          tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+          userAddress: '0xaBCD',
+          data: {
+            mock: 'values',
+          },
+        })
+      })
+
+      it('returns their payload in the response', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
+          .set('Accept', 'json')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            description:
+              'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+            userMetadata: { mock: 'values' },
           })
         )
       })

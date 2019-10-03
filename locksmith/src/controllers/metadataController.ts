@@ -3,7 +3,7 @@ import Normalizer from '../utils/normalizer'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
 
-import addMetadata from '../operations/userMetadataOperations'
+import { addMetadata } from '../operations/userMetadataOperations'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -22,9 +22,7 @@ namespace MetadataController {
     if (Object.keys(keyMetadata).length == 0) {
       res.sendStatus(404)
     } else {
-      return res.json(
-        await metadataOperations.generateKeyMetadata(address, keyId)
-      )
+      return res.json(keyMetadata)
     }
   }
 
