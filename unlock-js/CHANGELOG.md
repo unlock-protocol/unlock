@@ -1,5 +1,8 @@
 # Changes
 
+## 0.3.17
+- unlock-provider can personal_sign data
+
 ## 0.3.16
 
 - Using the right decimals number for ERC20 balances
