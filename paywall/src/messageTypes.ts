@@ -40,6 +40,8 @@ export enum PostMessages {
   PURCHASE_KEY = 'purchaseKey',
   DISMISS_CHECKOUT = 'dismiss/checkout',
   INITIATED_TRANSACTION = 'initiated/transaction',
+  PERSONAL_SIGN = 'personal_sign/submit',
+  PERSONAL_SIGN_RESULT = 'personal_sign/result',
 
   SHOW_ACCOUNTS_MODAL = 'show/accountsModal',
   HIDE_ACCOUNTS_MODAL = 'hide/accountsModal',
@@ -153,6 +155,14 @@ export type Message =
   | {
       type: PostMessages.USING_MANAGED_ACCOUNT
       payload: undefined
+    }
+  | {
+      type: PostMessages.PERSONAL_SIGN
+      payload: any
+    }
+  | {
+      type: PostMessages.PERSONAL_SIGN_RESULT
+      payload: any
     }
 
 export type MessageTypes = Message['type']
