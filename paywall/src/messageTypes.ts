@@ -158,11 +158,17 @@ export type Message =
     }
   | {
       type: PostMessages.PERSONAL_SIGN
-      payload: any
+      payload: {
+        dataToSign: any
+        callbackId: string
+      }
     }
   | {
       type: PostMessages.PERSONAL_SIGN_RESULT
-      payload: any
+      payload: {
+        signedData: any
+        callbackId: string
+      }
     }
 
 export type MessageTypes = Message['type']
