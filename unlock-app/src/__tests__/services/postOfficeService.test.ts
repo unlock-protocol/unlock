@@ -270,6 +270,19 @@ describe('postOfficeService', () => {
       triggerListener<PostMessages.UNLOCKED>(PostMessages.UNLOCKED, undefined)
     })
 
+    it('should add a handler for PostMessages.WEB3', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      mockService.on(PostOfficeEvents.Web3Call, () => {
+        // Just verifying that this event is triggered
+        expect(true).toBeTruthy()
+      })
+
+      triggerListener<PostMessages.WEB3>(PostMessages.WEB3, {} as any)
+    })
+
     it('should error if an invalid lock address is passed to PostMessages.PURCHASE_KEY', () => {
       expect.assertions(1)
 
