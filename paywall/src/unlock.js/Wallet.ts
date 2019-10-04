@@ -299,6 +299,9 @@ export default class Wallet {
           // userAccountNetwork listening is in this.setupUserAccounts()
           this.postResult(id, this.userAccountNetwork)
           break
+        case 'personal_sign':
+          this.iframes.accounts.postMessage(PostMessages.WEB3, payload)
+          break
         default:
           // this is a fail-safe, and will not happen unless there is a bug
           this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
