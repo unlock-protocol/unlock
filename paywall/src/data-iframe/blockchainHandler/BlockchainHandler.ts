@@ -622,6 +622,14 @@ export default class BlockchainHandler {
     }
   }
 
+  async signData(dataToSign: any, callback: any) {
+    return this.walletService.signDataPersonal(
+      '', // account address -- not actually used, param retained for BC
+      dataToSign,
+      callback
+    )
+  }
+
   /**
    * Merges the store values
    * @private
