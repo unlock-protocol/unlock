@@ -595,8 +595,18 @@ export default class Mailbox {
         this.emitError(error)
         return
       }
+
+      let sig = signedData
+      // walletService's signDataPersonal base64s its signatures. For
+      // the time being, we'll handle that here by decoding it so that
+      // end users get exactly a signature and nothing more.
+      const resultIsHex = signedData.startsWith('0x')
+      if (!resultIsHex) {
+        sig = Buffer.from(signedData, 'base64').toString()
+      }
+
       this.postMessage(PostMessages.PERSONAL_SIGN_RESULT, {
-        signedData,
+        signedData: sig,
         callbackId,
       })
     })
