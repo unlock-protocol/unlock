@@ -63,8 +63,10 @@ export function isTooExpensiveForUserByCurrency(lock, account, currencyKey) {
   }
 
   if (keyPrice <= balance) {
-    // This doesn't take gas into account. If keyPrice and balance are exactly
-    // equal, it's probable that no transaction can be carried out.
+    // This doesn't take gas into account. If a user has exactly as much eth as
+    // the price of a key, the wallet will warn that it cannot do the
+    // transaction without a little extra for gas. For an ERC20-priced lock, it
+    // makes sense to be able to spend all of your token on one thing.
     return LOCK_IS_AFFORDABLE
   }
 
