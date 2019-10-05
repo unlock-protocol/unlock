@@ -131,11 +131,12 @@ describe('MainWindowHandler - init', () => {
     })
 
     it('should dispatch unlockProtocol event, locked', () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       const handler = getMainWindowHandler()
       handler.init()
       handler.dispatchEvent = jest.fn()
+      iframes.accounts.postMessage = jest.fn()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.LOCKED,
@@ -145,6 +146,10 @@ describe('MainWindowHandler - init', () => {
       )
 
       expect(handler.dispatchEvent).toHaveBeenCalledWith('locked')
+      expect(iframes.accounts.postMessage).toHaveBeenCalledWith(
+        PostMessages.LOCKED,
+        undefined
+      )
     })
 
     it('should set unlocked state for react apps', () => {
@@ -181,11 +186,12 @@ describe('MainWindowHandler - init', () => {
     })
 
     it('should dispatch unlockProtocol event, unlocked', () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       const handler = getMainWindowHandler()
       handler.init()
       handler.dispatchEvent = jest.fn()
+      iframes.accounts.postMessage = jest.fn()
 
       const unlockedLockAddresses = ['address']
       fakeWindow.receivePostMessageFromIframe(
@@ -196,6 +202,10 @@ describe('MainWindowHandler - init', () => {
       )
 
       expect(handler.dispatchEvent).toHaveBeenCalledWith('unlocked')
+      expect(iframes.accounts.postMessage).toHaveBeenCalledWith(
+        PostMessages.UNLOCKED,
+        undefined
+      )
     })
 
     it('should dispatch locked when receiving a no crypto wallet error', () => {

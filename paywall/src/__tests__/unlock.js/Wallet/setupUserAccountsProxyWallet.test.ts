@@ -123,6 +123,14 @@ describe('Wallet.setupUserAccounts()', () => {
       checkoutOrigin
     )
 
+    // Accounts iframe buffers postmessages until it receives READY
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.READY,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+
     fakeWindow.expectPostMessageSentToIframe(
       PostMessages.PURCHASE_KEY,
       purchaseRequest,
