@@ -10,7 +10,7 @@ interface UserTokenMetadataInput {
   data: any
 }
 
-const addMetadata = async (metadata: UserTokenMetadataInput) => {
+export async function addMetadata(metadata: UserTokenMetadataInput) {
   return await UserTokenMetadata.upsert(
     {
       tokenAddress: Normalizer.ethereumAddress(metadata.tokenAddress),
@@ -26,4 +26,13 @@ const addMetadata = async (metadata: UserTokenMetadataInput) => {
   )
 }
 
-export default addMetadata
+export async function getMetadata(tokenAddress: string, userAddress: string) {
+  let data = await UserTokenMetadata.findOne({
+    where: {
+      tokenAddress: Normalizer.ethereumAddress(tokenAddress),
+      userAddress: Normalizer.ethereumAddress(userAddress),
+    },
+  })
+
+  return data ? data.data : data
+}

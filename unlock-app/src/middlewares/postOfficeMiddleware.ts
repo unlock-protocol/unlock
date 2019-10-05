@@ -15,6 +15,7 @@ import {
   DEFAULT_USER_ACCOUNT_ADDRESS,
 } from '../constants'
 import { isAccount } from '../utils/validators'
+import { setLockedState } from '../actions/pageStatus'
 
 const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   const postOfficeService = new PostOfficeService(
@@ -59,6 +60,13 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
         dispatch(addToCart({ lock, tip }))
         postOfficeService.showAccountModal()
       }
+    )
+
+    postOfficeService.on(PostOfficeEvents.Locked, () =>
+      dispatch(setLockedState(true))
+    )
+    postOfficeService.on(PostOfficeEvents.Unlocked, () =>
+      dispatch(setLockedState(false))
     )
 
     return (next: any) => {

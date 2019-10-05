@@ -85,7 +85,7 @@ describe('postOfficeService', () => {
       expectPostMessage<PostMessages.READY>(PostMessages.READY, undefined)
     })
 
-    it('should add a handler for PostMessages.SEND_UPDATES', () => {
+    it('should add a handler for PostMessages.SEND_UPDATES (account)', () => {
       expect.assertions(1)
 
       mockService = new PostOfficeService(fakeWindow, 2)
@@ -94,6 +94,17 @@ describe('postOfficeService', () => {
         PostMessages.SEND_UPDATES,
         PostMessages.UPDATE_ACCOUNT
       >(PostMessages.SEND_UPDATES, 'account', PostMessages.UPDATE_ACCOUNT, null)
+    })
+
+    it('should add a handler for PostMessages.SEND_UPDATES (network)', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      expectListenerRespondsWith<
+        PostMessages.SEND_UPDATES,
+        PostMessages.UPDATE_NETWORK
+      >(PostMessages.SEND_UPDATES, 'network', PostMessages.UPDATE_NETWORK, 2)
     })
 
     it('should add a handler for PostMessages.UPDATE_LOCKS', done => {
@@ -210,6 +221,32 @@ describe('postOfficeService', () => {
         lock: lockAddress,
         extraTip: '0',
       })
+    })
+
+    it('should add a handler for PostMessages.LOCKED', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      mockService.on(PostOfficeEvents.Locked, () => {
+        // Just verifying that this event is triggered
+        expect(true).toBeTruthy()
+      })
+
+      triggerListener<PostMessages.LOCKED>(PostMessages.LOCKED, undefined)
+    })
+
+    it('should add a handler for PostMessages.UNLOCKED', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      mockService.on(PostOfficeEvents.Unlocked, () => {
+        // Just verifying that this event is triggered
+        expect(true).toBeTruthy()
+      })
+
+      triggerListener<PostMessages.UNLOCKED>(PostMessages.UNLOCKED, undefined)
     })
 
     it('should error if an invalid lock address is passed to PostMessages.PURCHASE_KEY', () => {

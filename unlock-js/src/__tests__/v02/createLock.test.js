@@ -30,7 +30,6 @@ const callMethodData = prepContract({
   nock,
 })
 
-const owner = '0xdeadfeed'
 let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
 describe('v02', () => {
@@ -74,7 +73,7 @@ describe('v02', () => {
         )
         const mock = walletService._handleMethodCall
 
-        await walletService.createLock(lock, owner)
+        await walletService.createLock(lock)
 
         expect(mock).toHaveBeenCalledWith(
           expect.any(Promise),
@@ -121,7 +120,7 @@ describe('v02', () => {
 
         setupSuccess()
 
-        await walletService.createLock(Erc20Lock, owner)
+        await walletService.createLock(Erc20Lock)
         await nock.resolveWhenAllNocksUsed()
       })
     })
@@ -141,11 +140,10 @@ describe('v02', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: lock.maxNumberOfKeys,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -166,17 +164,13 @@ describe('v02', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(
-        {
-          ...lock,
-          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-        },
-        owner
-      )
+      await walletService.createLock({
+        ...lock,
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      })
 
       await nock.resolveWhenAllNocksUsed()
     })
@@ -192,7 +186,7 @@ describe('v02', () => {
         expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
   })
