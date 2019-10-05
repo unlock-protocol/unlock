@@ -26,6 +26,7 @@ import {
   normalizeAddressKeys,
   normalizeLockAddress,
 } from '../../utils/normalizeAddresses'
+import { isERC20Lock } from '../../utils/locks'
 import { createTemporaryKey } from './createTemporaryKey'
 
 /**
@@ -655,9 +656,7 @@ export default class BlockchainHandler {
     if (this.store.account) {
       this.web3Service.refreshAccountBalance({ address: this.store.account })
       // We need to refresh ERC20 token balances whenever we reset
-      const erc20locks = Object.values(this.store.locks).filter(
-        lock => !!lock.currencyContractAddress
-      )
+      const erc20locks = Object.values(this.store.locks).filter(isERC20Lock)
       erc20locks.forEach(lock =>
         this.getTokenBalance(lock.currencyContractAddress!)
       )
