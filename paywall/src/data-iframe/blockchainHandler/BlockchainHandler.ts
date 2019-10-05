@@ -389,12 +389,7 @@ export default class BlockchainHandler {
 
     // If the lock is in a non ethereum currency, we need to get the balance of currency for that user
     if (update.currencyContractAddress && this.store.account) {
-      const balance = await this.web3Service.getTokenBalance(
-        update.currencyContractAddress,
-        this.store.account
-      )
-      this.store.balance[update.currencyContractAddress] = balance
-      this.dispatchChangesToPostOffice()
+      this.getTokenBalance(update.currencyContractAddress)
     }
 
     this._mergeUpdate(
@@ -405,6 +400,17 @@ export default class BlockchainHandler {
       },
       update
     )
+  }
+
+  async getTokenBalance(currencyContractAddress: string) {
+    if (this.store.account) {
+      const balance = await this.web3Service.getTokenBalance(
+        currencyContractAddress,
+        this.store.account
+      )
+      this.store.balance[currencyContractAddress] = balance
+      this.dispatchChangesToPostOffice()
+    }
   }
 
   /**
@@ -648,6 +654,13 @@ export default class BlockchainHandler {
     this.store.transactions = {}
     if (this.store.account) {
       this.web3Service.refreshAccountBalance({ address: this.store.account })
+      // We need to refresh ERC20 token balances whenever we reset
+      const erc20locks = Object.values(this.store.locks).filter(
+        lock => !!lock.currencyContractAddress
+      )
+      erc20locks.forEach(lock =>
+        this.getTokenBalance(lock.currencyContractAddress!)
+      )
     }
     this.retrieveCurrentBlockchainData()
     this.dispatchChangesToPostOffice()
