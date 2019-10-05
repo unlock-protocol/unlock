@@ -16,7 +16,7 @@ import {
 } from '../constants'
 import { isAccount } from '../utils/validators'
 import { setLockedState } from '../actions/pageStatus'
-import { web3Call } from '../actions/web3call'
+import { web3Call, WEB3_RESULT } from '../actions/web3call'
 
 const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
   const postOfficeService = new PostOfficeService(
@@ -90,6 +90,9 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
           postOfficeService.hideAccountModal()
         } else if (action.type === DISMISS_PURCHASE_MODAL) {
           postOfficeService.hideAccountModal()
+        } else if (action.type === WEB3_RESULT) {
+          const { payload } = action
+          postOfficeService.sendWeb3Result(payload)
         }
 
         next(action)

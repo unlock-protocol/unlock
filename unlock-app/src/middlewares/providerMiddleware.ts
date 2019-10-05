@@ -118,21 +118,16 @@ export async function sendMethod(
   dispatch: any
 ) {
   const { method, id, params } = payload
-  const result = await provider.send(method, params)
-
-  // TODO: handle errors here -- at the moment there are no methods
-  // that return an error value
-  dispatch(
-    web3Result({
+  const result = provider.send(method, params)
+  dispatch(web3Result, {
+    id,
+    jsonrpc: '2.0',
+    result: {
       id,
       jsonrpc: '2.0',
-      result: {
-        id,
-        jsonrpc: '2.0',
-        result,
-      },
-    })
-  )
+      result,
+    },
+  })
 }
 
 export const providerMiddleware = (config: any) => {
