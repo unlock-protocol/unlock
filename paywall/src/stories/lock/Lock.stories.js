@@ -53,6 +53,14 @@ const WindowProvider = WindowContext.Provider
 
 const storyConfig = configure()
 
+const accountWithBalance = {
+  balance: {
+    eth: '9001',
+    '0x123ERC20': '9001',
+    [storyConfig.erc20Contract.address]: '9001',
+  },
+}
+
 storiesOf('Lock', module)
   .addDecorator(getStory => (
     <ConfigProvider value={storyConfig}>
@@ -90,6 +98,7 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={erc20Lock}
         transaction={null}
         lockKey={null}
@@ -109,6 +118,7 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={erc20Lock}
         transaction={null}
         lockKey={null}
@@ -128,6 +138,7 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={shortLock}
         transaction={null}
         lockKey={null}
@@ -140,6 +151,7 @@ storiesOf('Lock', module)
   .add('with no key (check hover state too)', () => {
     return (
       <Lock
+        account={accountWithBalance}
         lock={lock}
         transaction={null}
         lockKey={null}
@@ -152,6 +164,7 @@ storiesOf('Lock', module)
   .add('with very long name', () => {
     return (
       <Lock
+        account={accountWithBalance}
         lock={lockWithLongName}
         transaction={null}
         lockKey={null}
@@ -164,6 +177,7 @@ storiesOf('Lock', module)
   .add('disabled - another lock has a pending key', () => {
     return (
       <Lock
+        account={accountWithBalance}
         disabled
         lock={lock}
         transaction={null}
@@ -245,6 +259,7 @@ storiesOf('Lock', module)
       const accountWithNotEnoughEth = {
         balance: {
           eth: '0',
+          [storyConfig.erc20Contract.address]: '75',
         },
         name: 'julien',
       }
@@ -418,6 +433,7 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={lockWithBalance}
         transaction={null}
         lockKey={null}
@@ -435,6 +451,7 @@ storiesOf('Lock', module)
     )
     return (
       <Lock
+        account={accountWithBalance}
         lock={lockWithInfiniteNumberOfKeys}
         transaction={null}
         lockKey={null}
