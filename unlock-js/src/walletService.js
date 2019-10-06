@@ -139,6 +139,7 @@ export default class WalletService extends UnlockService {
   /**
    * Creates a lock on behalf of the user.
    * @param {PropTypes.lock} lock
+   * @return Promise<PropTypes.address> lockAddress
    */
   async createLock(lock) {
     const version = await this.unlockContractAbiVersion()
