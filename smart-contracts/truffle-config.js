@@ -77,6 +77,11 @@ module.exports = {
       port: 8545,
       network_id: '*', // Match any network id
     },
+    coverage: {
+      host: 'localhost',
+      port: 8545,
+      network_id: '*', // Match any network id
+    },
     rinkeby: {
       provider: rinkebyProvider,
       network_id: '4', // Network Id for Rinkeby
