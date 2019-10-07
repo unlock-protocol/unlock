@@ -87,9 +87,6 @@ jobs:
       - run:
           name: Smart Contract Tests
           command: scripts/tests.sh smart-contracts
-      - run: 
-          name: Codechecks
-          command: npm run codechecks
 
   locksmith-tests:
     machine: true
