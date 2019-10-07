@@ -254,10 +254,40 @@ describe("Retrieving a user's cards", () => {
     })
     it('returns an empty array', async () => {
       expect.assertions(1)
+
       let cards = await UserOperations.getCards(
         'user_without_stripe_customer_id@example.com'
       )
       expect(cards).toEqual([])
     })
+  })
+})
+
+describe('When marking a user as ejected', () => {
+  it.skip("applies the ejection date to the user's record", async () => {
+    expect.assertions(1)
+
+    RecoveryPhrase.generate = jest.fn(() => 'generated phrase')
+
+    let userCreationDetails = {
+      emailAddress: 'USER@EXAMPLE.COM',
+      publicKey: '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
+      passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      recoveryPhrase: 'recoveryPhrase',
+    }
+
+    // try{
+    // await UserOperations.createUser(userCreationDetails)
+    // }catch(e){
+    //   console.log('this happened ', e)
+    // }
+    await UserOperations.eject(userCreationDetails.publicKey)
+
+    let record = await User.findOne({
+      where: {
+        publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+      },
+    })
+    expect(record.ejection).not.toBe(null)
   })
 })

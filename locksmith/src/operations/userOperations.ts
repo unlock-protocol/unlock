@@ -58,14 +58,18 @@ namespace UserOperations {
   export const getUserRecoveryPhraseByEmailAddress = async (
     emailAddress: string
   ): Promise<string | null> => {
-    let user = await UserReference.findOne({
-      where: { emailAddress: Normalizer.emailAddress(emailAddress) },
-      include: [{ model: User, attributes: ['recoveryPhrase'] }],
-    })
+    try {
+      let user = await UserReference.findOne({
+        where: { emailAddress: Normalizer.emailAddress(emailAddress) },
+        include: [{ model: User, attributes: ['recoveryPhrase'] }],
+      })
 
-    if (user) {
-      return user.User.recoveryPhrase
-    } else {
+      if (user) {
+        return user.User.recoveryPhrase
+      } else {
+        return null
+      }
+    } catch (e) {
       return null
     }
   }
@@ -74,16 +78,21 @@ namespace UserOperations {
     existingEmailAddress: string,
     updatedEmailAddress: string
   ) => {
-    return await UserReference.update(
-      { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
-      {
-        where: {
-          emailAddress: {
-            [Op.eq]: Normalizer.emailAddress(existingEmailAddress),
+    try {
+      let result = await UserReference.update(
+        { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
+        {
+          where: {
+            emailAddress: {
+              [Op.eq]: Normalizer.emailAddress(existingEmailAddress),
+            },
           },
-        },
-      }
-    )
+        }
+      )
+      return result
+    } catch (e) {
+      return null
+    }
   }
 
   export const updatePaymentDetails = async (
@@ -138,6 +147,19 @@ namespace UserOperations {
     } catch (_e) {
       return []
     }
+  }
+
+  export const eject = async (publicKey: ethereumAddress): Promise<any> => {
+    return await User.update(
+      { ejection: Date.now() },
+      {
+        where: {
+          publicKey: {
+            [Op.eq]: Normalizer.ethereumAddress(publicKey),
+          },
+        },
+      }
+    )
   }
 }
 

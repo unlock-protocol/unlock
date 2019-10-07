@@ -24,6 +24,7 @@ namespace UserController {
         })
 
         let status = recoveryPhrase ? 200 : 400
+
         return res.status(status).json({
           recoveryPhrase,
         })
@@ -141,6 +142,17 @@ namespace UserController {
       let keys = await OwnedKeys.keys(address)
 
       return res.json(keys)
+    }
+  }
+
+  export const eject = async (req: Request, res: Response) => {
+    let address = req.params.ethereumAddress
+    let result = await UserOperations.eject(address)
+
+    if (result[0] > 0) {
+      return res.sendStatus(202)
+    } else {
+      return res.sendStatus(400)
     }
   }
 }
