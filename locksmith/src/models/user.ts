@@ -11,4 +11,7 @@ export class User extends Model<User> {
 
   @Column(DataType.JSON)
   passwordEncryptedPrivateKey!: JSON
+
+  @Column
+  ejection!: Date
 }
