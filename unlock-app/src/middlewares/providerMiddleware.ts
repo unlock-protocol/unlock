@@ -118,16 +118,19 @@ export async function sendMethod(
   dispatch: any
 ) {
   const { method, id, params } = payload
-  const result = provider.send(method, params)
-  dispatch(web3Result, {
-    id,
-    jsonrpc: '2.0',
-    result: {
+  const result = await provider.send(method, params)
+
+  dispatch(
+    web3Result({
       id,
       jsonrpc: '2.0',
-      result,
-    },
-  })
+      result: {
+        id,
+        jsonrpc: '2.0',
+        result,
+      },
+    })
+  )
 }
 
 export const providerMiddleware = (config: any) => {
