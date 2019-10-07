@@ -13,20 +13,20 @@
   "dependencies": {
     "@openzeppelin/cli": "2.5.3",
     "@openzeppelin/contracts": "2.3.0",
-    "@openzeppelin/contracts-ethereum-package": "2.2.3",
+    "@openzeppelin/contracts-ethereum-package": "2.3.0",
     "@openzeppelin/upgrades": "2.5.3",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.0",
-    "cross-env": "6.0.0",
+    "cross-env": "6.0.3",
     "erc1820": "0.0.2",
-    "eth-gas-reporter": "0.2.11",
+    "eth-gas-reporter": "0.2.12",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.7.0",
     "hardlydifficult-test-helpers": "0.4.0",
     "public-lock-abi-0": "1.0.0",
     "solium": "1.2.5",
-    "truffle": "5.0.37",
+    "truffle": "5.0.39",
     "truffle-assertions": "0.9.1",
     "truffle-hdwallet-provider": "1.0.17",
     "unlock-abi-0": "1.0.4",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "remixd": "0.1.8",
     "truffle-flattener": "1.4.2",
-    "truffle-security": "1.5.5"
+    "truffle-security": "1.6.1"
   },
   "lint-staged": {
     "linters": {
