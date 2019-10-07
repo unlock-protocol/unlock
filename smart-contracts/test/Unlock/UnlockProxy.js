@@ -18,8 +18,8 @@ contract('Unlock / UnlockProxy', function(accounts) {
       Unlock,
       // Leaving the old init approach here, else the test breaks
       // One or the other (initName vs methodName) will be used by ZOS
-      initName: 'initialize',
-      initArgs: [unlockOwner],
+      methodName: 'initialize',
+      methodArgs: [unlockOwner],
       initMethod: 'initialize',
       initArgs: [unlockOwner],
     })
