@@ -6,7 +6,7 @@ const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockV0 = Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock')
-const PublicLockV0 = require('public-lock-abi-0/abi_V0')
+const PublicLockV0 = require('unlock-abi-0/PublicLock')
 
 const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')

@@ -24,7 +24,6 @@
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.7.0",
     "hardlydifficult-test-helpers": "0.4.0",
-    "public-lock-abi-0": "1.0.0",
     "solium": "1.2.5",
     "truffle": "5.0.37",
     "truffle-assertions": "0.9.1",
