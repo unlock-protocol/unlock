@@ -89,7 +89,7 @@ jobs:
           command: scripts/tests.sh smart-contracts
       - run: 
           name: Codechecks
-          command: cd smart-contracts && npm i @codechecks/client && npx codechecks
+          command: cd smart-contracts && npm run codechecks
 
   locksmith-tests:
     machine: true
