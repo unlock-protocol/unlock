@@ -25,7 +25,7 @@ contract('Lock / transferFee', accounts => {
   })
 
   it('has a default fee of 0%', async () => {
-    const feeNumerator = new BigNumber(await lock.transferFeeNumerator.call())
+    const feeNumerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
     const feeDenominator = new BigNumber(
       await lock.transferFeeDenominator.call()
     )
@@ -35,7 +35,7 @@ contract('Lock / transferFee', accounts => {
   describe('once a fee of 5% is set', () => {
     before(async () => {
       // Change the fee to 0.05%
-      await lock.updateTransferFee(5, 100)
+      await lock.updateTransferFee(5000)
     })
 
     it('estimates the transfer fee, which is 5% of keyPrice or less', async () => {
@@ -140,7 +140,7 @@ contract('Lock / transferFee', accounts => {
 
       it('has an updated fee', async () => {
         const feeNumerator = new BigNumber(
-          await lock.transferFeeNumerator.call()
+          await lock.refundPenaltyBasisPoints.call()
         )
         const feeDenominator = new BigNumber(
           await lock.transferFeeDenominator.call()
@@ -150,9 +150,9 @@ contract('Lock / transferFee', accounts => {
 
       it('emits the TransferFeeDenominatorChanged event', async () => {
         assert.equal(tx.logs[0].event, 'TransferFeeChanged')
-        assert.equal(tx.logs[0].args.oldTransferFeeNumerator, 5)
+        assert.equal(tx.logs[0].args.oldrefundPenaltyBasisPoints, 5)
         assert.equal(tx.logs[0].args.oldTransferFeeDenominator, 100)
-        assert.equal(tx.logs[0].args.transferFeeNumerator, 1)
+        assert.equal(tx.logs[0].args.refundPenaltyBasisPoints, 1)
         assert.equal(tx.logs[0].args.transferFeeDenominator, 4000)
       })
     })

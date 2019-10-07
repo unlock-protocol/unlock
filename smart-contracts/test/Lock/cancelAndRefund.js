@@ -33,8 +33,8 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('should return the correct penalty', async () => {
-    const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
-    const denominator = await lock.refundPenaltyDenominator.call()
+    const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
+    const denominator = await lock.BASIS_POINTS_DEN.call()
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
@@ -144,7 +144,7 @@ contract('Lock / cancelAndRefund', accounts => {
     let tx
 
     before(async () => {
-      tx = await lock.updateRefundPenalty(0, 2, 10) // 20%
+      tx = await lock.updateRefundPenalty(0, 2000) // 20%
     })
 
     it('should trigger an event', async () => {
@@ -152,17 +152,13 @@ contract('Lock / cancelAndRefund', accounts => {
         return log.event === 'RefundPenaltyChanged'
       })
       assert.equal(
-        new BigNumber(event.args.refundPenaltyNumerator).toFixed(),
+        new BigNumber(event.args.refundPenaltyBasisPoints).toFixed(),
         2
-      )
-      assert.equal(
-        new BigNumber(event.args.refundPenaltyDenominator).toFixed(),
-        10
       )
     })
 
     it('should return the correct penalty', async () => {
-      const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
+      const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
       const denominator = await lock.refundPenaltyDenominator.call()
       assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
@@ -208,10 +204,6 @@ contract('Lock / cancelAndRefund', accounts => {
         }),
         'KEY_NOT_VALID'
       )
-    })
-
-    it('attempt to set the denominator to 0', async () => {
-      await shouldFail(lock.updateRefundPenalty(0, 1, 0), 'INVALID_RATE')
     })
   })
 })
