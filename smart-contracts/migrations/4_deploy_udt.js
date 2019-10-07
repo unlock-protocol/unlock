@@ -29,7 +29,7 @@ module.exports = async function(deployer, networkName, accounts) {
   })
   await create({
     contractAlias: 'UnlockDiscountToken',
-    methodName: 'initialize',
+    initMethod: 'initialize',
     methodArgs: [],
     from: proxyAdmin,
     network,

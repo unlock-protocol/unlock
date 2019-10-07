@@ -12,8 +12,8 @@ async function deploy(options, accounts) {
     Object.assign(
       {
         contractAlias: 'Unlock',
-        methodName: 'initialize',
-        methodArgs: [unlockOwner],
+        initMethod: 'initialize',
+        initArgs: [unlockOwner],
       },
       options
     )

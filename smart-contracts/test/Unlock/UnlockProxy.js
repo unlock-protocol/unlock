@@ -20,8 +20,8 @@ contract('Unlock / UnlockProxy', function(accounts) {
       // One or the other (initName vs methodName) will be used by ZOS
       initName: 'initialize',
       initArgs: [unlockOwner],
-      methodName: 'initialize',
-      methodArgs: [unlockOwner],
+      initMethod: 'initialize',
+      initArgs: [unlockOwner],
     })
     this.unlock = await Unlock.at(this.proxy.address)
   })
