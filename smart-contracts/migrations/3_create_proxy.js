@@ -22,7 +22,7 @@ async function deploy(options, accounts) {
 
   // Deploy lock template
   const lockTemplate = await PublicLock.new()
-  let tx = await unlockContract.methods.configUnlock(
+  await unlockContract.methods.configUnlock(
     lockTemplate.address,
     '',
     ''
