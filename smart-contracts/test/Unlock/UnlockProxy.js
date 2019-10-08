@@ -16,12 +16,8 @@ contract('Unlock / UnlockProxy', function(accounts) {
     this.project = await TestHelper({ from: proxyAdmin })
     this.proxy = await this.project.createProxy(Unlock, {
       Unlock,
-      // Leaving the old init approach here, else the test breaks
-      // One or the other (initName vs methodName) will be used by ZOS
-      initName: 'initialize',
+      initMethod: 'initialize',
       initArgs: [unlockOwner],
-      methodName: 'initialize',
-      methodArgs: [unlockOwner],
     })
     this.unlock = await Unlock.at(this.proxy.address)
   })
