@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 // From https://github.com/optionality/clone-factory/blob/master/contracts/CloneFactory.sol
 // Updated to support Solidity 5
