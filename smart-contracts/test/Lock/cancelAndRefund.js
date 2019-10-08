@@ -153,13 +153,13 @@ contract('Lock / cancelAndRefund', accounts => {
       })
       assert.equal(
         new BigNumber(event.args.refundPenaltyBasisPoints).toFixed(),
-        2
+        2000
       )
     })
 
     it('should return the correct penalty', async () => {
       const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
-      const denominator = await lock.refundPenaltyDenominator.call()
+      const denominator = await lock.BASIS_POINTS_DEN.call()
       assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 

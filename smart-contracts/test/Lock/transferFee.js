@@ -27,7 +27,7 @@ contract('Lock / transferFee', accounts => {
   it('has a default fee of 0%', async () => {
     const feeNumerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
     const feeDenominator = new BigNumber(
-      await lock.transferFeeDenominator.call()
+      await lock.BASIS_POINTS_DEN.call()
     )
     assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0)
   })
@@ -143,17 +143,17 @@ contract('Lock / transferFee', accounts => {
           await lock.refundPenaltyBasisPoints.call()
         )
         const feeDenominator = new BigNumber(
-          await lock.transferFeeDenominator.call()
+          await lock.BASIS_POINTS_DEN.call()
         )
         assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.00025)
       })
 
-      it('emits the TransferFeeDenominatorChanged event', async () => {
+      it('emits the BASIS_POINTS_DENChanged event', async () => {
         assert.equal(tx.logs[0].event, 'TransferFeeChanged')
         assert.equal(tx.logs[0].args.oldrefundPenaltyBasisPoints, 5)
-        assert.equal(tx.logs[0].args.oldTransferFeeDenominator, 100)
+        assert.equal(tx.logs[0].args.oldBASIS_POINTS_DEN, 100)
         assert.equal(tx.logs[0].args.refundPenaltyBasisPoints, 1)
-        assert.equal(tx.logs[0].args.transferFeeDenominator, 4000)
+        assert.equal(tx.logs[0].args.BASIS_POINTS_DEN, 4000)
       })
     })
 
