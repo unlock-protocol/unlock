@@ -29,6 +29,9 @@ contract MixinPurchase is
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
+  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
+  * than keyPrice is approved for spending).
   */
   function purchase(
     uint256 _value,
