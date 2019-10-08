@@ -1,5 +1,6 @@
 const BigNumber = require('bignumber.js')
 
+const truffleAssert = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
@@ -60,7 +61,7 @@ contract('Lock / owners', accounts => {
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {
-    await shouldFail(lock.owners.call(6), 'invalid opcode')
+    await truffleAssert.fails(lock.owners.call(6), 'revert')
   })
 
   describe('after a transfer to a new address', () => {

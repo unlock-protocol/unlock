@@ -2,13 +2,14 @@
 const { scripts, ConfigManager } = require('@openzeppelin/cli')
 
 const { create } = scripts
+const PublicLock = artifacts.require('PublicLock')
 
 async function deploy(options, accounts) {
   // default account used by ganache
   const unlockOwner = accounts[0]
 
   // Create an instance of MyContract
-  await create(
+  const unlockContract = await create(
     Object.assign(
       {
         contractAlias: 'Unlock',
@@ -18,6 +19,14 @@ async function deploy(options, accounts) {
       options
     )
   )
+
+  // Deploy lock template
+  const lockTemplate = await PublicLock.new()
+  await unlockContract.methods.configUnlock(
+    lockTemplate.address,
+    '',
+    ''
+  ).send({ from: unlockOwner })
 }
 
 module.exports = function(deployer, networkName, accounts) {
