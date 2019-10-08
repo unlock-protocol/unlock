@@ -41,7 +41,24 @@ export default async function(lock) {
       balance: '0',
       transaction: hash,
     })
+
+    // Let's now wait for the lock to be deployed before we return its address
+    const receipt = await this.provider.waitForTransaction(hash)
+    const parser = unlockContract.interface
+    const newLockEvent = receipt.logs
+      .map(log => {
+        return parser.parseLog(log)
+      })
+      .filter(event => event.name === 'NewLock')[0]
+
+    if (newLockEvent) {
+      return newLockEvent.values.newLockAddress
+    } else {
+      // There was no NewEvent log (transaction failed?)
+      return null
+    }
   } catch (error) {
     this.emit('error', new Error(TransactionTypes.FAILED_TO_CREATE_LOCK))
+    return null
   }
 }

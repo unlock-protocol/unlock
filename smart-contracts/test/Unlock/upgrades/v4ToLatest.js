@@ -29,8 +29,8 @@ contract('Unlock / upgrades', accounts => {
     UnlockV4.schema.contractName = 'UnlockV4'
     proxy = await project.createProxy(UnlockV4, {
       UnlockV4,
-      methodName: 'initialize',
-      methodArgs: [unlockOwner],
+      initMethod: 'initialize',
+      initArgs: [unlockOwner],
     })
 
     unlock = await UnlockV4.at(proxy.address)
@@ -61,6 +61,11 @@ contract('Unlock / upgrades', accounts => {
 
     // Record sample lock data
     v4LockData = await unlock.methods.locks(lockV4._address).call()
+  })
+
+  it('Unlock has an owner', async () => {
+    const owner = await unlock.methods.owner().call()
+    assert.equal(owner, unlockOwner)
   })
 
   it('V4 Key is owned', async () => {
