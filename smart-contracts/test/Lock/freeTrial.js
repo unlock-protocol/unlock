@@ -35,7 +35,7 @@ contract('Lock / freeTrial', accounts => {
     let initialLockBalance
 
     beforeEach(async () => {
-      await lock.updateRefundPenalty(5, 2, 10)
+      await lock.updateRefundPenalty(5, 2000)
       initialLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       )

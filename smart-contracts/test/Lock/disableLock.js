@@ -121,8 +121,8 @@ contract('Lock / disableLock', accounts => {
       await lock.updateLockName('Hardly')
     })
 
-    it('Lock owner can still updateRefundPenaltyDenominator', async () => {
-      await lock.updateRefundPenalty(0, 5, 100)
+    it('Lock owner can still updateBASIS_POINTS_DEN', async () => {
+      await lock.updateRefundPenalty(0, 5000)
     })
 
     it('should fail to setApprovalForAll', async () => {

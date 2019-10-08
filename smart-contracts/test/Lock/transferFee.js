@@ -25,17 +25,15 @@ contract('Lock / transferFee', accounts => {
   })
 
   it('has a default fee of 0%', async () => {
-    const feeNumerator = new BigNumber(await lock.transferFeeNumerator.call())
-    const feeDenominator = new BigNumber(
-      await lock.transferFeeDenominator.call()
-    )
+    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
+    const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
     assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0)
   })
 
   describe('once a fee of 5% is set', () => {
     before(async () => {
-      // Change the fee to 0.05%
-      await lock.updateTransferFee(5, 100)
+      // Change the fee to 5%
+      await lock.updateTransferFee(500)
     })
 
     it('estimates the transfer fee, which is 5% of keyPrice or less', async () => {
@@ -134,36 +132,27 @@ contract('Lock / transferFee', accounts => {
       let tx
 
       before(async () => {
-        // Change the fee to 0.025%
-        tx = await lock.updateTransferFee(1, 4000)
+        // Change the fee to 0.25%
+        tx = await lock.updateTransferFee(25)
       })
 
       it('has an updated fee', async () => {
         const feeNumerator = new BigNumber(
-          await lock.transferFeeNumerator.call()
+          await lock.transferFeeBasisPoints.call()
         )
-        const feeDenominator = new BigNumber(
-          await lock.transferFeeDenominator.call()
-        )
-        assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.00025)
+        const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
+        assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0025)
       })
 
-      it('emits the TransferFeeDenominatorChanged event', async () => {
+      it('emits TransferFeeChanged event', async () => {
         assert.equal(tx.logs[0].event, 'TransferFeeChanged')
-        assert.equal(tx.logs[0].args.oldTransferFeeNumerator, 5)
-        assert.equal(tx.logs[0].args.oldTransferFeeDenominator, 100)
-        assert.equal(tx.logs[0].args.transferFeeNumerator, 1)
-        assert.equal(tx.logs[0].args.transferFeeDenominator, 4000)
+        assert.equal(tx.logs[0].args.transferFeeBasisPoints.toString(), 25)
       })
     })
 
     describe('should fail if', () => {
       it('called by an account which does not own the lock', async () => {
-        await shouldFail(lock.updateTransferFee(1, 100, { from: accounts[1] }))
-      })
-
-      it('attempt to set the denominator to 0', async () => {
-        await shouldFail(lock.updateTransferFee(1, 0), 'INVALID_RATE')
+        await shouldFail(lock.updateTransferFee(1000, { from: accounts[1] }))
       })
     })
   })
