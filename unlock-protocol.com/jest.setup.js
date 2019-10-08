@@ -12,4 +12,5 @@ setConfig({
   publicRuntimeConfig: config.publicRuntimeConfig,
   intercomAppId: '0',
   googleAnalyticsId: '0',
+  baseUrl: 'https://unlock-protocol.com',
 })

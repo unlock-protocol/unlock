@@ -22,16 +22,22 @@ const Post = ({ slug, post }) => {
   let membersOnly = post.membersOnly || ''
   let nonMembersOnly = post.nonMembersOnly || ''
   let permalink = '/blog/' + slug
+  let image = post.image
 
   return (
     <Layout forContent>
       <Head>
         <title>{pageTitle(title)}</title>
-        <TwitterTags title={pageTitle(title)} description={description} />
+        <TwitterTags
+          title={pageTitle(title)}
+          description={description}
+          image={image}
+        />
         <OpenGraphTags
           title={pageTitle(title)}
           description={description}
           canonicalPath={permalink}
+          image={image}
         />
         <link
           rel="alternate"
