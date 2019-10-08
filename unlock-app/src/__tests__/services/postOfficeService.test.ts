@@ -5,6 +5,7 @@ import {
 import { IframePostOfficeWindow } from '../../utils/postOffice'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
 import { Locks } from '../../unlockTypes'
+import { web3MethodCall, web3MethodResult } from '../../windowTypes'
 
 describe('postOfficeService', () => {
   let mockService: PostOfficeService
@@ -155,6 +156,26 @@ describe('postOfficeService', () => {
         PostMessages.UPDATE_LOCKS,
         fakeLocks
       )
+    })
+
+    it('should add a handler for PostMessages.WEB3', () => {
+      expect.assertions(1)
+
+      mockService = new PostOfficeService(fakeWindow, 2)
+
+      const expectedPayload: web3MethodCall = {
+        id: 1066,
+        method: 'harvest_wheat',
+        params: [],
+        jsonrpc: '2.0',
+      }
+
+      mockService.on(PostOfficeEvents.Web3Call, payload => {
+        // Just verifying that this event is triggered
+        expect(payload).toEqual(expectedPayload)
+      })
+
+      triggerListener<PostMessages.WEB3>(PostMessages.WEB3, expectedPayload)
     })
 
     it('should error if invalid locks are passed to PostMessages.UPDATE_LOCKS', done => {
@@ -336,6 +357,28 @@ describe('postOfficeService', () => {
       expectPostMessage<PostMessages.INITIATED_TRANSACTION>(
         PostMessages.INITIATED_TRANSACTION,
         undefined,
+        2
+      )
+    })
+
+    it('should send out a web3 method call result when sendWeb3Result is called', () => {
+      expect.assertions(1)
+
+      const result: web3MethodResult = {
+        id: 1337,
+        jsonrpc: '2.0',
+        result: {
+          id: 1337,
+          jsonrpc: '2.0',
+          result: 'the number twelve',
+        },
+      }
+
+      mockService.sendWeb3Result(result)
+
+      expectPostMessage<PostMessages.WEB3_RESULT>(
+        PostMessages.WEB3_RESULT,
+        result,
         2
       )
     })

@@ -53,6 +53,24 @@ export interface web3MethodCall {
   id: number
 }
 
+interface web3MethodErrorResult {
+  id: number
+  error: string
+  jsonrpc: '2.0'
+}
+
+interface web3MethodSuccessResult {
+  id: number
+  jsonrpc: '2.0'
+  result: {
+    id: number
+    jsonrpc: '2.0'
+    result: any
+  }
+}
+
+export type web3MethodResult = web3MethodErrorResult | web3MethodSuccessResult
+
 export type web3Callback = (error: Error | string | null, result: any) => void
 export type web3Send = (
   methodCall: web3MethodCall,
