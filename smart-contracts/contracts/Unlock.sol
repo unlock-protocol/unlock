@@ -163,24 +163,27 @@ contract Unlock is
     public
     onlyFromDeployedLock()
   {
-    uint valueInETH;
-    if(_value > 0 && PublicLock(msg.sender).tokenAddress() != address(0)) {
-      // If priced in an ERC-20 token, find the supported uniswap exchange
-      IUniswap exchange = uniswapExchanges[PublicLock(msg.sender).tokenAddress()];
-      if(address(exchange) != address(0)) {
-        valueInETH = exchange.getTokenToEthInputPrice(_value);
-      } else {
-        // If the token type is not supported, assume 0 value
-        valueInETH = 0;
+    if(_value > 0) {
+      uint valueInETH;
+      address tokenAddress = PublicLock(msg.sender).tokenAddress();
+      if(tokenAddress != address(0)) {
+        // If priced in an ERC-20 token, find the supported uniswap exchange
+        IUniswap exchange = uniswapExchanges[tokenAddress];
+        if(address(exchange) != address(0)) {
+          valueInETH = exchange.getTokenToEthInputPrice(_value);
+        } else {
+          // If the token type is not supported, assume 0 value
+          valueInETH = 0;
+        }
       }
-    }
-    else {
-      // If priced in ETH (or value is 0), no conversion is required
-      valueInETH = _value;
-    }
+      else {
+        // If priced in ETH (or value is 0), no conversion is required
+        valueInETH = _value;
+      }
 
-    grossNetworkProduct += valueInETH;
-    locks[msg.sender].totalSales += valueInETH;
+      grossNetworkProduct += valueInETH;
+      locks[msg.sender].totalSales += valueInETH;
+    }
   }
 
   /**
