@@ -14,8 +14,8 @@ contract('Lock / erc721 / transferFrom', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    await locks['FIRST'].updateTransferFee(0, 1) // disable the transfer fee for this test
-    await locks['SINGLE KEY'].updateTransferFee(0, 1) // disable the transfer fee for this test
+    await locks['FIRST'].updateTransferFee(0) // disable the transfer fee for this test
+    await locks['SINGLE KEY'].updateTransferFee(0) // disable the transfer fee for this test
   })
 
   const from = accounts[1]

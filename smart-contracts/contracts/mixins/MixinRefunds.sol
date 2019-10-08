@@ -19,9 +19,8 @@ contract MixinRefunds is
   using SafeMath for uint;
 
   // CancelAndRefund will return funds based on time remaining minus this penalty.
-  // This is calculated as `proRatedRefund * refundPenaltyNumerator / refundPenaltyDenominator`.
-  uint public refundPenaltyNumerator;
-  uint public refundPenaltyDenominator;
+  // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.
+  uint public refundPenaltyBasisPoints;
 
   uint public freeTrialLength;
 
@@ -37,14 +36,13 @@ contract MixinRefunds is
 
   event RefundPenaltyChanged(
     uint freeTrialLength,
-    uint refundPenaltyNumerator,
-    uint refundPenaltyDenominator
+    uint refundPenaltyBasisPoints
   );
 
   function initialize() public
   {
-    refundPenaltyNumerator = 1;
-    refundPenaltyDenominator = 10;
+    // default to 10%
+    refundPenaltyBasisPoints = 1000;
   }
 
   /**
@@ -110,23 +108,18 @@ contract MixinRefunds is
    */
   function updateRefundPenalty(
     uint _freeTrialLength,
-    uint _refundPenaltyNumerator,
-    uint _refundPenaltyDenominator
+    uint _refundPenaltyBasisPoints
   )
     external
     onlyOwner
   {
-    require(_refundPenaltyDenominator != 0, 'INVALID_RATE');
-
     emit RefundPenaltyChanged(
       _freeTrialLength,
-      _refundPenaltyNumerator,
-      _refundPenaltyDenominator
+      _refundPenaltyBasisPoints
     );
 
     freeTrialLength = _freeTrialLength;
-    refundPenaltyNumerator = _refundPenaltyNumerator;
-    refundPenaltyDenominator = _refundPenaltyDenominator;
+    refundPenaltyBasisPoints = _refundPenaltyBasisPoints;
   }
 
   /**
@@ -213,7 +206,7 @@ contract MixinRefunds is
     // Apply the penalty if this is not a free trial
     if(freeTrialLength == 0 || timeRemaining + freeTrialLength < expirationDuration)
     {
-      uint penalty = keyPrice.mul(refundPenaltyNumerator) / refundPenaltyDenominator;
+      uint penalty = keyPrice.mul(refundPenaltyBasisPoints) / BASIS_POINTS_DEN;
       if (refund > penalty) {
         // Math: safeSub is not required since the if confirms this won't underflow
         refund -= penalty;
