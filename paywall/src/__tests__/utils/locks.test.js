@@ -164,6 +164,28 @@ describe('locks utilities', () => {
       ).toBeTruthy()
     })
 
+    it('should not be too expensive when the keyPrice is 0 on a lock', () => {
+      expect.assertions(2)
+      expect(
+        isTooExpensiveForUserByCurrency(
+          {
+            keyPrice: '0',
+          },
+          accountWithValidBalance,
+          'eth'
+        )
+      ).toBeFalsy()
+      expect(
+        isTooExpensiveForUserByCurrency(
+          {
+            keyPrice: '0',
+          },
+          accountWithValidBalance,
+          ERC20Lock.currencyContractAddress
+        )
+      ).toBeFalsy()
+    })
+
     it('should be too expensive if keyPrice is bigger than balance', () => {
       expect.assertions(2)
       expect(
