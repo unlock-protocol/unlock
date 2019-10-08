@@ -49,16 +49,16 @@ export function isTooExpensiveForUserByCurrency(lock, account, currencyKey) {
   if (!account || !account.balance) {
     return LOCK_IS_TOO_EXPENSIVE
   }
-
   const balance = parseFloat(account.balance[currencyKey])
   if (!balance) {
     return LOCK_IS_TOO_EXPENSIVE
   }
 
   const keyPrice = parseFloat(lock.keyPrice)
-  if (!keyPrice) {
+  if (typeof keyPrice !== 'number') {
     // All locks should have a keyPrice, but if for some reason one doesn't,
     // we're in some kind of broken state and we'd better prevent purchasing.
+    // On locks with no keyPrice the float would be Nan
     return LOCK_IS_TOO_EXPENSIVE
   }
 
