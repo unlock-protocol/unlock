@@ -6,7 +6,7 @@ import {
 } from '../../utils/postOffice'
 import { PostOfficeEvents } from '../../services/postOfficeService'
 import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
-import { ADD_TO_CART } from '../../actions/keyPurchase'
+import { ADD_TO_CART, DISMISS_PURCHASE_MODAL } from '../../actions/keyPurchase'
 import { KEY_PURCHASE_INITIATED } from '../../actions/user'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import {
@@ -14,6 +14,8 @@ import {
   DEFAULT_USER_ACCOUNT_ADDRESS,
 } from '../../constants'
 import { SET_LOCKED_STATE } from '../../actions/pageStatus'
+import { WEB3_CALL, WEB3_RESULT } from '../../actions/web3call'
+import { web3MethodCall } from '../../windowTypes'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -23,6 +25,7 @@ class MockPostOfficeService extends EventEmitter {
   hideAccountModal = jest.fn()
   transactionInitiated = jest.fn()
   setAccount = jest.fn()
+  sendWeb3Result = jest.fn()
 }
 
 let mockPostOfficeService = new MockPostOfficeService()
@@ -192,6 +195,24 @@ describe('postOfficeMiddleware', () => {
         isLocked: false,
       })
     })
+
+    it('should dispatch web3Call when receiving a web3 call', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      const payload: web3MethodCall = {
+        method: 'personal_sign',
+        params: [],
+        id: 1337,
+        jsonrpc: '2.0',
+      }
+      mockPostOfficeService.emit(PostOfficeEvents.Web3Call, payload)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: WEB3_CALL,
+        payload,
+      })
+    })
   })
 
   describe('handling actions', () => {
@@ -226,6 +247,34 @@ describe('postOfficeMiddleware', () => {
       expect(mockPostOfficeService.transactionInitiated).toHaveBeenCalled()
       expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should dismiss the purchase modal when receiving DISMISS_PURCHASE_MODAL', () => {
+      expect.assertions(2)
+      const { invoke } = makeMiddleware()
+      const action = {
+        type: DISMISS_PURCHASE_MODAL,
+      }
+
+      invoke(action)
+
+      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should send out web3 results when receiving WEB3_RESULT', () => {
+      expect.assertions(1)
+
+      const { invoke } = makeMiddleware()
+      const payload = 'this represents a web3MethodCallResult type'
+      const action = {
+        type: WEB3_RESULT,
+        payload,
+      }
+
+      invoke(action)
+
+      expect(mockPostOfficeService.sendWeb3Result).toHaveBeenCalledWith(payload)
     })
 
     it('should pass other actions on to the next middleware', () => {
