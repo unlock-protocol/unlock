@@ -14,7 +14,7 @@ const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
-contract('Unlock / upgrades', accounts => {
+contract('Unlock / upgrades v0', accounts => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
@@ -100,7 +100,13 @@ contract('Unlock / upgrades', accounts => {
         assert.equal(Web3Utils.toChecksumAddress(Web3Utils.toHex(id)), keyOwner)
       })
 
-      it('New keys may still be purchased', async () => {
+      /**
+       * v0 Locks are NO LONGER SUPPORTED.
+       * Attempting to purchase a key will fail.
+       * This is due to Unlock.sol calling PublicLock before the version was available.
+       * Other functions, such as withdraw, should be fine.
+       */
+      it.skip('New keys may still be purchased', async () => {
         const tx = await lockV0.methods
           .purchaseFor(accounts[6], Web3Utils.toHex('Julien'))
           .send({
@@ -111,7 +117,7 @@ contract('Unlock / upgrades', accounts => {
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
 
-      it('Keys may still be transfered', async () => {
+      it.skip('Keys may still be transfered', async () => {
         await lockV0.methods
           .purchaseFor(accounts[7], Web3Utils.toHex('Julien'))
           .send({
@@ -138,7 +144,7 @@ contract('Unlock / upgrades', accounts => {
         )
         assert.equal(
           grossNetworkProduct.toFixed(),
-          new BigNumber(keyPrice).times(3).toFixed()
+          new BigNumber(keyPrice).times(1).toFixed()
         )
       })
 
@@ -189,7 +195,7 @@ contract('Unlock / upgrades', accounts => {
         )
         assert.equal(
           grossNetworkProduct.toFixed(),
-          new BigNumber(keyPrice).times(4).toFixed()
+          new BigNumber(keyPrice).times(2).toFixed()
         )
       })
 
