@@ -9,18 +9,9 @@ module.exports = function deployLocks(
 ) {
   let locks = {}
   return Promise.all(
-    Object.keys(Locks).map(async name => {
-      let createCall
-      if (unlock.methods && unlock.methods.createLock) {
-        createCall = unlock.methods.createLock(
-          Locks[name].expirationDuration.toFixed(),
-          tokenAddress,
-          Locks[name].keyPrice.toFixed(),
-          Locks[name].maxNumberOfKeys.toFixed(),
-          Locks[name].lockName
-        )
-      } else {
-        createCall = unlock.createLock(
+    Object.keys(Locks).map(name => {
+      return unlock
+        .createLock(
           Locks[name].expirationDuration.toFixed(),
           tokenAddress,
           Locks[name].keyPrice.toFixed(),
@@ -28,20 +19,13 @@ module.exports = function deployLocks(
           Locks[name].lockName,
           { from }
         )
-      }
-      if (createCall.send) {
-        const tx = await createCall.send({ from, gasLimit: 4000000 })
-        // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.events.NewLock
-        locks[name] = await PublicLock.at(evt.returnValues.newLockAddress)
-        locks[name].params = Locks[name]
-      } else {
-        const tx = await createCall
-        // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.logs.find(v => v.event === 'NewLock')
-        locks[name] = await PublicLock.at(evt.args.newLockAddress)
-        locks[name].params = Locks[name]
-      }
+        .then(tx => {
+          const evt = tx.logs.find(v => v.event === 'NewLock')
+          return PublicLock.at(evt.args.newLockAddress).then(address => {
+            locks[name] = address
+            locks[name].params = Locks[name]
+          })
+        })
     })
   ).then(() => {
     return locks
