@@ -74,7 +74,7 @@ contract('Lock / grantKeys', accounts => {
           lock.grantKeys(keyOwnerList, [validExpirationTimestamp], {
             from: lockOwner,
           }),
-          'invalid opcode'
+          'revert'
         )
       })
     })

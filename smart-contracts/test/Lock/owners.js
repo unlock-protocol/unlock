@@ -60,7 +60,7 @@ contract('Lock / owners', accounts => {
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {
-    await shouldFail(lock.owners.call(6), 'invalid opcode')
+    await shouldFail(lock.owners.call(6), 'revert')
   })
 
   describe('after a transfer to a new address', () => {

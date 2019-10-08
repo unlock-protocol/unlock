@@ -99,6 +99,8 @@ contract Unlock is
     string memory _lockName
   ) public
   {
+    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
+
     // create lock
     address newLock = createClone(publicLockAddress);
     PublicLock(newLock).initialize(
