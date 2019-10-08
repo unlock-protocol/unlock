@@ -26,9 +26,7 @@ contract('Lock / transferFee', accounts => {
 
   it('has a default fee of 0%', async () => {
     const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
-    const feeDenominator = new BigNumber(
-      await lock.BASIS_POINTS_DEN.call()
-    )
+    const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
     assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0)
   })
 
@@ -142,9 +140,7 @@ contract('Lock / transferFee', accounts => {
         const feeNumerator = new BigNumber(
           await lock.transferFeeBasisPoints.call()
         )
-        const feeDenominator = new BigNumber(
-          await lock.BASIS_POINTS_DEN.call()
-        )
+        const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
         assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0025)
       })
 
