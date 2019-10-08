@@ -1,6 +1,7 @@
 import nock from 'nock'
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+import utils from '../utils'
 
 // TODO: move this to the integration tests directory
 
@@ -129,6 +130,21 @@ describe('Unlock Provider', () => {
         ).toBeTruthy()
       })
     })
+
+    describe('personal_sign', () => {
+      it('should sign some hex data with the user account private key', () => {
+        expect.assertions(1)
+        const someData = 'this is the data I want to sign'
+        const messageHash = utils.utf8ToHex(someData)
+
+        // second param is unused, but in keeping with what we receive from WalletService
+        const output = provider.personal_sign([messageHash, ''])
+
+        expect(sigUtil.recoverPersonalSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {
@@ -137,6 +153,17 @@ describe('Unlock Provider', () => {
       const accounts = await provider.send('eth_accounts')
       expect(accounts).toHaveLength(1)
       expect(accounts[0]).toEqual(publicKey)
+    })
+
+    it('should respond to personal_sign by calling the defined method', async () => {
+      expect.assertions(1)
+      provider.personal_sign = jest.fn()
+      await provider.send('personal_sign', ['some data', 'an address'])
+
+      expect(provider.personal_sign).toHaveBeenCalledWith([
+        'some data',
+        'an address',
+      ])
     })
   })
 })
