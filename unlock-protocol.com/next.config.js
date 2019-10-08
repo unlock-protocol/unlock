@@ -19,6 +19,7 @@ dotenv.config({
 let requiredConfigVariables = {
   unlockEnv,
   googleAnalyticsId,
+  urlBase: process.env.URL_BASE,
   dashboardUrl: process.env.DASHBOARD_URL,
   intercomAppId: 'f99d98d3', // Hardcoded for now
 }
