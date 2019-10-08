@@ -57,6 +57,22 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     return this[method](params)
   }
 
+  /**
+   * Implementation of personal_sign JSON-RPC call
+   * @param {string} data the data to sign.
+   * @param {string} _ the address to sign it with -- ignored because
+   * we use the address in this class.
+   */
+  // eslint-disable-next-line no-unused-vars
+  personal_sign([data, _]) {
+    const privateKey = toBuffer(this.wallet.privateKey)
+    const sig = sigUtil.personalSign(privateKey, { data })
+    return {
+      data,
+      sig,
+    }
+  }
+
   // Signature methods
   // TODO: move these into their own module so they aren't directly accessible
   // on the provider?
