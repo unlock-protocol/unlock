@@ -36,8 +36,9 @@ contract('Lock / erc721 / tokenSymbol', accounts => {
       await shouldFail(
         unlock.configUnlock(
           await unlock.publicLockAddress(),
-          'BTC', 
-          await unlock.globalBaseTokenURI(), {
+          'BTC',
+          await unlock.globalBaseTokenURI(),
+          {
             from: accounts[1],
           }
         )

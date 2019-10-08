@@ -54,8 +54,8 @@ contract('Lock / erc721 / tokenURI', accounts => {
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await shouldFail(
         unlock.configUnlock(
-        await unlock.publicLockAddress(),
-        await unlock.globalTokenSymbol(),
+          await unlock.publicLockAddress(),
+          await unlock.globalTokenSymbol(),
           'https://fakeURI.com',
           {
             from: accounts[1],
