@@ -43,7 +43,7 @@ contract('Lock / destroyLock', accounts => {
 
         // Add ETH to the lock, even if it's priced in ERC20
         // TODO: should we block this from happening instead?
-        await lock.purchase(accounts[9], web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(0, accounts[9], web3.utils.padLeft(0, 40), [], {
           from: accounts[9],
           value: Units.convert('0.01', 'eth', 'wei'),
         })
@@ -62,7 +62,7 @@ contract('Lock / destroyLock', accounts => {
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
 
-          await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
+          await lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
             from: accounts[1],
             value,
           })
@@ -144,7 +144,7 @@ contract('Lock / destroyLock', accounts => {
                 : 0
 
             // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-            await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
+            await lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
               from: accounts[1],
               value,
             })
@@ -163,9 +163,15 @@ contract('Lock / destroyLock', accounts => {
             // assert.equal(await lock.getHasValidKey.call(accounts[1]), false)
           } else {
             try {
-              await lock.purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
-                value: Units.convert('0.01', 'eth', 'wei'),
-              })
+              await lock.purchase(
+                0,
+                accounts[1],
+                web3.utils.padLeft(0, 40),
+                [],
+                {
+                  value: Units.convert('0.01', 'eth', 'wei'),
+                }
+              )
             } catch (e) {
               assert(e.message.endsWith('is not a contract address'))
               return

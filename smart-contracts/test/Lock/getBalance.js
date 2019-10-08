@@ -35,7 +35,7 @@ contract('Lock / getBalance', accounts => {
         await testToken.approve(lock.address, '1000000000000000000', {
           from: accounts[2],
         })
-        await lock.purchase(accounts[2], web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
           from: accounts[2],
           value: isErc20 ? 0 : keyPrice.toString(),
         })

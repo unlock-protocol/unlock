@@ -41,7 +41,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   before(async () => {
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
-      return lock.purchase(account, web3.utils.padLeft(0, 40), keyPrice.toFixed(), [], {
+      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
       })
@@ -144,7 +144,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
       await lock.cancelAndRefundFor(keyOwners[2], signature, {
         from: txSender,
       })
-      await lock.purchase(keyOwners[2], web3.utils.padLeft(0, 40), keyPrice.toFixed(), [], {
+      await lock.purchase(0, keyOwners[2], web3.utils.padLeft(0, 40), [], {
         from: keyOwners[2],
         value: keyPrice.toFixed(),
       })

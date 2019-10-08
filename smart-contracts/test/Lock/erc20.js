@@ -47,7 +47,7 @@ contract('Lock / erc20', accounts => {
 
     describe('users can purchase keys', () => {
       it('can purchase', async () => {
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
       })
@@ -66,7 +66,7 @@ contract('Lock / erc20', accounts => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
           from: keyOwner3,
         })
 
@@ -119,12 +119,12 @@ contract('Lock / erc20', accounts => {
 
       it('purchaseForFrom works as well', async () => {
         // The referrer needs a valid key for this test
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
         const balanceBefore = new BigNumber(await token.balanceOf(keyOwner2))
 
-        await lock.purchase(keyOwner2, keyOwner, [], { from: keyOwner2 })
+        await lock.purchase(0, keyOwner2, keyOwner, [], { from: keyOwner2 })
 
         const balance = new BigNumber(await token.balanceOf(keyOwner2))
         assert.equal(balance.toFixed(), balanceBefore.minus(keyPrice).toFixed())
@@ -147,7 +147,9 @@ contract('Lock / erc20', accounts => {
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice.minus(1))
       await shouldFail(
-        lock.purchase(account, web3.utils.padLeft(0, 40), [], { from: account })
+        lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
+          from: account,
+        })
       )
     })
 
@@ -156,7 +158,9 @@ contract('Lock / erc20', accounts => {
       await token.approve(lock.address, -1)
       await token.mint(account, keyPrice)
       await shouldFail(
-        lock.purchase(account, web3.utils.padLeft(0, 40), [], { from: account })
+        lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
+          from: account,
+        })
       )
     })
   })

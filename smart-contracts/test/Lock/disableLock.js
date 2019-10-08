@@ -21,13 +21,13 @@ contract('Lock / disableLock', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
-    await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), keyPrice, [], {
+    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
       value: keyPrice,
     })
-    await lock.purchase(keyOwner2, web3.utils.padLeft(0, 40), keyPrice, [], {
+    await lock.purchase(0, keyOwner2, web3.utils.padLeft(0, 40), [], {
       value: keyPrice,
     })
-    await lock.purchase(keyOwner3, web3.utils.padLeft(0, 40), keyPrice, [], {
+    await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
       value: keyPrice,
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
@@ -58,7 +58,7 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key', async () => {
       await shouldFail(
-        lock.purchase(keyOwner, web3.utils.padLeft(0, 40), keyPrice, [], {
+        lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
           value: keyPrice,
         }),
         'LOCK_DEPRECATED'
@@ -67,7 +67,7 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
-        lock.purchase(keyOwner, accounts[3], keyPrice, [], {
+        lock.purchase(0, keyOwner, accounts[3], [], {
           value: keyPrice,
         }),
         'LOCK_DEPRECATED'

@@ -25,15 +25,15 @@ contract MixinPurchase is
 
   /**
   * @dev Purchase function
+  * @param _value the price to pay for this purchase >=keyPrice (or 0 to ignore this check)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
-  * @param _value the price to pay for this purchase >=keyPrice (or 0 to ignore this check)
   * @param _data arbitrary data populated by the front-end which initiated the sale
   */
   function purchase(
+    uint256 _value,
     address _recipient,
     address _referrer,
-    uint256 _value,
     bytes calldata _data
   ) external payable
     onlyIfAlive
