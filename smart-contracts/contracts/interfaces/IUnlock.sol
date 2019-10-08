@@ -16,6 +16,7 @@ interface IUnlock {
   );
 
   event ConfigUnlock(
+    address publicLockAddress,
     string globalTokenSymbol,
     string globalTokenURI
   );
@@ -91,6 +92,7 @@ interface IUnlock {
    *  Should throw if called by other than owner.
    */
   function configUnlock(
+    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   )

@@ -28,9 +28,8 @@ async function _getKeyPrice(lock, provider) {
 /**
  * Creates a lock on behalf of the user, using version v10
  * @param {PropTypes.lock} lock
- * @param {PropTypes.address} owner
  */
-export default async function(lock, owner) {
+export default async function(lock) {
   const unlockContract = await this.getUnlockContract()
   let maxNumberOfKeys = lock.maxNumberOfKeys
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -53,7 +52,7 @@ export default async function(lock, owner) {
       maxNumberOfKeys,
       lockName,
       {
-        gasLimit: GAS_AMOUNTS.createLock, // overrides default value for transaction gas price
+        gasLimit: GAS_AMOUNTS.createLock,
       }
     )
     const hash = await this._handleMethodCall(
@@ -68,14 +67,29 @@ export default async function(lock, owner) {
       expirationDuration: lock.expirationDuration,
       keyPrice: lock.keyPrice, // Must be expressed in Eth!
       maxNumberOfKeys: lock.maxNumberOfKeys,
-      owner: owner,
       outstandingKeys: 0,
       balance: '0',
       transaction: hash,
       name: lockName,
       currencyContractAddress: lock.currencyContractAddress,
     })
+    // Let's now wait for the lock to be deployed before we return its address
+    const receipt = await this.provider.waitForTransaction(hash)
+    const parser = unlockContract.interface
+    const newLockEvent = receipt.logs
+      .map(log => {
+        return parser.parseLog(log)
+      })
+      .filter(event => event.name === 'NewLock')[0]
+
+    if (newLockEvent) {
+      return newLockEvent.values.newLockAddress
+    } else {
+      // There was no NewEvent log (transaction failed?)
+      return null
+    }
   } catch (error) {
     this.emit('error', new Error(TransactionTypes.FAILED_TO_CREATE_LOCK))
+    return null
   }
 }

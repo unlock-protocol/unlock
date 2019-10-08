@@ -38,7 +38,7 @@ module.exports = function deployLocks(
       } else {
         const tx = await createCall
         // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
-        const evt = tx.logs[1]
+        const evt = tx.logs.find(v => v.event === 'NewLock')
         locks[name] = await PublicLock.at(evt.args.newLockAddress)
         locks[name].params = Locks[name]
       }

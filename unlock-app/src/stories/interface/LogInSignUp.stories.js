@@ -13,7 +13,7 @@ import LogInSignUp from '../../components/interface/LogInSignUp'
 
 storiesOf('LogInSignUp/Components', module)
   .add('LogIn', () => {
-    return <LogIn toggleSignup={doNothing} />
+    return <LogIn toggleSignup={doNothing} errors={[]} />
   })
   .add('SignUp', () => {
     return <SignUp signupEmail={signupEmail} />
@@ -35,7 +35,18 @@ storiesOf('LogInSignUp/Components', module)
   .add('SignupSuccess', () => {
     return <SignupSuccess />
   })
-const store = createUnlockStore()
+const store = createUnlockStore({
+  errors: [],
+})
+const errorStore = createUnlockStore({
+  errors: [
+    {
+      level: 'Warning',
+      kind: 'LogIn',
+      message: 'Could not log in',
+    },
+  ],
+})
 
 const account = {
   address: '0x123',
@@ -43,9 +54,21 @@ const account = {
 }
 
 storiesOf('LogInSignUp', module)
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
-  .add('LogIn', () => <LogInSignUp login />)
-  .add('SignUp', () => <LogInSignUp signup />)
+  .add('Login', () => (
+    <Provider store={store}>
+      <LogInSignUp login />
+    </Provider>
+  ))
+  .add('Login (error)', () => (
+    <Provider store={errorStore}>
+      <LogInSignUp login />
+    </Provider>
+  ))
+  .add('SignUp', () => (
+    <Provider store={store}>
+      <LogInSignUp signup />
+    </Provider>
+  ))
 
 storiesOf('SignUp', module)
   .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
