@@ -20,6 +20,8 @@ import {
   signedPurchaseData,
   CHANGE_PASSWORD,
 } from '../actions/user'
+import { WEB3_CALL, web3Result } from '../actions/web3call'
+import { web3MethodCall } from '../windowTypes'
 
 interface Provider {
   enable?: () => any
@@ -110,6 +112,29 @@ export async function initializeUnlockProvider(
   }
 }
 
+export async function sendMethod(
+  payload: web3MethodCall,
+  provider: any,
+  dispatch: any
+) {
+  const { method, id, params } = payload
+  const result = await provider.send(method, params)
+
+  // TODO: handle errors here -- at the moment there are no methods
+  // that return an error value
+  dispatch(
+    web3Result({
+      id,
+      jsonrpc: '2.0',
+      result: {
+        id,
+        jsonrpc: '2.0',
+        result,
+      },
+    })
+  )
+}
+
 export const providerMiddleware = (config: any) => {
   return ({ getState, dispatch }: { [key: string]: any }) => {
     return function(next: any) {
@@ -139,6 +164,8 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_PURCHASE_DATA) {
           const payload = provider.signKeyPurchaseRequestData(action.data)
           dispatch(signedPurchaseData(payload))
+        } else if (action.type === WEB3_CALL) {
+          sendMethod(action.payload, provider, dispatch)
         }
 
         if (action.type === CHANGE_PASSWORD) {
