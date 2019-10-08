@@ -69,10 +69,11 @@ contract Unlock is
   // Used by locks where the owner has not set a custom base URI.
   string public globalBaseTokenURI;
 
-   // global base token symbol
+  // global base token symbol
   // Used by locks where the owner has not set a custom symbol
   string public globalTokenSymbol;
 
+  // The address of the public lock template, used when `createLock` is called
   address public publicLockAddress;
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
