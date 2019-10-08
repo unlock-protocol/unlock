@@ -25,7 +25,7 @@ contract('Lock / transferFee', accounts => {
   })
 
   it('has a default fee of 0%', async () => {
-    const feeNumerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
+    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
     const feeDenominator = new BigNumber(
       await lock.BASIS_POINTS_DEN.call()
     )
@@ -135,12 +135,12 @@ contract('Lock / transferFee', accounts => {
 
       before(async () => {
         // Change the fee to 0.025%
-        tx = await lock.updateTransferFee(1, 4000)
+        tx = await lock.updateTransferFee(25)
       })
 
       it('has an updated fee', async () => {
         const feeNumerator = new BigNumber(
-          await lock.refundPenaltyBasisPoints.call()
+          await lock.transferFeeBasisPoints.call()
         )
         const feeDenominator = new BigNumber(
           await lock.BASIS_POINTS_DEN.call()
@@ -148,22 +148,19 @@ contract('Lock / transferFee', accounts => {
         assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.00025)
       })
 
-      it('emits the BASIS_POINTS_DENChanged event', async () => {
+      it('emits TransferFeeChanged event', async () => {
         assert.equal(tx.logs[0].event, 'TransferFeeChanged')
-        assert.equal(tx.logs[0].args.oldrefundPenaltyBasisPoints, 5)
-        assert.equal(tx.logs[0].args.oldBASIS_POINTS_DEN, 100)
-        assert.equal(tx.logs[0].args.refundPenaltyBasisPoints, 1)
-        assert.equal(tx.logs[0].args.BASIS_POINTS_DEN, 4000)
+        assert.equal(tx.logs[0].args.transferFeeBasisPoints, 1)
       })
     })
 
     describe('should fail if', () => {
       it('called by an account which does not own the lock', async () => {
-        await shouldFail(lock.updateTransferFee(1, 100, { from: accounts[1] }))
+        await shouldFail(lock.updateTransferFee(1000, { from: accounts[1] }))
       })
 
       it('attempt to set the denominator to 0', async () => {
-        await shouldFail(lock.updateTransferFee(1, 0), 'INVALID_RATE')
+        await shouldFail(lock.updateTransferFee(1000), 'INVALID_RATE')
       })
     })
   })
