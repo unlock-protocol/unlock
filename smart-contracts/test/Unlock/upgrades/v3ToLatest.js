@@ -80,8 +80,21 @@ contract('Unlock / upgrades', accounts => {
 
   describe('latest', () => {
     before(async () => {
-      project.upgradeProxy(proxy.address, UnlockLatest)
-      unlock = UnlockLatest.at(proxy.address)
+      await project.upgradeProxy(proxy.address, UnlockLatest)
+      unlock = await UnlockLatest.at(proxy.address)
+      const lock = await PublicLockLatest.new({
+        from: unlockOwner,
+        gas: 6700000,
+      })
+      await unlock.methods
+        .configUnlock(
+          lock.address,
+          await unlock.methods.globalTokenSymbol().call(),
+          await unlock.methods.globalBaseTokenURI().call()
+        )
+        .send({
+          from: unlockOwner,
+        })
     })
 
     describe('Lock created with UnlockV3 is still available', () => {
