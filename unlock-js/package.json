@@ -32,12 +32,12 @@
     }
   },
   "devDependencies": {
-    "@babel/cli": "7.6.2",
-    "@babel/core": "7.6.2",
-    "@babel/preset-env": "7.6.2",
+    "@babel/cli": "7.6.0",
+    "@babel/core": "7.6.0",
+    "@babel/preset-env": "7.6.0",
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
-    "nock": "11.4.0",
+    "nock": "11.3.5",
     "unlock-abi-0": "1.0.4",
     "unlock-abi-0-1": "1.0.0",
     "unlock-abi-0-2": "1.0.0",
