@@ -36,7 +36,7 @@ function generateTypedData(message: any) {
   }
 }
 
-beforeAll(async () => {
+beforeAll(() => {
   let UserReference = models.UserReference
   let User = models.User
 
