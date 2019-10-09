@@ -1,4 +1,4 @@
-import { web3MethodCall } from '../../windowTypes'
+import { web3MethodCall, web3MethodResult } from '../../windowTypes'
 import {
   WEB3_CALL,
   web3Call,
