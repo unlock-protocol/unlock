@@ -1,5 +1,6 @@
 import useListenForPostMessage from './browser/useListenForPostMessage'
 import { PostMessages } from '../messageTypes'
+import { Account, Locks, PaywallConfig, Transactions } from '../unlockTypes'
 
 import {
   isAccountOrNull,
@@ -11,13 +12,26 @@ import {
 } from '../utils/validators'
 import useConfig from './utils/useConfig'
 
+// // TODO: move useBlockchainData to ts and remove these defs
+interface blockchainData {
+  account: Account | null
+  network: number
+  locks: Locks
+  transactions: Transactions
+  checkWallet: boolean
+  keys: any
+}
+
 /**
  * @param {window} window the global context (window, self, global)
  * @param {object} paywallConfig the paywall configuration passed into window.unlockProtocolConfig
  */
-export default function useBlockchainData(window, paywallConfig) {
+export default function useBlockchainData(
+  window: any,
+  paywallConfig: PaywallConfig
+): blockchainData {
   // this is our default network value until we hear otherwise from the data iframe
-  const { requiredNetworkId } = useConfig(window)
+  const { requiredNetworkId } = useConfig()
 
   // by default, checkWallet is false
   const checkWallet = useListenForPostMessage({
@@ -38,7 +52,7 @@ export default function useBlockchainData(window, paywallConfig) {
   const network = useListenForPostMessage({
     type: PostMessages.UPDATE_NETWORK,
     defaultValue: requiredNetworkId,
-    validator: val => isPositiveInteger(val) && typeof val === 'number',
+    validator: (val: any) => isPositiveInteger(val) && typeof val === 'number',
     local: 'useBlockchainData [network]',
   })
 
@@ -47,7 +61,7 @@ export default function useBlockchainData(window, paywallConfig) {
   const balance = useListenForPostMessage({
     type: PostMessages.UPDATE_ACCOUNT_BALANCE,
     defaultValue: {},
-    validator: val => {
+    validator: (val: any) => {
       return Object.keys(val).reduce((accumulator, currency) => {
         return (
           accumulator &&
