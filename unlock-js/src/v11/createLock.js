@@ -47,8 +47,8 @@ export default async function(lock) {
       'createLock(uint256,address,uint256,uint256,string)'
     ](
       lock.expirationDuration,
-      currencyContractAddress, // ERC20 address, 0 is for eth
-      decimalKeyPrice, // FIX ME!
+      currencyContractAddress,
+      decimalKeyPrice,
       maxNumberOfKeys,
       lockName,
       {
