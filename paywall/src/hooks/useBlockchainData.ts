@@ -12,7 +12,6 @@ import {
 } from '../utils/validators'
 import useConfig from './utils/useConfig'
 
-// // TODO: move useBlockchainData to ts and remove these defs
 interface blockchainData {
   account: Account | null
   network: number
