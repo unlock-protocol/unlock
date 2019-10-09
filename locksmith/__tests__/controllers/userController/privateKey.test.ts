@@ -15,7 +15,12 @@ jest.mock('../../../src/utils/ownedKeys', () => {
 
 beforeAll(() => {
   let UserReference = models.UserReference
-  return UserReference.truncate({ cascade: true })
+  let User = models.User
+
+  return Promise.all([
+    UserReference.truncate({ cascade: true }),
+    User.truncate({ cascade: true }),
+  ])
 })
 
 describe('encrypted private key retrevial', () => {
@@ -56,6 +61,24 @@ describe('encrypted private key retrevial', () => {
       expect(passwordEncryptedPrivateKey).toHaveProperty('address')
       expect(passwordEncryptedPrivateKey).toHaveProperty('id')
       expect(passwordEncryptedPrivateKey).toHaveProperty('version')
+    })
+  })
+
+  describe('when the account has been ejected', () => {
+    it('returns a 404', async () => {
+      expect.assertions(1)
+      let emailAddress = 'ejected_user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+      await UserOperations.eject(userCreationDetails.publicKey)
+
+      let response = await request(app).get(`/users/${emailAddress}/privatekey`)
+      expect(response.statusCode).toEqual(404)
     })
   })
 })

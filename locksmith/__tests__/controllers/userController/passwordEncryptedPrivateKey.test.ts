@@ -1,3 +1,5 @@
+import models = require('../../../src/models')
+
 jest.mock('../../../src/utils/ownedKeys', () => {
   return {
     keys: jest
@@ -34,11 +36,14 @@ function generateTypedData(message: any) {
   }
 }
 
-beforeAll(async () => {
-  let models = require('../../../src/models')
-
+beforeAll(() => {
   let UserReference = models.UserReference
-  return UserReference.truncate({ cascade: true })
+  let User = models.User
+
+  return Promise.all([
+    UserReference.truncate({ cascade: true }),
+    User.truncate({ cascade: true }),
+  ])
 })
 
 describe("updating a user's password encrypted private key", () => {
