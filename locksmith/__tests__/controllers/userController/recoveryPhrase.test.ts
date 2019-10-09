@@ -59,4 +59,26 @@ describe("retrieving a user's recovery phrase", () => {
       expect(response.statusCode).toBe(200)
     })
   })
+
+  describe('when the user has been ejected', () => {
+    it('returns a 404', async () => {
+      expect.assertions(1)
+
+      let emailAddress = 'ejected_user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+      await UserOperations.eject(userCreationDetails.publicKey)
+
+      let response = await request(app).get(
+        `/users/${emailAddress}/recoveryphrase`
+      )
+
+      expect(response.statusCode).toEqual(404)
+    })
+  })
 })

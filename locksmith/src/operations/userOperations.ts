@@ -55,12 +55,31 @@ namespace UserOperations {
     }
   }
 
+  export const ejectionStatus = async (
+    emailAddress: string
+  ): Promise<boolean> => {
+    try {
+      let user = await UserReference.findOne({
+        where: {
+          emailAddress: Normalizer.emailAddress(emailAddress),
+        },
+        include: [{ model: User, attributes: ['ejection'] }],
+      })
+
+      return user.User.ejection ? true : false
+    } catch (e) {
+      return false
+    }
+  }
+
   export const getUserRecoveryPhraseByEmailAddress = async (
     emailAddress: string
   ): Promise<string | null> => {
     try {
       let user = await UserReference.findOne({
-        where: { emailAddress: Normalizer.emailAddress(emailAddress) },
+        where: {
+          emailAddress: Normalizer.emailAddress(emailAddress),
+        },
         include: [{ model: User, attributes: ['recoveryPhrase'] }],
       })
 

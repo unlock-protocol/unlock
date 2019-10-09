@@ -59,15 +59,21 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
-      emailAddress
-    )
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    if (result) {
-      return res.json({ recoveryPhrase: result })
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      let recoveryPhrase = new DecoyUser().recoveryPhrase()
-      return res.json({ recoveryPhrase: recoveryPhrase })
+      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+        emailAddress
+      )
+
+      if (result) {
+        return res.json({ recoveryPhrase: result })
+      } else {
+        let recoveryPhrase = new DecoyUser().recoveryPhrase()
+        return res.json({ recoveryPhrase: recoveryPhrase })
+      }
     }
   }
 
