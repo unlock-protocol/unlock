@@ -39,18 +39,24 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserPrivateKeyByEmailAddress(
-      emailAddress
-    )
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    if (result) {
-      return res.json({ passwordEncryptedPrivateKey: result })
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      let result = await new DecoyUser().encryptedPrivateKey()
+      let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+        emailAddress
+      )
 
-      return res.json({
-        passwordEncryptedPrivateKey: result,
-      })
+      if (result) {
+        return res.json({ passwordEncryptedPrivateKey: result })
+      } else {
+        let result = await new DecoyUser().encryptedPrivateKey()
+
+        return res.json({
+          passwordEncryptedPrivateKey: result,
+        })
+      }
     }
   }
 
