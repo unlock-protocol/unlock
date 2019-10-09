@@ -120,6 +120,8 @@ export async function sendMethod(
   const { method, id, params } = payload
   const result = await provider.send(method, params)
 
+  // TODO: handle errors here -- at the moment there are no methods
+  // that return an error value
   dispatch(
     web3Result({
       id,
