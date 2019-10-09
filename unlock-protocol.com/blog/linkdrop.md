@@ -6,7 +6,7 @@ description: Linkdrop provides a simple mechanism which lets anyone create links
 image: /static/images/blog/linkdrop/linkdrop.png
 ---
 
-In the blockchain world, one of the most potent distribution mechanism is called **an airdrop**. It is a way for token creators to send their tokens to a large set of people, without requiring these recipients to perform transactions and pay fees themselves. Unfortunately it is often used as a vector for spam even though it is a very useful tool to boostrap a fairly wide adoption.
+In the blockchain world, one of the most potent distribution mechanisms is called **an airdrop**. It is a way for token creators to send their tokens to a large set of people, without requiring these recipients to perform transactions and pay fees themselves. Unfortunately it is often used as a vector for spam even though it is a very useful tool to boostrap a fairly wide adoption.
 
 At Unlock, [we believe](/blog/mission-vision/) that all creators should make a sustainable living from their work, while respecting the time, privacy and health of their community... and spam does not really fit in this vision!
 
