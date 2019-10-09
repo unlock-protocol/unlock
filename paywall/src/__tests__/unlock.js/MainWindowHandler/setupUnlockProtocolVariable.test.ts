@@ -5,6 +5,7 @@ import {
   UnlockWindow,
   UnlockAndIframeManagerWindow,
 } from '../../../windowTypes'
+import { SIGN_DATA_NAMESPACE } from '../../../constants'
 
 describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
   let fakeWindow: FakeWindow
@@ -58,6 +59,25 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
     expect(fullWindow().unlockProtocol.getState()).toBeUndefined()
   })
 
+  it('should set a signData function on the window.unlockProtocol object, which registers callbacks', () => {
+    expect.assertions(2)
+
+    const handler = getMainWindowHandler()
+    ;(handler as any).callbacker = {
+      addCallback: jest.fn(),
+    }
+    const aCallback = jest.fn()
+
+    handler.setupUnlockProtocolVariable()
+    expect(fullWindow().unlockProtocol.signData).toBeInstanceOf(Function)
+
+    fullWindow().unlockProtocol.signData('some data', aCallback)
+    expect((handler as any).callbacker.addCallback).toHaveBeenCalledWith(
+      SIGN_DATA_NAMESPACE,
+      aCallback
+    )
+  })
+
   it('should not allow setting new variables on the unlockProtocol object', () => {
     expect.assertions(1)
 
@@ -68,6 +88,7 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
       unlockProtocol: {
         loadCheckoutModal: () => void
         getState: () => undefined
+        signData: () => void
         hi: number
       }
     }

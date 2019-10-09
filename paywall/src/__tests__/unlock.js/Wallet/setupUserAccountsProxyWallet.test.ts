@@ -287,6 +287,42 @@ describe('Wallet.setupUserAccounts()', () => {
     )
   })
 
+  it('should forward personal_sign requests to the accounts iframe', () => {
+    expect.assertions(1)
+
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.WEB3,
+      {
+        method: 'personal_sign',
+        jsonrpc: '2.0',
+        params: [],
+        id: 2,
+      },
+      iframes.data.iframe,
+      dataOrigin
+    )
+
+    // Accounts iframe buffers postmessages until it receives READY
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.READY,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+
+    fakeWindow.expectPostMessageSentToIframe(
+      PostMessages.WEB3,
+      {
+        method: 'personal_sign',
+        jsonrpc: '2.0',
+        params: [],
+        id: 2,
+      },
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+  })
+
   it('should error on any other web3 call is sent', () => {
     expect.assertions(1)
 

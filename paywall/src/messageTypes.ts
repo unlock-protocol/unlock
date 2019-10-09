@@ -10,6 +10,16 @@ import { KeyResults } from './data-iframe/blockchainHandler/blockChainTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
 
+export interface PersonalSignPayload {
+  dataToSign: any
+  callbackId: string
+}
+
+export interface PersonalSignResultPayload {
+  signedData: any
+  callbackId: string
+}
+
 // TODO: there is a lot of duplicates from constants.js
 export enum PostMessages {
   LOCKED = 'locked',
@@ -40,6 +50,8 @@ export enum PostMessages {
   PURCHASE_KEY = 'purchaseKey',
   DISMISS_CHECKOUT = 'dismiss/checkout',
   INITIATED_TRANSACTION = 'initiated/transaction',
+  PERSONAL_SIGN = 'personal_sign/submit',
+  PERSONAL_SIGN_RESULT = 'personal_sign/result',
 
   SHOW_ACCOUNTS_MODAL = 'show/accountsModal',
   HIDE_ACCOUNTS_MODAL = 'hide/accountsModal',
@@ -153,6 +165,14 @@ export type Message =
   | {
       type: PostMessages.USING_MANAGED_ACCOUNT
       payload: undefined
+    }
+  | {
+      type: PostMessages.PERSONAL_SIGN
+      payload: PersonalSignPayload
+    }
+  | {
+      type: PostMessages.PERSONAL_SIGN_RESULT
+      payload: PersonalSignResultPayload
     }
 
 export type MessageTypes = Message['type']
