@@ -69,7 +69,6 @@ const postOfficeMiddleware = (window: IframePostOfficeWindow, config: any) => {
     postOfficeService.on(PostOfficeEvents.Unlocked, () =>
       dispatch(setLockedState(false))
     )
-
     postOfficeService.on(PostOfficeEvents.Web3Call, payload => {
       dispatch(web3Call(payload))
     })
