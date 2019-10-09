@@ -1,0 +1,26 @@
+---
+title: "Linkdrop: granting keys through links!"
+authorName: Julien Genestoux
+publishDate: October 9, 2019
+description: Linkdrop provides a simple mechanism which lets anyone create links to "claim" keys for free!
+image: /static/images/blog/linkdrop/linkdrop.png
+---
+
+In the blockchain world, one of the most potent distribution mechanisms is called **an airdrop**. It is a way for token creators to send their tokens to a large set of people, without requiring these recipients to perform transactions and pay fees themselves. Unfortunately it is often used as a vector for spam even though it is a very useful tool to boostrap a fairly wide adoption.
+
+At Unlock, [we believe](/blog/mission-vision/) that all creators should make a sustainable living from their work, while respecting the time, privacy and health of their community... and spam does not really fit in this vision!
+
+Additionally, when talking with creators, they often mention that they want to give away some access keys to their most loyal fans or others members of their community as a way to thank them for their contributions. Of course, our smart contract already includes a `purchaseFor` method which anyone can invoke in order to purchase a new key and assign it to someone else. In the Ethereum world, this is akin to a "meta transaction", a transaction whose beneficiary is not its sender.
+
+Unfortunately, this function, `purchaseFor` requires the purchaser to know the recipient's Ethereum address in advance which is not always practical. Luckily, the team at [LinkDrop](https://linkdrop.io/) found a very good way to solve this: they created a system which lets anyone _create links_ with attached keys. The first user who clicks on a link can then claim a unique key for it. This way, someone who wants to give away keys to a lock can easily do so by creating droplinks which they would then send to users by email, social networking, or even for promotional events.
+
+Want to try it out? Here are 5 links which include keys to this blog:
+1. [Linkdrop 1](https://unlock.linkdrop.io/#/receive?weiAmount=0&tokenAddress=0x0000000000000000000000000000000000000000&tokenAmount=0&expirationTime=12345678910&version=1&chainId=1&linkKey=0x9d0e94f09d2e5322397c7a83cca5fcc627c9c39cc98a16c8ae85e3111fa7ae7d&linkdropMasterAddress=0x6C0F58AD4eb24da5769412Bf34dDEe698c4d185b&linkdropSignerSignature=0xc22ab16ae613b80609919d2b83ef2ec29b8601bc1d8fcc83567505ab5bbf78a74b61aa23d692a4bea5ec65da049ba2c28c82b12a94730df7bca23da0ef3ea5f31b&campaignId=0&lock=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&article=https%3A%2F%2Funlock-protocol.com%2Fblog%2F)
+2. [Linkdrop 2](https://unlock.linkdrop.io/#/receive?weiAmount=0&tokenAddress=0x0000000000000000000000000000000000000000&tokenAmount=0&expirationTime=12345678910&version=1&chainId=1&linkKey=0xf2812db5c39fc1b555f8b337c4187be0573328ffd41737f0e7c78bc9c99a1ee9&linkdropMasterAddress=0x6C0F58AD4eb24da5769412Bf34dDEe698c4d185b&linkdropSignerSignature=0xef24121b19bf6e381bdb6dd7c04c8517c0e330f7c3c4f84e67c0aba958aef860576b99ca75540ebfa27ab5d39f848fc842723af8cf235a75373f6f5e943768321c&campaignId=0&lock=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&article=https%3A%2F%2Funlock-protocol.com%2Fblog%2F)
+3. [Linkdrop 3](https://unlock.linkdrop.io/#/receive?weiAmount=0&tokenAddress=0x0000000000000000000000000000000000000000&tokenAmount=0&expirationTime=12345678910&version=1&chainId=1&linkKey=0x860db4444c666f5e83b548a6d8d7ec80c7cda7984d510b6b042a0c83fef96f89&linkdropMasterAddress=0x6C0F58AD4eb24da5769412Bf34dDEe698c4d185b&linkdropSignerSignature=0x2250dc0e1df84a3cca8741d6c0c66d603625670e8e00db826185f26c5994c56a3a2512bb4512ef272fdb2b3f49e3b1ef7d597d0b66a1f0a998a960b78ba4e5af1b&campaignId=0&lock=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&article=https%3A%2F%2Funlock-protocol.com%2Fblog%2F)
+4. [Linkdrop 4](https://unlock.linkdrop.io/#/receive?weiAmount=0&tokenAddress=0x0000000000000000000000000000000000000000&tokenAmount=0&expirationTime=12345678910&version=1&chainId=1&linkKey=0x79baa71ea0d19f111ed4f24b4cacf827539271ad8c320a20305fb7f89dc92b09&linkdropMasterAddress=0x6C0F58AD4eb24da5769412Bf34dDEe698c4d185b&linkdropSignerSignature=0x2ec3068612f9d963efcd8c7d4be61458e075c059d917c101a0ff1f7d1050081e53c7c7695659c9cf0e7f1ffdf1c40d8792d6f39de392f8c5c7a9e7aa028275581c&campaignId=0&lock=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&article=https%3A%2F%2Funlock-protocol.com%2Fblog%2F)
+5. [Linkdrop 5](https://unlock.linkdrop.io/#/receive?weiAmount=0&tokenAddress=0x0000000000000000000000000000000000000000&tokenAmount=0&expirationTime=12345678910&version=1&chainId=1&linkKey=0x69c72ac85f8a8e4886876963940da4b76846226e61e97ed7f31a4ceeb6998cc4&linkdropMasterAddress=0x6C0F58AD4eb24da5769412Bf34dDEe698c4d185b&linkdropSignerSignature=0x715f9862aefb88c9ce78d13204a7bcb2a171280e2310a98762deea5a9a8636df6212fd2de2acfe2ac618a59505c2e23c48624ae992034757f49dc81c66741ac51c&campaignId=0&lock=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&article=https%3A%2F%2Funlock-protocol.com%2Fblog%2F)
+
+If all links have been claimed, please reach out in our [Telegram group](https://t.me/unlockprotocol), as we have more links to share ;)
+
+For which lock would you want to generate links? You can easily [use Linkdrop's tutorial](https://github.com/LinkdropHQ/linkdrop-unlock)!
