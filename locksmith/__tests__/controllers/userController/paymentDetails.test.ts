@@ -35,7 +35,7 @@ describe('payment details', () => {
   let request = require('supertest')
 
   describe("retrieving a user's card details ", () => {
-    it("return the user's card details available", async () => {
+    it("return the user's card details if available", async () => {
       expect.assertions(1)
       UserOperations.getCards = jest.fn()
 
