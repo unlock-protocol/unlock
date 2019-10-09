@@ -15,6 +15,7 @@ export const OpenGraphTags = ({ title, description, image, canonicalPath }) => {
   if (!image) image = PAGE_DEFAULT_IMAGE
   if (!canonicalPath) canonicalPath = '/'
 
+  const absolutePath = `${config.urlBase || ''}${canonicalPath}`
   const absolutePathImage = `${config.urlBase || ''}${image}`
 
   return (
@@ -22,7 +23,7 @@ export const OpenGraphTags = ({ title, description, image, canonicalPath }) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={canonicalPath} />
+      <meta property="og:url" content={absolutePath} />
       <meta property="og:image" content={absolutePathImage} />
     </>
   )
