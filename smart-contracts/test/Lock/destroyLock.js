@@ -10,7 +10,7 @@ const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
-
+const keyPrice = Units.convert('0.01', 'eth', 'wei')
 let unlock, locks
 
 contract('Lock / destroyLock', accounts => {
@@ -43,10 +43,16 @@ contract('Lock / destroyLock', accounts => {
 
         // Add ETH to the lock, even if it's priced in ERC20
         // TODO: should we block this from happening instead?
-        await lock.purchase(0, accounts[9], web3.utils.padLeft(0, 40), [], {
-          from: accounts[9],
-          value: Units.convert('0.01', 'eth', 'wei'),
-        })
+        await lock.purchase(
+          keyPrice,
+          accounts[9],
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            from: accounts[9],
+            value: keyPrice,
+          }
+        )
       })
 
       it('should fail if called by the wrong account', async () => {
@@ -62,10 +68,16 @@ contract('Lock / destroyLock', accounts => {
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
 
-          await lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-            from: accounts[1],
-            value,
-          })
+          await lock.purchase(
+            keyPrice,
+            accounts[1],
+            web3.utils.padLeft(0, 40),
+            [],
+            {
+              from: accounts[1],
+              value,
+            }
+          )
           assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
           initialLockBalance = await getTokenBalance(lock.address, tokenAddress)
@@ -144,10 +156,16 @@ contract('Lock / destroyLock', accounts => {
                 : 0
 
             // This line does not fail, but instead calls the fallback function and sends msg.value to the destroyed contract.
-            await lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
-              from: accounts[1],
-              value,
-            })
+            await lock.purchase(
+              keyPrice,
+              accounts[1],
+              web3.utils.padLeft(0, 40),
+              [],
+              {
+                from: accounts[1],
+                value,
+              }
+            )
 
             let finalLockBalance = await getTokenBalance(
               lock.address,
@@ -164,7 +182,7 @@ contract('Lock / destroyLock', accounts => {
           } else {
             try {
               await lock.purchase(
-                0,
+                keyPrice,
                 accounts[1],
                 web3.utils.padLeft(0, 40),
                 [],

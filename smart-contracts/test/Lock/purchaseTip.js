@@ -102,34 +102,38 @@ contract('Lock / purchaseTip', accounts => {
         })
       })
 
-      describe('purchase with unspecified ETH tip', () => {
-        beforeEach(async () => {
-          await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
-            from: accounts[2],
-            value: isErc20 ? 0 : tip.toString(),
+      if (!isErc20) {
+        describe('purchase with unspecified ETH tip', () => {
+          beforeEach(async () => {
+            await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
+              from: accounts[2],
+              value: isErc20 ? 0 : tip.toString(),
+            })
+          })
+
+          it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
+            const balance = await lock.getBalance(tokenAddress, lock.address)
+            if (!isErc20) {
+              assert.equal(balance.toString(), tip.toString())
+            } else {
+              assert.equal(balance.toString(), keyPrice.toString())
+            }
           })
         })
+      }
 
-        it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-          const balance = await lock.getBalance(tokenAddress, lock.address)
-          if (!isErc20) {
-            assert.equal(balance.toString(), tip.toString())
-          } else {
-            assert.equal(balance.toString(), keyPrice.toString())
-          }
+      if (isErc20) {
+        it('should fail if value is less than keyPrice', async () => {
+          await truffleAssert.fails(
+            lock.purchase(1, accounts[2], web3.utils.padLeft(0, 40), [], {
+              from: accounts[2],
+              value: isErc20 ? 0 : keyPrice.toString(),
+            }),
+            'revert',
+            'INSUFFICIENT_VALUE'
+          )
         })
-      })
-
-      it('should fail if value is less than keyPrice', async () => {
-        await truffleAssert.fails(
-          lock.purchase(1, accounts[2], web3.utils.padLeft(0, 40), [], {
-            from: accounts[2],
-            value: isErc20 ? 0 : keyPrice.toString(),
-          }),
-          'revert',
-          'INSUFFICIENT_VALUE'
-        )
-      })
+      }
     })
   })
 })

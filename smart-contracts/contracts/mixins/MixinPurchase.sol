@@ -25,7 +25,7 @@ contract MixinPurchase is
 
   /**
   * @dev Purchase function
-  * @param _value the price to pay for this purchase >=keyPrice (or 0 to ignore this check)
+  * @param _value the price to pay for this purchase >=keyPrice (ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
@@ -89,7 +89,7 @@ contract MixinPurchase is
     );
 
     // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-    if(_value > 0) {
+    if(tokenAddress != address(0)) {
       require(_value >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
       inMemoryKeyPrice = _value;
     }
