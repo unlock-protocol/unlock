@@ -57,6 +57,9 @@ import recoveryReducer, {
 import pageStatusReducer, {
   initialState as defaultPageStatus,
 } from './reducers/pageStatusReducer'
+import signatureReducer, {
+  initialState as defaultSignatureState,
+} from './reducers/signatureReducer'
 
 const config = configure()
 
@@ -83,6 +86,7 @@ export const createUnlockStore = (
     cart: cartReducer,
     recoveryPhrase: recoveryReducer,
     pageIsLocked: pageStatusReducer,
+    signature: signatureReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -112,6 +116,7 @@ export const createUnlockStore = (
       recoveryPhrase: defaultRecoveryPhrase,
       cart: defaultCartState,
       pageIsLocked: defaultPageStatus,
+      signature: defaultSignatureState,
     },
     {
       provider: Object.keys(config.providers)[0],
