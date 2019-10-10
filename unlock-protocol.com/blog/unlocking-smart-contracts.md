@@ -69,7 +69,7 @@ constructor(IPublicLock _lockAddress) public
 }
 ```
 
-We have to set the address for the Lock to use at some point.  If you know it when this contract is deployed you can simply assign it in the constructor: However you might also consider a privileged call instead, allowing you to update the Lock in the future if needed.  Here’s an example of a [MutableLock](https://github.com/HardlyDifficult/unlock-contracts/blob/master/contracts/MutableLock.sol).
+We have to set the address for the Lock to use at some point.  If you know it when this contract is deployed you can simply assign it in the constructor. However you might also consider a privileged call instead, allowing you to update the Lock in the future if needed.  Here’s an example of a [MutableLock](https://github.com/HardlyDifficult/unlock-contracts/blob/master/contracts/MutableLock.sol).
 
 ```
 require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
