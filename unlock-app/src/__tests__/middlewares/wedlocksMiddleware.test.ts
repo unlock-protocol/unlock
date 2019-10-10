@@ -50,9 +50,9 @@ describe('Wedlocks Middleware', () => {
 
     expect(wedlocksService.welcomeEmail).toHaveBeenCalledWith(
       emailAddress,
-      `http://localhost/recover/?email=tim@cern.ch&recoveryKey=${encodeURIComponent(
-        JSON.stringify(recoveryKey)
-      )}`
+      `http://localhost/recover/?email=${encodeURIComponent(
+        'tim@cern.ch'
+      )}&recoveryKey=${encodeURIComponent(JSON.stringify(recoveryKey))}`
     )
   })
 })
