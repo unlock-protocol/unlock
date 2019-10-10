@@ -89,19 +89,24 @@ namespace UserController {
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
     let user = req.body.message.user
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    try {
-      let result = await UserOperations.updateEmail(
-        emailAddress,
-        user.emailAddress
-      )
+    if (ejected) {
+      return res.sendStatus(404)
+    } else {
+      try {
+        let result = await UserOperations.updateEmail(
+          emailAddress,
+          user.emailAddress
+        )
 
-      if (result[0] == 0) {
+        if (result[0] == 0) {
+          return res.sendStatus(400)
+        }
+        return res.sendStatus(202)
+      } catch (error) {
         return res.sendStatus(400)
       }
-      return res.sendStatus(202)
-    } catch (error) {
-      return res.sendStatus(400)
     }
   }
 
