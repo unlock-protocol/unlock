@@ -84,6 +84,11 @@ export default class EventService {
           'https://assets.unlock-protocol.com/nft-images/ethwaterloo/ethwaterloo-logomark.png'
       }
 
+      if (lockAddress === '0xaA23E8ceBd3817eeEC735Cd9aaF557cCB8e8407C') {
+        image =
+          'https://assets.unlock-protocol.com/events/coinfund-rabbithole.png'
+      }
+
       return {
         name,
         date: new Date(date),
