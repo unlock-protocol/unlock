@@ -23,9 +23,9 @@ const wedlocksMiddleware = (config: any) => {
           // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.welcomeEmail(
             action.emailAddress,
-            `${origin}/recover/?email=${
+            `${origin}/recover/?email=${encodeURIComponent(
               action.emailAddress
-            }&recoveryKey=${encodeURIComponent(
+            )}&recoveryKey=${encodeURIComponent(
               JSON.stringify(action.recoveryKey)
             )}`
           )
