@@ -115,13 +115,21 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let publicKey = req.body.message.user.publicKey
+    let emailAddress = req.params.emailAddress
     let token = req.body.message.user.stripeTokenId
-    let result = await UserOperations.updatePaymentDetails(token, publicKey)
 
-    if (result) {
-      return res.sendStatus(202)
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
+
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      return res.sendStatus(400)
+      let result = await UserOperations.updatePaymentDetails(token, publicKey)
+
+      if (result) {
+        return res.sendStatus(202)
+      } else {
+        return res.sendStatus(400)
+      }
     }
   }
 

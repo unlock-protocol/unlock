@@ -18,13 +18,17 @@ beforeAll(() => {
   jest.unmock('../../../src/operations/userOperations')
 
   let UserReference = models.UserReference
+  let User = models.User
 
   UserOperations.updatePaymentDetails = jest
     .fn()
     .mockReturnValueOnce(true)
     .mockReturnValueOnce(false)
 
-  return UserReference.truncate({ cascade: true })
+  return Promise.all([
+    UserReference.truncate({ cascade: true }),
+    User.truncate({ cascade: true }),
+  ])
 })
 
 afterAll(() => {
@@ -77,6 +81,35 @@ describe('payment details', () => {
           },
         })
       expect(response.statusCode).toBe(400)
+    })
+  })
+
+  describe('when the user has been has been ejected', () => {
+    it('returns 404', async () => {
+      expect.assertions(1)
+
+      let emailAddress = 'ejected_user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+      await UserOperations.eject(userCreationDetails.publicKey)
+
+      let response = await request(app)
+        .put('/users/ejected_user@example.com/paymentdetails')
+        .set('Accept', /json/)
+        .send({
+          message: {
+            user: {
+              publicKey: 'ejected_user_phrase_public_key',
+              stripeTokenId: 'tok_RANDOM',
+            },
+          },
+        })
+      expect(response.statusCode).toBe(404)
     })
   })
 })
