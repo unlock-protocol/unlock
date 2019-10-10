@@ -13,6 +13,7 @@ export const EventInfo = ({ event }: any) => {
     <div>
       {event.image && <Banner src={event.image} />}
       <Title>{event.name}</Title>
+      /** TEMPORARY VALUE FOR ETHWATERLOO */
       {normalizedName === 'ethwaterloo' ? (
         <DateComponent>Nov 8 - 10, 2019</DateComponent>
       ) : (
