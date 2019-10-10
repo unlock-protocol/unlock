@@ -10,8 +10,8 @@ describe('KeyData', () => {
         expect(keyData.openSeaPresentation({ expiration: 1234 })).toEqual({
           attributes: [
             {
-              display_type: 'number',
-              trait_type: 'expiration',
+              display_type: 'date',
+              trait_type: 'Expiration',
               value: 1234,
             },
           ],
