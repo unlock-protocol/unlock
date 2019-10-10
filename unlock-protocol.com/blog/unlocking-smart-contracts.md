@@ -6,48 +6,135 @@ description: Unlock value-added features directly in your smart contract. Trivia
 image: /static/images/blog/TBD/hero.jpg
 ---
 
-To date we’ve been talking about using Unlock-Protocol to monetize content such as your blog posts or to sell tickets to an event. But you can also use Unlock for value-add features inside your smart contract!
+Smart contract developers can integrate with Unlock Protocol on-chain, allowing you to monetize features by selling Keys.
 
-# How it works
+Let’s clear up a little terminology first.  ‘Unlock Protocol’ allows you to create ‘Locks’ for specific content or features.  Users can then purchase a ‘Key’ to gain access to that content.  Keys may expire, allowing you to offer a monthly subscription option, and they are NFTs enabling a second hand market if you choose.  We’re adding new features all the time.
 
-1. Create a [Lock](https://unlock-protocol.com/). (If this is your first lock, follow [this step by step](https://unlock-protocol.com/blog/create-first-lock/).)
+From your smart contract, you simply call `getHasValidKey` on the Lock to see if the user should gain access.
 
-Your users can purchase a Key to this Lock in order to gain access to some feature or benefit. Sell Keys on your website, we publish a Javascript API to make integration easy. For example, here is [how to integrate with React](https://unlock-protocol.com/blog/integratating-unlock-react/).
-
-But, you could also very well integrate with your smart contract too by simply checking if the user’s account owns a valid key.
-
-## Use cases:
-
-* Unlock a paid-only feature
-* Unlock a discount on future transactions (or free transactions). Yes, BNB, the most valuable ERC20 actually does exactly that ;)
-* Unlock better odds, e.g. :
-  - opening card packs, key owners get 1 epic or better vs the usual 1 rare or better when rolling a DnD die, get +x bonus on the roll
-* Unlock usage limits, such as free trial enables 1 tx per day, Unlock unlimited per-day.
-* instant-unfreezing for a standard freeze / unfreeze contract which usually requires 24 hours to defrost
-
-# How-to (for developers)
-
-All of our examples are [on Github](https://github.com/HardlyDifficult/unlock-contracts) (from easy to hard):
-
-* PaidOnlyFeature: a function which can only be called by key owners
-* DiceRoleModifier: a function which gives key owners an advantage over non-owners
-* FreeTrial: a function that can only be called once per day unless you purchase a key
-* MutableLock: an example of how you can support changing the Lock in the future
-
-Each example has a Solidity contract in the `contracts` directory and a Truffle test in the `test` folder.
-
-In order to test during development of your smart-contract - you’ll need to deploy the lock locally. The tests show how this is done.
-
-Run the following in your project folder to install:
+A simple example of how this may be leveraged is to unlock a paid-only feature in your contract.  Let me show you how…
 
 ```
-npm hardlydifficult-test-helpers
+pragma solidity ^0.5.0;
+
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
+
+contract PaidOnlyFeature
+{
+  IPublicLock public lock;
+
+  constructor(IPublicLock _lockAddress) public
+  {
+    lock = _lockAddress;
+  }
+
+  function paidOnlyFeature() public
+  {
+    require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
+    // ...and then implement your feature as normal
+  }
+
+  // You can also have free features of course
+}
 ```
 
-Check out our example tests for how to get started.
+Pretty straight forward, right?  Let’s step through it.
 
-Going further: (figure we can mention these at the end but not go into detail)
-Using multiple Locks in a single contract. E.g. with the dice example, maybe you can buy a +1 modifier and/or a +2 modifier (for a total of +3 with both keys maybe).
-Making the Lock address mutable.  Unlock is under active development, you may want to ensure the Lock used can be changed in the future in case we release a new feature you want to leverage.
+First we need to install an NPM package with this command:
+
+```
+npm i hardlydifficult-ethereum-contracts
+```
+
+Now we can review the code...
+
+```
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
+```
+
+Importing the interface allows us to make calls to the Lock contract, given its address.
+
+
+```
+IPublicLock public lock;
+```
+
+To gain access, users must purchase a key to the Lock for this content.  This stores the address for the Lock contract.  By using `IPublicLock` instead of `address` we simplify making calls within the contract.  `public` allows end-users to read the Lock’s address, confirming they are purchasing the correct Key.
+
+
+```
+constructor(IPublicLock _lockAddress) public
+{
+  lock = _lockAddress;
+}
+```
+
+We have to set the address for the Lock to use at some point.  If you know it when this contract is deployed you can simply assign it in the constructor: However you might also consider a privileged call instead, allowing you to update the Lock in the future if needed.  Here’s an example of a [MutableLock](https://github.com/HardlyDifficult/unlock-contracts/blob/master/contracts/MutableLock.sol).
+
+```
+require(lock.getHasValidKey(msg.sender), 'Purchase a key first!');
+```
+
+`getHasValidKey` checks if the given address owns a valid (unexpired) key and returns true or false.  We place this in a `require` statement so that the entire transaction fails if they do not.  If you prefer, this could be moved to a `modifier` instead.  Alternatively you could use an `if` condition instead to modify behavior for Key owners somehow (we have a few ideas about that below).
+
+That’s the contract implementation!  The hardest part can be testing though.  We need a way to run your contract locally, and to make calls with and without owning a Key.  For this we have a script to get you started:
+
+```javascript
+const { protocols } = require("hardlydifficult-ethereum-contracts");
+const PaidOnlyFeature = artifacts.require("PaidOnlyFeature");
+
+contract("PaidOnlyFeature", accounts => {
+  let lock;
+  let featureContract;
+  const keyOwner = accounts[3];
+
+  beforeEach(async () => {
+    lock = await protocols.unlock.createTestLock(
+      web3,
+      accounts[9], // Unlock Protocol owner
+      accounts[1], // Lock owner
+      {
+        keyPrice: web3.utils.toWei("0.01", "ether")
+      }
+    );
+
+    featureContract = await PaidOnlyFeature.new(lock.address);
+
+    await lock.purchaseFor(keyOwner, {
+      from: keyOwner,
+      value: await lock.keyPrice()
+    });
+  });
+
+  it("Key owner can call the function", async () => {
+    await featureContract.paidOnlyFeature({
+      from: keyOwner
+    });
+  });
+});
+```
+
+This line does all the heavy lifting for you:
+
+```javascript
+lock = await protocols.unlock.createTestLock(
+  web3,
+  accounts[9], // Unlock Protocol owner
+  accounts[1], // Lock owner
+  {
+    keyPrice: web3.utils.toWei("0.01", "ether")
+  }
+);
+```
+
+It deploys the Unlock Protocol, creates a Lock to use for testing, and returns a contract instance for interacting with the Lock… as shown with the `purchaseFor` line.  With this you can now test as you normally would.
+
+If you want to step it up a notch here are a few mays you might monitize your contracts with Unlock:
+ - Unlock a discount on future transactions (or maybe make it free for key owners).
+ - Unlock usage limits, such as defaulting to a free trial which enables 1 tx per day per account.  Key owners unlock unlimited calls.
+ - Unlock better odds, e.g. when rolling a DnD die key owners get +2 bonus on the roll.
+
+Here's a few [unlock-contract examples](https://github.com/HardlyDifficult/unlock-contracts) with both contracts and sample tests to help you get started.
 
 Want to do this for your smart contract? Get in touch we’d love to help you set it up: hello@unlock-protocol.com
+
