@@ -4,6 +4,7 @@ const Transaction = require('../../src/models').Transaction
 
 describe('transactionController', () => {
   beforeEach(async () => {
+    await Transaction.truncate()
     await Transaction.bulkCreate([
       {
         transactionHash: '0x345546567',

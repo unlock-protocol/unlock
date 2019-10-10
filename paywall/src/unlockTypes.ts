@@ -144,3 +144,7 @@ export interface PurchaseKeyRequest {
   lock: string // lock address
   extraTip: string // extra value to add in addition to key price
 }
+
+export interface NetworkNames {
+  [key: number]: string[]
+}

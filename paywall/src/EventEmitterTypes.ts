@@ -43,6 +43,9 @@ export interface DataIframeEvents {
   ) => void
   // this has to be more specific because WEB3 is overloaded
   [PostMessages.WEB3]: (request: web3MethodCall) => void
+  [PostMessages.PERSONAL_SIGN_RESULT]: (
+    update: ExtractPayload<PostMessages.PERSONAL_SIGN_RESULT>
+  ) => void
 }
 
 /**
@@ -85,6 +88,9 @@ export interface UserAccountsIframeEvents {
   [PostMessages.INITIATED_TRANSACTION]: () => void
   [PostMessages.SHOW_ACCOUNTS_MODAL]: () => void
   [PostMessages.HIDE_ACCOUNTS_MODAL]: () => void
+  [PostMessages.PERSONAL_SIGN_RESULT]: (
+    update: ExtractPayload<PostMessages.PERSONAL_SIGN_RESULT>
+  ) => void
 }
 
 export type UserAccountsIframeEventEmitter = StrictEventEmitter<

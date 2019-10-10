@@ -62,4 +62,29 @@ describe('Wedlocks Service', () => {
       }
     )
   })
+
+  it('should request a welcome email, with the right headers and params, including an encoded URL', async () => {
+    expect.assertions(1)
+    const recipient = 'julien+hello@unlock-protocol.com'
+    const expectedPayload = {
+      template: emailTemplate.welcome,
+      recipient,
+      params: {
+        recoveryLink: 'https://recovery',
+        email: encodeURIComponent(recipient),
+      },
+    }
+    axios.post.mockReturnValue()
+    await w.welcomeEmail(recipient, 'https://recovery')
+
+    expect(axios.post).toHaveBeenCalledWith(
+      'http://notareal.host',
+      expectedPayload,
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
+  })
 })

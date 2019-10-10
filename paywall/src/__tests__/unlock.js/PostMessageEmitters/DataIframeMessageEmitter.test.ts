@@ -118,6 +118,9 @@ describe('DataIframeMessageEmitter', () => {
       >
       [PostMessages.UPDATE_NETWORK]: ExtractPayload<PostMessages.UPDATE_NETWORK>
       [PostMessages.UPDATE_LOCKS]: ExtractPayload<PostMessages.UPDATE_LOCKS>
+      [PostMessages.PERSONAL_SIGN_RESULT]: ExtractPayload<
+        PostMessages.PERSONAL_SIGN_RESULT
+      >
     }
     type Messages = keyof PayloadMessageTypes
     type PayloadMessages<T extends Messages = Messages> = [
@@ -149,6 +152,10 @@ describe('DataIframeMessageEmitter', () => {
         },
       },
     }
+    const personalSignResult = {
+      signedData: 'some signed data',
+      callbackId: 'rupert46',
+    }
 
     const keys: ExtractPayload<PostMessages.UPDATE_KEYS> = {}
 
@@ -165,6 +172,11 @@ describe('DataIframeMessageEmitter', () => {
       ['UPDATE_LOCKS', PostMessages.UPDATE_LOCKS, locks],
       ['UPDATE_KEYS', PostMessages.UPDATE_KEYS, keys],
       ['UPDATE_TRANSACTIONS', PostMessages.UPDATE_TRANSACTIONS, transactions],
+      [
+        'PERSONAL_SIGN_RESULT',
+        PostMessages.PERSONAL_SIGN_RESULT,
+        personalSignResult,
+      ],
     ])(
       'should emit PostMessages.%s upon receiving it',
       (_, message, payload) => {

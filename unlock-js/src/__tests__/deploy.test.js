@@ -129,6 +129,7 @@ describe('contract deployer', () => {
     ['v0', 'v0', v0.Unlock],
     ['v01', 'v01', v01.Unlock],
     ['v02', 'v02', v02.Unlock],
+    // TODO: we're missing tests here for the latest versions of the contract!
     ['Full contract', v0.Unlock, v0.Unlock],
   ])('%s', (name, ContractParameter, UnlockContract) => {
     describe('all JSON-RPC calls happen in expected order', () => {

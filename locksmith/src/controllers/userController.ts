@@ -24,6 +24,7 @@ namespace UserController {
         })
 
         let status = recoveryPhrase ? 200 : 400
+
         return res.status(status).json({
           recoveryPhrase,
         })
@@ -38,18 +39,24 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserPrivateKeyByEmailAddress(
-      emailAddress
-    )
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    if (result) {
-      return res.json({ passwordEncryptedPrivateKey: result })
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      let result = await new DecoyUser().encryptedPrivateKey()
+      let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+        emailAddress
+      )
 
-      return res.json({
-        passwordEncryptedPrivateKey: result,
-      })
+      if (result) {
+        return res.json({ passwordEncryptedPrivateKey: result })
+      } else {
+        let result = await new DecoyUser().encryptedPrivateKey()
+
+        return res.json({
+          passwordEncryptedPrivateKey: result,
+        })
+      }
     }
   }
 
@@ -58,15 +65,21 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
-      emailAddress
-    )
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    if (result) {
-      return res.json({ recoveryPhrase: result })
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      let recoveryPhrase = new DecoyUser().recoveryPhrase()
-      return res.json({ recoveryPhrase: recoveryPhrase })
+      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+        emailAddress
+      )
+
+      if (result) {
+        return res.json({ recoveryPhrase: result })
+      } else {
+        let recoveryPhrase = new DecoyUser().recoveryPhrase()
+        return res.json({ recoveryPhrase: recoveryPhrase })
+      }
     }
   }
 
@@ -76,19 +89,24 @@ namespace UserController {
   ): Promise<any> => {
     let emailAddress = req.params.emailAddress
     let user = req.body.message.user
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-    try {
-      let result = await UserOperations.updateEmail(
-        emailAddress,
-        user.emailAddress
-      )
+    if (ejected) {
+      return res.sendStatus(404)
+    } else {
+      try {
+        let result = await UserOperations.updateEmail(
+          emailAddress,
+          user.emailAddress
+        )
 
-      if (result[0] == 0) {
+        if (result[0] == 0) {
+          return res.sendStatus(400)
+        }
+        return res.sendStatus(202)
+      } catch (error) {
         return res.sendStatus(400)
       }
-      return res.sendStatus(202)
-    } catch (error) {
-      return res.sendStatus(400)
     }
   }
 
@@ -97,13 +115,21 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     let publicKey = req.body.message.user.publicKey
+    let emailAddress = req.params.emailAddress
     let token = req.body.message.user.stripeTokenId
-    let result = await UserOperations.updatePaymentDetails(token, publicKey)
 
-    if (result) {
-      return res.sendStatus(202)
+    let ejected = await UserOperations.ejectionStatus(emailAddress)
+
+    if (ejected) {
+      return res.sendStatus(404)
     } else {
-      return res.sendStatus(400)
+      let result = await UserOperations.updatePaymentDetails(token, publicKey)
+
+      if (result) {
+        return res.sendStatus(202)
+      } else {
+        return res.sendStatus(400)
+      }
     }
   }
 
@@ -141,6 +167,17 @@ namespace UserController {
       let keys = await OwnedKeys.keys(address)
 
       return res.json(keys)
+    }
+  }
+
+  export const eject = async (req: Request, res: Response) => {
+    let address = req.params.ethereumAddress
+    let result = await UserOperations.eject(address)
+
+    if (result[0] > 0) {
+      return res.sendStatus(202)
+    } else {
+      return res.sendStatus(400)
     }
   }
 }

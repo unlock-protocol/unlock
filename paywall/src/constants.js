@@ -122,3 +122,5 @@ export const OPTIMISM_POLLING_INTERVAL = 15000
 // used to provide a default balance for stablecoins so that the paywall does
 // not show "insufficient funds" for managed user accounts
 export const DEFAULT_STABLECOIN_BALANCE = '35'
+
+export const SIGN_DATA_NAMESPACE = 'personalSign'

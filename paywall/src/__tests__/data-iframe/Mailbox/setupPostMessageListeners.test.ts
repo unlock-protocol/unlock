@@ -59,6 +59,7 @@ describe('Mailbox - setupPostMessageListeners', () => {
     testingMailbox().sendUpdates = jest.fn()
     testingMailbox().purchaseKey = jest.fn()
     testingMailbox().refreshBlockchainTransactions = jest.fn()
+    testingMailbox().signData = jest.fn()
     mailbox.setupPostMessageListeners()
   }
 
@@ -133,6 +134,25 @@ describe('Mailbox - setupPostMessageListeners', () => {
       expect(
         testingMailbox().refreshBlockchainTransactions
       ).toHaveBeenCalledWith(payload, expect.any(Function))
+    })
+
+    it('should listen for requests to sign some data', () => {
+      expect.assertions(1)
+
+      const payload = {
+        dataToSign: 'some data',
+        callbackId: 'rupert46',
+      }
+      fakeWindow.receivePostMessageFromMainWindow(
+        PostMessages.PERSONAL_SIGN,
+        payload
+      )
+
+      // called with the payload, and a function that can be used to respond
+      expect(testingMailbox().signData).toHaveBeenCalledWith(
+        payload,
+        expect.any(Function)
+      )
     })
 
     it('should send PostMessages.READY to the main window', () => {

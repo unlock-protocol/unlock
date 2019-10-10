@@ -10,13 +10,7 @@ import useBlockchainData from '../../hooks/useBlockchainData'
 import useWindow from '../../hooks/browser/useWindow'
 import usePaywallConfig from '../../hooks/usePaywallConfig'
 import usePostMessage from '../../hooks/browser/usePostMessage'
-import {
-  Key,
-  Locks,
-  PaywallConfig,
-  Account,
-  Transactions,
-} from '../../unlockTypes'
+import { Key, Locks, NetworkNames } from '../../unlockTypes'
 
 import { PostMessages } from '../../messageTypes'
 
@@ -25,23 +19,6 @@ import { WrongNetwork } from '../creator/FatalError'
 import Greyout from '../helpers/Greyout'
 import useListenForPostMessage from '../../hooks/browser/useListenForPostMessage'
 import CheckoutConfirmingModal from '../checkout/CheckoutConfirmingModal'
-
-interface networkNames {
-  [key: number]: string[]
-}
-
-// TODO: move useBlockchainData to ts and remove these defs
-interface blockchainData {
-  account: Account | null
-  network: number
-  locks: Locks
-  transactions: Transactions
-  checkWallet: boolean
-}
-type useBlockchainDataFunc = (
-  window: any,
-  paywallConfig: PaywallConfig
-) => blockchainData
 
 /**
  * This is the data handler for the Checkout component
@@ -53,12 +30,7 @@ export default function CheckoutContent() {
   // the paywall configuration passed as window.unlockProtocolConfig in the main window
   const paywallConfig = usePaywallConfig()
   // the blockchain data returned from the data iframe
-  const {
-    account,
-    network,
-    locks,
-    checkWallet,
-  }: blockchainData = (useBlockchainData as useBlockchainDataFunc)(
+  const { account, network, locks, checkWallet } = useBlockchainData(
     window,
     paywallConfig
   )
@@ -70,7 +42,7 @@ export default function CheckoutContent() {
     setWalletOverlayDismissed(true)
   }
 
-  const currentNetwork: string = (ETHEREUM_NETWORKS_NAMES as networkNames)[
+  const currentNetwork: string = (ETHEREUM_NETWORKS_NAMES as NetworkNames)[
     network
   ][0]
   // for sending purchase requests, hiding the checkout iframe

@@ -46,5 +46,6 @@ router.put(
   '/:emailAddress/passwordEncryptedPrivateKey',
   userController.updatePasswordEncryptedPrivateKey
 )
+router.post('/:ethereumAddress/eject', userController.eject)
 
 module.exports = router
