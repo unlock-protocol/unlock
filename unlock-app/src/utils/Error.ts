@@ -20,6 +20,7 @@ type ErrorKind =
   | 'Storage'
   | 'Transaction'
   | 'Web3'
+  | 'Wallet'
 
 export type NetworkInfo = {
   currentNetwork: string
@@ -105,6 +106,8 @@ export const Transaction: ErrorMakers = errorsFor('Transaction')
 
 export const Web3: ErrorMakers = errorsFor('Web3')
 
+export const Wallet: ErrorMakers = errorsFor('Wallet')
+
 const constructors: { [key: string]: ErrorMakers } = {
   Application,
   Storage,
@@ -114,6 +117,7 @@ const constructors: { [key: string]: ErrorMakers } = {
   PostOffice,
   SignUp,
   Transaction,
+  Wallet,
   Web3,
 }
 

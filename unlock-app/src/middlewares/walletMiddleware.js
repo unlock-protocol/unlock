@@ -18,7 +18,7 @@ import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
-import { Application, Transaction } from '../utils/Error'
+import { Application, Transaction, Wallet } from '../utils/Error'
 
 import {
   FATAL_NO_USER_ACCOUNT,
@@ -29,6 +29,7 @@ import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
 import { getStoredPaymentDetails } from '../actions/user'
+import { SIGN_DATA, signedData } from '../actions/signature'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -218,6 +219,21 @@ const walletMiddleware = config => {
               action.price
             )
           })
+        } else if (action.type === SIGN_DATA) {
+          const { data } = action
+          walletService.signDataPersonal(
+            '', // account address -- unused in walletService
+            data,
+            (error, signature) => {
+              if (error) {
+                dispatch(
+                  setError(Wallet.Warning('Could not sign identity data.'))
+                )
+              } else {
+                dispatch(signedData(data, signature))
+              }
+            }
+          )
         }
 
         next(action)
