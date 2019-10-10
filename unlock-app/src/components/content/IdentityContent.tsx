@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import Head from 'next/head'
 import QRCode from 'qrcode.react'
 import Layout from '../interface/Layout'
+import LogInSignUp from '../interface/LogInSignUp'
 import { pageTitle } from '../../constants'
 import { signData } from '../../actions/signature'
 
@@ -39,6 +40,7 @@ export class IdentityContent extends React.Component<IdentityContentProps> {
         <Head>
           <title>{pageTitle('Identity')}</title>
         </Head>
+        {!accountAddress && <LogInSignUp login />}
         {signature && (
           <QRCode
             data-testid="identity-signature-QR-code"

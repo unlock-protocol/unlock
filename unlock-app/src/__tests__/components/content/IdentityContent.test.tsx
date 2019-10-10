@@ -13,10 +13,24 @@ import { signData } from '../../../actions/signature'
 const store = createUnlockStore()
 
 describe('IdentityContent', () => {
-  it('should not show a button to sign some data when there is no account address', () => {
-    expect.assertions(2)
+  it('should prompt for login if there is no account address', () => {
+    expect.assertions(0)
 
-    const { queryByText, queryByTestId } = rtl.render(
+    const { getByText } = rtl.render(
+      <Provider store={store}>
+        <ConfigContext.Provider value={{}}>
+          <IdentityContent signature={null} signData={signData} />
+        </ConfigContext.Provider>
+      </Provider>
+    )
+
+    getByText('Log In to Your Account')
+  })
+
+  it('should not show a button to sign some data when there is no account address', () => {
+    expect.assertions(1)
+
+    const { queryByText } = rtl.render(
       <Provider store={store}>
         <ConfigContext.Provider value={{}}>
           <IdentityContent signature={null} signData={signData} />
@@ -25,7 +39,23 @@ describe('IdentityContent', () => {
     )
 
     expect(queryByText('Click here to sign')).toBeNull()
-    // signature is null, so there should also be no QR
+  })
+
+  it('should not show a QR code unless there is a signature', () => {
+    expect.assertions(1)
+
+    const { queryByTestId } = rtl.render(
+      <Provider store={store}>
+        <ConfigContext.Provider value={{}}>
+          <IdentityContent
+            accountAddress="0x123abc"
+            signature={null}
+            signData={signData}
+          />
+        </ConfigContext.Provider>
+      </Provider>
+    )
+
     expect(queryByTestId('identity-signature-QR-code')).toBeNull()
   })
 
