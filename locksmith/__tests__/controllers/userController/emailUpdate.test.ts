@@ -40,8 +40,13 @@ function generateTypedData(message: any) {
 }
 
 beforeAll(() => {
+  let User = models.User
   let UserReference = models.UserReference
-  return UserReference.truncate({ cascade: true })
+
+  return Promise.all([
+    UserReference.truncate({ cascade: true }),
+    User.truncate({ cascade: true }),
+  ])
 })
 
 describe("updating a user's email address", () => {
@@ -102,6 +107,30 @@ describe("updating a user's email address", () => {
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
       expect(response.statusCode).toBe(400)
+    })
+  })
+
+  describe('when the account has been ejected', () => {
+    it('returns 404', async () => {
+      expect.assertions(1)
+
+      let emailAddress = 'ejected_user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+      await UserOperations.eject(userCreationDetails.publicKey)
+
+      let response = await request(app)
+        .put('/users/ejected_user@example.com')
+        .set('Accept', /json/)
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.statusCode).toBe(404)
     })
   })
 })
