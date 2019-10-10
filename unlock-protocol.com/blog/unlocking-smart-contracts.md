@@ -12,7 +12,7 @@ Let’s clear up a little terminology first.  ‘Unlock Protocol’ allows you t
 
 From your smart contract, you simply call `getHasValidKey` on the Lock to see if the user should gain access.
 
-A simple example of how this may be leveraged is to unlock a paid-only feature in your contract.  Let me show you how…
+A simple example is unlocking a paid-only feature in your contract.  Let me show you how…
 
 ```
 pragma solidity ^0.5.0;
