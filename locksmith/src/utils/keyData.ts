@@ -43,9 +43,9 @@ export default class KeyData {
       return {
         attributes: [
           {
-            trait_type: 'expiration',
+            trait_type: 'Expiration',
             value: data.expiration,
-            display_type: 'number',
+            display_type: 'date',
           },
         ],
       }
