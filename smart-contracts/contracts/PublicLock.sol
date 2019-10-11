@@ -71,6 +71,6 @@ contract PublicLock is
   ) external pure
     returns (uint16)
   {
-    return 5;
+    return 6;
   }
 }
