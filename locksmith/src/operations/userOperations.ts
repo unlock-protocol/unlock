@@ -72,6 +72,25 @@ namespace UserOperations {
     }
   }
 
+  export const ejectionStatusByAddress = async (
+    publicKey: string
+  ): Promise<boolean> => {
+    try {
+      let ejectedUser = await User.findOne({
+        where: {
+          publicKey: Normalizer.ethereumAddress(publicKey),
+          ejection: {
+            [Op.ne]: null,
+          },
+        },
+      })
+
+      return ejectedUser ? true : false
+    } catch (e) {
+      return false
+    }
+  }
+
   export const getUserRecoveryPhraseByEmailAddress = async (
     emailAddress: string
   ): Promise<string | null> => {
