@@ -106,7 +106,7 @@ module.exports = {
     kovan: {
       provider: kovanProvider,
       network_id: '42', // Network Id for Rinkeby
-      gas: 6400000,
+      gas: 4700000,
       gasPrice: 5000000000, // 5GWEI
     },
     ropsten: {
