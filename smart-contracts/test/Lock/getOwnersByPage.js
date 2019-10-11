@@ -26,6 +26,7 @@ contract('Lock / getOwnersByPage', accounts => {
   describe('when there are less owners than the page size', () => {
     it('should return all of the key owners', async () => {
       await locks['FIRST'].purchase(
+        0,
         accounts[1],
         web3.utils.padLeft(0, 40),
         [],
@@ -44,6 +45,7 @@ contract('Lock / getOwnersByPage', accounts => {
   describe('when there are more owners than the page size', () => {
     it('return page size number of key owners', async () => {
       await locks['FIRST'].purchase(
+        0,
         accounts[1],
         web3.utils.padLeft(0, 40),
         [],
@@ -53,6 +55,7 @@ contract('Lock / getOwnersByPage', accounts => {
       )
 
       await locks['FIRST'].purchase(
+        0,
         accounts[2],
         web3.utils.padLeft(0, 40),
         [],
@@ -62,6 +65,7 @@ contract('Lock / getOwnersByPage', accounts => {
       )
 
       await locks['FIRST'].purchase(
+        0,
         accounts[3],
         web3.utils.padLeft(0, 40),
         [],
@@ -82,6 +86,7 @@ contract('Lock / getOwnersByPage', accounts => {
   describe('when requesting a secondary page', () => {
     it('return page size number of key owners', async () => {
       await locks['FIRST'].purchase(
+        0,
         accounts[1],
         web3.utils.padLeft(0, 40),
         [],
@@ -91,6 +96,7 @@ contract('Lock / getOwnersByPage', accounts => {
       )
 
       await locks['FIRST'].purchase(
+        0,
         accounts[2],
         web3.utils.padLeft(0, 40),
         [],
@@ -100,6 +106,7 @@ contract('Lock / getOwnersByPage', accounts => {
       )
 
       await locks['FIRST'].purchase(
+        0,
         accounts[3],
         web3.utils.padLeft(0, 40),
         [],

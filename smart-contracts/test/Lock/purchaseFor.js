@@ -18,7 +18,7 @@ contract('Lock / purchaseFor', accounts => {
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
       await shouldFail(
-        locks['FIRST'].purchase(accounts[0], web3.utils.padLeft(0, 40), [], {
+        locks['FIRST'].purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.0001', 'eth', 'wei'),
         }),
         'NOT_ENOUGH_FUNDS'
@@ -32,6 +32,7 @@ contract('Lock / purchaseFor', accounts => {
 
     it('should fail if we reached the max number of keys', async () => {
       await locks['SINGLE KEY'].purchase(
+        0,
         accounts[0],
         web3.utils.padLeft(0, 40),
         [],
@@ -41,6 +42,7 @@ contract('Lock / purchaseFor', accounts => {
       )
       await shouldFail(
         locks['SINGLE KEY'].purchase(
+          0,
           accounts[1],
           web3.utils.padLeft(0, 40),
           [],
@@ -55,6 +57,7 @@ contract('Lock / purchaseFor', accounts => {
 
     it('should trigger an event when successful', async () => {
       const tx = await locks['FIRST'].purchase(
+        0,
         accounts[2],
         web3.utils.padLeft(0, 40),
         [],
@@ -70,6 +73,7 @@ contract('Lock / purchaseFor', accounts => {
     describe('when the user already owns an expired key', () => {
       it('should expand the validity by the default key duration', async () => {
         await locks['SECOND'].purchase(
+          0,
           accounts[4],
           web3.utils.padLeft(0, 40),
           [],
@@ -81,6 +85,7 @@ contract('Lock / purchaseFor', accounts => {
         await locks['SECOND'].expireKeyFor(accounts[4])
         // Purchase a new one
         await locks['SECOND'].purchase(
+          0,
           accounts[4],
           web3.utils.padLeft(0, 40),
           [],
@@ -110,6 +115,7 @@ contract('Lock / purchaseFor', accounts => {
     describe('when the user already owns a non expired key', () => {
       it('should expand the validity by the default key duration', async () => {
         await locks['FIRST'].purchase(
+          0,
           accounts[1],
           web3.utils.padLeft(0, 40),
           [],
@@ -122,6 +128,7 @@ contract('Lock / purchaseFor', accounts => {
         )
         assert(firstExpiration.gt(0))
         await locks['FIRST'].purchase(
+          0,
           accounts[1],
           web3.utils.padLeft(0, 40),
           [],
@@ -154,6 +161,7 @@ contract('Lock / purchaseFor', accounts => {
           await locks['FIRST'].numberOfOwners.call()
         )
         return locks['FIRST'].purchase(
+          0,
           accounts[0],
           web3.utils.padLeft(0, 40),
           [],
@@ -203,6 +211,7 @@ contract('Lock / purchaseFor', accounts => {
 
     it('can purchase a free key', async () => {
       const tx = await locks['FREE'].purchase(
+        0,
         accounts[2],
         web3.utils.padLeft(0, 40),
         []
@@ -215,6 +224,7 @@ contract('Lock / purchaseFor', accounts => {
     describe('can re-purchase an expired key', () => {
       before(async () => {
         await locks['SHORT'].purchase(
+          0,
           accounts[4],
           web3.utils.padLeft(0, 40),
           [],
@@ -231,6 +241,7 @@ contract('Lock / purchaseFor', accounts => {
       it('should expand the validity by the default key duration', async () => {
         // Purchase a new one
         await locks['SHORT'].purchase(
+          0,
           accounts[4],
           web3.utils.padLeft(0, 40),
           [],

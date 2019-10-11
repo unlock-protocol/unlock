@@ -20,7 +20,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
   describe('when the key exists', () => {
     before(async () => {
-      await lock.purchase(owner, web3.utils.padLeft(0, 40), [], {
+      await lock.purchase(0, owner, web3.utils.padLeft(0, 40), [], {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: owner,
       })

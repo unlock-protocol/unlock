@@ -1,3 +1,4 @@
+const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const { protocols } = require('hardlydifficult-test-helpers')
@@ -7,6 +8,8 @@ const TestErc20Token = artifacts.require('TestErc20Token.sol')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
+
+const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
 let unlock, locks, lock, token, exchange
 
@@ -70,7 +73,7 @@ contract('Unlock / uniswapValue', accounts => {
         await token.mint(keyOwner, price, { from: accounts[0] })
         await token.approve(lock.address, -1, { from: keyOwner })
 
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
       })
@@ -102,7 +105,7 @@ contract('Unlock / uniswapValue', accounts => {
         await token.mint(keyOwner, price, { from: accounts[0] })
         await token.approve(lock.address, -1, { from: keyOwner })
 
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
         })
       })
@@ -127,7 +130,7 @@ contract('Unlock / uniswapValue', accounts => {
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
 
-        await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+        await lock.purchase(keyPrice, keyOwner, web3.utils.padLeft(0, 40), [], {
           from: keyOwner,
           value: price,
         })

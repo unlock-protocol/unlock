@@ -19,7 +19,7 @@ contract('Lock / transferFee', accounts => {
     // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.purchase(keyOwner, web3.utils.padLeft(0, 40), [], {
+    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
       value: keyPrice.toFixed(),
     })
   })
