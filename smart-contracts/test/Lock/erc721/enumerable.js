@@ -15,7 +15,7 @@ contract('Lock / erc721 / approve', accounts => {
     // Buy test keys for each account
     const keyPrice = await lock.keyPrice()
     for (let i = 0; i < 5; i++) {
-      await lock.purchase(accounts[i], web3.utils.padLeft(0, 40), [], {
+      await lock.purchase(0, accounts[i], web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toString(),
         from: accounts[i],
       })

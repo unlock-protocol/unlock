@@ -19,7 +19,7 @@ contract('Lock / onKeySoldHook', accounts => {
     testKeySoldHook = await testKeySoldHookContract.new()
     await lock.updateBeneficiary(testKeySoldHook.address)
     keyPrice = await lock.keyPrice()
-    await lock.purchase(to, web3.utils.padLeft(0, 40), dataField, {
+    await lock.purchase(0, to, web3.utils.padLeft(0, 40), dataField, {
       from,
       value: keyPrice,
     })
