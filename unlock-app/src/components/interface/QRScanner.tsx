@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React from 'react'
 import Scanner from 'qr-scanner'
 
@@ -8,7 +9,7 @@ export interface Props {
 export class QRScanner extends React.Component<Props> {
   private videoRef = React.createRef<HTMLVideoElement>()
   private scanner: Scanner | null = null
-  
+
   constructor(props: Props) {
     super(props)
   }
@@ -38,9 +39,7 @@ export class QRScanner extends React.Component<Props> {
   }
 
   render = () => {
-    return (
-      <video ref={this.videoRef} />
-    )
+    return <video ref={this.videoRef} />
   }
 }
 
