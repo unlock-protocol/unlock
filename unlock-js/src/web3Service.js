@@ -64,7 +64,7 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
-          keyPrice: utils.fromWei(keyPrice, 'ether'),
+          keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
