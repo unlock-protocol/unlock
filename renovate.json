@@ -14,14 +14,18 @@
         "*"
       ],
       "minor": {
-        "groupName": "all non-major dependencies",
-        "groupSlug": "all-minor-patch"
+        "groupName": "all dependencies minor updates",
+        "groupSlug": "all-minor"
+      },
+      "patch": {
+        "groupName": "all dependencies patch updates",
+        "groupSlug": "all-patch"
       }
     },
     {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
-      "groupName": null
+      "groupSlug": "unlock-js"
     }
   ]
 }

@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
@@ -60,7 +60,6 @@ contract PublicLock is
     MixinLockCore.initialize(_owner, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata.initialize(_lockName);
     MixinERC721Enumerable.initialize();
-    MixinTransfer.initialize();
     MixinRefunds.initialize();
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721

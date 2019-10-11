@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 /**
  * @title The Unlock contract
@@ -30,6 +30,8 @@ import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
+import './interfaces/IUniswap.sol';
+import './mixins/CloneFactory.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -37,7 +39,8 @@ import './interfaces/IUnlock.sol';
 contract Unlock is
   IUnlock,
   Initializable,
-  Ownable
+  Ownable,
+  CloneFactory
 {
   /**
    * The struct for a lock
@@ -67,9 +70,16 @@ contract Unlock is
   // Used by locks where the owner has not set a custom base URI.
   string public globalBaseTokenURI;
 
-   // global base token symbol
+  // global base token symbol
   // Used by locks where the owner has not set a custom symbol
   string public globalTokenSymbol;
+
+  // The address of the public lock template, used when `createLock` is called
+  address public publicLockAddress;
+
+  // Map token address to exchange contract address if the token is supported
+  // Used for GDP calculations
+  mapping (address => IUniswap) public uniswapExchanges;
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(
@@ -95,8 +105,10 @@ contract Unlock is
     string memory _lockName
   ) public
   {
+    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
+
     // create lock
-    address newLock = address(new PublicLock());
+    address newLock = createClone(publicLockAddress);
     PublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
@@ -151,9 +163,27 @@ contract Unlock is
     public
     onlyFromDeployedLock()
   {
-    // TODO: implement me (discount tokens)
-    grossNetworkProduct += _value;
-    locks[msg.sender].totalSales += _value;
+    if(_value > 0) {
+      uint valueInETH;
+      address tokenAddress = PublicLock(msg.sender).tokenAddress();
+      if(tokenAddress != address(0)) {
+        // If priced in an ERC-20 token, find the supported uniswap exchange
+        IUniswap exchange = uniswapExchanges[tokenAddress];
+        if(address(exchange) != address(0)) {
+          valueInETH = exchange.getTokenToEthInputPrice(_value);
+        } else {
+          // If the token type is not supported, assume 0 value
+          valueInETH = 0;
+        }
+      }
+      else {
+        // If priced in ETH (or value is 0), no conversion is required
+        valueInETH = _value;
+      }
+
+      grossNetworkProduct += valueInETH;
+      locks[msg.sender].totalSales += valueInETH;
+    }
   }
 
   /**
@@ -184,13 +214,27 @@ contract Unlock is
 
   // function for the owner to update configuration variables
   function configUnlock(
+    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   ) external
     onlyOwner
   {
+    publicLockAddress = _publicLockAddress;
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
-    emit ConfigUnlock(_symbol, _URI);
+
+    emit ConfigUnlock(_publicLockAddress, _symbol, _URI);
+  }
+
+  // allows the owner to set the exchange address to use for value conversions
+  // setting the _exchangeAddress to address(0) removes support for the token
+  function setExchange(
+    address _tokenAddress,
+    address _exchangeAddress
+  ) external
+    onlyOwner
+  {
+    uniswapExchanges[_tokenAddress] = IUniswap(_exchangeAddress);
   }
 }

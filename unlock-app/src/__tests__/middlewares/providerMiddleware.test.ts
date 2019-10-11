@@ -3,6 +3,7 @@ import * as unlockJs from '@unlock-protocol/unlock-js'
 import providerMiddleware, {
   changePassword,
   initializeUnlockProvider,
+  sendMethod,
 } from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER, providerReady } from '../../actions/provider'
 import { setError } from '../../actions/error'
@@ -17,6 +18,8 @@ import {
 } from '../../actions/user'
 import { resetRecoveryPhrase } from '../../actions/recovery'
 import { EncryptedPrivateKey } from '../../unlockTypes'
+import { web3MethodCall } from '../../windowTypes'
+import { WEB3_CALL, WEB3_RESULT } from '../../actions/web3call'
 
 jest.mock('@unlock-protocol/unlock-js')
 
@@ -27,6 +30,7 @@ const config = {
       signUserData: jest.fn(() => ({ data: {}, sig: {} })),
       signPaymentData: jest.fn(() => ({ data: {}, sig: {} })),
       signKeyPurchaseRequestData: jest.fn(() => ({ data: {}, sig: {} })),
+      send: jest.fn(),
     },
     NUNLOCK: {
       enable: jest.fn(() => new Promise(resolve => resolve(true))),
@@ -249,6 +253,33 @@ describe('provider middleware', () => {
     })
   })
 
+  describe('WEB3_CALL', () => {
+    it('should call UnlockProvider', () => {
+      expect.assertions(1)
+
+      const payload: web3MethodCall = {
+        id: 9001,
+        jsonrpc: '2.0',
+        method: 'harvest_wheat',
+        params: ['tractor=true'],
+      }
+      const next = () => {
+        expect(config.providers['UNLOCK'].send).toHaveBeenCalledWith(
+          payload.method,
+          payload.params
+        )
+      }
+
+      providerMiddleware(config)({
+        getState: () => ({ provider: 'UNLOCK' }),
+        dispatch,
+      })(next)({
+        type: WEB3_CALL,
+        payload,
+      })
+    })
+  })
+
   describe('CHANGE_PASSWORD', () => {
     const encryptedPrivateKey = {
       version: 3,
@@ -289,6 +320,44 @@ describe('provider middleware', () => {
           type: SIGN_USER_DATA,
         })
       )
+    })
+  })
+})
+
+describe('sendMethod', () => {
+  const method = 'harvest_wheat'
+  const params = ['tractor', 'silo', 'a bag']
+  const id = 9001
+  const jsonrpc = '2.0'
+  const expectedOutput = '12000 cubic hectares of grain'
+
+  it('should dispatch the result of a web3call', async () => {
+    expect.assertions(2)
+    const payload: web3MethodCall = {
+      method,
+      params,
+      id,
+      jsonrpc,
+    }
+    const provider = {
+      send: jest.fn(() => expectedOutput),
+    }
+    const dispatch = jest.fn()
+
+    await sendMethod(payload, provider, dispatch)
+
+    expect(provider.send).toHaveBeenCalledWith(method, params)
+    expect(dispatch).toHaveBeenCalledWith({
+      type: WEB3_RESULT,
+      payload: {
+        id,
+        jsonrpc,
+        result: {
+          id,
+          jsonrpc,
+          result: expectedOutput,
+        },
+      },
     })
   })
 })
