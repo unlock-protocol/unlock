@@ -1,6 +1,7 @@
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
+let UserOperations = require('../../../src/operations/userOperations')
 
 function generateTypedData(message: any) {
   return {
@@ -119,6 +120,37 @@ describe('user creation', () => {
         .send(typedData)
 
       expect(response.statusCode).toBe(400)
+    })
+  })
+
+  describe('when attempting to re-create a previously ejected user', () => {
+    it('returns a 409', async () => {
+      expect.assertions(1)
+
+      let emailAddress = 'ejected_user@example.com'
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+      await UserOperations.eject(userCreationDetails.publicKey)
+
+      let message = {
+        user: {
+          emailAddress,
+          publicKey: userCreationDetails.publicKey,
+          passwordEncryptedPrivateKey:
+            userCreationDetails.passwordEncryptedPrivateKey,
+        },
+      }
+
+      let response = await request(app)
+        .post('/users')
+        .set('Accept', /json/)
+        .send(generateTypedData(message))
+      expect(response.statusCode).toBe(409)
     })
   })
 })
