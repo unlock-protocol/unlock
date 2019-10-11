@@ -145,7 +145,6 @@ describe('user creation', () => {
             userCreationDetails.passwordEncryptedPrivateKey,
         },
       }
-      generateTypedData(message)
 
       let response = await request(app)
         .post('/users')
