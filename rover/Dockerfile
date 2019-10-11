@@ -1,4 +1,4 @@
-FROM node:8.16.1-alpine
+FROM node:10.16.3-alpine
 LABEL Unlock <ops@unlock-protocol.com>
 LABEL maintainer="ops@unlock-protocol.com"
 

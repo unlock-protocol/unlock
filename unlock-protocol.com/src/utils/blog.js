@@ -62,7 +62,7 @@ const generatePostPages = postFeed => {
  */
 const generateBlogIndexFile = (baseDir, postFeed) => {
   // Write blog post index to output baseDirectory
-  fs.writeFile(
+  fs.writeFileSync(
     join(baseDir, 'blog', 'blog.index'),
     JSON.stringify({ items: postFeed }),
     'utf8'
@@ -116,7 +116,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
     }
   })
 
-  fs.writeFile(
+  fs.writeFileSync(
     join(baseDir, 'static', 'blog.rss'),
     rssFeed.xml({ indent: true })
   )
