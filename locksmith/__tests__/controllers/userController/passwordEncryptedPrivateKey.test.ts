@@ -50,47 +50,81 @@ describe("updating a user's password encrypted private key", () => {
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
 
-  let message = {
-    user: {
-      emailAddress: 'user@example.com',
-      publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-      passwordEncryptedPrivateKey: '{"data" : "New Encrypted Password"}',
-    },
-  }
-
-  let typedData = generateTypedData(message)
-  const sig = sigUtil.signTypedData(privateKey, {
-    data: typedData,
-  })
-
-  it('updates the password encrypted private key of the user', async () => {
-    expect.assertions(2)
-
-    let emailAddress = 'user@example.com'
-
-    let userCreationDetails = {
-      emailAddress: emailAddress,
-      publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-      passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+  describe('when the account is active', () => {
+    let message = {
+      user: {
+        emailAddress: 'user@example.com',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        passwordEncryptedPrivateKey: '{"data" : "New Encrypted Password"}',
+      },
     }
 
-    await UserOperations.createUser(userCreationDetails)
-
-    let response = await request(app)
-      .put(
-        '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
-      )
-      .set('Accept', /json/)
-      .set('Authorization', `Bearer ${Base64.encode(sig)}`)
-      .send(typedData)
-
-    let user = await User.findOne({
-      where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
+    let typedData = generateTypedData(message)
+    const sig = sigUtil.signTypedData(privateKey, {
+      data: typedData,
     })
 
-    expect(user.passwordEncryptedPrivateKey).toEqual(
-      '{"data" : "New Encrypted Password"}'
-    )
-    expect(response.status).toBe(202)
+    it('updates the password encrypted private key of the user', async () => {
+      expect.assertions(2)
+
+      let emailAddress = 'user@example.com'
+
+      let userCreationDetails = {
+        emailAddress: emailAddress,
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(userCreationDetails)
+
+      let response = await request(app)
+        .put(
+          '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
+        )
+        .set('Accept', /json/)
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      let user = await User.findOne({
+        where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
+      })
+
+      expect(user.passwordEncryptedPrivateKey).toEqual(
+        '{"data" : "New Encrypted Password"}'
+      )
+      expect(response.status).toBe(202)
+    })
+  })
+
+  describe('when the account has been ejected', () => {
+    it('returns a 404', async () => {
+      expect.assertions(1)
+      let emailAddress = 'ejected_user@example.com'
+      let user = {
+        emailAddress: emailAddress,
+        publicKey: 'ejected_user_phrase_public_key',
+        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+      }
+
+      await UserOperations.createUser(user)
+      await UserOperations.eject(user.publicKey)
+
+      let message = {
+        user,
+      }
+
+      let typedData = generateTypedData(message)
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+      })
+
+      let response = await request(app)
+        .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)
+        .set('Accept', /json/)
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.status).toBe(404)
+    })
   })
 })

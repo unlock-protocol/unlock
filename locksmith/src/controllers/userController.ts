@@ -149,6 +149,12 @@ namespace UserController {
     let publicKey = user.publicKey
     let passwordEncryptedPrivateKey = user.passwordEncryptedPrivateKey
 
+    let ejected = await UserOperations.ejectionStatusByAddress(publicKey)
+
+    if (ejected) {
+      return res.sendStatus(404)
+    }
+
     let result = await UserOperations.updatePasswordEncryptedPrivateKey(
       publicKey,
       passwordEncryptedPrivateKey
