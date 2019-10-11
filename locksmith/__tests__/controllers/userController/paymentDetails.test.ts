@@ -3,17 +3,6 @@ let UserOperations = require('../../../src/operations/userOperations')
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 
-jest.mock('../../../src/utils/ownedKeys', () => {
-  return {
-    keys: jest
-      .fn()
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(['0x1234'])
-      .mockResolvedValueOnce(['0x1234']),
-  }
-})
-
 beforeAll(() => {
   jest.unmock('../../../src/operations/userOperations')
 
