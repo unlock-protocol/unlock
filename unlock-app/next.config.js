@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
 const withTypescript = require('@zeit/next-typescript')
+const withTM = require('next-transpile-modules')
 const dotenv = require('dotenv')
 const path = require('path')
 const { exportPaths } = require('./src/utils/exportStatic')
@@ -49,13 +50,16 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withTypescript({
-  publicRuntimeConfig: {
-    ...optionalConfigVariables,
-    ...requiredConfigVariables,
-  },
-  webpack(config) {
-    return config
-  },
-  exportPathMap: exportPaths,
-})
+module.exports = withTypescript(
+  withTM({
+    publicRuntimeConfig: {
+      ...optionalConfigVariables,
+      ...requiredConfigVariables,
+    },
+    webpack(config) {
+      return config
+    },
+    exportPathMap: exportPaths,
+    transpileModules: ['qr-scanner'],
+  })
+)
