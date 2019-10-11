@@ -1,37 +1,45 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
-import * as OwnedKeys from '../utils/ownedKeys'
 
 import UserOperations = require('../operations/userOperations')
-
-const env = process.env.NODE_ENV || 'development'
 
 namespace UserController {
   export const createUser = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    let user = req.body.message.user
-
     try {
+      let user = req.body.message.user
+
       if (user) {
-        let recoveryPhrase:
-          | String
-          | undefined = await UserOperations.createUser({
-          emailAddress: user.emailAddress,
-          publicKey: user.publicKey,
-          passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-        })
+        let emailAddress = user.emailAddress
+        let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-        let status = recoveryPhrase ? 200 : 400
+        if (ejected) {
+          return res.sendStatus(409)
+        } else {
+          let creationStatus = await userCreationStatus(user)
+          let recoveryPhrase = creationStatus.recoveryPhrase
 
-        return res.status(status).json({
-          recoveryPhrase,
-        })
+          return res.status(creationStatus.status).json({ recoveryPhrase })
+        }
+      } else {
+        return res.sendStatus(400)
       }
     } catch (e) {
       return res.sendStatus(400)
     }
+  }
+
+  const userCreationStatus = async (user: any): Promise<any> => {
+    let recoveryPhrase: String | undefined = await UserOperations.createUser({
+      emailAddress: user.emailAddress,
+      publicKey: user.publicKey,
+      passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
+    })
+
+    let status = recoveryPhrase ? 200 : 400
+    return { status, recoveryPhrase }
   }
 
   export const retrieveEncryptedPrivatekey = async (
@@ -157,17 +165,6 @@ namespace UserController {
     let emailAddress = req.params.emailAddress
     let result = await UserOperations.getCards(emailAddress)
     return res.json(result)
-  }
-
-  export const keys = async (req: Request, res: Response) => {
-    if (env == 'development') {
-      return res.sendStatus(406)
-    } else {
-      let address = req.params.ethereumAddress
-      let keys = await OwnedKeys.keys(address)
-
-      return res.json(keys)
-    }
   }
 
   export const eject = async (req: Request, res: Response) => {

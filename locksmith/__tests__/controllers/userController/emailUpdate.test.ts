@@ -3,17 +3,6 @@ import app = require('../../../src/app')
 import UserOperations = require('../../../src/operations/userOperations')
 import Base64 = require('../../../src/utils/base64')
 
-jest.mock('../../../src/utils/ownedKeys', () => {
-  return {
-    keys: jest
-      .fn()
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(['0x1234'])
-      .mockResolvedValueOnce(['0x1234']),
-  }
-})
-
 function generateTypedData(message: any) {
   return {
     types: {
