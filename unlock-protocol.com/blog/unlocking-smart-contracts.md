@@ -2,6 +2,7 @@
 title: Unlocking Smart Contracts
 subTitle: Integrating Unlock-Protocol into your Smart Contracts
 authorName: Nick Mancuso
+publishDate: October 10, 2019
 description: Unlock value-added features directly in your smart contract. Trivial to implement with endless opportunities. We show you how and discuss some reasons why this might be interesting to you.
 image: /static/images/blog/unlocking-smart-contracts/code.jpeg
 ---
