@@ -441,6 +441,8 @@ storiesOf('Checkout', module)
   })
 
   .add('Checkout with lock with config name override', () => {
+    const expiration = new Date().getTime() / 1000 + 60 * 60 * 24 * 8.5 // this in 8 and a half days. Using a half allows us to avoid transient testing issues because with a "integer" number of days, it could be either 7 or 8 days based on test speed execution
+
     const locks = {
       '0x123': {
         name: 'Overridden',
@@ -450,7 +452,7 @@ storiesOf('Checkout', module)
         key: {
           status: 'valid',
           transactions: [{}],
-          expiration: new Date().getTime() / 1000 + 60 * 60 * 24 * 8,
+          expiration,
         },
       },
       '0x456': {
