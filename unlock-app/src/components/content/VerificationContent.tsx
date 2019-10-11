@@ -1,6 +1,6 @@
 import React from 'react'
-import QRScanner from '../interface/QRScanner'
 import Head from 'next/head'
+import QRScanner from '../interface/QRScanner'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import BrowserOnly from '../helpers/BrowserOnly'
@@ -11,7 +11,7 @@ export class VerificationContent extends React.Component {
   }
 
   handleDecode = (result: string) => {
-    console.log(result)
+    alert(result)
   }
 
   render = () => {
@@ -27,6 +27,5 @@ export class VerificationContent extends React.Component {
     )
   }
 }
-
 
 export default VerificationContent
