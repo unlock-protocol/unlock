@@ -46,6 +46,10 @@
     "@svgr/cli": "4.3.2",
     "nodemon": "1.19.2"
   },
+  "engines": {
+    "node": "10.16.3"
+  },
+  "engineStrict": true,
   "scripts": {
     "predev": "npm run build-blog",
     "dev": "nodemon src/server.js",
