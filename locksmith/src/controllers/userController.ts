@@ -8,27 +8,38 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let user = req.body.message.user
-
     try {
+      let user = req.body.message.user
+
       if (user) {
-        let recoveryPhrase:
-          | String
-          | undefined = await UserOperations.createUser({
-          emailAddress: user.emailAddress,
-          publicKey: user.publicKey,
-          passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
-        })
+        let emailAddress = user.emailAddress
+        let ejected = await UserOperations.ejectionStatus(emailAddress)
 
-        let status = recoveryPhrase ? 200 : 400
+        if (ejected) {
+          return res.sendStatus(409)
+        } else {
+          let creationStatus = await userCreationStatus(user)
+          let recoveryPhrase = creationStatus.recoveryPhrase
 
-        return res.status(status).json({
-          recoveryPhrase,
-        })
+          return res.status(creationStatus.status).json({ recoveryPhrase })
+        }
+      } else {
+        return res.sendStatus(400)
       }
     } catch (e) {
       return res.sendStatus(400)
     }
+  }
+
+  const userCreationStatus = async (user: any): Promise<any> => {
+    let recoveryPhrase: String | undefined = await UserOperations.createUser({
+      emailAddress: user.emailAddress,
+      publicKey: user.publicKey,
+      passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
+    })
+
+    let status = recoveryPhrase ? 200 : 400
+    return { status, recoveryPhrase }
   }
 
   export const retrieveEncryptedPrivatekey = async (
