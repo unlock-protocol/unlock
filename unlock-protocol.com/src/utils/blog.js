@@ -116,7 +116,7 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
     }
   })
 
-  fs.writeFile(
+  fs.writeFileSync(
     join(baseDir, 'static', 'blog.rss'),
     rssFeed.xml({ indent: true })
   )
