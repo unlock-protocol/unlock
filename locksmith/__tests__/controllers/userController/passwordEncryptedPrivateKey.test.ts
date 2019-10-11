@@ -1,16 +1,5 @@
 import models = require('../../../src/models')
 
-jest.mock('../../../src/utils/ownedKeys', () => {
-  return {
-    keys: jest
-      .fn()
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce([])
-      .mockResolvedValueOnce(['0x1234'])
-      .mockResolvedValueOnce(['0x1234']),
-  }
-})
-
 function generateTypedData(message: any) {
   return {
     types: {
