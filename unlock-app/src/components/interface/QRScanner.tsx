@@ -2,6 +2,8 @@
 import React from 'react'
 import Scanner from 'qr-scanner'
 
+Scanner.WORKER_PATH = 'static/qr-scanner-worker.min.js'
+
 export interface Props {
   onDecode: (result: string) => void
 }
@@ -26,6 +28,7 @@ export class QRScanner extends React.Component<Props> {
     const { onDecode } = this.props
     const videoElement = this.videoRef.current!
     this.scanner = new Scanner(videoElement, onDecode)
+    this.scanner.start()
   }
 
   // See: https://github.com/nimiq/qr-scanner#clean-up
