@@ -31,6 +31,18 @@ if (ropstenProviderUrl) {
 }
 
 /**
+ * Used for kovan deployments
+ */
+const kovanProviderUrl = process.env.KOVAN_PROVIDER_URL
+let kovanMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (kovanProviderUrl) {
+  kovanMnemonic = require('./mnemonic.kovan') // eslint-disable-line import/no-unresolved
+}
+
+/**
  * Used for mainnet deployments
  */
 const mainnetProviderUrl = process.env.MAINNET_PROVIDER_URL
@@ -69,6 +81,14 @@ const ropstenProvider = function() {
   )
 }
 
+const kovanProvider = function() {
+  return new HDWalletProvider(
+    kovanMnemonic.seed,
+    kovanProviderUrl,
+    kovanMnemonic.accountIndex
+  )
+}
+
 module.exports = {
   networks: {
     development: {
@@ -87,6 +107,12 @@ module.exports = {
       provider: ropstenProvider,
       network_id: '3', // Network Id for Rinkeby
       gas: 5000000,
+      gasPrice: 5000000000, // 5GWEI
+    },
+    kovan: {
+      provider: kovanProvider,
+      network_id: '42', // Network Id for Rinkeby
+      gas: 10000000,
       gasPrice: 5000000000, // 5GWEI
     },
     mainnet: {
