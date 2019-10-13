@@ -103,16 +103,16 @@ module.exports = {
       gas: 6400000,
       gasPrice: 5000000000, // 5GWEI
     },
-    kovan: {
-      provider: kovanProvider,
-      network_id: '42', // Network Id for Rinkeby
-      gas: 10000000,
-      gasPrice: 5000000000, // 5GWEI
-    },
     ropsten: {
       provider: ropstenProvider,
       network_id: '3', // Network Id for Rinkeby
       gas: 5000000,
+      gasPrice: 5000000000, // 5GWEI
+    },
+    kovan: {
+      provider: kovanProvider,
+      network_id: '42', // Network Id for Rinkeby
+      gas: 10000000,
       gasPrice: 5000000000, // 5GWEI
     },
     mainnet: {
@@ -124,7 +124,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.5.9',
+      version: '0.5.12',
       settings: {
         optimizer: {
           enabled: true,
