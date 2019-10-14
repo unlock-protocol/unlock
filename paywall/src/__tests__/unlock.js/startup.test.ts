@@ -77,6 +77,8 @@ describe('unlock.js startup', () => {
       debug: 0,
       paywallUrl: 'http://paywall',
       accountsUrl: 'http://app/account',
+      managedPurchaseStablecoinAddress:
+        '0x591AD9066603f5499d12fF4bC207e2f577448c46',
     }
     const dataOrigin = 'http://paywall'
     const checkoutOrigin = 'http://paywall'

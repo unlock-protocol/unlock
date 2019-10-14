@@ -2,15 +2,24 @@ import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { PaywallConfig, Balance } from '../unlockTypes'
 import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
+import StartupConstants from './startupTypes'
 
-export const injectDefaultBalance = (oldBalance: Balance): Balance => {
+export const injectDefaultBalance = (
+  oldBalance: Balance,
+  managedPurchaseStablecoinAddress: string
+): Balance => {
   const newBalance: Balance = {}
   const tokens = Object.keys(oldBalance)
   tokens.forEach(token => {
-    if (token.startsWith('0x')) {
+    if (token === managedPurchaseStablecoinAddress) {
+      // If the token is the one we allow, we give the user a default
+      // balance. TODO: only do this if the corresponding lock is approved.
       newBalance[token] = DEFAULT_STABLECOIN_BALANCE
     } else {
-      newBalance[token] = oldBalance[token]
+      // the "null account" 0x0000000... has an enormous balance of eth and other tokens. We zero
+      // them out here so that we don't enable purchasing on the wrong locks for user
+      // account users.
+      newBalance[token] = '0'
     }
   })
 
@@ -27,10 +36,16 @@ export const injectDefaultBalance = (oldBalance: Balance): Balance => {
 export default class CheckoutUIHandler {
   private iframes: IframeHandler
   private config: PaywallConfig
+  private constants: StartupConstants
 
-  constructor(iframes: IframeHandler, config: PaywallConfig) {
+  constructor(
+    iframes: IframeHandler,
+    config: PaywallConfig,
+    constants: StartupConstants
+  ) {
     this.iframes = iframes
     this.config = config
+    this.constants = constants
   }
 
   init({ usingManagedAccount }: { usingManagedAccount: boolean }) {
@@ -41,7 +56,11 @@ export default class CheckoutUIHandler {
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
       let balanceUpdate = balance
       if (usingManagedAccount) {
-        balanceUpdate = injectDefaultBalance(balance)
+        const { managedPurchaseStablecoinAddress } = this.constants
+        balanceUpdate = injectDefaultBalance(
+          balance,
+          managedPurchaseStablecoinAddress
+        )
       }
       this.iframes.checkout.postMessage(
         PostMessages.UPDATE_ACCOUNT_BALANCE,
