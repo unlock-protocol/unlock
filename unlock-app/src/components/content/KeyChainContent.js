@@ -16,6 +16,8 @@ import {
   expirationAsDate,
   durationsAsTextFromSeconds,
 } from '../../utils/durations'
+import Media from '../../theme/media'
+import { DefaultError } from '../creator/FatalError'
 
 export const KeyChainContent = ({ account, network, router }) => {
   const { hash } = router.location
@@ -59,10 +61,6 @@ export const mapStateToProps = ({ account, network, router }) => {
   }
 }
 
-const formatPrice = price => {
-  return parseInt(price) / Math.pow(10, 18)
-}
-
 const keyDetails = address => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { address },
@@ -72,7 +70,16 @@ const keyDetails = address => {
   if (error) return <p>Error :c</p>
 
   if (data.keyHolders.length == 0) {
-    return <div></div>
+    return (
+      <DefaultError
+        title="Manage your keys here"
+        illustration="/static/images/illustrations/lock.svg"
+        critical={false}
+      >
+        The Keychain lets you view and manage the keys that you own. As soon as
+        you have one, you&apos;ll see it on this page.
+      </DefaultError>
+    )
   }
 
   return (
@@ -89,8 +96,6 @@ const keyDetails = address => {
             <KeyExpiration>
               {expirationAsDate(ownedKeys.expiration)}
             </KeyExpiration>
-
-            <KeyPrice>Ξ {formatPrice(ownedKeys.lock.price)}</KeyPrice>
           </Box>
         )
       })}
@@ -103,16 +108,26 @@ export default connect(mapStateToProps)(KeyChainContent)
 const Box = styled.div`
   border: thin #dddddd solid;
   width: 212px;
-  float: left;
-  margin-right: 32px;
+  padding: 16px;
+  ${Media.phone`
+width: 100%;
+margin: 0 0 16px 0;
+  `}
+  ${Media.nophone`
+width: 30%;
+margin: 0 16px 16px 0;
+  `}
   &:hover {
     border: thin #aaaaaa solid;
+    box-shadow: 0px 0px 10px 3px rgba(221, 221, 221, 1);
   }
 `
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 100%;
 `
 
 const LockName = styled.div`
@@ -126,7 +141,6 @@ const LockName = styled.div`
   display: flex;
   align-items: center;
   color: #4d8be8;
-  padding: 16px;
 `
 
 const LockExpirationDuration = styled.div`
@@ -139,13 +153,11 @@ const LockExpirationDuration = styled.div`
 
   display: flex;
   align-items: center;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 18px;
 
   /* Grey 4 */
 
   color: #333333;
+  margin-top: 8px;
 `
 
 const ValidUntil = styled.div`
@@ -159,7 +171,7 @@ const ValidUntil = styled.div`
   letter-spacing: 1px;
   text-transform: uppercase;
   color: #a6a6a6;
-  padding-left: 16px;
+  margin-top: 8px;
 `
 
 const KeyExpiration = styled.div`
@@ -169,19 +181,4 @@ const KeyExpiration = styled.div`
   font-size: 16px;
   line-height: 20px;
   color: #333333;
-  padding-left: 16px;
-  padding-bottom: 10px;
-`
-
-const KeyPrice = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 20px;
-  /* identical to box height, or 125% */
-
-  color: #333333;
-  padding-left: 16px;
-  padding-bottom: 40px;
 `
