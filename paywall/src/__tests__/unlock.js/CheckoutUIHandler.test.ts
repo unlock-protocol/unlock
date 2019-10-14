@@ -251,7 +251,7 @@ describe('CheckoutUIHandler', () => {
       }
 
       const expectedPayload = {
-        eth: '123.4',
+        eth: '0',
         '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
       }
 
@@ -278,12 +278,15 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
     expect(injectDefaultBalance({})).toEqual({})
   })
 
-  it('should leave eth alone', () => {
+  it('should zero out eth', () => {
     expect.assertions(1)
     const balance = {
       eth: '123.4',
     }
-    expect(injectDefaultBalance(balance)).toEqual(balance)
+    const expectedBalance = {
+      eth: '0',
+    }
+    expect(injectDefaultBalance(balance)).toEqual(expectedBalance)
   })
 
   it('should update any non-eth balances with the default', () => {
@@ -294,7 +297,7 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
       '0xdeadbeef': '0',
     }
     expect(injectDefaultBalance(balance)).toEqual({
-      eth: '123.4',
+      eth: '0',
       '0x123abc': DEFAULT_STABLECOIN_BALANCE,
       '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
     })

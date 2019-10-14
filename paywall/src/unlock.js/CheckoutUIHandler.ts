@@ -7,10 +7,15 @@ export const injectDefaultBalance = (oldBalance: Balance): Balance => {
   const newBalance: Balance = {}
   const tokens = Object.keys(oldBalance)
   tokens.forEach(token => {
-    if (token.startsWith('0x')) {
-      newBalance[token] = DEFAULT_STABLECOIN_BALANCE
+    if (token === 'eth') {
+      // the "null account" 0x0000000... has an enormous balance of eth. We zero
+      // it out here so that we don't enable purchasing on eth locks for user
+      // account users.
+      newBalance[token] = '0'
     } else {
-      newBalance[token] = oldBalance[token]
+      // all other tokens should have the default balance -- assumption is you
+      // can only create stablecoin locks that we support purchasing on
+      newBalance[token] = DEFAULT_STABLECOIN_BALANCE
     }
   })
 
