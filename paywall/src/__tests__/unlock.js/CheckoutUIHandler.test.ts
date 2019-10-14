@@ -7,6 +7,7 @@ import { KeyResults } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import IframeHandler from '../../unlock.js/IframeHandler'
 import { PostMessages, ExtractPayload } from '../../messageTypes'
 import { DEFAULT_STABLECOIN_BALANCE } from '../../constants'
+import StartupConstants from '../../unlock.js/startupTypes'
 
 declare const process: {
   env: {
@@ -58,6 +59,15 @@ describe('CheckoutUIHandler', () => {
     },
   }
 
+  const startup: StartupConstants = {
+    network: 1984,
+    debug: 0,
+    paywallUrl: 'http://paywall',
+    accountsUrl: 'http://app/accounts',
+    managedPurchaseStablecoinAddress:
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+  }
+
   function makeCheckoutUIHandler(fakeWindow: FakeWindow) {
     iframes = new IframeHandler(
       fakeWindow,
@@ -66,7 +76,7 @@ describe('CheckoutUIHandler', () => {
       accountsIframeUrl
     )
     iframes.init(config)
-    return new CheckoutUIHandler(iframes, config)
+    return new CheckoutUIHandler(iframes, config, startup)
   }
 
   beforeEach(() => {
@@ -248,11 +258,13 @@ describe('CheckoutUIHandler', () => {
       const initialPayload = {
         eth: '123.4',
         '0xdeadbeef': '0',
+        '0x591AD9066603f5499d12fF4bC207e2f577448c46': '0',
       }
 
       const expectedPayload = {
         eth: '0',
-        '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
+        '0xdeadbeef': '0',
+        '0x591AD9066603f5499d12fF4bC207e2f577448c46': DEFAULT_STABLECOIN_BALANCE,
       }
 
       fakeWindow.receivePostMessageFromIframe(
@@ -273,9 +285,12 @@ describe('CheckoutUIHandler', () => {
 })
 
 describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
+  const managedPurchaseStablecoinAddress = '0xdeadbeef'
   it('should return empty object given an empty object', () => {
     expect.assertions(1)
-    expect(injectDefaultBalance({})).toEqual({})
+    expect(injectDefaultBalance({}, managedPurchaseStablecoinAddress)).toEqual(
+      {}
+    )
   })
 
   it('should zero out eth', () => {
@@ -286,19 +301,23 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
     const expectedBalance = {
       eth: '0',
     }
-    expect(injectDefaultBalance(balance)).toEqual(expectedBalance)
+    expect(
+      injectDefaultBalance(balance, managedPurchaseStablecoinAddress)
+    ).toEqual(expectedBalance)
   })
 
-  it('should update any non-eth balances with the default', () => {
+  it('should update balances for the managed purchase stablecoin address with the default', () => {
     expect.assertions(1)
     const balance = {
       eth: '123.4',
       '0x123abc': '0',
       '0xdeadbeef': '0',
     }
-    expect(injectDefaultBalance(balance)).toEqual({
+    expect(
+      injectDefaultBalance(balance, managedPurchaseStablecoinAddress)
+    ).toEqual({
       eth: '0',
-      '0x123abc': DEFAULT_STABLECOIN_BALANCE,
+      '0x123abc': '0',
       '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
     })
   })
