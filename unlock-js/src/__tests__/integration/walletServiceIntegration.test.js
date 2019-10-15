@@ -35,6 +35,8 @@ jest.setTimeout(15000)
 // I wish we did not have to do this manually!
 const versionMappings = { v0: v0, v01: v01, v02: v02, v10: v10, v11: v11 }
 
+let accounts
+
 // Tests
 describe('Wallet Service Integration', () => {
   const versions = Object.keys(abis)
@@ -50,6 +52,7 @@ describe('Wallet Service Integration', () => {
       walletService = new WalletService({
         unlockAddress: initialization.to,
       })
+
       web3Service = new Web3Service({
         readOnlyProvider: provider,
         unlockAddress: initialization.to,
@@ -57,6 +60,7 @@ describe('Wallet Service Integration', () => {
       })
 
       await walletService.connect(provider)
+      accounts = await walletService.provider.listAccounts()
     })
 
     it('should yield true to isUnlockContractDeployed', done => {
@@ -119,6 +123,11 @@ describe('Wallet Service Integration', () => {
         )
       })
 
+      it('should have deployed a lock to the right owner', () => {
+        expect.assertions(1)
+        expect(lock.owner).toEqual(accounts[0]) // This is the default in walletService
+      })
+
       describe('updateKeyPrice', () => {
         let oldKeyPrice, newPrice
         beforeAll(async () => {
@@ -145,7 +154,6 @@ describe('Wallet Service Integration', () => {
         let userBalanceBefore
 
         beforeAll(async () => {
-          const accounts = await walletService.provider.listAccounts()
           keyPurchaser = accounts[0] // This is the default in walletService
           keyOwner = accounts[5]
           if (lock.currencyContractAddress === null) {
@@ -252,7 +260,85 @@ describe('Wallet Service Integration', () => {
         })
       })
 
-      describe('withdrawFromLock', () => {})
+      describe('withdrawFromLock', () => {
+        let lockBalanceBefore
+        let userBalanceBefore
+        let withdrawnAmount
+        // TODO: support partial withdraws
+        // TODO: get the beneficiary address from the lock
+
+        beforeAll(async () => {
+          if (lock.currencyContractAddress === null) {
+            // Get the ether balance of the lock before the withdrawal
+            lockBalanceBefore = await web3Service.getAddressBalance(lockAddress)
+            // Get the ether balance of the beneficiary before the withdrawal
+            userBalanceBefore = await web3Service.getAddressBalance(lock.owner)
+          } else {
+            // Get the erc20 balance of the lock before the purchase
+            lockBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lockAddress
+            )
+            // Get the erc20 balance of the user before the purchase
+            userBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lock.owner
+            )
+          }
+
+          withdrawnAmount = await walletService.withdrawFromLock({
+            lockAddress,
+          })
+        })
+
+        it('should have withdrawn an non null amount', () => {
+          expect.assertions(1)
+          expect(withdrawnAmount).toEqual(lockBalanceBefore)
+        })
+
+        it('should decrease the balance by the withdrawn amount', async () => {
+          expect.assertions(1)
+          let lockBalanceAfter
+          if (lock.currencyContractAddress === null) {
+            // Get the ether balance of the lock before the withdrawal
+            lockBalanceAfter = await web3Service.getAddressBalance(lockAddress)
+          } else {
+            // Get the erc20 balance of the lock before the purchase
+            lockBalanceAfter = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lockAddress
+            )
+          }
+          expect(parseFloat(lockBalanceAfter)).toEqual(
+            parseFloat(lockBalanceBefore) - parseFloat(withdrawnAmount)
+          )
+        })
+
+        it('should increase the balance of the beneficiary', async () => {
+          expect.assertions(1)
+          let beneficiaryBalanceAfter
+          if (lock.currencyContractAddress === null) {
+            // Get the ether balance of the beneficiary before the withdrawal
+            beneficiaryBalanceAfter = await web3Service.getAddressBalance(
+              lock.owner
+            )
+            // We should take gas paid into account... so the amount is larger than before
+            // but smaller than the sum of the previous balance and the amount in the lock
+            expect(parseFloat(beneficiaryBalanceAfter)).toBeGreaterThan(
+              parseFloat(userBalanceBefore)
+            )
+          } else {
+            // Get the erc20 balance of the user before the purchase
+            beneficiaryBalanceAfter = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lock.owner
+            )
+            expect(parseFloat(beneficiaryBalanceAfter)).toEqual(
+              parseFloat(userBalanceBefore) + parseFloat(withdrawnAmount)
+            )
+          }
+        })
+      })
     })
   })
 })
