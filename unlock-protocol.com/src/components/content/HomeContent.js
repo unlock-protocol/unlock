@@ -3,13 +3,7 @@ import React from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import Signature from '../interface/Signature'
-import {
-  Headline,
-  SubTitle,
-  ThreeColumns,
-  Column,
-  Section,
-} from '../Components'
+import { SubTitle, ThreeColumns, Column, Section } from '../Components'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
@@ -24,10 +18,13 @@ export const HomeContent = () => (
       <TwitterTags />
       <OpenGraphTags />
     </Head>
-    <Hero>The Web&#39;s new business model</Hero>
+    <Hero>
+      <img alt="Unlock" src="/static/images/pages/png/hero.svg" />
+      <h1>Monetize the web through memberships</h1>
+    </Hero>
     <Headline>
-      Unlock is a protocol which enables creators to monetize their content with
-      a few lines of code in a fully decentralized way.
+      Unlock lets you let’s you easily lock and manage access to your content,
+      apps, community and even real life events and spaces.
     </Headline>
     <HomepageButton />
     <ThreeColumns>
@@ -91,12 +88,23 @@ const ImageWithHover = styled.div`
   }
 `
 
-const Hero = styled.h1`
-  font-size: 36px;
+const Hero = styled.div`
   margin-top: 30px;
-  margin-bottom: 0px;
-  color: var(--darkgrey);
-  font-weight: 700;
+  position: relative;
+  h1 {
+    position: absolute;
+    color: var(--white);
+    font-weight: 700;
+    left: 5%;
+    font-size: 40px;
+    max-width: 50%;
+    top: 50%;
+    transform: translate(0%, -66%);
+  }
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `
 
 const SubHead = styled.h2`
@@ -110,4 +118,14 @@ const Paragraph = styled.p`
   font-family: 'IBM Plex Serif', serif;
   font-weight: 300;
   font-size: 20px;
+`
+
+export const Headline = styled.p`
+  font-size: 32px;
+  line-height: 42px;
+  font-family: 'IBM Plex Serif', serif;
+  font-weight: 100;
+  margin-top: 0px;
+  padding-left: 5%;
+  padding-right: 5%;
 `
