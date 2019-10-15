@@ -9,6 +9,7 @@ import {
   expirationAsDate,
   durationsAsTextFromSeconds,
 } from '../../../utils/durations'
+import Loading from '../Loading'
 
 export interface KeyDetailsProps {
   address: string
@@ -36,8 +37,18 @@ export const KeyDetails = ({ address, signData }: KeyDetailsProps) => {
     variables: { address },
   })
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error :c</p>
+  if (loading) return <Loading />
+  if (error) {
+    return (
+      <DefaultError
+        title="Could not retrieve keys"
+        illustration="/static/images/illustrations/error.svg"
+        critical
+      >
+        {error.message}
+      </DefaultError>
+    )
+  }
 
   if (data.keyHolders.length == 0) {
     return (
