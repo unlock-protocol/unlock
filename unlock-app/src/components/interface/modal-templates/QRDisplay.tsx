@@ -1,6 +1,7 @@
 import React from 'react'
+import QRCode from 'qrcode.react'
 import { dismissQR } from '../../../actions/fullScreenModals'
-import { MessageBox, Quit, QRCode } from './styles'
+import { MessageBox, Dismiss } from './styles'
 import { Dispatch } from '../../../unlockTypes' // eslint-disable-line
 
 interface QRDisplayProps {
@@ -9,8 +10,8 @@ interface QRDisplayProps {
 }
 const QRDisplay = ({ dispatch, data }: QRDisplayProps) => (
   <MessageBox>
-    <Quit data-testid="qr-quit-button" onClick={() => dispatch(dismissQR())} />
-    <QRCode value={data} renderAs="svg" size={256} />
+    <Dismiss onClick={() => dispatch(dismissQR())}>Dismiss</Dismiss>
+    <QRCode value={data} />
   </MessageBox>
 )
 
