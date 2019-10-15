@@ -1,5 +1,6 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import { DecoyUser } from '../utils/decoyUser'
+import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 
 import UserOperations = require('../operations/userOperations')
 
@@ -173,9 +174,13 @@ namespace UserController {
     return res.json(result)
   }
 
-  export const eject = async (req: Request, res: Response) => {
+  export const eject = async (req: SignedRequest, res: Response) => {
     let address = req.params.ethereumAddress
     let ejected = await UserOperations.ejectionStatusByAddress(address)
+
+    if (address.toLowerCase() != req.owner.toLowerCase()) {
+      return res.sendStatus(401)
+    }
 
     if (ejected) {
       return res.sendStatus(400)
