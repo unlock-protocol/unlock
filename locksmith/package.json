@@ -30,6 +30,9 @@
       ]
     }
   },
+  "engines": {
+    "node": "10.16.3"
+  },
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
