@@ -30,11 +30,11 @@ describe('Modal Templates', () => {
       expect.assertions(1)
       const dispatch = jest.fn()
 
-      const { getByText } = rtl.render(
+      const { getByTestId } = rtl.render(
         <QRDisplay dispatch={dispatch} data="some data" />
       )
 
-      const dismissButton = getByText('Dismiss')
+      const dismissButton = getByTestId('qr-quit-button')
       rtl.fireEvent.click(dismissButton)
 
       expect(dispatch).toHaveBeenCalledWith({
