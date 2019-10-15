@@ -429,6 +429,25 @@ describe('WalletService (ethers)', () => {
         })
       })
 
+      it('dispatches the request to personally sign the data for the unlock-provider', async done => {
+        expect.assertions(2)
+        await resetTestsAndConnect()
+        const data = 'data to be signed'
+        const account = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+        const hash = utils.utf8ToHex('data to be signed')
+        const returned = Buffer.from('stuff').toString('base64')
+        walletService.provider.isUnlock = true
+
+        nock.accountsAndYield([account])
+        nock.personalSignAndYield(hash, account, 'stuff')
+
+        walletService.signDataPersonal(account, data, (error, result) => {
+          expect(error).toBeNull()
+          expect(result).toBe(returned)
+          done()
+        })
+      })
+
       it('calls eth_sign for http providers', async done => {
         expect.assertions(2)
         await resetTestsAndConnect()
