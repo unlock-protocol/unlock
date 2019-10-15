@@ -9,7 +9,7 @@
     "predev": "NODE_ENV=development npm run db:migrate",
     "dev": "tsc-watch --onSuccess 'node build/server.js' --onFailure 'echo Beep! Compilation Failed'",
     "pretest": "NODE_ENV=test sequelize db:migrate",
-    "test": "jest --forceExit",
+    "test": "jest  --forceExit --runInBand",
     "lint": "eslint --ext .ts,.js src/ __tests__/",
     "db:migrate": "sequelize db:migrate",
     "preci": "npm run lint",
