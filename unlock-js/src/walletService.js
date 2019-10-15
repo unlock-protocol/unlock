@@ -129,6 +129,8 @@ export default class WalletService extends UnlockService {
    * Updates the key price on a lock
    * @param {PropTypes.address} lockAddress : address of the lock for which we update the price
    * @param {string} price : new price for the lock
+   * @return Promise<PropTypes.number> newKeyPrice
+   * TODO: add a callback @param which is invoked with the transaction hash of the transaction (this pattern should actually be implemented for all calls)
    */
   async updateKeyPrice(params = {}) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')

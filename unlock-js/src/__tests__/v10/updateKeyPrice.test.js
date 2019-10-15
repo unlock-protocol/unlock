@@ -3,14 +3,15 @@ import * as UnlockV10 from 'unlock-abi-1-0'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 import Errors from '../../errors'
-import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import erc20 from '../../erc20'
+import abis from '../../abis'
 
 const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
+const UnlockVersion = abis.v10
 
 let walletService
 let transaction
@@ -21,11 +22,10 @@ let setupFail
 jest.mock('../../erc20.js', () => {
   return { getErc20Decimals: jest.fn() }
 })
-
 describe('v10', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const keyPrice = '100000000'
+    const keyPrice = '2' // new keyPrice
     const decimals = 8 // Do not test with 18 which is the default...
     const erc20Address = '0x6F7a54D6629b7416E17fc472B4003aE8EF18EF4c'
 
@@ -82,18 +82,72 @@ describe('v10', () => {
         )
         const mock = walletService._handleMethodCall
 
-        await walletService.updateKeyPrice({ lockAddress, keyPrice, decimals })
+        const EventInfo = new ethers.utils.Interface(
+          UnlockVersion.PublicLock.abi
+        )
+        const encoder = ethers.utils.defaultAbiCoder
+        const oldPrice = '1'
 
-        expect(mock).toHaveBeenCalledWith(
-          expect.any(Promise),
-          TransactionTypes.UPDATE_KEY_PRICE
+        walletService.provider.waitForTransaction = jest.fn(() =>
+          Promise.resolve({
+            logs: [
+              {
+                transactionIndex: 1,
+                blockNumber: 19759,
+                transactionHash:
+                  '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+                address: lockAddress,
+                topics: [
+                  EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                  encoder.encode(
+                    ['uint256'],
+                    [
+                      utils.toRpcResultNumber(
+                        utils.toDecimal(oldPrice, decimals)
+                      ),
+                    ]
+                  ),
+                  encoder.encode(
+                    ['uint256'],
+                    [
+                      utils.toRpcResultNumber(
+                        utils.toDecimal(keyPrice, decimals)
+                      ),
+                    ]
+                  ),
+                ],
+                data: encoder.encode(
+                  ['uint256', 'uint256'],
+                  [
+                    utils.toRpcResultNumber(
+                      utils.toDecimal(oldPrice, decimals)
+                    ),
+                    utils.toRpcResultNumber(
+                      utils.toDecimal(keyPrice, decimals)
+                    ),
+                  ]
+                ),
+                logIndex: 0,
+                blockHash:
+                  '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+                transactionLogIndex: 0,
+              },
+            ],
+          })
         )
 
+        const newKeyPrice = await walletService.updateKeyPrice({
+          lockAddress,
+          keyPrice,
+          decimals,
+        })
+
         // verify that the promise passed to _handleMethodCall actually resolves
-        // to the result the chain returns from a sendTransaction call to createLock
+        // to the result the chain returns from a sendTransaction call to updateKeyPrice
         const result = await mock.mock.calls[0][0]
         await result.wait()
         expect(result).toEqual(transactionResult)
+        expect(newKeyPrice).toEqual(keyPrice)
         await nock.resolveWhenAllNocksUsed()
       })
 
@@ -116,7 +170,7 @@ describe('v10', () => {
     describe('when the decimals are not passed', () => {
       describe('when the erc20Address is passed', () => {
         it('should retrieve the decimals from the contract', async () => {
-          expect.assertions(1)
+          expect.assertions(2)
 
           await nockBeforeEach(decimals)
           setupSuccess()
@@ -132,7 +186,62 @@ describe('v10', () => {
               return Promise.resolve(decimals)
             })
           }
-          await walletService.updateKeyPrice({
+
+          const EventInfo = new ethers.utils.Interface(
+            UnlockVersion.PublicLock.abi
+          )
+          const encoder = ethers.utils.defaultAbiCoder
+          const oldPrice = '1'
+
+          walletService.provider.waitForTransaction = jest.fn(() =>
+            Promise.resolve({
+              logs: [
+                {
+                  transactionIndex: 1,
+                  blockNumber: 19759,
+                  transactionHash:
+                    '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+                  address: lockAddress,
+                  topics: [
+                    EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                    encoder.encode(
+                      ['uint256'],
+                      [
+                        utils.toRpcResultNumber(
+                          utils.toDecimal(oldPrice, decimals)
+                        ),
+                      ]
+                    ),
+                    encoder.encode(
+                      ['uint256'],
+                      [
+                        utils.toRpcResultNumber(
+                          utils.toDecimal(keyPrice, decimals)
+                        ),
+                      ]
+                    ),
+                  ],
+                  data: encoder.encode(
+                    ['uint256', 'uint256'],
+                    [
+                      utils.toRpcResultNumber(
+                        utils.toDecimal(oldPrice, decimals)
+                      ),
+                      utils.toRpcResultNumber(
+                        utils.toDecimal(keyPrice, decimals)
+                      ),
+                    ]
+                  ),
+                  logIndex: 0,
+                  blockHash:
+                    '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+                  transactionLogIndex: 0,
+                },
+              ],
+            })
+          )
+
+          const newKeyPrice = await walletService.updateKeyPrice({
             lockAddress,
             keyPrice,
             erc20Address,
@@ -143,16 +252,18 @@ describe('v10', () => {
             walletService.provider
           )
           // verify that the promise passed to _handleMethodCall actually resolves
-          // to the result the chain returns from a sendTransaction call to createLock
+          // to the result the chain returns from a sendTransaction call to updateKeyPrice
           const result = await mock.mock.calls[0][0]
           await result.wait()
+          expect(newKeyPrice).toEqual(keyPrice)
           await nock.resolveWhenAllNocksUsed()
         })
       })
+
       describe('when the erc20Address is not passed', () => {
         describe('when the lock is an ERC20 lock', () => {
           it('should retrieve the decimals from the contract', async () => {
-            expect.assertions(1)
+            expect.assertions(2)
 
             await nockBeforeEach(decimals, erc20Address)
             setupSuccess()
@@ -165,25 +276,82 @@ describe('v10', () => {
             erc20.getErc20Decimals = jest.fn(() => {
               return Promise.resolve(decimals)
             })
-            await walletService.updateKeyPrice({
+
+            const EventInfo = new ethers.utils.Interface(
+              UnlockVersion.PublicLock.abi
+            )
+            const encoder = ethers.utils.defaultAbiCoder
+            const oldPrice = '1'
+
+            walletService.provider.waitForTransaction = jest.fn(() =>
+              Promise.resolve({
+                logs: [
+                  {
+                    transactionIndex: 1,
+                    blockNumber: 19759,
+                    transactionHash:
+                      '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+                    address: lockAddress,
+                    topics: [
+                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      encoder.encode(
+                        ['uint256'],
+                        [
+                          utils.toRpcResultNumber(
+                            utils.toDecimal(oldPrice, decimals)
+                          ),
+                        ]
+                      ),
+                      encoder.encode(
+                        ['uint256'],
+                        [
+                          utils.toRpcResultNumber(
+                            utils.toDecimal(keyPrice, decimals)
+                          ),
+                        ]
+                      ),
+                    ],
+                    data: encoder.encode(
+                      ['uint256', 'uint256'],
+                      [
+                        utils.toRpcResultNumber(
+                          utils.toDecimal(oldPrice, decimals)
+                        ),
+                        utils.toRpcResultNumber(
+                          utils.toDecimal(keyPrice, decimals)
+                        ),
+                      ]
+                    ),
+                    logIndex: 0,
+                    blockHash:
+                      '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+                    transactionLogIndex: 0,
+                  },
+                ],
+              })
+            )
+
+            const newKeyPrice = await walletService.updateKeyPrice({
               lockAddress,
               keyPrice,
             })
-
             expect(erc20.getErc20Decimals).toHaveBeenCalledWith(
               erc20Address,
               walletService.provider
             )
             // verify that the promise passed to _handleMethodCall actually resolves
-            // to the result the chain returns from a sendTransaction call to createLock
+            // to the result the chain returns from a sendTransaction call to updateKeyPrice
             const result = await mock.mock.calls[0][0]
             await result.wait()
+            expect(newKeyPrice).toEqual(keyPrice)
+
             await nock.resolveWhenAllNocksUsed()
           })
         })
+
         describe('when the lock is an Ether lock', () => {
           it('should use 18 as decimals', async () => {
-            expect.assertions(1)
+            expect.assertions(2)
 
             await nockBeforeEach(
               18 /* decimals for an ether lock */,
@@ -197,9 +365,51 @@ describe('v10', () => {
             const mock = walletService._handleMethodCall
 
             erc20.getErc20Decimals = jest.fn(() => {
-              return Promise.resolve(decimals)
+              return Promise.reject() // This should not be called!
             })
-            await walletService.updateKeyPrice({
+            const EventInfo = new ethers.utils.Interface(
+              UnlockVersion.PublicLock.abi
+            )
+            const encoder = ethers.utils.defaultAbiCoder
+            const oldPrice = '1'
+
+            walletService.provider.waitForTransaction = jest.fn(() =>
+              Promise.resolve({
+                logs: [
+                  {
+                    transactionIndex: 1,
+                    blockNumber: 19759,
+                    transactionHash:
+                      '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+                    address: lockAddress,
+                    topics: [
+                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      encoder.encode(
+                        ['uint256'],
+                        [utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18))]
+                      ),
+                      encoder.encode(
+                        ['uint256'],
+                        [utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18))]
+                      ),
+                    ],
+                    data: encoder.encode(
+                      ['uint256', 'uint256'],
+                      [
+                        utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18)),
+                        utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18)),
+                      ]
+                    ),
+                    logIndex: 0,
+                    blockHash:
+                      '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+                    transactionLogIndex: 0,
+                  },
+                ],
+              })
+            )
+
+            const newKeyPrice = await walletService.updateKeyPrice({
               lockAddress,
               keyPrice,
             })
@@ -207,9 +417,10 @@ describe('v10', () => {
             expect(erc20.getErc20Decimals).not.toHaveBeenCalled()
 
             // verify that the promise passed to _handleMethodCall actually resolves
-            // to the result the chain returns from a sendTransaction call to createLock
+            // to the result the chain returns from a sendTransaction call to updateKeyPrice
             const result = await mock.mock.calls[0][0]
             await result.wait()
+            expect(newKeyPrice).toEqual(keyPrice)
             await nock.resolveWhenAllNocksUsed()
           })
         })

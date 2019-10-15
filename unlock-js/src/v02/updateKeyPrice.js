@@ -19,11 +19,27 @@ export default async function({ lockAddress, keyPrice }) {
         gasLimit: GAS_AMOUNTS.updateKeyPrice,
       }
     )
-    const ret = await this._handleMethodCall(
+    const hash = await this._handleMethodCall(
       transactionPromise,
       TransactionTypes.UPDATE_KEY_PRICE
     )
-    return ret
+    // Let's now wait for the keyPrice to have been changed before we return it
+    const receipt = await this.provider.waitForTransaction(hash)
+    const parser = lockContract.interface
+
+    const priceChangedEvent = receipt.logs
+      .map(log => {
+        return parser.parseLog(log)
+      })
+      .filter(event => {
+        return event.name === 'PriceChanged'
+      })[0]
+    if (priceChangedEvent) {
+      return utils.fromWei(priceChangedEvent.values.keyPrice, 'ether')
+    } else {
+      // There was no NewEvent log (transaction failed?)
+      return null
+    }
   } catch (error) {
     this.emit('error', new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE))
   }
