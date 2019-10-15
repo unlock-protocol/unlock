@@ -102,4 +102,10 @@ interface IUnlock {
     string calldata _URI
   )
     external;
+
+  // Allows the owner to change the value tracking variables as needed.
+  function resetTrackedValue(
+    uint _grossNetworkProduct,
+    uint _totalDiscountGranted
+  ) external;
 }
