@@ -21,6 +21,11 @@ interface IUnlock {
     string globalTokenURI
   );
 
+  event ResetTrackedValue(
+    uint grossNetworkProduct,
+    uint totalDiscountGranted
+  );
+
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
   function initialize(address _owner) external;
 
@@ -97,4 +102,10 @@ interface IUnlock {
     string calldata _URI
   )
     external;
+
+  // Allows the owner to change the value tracking variables as needed.
+  function resetTrackedValue(
+    uint _grossNetworkProduct,
+    uint _totalDiscountGranted
+  ) external;
 }

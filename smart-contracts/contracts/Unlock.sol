@@ -237,4 +237,17 @@ contract Unlock is
   {
     uniswapExchanges[_tokenAddress] = IUniswap(_exchangeAddress);
   }
+
+  // Allows the owner to change the value tracking variables as needed.
+  function resetTrackedValue(
+    uint _grossNetworkProduct,
+    uint _totalDiscountGranted
+  ) external
+    onlyOwner
+  {
+    grossNetworkProduct = _grossNetworkProduct;
+    totalDiscountGranted = _totalDiscountGranted;
+
+    emit ResetTrackedValue(_grossNetworkProduct, _totalDiscountGranted);
+  }
 }
