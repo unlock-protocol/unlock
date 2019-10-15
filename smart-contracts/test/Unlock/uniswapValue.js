@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
-const { protocols } = require('hardlydifficult-test-helpers')
+const { protocols } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')

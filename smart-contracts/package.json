@@ -23,7 +23,7 @@
     "eth-gas-reporter": "0.2.11",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.7.0",
-    "hardlydifficult-test-helpers": "0.4.0",
+    "hardlydifficult-ethereum-contracts": "0.5.5",
     "solium": "1.2.5",
     "truffle": "5.0.37",
     "truffle-assertions": "0.9.1",
