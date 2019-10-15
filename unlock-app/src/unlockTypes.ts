@@ -25,6 +25,7 @@ export enum KindOfModal {
   WalletCheckOverlay,
   PasswordPrompt,
   ResetPasswordPrompt,
+  QRDisplay,
 }
 /* eslint-enable no-unused-vars */
 
