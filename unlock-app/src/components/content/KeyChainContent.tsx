@@ -1,27 +1,27 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
-import 'cross-fetch/polyfill'
-import { useQuery } from '@apollo/react-hooks'
-import styled from 'styled-components'
 import BrowserOnly from '../helpers/BrowserOnly'
-import UnlockPropTypes from '../../propTypes'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
-import keyHolderQuery from '../../queries/keyHolder'
-import {
-  expirationAsDate,
-  durationsAsTextFromSeconds,
-} from '../../utils/durations'
-import Media from '../../theme/media'
-import { DefaultError } from '../creator/FatalError'
+import { Account as AccountType, Network } from '../../unlockTypes'
+import { signData } from '../../actions/signature'
+import KeyDetails from '../interface/keyChain/KeyDetails'
 
-export const KeyChainContent = ({ account, network, router }) => {
-  const { hash } = router.location
-  const emailAddress = hash.slice(1) // trim off leading '#'
+interface KeyChainContentProps {
+  account: AccountType
+  network: Network
+  signData: (data: any, id: any) => void
+}
+
+export const KeyChainContent = ({
+  account,
+  network,
+  signData,
+}: KeyChainContentProps) => {
   return (
     <Layout title="Key Chain">
       <Head>
@@ -30,163 +30,35 @@ export const KeyChainContent = ({ account, network, router }) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          <KeyDetails address={account.address.toLowerCase()} />
+          <KeyDetails
+            address={account.address.toLowerCase()}
+            signData={signData}
+          />
           <DeveloperOverlay />
         </BrowserOnly>
       )}
       {!account && (
         // Default to sign up form. User can toggle to login. If email
         // address is truthy, do the signup flow.
-        <LogInSignUp signup emailAddress={emailAddress} />
+        <LogInSignUp signup />
       )}
     </Layout>
   )
 }
 
-KeyChainContent.propTypes = {
-  account: UnlockPropTypes.account,
-  network: UnlockPropTypes.network.isRequired,
-  router: UnlockPropTypes.router.isRequired,
+interface ReduxState {
+  account: AccountType
+  network: Network
 }
 
-KeyChainContent.defaultProps = {
-  account: null,
-}
-
-export const mapStateToProps = ({ account, network, router }) => {
+export const mapStateToProps = ({ account, network }: ReduxState) => {
   return {
     account,
     network,
-    router,
   }
 }
 
-const KeyDetails = ({ address }) => {
-  const { loading, error, data } = useQuery(keyHolderQuery(), {
-    variables: { address },
-  })
-
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error :c</p>
-
-  if (data.keyHolders.length == 0) {
-    return (
-      <DefaultError
-        title="Manage your keys here"
-        illustration="/static/images/illustrations/lock.svg"
-        critical={false}
-      >
-        The Keychain lets you view and manage the keys that you own. As soon as
-        you have one, you&apos;ll see it on this page.
-      </DefaultError>
-    )
-  }
-
-  return (
-    <Container>
-      {data.keyHolders[0].keys.map(key => (
-        <Key ownedKey={key} />
-      ))}
-    </Container>
-  )
-}
-
-class Key extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render = () => {
-    const { ownedKey } = this.props
-    return (
-      <Box key={ownedKey.lock.id}>
-        <LockName>{ownedKey.lock.name}</LockName>
-        <LockExpirationDuration>
-          {durationsAsTextFromSeconds(ownedKey.lock.expirationDuration)}
-        </LockExpirationDuration>
-        <ValidUntil>Valid Until</ValidUntil>
-        <KeyExpiration>{expirationAsDate(ownedKey.expiration)}</KeyExpiration>
-      </Box>
-    )
-  }
-}
-
-export default connect(mapStateToProps)(KeyChainContent)
-
-const Box = styled.div`
-  border: thin #dddddd solid;
-  width: 212px;
-  padding: 16px;
-  ${Media.phone`
-width: 100%;
-margin: 0 0 16px 0;
-  `}
-  ${Media.nophone`
-width: 30%;
-margin: 0 16px 16px 0;
-  `}
-  &:hover {
-    border: thin #aaaaaa solid;
-    box-shadow: 0px 0px 10px 3px rgba(221, 221, 221, 1);
-  }
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 100%;
-`
-
-const LockName = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 19px;
-  /* or 127% */
-
-  display: flex;
-  align-items: center;
-  color: #4d8be8;
-`
-
-const LockExpirationDuration = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 19px;
-  /* identical to box height, or 127% */
-
-  display: flex;
-  align-items: center;
-
-  /* Grey 4 */
-
-  color: #333333;
-  margin-top: 8px;
-`
-
-const ValidUntil = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  /* identical to box height */
-
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #a6a6a6;
-  margin-top: 8px;
-`
-
-const KeyExpiration = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 20px;
-  color: #333333;
-`
+export default connect(
+  mapStateToProps,
+  { signData }
+)(KeyChainContent)
