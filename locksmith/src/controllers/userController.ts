@@ -149,6 +149,12 @@ namespace UserController {
     let publicKey = user.publicKey
     let passwordEncryptedPrivateKey = user.passwordEncryptedPrivateKey
 
+    let ejected = await UserOperations.ejectionStatusByAddress(publicKey)
+
+    if (ejected) {
+      return res.sendStatus(404)
+    }
+
     let result = await UserOperations.updatePasswordEncryptedPrivateKey(
       publicKey,
       passwordEncryptedPrivateKey
@@ -169,6 +175,12 @@ namespace UserController {
 
   export const eject = async (req: Request, res: Response) => {
     let address = req.params.ethereumAddress
+    let ejected = await UserOperations.ejectionStatusByAddress(address)
+
+    if (ejected) {
+      return res.sendStatus(400)
+    }
+
     let result = await UserOperations.eject(address)
 
     if (result[0] > 0) {
