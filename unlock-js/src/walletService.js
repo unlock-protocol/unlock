@@ -158,6 +158,7 @@ export default class WalletService extends UnlockService {
    * - {string} data
    * - {PropTypes.address} erc20Address
    * - {number} decimals
+   * TODO: add an exta callback param which will be invoked with the transaction hash
    */
   async purchaseKey(params = {}) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
