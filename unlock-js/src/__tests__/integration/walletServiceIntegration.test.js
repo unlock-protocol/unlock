@@ -7,7 +7,7 @@ import deploy from '../../deploy'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 
-import { UNLIMITED_KEYS_COUNT } from '../../../lib/constants'
+import locks from '../helpers/fixtures/locks'
 
 const abis = require('../../abis').default
 
@@ -32,87 +32,6 @@ let provider = `http://${host}:${port}`
 
 // Increasing timeouts
 jest.setTimeout(15000)
-
-// Locks to deploy for each version
-const locks = {
-  v0: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: undefined, // Not supported
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: undefined, // Not supported
-    },
-  ],
-  v01: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: '', // Not set when created
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: '', // Not set when created
-    },
-  ],
-  v02: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: '', // Not set when created
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: '', // Not set when created
-    },
-  ],
-  v10: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: 'My Lock',
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: 'Unlimited Keys lock',
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 10,
-      keyPrice: '100',
-      maxNumberOfKeys: 100,
-      name: 'ERC20 lock',
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
-    },
-  ],
-  v11: [
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: 100,
-      name: 'My Lock',
-    },
-    {
-      expirationDuration: 60 * 60 * 24 * 30,
-      keyPrice: '0.1',
-      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      name: 'Unlimited Keys lock',
-    },
-  ],
-}
 
 // I wish we did not have to do this manually!
 const versionMappings = { v0: v0, v01: v01, v02: v02, v10: v10, v11: v11 }
@@ -193,6 +112,35 @@ describe('Wallet Service Integration', () => {
         expect.assertions(1)
         expect(lock.expirationDuration).toEqual(lockParams.expirationDuration)
       })
+
+      it('should have deployed the right currency', () => {
+        expect.assertions(1)
+        expect(lock.currencyContractAddress).toEqual(
+          lockParams.currencyContractAddress
+        )
+      })
+
+      describe('updateKeyPrice', () => {
+        let oldKeyPrice, newPrice
+        beforeEach(async () => {
+          oldKeyPrice = lock.keyPrice
+          newPrice = await walletService.updateKeyPrice({
+            lockAddress: lockAddress,
+            keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
+          })
+          lock = await web3Service.getLock(lockAddress)
+        })
+
+        it('should have changed the keyPrice', () => {
+          expect.assertions(2)
+          expect(newPrice).toEqual((parseFloat(oldKeyPrice) * 2).toString())
+          expect(lock.keyPrice).toEqual(newPrice)
+        })
+      })
+
+      describe('purchaseKey', () => {})
+
+      describe('withdrawFromLock', () => {})
     })
   })
 })
