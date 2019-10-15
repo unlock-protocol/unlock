@@ -67,7 +67,7 @@ export default {
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
-      keyPrice: '100',
+      keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
       currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
@@ -90,7 +90,7 @@ export default {
     },
     {
       expirationDuration: 60 * 60 * 24 * 10,
-      keyPrice: '100',
+      keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
       currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container

@@ -71,10 +71,11 @@ export default async function({
 
     const transferEvent = receipt.logs
       .map(log => {
+        if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
         return parser.parseLog(log)
       })
       .filter(event => {
-        return event.name === 'Transfer'
+        return event && event.name === 'Transfer'
       })[0]
     if (transferEvent) {
       return transferEvent.values._tokenId.toString()
@@ -83,6 +84,7 @@ export default async function({
       return null
     }
   } catch (error) {
+    // TODO remove all try catch non sense.
     this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
   }
 }
