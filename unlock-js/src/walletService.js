@@ -220,7 +220,10 @@ export default class WalletService extends UnlockService {
 
   async signDataPersonal(account, data, callback) {
     try {
-      const method = this.web3Provider ? 'personal_sign' : 'eth_sign'
+      let method = 'eth_sign'
+      if (this.web3Provider || this.provider.isUnlock) {
+        method = 'personal_sign'
+      }
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
