@@ -21,6 +21,10 @@ const aKey: OwnedKey = {
     price: '50',
   },
 }
+/* const aSignature = {
+ *   data: 'nice',
+ *   signature: 'really nice',
+ * } */
 
 describe('keyChain -- Key', () => {
   it('should render the lock name', () => {
@@ -29,6 +33,8 @@ describe('keyChain -- Key', () => {
     const { getByText } = rtl.render(
       <Key
         signData={signData}
+        signature={null}
+        displayQR={jest.fn()}
         accountAddress={accountAddress}
         ownedKey={aKey}
       />
@@ -46,6 +52,8 @@ describe('keyChain -- Key', () => {
     const { getByText } = rtl.render(
       <Key
         signData={signData}
+        signature={null}
+        displayQR={jest.fn()}
         accountAddress={accountAddress}
         ownedKey={aKey}
       />
@@ -74,7 +82,12 @@ describe('keyChain -- KeyDetails', () => {
 
     const { getByTitle } = rtl.render(
       <MockedProvider mocks={[]}>
-        <KeyDetails address={accountAddress} signData={signData} />
+        <KeyDetails
+          address={accountAddress}
+          signData={signData}
+          displayQR={jest.fn}
+          signatures={{}}
+        />
       </MockedProvider>
     )
 
@@ -97,7 +110,12 @@ describe('keyChain -- KeyDetails', () => {
 
     const { getByText } = rtl.render(
       <MockedProvider mocks={[errorMock]} addTypename={false}>
-        <KeyDetails address={accountAddress} signData={signData} />
+        <KeyDetails
+          address={accountAddress}
+          signData={signData}
+          displayQR={jest.fn}
+          signatures={{}}
+        />
       </MockedProvider>
     )
 
@@ -128,7 +146,12 @@ describe('keyChain -- KeyDetails', () => {
 
     const { getByText } = rtl.render(
       <MockedProvider mocks={[noResultsMock]} addTypename={false}>
-        <KeyDetails address={accountAddress} signData={signData} />
+        <KeyDetails
+          address={accountAddress}
+          signData={signData}
+          displayQR={jest.fn}
+          signatures={{}}
+        />
       </MockedProvider>
     )
 
@@ -163,7 +186,12 @@ describe('keyChain -- KeyDetails', () => {
 
     const { getByText } = rtl.render(
       <MockedProvider mocks={[resultsMock]} addTypename={false}>
-        <KeyDetails address={accountAddress} signData={signData} />
+        <KeyDetails
+          address={accountAddress}
+          signData={signData}
+          displayQR={jest.fn}
+          signatures={{}}
+        />
       </MockedProvider>
     )
 
