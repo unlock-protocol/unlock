@@ -40,6 +40,9 @@ describe('keyChain -- Key', () => {
   it('should dispatch a payload to be signed', () => {
     expect.assertions(1)
     const signData = jest.fn()
+    const realDateNow = Date.now.bind(global.Date)
+    const dateNowStub = jest.fn(() => 1530518207007)
+    global.Date.now = dateNowStub
     const { getByText } = rtl.render(
       <Key
         signData={signData}
@@ -52,9 +55,15 @@ describe('keyChain -- Key', () => {
     rtl.fireEvent.click(button)
 
     expect(signData).toHaveBeenCalledWith(
-      JSON.stringify({ accountAddress, lockAddress: aKey.lock.address }),
+      JSON.stringify({
+        accountAddress,
+        lockAddress: aKey.lock.address,
+        timestamp: dateNowStub(),
+      }),
       aKey.lock.address
     )
+
+    global.Date.now = realDateNow
   })
 })
 

@@ -96,6 +96,7 @@ export class Key extends React.Component<KeyProps> {
     const payload = JSON.stringify({
       accountAddress,
       lockAddress: lock.address,
+      timestamp: Date.now(),
     })
     signData(payload, lock.address)
   }
