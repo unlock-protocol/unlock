@@ -30,7 +30,7 @@ export const KeyChainContent = ({ account, network, router }) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          {keyDetails(account.address.toLowerCase())}
+          <KeyDetails address={account.address.toLowerCase()} />
           <DeveloperOverlay />
         </BrowserOnly>
       )}
@@ -61,7 +61,7 @@ export const mapStateToProps = ({ account, network, router }) => {
   }
 }
 
-const keyDetails = address => {
+const KeyDetails = ({ address }) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { address },
   })
@@ -84,23 +84,31 @@ const keyDetails = address => {
 
   return (
     <Container>
-      {data.keyHolders[0].keys.map(ownedKeys => {
-        return (
-          <Box key={ownedKeys.lock.id}>
-            <LockName>{ownedKeys.lock.name}</LockName>
-            <LockExpirationDuration>
-              {durationsAsTextFromSeconds(ownedKeys.lock.expirationDuration)}
-            </LockExpirationDuration>
-
-            <ValidUntil>Valid Until</ValidUntil>
-            <KeyExpiration>
-              {expirationAsDate(ownedKeys.expiration)}
-            </KeyExpiration>
-          </Box>
-        )
-      })}
+      {data.keyHolders[0].keys.map(key => (
+        <Key ownedKey={key} />
+      ))}
     </Container>
   )
+}
+
+class Key extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+
+  render = () => {
+    const { ownedKey } = this.props
+    return (
+      <Box key={ownedKey.lock.id}>
+        <LockName>{ownedKey.lock.name}</LockName>
+        <LockExpirationDuration>
+          {durationsAsTextFromSeconds(ownedKey.lock.expirationDuration)}
+        </LockExpirationDuration>
+        <ValidUntil>Valid Until</ValidUntil>
+        <KeyExpiration>{expirationAsDate(ownedKey.expiration)}</KeyExpiration>
+      </Box>
+    )
+  }
 }
 
 export default connect(mapStateToProps)(KeyChainContent)
