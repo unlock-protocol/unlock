@@ -38,9 +38,8 @@ describe('v0', () => {
     }
 
     function callReadOnlyFunction({ maxKeys }) {
-      // check to see if this is v0 or v01
       nock.ethGetCodeAndYield(lockAddress, UnlockV0.PublicLock.deployedBytecode)
-      // what version is this? v0 fails with method non-existing
+
       nock.ethCallAndFail(
         fakeContract.functions['publicLockVersion()'].encode([]),
         checksumLockAddress,

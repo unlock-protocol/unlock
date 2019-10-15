@@ -13,7 +13,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.updateTransferFee(0, 1) // disable the transfer fee for this test
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   // function safeTransferFrom() still uses transferFrom() under the hood, but adds an additional check afterwards. transferFrom is already well-tested, so here we add a few checks to test only the new functionality.
@@ -23,7 +23,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
 
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
-    await lock.purchase(from, web3.utils.padLeft(0, 40), [], {
+    await lock.purchase(0, from, web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from,
     })
@@ -39,7 +39,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   })
 
   it('should work if some data is passed in', async () => {
-    await lock.purchase(accounts[7], web3.utils.padLeft(0, 40), [], {
+    await lock.purchase(0, accounts[7], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[7],
     })
@@ -60,7 +60,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    await lock.purchase(accounts[5], web3.utils.padLeft(0, 40), [], {
+    await lock.purchase(0, accounts[5], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[5],
     })

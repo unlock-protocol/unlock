@@ -24,6 +24,7 @@ let purchaseRouter = require('./routes/purchase')
 let priceRouter = require('./routes/price')
 let metadataRouter = require('./routes/metadata')
 let healthCheckRouter = require('./routes/health')
+let linkdropRouter = require('./routes/linkdrop')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -35,6 +36,7 @@ app.use('/users', userRouter)
 app.use('/purchase', purchaseRouter)
 app.use('/price', priceRouter)
 app.use('/api/key', metadataRouter)
+app.use('/api/linkdrop', linkdropRouter)
 app.use('/health', healthCheckRouter)
 
 module.exports = app

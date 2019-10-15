@@ -4,14 +4,15 @@ import Errors from '../errors'
 
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
- * @param {PropTypes.address} lock
+ * Note: this version of the contract actually supports partialWithdraw() which we could use here.
+ * @param {PropTypes.address} lockAddress
  */
-export default async function(lockAddress) {
+export default async function({ lockAddress }) {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   try {
     transactionPromise = lockContract['withdraw()']({
-      gasLimit: GAS_AMOUNTS.withdraw, // overrides default value for transaction gas price
+      gasLimit: GAS_AMOUNTS.withdraw,
     })
     const ret = await this._handleMethodCall(
       transactionPromise,

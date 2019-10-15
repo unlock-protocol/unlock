@@ -64,7 +64,7 @@ export class EventContent extends Component<
           [lockAddress]: {},
         },
         callToAction: {
-          default: 'Buy a ticket',
+          default: 'Purchase a ticket using the Unlock Protocol',
         },
         unlockUserAccounts,
       }
@@ -135,11 +135,10 @@ export class EventContent extends Component<
                       window.unlockProtocol.loadCheckoutModal()
                   }
                 }}
-                keyPrice="0.01"
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
-              <EventTicket lockAddress={lockAddress} />
+              <EventTicket lockAddress={lockAddress} event={event} />
             )}
           </Column>
         </Columns>

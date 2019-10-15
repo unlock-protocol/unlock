@@ -139,11 +139,19 @@ storiesOf('Checkout', module)
         },
       },
     }
+    const singleLockConfig = {
+      ...paywallConfig,
+      locks: {
+        '0x123': {
+          name: 'One Week',
+        },
+      },
+    }
 
     return (
       <Checkout
         locks={locks}
-        config={paywallConfig}
+        config={singleLockConfig}
         account={account}
         purchase={purchaseKey}
         hideCheckout={hideCheckout}
@@ -357,6 +365,31 @@ storiesOf('Checkout', module)
       />
     )
   })
+  .add('Checkout with locks partially loaded', () => {
+    const locks = {
+      '0x123': {
+        name: '',
+        address: '0x123',
+        keyPrice: '0.1',
+        expirationDuration: 60 * 60 * 24 * 7,
+        key: {
+          status: 'valid',
+          transactions: [{}],
+          // expiration in hours
+          expiration: new Date().getTime() / 1000 + 60 * 60 + 300,
+        },
+      },
+    }
+    return (
+      <Checkout
+        locks={locks}
+        config={paywallConfigNoNames}
+        account={account}
+        purchase={purchaseKey}
+        hideCheckout={hideCheckout}
+      />
+    )
+  })
   .add('Checkout with lock with no name', () => {
     const locks = {
       '0x123': {
@@ -408,6 +441,8 @@ storiesOf('Checkout', module)
   })
 
   .add('Checkout with lock with config name override', () => {
+    const expiration = new Date().getTime() / 1000 + 60 * 60 * 24 * 8.5 // this in 8 and a half days. Using a half allows us to avoid transient testing issues because with a "integer" number of days, it could be either 7 or 8 days based on test speed execution
+
     const locks = {
       '0x123': {
         name: 'Overridden',
@@ -417,7 +452,7 @@ storiesOf('Checkout', module)
         key: {
           status: 'valid',
           transactions: [{}],
-          expiration: new Date().getTime() / 1000 + 60 * 60 * 24 * 8,
+          expiration,
         },
       },
       '0x456': {

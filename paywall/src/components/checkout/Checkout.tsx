@@ -93,7 +93,6 @@ export const Checkout = ({
       )
     }
   })
-
   return (
     <>
       <Header>
@@ -101,8 +100,11 @@ export const Checkout = ({
         {callToActionParagraphs}
       </Header>
       <CheckoutLocks>
-        {lockAddresses.length == 0 && <LoadingLock />}
-        {checkoutLocks}
+        {lockAddresses.length < Object.keys(config.locks).length && (
+          <LoadingLock />
+        )}
+        {lockAddresses.length === Object.keys(config.locks).length &&
+          checkoutLocks}
       </CheckoutLocks>
       <Footer>
         <RoundedLogo />

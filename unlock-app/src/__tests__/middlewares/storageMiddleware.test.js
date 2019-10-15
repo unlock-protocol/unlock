@@ -1,29 +1,32 @@
 import { EventEmitter } from 'events'
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
-import storageMiddleware, {
-  changePassword,
-} from '../../middlewares/storageMiddleware'
+import * as unlockJs from '@unlock-protocol/unlock-js'
+import storageMiddleware from '../../middlewares/storageMiddleware'
 import { UPDATE_LOCK, updateLock, getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
+import { gotRecoveryPhrase } from '../../actions/recovery'
 import configure from '../../config'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   setEncryptedPrivateKey,
-  SIGN_USER_DATA,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
   KEY_PURCHASE_INITIATED,
+  WELCOME_EMAIL,
+  gotEncryptedPrivateKeyPayload,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
 import { setError, SET_ERROR } from '../../actions/error'
 import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
+import UnlockUser from '../../structured_data/unlockUser'
+
+jest.mock('@unlock-protocol/unlock-js')
 
 const { Storage } = Error
 
@@ -380,10 +383,22 @@ describe('Storage middleware', () => {
   })
 
   describe('SIGNUP_CREDENTIALS', () => {
-    it('should call storageService', done => {
-      expect.assertions(4)
-      const emailAddress = 'tim@cern.ch'
-      const password = 'guest'
+    const password = 'password'
+    const passwordEncryptedPrivateKey = {}
+    const emailAddress = 'tim@cern.ch'
+    const publicKey = '0xabc'
+    const accountInfo = { address: publicKey, passwordEncryptedPrivateKey }
+    const user = {}
+
+    beforeEach(() => {
+      unlockJs.createAccountAndPasswordEncryptKey = jest.fn(() =>
+        Promise.resolve(accountInfo)
+      )
+      UnlockUser.build = jest.fn(() => user)
+    })
+
+    it('should call storageService with the right object', async () => {
+      expect.assertions(3)
       const { next, invoke } = create()
 
       const action = {
@@ -392,45 +407,55 @@ describe('Storage middleware', () => {
         password,
       }
 
-      mockStorageService.createUser = user => {
-        // These properties will be undefined if async call is used incorrectly.
-        const {
-          emailAddress,
-          publicKey,
-          passwordEncryptedPrivateKey,
-        } = user.message.user
-        expect(emailAddress).toBeDefined()
-        expect(publicKey).toBeDefined()
-        expect(passwordEncryptedPrivateKey).toBeDefined()
-        done()
-      }
+      mockStorageService.createUser = jest.fn()
 
-      invoke(action)
-
+      await invoke(action)
+      expect(UnlockUser.build).toHaveBeenCalledWith({
+        emailAddress,
+        publicKey,
+        passwordEncryptedPrivateKey,
+      })
+      expect(mockStorageService.createUser).toHaveBeenCalledWith(
+        user,
+        emailAddress,
+        password
+      )
       expect(next).toHaveBeenCalledTimes(1)
     })
 
-    it('should dispatch gotEncryptedPrivateKeyPayload after an account is created', () => {
-      expect.assertions(1)
-      const { store } = create()
+    describe('success', () => {
+      it('should dispatch gotEncryptedPrivateKeyPayload and welcomeEmail after an account is created', async () => {
+        expect.assertions(2)
+        const { store } = create()
 
-      const passwordEncryptedPrivateKey = {
-        id: 'this is the encrypted key',
-      }
-      const emailAddress = 'paul@bunyan.io'
-      const password = 'guest'
+        const passwordEncryptedPrivateKey = {
+          id: 'this is the encrypted key',
+        }
+        const emailAddress = 'paul@bunyan.io'
+        const password = 'guest'
+        const recoveryKey = {}
 
-      mockStorageService.emit(success.createUser, {
-        passwordEncryptedPrivateKey,
-        emailAddress,
-        password,
-      })
+        unlockJs.reEncryptPrivateKey = jest.fn(() =>
+          Promise.resolve(recoveryKey)
+        )
 
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-        key: passwordEncryptedPrivateKey,
-        emailAddress,
-        password,
+        await mockStorageService.emit(success.createUser, {
+          passwordEncryptedPrivateKey,
+          emailAddress,
+          password,
+        })
+
+        expect(store.dispatch).toHaveBeenNthCalledWith(2, {
+          type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+          key: passwordEncryptedPrivateKey,
+          emailAddress,
+          password,
+        })
+        expect(store.dispatch).toHaveBeenNthCalledWith(1, {
+          type: WELCOME_EMAIL,
+          emailAddress,
+          recoveryKey,
+        })
       })
     })
 
@@ -453,10 +478,7 @@ describe('Storage middleware', () => {
     const emailAddress = 'tim@cern.ch'
     const password = 'guest'
     let key
-    beforeEach(async () => {
-      const info = await createAccountAndPasswordEncryptKey(password)
-      key = info.passwordEncryptedPrivateKey
-    })
+
     it('should dispatch the payload when it can get an encrypted private key', () => {
       expect.assertions(4)
       const { next, invoke, store } = create()
@@ -499,56 +521,6 @@ describe('Storage middleware', () => {
         setError(Storage.Warning('Could not find this user account.'))
       )
       expect(store.dispatch).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('CHANGE_PASSWORD', () => {
-    const encryptedPrivateKey = {
-      version: 3,
-      id: 'edbe0942-593b-4027-8688-07b7d3ec56c5',
-      address: '0272742cbe9b4d4c81cffe8dfc0c33b5fb8893e5',
-      crypto: {
-        ciphertext:
-          '6f2a3ed499a2962cc48e6f7f0a90a0c817c83024cc4878f624ad251fccd0b706',
-        cipherparams: { iv: '69f031944591eed34c4d4f5841d283b0' },
-        cipher: 'aes-128-ctr',
-        kdf: 'scrypt',
-        kdfparams: {
-          dklen: 32,
-          salt:
-            '5ac866336768f9613a505acd18dab463f4d10152ffefba5772125f5807539c36',
-          n: 8192,
-          r: 8,
-          p: 1,
-        },
-        mac: 'cc8efad3b534336ecffc0dbf6f51fd558301873d322edc6cbc1c9398ee0953ec',
-      },
-    }
-    const oldPassword = 'guest'
-
-    it('should dispatch a new user object to be signed', async () => {
-      expect.assertions(1)
-      const dispatch = jest.fn()
-      const emailAddress = 'zapp@brannigan.io'
-      const storageService = {
-        getUserPrivateKey: async () => {
-          return encryptedPrivateKey
-        },
-      }
-
-      await changePassword({
-        oldPassword,
-        newPassword: 'visitor',
-        emailAddress,
-        storageService,
-        dispatch,
-      })
-
-      expect(dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: SIGN_USER_DATA,
-        })
-      )
     })
   })
 
@@ -694,6 +666,67 @@ describe('Storage middleware', () => {
           level: 'Warning',
           message: 'Unable to get dollar-denominated key price from server.',
         },
+      })
+    })
+  })
+
+  describe('when starting on the recovery page', () => {
+    let email = 'julien@unlock-protocol.com'
+    let recoveryKey = {}
+    let recoveryPhrase = 'recoveryPhrase'
+
+    beforeEach(() => {
+      state.router = {
+        location: {
+          pathname: '/recover/',
+          search: `?email=${email}&recoveryKey=${JSON.stringify(recoveryKey)}`,
+        },
+      }
+      mockStorageService = new MockStorageService()
+      mockStorageService.getUserRecoveryPhrase = jest.fn()
+    })
+
+    it('should get the user recovery phrase', () => {
+      expect.assertions(1)
+      create()
+      expect(mockStorageService.getUserRecoveryPhrase).toHaveBeenCalledWith(
+        email
+      )
+    })
+
+    describe('when the recovery phrase was successfully retrieved', () => {
+      it('should dispatch gotRecoveryPhrase and gotEncryptedPrivateKeyPayload', () => {
+        expect.assertions(2)
+        const { store } = create()
+
+        mockStorageService.emit(success.getUserRecoveryPhrase, {
+          recoveryPhrase,
+        })
+
+        expect(store.dispatch).toHaveBeenNthCalledWith(
+          1,
+          gotRecoveryPhrase(recoveryPhrase)
+        )
+        expect(store.dispatch).toHaveBeenNthCalledWith(
+          2,
+          gotEncryptedPrivateKeyPayload(recoveryKey, email, recoveryPhrase)
+        )
+      })
+    })
+
+    describe('when the recovery phrase could not be retrieved', () => {
+      it('should dispatch setError', () => {
+        expect.assertions(1)
+        const { store } = create()
+
+        mockStorageService.emit(failure.getUserRecoveryPhrase, {
+          recoveryPhrase,
+        })
+
+        expect(store.dispatch).toHaveBeenNthCalledWith(
+          1,
+          setError(Storage.Warning('Could not initiate account recovery.'))
+        )
       })
     })
   })

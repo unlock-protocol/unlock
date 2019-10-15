@@ -2,10 +2,13 @@ import { KeyMetadata } from '../models/keyMetadata'
 import { LockMetadata } from '../models/lockMetadata'
 import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
+import { getMetadata } from './userMetadataOperations'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
 const Asset = require('../utils/assets')
+
+let baseURIFragement = 'https://assets.unlock-protocol.com'
 
 export const updateKeyMetadata = async (data: any) => {
   try {
@@ -30,9 +33,19 @@ export const generateKeyMetadata = async (address: string, keyId: string) => {
   if (Object.keys(onChainKeyMetadata).length == 0) {
     return {}
   }
+
+  let kd = new KeyData(config.web3ProviderHost)
+  let data = await kd.get(address, keyId)
+  let userMetadata = data.owner ? await getMetadata(address, data.owner) : {}
+
   let keyCentricData = await getKeyCentricData(address, keyId)
   let baseTokenData = await getBaseTokenData(address)
-  return Object.assign(baseTokenData, keyCentricData, onChainKeyMetadata)
+  return Object.assign(
+    baseTokenData,
+    keyCentricData,
+    onChainKeyMetadata,
+    userMetadata
+  )
 }
 
 const getBaseTokenData = async (address: string) => {
@@ -42,7 +55,7 @@ const getBaseTokenData = async (address: string) => {
   })
 
   let assetLocation = Asset.tokenMetadataDefaultImage({
-    base: 'https://assets.unlock-protocol.com',
+    base: baseURIFragement,
     address: address,
   })
 
@@ -66,7 +79,7 @@ const getKeyCentricData = async (address: string, tokenId: string) => {
   })
 
   let assetLocation = Asset.tokenCentricImage({
-    base: 'https://assets.unlock-protocol.com',
+    base: baseURIFragement,
     address: address,
     tokenId: tokenId,
   })
@@ -90,7 +103,7 @@ const defaultMappings = (address: string) => {
   let defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
-    image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
+    image: `${baseURIFragement}/unlock-default-key-image.png`,
   }
 
   // Custom mappings

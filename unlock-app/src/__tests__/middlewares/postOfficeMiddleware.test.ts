@@ -6,10 +6,16 @@ import {
 } from '../../utils/postOffice'
 import { PostOfficeEvents } from '../../services/postOfficeService'
 import postOfficeMiddleware from '../../middlewares/postOfficeMiddleware'
-import { ADD_TO_CART } from '../../actions/keyPurchase'
+import { ADD_TO_CART, DISMISS_PURCHASE_MODAL } from '../../actions/keyPurchase'
 import { KEY_PURCHASE_INITIATED } from '../../actions/user'
 import { SET_ACCOUNT } from '../../actions/accounts'
-import { USER_ACCOUNT_ADDRESS_STORAGE_ID } from '../../constants'
+import {
+  USER_ACCOUNT_ADDRESS_STORAGE_ID,
+  DEFAULT_USER_ACCOUNT_ADDRESS,
+} from '../../constants'
+import { SET_LOCKED_STATE } from '../../actions/pageStatus'
+import { WEB3_CALL, WEB3_RESULT } from '../../actions/web3call'
+import { web3MethodCall } from '../../windowTypes'
 
 class MockPostOfficeService extends EventEmitter {
   constructor() {
@@ -19,6 +25,7 @@ class MockPostOfficeService extends EventEmitter {
   hideAccountModal = jest.fn()
   transactionInitiated = jest.fn()
   setAccount = jest.fn()
+  sendWeb3Result = jest.fn()
 }
 
 let mockPostOfficeService = new MockPostOfficeService()
@@ -89,15 +96,17 @@ describe('postOfficeMiddleware', () => {
   })
 
   describe('setting account', () => {
-    it('should set account to null when there is nothing in localStorage', () => {
+    it('should set account to the default address when there is nothing in localStorage', () => {
       expect.assertions(1)
 
       makeMiddleware()
 
-      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(
+        DEFAULT_USER_ACCOUNT_ADDRESS
+      )
     })
 
-    it('should set account to null when localStorage contains a malformed value', () => {
+    it('should set account to the default address when localStorage contains a malformed value', () => {
       expect.assertions(1)
 
       const anAddress = 'some random garbage'
@@ -105,7 +114,9 @@ describe('postOfficeMiddleware', () => {
 
       makeMiddleware()
 
-      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(null)
+      expect(mockPostOfficeService.setAccount).toHaveBeenLastCalledWith(
+        DEFAULT_USER_ACCOUNT_ADDRESS
+      )
     })
 
     it('should set account to the value provided by localStorage, if it is a real address', () => {
@@ -160,11 +171,53 @@ describe('postOfficeMiddleware', () => {
         tip,
       })
     })
+
+    it('should set locked state when receiving Locked', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      mockPostOfficeService.emit(PostOfficeEvents.Locked)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_LOCKED_STATE,
+        isLocked: true,
+      })
+    })
+
+    it('should set unlocked state when receiving Unlocked', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      mockPostOfficeService.emit(PostOfficeEvents.Unlocked)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_LOCKED_STATE,
+        isLocked: false,
+      })
+    })
+
+    it('should dispatch web3Call when receiving a web3 call', () => {
+      expect.assertions(1)
+
+      const { store } = makeMiddleware()
+      const payload: web3MethodCall = {
+        method: 'personal_sign',
+        params: [],
+        id: 1337,
+        jsonrpc: '2.0',
+      }
+      mockPostOfficeService.emit(PostOfficeEvents.Web3Call, payload)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: WEB3_CALL,
+        payload,
+      })
+    })
   })
 
   describe('handling actions', () => {
     it('should tell the paywall about account changes', () => {
-      expect.assertions(3)
+      expect.assertions(2)
       const { invoke } = makeMiddleware()
       const action = {
         type: SET_ACCOUNT,
@@ -180,7 +233,6 @@ describe('postOfficeMiddleware', () => {
         '0x123abc'
       )
       expect(mockPostOfficeService.setAccount).toHaveBeenCalledWith('0x123abc')
-      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
     })
 
     it('should tell the paywall about a purchase and dismiss itself when receiving KEY_PURCHASE_INITIATED', () => {
@@ -195,6 +247,34 @@ describe('postOfficeMiddleware', () => {
       expect(mockPostOfficeService.transactionInitiated).toHaveBeenCalled()
       expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
       expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should dismiss the purchase modal when receiving DISMISS_PURCHASE_MODAL', () => {
+      expect.assertions(2)
+      const { invoke } = makeMiddleware()
+      const action = {
+        type: DISMISS_PURCHASE_MODAL,
+      }
+
+      invoke(action)
+
+      expect(mockPostOfficeService.hideAccountModal).toHaveBeenCalled()
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should send out web3 results when receiving WEB3_RESULT', () => {
+      expect.assertions(1)
+
+      const { invoke } = makeMiddleware()
+      const payload = 'this represents a web3MethodCallResult type'
+      const action = {
+        type: WEB3_RESULT,
+        payload,
+      }
+
+      invoke(action)
+
+      expect(mockPostOfficeService.sendWeb3Result).toHaveBeenCalledWith(payload)
     })
 
     it('should pass other actions on to the next middleware', () => {

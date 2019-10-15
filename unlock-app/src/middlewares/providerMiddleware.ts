@@ -1,5 +1,7 @@
+import { reEncryptPrivateKey } from '@unlock-protocol/unlock-js'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
+import { resetRecoveryPhrase } from '../actions/recovery'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import {
   FATAL_MISSING_PROVIDER,
@@ -11,11 +13,15 @@ import {
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   SIGN_USER_DATA,
   signedUserData,
+  signUserData,
   SIGN_PAYMENT_DATA,
   signedPaymentData,
   SIGN_PURCHASE_DATA,
   signedPurchaseData,
+  CHANGE_PASSWORD,
 } from '../actions/user'
+import { WEB3_CALL, web3Result } from '../actions/web3call'
+import { web3MethodCall } from '../windowTypes'
 
 interface Provider {
   enable?: () => any
@@ -52,6 +58,37 @@ export function initializeProvider(provider: Provider, dispatch: any) {
   }
 }
 
+interface ChangePasswordArgs {
+  oldPassword: string
+  newPassword: string
+  passwordEncryptedPrivateKey: any
+  dispatch: (action: any) => void
+}
+
+export async function changePassword({
+  oldPassword,
+  newPassword,
+  passwordEncryptedPrivateKey,
+  dispatch,
+}: ChangePasswordArgs) {
+  try {
+    const newEncryptedKey = await reEncryptPrivateKey(
+      passwordEncryptedPrivateKey,
+      oldPassword,
+      newPassword
+    )
+
+    dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
+    dispatch(resetRecoveryPhrase()) // We unset the recovery phrase
+  } catch (e) {
+    dispatch(
+      setError(
+        LogIn.Warning('Could not re-encrypt private key -- bad password?')
+      )
+    )
+  }
+}
+
 export async function initializeUnlockProvider(
   action: Action, // action: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
   unlockProvider: any,
@@ -73,6 +110,29 @@ export async function initializeUnlockProvider(
       )
     )
   }
+}
+
+export async function sendMethod(
+  payload: web3MethodCall,
+  provider: any,
+  dispatch: any
+) {
+  const { method, id, params } = payload
+  const result = await provider.send(method, params)
+
+  // TODO: handle errors here -- at the moment there are no methods
+  // that return an error value
+  dispatch(
+    web3Result({
+      id,
+      jsonrpc: '2.0',
+      result: {
+        id,
+        jsonrpc: '2.0',
+        result,
+      },
+    })
+  )
 }
 
 export const providerMiddleware = (config: any) => {
@@ -104,6 +164,20 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_PURCHASE_DATA) {
           const payload = provider.signKeyPurchaseRequestData(action.data)
           dispatch(signedPurchaseData(payload))
+        } else if (action.type === WEB3_CALL) {
+          sendMethod(action.payload, provider, dispatch)
+        }
+
+        if (action.type === CHANGE_PASSWORD) {
+          const { oldPassword, newPassword } = action
+          const passwordEncryptedPrivateKey =
+            provider.passwordEncryptedPrivateKey
+          changePassword({
+            passwordEncryptedPrivateKey,
+            oldPassword,
+            newPassword,
+            dispatch,
+          })
         }
 
         next(action)

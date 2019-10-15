@@ -67,7 +67,7 @@ export default class EventService {
   async getEvent(lockAddress) {
     try {
       const response = await axios.get(`${this.host}/events/${lockAddress}`)
-      const {
+      let {
         name,
         date,
         description,
@@ -77,6 +77,17 @@ export default class EventService {
         image,
         eventLinks,
       } = response.data
+
+      // Hardcoding values
+      if (lockAddress === '0xB0ad425cA5792DD4C4Af9177c636e5b0e6c317BF') {
+        image =
+          'https://assets.unlock-protocol.com/nft-images/ethwaterloo/ethwaterloo-logomark.png'
+      }
+
+      if (lockAddress === '0xaA23E8ceBd3817eeEC735Cd9aaF557cCB8e8407C') {
+        image =
+          'https://assets.unlock-protocol.com/events/coinfund-rabbithole.png'
+      }
 
       return {
         name,

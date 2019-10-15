@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
@@ -25,11 +25,17 @@ contract MixinPurchase is
 
   /**
   * @dev Purchase function
+  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
+  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
+  * than keyPrice is approved for spending).
   */
   function purchase(
+    uint256 _value,
     address _recipient,
     address _referrer,
     bytes calldata _data
@@ -83,7 +89,11 @@ contract MixinPurchase is
       toKey.tokenId
     );
 
-    // We explicitly allow for greater amounts of ETH to allow 'donations'
+    // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+    if(tokenAddress != address(0)) {
+      require(_value >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
+      inMemoryKeyPrice = _value;
+    }
     // Security: after state changes to minimize risk of re-entrancy
     uint pricePaid = _chargeAtLeast(inMemoryKeyPrice);
 

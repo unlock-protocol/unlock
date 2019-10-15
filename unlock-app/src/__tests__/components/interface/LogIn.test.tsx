@@ -3,6 +3,7 @@ import * as rtl from 'react-testing-library'
 import { LogIn } from '../../../components/interface/LogIn'
 // eslint-disable-next-line no-unused-vars
 import { Credentials } from '../../../actions/user'
+import { resetError } from '../../../actions/error'
 
 let loginCredentials: (c: Credentials) => any
 
@@ -17,7 +18,12 @@ describe('LogIn', () => {
     const toggleSignup = jest.fn()
 
     const { getByText } = rtl.render(
-      <LogIn toggleSignup={toggleSignup} loginCredentials={loginCredentials} />
+      <LogIn
+        toggleSignup={toggleSignup}
+        loginCredentials={loginCredentials}
+        errors={[]}
+        close={resetError}
+      />
     )
 
     const signUp = getByText('Sign up here.')
@@ -32,7 +38,12 @@ describe('LogIn', () => {
     const password = 'guest'
 
     const { getByDisplayValue, getByLabelText } = rtl.render(
-      <LogIn toggleSignup={() => {}} loginCredentials={loginCredentials} />
+      <LogIn
+        toggleSignup={() => {}}
+        loginCredentials={loginCredentials}
+        errors={[]}
+        close={resetError}
+      />
     )
 
     const emailInput = getByLabelText('Email Address')
@@ -66,6 +77,8 @@ describe('LogIn', () => {
         toggleSignup={toggleSignup}
         loginCredentials={loginCredentials}
         account={account}
+        errors={[]}
+        close={resetError}
       />
     )
 

@@ -22,8 +22,12 @@ const lock = {
   keyPrice: '0.1', // 0.1 Eth
   maxNumberOfKeys: 100,
 }
-const owner = '0xdeadfeed'
+const EventInfo = new ethers.utils.Interface(UnlockV01.Unlock.abi)
+const encoder = ethers.utils.defaultAbiCoder
 
+let receipt = {
+  logs: [],
+}
 describe('v01', () => {
   describe('createLock', () => {
     async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
@@ -54,6 +58,10 @@ describe('v01', () => {
         maxNumberOfKeys
       )
 
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve(receipt)
+      )
+
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
@@ -71,7 +79,7 @@ describe('v01', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -101,11 +109,10 @@ describe('v01', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: lock.maxNumberOfKeys,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -126,17 +133,13 @@ describe('v01', () => {
           keyPrice: lock.keyPrice,
           maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
           outstandingKeys: 0,
-          owner,
         })
       })
 
-      await walletService.createLock(
-        {
-          ...lock,
-          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-        },
-        owner
-      )
+      await walletService.createLock({
+        ...lock,
+        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      })
 
       await nock.resolveWhenAllNocksUsed()
     })
@@ -152,8 +155,45 @@ describe('v01', () => {
         expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
       })
 
-      await walletService.createLock(lock, owner)
+      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
+    })
+
+    it('should yield a promise of lock address', async () => {
+      expect.assertions(1)
+
+      await nockBeforeEach()
+      setupSuccess()
+
+      // For now we do not use this
+      const sender = '0x0000000000000000000000000000000000000000'
+
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve({
+          logs: [
+            {
+              transactionIndex: 1,
+              blockNumber: 19759,
+              transactionHash:
+                '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+              address: lock.address,
+              topics: [
+                EventInfo.events['NewLock(address,address)'].topic,
+                encoder.encode(['address'], [sender]),
+                encoder.encode(['address'], [lock.address]),
+              ],
+              data: '0x',
+              logIndex: 0,
+              blockHash:
+                '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+              transactionLogIndex: 0,
+            },
+          ],
+        })
+      )
+      const lockAddress = await walletService.createLock(lock)
+      await nock.resolveWhenAllNocksUsed()
+      expect(lockAddress).toEqual(lock.address)
     })
   })
 })

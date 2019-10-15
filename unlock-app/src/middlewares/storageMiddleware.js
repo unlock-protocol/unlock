@@ -1,5 +1,5 @@
 /* eslint promise/prefer-await-to-then: 0 */
-
+import queryString from 'query-string'
 import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
@@ -12,58 +12,23 @@ import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
+import { gotRecoveryPhrase } from '../actions/recovery'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
-  CHANGE_PASSWORD,
   gotEncryptedPrivateKeyPayload,
   setEncryptedPrivateKey,
-  signUserData,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
   keyPurchaseInitiated,
+  welcomeEmail,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
-
-export async function changePassword({
-  oldPassword,
-  newPassword,
-  emailAddress,
-  storageService,
-  dispatch,
-}) {
-  let passwordEncryptedPrivateKey
-  try {
-    passwordEncryptedPrivateKey = await storageService.getUserPrivateKey(
-      emailAddress
-    )
-  } catch (e) {
-    dispatch(
-      setError(Storage.Warning('Could not retrieve encrypted private key.'))
-    )
-    return
-  }
-  try {
-    const newEncryptedKey = await reEncryptPrivateKey(
-      passwordEncryptedPrivateKey,
-      oldPassword,
-      newPassword
-    )
-
-    dispatch(signUserData({ passwordEncryptedPrivateKey: newEncryptedKey }))
-  } catch (e) {
-    dispatch(
-      setError(
-        Storage.Warning('Could not re-encrypt private key -- bad password?')
-      )
-    )
-  }
-}
 
 const storageMiddleware = config => {
   const { services } = config
@@ -105,7 +70,19 @@ const storageMiddleware = config => {
     // SIGNUP_CREDENTIALS
     storageService.on(
       success.createUser,
-      ({ passwordEncryptedPrivateKey, emailAddress, password }) => {
+      async ({
+        passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+        recoveryPhrase,
+      }) => {
+        // Build a recovery key with the private key and recovery phrase
+        const recoveryKey = await reEncryptPrivateKey(
+          passwordEncryptedPrivateKey,
+          password,
+          recoveryPhrase
+        )
+        dispatch(welcomeEmail(emailAddress, recoveryKey))
         dispatch(
           gotEncryptedPrivateKeyPayload(
             passwordEncryptedPrivateKey,
@@ -181,6 +158,7 @@ const storageMiddleware = config => {
     storageService.on(success.getKeyPrice, fees => {
       dispatch(updatePrice(fees))
     })
+
     storageService.on(failure.getKeyPrice, () => {
       dispatch(
         setError(
@@ -194,9 +172,42 @@ const storageMiddleware = config => {
     storageService.on(success.keyPurchase, () => {
       dispatch(keyPurchaseInitiated())
     })
+
     storageService.on(failure.keyPurchase, () => {
       dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
+
+    const { router } = getState()
+    if (router && router.location && router.location.pathname === '/recover/') {
+      // Let's get the user's recovery key from locksmith
+      // And log the user in with the recoveryKey (submitted by user thru email) and the recoveryPhase,
+      // from locksmith
+      const query = queryString.parse(router.location.search)
+      if (query && query.email && query.recoveryKey) {
+        storageService.once(
+          success.getUserRecoveryPhrase,
+          ({ recoveryPhrase }) => {
+            dispatch(gotRecoveryPhrase(recoveryPhrase))
+            dispatch(
+              gotEncryptedPrivateKeyPayload(
+                JSON.parse(query.recoveryKey),
+                query.email,
+                recoveryPhrase
+              )
+            )
+          }
+        )
+        storageService.once(failure.getUserRecoveryPhrase, () => {
+          dispatch(
+            setError(Storage.Warning('Could not initiate account recovery.'))
+          )
+        })
+        // We must put in state the email, and the recoveryKey
+        storageService.getUserRecoveryPhrase(query.email)
+      } else {
+        setError(Storage.Warning('Could not initiate account recovery.'))
+      }
+    }
 
     return next => {
       return action => {
@@ -272,22 +283,6 @@ const storageMiddleware = config => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
           })
         }
-
-        if (action.type === CHANGE_PASSWORD) {
-          const { oldPassword, newPassword } = action
-          const {
-            account: { emailAddress },
-          } = getState()
-
-          changePassword({
-            oldPassword,
-            newPassword,
-            emailAddress,
-            storageService,
-            dispatch,
-          })
-        }
-
         if (action.type === GET_STORED_PAYMENT_DETAILS) {
           const { emailAddress } = action
           storageService.getCards(emailAddress)

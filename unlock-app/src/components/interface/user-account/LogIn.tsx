@@ -139,7 +139,7 @@ export class LogIn extends React.Component<Props, State> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
+export const mapDispatchToProps = (dispatch: any) => ({
   loginCredentials: ({ emailAddress, password }: Credentials) =>
     dispatch(loginCredentials({ emailAddress, password })),
   close: (e: WarningError) => {
@@ -152,9 +152,9 @@ interface ReduxState {
   errors: UnlockError[]
 }
 
-const mapStateToProps = ({ account, errors }: ReduxState) => {
+export const mapStateToProps = ({ account, errors }: ReduxState) => {
   const logInWarnings = errors.filter(
-    e => isWarningError(e) && e.kind === 'LogIn'
+    e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
   )
 
   return {

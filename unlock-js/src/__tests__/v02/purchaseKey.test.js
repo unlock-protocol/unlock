@@ -60,7 +60,7 @@ describe('v02', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -86,7 +86,7 @@ describe('v02', () => {
         expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
       })
 
-      await walletService.purchaseKey(lockAddress, owner, keyPrice)
+      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
       await nock.resolveWhenAllNocksUsed()
     })
   })
