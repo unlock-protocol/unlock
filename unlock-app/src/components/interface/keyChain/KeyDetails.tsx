@@ -14,6 +14,13 @@ import Loading from '../Loading'
 export interface KeyDetailsProps {
   address: string
   signData: (data: any, id: any) => void
+  displayQR: (data: string) => void
+  signatures: {
+    [id: string]: {
+      data: string
+      signature: string
+    }
+  }
 }
 
 export interface OwnedKey {
@@ -33,9 +40,19 @@ export interface KeyProps {
   ownedKey: OwnedKey
   accountAddress: string
   signData: (data: any, id: any) => void
+  displayQR: (data: string) => void
+  signature: null | {
+    data: string
+    signature: string
+  }
 }
 
-export const KeyDetails = ({ address, signData }: KeyDetailsProps) => {
+export const KeyDetails = ({
+  address,
+  signData,
+  displayQR,
+  signatures,
+}: KeyDetailsProps) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { address },
   })
@@ -74,6 +91,8 @@ export const KeyDetails = ({ address, signData }: KeyDetailsProps) => {
           ownedKey={key}
           accountAddress={address}
           signData={signData}
+          displayQR={displayQR}
+          signature={signatures[key.lock.address] || null}
         />
       ))}
     </Container>
@@ -87,7 +106,7 @@ export class Key extends React.Component<KeyProps> {
     super(props)
   }
 
-  handleClick = () => {
+  handleSignature = () => {
     const {
       accountAddress,
       signData,
@@ -99,6 +118,29 @@ export class Key extends React.Component<KeyProps> {
       timestamp: Date.now(),
     })
     signData(payload, lock.address)
+  }
+
+  showQRCode = () => {
+    const { displayQR, signature } = this.props
+    if (signature) {
+      displayQR(signature.data)
+    }
+  }
+
+  qrButton = () => {
+    const { signature } = this.props
+    if (signature) {
+      return (
+        <button type="button" onClick={this.showQRCode}>
+          Display QR Code
+        </button>
+      )
+    }
+    return (
+      <button type="button" onClick={this.handleSignature}>
+        Assert Ownership
+      </button>
+    )
   }
 
   render = () => {
@@ -113,9 +155,7 @@ export class Key extends React.Component<KeyProps> {
         </LockExpirationDuration>
         <ValidUntil>Valid Until</ValidUntil>
         <KeyExpiration>{expirationAsDate(expiration)}</KeyExpiration>
-        <button type="button" onClick={this.handleClick}>
-          Assert Ownership
-        </button>
+        {this.qrButton()}
       </Box>
     )
   }

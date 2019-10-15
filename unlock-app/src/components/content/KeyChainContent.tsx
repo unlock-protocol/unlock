@@ -9,18 +9,30 @@ import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
 import { Account as AccountType, Network } from '../../unlockTypes'
 import { signData } from '../../actions/signature'
+import { displayQR } from '../../actions/fullScreenModals'
 import KeyDetails from '../interface/keyChain/KeyDetails'
 
 interface KeyChainContentProps {
   account: AccountType
   network: Network
   signData: (data: any, id: any) => void
+  displayQR: (data: string) => void
+  signatures: Signatures
+}
+
+interface Signatures {
+  [id: string]: {
+    data: string
+    signature: string
+  }
 }
 
 export const KeyChainContent = ({
   account,
   network,
+  signatures,
   signData,
+  displayQR,
 }: KeyChainContentProps) => {
   return (
     <Layout title="Key Chain">
@@ -33,6 +45,8 @@ export const KeyChainContent = ({
           <KeyDetails
             address={account.address.toLowerCase()}
             signData={signData}
+            displayQR={displayQR}
+            signatures={signatures}
           />
           <DeveloperOverlay />
         </BrowserOnly>
@@ -49,16 +63,22 @@ export const KeyChainContent = ({
 interface ReduxState {
   account: AccountType
   network: Network
+  signature: Signatures
 }
 
-export const mapStateToProps = ({ account, network }: ReduxState) => {
+export const mapStateToProps = ({
+  account,
+  network,
+  signature,
+}: ReduxState) => {
   return {
     account,
     network,
+    signatures: signature,
   }
 }
 
 export default connect(
   mapStateToProps,
-  { signData }
+  { signData, displayQR }
 )(KeyChainContent)

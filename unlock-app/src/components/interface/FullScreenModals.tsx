@@ -21,6 +21,9 @@ export const FullScreenModal = ({
     case KindOfModal.WalletCheckOverlay:
       Template = WalletCheck
       break
+    case KindOfModal.QRDisplay:
+      Template = QRDisplay
+      break
     default:
       // We were given a KindOfModal that we don't have a template for. Do nothing.
       return null
