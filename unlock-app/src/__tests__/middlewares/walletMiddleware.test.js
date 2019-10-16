@@ -661,7 +661,11 @@ describe('Wallet middleware', () => {
     it("should handle SIGN_DATA by calling walletService's signDataPersonal", () => {
       expect.assertions(2)
       const { next, invoke } = create()
-      const action = { type: SIGN_DATA, data: 'neat' }
+      const action = {
+        type: SIGN_DATA,
+        data: 'neat',
+        id: 'track this signature',
+      }
 
       mockWalletService.signDataPersonal = jest
         .fn()
@@ -702,7 +706,11 @@ describe('Wallet middleware', () => {
     it('should dispatch some typed data if there is no error', () => {
       expect.assertions(1)
       const { invoke, store } = create()
-      const action = { type: SIGN_DATA, data: 'neat' }
+      const action = {
+        type: SIGN_DATA,
+        data: 'neat',
+        id: 'track this signature',
+      }
 
       mockWalletService.signDataPersonal = jest
         .fn()
@@ -717,6 +725,7 @@ describe('Wallet middleware', () => {
         type: 'signature/SIGNED_DATA',
         data: 'neat',
         signature: 'here is your signature',
+        id: 'track this signature',
       })
     })
   })
