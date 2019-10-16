@@ -31192,6 +31192,7 @@ Object {
 
 .c1 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -32731,16 +32732,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-bYSBpT gXcQiX"
+      class="sc-jtRfpW gZekgG"
     >
       <div
-        class="sc-lhVmIH gZGkEg"
+        class="sc-elJkPf heWQOk"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-cmTdod ftojYZ"
+          class="sc-btzYZH eDleNM"
         >
           Dismiss
         </button>
@@ -36510,6 +36511,387 @@ Object {
 }
 `;
 
+exports[`Storyshots Full Screen Modals The QRDisplay Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c3 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: var(--link);
+}
+
+.c3:hover > svg {
+  fill: white;
+}
+
+.c3:focus {
+  outline: none;
+}
+
+.c2:hover .c6 {
+  display: inline-block;
+}
+
+.c7 .c2 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c7 .c2:nth-child(1) {
+  pointer-events: none;
+}
+
+.c7 .c2:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c7 .c2 > svg {
+  fill: var(--grey);
+}
+
+.c7 .c2:hover > svg {
+  fill: var(--grey);
+}
+
+.c8 .c2 {
+  margin: 24px;
+}
+
+.c8 .c2 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c5 {
+  padding: 8px;
+  border: thin black solid;
+}
+
+.c4 {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.c1 {
+  background: var(--white);
+  position: relative;
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c0 {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: var(--alwaysontop);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            class="c2 c3 c4"
+            data-testid="qr-quit-button"
+            target="_self"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+          <svg
+            class="c5"
+            height="256"
+            shape-rendering="crispEdges"
+            viewBox="0 0 21 21"
+            width="256"
+          >
+            <path
+              d="M0,0 h21v21H0z"
+              fill="#FFFFFF"
+            />
+            <path
+              d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+              fill="#000000"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-jtRfpW gZekgG"
+    >
+      <div
+        class="sc-elJkPf heWQOk"
+      >
+        <a
+          class="sc-850ddk-0 iabPtF sc-jwKygS hWhrqh"
+          data-testid="qr-quit-button"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <svg
+          class="sc-cmTdod kfQwzw"
+          height="256"
+          shape-rendering="crispEdges"
+          viewBox="0 0 21 21"
+          width="256"
+        >
+          <path
+            d="M0,0 h21v21H0z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+            fill="#000000"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals The QRDisplay Overlay, inactive 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Full Screen Modals The Wallet Check Overlay 1`] = `
 Object {
   "asFragment": [Function],
@@ -36530,6 +36912,7 @@ Object {
 
 .c1 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -36607,16 +36990,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-bYSBpT gXcQiX"
+      class="sc-jtRfpW gZekgG"
     >
       <div
-        class="sc-lhVmIH gZGkEg"
+        class="sc-elJkPf heWQOk"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-cmTdod ftojYZ"
+          class="sc-btzYZH eDleNM"
         >
           Dismiss
         </button>
@@ -36764,6 +37147,275 @@ Object {
 }
 `;
 
+exports[`Storyshots Full Screen Modals/templates The QRDisplay Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c2 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c2:focus {
+  outline: none;
+}
+
+.c1:hover .c5 {
+  display: inline-block;
+}
+
+.c6 .c1 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 .c1:nth-child(1) {
+  pointer-events: none;
+}
+
+.c6 .c1:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c6 .c1 > svg {
+  fill: var(--grey);
+}
+
+.c6 .c1:hover > svg {
+  fill: var(--grey);
+}
+
+.c7 .c1 {
+  margin: 24px;
+}
+
+.c7 .c1 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  padding: 8px;
+  border: thin black solid;
+}
+
+.c3 {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.c0 {
+  background: var(--white);
+  position: relative;
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <a
+          class="c1 c2 c3"
+          data-testid="qr-quit-button"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <svg
+          class="c4"
+          height="256"
+          shape-rendering="crispEdges"
+          viewBox="0 0 21 21"
+          width="256"
+        >
+          <path
+            d="M0,0 h21v21H0z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+            fill="#000000"
+          />
+        </svg>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-elJkPf heWQOk"
+    >
+      <a
+        class="sc-850ddk-0 iabPtF sc-jwKygS hWhrqh"
+        data-testid="qr-quit-button"
+        target="_self"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <svg
+        class="sc-cmTdod kfQwzw"
+        height="256"
+        shape-rendering="crispEdges"
+        viewBox="0 0 21 21"
+        width="256"
+      >
+        <path
+          d="M0,0 h21v21H0z"
+          fill="#FFFFFF"
+        />
+        <path
+          d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+          fill="#000000"
+        />
+      </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Full Screen Modals/templates The Wallet Check Overlay 1`] = `
 Object {
   "asFragment": [Function],
@@ -36784,6 +37436,7 @@ Object {
 
 .c0 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -36832,13 +37485,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-lhVmIH gZGkEg"
+      class="sc-elJkPf heWQOk"
     >
       <p>
         Please check your browser wallet.
       </p>
       <button
-        class="sc-cmTdod ftojYZ"
+        class="sc-btzYZH eDleNM"
       >
         Dismiss
       </button>
@@ -41812,22 +42465,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-iQKALj koADYe"
+            class="sc-hrWEMg dVjwtT"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-bwCtUz gMSTMj"
+            class="sc-eTuwsz WzRvq"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-hrWEMg hWCxgO"
+            class="sc-gwVKww fRHzKi"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-hrWEMg hWCxgO"
+            class="sc-gwVKww fRHzKi"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out
              
@@ -41842,25 +42495,25 @@ Object {
             .
           </p>
           <form
-            class="sc-eTuwsz eeROGq"
+            class="sc-hXRMBi bgDxAD"
           >
             <input
-              class="sc-gwVKww jnKnAF"
+              class="sc-epnACN ipflzZ"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-hXRMBi fZLkLx"
+              class="sc-iQNlJl duKHhO"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-hrWEMg hWCxgO"
+              class="sc-gwVKww fRHzKi"
             >
               Already have an account? 
               <a
-                class="sc-iQNlJl fYRuoc"
+                class="sc-hZSUBg hGIzOw"
               >
                 Log in here
               </a>
@@ -52582,21 +53235,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-kPVwWT icWkGi"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-ibxdXY zpHwl"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -52604,13 +53257,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -52618,22 +53271,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-RefOD vbmQD"
         >
           <input
-            class="sc-kfGgVZ sc-esjQYD cTKJOx"
+            class="sc-kIPQKe sc-eXEjpC goberq"
             type="submit"
             value="Retry"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-kfGgVZ dRHuau"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-bwCtUz leOxIb"
         >
           Sign up here.
         </a>
@@ -52836,21 +53489,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-kPVwWT icWkGi"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-ibxdXY zpHwl"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -52858,13 +53511,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -52872,22 +53525,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-RefOD vbmQD"
         >
           <input
-            class="sc-kfGgVZ brJDaE"
+            class="sc-kIPQKe hmYLER"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-kfGgVZ dRHuau"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-bwCtUz leOxIb"
         >
           Sign up here.
         </a>
@@ -53084,22 +53737,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-hrWEMg dVjwtT"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-eTuwsz WzRvq"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -53114,25 +53767,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-hXRMBi bgDxAD"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-epnACN ipflzZ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-iQNlJl duKHhO"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-gwVKww fRHzKi"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-hZSUBg hGIzOw"
           >
             Log in here
           </a>
@@ -53764,21 +54417,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-kPVwWT icWkGi"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-ibxdXY zpHwl"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -53786,13 +54439,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-iQKALj lmAirJ"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-esjQYD jxvvoB"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -53800,22 +54453,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-RefOD vbmQD"
         >
           <input
-            class="sc-kfGgVZ brJDaE"
+            class="sc-kIPQKe hmYLER"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-kfGgVZ dRHuau"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-bwCtUz leOxIb"
         >
           Sign up here.
         </a>
@@ -54012,22 +54665,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-hrWEMg dVjwtT"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-eTuwsz WzRvq"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -54042,25 +54695,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-hXRMBi bgDxAD"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-epnACN ipflzZ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-iQNlJl duKHhO"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-gwVKww fRHzKi"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-hZSUBg hGIzOw"
           >
             Log in here
           </a>
@@ -63209,22 +63862,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-hrWEMg dVjwtT"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-eTuwsz WzRvq"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-gwVKww fRHzKi"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -63239,25 +63892,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-hXRMBi bgDxAD"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-epnACN ipflzZ"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-iQNlJl duKHhO"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-gwVKww fRHzKi"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-hZSUBg hGIzOw"
           >
             Log in here
           </a>
@@ -64792,73 +65445,73 @@ Object {
           </button>
         </div>
         <div
-          class="sc-jtRfpW fVThxy"
+          class="sc-dqBHgY hxaZcM"
         >
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-gxMtzJ gsxhrA"
           >
             Block Number
           </div>
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-gxMtzJ gsxhrA"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-gxMtzJ gsxhrA"
           >
             Type
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-dfVpRl sc-gzOgki rzCUi"
           >
             3
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-iyvyFf hSLTdm"
             href=""
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki lnZrbI"
+            class="sc-dfVpRl sc-hwwEjo eeraiP"
             type="Lock Creation"
           >
             Lock Creation
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-dfVpRl sc-gzOgki rzCUi"
           >
             2
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-iyvyFf hSLTdm"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki fQssos"
+            class="sc-dfVpRl sc-hwwEjo kWiKoL"
             type="Update Key Price"
           >
             Update Key Price
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-dfVpRl sc-gzOgki rzCUi"
           >
             1
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-iyvyFf hSLTdm"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki lnZrbI"
+            class="sc-dfVpRl sc-hwwEjo eeraiP"
             type="Lock Creation"
           >
             Lock Creation
@@ -65656,7 +66309,7 @@ Object {
           class="sc-dnqmqq kkgxkC"
         />
         <button
-          class="sc-iwsKbI sc-bsbRJL foHgoP"
+          class="sc-iwsKbI sc-cMhqgX hyImCK"
         >
           Update Password
         </button>
@@ -67388,7 +68041,7 @@ Object {
             class="sc-dnqmqq kkgxkC"
           />
           <button
-            class="sc-iwsKbI sc-bsbRJL foHgoP"
+            class="sc-iwsKbI sc-cMhqgX hyImCK"
           >
             Update Password
           </button>
