@@ -14,7 +14,7 @@ const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
-contract('Unlock / upgrades', accounts => {
+contract('Unlock / upgrades / v1ToLatest', accounts => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
@@ -41,7 +41,8 @@ contract('Unlock / upgrades', accounts => {
         60 * 60 * 24, // expirationDuration 1 day
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
-        5 // maxNumberOfKeys
+        5, // maxNumberOfKeys
+        '0x000000000000000000000000'
       )
       .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
@@ -162,7 +163,8 @@ contract('Unlock / upgrades', accounts => {
             Web3Utils.padLeft(0, 40),
             keyPrice,
             5, // maxNumberOfKeys
-            'After-Upgrade Lock'
+            'After-Upgrade Lock',
+            '0x000000000000000000000000'
           )
           .send({
             from: lockOwner,

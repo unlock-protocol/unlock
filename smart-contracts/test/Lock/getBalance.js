@@ -16,7 +16,7 @@ contract('Lock / getBalance', accounts => {
     let tokenAddress
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
-      before(async () => {
+      beforeEach(async () => {
         testToken = await TestErc20Token.new()
         // Mint some tokens for testing
         for (let i = 0; i < accounts.length; i++) {

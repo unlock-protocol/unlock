@@ -28,10 +28,10 @@ pragma solidity 0.5.12;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
+import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
 import './interfaces/IUniswap.sol';
-import './mixins/CloneFactory.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -40,7 +40,7 @@ contract Unlock is
   IUnlock,
   Initializable,
   Ownable,
-  CloneFactory
+  Clone2Factory
 {
   /**
    * The struct for a lock
@@ -96,19 +96,23 @@ contract Unlock is
   * @dev Create lock
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
+  * @param _salt an identifier for the Lock, which is unique for the user.
+  * This may be implemented as a sequence ID or with RNG. It's used with `create2`
+  * to know the lock's address before the transaction is mined.
   */
   function createLock(
     uint _expirationDuration,
     address _tokenAddress,
     uint _keyPrice,
     uint _maxNumberOfKeys,
-    string memory _lockName
+    string memory _lockName,
+    bytes12 _salt
   ) public
   {
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // create lock
-    address newLock = createClone(publicLockAddress);
+    address newLock = _createClone2(publicLockAddress, _salt);
     PublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
