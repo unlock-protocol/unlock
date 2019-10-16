@@ -18,7 +18,7 @@ contract('Lock / onKeyCancelHook', accounts => {
     testKeySoldHook = await testKeySoldHookContract.new()
     await lock.updateBeneficiary(testKeySoldHook.address)
     keyPrice = await lock.keyPrice()
-    await lock.purchase(to, web3.utils.padLeft(0, 40), [], {
+    await lock.purchase(0, to, web3.utils.padLeft(0, 40), [], {
       from,
       value: keyPrice,
     })
