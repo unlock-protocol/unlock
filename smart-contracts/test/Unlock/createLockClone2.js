@@ -1,6 +1,5 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
-const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('./PublicLock.sol')
