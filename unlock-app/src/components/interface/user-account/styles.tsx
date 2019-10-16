@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Svg from '../svg'
+import Media from '../../../theme/media'
 
 export const Grid = styled.div`
   max-width: 896px;
@@ -27,11 +28,13 @@ export const SectionHeader = styled.span`
 
 const columnSpans = {
   full: 12,
+  threeQuarter: 9,
   half: 6,
   third: 4,
+  quarter: 3,
 }
 
-type ColumnSize = 'full' | 'half' | 'third'
+type ColumnSize = 'full' | 'half' | 'third' | 'quarter' | 'threeQuarter'
 interface ColumnProps {
   size: ColumnSize
 }
@@ -93,7 +96,7 @@ interface SubmitButtonProps {
   roundBottomOnly?: boolean
   backgroundColor?: string
 }
-export const SubmitButton = styled.button`
+export const SubmitButton = styled.button.attrs({ type: 'button' })`
   height: 60px;
   width: 100%;
   border: none;
@@ -188,7 +191,7 @@ export const LockInfo = ({ price, timeRemaining }: LockInfoProps) => (
 )
 
 export const DisabledButton = styled(SubmitButton)`
-  cursor: disabled;
+  cursor: not-allowed;
   background-color: var(--grey);
 `
 
@@ -248,5 +251,106 @@ export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
     </XYCenter>
   )
 }
+
+export const Description = styled.p`
+    color: var(--slate);
+    font-size: 16px;
+    line-height: 21px;
+`
+
+export const Box = styled.div`
+    width: 100%;
+    border: thin var(--lightgrey) solid;
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    ${SubmitButton} {
+      margin-top: 16px;
+      width: 384px;
+      background-color: var(--red);
+    }
+    ${DisabledButton} {
+      background-color: var(--grey);
+    }
+    ${Media.phone`
+        justify-items: center;
+grid-template-columns: 1fr;
+${SubmitButton} {
+  width: 100%;
+}
+    `}
+`
+
+export const DangerHeader = styled.h1`
+    color: var(--red);
+    margin-top: 0;
+`
+
+export const SuperWarning = styled.span`
+    font-style: italic;
+    text-decoration: underline;
+    text-decoration-color: var(--red);
+`
+
+export const DangerIllustration = styled(Svg.Attention)`
+  width: 96px;
+fill: var(--grey);
+`
+
+export const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  // Hide checkbox visually but remain accessible to screen readers.
+  // Source: https://polished.js.org/docs/#hidevisually
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`
+
+const Checkmark = styled(Svg.Checkmark)``
+
+interface StyledCheckboxProps {
+  checked: boolean
+}
+
+export const StyledCheckbox = styled.div<StyledCheckboxProps>`
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background: ${p => p.checked ? 'var(--white)' : 'var(--lightgrey)'};
+    border: thin ${p => p.checked ? 'var(--red)' : 'var(--lightgrey)'} solid;
+    border-radius: 3px;
+    margin-right: 16px;
+    transition: all 100ms;
+    ${HiddenCheckbox}:focus + & {
+    box-shadow: 0 0 0 3px var(--blue);
+    }
+    ${Checkmark} {
+      visibility: ${p => p.checked ? 'visible' : 'hidden' };
+    }
+`
+
+const CheckboxContainer = styled.div`
+    display: inline-block;
+    vertical-align: middle;
+`
+
+interface CheckboxProps {
+  checked: boolean
+  onChange: () => void
+}
+export const Checkbox = ({ checked, onChange }: CheckboxProps) => (
+  <CheckboxContainer>
+    <HiddenCheckbox checked={checked} onChange={onChange} />
+    <StyledCheckbox checked={checked}>
+      <Checkmark fill="var(--red)" />
+    </StyledCheckbox>
+  </CheckboxContainer>
+)
 
 // TODO: steal input/button elements from other parts of app and integrate here

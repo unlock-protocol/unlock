@@ -8,6 +8,7 @@ import {
   displayCard,
 } from '../../components/interface/user-account/KeyPurchaseConfirmation'
 import { PaymentMethods } from '../../components/interface/user-account/PaymentMethods'
+import EjectAccount from '../../components/interface/user-account/EjectAccount'
 import { changePassword, signPurchaseData } from '../../actions/user'
 import { Grid } from '../../components/interface/user-account/styles'
 
@@ -94,6 +95,9 @@ storiesOf('User Account/Components', module)
   })
   .add('PaymentMethods', () => {
     return <PaymentMethods cards={cards} />
+  })
+  .add('EjectAccount', () => {
+    return <EjectAccount />
   })
 
 storiesOf('User Account/Settings', module).add('Mock settings page', () => {
