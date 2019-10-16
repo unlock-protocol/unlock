@@ -481,7 +481,7 @@ describe('Storage middleware', () => {
     let key
 
     it('should dispatch the payload when it can get an encrypted private key', () => {
-      expect.assertions(4)
+      expect.assertions(5)
       const { next, invoke, store } = create()
 
       const action = {
