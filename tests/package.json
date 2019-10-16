@@ -25,6 +25,9 @@
       ]
     }
   },
+  "engines": {
+    "node": "10.16.3"
+  },
   "license": "MIT",
   "dependencies": {
     "expect-puppeteer": "^4.0.0",

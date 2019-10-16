@@ -4,15 +4,255 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Fri, 22 Mar 2019 21:07:32 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 15 Oct 2019 20:57:00 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Linkdrop: granting keys through links!]]></title>
+            <description><![CDATA[Linkdrop provides a simple mechanism which lets anyone create links to "claim" keys for free!]]></description>
+            <link>https://unlock-protocol.com/blog/linkdrop</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/linkdrop</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 09 Oct 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[ETHWaterloo Tickets]]></title>
+            <description><![CDATA[We're proud to announce that ETHGlobal is using Unlock's ticket application for its ETHWaterloo hackathon, for crypto and non crypto users alike!]]></description>
+            <link>https://unlock-protocol.com/blog/ethwaterloo-tickets</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ethwaterloo-tickets</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 02 Oct 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[The Graph]]></title>
+            <description><![CDATA[Using the Graph Protocol for faster iteration on Ethereum based products]]></description>
+            <link>https://unlock-protocol.com/blog/the-graph-blog-post</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/the-graph-blog-post</guid>
+            <dc:creator><![CDATA[Akeem Adeniji]]></dc:creator>
+            <pubDate>Wed, 25 Sep 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlock User Accounts]]></title>
+            <description><![CDATA[Unlock Inc. provides a way for users without crypto wallets to buy keys to locks on the Unlock protocol. For this we introduce managed user accounts as well as payment via Credit Card.]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-user-accounts</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-user-accounts</guid>
+            <dc:creator><![CDATA[Christopher Nascone]]></dc:creator>
+            <pubDate>Tue, 17 Sep 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Wordpress Plugin]]></title>
+            <description><![CDATA[Wordpress.org is the most popular Content Management System. Adding a lock to your site lets you monetize the words you write without asking anyone's permission!]]></description>
+            <link>https://unlock-protocol.com/blog/wordpress-plugin</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/wordpress-plugin</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 11 Sep 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Event Sponsorship!]]></title>
+            <description><![CDATA[Today, we're excited to announce a broad sponsorship effort for anyone who uses tickets to organize an Ethereum or Bitcoin related event for any event until December 31st 2019.]]></description>
+            <link>https://unlock-protocol.com/blog/tickets-sponsored</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/tickets-sponsored</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 03 Sep 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlock Donations]]></title>
+            <description><![CDATA[A sponsor or a donor is a member of a unique club; the club of people and organizations which help someone do their work "for free" for the rest of the world. Unlock can easily be used to create sponsorships!]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-donations</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-donations</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Mon, 26 Aug 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[A blue check-mark NFT]]></title>
+            <description><![CDATA[Locks are the core of the Unlock protocol. They are smart contracts deployed on the Ethereum chain which lets your community become members by purchasing keys to your lock.]]></description>
+            <link>https://unlock-protocol.com/blog/blue-checkmark-nft</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/blue-checkmark-nft</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Fri, 23 Aug 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlocking Scout]]></title>
+            <description><![CDATA[Our friends at Scout have integrated Unlock on the Unlock dashboard. Here's how it works]]></description>
+            <link>https://unlock-protocol.com/blog/unlocking-scout</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlocking-scout</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Sun, 18 Aug 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Introducing Tickets]]></title>
+            <description><![CDATA[Now you can buy tickets to real-world events using Ethereum and the Unlock Protocol.]]></description>
+            <link>https://unlock-protocol.com/blog/introducing-tickets</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/introducing-tickets</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Thu, 08 Aug 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlock this blog]]></title>
+            <description><![CDATA[We've put a lock on our own blog! Members can leave comments, read exclusive content and will receive a Non Fungible Token.]]></description>
+            <link>https://unlock-protocol.com/blog/unlock-this-blog</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlock-this-blog</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 24 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Creating your first lock]]></title>
+            <description><![CDATA[Locks are the core of the Unlock protocol. They are smart contracts deployed on the Ethereum chain which lets your community become members by purchasing keys to your lock.]]></description>
+            <link>https://unlock-protocol.com/blog/create-first-lock</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/create-first-lock</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Mon, 15 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Integrating Unlock with React]]></title>
+            <description><![CDATA[Integrating Unlock with React is straighforward! Here's a quick tutorial on how to get there!]]></description>
+            <link>https://unlock-protocol.com/blog/integratating-unlock-react</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/integratating-unlock-react</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 10 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Integrating Unlock with Known]]></title>
+            <description><![CDATA[The Unlock API is flexible and easy to use. Now any Known user can use Unlock on their website with a simple plugin. Here's how we did it.]]></description>
+            <link>https://unlock-protocol.com/blog/integrating-unlock-with-known</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/integrating-unlock-with-known</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Digital Cash. Big Deal.]]></title>
+            <description><![CDATA[A quick exploration into blockchain wallets, their applications and why they're so powerful.]]></description>
+            <link>https://unlock-protocol.com/blog/digital-cash</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/digital-cash</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Tue, 02 Jul 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Mission, Vision and Values]]></title>
+            <description><![CDATA[Identifying Mission, Vision and Values informs business strategy and paints a holistic and accurate picture of a business.]]></description>
+            <link>https://unlock-protocol.com/blog/mission-vision</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/mission-vision</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Thu, 27 Jun 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Non Fungible Tokens at Betaworks Studios]]></title>
+            <description><![CDATA[Non Fungible are one of the largest emerging token categories in the crypto asset world. We presented an intro to them at Betaworks Studios!]]></description>
+            <link>https://unlock-protocol.com/blog/non-fungible-tokens-betaworks</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/non-fungible-tokens-betaworks</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Sun, 23 Jun 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[A Protocol for Membership]]></title>
+            <description><![CDATA[The Unlock protocol provides a way for people to show their support and access exclusive content, features, or even status. It is a web-native way for creators to monetize their work.]]></description>
+            <link>https://unlock-protocol.com/blog/protocol-for-membership</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/protocol-for-membership</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Wed, 19 Jun 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Introducing ERC20 Locks]]></title>
+            <description><![CDATA[A lot of the creators that we spoke with were concerned by the volatile nature of Ether when using it to price their keys: we needed to support stable coins. The ERC20 standard is a way to create tokens which are all compatible, even though they may have different implementations.]]></description>
+            <link>https://unlock-protocol.com/blog/erc20-locks</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/erc20-locks</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Thu, 13 Jun 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Multi Use Locks]]></title>
+            <description><![CDATA[Find out how a single key together with your wallet can unlock anything from tickets to content.]]></description>
+            <link>https://unlock-protocol.com/blog/multi-use-locks</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/multi-use-locks</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Fri, 24 May 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[NFT Dev Meetup]]></title>
+            <description><![CDATA[More info and a livestream for registred participants.]]></description>
+            <link>https://unlock-protocol.com/blog/nft-dev-meetup</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/nft-dev-meetup</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Thu, 16 May 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Crypto First]]></title>
+            <description><![CDATA[At Unlock, like many in the crypto and blockchain world, we believe that a better web is possible... and we're building it. But we also understand that dreaming and building is not enough.]]></description>
+            <link>https://unlock-protocol.com/blog/crypto-first</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/crypto-first</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Mon, 06 May 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Hello Optimistic Unlocking]]></title>
+            <description><![CDATA[Introducing Optimistic Unlocking, which overcomes the slow confirmation times and provides a better user experience for blockchain transactions.]]></description>
+            <link>https://unlock-protocol.com/blog/hello-optimistic-unlocking</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/hello-optimistic-unlocking</guid>
+            <dc:creator><![CDATA[Sascha Mombartz]]></dc:creator>
+            <pubDate>Fri, 12 Apr 2019 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Ways to Unlock the Web]]></title>
+            <description><![CDATA[We’re building an open protocol to allow anyone on the web to earn money from their work. The possibilities are endless. Here are some of them.]]></description>
+            <link>https://unlock-protocol.com/blog/ways-to-unlock-the-web</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ways-to-unlock-the-web</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Wed, 20 Mar 2019 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[What is Unlock?]]></title>
             <description><![CDATA[Why we’re building a business model as an open protocol.]]></description>
-            <link>https://unlock-protocol.com/blog/20190226_what_is_unlock</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/20190226_what_is_unlock</guid>
+            <link>https://unlock-protocol.com/blog/what-is-unlock</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/what-is-unlock</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
-            <pubDate>Tue, 26 Feb 2019 08:00:00 GMT</pubDate>
+            <pubDate>Tue, 26 Feb 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Announcing Unlock Version Zero]]></title>
+            <description><![CDATA[We’re changing the business model for the web. It starts here, today.]]></description>
+            <link>https://unlock-protocol.com/blog/announcing-v0</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/announcing-v0</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Fri, 25 Jan 2019 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[The End of the Ad-Supported Web]]></title>
+            <description><![CDATA[What if we got the business model of the web wrong?]]></description>
+            <link>https://unlock-protocol.com/blog/ad-supported-web</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ad-supported-web</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Thu, 13 Dec 2018 05:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[To Save Freedom of Speech, We Must Decentralize the Web]]></title>
+            <description><![CDATA[In a world where corporations control our conversations, removing middlemen is more important than ever.]]></description>
+            <link>https://unlock-protocol.com/blog/freedom-of-speech</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/freedom-of-speech</guid>
+            <dc:creator><![CDATA[Ben Werdmuller]]></dc:creator>
+            <pubDate>Mon, 15 Oct 2018 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Unlocking Some Exciting News]]></title>
+            <description><![CDATA[We’re growing our talented and mission-driven team. Come join us!]]></description>
+            <link>https://unlock-protocol.com/blog/exciting-news</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/exciting-news</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 24 Jul 2018 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[Setting Unlock’s demo free]]></title>
+            <description><![CDATA[Today we’re sharing the very first demo of the Unlock Protocol.]]></description>
+            <link>https://unlock-protocol.com/blog/setting-unlocks-demo-free</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/setting-unlocks-demo-free</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Sun, 10 Jun 2018 04:00:00 GMT</pubDate>
+        </item>
+        <item>
+            <title><![CDATA[It’s Time to Unlock The Web]]></title>
+            <description><![CDATA[The web needs a better business model — and we believe the technology is finally here to do it.]]></description>
+            <link>https://unlock-protocol.com/blog/its-time-to-unlock-the-web</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/its-time-to-unlock-the-web</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Fri, 27 Apr 2018 04:00:00 GMT</pubDate>
         </item>
     </channel>
 </rss>

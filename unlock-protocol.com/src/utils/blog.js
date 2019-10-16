@@ -60,12 +60,12 @@ const generatePostPages = postFeed => {
  * @param baseDir
  * @param postFeed
  */
-const generateBlogIndexFile = (baseDir, postFeed) => {
+const generateBlogIndexFile = (baseDir, postFeed, callback) => {
   // Write blog post index to output baseDirectory
   fs.writeFile(
     join(baseDir, 'blog', 'blog.index'),
     JSON.stringify({ items: postFeed }),
-    'utf8'
+    callback
   )
 }
 
@@ -92,7 +92,7 @@ const generateBlogPages = (numberOfPosts, postsPerPage) => {
  * @param postFeed
  * @param unlockUrl
  */
-const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
+const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   // Build list of items that don't have future publish dates
   let now = Date.now()
 
@@ -117,8 +117,9 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
   })
 
   fs.writeFile(
-    join(baseDir, 'static', 'blog.rss'),
-    rssFeed.xml({ indent: true })
+    join(baseDir, 'src', 'static', 'blog.rss'),
+    rssFeed.xml({ indent: true }),
+    callback
   )
 }
 
