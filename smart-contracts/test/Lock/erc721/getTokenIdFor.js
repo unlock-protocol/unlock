@@ -23,10 +23,16 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
   })
 
   it("should return the tokenId for the owner's key", async () => {
-    await locks['FIRST'].purchase(accounts[1], web3.utils.padLeft(0, 40), [], {
-      value: Units.convert('0.01', 'eth', 'wei'),
-      from: accounts[1],
-    })
+    await locks['FIRST'].purchase(
+      0,
+      accounts[1],
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        value: Units.convert('0.01', 'eth', 'wei'),
+        from: accounts[1],
+      }
+    )
     let ID = new BigNumber(await locks['FIRST'].getTokenIdFor.call(accounts[1]))
     // Note that as we implement ERC721 support, the tokenId will no longer
     // be the same as the user's address
