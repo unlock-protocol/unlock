@@ -5,9 +5,10 @@ export const DISMISS_MODAL = 'fullScreenModal/DISMISS'
 
 // General events, in terms of which other kinds of modal interaction should be
 // defined.
-export const launchModal = (kindOfModal: KindOfModal) => ({
+export const launchModal = (kindOfModal: KindOfModal, data?: any) => ({
   type: LAUNCH_MODAL,
   kindOfModal,
+  data,
 })
 
 // The dismissal method is specialized on the off chance that an action gets set
@@ -23,14 +24,7 @@ export const waitForWallet = () => launchModal(KindOfModal.WalletCheckOverlay)
 export const dismissWalletCheck = () =>
   dismissModal(KindOfModal.WalletCheckOverlay)
 
-// Password prompts -- only responsible for launching and closing the
-// modal. Actually passing credentials around is the responsibility of the user
-// actions.
-export const promptForPassword = () => launchModal(KindOfModal.PasswordPrompt)
-export const dismissPasswordPrompt = () =>
-  dismissModal(KindOfModal.PasswordPrompt)
-
-export const promptForResetPassword = () =>
-  launchModal(KindOfModal.ResetPasswordPrompt)
-export const dismissResetPasswordPrompt = () =>
-  dismissModal(KindOfModal.ResetPasswordPrompt)
+// QRDisplay
+export const displayQR = (data: string) =>
+  launchModal(KindOfModal.QRDisplay, data)
+export const dismissQR = () => dismissModal(KindOfModal.QRDisplay)
