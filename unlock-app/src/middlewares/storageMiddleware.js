@@ -281,6 +281,7 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
+            dispatch(setEncryptedPrivateKey(key, emailAddress))
           })
         }
         if (action.type === GET_STORED_PAYMENT_DETAILS) {
