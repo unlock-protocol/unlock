@@ -10,24 +10,18 @@ interface Props {
   data?: any
 }
 
+const templates = {
+  [KindOfModal.WalletCheckOverlay]: WalletCheck,
+  [KindOfModal.QRDisplay]: QRDisplay,
+}
+
 export const FullScreenModal = ({
   active,
   kindOfModal,
   dispatch,
   data,
 }: Props) => {
-  let Template: React.ComponentType<any>
-  switch (kindOfModal) {
-    case KindOfModal.WalletCheckOverlay:
-      Template = WalletCheck
-      break
-    case KindOfModal.QRDisplay:
-      Template = QRDisplay
-      break
-    default:
-      // We were given a KindOfModal that we don't have a template for. Do nothing.
-      return null
-  }
+  const Template = templates[kindOfModal]
 
   if (active) {
     // render a modal
