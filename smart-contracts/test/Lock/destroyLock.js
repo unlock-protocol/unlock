@@ -18,7 +18,7 @@ contract('Lock / destroyLock', accounts => {
   let testToken
   const scenarios = [false, true]
 
-  beforeEach(async () => {
+  before(async () => {
     testToken = await TestErc20Token.new()
     // Mint some tokens for testing
     for (let i = 0; i < accounts.length; i++) {
@@ -31,7 +31,7 @@ contract('Lock / destroyLock', accounts => {
   scenarios.forEach(isErc20 => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       let tokenAddress
-      beforeEach(async () => {
+      before(async () => {
         tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
@@ -62,7 +62,7 @@ contract('Lock / destroyLock', accounts => {
       describe('when called by the owner', () => {
         let initialLockBalance, initialOwnerBalance, txObj, event
 
-        beforeEach(async () => {
+        before(async () => {
           let value =
             tokenAddress === Web3Utils.padLeft(0, 40)
               ? Units.convert('0.01', 'eth', 'wei')
