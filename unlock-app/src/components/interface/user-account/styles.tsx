@@ -253,26 +253,26 @@ export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
 }
 
 export const Description = styled.p`
-    color: var(--slate);
-    font-size: 16px;
-    line-height: 21px;
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 21px;
 `
 
 export const Box = styled.div`
-    width: 100%;
-    border: thin var(--lightgrey) solid;
-    padding: 16px;
-    display: grid;
-    grid-template-columns: 128px 1fr;
-    ${SubmitButton} {
-      margin-top: 16px;
-      width: 384px;
-      background-color: var(--red);
-    }
-    ${DisabledButton} {
-      background-color: var(--grey);
-    }
-    ${Media.phone`
+  width: 100%;
+  border: thin var(--lightgrey) solid;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  ${SubmitButton} {
+    margin-top: 16px;
+    width: 384px;
+    background-color: var(--red);
+  }
+  ${DisabledButton} {
+    background-color: var(--grey);
+  }
+  ${Media.phone`
         justify-items: center;
 grid-template-columns: 1fr;
 ${SubmitButton} {
@@ -282,19 +282,19 @@ ${SubmitButton} {
 `
 
 export const DangerHeader = styled.h1`
-    color: var(--red);
-    margin-top: 0;
+  color: var(--red);
+  margin-top: 0;
 `
 
 export const SuperWarning = styled.span`
-    font-style: italic;
-    text-decoration: underline;
-    text-decoration-color: var(--red);
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-color: var(--red);
 `
 
 export const DangerIllustration = styled(Svg.Attention)`
   width: 96px;
-fill: var(--grey);
+  fill: var(--grey);
 `
 
 export const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -319,25 +319,25 @@ interface StyledCheckboxProps {
 }
 
 export const StyledCheckbox = styled.div<StyledCheckboxProps>`
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background: ${p => p.checked ? 'var(--white)' : 'var(--lightgrey)'};
-    border: thin ${p => p.checked ? 'var(--red)' : 'var(--lightgrey)'} solid;
-    border-radius: 3px;
-    margin-right: 16px;
-    transition: all 100ms;
-    ${HiddenCheckbox}:focus + & {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: ${p => (p.checked ? 'var(--white)' : 'var(--lightgrey)')};
+  border: thin ${p => (p.checked ? 'var(--red)' : 'var(--lightgrey)')} solid;
+  border-radius: 3px;
+  margin-right: 16px;
+  transition: all 100ms;
+  ${HiddenCheckbox}:focus + & {
     box-shadow: 0 0 0 3px var(--blue);
-    }
-    ${Checkmark} {
-      visibility: ${p => p.checked ? 'visible' : 'hidden' };
-    }
+  }
+  ${Checkmark} {
+    visibility: ${p => (p.checked ? 'visible' : 'hidden')};
+  }
 `
 
 const CheckboxContainer = styled.div`
-    display: inline-block;
-    vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
 `
 
 interface CheckboxProps {

@@ -1,5 +1,17 @@
 import React from 'react'
-import { Grid, SectionHeader, Column, Description, Box, DangerHeader, SuperWarning, DangerIllustration, Checkbox, SubmitButton, DisabledButton } from './styles'
+import {
+  Grid,
+  SectionHeader,
+  Column,
+  Description,
+  Box,
+  DangerHeader,
+  SuperWarning,
+  DangerIllustration,
+  Checkbox,
+  SubmitButton,
+  DisabledButton,
+} from './styles'
 import { EncryptedPrivateKey } from '../../../unlockTypes'
 
 interface EjectAccountProps {
@@ -25,7 +37,13 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
           <div>
             <DangerHeader>Danger Zone</DangerHeader>
             <Description>
-              Clicking the Eject Account button below will delete your Unlock account and download a JSON file containing your encrypted private key. You can import the JSON file into a Web3 wallet using your account password. <SuperWarning>Do not lose this file, we cannot recover it if you do.</SuperWarning>
+              Clicking the Eject Account button below will delete your Unlock
+              account and download a JSON file containing your encrypted private
+              key. You can import the JSON file into a Web3 wallet using your
+              account password.{' '}
+              <SuperWarning>
+                Do not lose this file, we cannot recover it if you do.
+              </SuperWarning>
             </Description>
             <EjectionForm encryptedPrivateKey={encryptedPrivateKey} />
           </div>
@@ -43,7 +61,10 @@ interface EjectionFormState {
   checked: boolean
 }
 
-export class EjectionForm extends React.Component<EjectionFormProps, EjectionFormState> {
+export class EjectionForm extends React.Component<
+  EjectionFormProps,
+  EjectionFormState
+> {
   constructor(props: EjectionFormProps) {
     super(props)
     this.state = {
@@ -61,22 +82,24 @@ export class EjectionForm extends React.Component<EjectionFormProps, EjectionFor
   submitButton = () => {
     const { checked } = this.state
     if (checked) {
-      return (
-        <SubmitButton>Eject</SubmitButton>
-      )
+      return <SubmitButton>Eject</SubmitButton>
     }
-    return (
-      <DisabledButton>Eject</DisabledButton>
-    )
+    return <DisabledButton>Eject</DisabledButton>
   }
 
   render() {
     const { checked } = this.state
     return (
       <form>
-        <label>
-          <Checkbox checked={checked} onChange={this.toggleChecked} />
-          <SectionHeader>Yes, I want to export and delete my account</SectionHeader>
+        <label htmlFor="ejection-confirmation-checkbox">
+          <Checkbox
+            id="ejection-confirmation-checkbox"
+            checked={checked}
+            onChange={this.toggleChecked}
+          />
+          <SectionHeader>
+            Yes, I want to export and delete my account
+          </SectionHeader>
           {this.submitButton()}
         </label>
       </form>
