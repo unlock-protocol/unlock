@@ -41,8 +41,7 @@ contract('Unlock / upgrades / v1ToLatest', accounts => {
         60 * 60 * 24, // expirationDuration 1 day
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
-        5, // maxNumberOfKeys
-        '0x000000000000000000000000'
+        5 // maxNumberOfKeys
       )
       .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
