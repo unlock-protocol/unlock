@@ -44,7 +44,6 @@
     "next": "8.1.0",
     "node-forge": "0.9.0",
     "prop-types": "15.7.2",
-    "qr-scanner": "1.1.1",
     "qrcode.react": "0.9.3",
     "query-string": "6.8.3",
     "react": "16.9.0",
