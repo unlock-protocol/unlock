@@ -5,6 +5,9 @@
    "bin": {
       "rover": "./build/server.js"
    },
+   "engines": {
+      "node": "10.16.3"
+    },
    "scripts": {
       "test": "jest",
       "prebuild": "rm -rf ./build",
