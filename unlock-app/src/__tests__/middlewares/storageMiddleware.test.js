@@ -425,8 +425,8 @@ describe('Storage middleware', () => {
     })
 
     describe('success', () => {
-      it('should dispatch gotEncryptedPrivateKeyPayload and welcomeEmail after an account is created', async () => {
-        expect.assertions(2)
+      it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', async () => {
+        expect.assertions(3)
         const { store } = create()
 
         const passwordEncryptedPrivateKey = {
@@ -446,6 +446,11 @@ describe('Storage middleware', () => {
           password,
         })
 
+        expect(store.dispatch).toHaveBeenNthCalledWith(3, {
+          type: SET_ENCRYPTED_PRIVATE_KEY,
+          key: passwordEncryptedPrivateKey,
+          emailAddress,
+        })
         expect(store.dispatch).toHaveBeenNthCalledWith(2, {
           type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
           key: passwordEncryptedPrivateKey,

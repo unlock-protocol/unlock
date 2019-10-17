@@ -90,6 +90,9 @@ const storageMiddleware = config => {
             password
           )
         )
+        dispatch(
+          setEncryptedPrivateKey(passwordEncryptedPrivateKey, emailAddress)
+        )
       }
     )
     storageService.on(failure.createUser, () => {
