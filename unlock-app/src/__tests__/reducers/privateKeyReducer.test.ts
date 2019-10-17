@@ -58,11 +58,11 @@ const newKeyState = {
 
 describe('privateKeyReducer', () => {
   it.each([SET_ACCOUNT, SET_PROVIDER, SET_NETWORK])(
-    'should return initialState when receiving %s',
+    'should retain state when receiving %s',
     actionType => {
       expect.assertions(1)
       const action = { type: actionType }
-      expect(reducer(oldKeyState, action)).toEqual(initialState)
+      expect(reducer(oldKeyState, action)).toEqual(oldKeyState)
     }
   )
 
