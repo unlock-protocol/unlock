@@ -40,11 +40,11 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
               Clicking the Eject Account button below will delete your Unlock
               account and download a JSON file containing your encrypted private
               key. You can import the JSON file into a Web3 wallet using your
-              account password.{' '}
-              <SuperWarning>
-                Do not lose this file, we cannot recover it if you do.
-              </SuperWarning>
+              account password.
             </Description>
+            <SuperWarning>
+              Do not lose this file, we cannot recover it if you do.
+            </SuperWarning>
             <EjectionForm encryptedPrivateKey={encryptedPrivateKey} />
           </div>
         </Box>

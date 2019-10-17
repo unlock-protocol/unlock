@@ -268,6 +268,9 @@ export const Box = styled.div`
     margin-top: 16px;
     width: 384px;
     background-color: var(--red);
+    &:hover {
+      background-color: var(--sharpred);
+    }
   }
   ${DisabledButton} {
     background-color: var(--grey);
@@ -286,10 +289,10 @@ export const DangerHeader = styled.h1`
   margin-top: 0;
 `
 
-export const SuperWarning = styled.span`
-  font-style: italic;
-  text-decoration: underline;
-  text-decoration-color: var(--red);
+export const SuperWarning = styled(SectionHeader)`
+  display: block;
+  color: var(--red);
+  margin-bottom: 16px;
 `
 
 export const DangerIllustration = styled(Svg.Attention)`
@@ -341,12 +344,13 @@ const CheckboxContainer = styled.div`
 `
 
 interface CheckboxProps {
+  id: string
   checked: boolean
   onChange: () => void
 }
-export const Checkbox = ({ checked, onChange }: CheckboxProps) => (
+export const Checkbox = ({ checked, onChange, id }: CheckboxProps) => (
   <CheckboxContainer>
-    <HiddenCheckbox checked={checked} onChange={onChange} />
+    <HiddenCheckbox id={id} checked={checked} onChange={onChange} />
     <StyledCheckbox checked={checked}>
       <Checkmark fill="var(--red)" />
     </StyledCheckbox>
