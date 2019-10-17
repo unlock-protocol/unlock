@@ -14,11 +14,13 @@ type ErrorKind =
   | 'Application'
   | 'FormValidation'
   | 'LogIn'
+  | 'PostOffice'
   | 'SignUp'
   | 'Signature'
   | 'Storage'
   | 'Transaction'
   | 'Web3'
+  | 'Wallet'
 
 export type NetworkInfo = {
   currentNetwork: string
@@ -93,6 +95,9 @@ export const FormValidation: ErrorMakers = errorsFor('FormValidation')
 // errors that occur while logging in (wrong password...)
 export const LogIn: ErrorMakers = errorsFor('LogIn')
 
+// errors that happen when posting messages back and forth with the paywall
+export const PostOffice: ErrorMakers = errorsFor('PostOffice')
+
 // errors that occur while signing up/creating accounts
 export const SignUp: ErrorMakers = errorsFor('SignUp')
 
@@ -101,14 +106,18 @@ export const Transaction: ErrorMakers = errorsFor('Transaction')
 
 export const Web3: ErrorMakers = errorsFor('Web3')
 
+export const Wallet: ErrorMakers = errorsFor('Wallet')
+
 const constructors: { [key: string]: ErrorMakers } = {
   Application,
   Storage,
   Signature,
   FormValidation,
   LogIn,
+  PostOffice,
   SignUp,
   Transaction,
+  Wallet,
   Web3,
 }
 

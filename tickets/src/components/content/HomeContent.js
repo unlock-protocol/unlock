@@ -26,7 +26,7 @@ export default function HomeContent() {
               <Illustration src="/static/images/jpg/tickets.jpg" />
             </Phone>
             <Link href="/create">
-              <CreateButton>Create an event</CreateButton>
+              <CreateButton>Create or update an event</CreateButton>
             </Link>
           </Description>
           <NoPhone>

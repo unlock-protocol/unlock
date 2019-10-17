@@ -10,6 +10,7 @@ const { addBlogPagesToPageObject } = require('./src/utils/blog')
 const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
+const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
 
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
@@ -17,7 +18,10 @@ dotenv.config({
 
 let requiredConfigVariables = {
   unlockEnv,
+  googleAnalyticsId,
+  urlBase: process.env.URL_BASE,
   dashboardUrl: process.env.DASHBOARD_URL,
+  intercomAppId: 'f99d98d3', // Hardcoded for now
 }
 
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
@@ -58,12 +62,6 @@ module.exports = withTypescript({
         join(dir, 'static', 'humans.txt'),
         join(outDir, 'humans.txt')
       )
-
-      // Export _redirects which is used by netlify for URL rewrites
-      await copyFile(
-        join(dir, 'static', '_redirects'),
-        join(outDir, '_redirects')
-      )
     }
 
     // Our statically-defined pages to export
@@ -73,7 +71,6 @@ module.exports = withTypescript({
       '/jobs': { page: '/jobs' },
       '/terms': { page: '/terms' },
       '/privacy': { page: '/privacy' },
-      '/post': { page: '/post' },
       '/blog': { page: '/blog' },
     }
 

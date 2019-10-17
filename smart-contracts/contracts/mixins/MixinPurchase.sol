@@ -1,10 +1,11 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.12;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 import './MixinFunds.sol';
+import './MixinEventHooks.sol';
 
 
 /**
@@ -17,75 +18,35 @@ contract MixinPurchase is
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinEventHooks
 {
   using SafeMath for uint;
 
   /**
-  * @dev Purchase function, public version, with no referrer.
-  * @param _recipient address of the recipient of the purchased key
-  */
-  function purchaseFor(
-    address _recipient
-  )
-    external
-    payable
-    onlyIfAlive
-  {
-    return _purchaseFor(_recipient, address(0));
-  }
-
-  /**
-  * @dev Purchase function, public version, with referrer.
+  * @dev Purchase function
+  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+  * (_value is ignored when using ETH)
   * @param _recipient address of the recipient of the purchased key
   * @param _referrer address of the user making the referral
+  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
+  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
+  * than keyPrice is approved for spending).
   */
-  function purchaseForFrom(
+  function purchase(
+    uint256 _value,
     address _recipient,
-    address _referrer
-  )
-    external
-    payable
+    address _referrer,
+    bytes calldata _data
+  ) external payable
     onlyIfAlive
-    hasValidKey(_referrer)
+    notSoldOut
   {
-    return _purchaseFor(_recipient, _referrer);
-  }
-
-  /**
-  * @dev Purchase function: this lets a user purchase a key from the lock for another user
-  * @param _recipient address of the recipient of the purchased key
-  * This will fail if
-  *  - the keyReleaseMechanism is private
-  *  - the keyReleaseMechanism is Approved and the recipient has not been previously approved
-  *  - the amount value is smaller than the price
-  *  - the recipient already owns a key
-  * TODO: next version of solidity will allow for message to be added to require.
-  */
-  function _purchaseFor(
-    address _recipient,
-    address _referrer
-  )
-    private
-    notSoldOut()
-  { // solhint-disable-line function-max-lines
     require(_recipient != address(0), 'INVALID_ADDRESS');
 
-    // Let's get the actual price for the key from the Unlock smart contract
-    uint discount;
-    uint tokens;
-    uint inMemoryKeyPrice = keyPrice;
-    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
-    uint netPrice = inMemoryKeyPrice;
-    if (discount > inMemoryKeyPrice) {
-      netPrice = 0;
-    } else {
-      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
-      netPrice = inMemoryKeyPrice - discount;
-    }
-
     // Assign the key
-    Key storage toKey = _getKeyFor(_recipient);
+    Key storage toKey = keyByOwner[_recipient];
 
     if (toKey.tokenId == 0) {
       // Assign a new tokenId (if a new owner or previously transfered)
@@ -102,21 +63,41 @@ contract MixinPurchase is
       toKey.expirationTimestamp = block.timestamp + expirationDuration;
     }
 
+    // Let's get the actual price for the key from the Unlock smart contract
+    uint discount;
+    uint tokens;
+    uint inMemoryKeyPrice = keyPrice;
+    (discount, tokens) = unlockProtocol.computeAvailableDiscountFor(_recipient, inMemoryKeyPrice);
+
+    if (discount > inMemoryKeyPrice) {
+      inMemoryKeyPrice = 0;
+    } else {
+      // SafeSub not required as the if statement already confirmed `inMemoryKeyPrice - discount` cannot underflow
+      inMemoryKeyPrice -= discount;
+    }
+
     if (discount > 0) {
       unlockProtocol.recordConsumedDiscount(discount, tokens);
     }
 
-    unlockProtocol.recordKeyPurchase(netPrice, _referrer);
+    unlockProtocol.recordKeyPurchase(inMemoryKeyPrice, getHasValidKey(_referrer) ? _referrer : address(0));
 
     // trigger event
     emit Transfer(
       address(0), // This is a creation.
       _recipient,
-      numberOfKeysSold
+      toKey.tokenId
     );
 
-    // We explicitly allow for greater amounts of ETH to allow 'donations'
+    // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
+    if(tokenAddress != address(0)) {
+      require(_value >= inMemoryKeyPrice, 'INSUFFICIENT_VALUE');
+      inMemoryKeyPrice = _value;
+    }
+    // Security: after state changes to minimize risk of re-entrancy
+    uint pricePaid = _chargeAtLeast(inMemoryKeyPrice);
+
     // Security: last line to minimize risk of re-entrancy
-    _chargeAtLeast(netPrice);
+    _onKeySold(_recipient, _referrer, pricePaid, _data);
   }
 }

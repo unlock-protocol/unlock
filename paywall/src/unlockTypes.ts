@@ -17,6 +17,8 @@ export enum TransactionStatus {
   SUBMITTED = 'submitted',
   PENDING = 'pending',
   MINED = 'mined',
+  STALE = 'stale',
+  FAILED = 'failed',
   NONE = '', // for testing purposes
 }
 /* eslint-enable no-unused-vars */
@@ -28,6 +30,10 @@ export interface Transaction {
   type: TransactionType
   blockNumber: number
 
+  createdAt?: Date
+  to?: string
+  for?: string
+  from?: string
   lock?: string
   name?: string
   key?: string // TODO: tighten up our types, hopefully we won't have too many
@@ -69,7 +75,8 @@ export interface PaywallConfigLock {
 
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
-  icon: string
+  icon?: string
+  unlockUserAccounts?: true | 'true' | false
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
 }
@@ -85,12 +92,12 @@ export enum KeyStatus {
   FAILED = 'failed',
 }
 
-export interface Lock {
+export interface RawLock {
   name: string
   address: string
   keyPrice: string
   expirationDuration: number
-  key: Key
+  currencyContractAddress: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number
@@ -98,8 +105,30 @@ export interface Lock {
   owner?: string
 }
 
+export interface Lock {
+  name: string
+  address: string
+  keyPrice: string
+  expirationDuration: number
+  key: Key
+  currencyContractAddress: string | null
+  asOf?: number
+  maxNumberOfKeys?: number
+  outstandingKeys?: number
+  balance?: string
+  owner?: string
+}
+
+// Mapping if currency: amount
+export interface Balance {
+  [currency: string]: string
+}
 export interface Locks {
   [address: string]: Lock
+}
+
+export interface RawLocks {
+  [address: string]: RawLock
 }
 
 export interface Key {
@@ -109,4 +138,13 @@ export interface Key {
   confirmations: number
   owner: string | null
   lock: string
+}
+
+export interface PurchaseKeyRequest {
+  lock: string // lock address
+  extraTip: string // extra value to add in addition to key price
+}
+
+export interface NetworkNames {
+  [key: number]: string[]
 }

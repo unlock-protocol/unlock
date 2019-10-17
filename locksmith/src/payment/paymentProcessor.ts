@@ -14,13 +14,25 @@ export class PaymentProcessor {
   stripe: Stripe
   keyPricer: KeyPricer
 
-  constructor(apiKey: string) {
+  constructor(
+    apiKey: string,
+    providerURL: string,
+    unlockContractAddress: string
+  ) {
     this.stripe = new Stripe(apiKey)
-    this.keyPricer = new KeyPricer()
+    this.keyPricer = new KeyPricer(providerURL, unlockContractAddress)
+  }
+
+  async findUserByPublicKey(publicKey: ethereumAddress) {
+    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+
+    return UserReference.findOne({
+      where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
+      include: [{ model: User, attributes: ['publicKey'] }],
+    })
   }
 
   /**
-   *  Updates the user associated with a given email address with the
    *  appropriate stripe customer id based on the provided token.
    *
    * @param token
@@ -30,20 +42,17 @@ export class PaymentProcessor {
     token: string,
     publicKey: ethereumAddress
   ): Promise<boolean> {
-    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
-
     try {
-      let user = await UserReference.findOne({
-        where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
-        include: [{ model: User, attributes: ['publicKey'] }],
-      })
+      let user = await this.findUserByPublicKey(publicKey)
 
-      if (user) {
-        let customer = await this.stripe.customers.create({
-          email: user.emailAddress,
+      if (user && user.stripe_customer_id) {
+        await this.stripe.customers.createSource(user.stripe_customer_id, {
           source: token,
         })
 
+        return true
+      } else if (user && !user.stripe_customer_id) {
+        let customer = await this.createStripeCustomer(user.emailAddress, token)
         user.stripe_customer_id = customer.id
         await user.save()
         return true
@@ -55,6 +64,13 @@ export class PaymentProcessor {
     }
   }
 
+  createStripeCustomer(emailAddress: string, token: string) {
+    return this.stripe.customers.create({
+      email: emailAddress,
+      source: token,
+    })
+  }
+
   /**
    *  Charges an appropriately configured user with purchasing details, with the amount specified
    *  in the purchase details
@@ -63,18 +79,14 @@ export class PaymentProcessor {
    */
   async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
     try {
-      let normalizedPublicKey = Normalizer.ethereumAddress(publicKey)
-
-      let user = await UserReference.findOne({
-        where: { publicKey: normalizedPublicKey },
-        include: [{ model: User, attributes: ['publicKey'] }],
-      })
+      let user = await this.findUserByPublicKey(publicKey)
 
       if (user && user.stripe_customer_id) {
         let charge = await this.stripe.charges.create({
-          amount: this.price(lock),
+          amount: await this.price(lock),
           currency: 'USD',
           customer: user.stripe_customer_id,
+          metadata: { lock: lock, publicKey: publicKey },
         })
         return charge
       } else {
@@ -85,8 +97,8 @@ export class PaymentProcessor {
     }
   }
 
-  price(lock: ethereumAddress): number {
-    let itemizedPrice = this.keyPricer.generate(lock)
+  async price(lock: ethereumAddress): Promise<number> {
+    let itemizedPrice = await this.keyPricer.generate(lock)
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
   }
 
@@ -97,7 +109,7 @@ export class PaymentProcessor {
     providerHost: string,
     buyer: ethereumAddress
   ) {
-    let successfulCharge = this.chargeUser(recipient, lock)
+    let successfulCharge = await this.chargeUser(recipient, lock)
     if (successfulCharge) {
       let fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',

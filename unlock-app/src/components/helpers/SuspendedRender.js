@@ -3,15 +3,6 @@ import { node } from 'prop-types'
 import * as UnlockPropTypes from '../../propTypes'
 
 export default class SuspendedRender extends Component {
-  static propTypes = {
-    children: node.isRequired,
-    delay: UnlockPropTypes.delay,
-  }
-
-  static defaultProps = {
-    delay: 200,
-  }
-
   constructor(props) {
     super(props)
     this.state = {
@@ -41,4 +32,13 @@ export default class SuspendedRender extends Component {
     if (!show) return null
     return children
   }
+}
+
+SuspendedRender.propTypes = {
+  children: node.isRequired,
+  delay: UnlockPropTypes.delay,
+}
+
+SuspendedRender.defaultProps = {
+  delay: 200,
 }

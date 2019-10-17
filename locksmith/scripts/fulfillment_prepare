@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+const { exec } = require('child_process')
+
+exec(
+  `./scripts/approve_erc20_transfer --value 20 --provider ${
+    process.env.WEB3_PROVIDER_HOST
+  } --lockContractAddress ${
+    process.env.ERC20_LOCK_CONTRACT_ADDRESS
+  } --erc20ContractAddress ${process.env.ERC20_CONTRACT_ADDRESS} --privateKey ${
+    process.env.PURCHASER_CREDENTIALS
+  }`,
+  (error, stdout, stderr) => {
+    if (error) {
+      console.error(`exec error: ${error}`)
+      return
+    }
+    console.log(`stdout: ${stdout}`)
+    console.log(`stderr: ${stderr}`)
+  }
+)

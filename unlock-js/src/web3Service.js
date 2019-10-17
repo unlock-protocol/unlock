@@ -4,6 +4,11 @@ import TransactionTypes from './transactionTypes'
 import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { UNLIMITED_KEYS_COUNT, KEY_ID } from './constants'
+import {
+  getErc20TokenSymbol,
+  getErc20BalanceForAddress,
+  getErc20Decimals,
+} from './erc20'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -40,6 +45,7 @@ export default class Web3Service extends UnlockService {
         const owner = args._to
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
+          for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
         return this.emit('key.saved', KEY_ID(contractAddress, owner), {
@@ -58,7 +64,7 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
-          keyPrice: utils.fromWei(keyPrice, 'ether'),
+          keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
@@ -99,6 +105,7 @@ export default class Web3Service extends UnlockService {
         const owner = params._recipient
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
+          for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
         return this.emit('key.saved', KEY_ID(contractAddress, owner), {
@@ -271,17 +278,21 @@ export default class Web3Service extends UnlockService {
    * @param {*} transactionHash
    * @param {*} contract
    * @param {*} transactionReceipt
+   * @param {string} contractAddress
    */
   _parseTransactionLogsFromReceipt(
     transactionHash,
     contract,
-    transactionReceipt
+    transactionReceipt,
+    contractAddress
   ) {
-    const metadata = new ethers.utils.Interface(contract.abi)
+    const parser = new ethers.utils.Interface(contract.abi)
 
     transactionReceipt.logs.forEach(log => {
+      // ignore events not from our contract
+      if (log.address !== contractAddress) return
       // For each log, let's find which event it is
-      const logInfo = metadata.parseLog(log)
+      const logInfo = parser.parseLog(log)
 
       this.emitContractEvent(
         transactionHash,
@@ -306,12 +317,13 @@ export default class Web3Service extends UnlockService {
     transactionHash,
     contract,
     data,
-    contractAddress
+    contractAddress,
+    status = 'pending'
   ) {
     const transactionType = this._getTransactionType(contract, data)
 
     this.emit('transaction.updated', transactionHash, {
-      status: 'pending',
+      status,
       type: transactionType,
       confirmations: 0,
       blockNumber: Number.MAX_SAFE_INTEGER, // Asign the largest block number for sorting purposes
@@ -372,7 +384,8 @@ export default class Web3Service extends UnlockService {
         transactionHash,
         contract,
         defaults.input,
-        defaults.to
+        defaults.to,
+        'submitted'
       )
     }
 
@@ -405,13 +418,19 @@ export default class Web3Service extends UnlockService {
       blockTransaction.hash,
       contract,
       blockTransaction.data,
-      blockTransaction.to
+      blockTransaction.to,
+      'pending'
     )
   }
 
   /**
    * This refreshes a transaction by its hash.
    * It will only process the transaction if the filter function returns true
+   * There are at least 4 states for a transaction
+   * 1- The node does not know about it
+   * 2- The node knows about it but it has not been mined
+   * 3- The node knows about it and it has been mined but not confirmed (12 blocks)
+   * 4- The node knows about it and it has been mined and confirmed
    * @param {string} transactionHash
    * @param {object} filter
    */
@@ -420,40 +439,55 @@ export default class Web3Service extends UnlockService {
       this.provider.getBlockNumber(),
       this.provider.getTransaction(transactionHash),
     ]).then(async ([blockNumber, blockTransaction]) => {
-      if (!blockTransaction && !defaults) {
-        // transaction is pending, but we have refreshed the page
-        return null
+      if (!blockTransaction) {
+        // Case 1
+        // Here the node does not know about it.
+        // This could either be that the node is "late" (transaction is very recent)
+        // of the transaction was cancelled/dropped.
+        // We should watch just in case this is a "late" transaction
+
+        // If we have defaults, we should parse them
+        if (defaults) {
+          let version
+          // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
+          const contractAddress = defaults.to // ethers.js does format addresses in checksum format
+          if (this.unlockContractAddress === contractAddress) {
+            version = await this.unlockContractAbiVersion()
+          } else {
+            version = await this.lockContractAbiVersion(defaults.to)
+          }
+          return this._getSubmittedTransaction(
+            version,
+            transactionHash,
+            blockNumber,
+            defaults
+          )
+        } else {
+          this._watchTransaction(transactionHash)
+          return null
+        }
       }
+
+      // Here we have a block transaction , which means the node knows about it
       // Let's find the type of contract before we can get its version
-      const to = blockTransaction ? blockTransaction.to : defaults.to
       let version
       // const contractAddress = Web3Utils.toChecksumAddress(to) // web3 does not format addresses properly
-      const contractAddress = to // ethers.js does format addresses in checksum format
+      const contractAddress = blockTransaction.to // ethers.js does format addresses in checksum format
       if (this.unlockContractAddress === contractAddress) {
         version = await this.unlockContractAbiVersion()
       } else {
-        version = await this.lockContractAbiVersion(to)
-      }
-
-      // If the block transaction is missing the transacion has been submitted but not
-      // received by all nodes
-      if (!blockTransaction) {
-        return this._getSubmittedTransaction(
-          version,
-          transactionHash,
-          blockNumber,
-          defaults
-        )
+        version = await this.lockContractAbiVersion(contractAddress)
       }
 
       // If the block number is missing the transaction has been received by the node
       // but not mined yet
       if (blockTransaction.blockNumber === null) {
+        // Case 2
+        // Node knows about it and it has not been mined
         return this._getPendingTransaction(version, blockTransaction)
       }
 
       // The transaction has been mined :
-
       const contract =
         this.unlockContractAddress === contractAddress
           ? version.Unlock
@@ -468,6 +502,7 @@ export default class Web3Service extends UnlockService {
         blockNumber - blockTransaction.blockNumber <
         this.requiredConfirmations
       ) {
+        // Case 3
         this._watchTransaction(transactionHash)
       }
 
@@ -493,7 +528,8 @@ export default class Web3Service extends UnlockService {
         return this._parseTransactionLogsFromReceipt(
           transactionHash,
           contract,
-          transactionReceipt
+          transactionReceipt,
+          contractAddress
         )
       }
     })
@@ -506,7 +542,9 @@ export default class Web3Service extends UnlockService {
    */
   async getLock(address) {
     const version = await this.lockContractAbiVersion(address)
-    return version.getLock.bind(this)(address)
+    const lock = version.getLock.bind(this)(address)
+    lock.address = address
+    return lock
   }
 
   /**
@@ -655,5 +693,53 @@ export default class Web3Service extends UnlockService {
    */
   async recoverAccountFromSignedData(data, signedData) {
     return utils.verifyMessage(data, signedData)
+  }
+
+  /**
+   * Given an ERC20 token contract address, resolve with the symbol that identifies that token.
+   * Additionally emits an event that maps the address to the symbol.
+   * @param {string} contractAddress
+   * @returns {Promise<string>}
+   */
+  async getTokenSymbol(contractAddress) {
+    const symbolPromise = getErc20TokenSymbol(contractAddress, this.provider)
+    this.emitTokenSymbol(contractAddress, symbolPromise)
+    return symbolPromise
+  }
+
+  /**
+   * Given an ERC20 token contract address, and a promise that resolves to the symbol that identifies the token,
+   * emit a event that maps the address to the symbol.
+   * @param {string} contractAddress
+   * @param {Promise<string>} symbolPromise
+   */
+  async emitTokenSymbol(contractAddress, symbolPromise) {
+    const symbol = await symbolPromise
+    this.emit('token.update', contractAddress, {
+      symbol,
+    })
+  }
+
+  /**
+   * Given an ERC20 token contract address, resolve with the provided user's balance of that token.
+   * @param {string} contractAddress
+   * @param {string} userWalletAddress
+   * @returns {Promise<string>}
+   */
+  async getTokenBalance(contractAddress, userWalletAddress) {
+    let balance, decimals
+    let result
+    try {
+      balance = await getErc20BalanceForAddress(
+        contractAddress,
+        userWalletAddress,
+        this.provider
+      )
+      decimals = await getErc20Decimals(contractAddress, this.provider)
+      result = utils.fromDecimal(balance, decimals)
+    } catch (e) {
+      this.emit('error', e)
+    }
+    return result
   }
 }

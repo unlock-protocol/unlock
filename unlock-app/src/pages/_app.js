@@ -2,6 +2,9 @@ import App, { Container } from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-next-router'
+import 'cross-fetch/polyfill'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
 import configure from '../config'
 import { createUnlockStore } from '../createUnlockStore'
 
@@ -18,6 +21,7 @@ import storageMiddleware from '../middlewares/storageMiddleware'
 import walletMiddleware from '../middlewares/walletMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
 import wedlocksMiddleware from '../middlewares/wedlocksMiddleware'
+import postOfficeMiddleware from '../middlewares/postOfficeMiddleware'
 
 const config = configure()
 
@@ -34,6 +38,18 @@ function getOrCreateStore(initialState, path) {
 
   if (config.services.storage) {
     middlewares.push(storageMiddleware(config))
+  }
+
+  // Cannot load postOfficeMiddleware on the server
+  if (!config.isServer) {
+    const target = window.parent
+    const url = new URL(window.location.href)
+    const origin = url.searchParams.get('origin')
+    // postOfficeMiddleware can't instantiate postOfficeService without these
+    // values
+    if (target && origin) {
+      middlewares.push(postOfficeMiddleware(window, config))
+    }
   }
 
   // Always make a new store if server, otherwise state is shared between requests
@@ -104,20 +120,26 @@ The Unlock team
     } = this.props
     const store = getOrCreateStore({}, asPath)
 
+    const client = new ApolloClient({
+      uri: config.subgraphURI,
+    })
+
     return (
-      <Container>
-        <GlobalStyle />
-        <Provider store={store}>
-          <FullScreenModal />
-          <ConnectedRouter>
-            <ConfigProvider value={config}>
-              <GlobalErrorConsumer>
-                <Component {...pageProps} />
-              </GlobalErrorConsumer>
-            </ConfigProvider>
-          </ConnectedRouter>
-        </Provider>
-      </Container>
+      <ApolloProvider client={client}>
+        <Container>
+          <GlobalStyle />
+          <Provider store={store}>
+            <FullScreenModal />
+            <ConnectedRouter>
+              <ConfigProvider value={config}>
+                <GlobalErrorConsumer>
+                  <Component {...pageProps} />
+                </GlobalErrorConsumer>
+              </ConfigProvider>
+            </ConnectedRouter>
+          </Provider>
+        </Container>
+      </ApolloProvider>
     )
   }
 }

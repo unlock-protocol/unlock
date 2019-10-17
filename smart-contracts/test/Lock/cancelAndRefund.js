@@ -5,13 +5,13 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / cancelAndRefund', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -23,7 +23,7 @@ contract('Lock / cancelAndRefund', accounts => {
   before(async () => {
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
-      return lock.purchaseFor(account, {
+      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
       })
@@ -33,8 +33,8 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('should return the correct penalty', async () => {
-    const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
-    const denominator = await lock.refundPenaltyDenominator.call()
+    const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
+    const denominator = await lock.BASIS_POINTS_DEN.call()
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
@@ -46,7 +46,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
-    await lock.grantKey(accounts[5], 999999999999, { from: accounts[0] })
+    await lock.grantKeys([accounts[5]], [999999999999], { from: accounts[0] })
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValueFor.call(accounts[5])
     )
@@ -54,7 +54,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    await locks['FREE'].grantKey(accounts[5], 999999999999, {
+    await locks['FREE'].grantKeys([accounts[5]], [999999999999], {
       from: accounts[0],
     })
     const estimatedRefund = new BigNumber(
@@ -131,7 +131,7 @@ contract('Lock / cancelAndRefund', accounts => {
   })
 
   it('can cancel a free key', async () => {
-    await locks['FREE'].grantKey(accounts[1], 999999999999, {
+    await locks['FREE'].grantKeys([accounts[1]], [999999999999], {
       from: accounts[0],
     })
     const txObj = await locks['FREE'].cancelAndRefund({
@@ -144,7 +144,7 @@ contract('Lock / cancelAndRefund', accounts => {
     let tx
 
     before(async () => {
-      tx = await lock.updateRefundPenalty(2, 10) // 20%
+      tx = await lock.updateRefundPenalty(0, 2000) // 20%
     })
 
     it('should trigger an event', async () => {
@@ -152,26 +152,16 @@ contract('Lock / cancelAndRefund', accounts => {
         return log.event === 'RefundPenaltyChanged'
       })
       assert.equal(
-        new BigNumber(event.args.oldRefundPenaltyNumerator).toFixed(),
-        1
-      )
-      assert.equal(
-        new BigNumber(event.args.oldRefundPenaltyDenominator).toFixed(),
-        10
-      )
-      assert.equal(
-        new BigNumber(event.args.refundPenaltyNumerator).toFixed(),
-        2
-      )
-      assert.equal(
-        new BigNumber(event.args.refundPenaltyDenominator).toFixed(),
-        10
+        new BigNumber(event.args.refundPenaltyBasisPoints).toFixed(),
+        2000
       )
     })
 
     it('should return the correct penalty', async () => {
-      const numerator = new BigNumber(await lock.refundPenaltyNumerator.call())
-      const denominator = await lock.refundPenaltyDenominator.call()
+      const numerator = new BigNumber(
+        await lock.refundPenaltyBasisPoints.call()
+      )
+      const denominator = await lock.BASIS_POINTS_DEN.call()
       assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 
@@ -186,7 +176,7 @@ contract('Lock / cancelAndRefund', accounts => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(0, {
+      await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
       await shouldFail(
@@ -216,10 +206,6 @@ contract('Lock / cancelAndRefund', accounts => {
         }),
         'KEY_NOT_VALID'
       )
-    })
-
-    it('attempt to set the denominator to 0', async () => {
-      await shouldFail(lock.updateRefundPenalty(1, 0), 'INVALID_RATE')
     })
   })
 })

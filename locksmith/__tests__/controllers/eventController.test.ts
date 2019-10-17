@@ -8,31 +8,6 @@ const models = require('../../src/models')
 
 let Event = models.Event
 
-let message = {
-  event: {
-    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
-    name: 'A Test Event',
-    description: 'A fun event for everyone',
-    location: 'http://example.com/a_sample_location',
-    date: 1744487946000,
-    logo: 'http://example.com/a_logo',
-    owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-    duration: 42,
-  },
-}
-
-let badOwnerMessage = {
-  event: {
-    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
-    name: 'A Test Event',
-    description: 'A fun event for everyone',
-    location: 'http://example.com/a_sample_location',
-    date: 1744487946000,
-    logo: 'http://example.com/a_logo',
-    owner: '0xbbbcdde4c0b861cb36f4ce006a9c90ba2e43abc9',
-  },
-}
-
 let newLinks = {
   eventModification: {
     lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
@@ -48,6 +23,32 @@ let newLinks = {
       href: 'https://www.msn.com',
     },
   ],
+}
+
+let message = {
+  event: {
+    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
+    name: 'A Test Event',
+    description: 'A fun event for everyone',
+    location: 'http://example.com/a_sample_location',
+    date: 1744487946000,
+    logo: 'http://example.com/a_logo',
+    owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+    duration: 42,
+    links: newLinks,
+  },
+}
+
+let badOwnerMessage = {
+  event: {
+    lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
+    name: 'A Test Event',
+    description: 'A fun event for everyone',
+    location: 'http://example.com/a_sample_location',
+    date: 1744487946000,
+    logo: 'http://example.com/a_logo',
+    owner: '0xbbbcdde4c0b861cb36f4ce006a9c90ba2e43abc9',
+  },
 }
 
 let overWritingLinks = {
@@ -148,12 +149,14 @@ describe('Event Controller', () => {
         expect(await Event.count()).toEqual(0)
       })
     })
+
     describe('when the event could be created', () => {
       it('creates the event and returns 200', async () => {
         expect.assertions(1)
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -172,6 +175,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -204,6 +208,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -221,6 +226,7 @@ describe('Event Controller', () => {
         let typedData = generateTypedData(badOwnerMessage)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
+          from: '',
         })
 
         let response = await request(app)
@@ -251,6 +257,7 @@ describe('adding event links', () => {
     let typedData = generateTypedData2(newLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
+      from: '',
     })
 
     let response = await request(app)
@@ -270,6 +277,7 @@ describe('overwritting event links', () => {
     let typedData = generateTypedData(overWritingLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
+      from: '',
     })
 
     let response = await request(app)

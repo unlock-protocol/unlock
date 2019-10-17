@@ -2,6 +2,9 @@ import { providers } from 'ethers'
 import sigUtil from 'eth-sig-util'
 import { toBuffer } from 'ethereumjs-utils'
 import { getAccountFromPrivateKey } from './accounts'
+import UnlockUser from './structured_data/unlockUser'
+import UnlockPaymentDetails from './structured_data/unlockPaymentDetails'
+import UnlockPurchaseRequest from './structured_data/unlockPurchaseRequest'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
@@ -10,15 +13,23 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   constructor({ readOnlyProvider }) {
     super(readOnlyProvider)
     this.wallet = null
+
+    // These properties are retained so that we can use them when generating
+    // signed typed data for the user account
+    this.emailAddress = null
+    this.passwordEncryptedPrivateKey = null
+
     this.isUnlock = true
   }
 
   // You should be able to just pass the action for
   // GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD into here
-  async connect({ key, password }) {
+  async connect({ key, password, emailAddress }) {
     try {
       this.wallet = await getAccountFromPrivateKey(key, password)
       this.wallet.connect(this)
+      this.emailAddress = emailAddress
+      this.passwordEncryptedPrivateKey = key
 
       return true
     } catch (err) {
@@ -36,14 +47,6 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     return []
   }
 
-  async eth_signTypedData(params) {
-    // params is [ account, data ]
-    // we don't need account
-    const data = params[1]
-    const privateKey = toBuffer(this.wallet.privateKey)
-    return sigUtil.signTypedData(privateKey, data)
-  }
-
   async send(method, params) {
     if (typeof this[method] === 'undefined') {
       // We haven't implemented this method, defer to the fallback provider.
@@ -52,5 +55,70 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
     }
 
     return this[method](params)
+  }
+
+  /**
+   * Implementation of personal_sign JSON-RPC call
+   * @param {string} data the data to sign.
+   * @param {string} _ the address to sign it with -- ignored because
+   * we use the address in this class.
+   */
+  // eslint-disable-next-line no-unused-vars
+  personal_sign([data, _]) {
+    const privateKey = toBuffer(this.wallet.privateKey)
+    const sig = sigUtil.personalSign(privateKey, { data })
+    return {
+      data,
+      sig,
+    }
+  }
+
+  // Signature methods
+  // TODO: move these into their own module so they aren't directly accessible
+  // on the provider?
+  signData(data) {
+    const privateKey = toBuffer(this.wallet.privateKey)
+    const sig = sigUtil.signTypedData(privateKey, { data })
+    return {
+      data,
+      sig,
+    }
+  }
+
+  // input conforms to unlockUser structured_data; missing properties default to
+  // those stored on provider
+  signUserData(input) {
+    const user = Object.assign({}, input)
+    user.emailAddress = user.emailAddress || this.emailAddress
+    user.publicKey = user.publicKey || this.wallet.address
+    user.passwordEncryptedPrivateKey =
+      user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
+
+    const data = UnlockUser.build(user)
+    return this.signData(data)
+  }
+
+  // takes and signs a stripe card token
+  signPaymentData(stripeTokenId) {
+    const data = UnlockPaymentDetails.build({
+      emailAddress: this.emailAddress,
+      publicKey: this.wallet.address,
+      stripeTokenId,
+    })
+    return this.signData(data)
+  }
+
+  // input contains recipient and lock addresses
+  signKeyPurchaseRequestData(input) {
+    // default signature expiration to now + 60 seconds
+    const expiry = Math.floor(Date.now() / 1000) + 60
+    const purchaseRequest = Object.assign(
+      {
+        expiry,
+      },
+      input
+    )
+    const data = UnlockPurchaseRequest.build(purchaseRequest)
+    return this.signData(data)
   }
 }

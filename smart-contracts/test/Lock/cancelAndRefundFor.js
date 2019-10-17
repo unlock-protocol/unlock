@@ -5,7 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
@@ -28,7 +28,7 @@ async function signMessage(messageHex, signer) {
 
 contract('Lock / cancelAndRefundFor', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -41,7 +41,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   before(async () => {
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
-      return lock.purchaseFor(account, {
+      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
       })
@@ -56,7 +56,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
   })
 
   it('can increment nonce', async () => {
-    await lock.incrementNonce({ from: keyOwners[0] })
+    await lock.invalidateApprovalToCancelKey({ from: keyOwners[0] })
   })
 
   it('can read the non-zero nonce', async () => {
@@ -127,7 +127,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[1], txSender),
         keyOwners[1]
       )
-      await lock.incrementNonce({ from: keyOwners[1] })
+      await lock.invalidateApprovalToCancelKey({ from: keyOwners[1] })
       await shouldFail(
         lock.cancelAndRefundFor(keyOwners[1], signature, {
           from: txSender,
@@ -144,7 +144,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
       await lock.cancelAndRefundFor(keyOwners[2], signature, {
         from: txSender,
       })
-      await lock.purchaseFor(keyOwners[2], {
+      await lock.purchase(0, keyOwners[2], web3.utils.padLeft(0, 40), [], {
         from: keyOwners[2],
         value: keyPrice.toFixed(),
       })
@@ -177,7 +177,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
      * This is a risk: we refund via CC but can't cancel the key because the Lock is broke
      */
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(0, {
+      await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockOwner,
       })
 

@@ -1,7 +1,12 @@
 import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
-import { ADD_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
+import {
+  ADD_LOCK,
+  GET_LOCK,
+  UPDATE_LOCK,
+  CREATE_LOCK,
+} from '../../actions/lock'
 import { UPDATE_KEY } from '../../actions/key'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
@@ -506,6 +511,23 @@ describe('Lock middleware', () => {
       invoke(action)
       expect(next).toHaveBeenCalled()
       expect(mockWeb3Service.generateLockAddress).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('GET_LOCK', () => {
+    it('should retrieve the locks using web3Service', () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const address = '0x123'
+      const lock = {
+        address,
+      }
+      const action = { type: GET_LOCK, address, lock }
+      mockWeb3Service.getLock = jest.fn()
+
+      invoke(action)
+      expect(next).toHaveBeenCalled()
+      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(address)
     })
   })
 })

@@ -3,16 +3,16 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../../helpers/proxy')
+const getProxy = require('../../helpers/proxy')
 
 let unlock, lock, ID
 
 contract('Lock / erc721 / approveForAll', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.updateTransferFee(0, 1) // disable the transfer fee for this test
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   let owner = accounts[1]
@@ -20,7 +20,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
   describe('when the key exists', () => {
     before(async () => {
-      await lock.purchaseFor(owner, {
+      await lock.purchase(0, owner, web3.utils.padLeft(0, 40), [], {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: owner,
       })

@@ -37,6 +37,7 @@ describe('Pages', () => {
           authorName: 'Author name',
           publishDate: 'Publish date',
           image: '/foo/image.jpg',
+          slug: 'sample-post',
         },
       ]
 
@@ -89,7 +90,7 @@ describe('Pages', () => {
   describe('Blog', () => {
     it('should render title correctly', () => {
       expect.assertions(1)
-      rtl.render(<Blog posts={[]} />)
+      rtl.render(<Blog page={1} totalPages={1} posts={[]} />)
 
       expect(pageTitle).toBeCalledWith('Blog')
     })
@@ -107,7 +108,7 @@ describe('Pages', () => {
         },
       ]
 
-      const page = rtl.render(<Blog posts={posts} />)
+      const page = rtl.render(<Blog page={1} totalPages={1} posts={posts} />)
 
       expect(page.queryByText(posts[0].title)).not.toBeNull()
       expect(page.queryByText(posts[0].authorName)).not.toBeNull()
@@ -115,10 +116,15 @@ describe('Pages', () => {
     })
 
     it('should load blog posts as initial props', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
-      await Blog.getInitialProps()
+      await Blog.getInitialProps({
+        query: {
+          slug: '2',
+        },
+      })
       expect(prepareBlogProps).toHaveBeenCalledTimes(1)
+      expect(prepareBlogProps).toHaveBeenCalledWith(10, 2)
     })
   })
 
@@ -140,10 +146,15 @@ describe('Pages', () => {
     })
 
     it('should load post details in initial props', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
-      await Post.getInitialProps()
+      await Post.getInitialProps({
+        query: {
+          slug: 'a-post',
+        },
+      })
       expect(preparePostProps).toHaveBeenCalledTimes(1)
+      expect(preparePostProps).toHaveBeenCalledWith('a-post')
     })
   })
 })

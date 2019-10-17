@@ -19,17 +19,25 @@ const Post = ({ slug, post }) => {
   let publishDate = post.publishDate || ''
   let paywallLock = post.paywallLock || ''
   let body = post.__content || ''
+  let membersOnly = post.membersOnly || ''
+  let nonMembersOnly = post.nonMembersOnly || ''
   let permalink = '/blog/' + slug
+  let image = post.image
 
   return (
     <Layout forContent>
       <Head>
         <title>{pageTitle(title)}</title>
-        <TwitterTags title={pageTitle(title)} description={description} />
+        <TwitterTags
+          title={pageTitle(title)}
+          description={description}
+          image={image}
+        />
         <OpenGraphTags
           title={pageTitle(title)}
           description={description}
           canonicalPath={permalink}
+          image={image}
         />
         <link
           rel="alternate"
@@ -45,6 +53,8 @@ const Post = ({ slug, post }) => {
         subTitle={subTitle}
         authorName={authorName}
         permalink={permalink}
+        membersOnly={membersOnly}
+        nonMembersOnly={nonMembersOnly}
       />
     </Layout>
   )
@@ -56,7 +66,8 @@ Post.propTypes = {
 }
 
 Post.getInitialProps = async context => {
-  return await preparePostProps(context)
+  const { slug } = context.query
+  return await preparePostProps(slug)
 }
 
 export default Post

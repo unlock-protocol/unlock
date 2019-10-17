@@ -8,8 +8,6 @@ There are 2 "main" smart contracts:
 
 ## High-Level overview of contracts & Interfaces
 
-![Contracts & Interfaces](/Contracts_and_Interfaces.png)
-
 ## Lock
 
 The lock contract is a smart contract “class”, deployed on an Ethereum Blockchain and written in Solidity. Each instance is owned by a creator and represents access to a given resource (or set of resources). The Lock keeps track of its keys, which are non fungible tokens. We do not expect any deployed lock to be upgraded, however we will likely introduce more complex versions of the Lock with more features or characteristics.

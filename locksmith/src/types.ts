@@ -27,6 +27,7 @@ export interface EventCreation {
   logo: string
   owner: string
   duration?: number
+  links?: any
 }
 
 export interface ItemizedKeyPrice {

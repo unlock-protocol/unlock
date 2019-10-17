@@ -31,6 +31,18 @@ if (ropstenProviderUrl) {
 }
 
 /**
+ * Used for kovan deployments
+ */
+const kovanProviderUrl = process.env.KOVAN_PROVIDER_URL
+let kovanMnemonic = {
+  seed: '',
+  accountIndex: 0,
+}
+if (kovanProviderUrl) {
+  kovanMnemonic = require('./mnemonic.kovan') // eslint-disable-line import/no-unresolved
+}
+
+/**
  * Used for mainnet deployments
  */
 const mainnetProviderUrl = process.env.MAINNET_PROVIDER_URL
@@ -69,6 +81,14 @@ const ropstenProvider = function() {
   )
 }
 
+const kovanProvider = function() {
+  return new HDWalletProvider(
+    kovanMnemonic.seed,
+    kovanProviderUrl,
+    kovanMnemonic.accountIndex
+  )
+}
+
 module.exports = {
   networks: {
     development: {
@@ -89,16 +109,22 @@ module.exports = {
       gas: 5000000,
       gasPrice: 5000000000, // 5GWEI
     },
+    kovan: {
+      provider: kovanProvider,
+      network_id: '42', // Network Id for Rinkeby
+      gas: 10000000,
+      gasPrice: 5000000000, // 5GWEI
+    },
     mainnet: {
       provider: mainnetProvider,
       network_id: 1,
-      gas: 6000000,
+      gas: 6400000,
       gasPrice: 5000000000, // 5GWEI
     },
   },
   compilers: {
     solc: {
-      version: '0.5.9',
+      version: '0.5.12',
       settings: {
         optimizer: {
           enabled: true,
@@ -109,7 +135,13 @@ module.exports = {
     },
   },
   mocha: {
+    reporter: 'eth-gas-reporter',
     useColors: true,
+    reporterOptions: {
+      currency: 'USD',
+      excludeContracts: ['Migrations', 'TestErc20Token', 'TestNoop'],
+      gasPrice: 5,
+    },
   },
   plugins: ['truffle-security'],
 }

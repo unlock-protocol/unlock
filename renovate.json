@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "config:base",
+    ":prHourlyLimitNone",
+    ":prConcurrentLimitNone",
+    ":pinVersions"
+  ],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 3am on monday"],
+  "rebaseStalePrs": false,
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "*"
+      ],
+      "minor": {
+        "groupName": "all dependencies minor updates",
+        "groupSlug": "all-minor"
+      },
+      "patch": {
+        "groupName": "all dependencies patch updates",
+        "groupSlug": "all-patch"
+      }
+    },
+    {
+      "packageNames": ["@unlock-protocol/unlock-js"],
+      "schedule": ["at any time"],
+      "groupSlug": "unlock-js"
+    }
+  ]
+}

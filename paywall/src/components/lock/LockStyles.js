@@ -3,7 +3,7 @@ import Media from '../../theme/media'
 
 export const LockWrapper = styled.li.attrs(props => ({
   className: 'lock',
-  'data-address': props.lock.address,
+  'data-address': props.lock ? props.lock.address : '',
 }))`
   display: grid;
   justify-items: stretch;
@@ -11,11 +11,9 @@ export const LockWrapper = styled.li.attrs(props => ({
   padding: 0px;
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   width: 200px;
-  height: 180px;
-  grid-gap: 0px;
+  grid-gap: 8px;
   background-clip: padding-box;
-  grid-template-rows: 40px 140px;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
+  grid-template-rows: 1fr 140px;
 `
 
 export const LockHeader = styled.header`
@@ -23,9 +21,9 @@ export const LockHeader = styled.header`
   font-weight: 300;
   justify-content: center;
   align-content: center;
+  text-align: center;
   font-size: 20px;
-  line-height: 20px;
-  height: 40px;
+  min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
   color: var(--grey);

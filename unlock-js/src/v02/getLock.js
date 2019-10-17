@@ -9,6 +9,7 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
 export default async function(address) {
   const contract = await this.getLockContract(address)
   const attributes = {
+    name: x => x,
     keyPrice: x => utils.fromWei(x, 'ether'),
     expirationDuration: parseInt,
     maxNumberOfKeys: value => {
@@ -34,7 +35,9 @@ export default async function(address) {
     update.asOf = blockNumber
   }
 
-  const update = {}
+  const update = {
+    currencyContractAddress: null, // v0 only supports Ether locks
+  }
 
   const constantPromises = Object.keys(attributes).map(async attribute => {
     const result = await contract.functions[`${attribute}()`]()

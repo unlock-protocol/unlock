@@ -3,10 +3,7 @@ import * as rtl from 'react-testing-library'
 import usePaywallConfig, { defaultValue } from '../../hooks/usePaywallConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { ConfigContext } from '../../utils/withConfig'
-import {
-  POST_MESSAGE_READY,
-  POST_MESSAGE_CONFIG,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('usePaywallConfig hook', () => {
   let fakeWindow
@@ -54,13 +51,13 @@ describe('usePaywallConfig hook', () => {
     fakeWindow.top = {}
   })
 
-  it('sends POST_MESSAGE_READY on startup', () => {
+  it('sends PostMessages.READY on startup', () => {
     expect.assertions(1)
 
     rtl.render(<Wrapper />)
 
     expect(fakeWindow.parent.postMessage).toHaveBeenCalledWith(
-      expect.objectContaining({ type: POST_MESSAGE_READY, payload: undefined }),
+      expect.objectContaining({ type: PostMessages.READY, payload: undefined }),
       'origin'
     )
   })
@@ -78,7 +75,7 @@ describe('usePaywallConfig hook', () => {
     )
   })
 
-  it('does not send POST_MESSAGE_STARTUP more than once', () => {
+  it('does not send PostMessages.STARTUP more than once', () => {
     expect.assertions(1)
 
     const { rerender } = rtl.render(<Wrapper />)
@@ -88,7 +85,7 @@ describe('usePaywallConfig hook', () => {
     expect(fakeWindow.parent.postMessage).toHaveBeenCalledTimes(1)
   })
 
-  it('listens for POST_MESSAGE_CONFIG', () => {
+  it('listens for PostMessages.CONFIG', () => {
     expect.assertions(1)
 
     const myConfig = {
@@ -112,7 +109,7 @@ describe('usePaywallConfig hook', () => {
         source: fakeWindow.parent,
         origin: 'origin',
         data: {
-          type: POST_MESSAGE_CONFIG,
+          type: PostMessages.CONFIG,
           payload: myConfig,
         },
       })
@@ -150,7 +147,7 @@ describe('usePaywallConfig hook', () => {
         source: fakeWindow.parent,
         origin: 'origin',
         data: {
-          type: POST_MESSAGE_CONFIG,
+          type: PostMessages.CONFIG,
           payload: myConfig,
         },
       })
@@ -159,6 +156,61 @@ describe('usePaywallConfig hook', () => {
     expect(wrapper.getByTestId('config')).toHaveTextContent(
       JSON.stringify({
         ...myConfig,
+        callToAction: {
+          ...defaultValue.callToAction,
+          expired: 'hi',
+        },
+      })
+    )
+  })
+
+  it('includes default values for lock name', () => {
+    expect.assertions(1)
+    const lockAddress = '0x1234567890123456789012345678901234567890'
+    const lockAddress2 = '0xa234567890123456789012345678901234567890'
+
+    const myConfig = {
+      ...defaultValue,
+      locks: {
+        [lockAddress]: {},
+        [lockAddress2]: {
+          name: 'hi',
+        },
+      },
+      callToAction: {
+        expired: 'hi',
+      },
+    }
+
+    let wrapper
+    rtl.act(() => {
+      wrapper = rtl.render(<Wrapper />)
+    })
+
+    const listener = getListener()
+
+    rtl.act(() => {
+      listener({
+        source: fakeWindow.parent,
+        origin: 'origin',
+        data: {
+          type: PostMessages.CONFIG,
+          payload: myConfig,
+        },
+      })
+    })
+
+    expect(wrapper.getByTestId('config')).toHaveTextContent(
+      JSON.stringify({
+        ...myConfig,
+        locks: {
+          [lockAddress]: {
+            name: '',
+          },
+          [lockAddress2]: {
+            name: 'hi',
+          },
+        },
         callToAction: {
           ...defaultValue.callToAction,
           expired: 'hi',

@@ -11,7 +11,7 @@ export const displayError = (error, errorMetadata, children) => {
     const Error = mapErrorToComponent(error, errorMetadata)
     return <Layout title="">{Error}</Layout>
   }
-  return <React.Fragment>{children}</React.Fragment>
+  return <>{children}</>
 }
 
 /**
@@ -23,7 +23,7 @@ export function GlobalErrorConsumer({ displayError, children, error }) {
   if (error) {
     return displayError(error.name, error.data, children)
   }
-  return <React.Fragment>{children}</React.Fragment>
+  return <>{children}</>
 }
 
 GlobalErrorConsumer.propTypes = {

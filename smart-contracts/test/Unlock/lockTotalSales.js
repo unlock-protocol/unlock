@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
@@ -13,7 +13,7 @@ contract('Unlock / lockTotalSales', accounts => {
   let lock
 
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
@@ -27,7 +27,7 @@ contract('Unlock / lockTotalSales', accounts => {
 
   describe('buy 1 key', () => {
     before(async () => {
-      await lock.purchaseFor(accounts[0], {
+      await lock.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
         value: price,
         from: accounts[0],
       })
@@ -44,7 +44,7 @@ contract('Unlock / lockTotalSales', accounts => {
   describe('buy multiple keys', () => {
     before(async () => {
       for (let i = 1; i < 5; i++) {
-        await lock.purchaseFor(accounts[i], {
+        await lock.purchase(0, accounts[i], web3.utils.padLeft(0, 40), [], {
           value: price,
           from: accounts[i],
         })

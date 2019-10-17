@@ -2,11 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 
-import * as UnlockTypes from '../../unlockTypes' // eslint-disable-line no-unused-vars
+import * as UnlockTypes from '../../unlockTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 
 import Media from '../../theme/media'
-import Balance from '../helpers/Balance'
 
 interface Props {
   account: UnlockTypes.Account
@@ -30,7 +29,7 @@ export function Account({ account, network }: Props) {
           Address
           <NetworkInfo id="NetworkName">{networkName}</NetworkInfo>
         </Label>
-        <Label>Balance</Label>
+        <DoubleHeightCell />
         <DoubleHeightCell />
         <DoubleHeightCell />
         <DoubleHeightCell />
@@ -39,9 +38,6 @@ export function Account({ account, network }: Props) {
         {/* eslint-disable-line */
         /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
         <Address id="UserAddress">{account.address}</Address>
-        <Value id="AccountBalance">
-          <Balance amount={account.balance} convertCurrency={false} />
-        </Value>
       </AccountDetails>
     </AccountWrapper>
   )
@@ -68,7 +64,7 @@ const AccountDetails = styled.div`
   grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
   ${Media.phone`
     column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2, 80px);
+    grid-template-columns: 45px 145px repeat(2, 0px);
   `};
 `
 
@@ -97,9 +93,4 @@ const Address = styled.div`
   font-weight: 300;
   word-wrap: break-word;
   word-break: break-all;
-`
-const Value = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--darkgrey);
 `

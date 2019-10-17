@@ -5,7 +5,7 @@ import Head from 'next/head'
 import PropTypes from 'prop-types'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import { googleCalendarLinkBuilder } from '../../utils/links.ts'
-import { Label } from './CreateContent'
+import { Label } from '../interface/EventStyles'
 import { MONTH_NAMES, pageTitle, TRANSACTION_TYPES } from '../../constants'
 import UnlockPropTypes from '../../propTypes'
 import BalanceProvider from '../helpers/BalanceProvider'
@@ -13,7 +13,6 @@ import { lockRoute } from '../../utils/routes'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import { purchaseKey } from '../../actions/key'
-import { loadEvent } from '../../actions/event'
 import PayButton from './purchase/PayButton'
 import Media, { NoPhone } from '../../theme/media'
 import { transactionTypeMapping } from '../../utils/types'
@@ -22,6 +21,7 @@ import withConfig from '../../utils/withConfig'
 import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
 import { getTimeString } from '../../utils/dates'
+import { currencySymbolForLock } from '../../utils/locks'
 
 export const EventContent = ({
   lock,
@@ -31,8 +31,9 @@ export const EventContent = ({
   event,
   keyStatus,
   account,
+  config,
 }) => {
-  if (!lock.address || !event.name) return null // Wait for the lock and event to load
+  if (!event.name) return null // Wait for the lock and event to load
 
   const {
     name,
@@ -56,24 +57,96 @@ export const EventContent = ({
       ' - ' + getTimeString(new Date(date.getTime() + duration * 1000))
   }
 
-  const externalLinks = links.map(({ href, title }) => {
-    return (
-      <li key={href}>
-        <a target="_blank" rel="noopener noreferrer" href={href}>
-          {title}
-        </a>
-      </li>
-    )
+  let currency = currencySymbolForLock(lock, config)
+
+  const convertCurrency = !lock.currencyContractAddress
+
+  // Sanitize user-provided links
+  const sanitizedLinks = links.map(link => {
+    link.href = encodeURI(link.href)
+    return link
   })
 
-  const details = `For details, click here ${window.location.href}`
+  let details = description
+  if (sanitizedLinks.length) {
+    details += '\n\n<strong>Event Website</strong>'
+    sanitizedLinks.forEach(link => {
+      details += '\n' + link.href
+    })
+  }
+  details += `\n\n<strong>Ticket Details</strong>\n${window.location.href}`
 
+  // No need to sanitize the GCal link because googleCalendarLinkBuilder does it for us
   let googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
     date,
     duration,
     location
+  )
+
+  const eventLinks = [
+    ...sanitizedLinks,
+    {
+      href: googleCalendarLink,
+      text: 'Add to your Calendar!',
+      icon: '/static/images/illustrations/calendar.svg',
+    },
+  ]
+  const externalLinks = eventLinks.map(
+    ({ href, text, icon = '/static/images/illustrations/link.svg' }) => {
+      if (href) {
+        return (
+          <Link key={href} icon={icon}>
+            <a target="_blank" rel="noopener noreferrer" href={href}>
+              {text}
+            </a>
+          </Link>
+        )
+      }
+    }
+  )
+
+  const loadingTicket = (
+    <Column>
+      <Label>Loading ticket details...</Label>
+      <Loading>
+        <img alt="loading" src="/static/images/loading.svg" />
+      </Loading>
+    </Column>
+  )
+
+  const ticketInfo = (
+    <Column>
+      <NoPhone>
+        <Label>Tickets</Label>
+      </NoPhone>
+      <BalanceProvider
+        amount={lock.keyPrice}
+        render={(ethWithPresentation, convertedUSDValue) => (
+          <Price>
+            <Eth>
+              {ethWithPresentation} {currency}
+            </Eth>
+            {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
+          </Price>
+        )}
+      />
+      <PayButton
+        transaction={transaction}
+        keyStatus={keyStatus}
+        purchaseKey={() => purchaseKey(lockKey)}
+      />
+      {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
+        <small>
+          The transaction may take a couple minutes to go through... You can
+          close this page safely and come back later to see your ticket!
+        </small>
+      )}
+      {account && (
+        <Ticket account={account} lock={lock} keyStatus={keyStatus} />
+      )}
+    </Column>
   )
 
   return (
@@ -89,6 +162,7 @@ export const EventContent = ({
             {dateString}
             <DisplayTime>{timeString}</DisplayTime>
           </DisplayDate>
+          <Location>{location}</Location>
           <Columns count={2}>
             <Column>
               <Description>
@@ -96,45 +170,10 @@ export const EventContent = ({
                   return <DescriptionPara key={line}>{line}</DescriptionPara>
                 })}
               </Description>
-              <Location>{location}</Location>
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={googleCalendarLink}
-              >
-                Add to your Calendar!
-              </a>
               <Links>{externalLinks}</Links>
             </Column>
-            <Column>
-              <NoPhone>
-                <Label>Tickets</Label>
-              </NoPhone>
-              <BalanceProvider
-                amount={lock.keyPrice}
-                render={(ethWithPresentation, convertedUSDValue) => (
-                  <Price>
-                    <Eth>{ethWithPresentation} ETH</Eth>
-                    <Fiat>${convertedUSDValue}</Fiat>
-                  </Price>
-                )}
-              />
-              <PayButton
-                transaction={transaction}
-                keyStatus={keyStatus}
-                purchaseKey={() => purchaseKey(lockKey)}
-              />
-              {['confirming', 'confirmed'].indexOf(keyStatus) > -1 && (
-                <small>
-                  The transaction may take a couple minutes to go through... You
-                  can close this page safely and come back later to see your
-                  ticket!
-                </small>
-              )}
-              {account && (
-                <Ticket account={account} lock={lock} keyStatus={keyStatus} />
-              )}
-            </Column>
+            {lock.address && keyStatus && ticketInfo}
+            {(!lock.address || !keyStatus) && loadingTicket}
           </Columns>
         </Layout>
         <DeveloperOverlay />
@@ -151,6 +190,7 @@ EventContent.propTypes = {
   event: UnlockPropTypes.ticketedEvent,
   keyStatus: PropTypes.string,
   account: UnlockPropTypes.account,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 EventContent.defaultProps = {
@@ -165,9 +205,6 @@ EventContent.defaultProps = {
 export const mapDispatchToProps = dispatch => ({
   purchaseKey: key => {
     dispatch(purchaseKey(key))
-  },
-  loadEvent: address => {
-    dispatch(loadEvent(address))
   },
 })
 
@@ -198,7 +235,7 @@ export const mapStateToProps = (
   }
 
   if (event) {
-    event.date = new Date(event.date)
+    event.date = new Date(event.date) // TODO: What is this for?
     // TEMPORARY: HARD CODE VALUES FOR NFT EVENT
     if (lockAddress === '0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4') {
       event.name = 'NFT Dev Meetup - NYC Blockchain Week 2019'
@@ -218,7 +255,7 @@ Meet us at 6:30PM on May 16th, at the Bushwick Generator.
         'https://s3.amazonaws.com/assets.unlock-protocol.com/NFTEventLogos.png'
       event.links = [
         {
-          title: '💬 Telegram Group',
+          text: '💬 Telegram Group',
           href: 'https://t.me/joinchat/GzMTuRZfLMHZ1n2EMmF0UQ',
         },
         // {
@@ -258,6 +295,7 @@ export default withConfig(
 )
 
 const Columns = styled.section`
+  margin-top: 10px;
   ${Media.nophone`
     display: grid;
     grid-gap: 40px;
@@ -289,16 +327,17 @@ const Image = styled.img`
   max-width: 100%;
 `
 
-const Links = styled.ul`
-  padding: 0px;
+const Link = styled.li`
+  margin-top: 15px;
+  font-weight: 200;
+  list-style: none;
+  background: url(${props => props.icon}) no-repeat;
+  padding-left: 40px;
+`
 
-  li {
-    display: inline-block;
-  }
-  li + li:before {
-    content: ' - ';
-    padding: 0 5px;
-  }
+const Links = styled.ul`
+  font-size: 24px;
+  padding: 0px;
 `
 
 export const Title = styled.h1`
@@ -365,9 +404,18 @@ const Description = styled.div`
 const Location = styled.p`
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 16px;
-  margin-top: 30px;
+  margin: 0px;
+  padding-left: 20px;
 `
 
 const DescriptionPara = styled.p`
   margin-bottom: 1em;
+`
+
+const Loading = styled.div`
+  display: grid;
+  align-items: center;
+  img {
+    width: 30px;
+  }
 `

@@ -12,7 +12,9 @@
     "globalSetup": "./helpers/setup.js",
     "globalTeardown": "./helpers/teardown.js",
     "testEnvironment": "./helpers/environment.js",
-    "setupTestFrameworkScriptFile": "./jest.setup.js"
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ]
   },
   "author": "Unlock Inc",
   "lint-staged": {
@@ -22,6 +24,9 @@
         "git add"
       ]
     }
+  },
+  "engines": {
+    "node": "10.16.3"
   },
   "license": "MIT",
   "dependencies": {

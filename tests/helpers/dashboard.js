@@ -17,7 +17,8 @@ const deployLock = async (
   name,
   expirationDuration,
   maxNumberOfKeys,
-  keyPrice
+  keyPrice,
+  useERC20 = false
 ) => {
   await page.goto(url.main('/dashboard'), { waitUntil: 'networkidle2' })
 
@@ -34,6 +35,13 @@ const deployLock = async (
   )
   await expect(page).toFill('input[name="maxNumberOfKeys"]', maxNumberOfKeys)
   await expect(page).toFill('input[name="keyPrice"]', keyPrice)
+  if (useERC20) {
+    // TODO - we should NOT be using div for clickable elements
+    await expect(page).toClick('div.currency')
+    // it takes a split second for the javascript to run,
+    // this ensures we have changed the currency before we create the lock
+    await new Promise(resolve => setTimeout(resolve, 50))
+  }
   await expect(page).toClick('button', { text: 'Submit' })
   await wait.untilIsGone('.lockForm')
 

@@ -30,7 +30,7 @@ const accountRegex = '0x[a-fA-F0-9]{40}'
 /**
  * Matches any valid ethereum account address
  */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex)
+export const ACCOUNT_REGEXP = new RegExp('^' + accountRegex + '$')
 
 // helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
@@ -103,3 +103,11 @@ export const MAX_UINT =
 export const POLLING_INTERVAL = 2000
 
 export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
+
+export const USER_ACCOUNT_ADDRESS_STORAGE_ID = 'managedUserAccountAddress'
+
+// This represents an account that will never hold any keys. It's a bit of an
+// ugly hack, but it allows us to initialize the paywall without asking a user
+// to log in and without granting any unauthorized access.
+export const DEFAULT_USER_ACCOUNT_ADDRESS =
+  '0x0000000000000000000000000000000000000000'

@@ -324,7 +324,7 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
-      it('icon is not an string', () => {
+      it('icon is not a string', () => {
         expect.assertions(2)
 
         expect(
@@ -558,11 +558,170 @@ describe('Form field validators', () => {
           ).toBe(false)
         })
       })
+
+      describe('unlockUserAccounts', () => {
+        it('unlockUserAccounts is missing', () => {
+          expect.assertions(1)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+            })
+          ).toBe(true)
+        })
+
+        it('unlockUserAccounts is true', () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: true,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: 'true',
+            })
+          ).toBe(true)
+        })
+
+        it('unlockUserAccounts is false', () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: false,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: 'false',
+            })
+          ).toBe(true)
+        })
+
+        it('unlockUserAccounts is not a boolean', () => {
+          expect.assertions(4)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: 'hello',
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: [],
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: 7,
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              unlockUserAccounts: {},
+            })
+          ).toBe(false)
+        })
+      })
+
+      describe('persistentCheckout', () => {
+        it("should accept or 'true' as value", () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: true,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 'true',
+            })
+          ).toBe(true)
+        })
+        it("should accept false or 'false' as value", () => {
+          expect.assertions(2)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: false,
+            })
+          ).toBe(true)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 'false',
+            })
+          ).toBe(true)
+        })
+
+        it('should accept no value set', () => {
+          expect.assertions(1)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+            })
+          ).toBe(true)
+        })
+
+        it('should reject other types', () => {
+          expect.assertions(4)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: '',
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: 3,
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: [],
+            })
+          ).toBe(false)
+
+          expect(
+            validators.isValidPaywallConfig({
+              ...validConfig,
+              persistentCheckout: {},
+            })
+          ).toBe(false)
+        })
+      })
     })
 
     describe('valid cases', () => {
       it('is valid config', () => {
-        expect.assertions(8)
+        expect.assertions(9)
 
         expect(validators.isValidPaywallConfig(validConfig)).toBe(true)
         expect(
@@ -614,6 +773,14 @@ describe('Form field validators', () => {
           validators.isValidPaywallConfig({
             ...validConfig,
             icon: 'ftp://example.com/img.png',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            locks: {
+              [lock]: {},
+            },
           })
         ).toBe(true)
       })
@@ -1017,6 +1184,35 @@ describe('Form field validators', () => {
           })
         ).toBe(false)
       })
+
+      it('should fail on invalid lock currencyContractAddress', () => {
+        expect.assertions(4)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: 9,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: undefined,
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: [],
+          })
+        ).toBe(false)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: {},
+          })
+        ).toBe(false)
+      })
     })
 
     describe('valid locks', () => {
@@ -1037,8 +1233,29 @@ describe('Form field validators', () => {
             outstandingKeys: 0,
             balance: '0',
             owner: '0x1234567890123456789012345678901234567890',
+            publicLockVersion: 4,
             currencyContractAddress:
               '0x9876543210987654321098765432109876543210',
+            some: 'random',
+            fields: 'we do not know about',
+          })
+        ).toBe(true)
+      })
+
+      it('should accept valid currency contract address', () => {
+        expect.assertions(2)
+
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress:
+              '0x9876543210987654321098765432109876543210',
+          })
+        ).toBe(true)
+        expect(
+          validators.isValidLock({
+            ...validLock,
+            currencyContractAddress: null,
           })
         ).toBe(true)
       })
@@ -1102,12 +1319,18 @@ describe('Form field validators', () => {
     })
 
     it('should fail on any invalid locks', () => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       expect(
         validators.isValidLocks({
           [validLock.address]: validLock,
           invalidLock,
+        })
+      ).toBe(false)
+      expect(
+        validators.isValidLocks({
+          [validLock.address]: invalidLock,
+          [validLock.address.replace('1', '2')]: invalidLock,
         })
       ).toBe(false)
     })

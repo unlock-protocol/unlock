@@ -7,9 +7,10 @@
 module.exports = class WalletService {
   static gasAmountConstants() {
     return {
-      createLock: 4000000,
+      createLock: 4500000,
       updateKeyPrice: 1000000,
       purchaseKey: 1000000,
+      fullRefund: 1000000,
       cancelAndRefund: 1000000,
       withdrawFromLock: 1000000,
     }

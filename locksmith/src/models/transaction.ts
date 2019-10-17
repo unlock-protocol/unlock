@@ -15,6 +15,9 @@ export class Transaction extends Model<Transaction> {
   @Column
   public chain!: number
 
+  @Column
+  public for!: string
+
   @Column(DataType.TEXT)
   public data!: string
 }

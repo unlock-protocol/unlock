@@ -4,13 +4,13 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / getOwnersByPage', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -25,9 +25,15 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when there are less owners than the page size', () => {
     it('should return all of the key owners', async () => {
-      await locks['FIRST'].purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
       let result = await locks['FIRST'].getOwnersByPage.call(0, 2, {
         from: accounts[0],
       })
@@ -38,17 +44,35 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when there are more owners than the page size', () => {
     it('return page size number of key owners', async () => {
-      await locks['FIRST'].purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchaseFor(accounts[2], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[2],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchaseFor(accounts[3], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[3],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
       let result = await locks['FIRST'].getOwnersByPage.call(0, 2, {
         from: accounts[0],
@@ -61,17 +85,35 @@ contract('Lock / getOwnersByPage', accounts => {
 
   describe('when requesting a secondary page', () => {
     it('return page size number of key owners', async () => {
-      await locks['FIRST'].purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchaseFor(accounts[2], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[2],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
-      await locks['FIRST'].purchaseFor(accounts[3], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-      })
+      await locks['FIRST'].purchase(
+        0,
+        accounts[3],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+        }
+      )
 
       let result = await locks['FIRST'].getOwnersByPage.call(1, 2, {
         from: accounts[0],

@@ -4,6 +4,7 @@ import http from 'http'
 import NockHelper from './helpers/nockHelper'
 import Web3Service from '../web3Service'
 import utils from '../utils'
+import erc20 from '../erc20'
 
 import v0 from '../v0'
 import v01 from '../v01'
@@ -22,6 +23,13 @@ const lockAddress = '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e'
 
 const nock = new NockHelper(readOnlyProvider, false /** debug */)
 let web3Service
+
+jest.mock('../erc20.js', () => {
+  return {
+    getErc20Decimals: jest.fn(() => Promise.resolve(18)),
+    getErc20BalanceForAddress: jest.fn(() => Promise.resolve('0x0')),
+  }
+})
 
 describe('Web3Service', () => {
   async function nockBeforeEach(endpoint = readOnlyProvider) {
@@ -466,6 +474,33 @@ describe('Web3Service', () => {
       )
 
       expect(returnedAddress).toBe(account)
+    })
+  })
+
+  describe('getTokenBalance', () => {
+    it('should yield the token balance based on the decimals number', async () => {
+      expect.assertions(3)
+
+      erc20.getErc20BalanceForAddress = jest.fn(() => {
+        return Promise.resolve('36042555786755496657')
+      })
+      erc20.getErc20Decimals = jest.fn(() => {
+        return Promise.resolve(7)
+      })
+      const user = '0x123'
+      const erc20Contract = '0xabc'
+      const balance = await web3Service.getTokenBalance(erc20Contract, user)
+
+      expect(balance).toBe('3604255578675.5496657')
+      expect(erc20.getErc20BalanceForAddress).toHaveBeenCalledWith(
+        erc20Contract,
+        user,
+        web3Service.provider
+      )
+      expect(erc20.getErc20Decimals).toHaveBeenCalledWith(
+        erc20Contract,
+        web3Service.provider
+      )
     })
   })
 })

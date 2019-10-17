@@ -21,6 +21,8 @@ const requiredConfigVariables = {
   locksmithUri: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
   unlockTicketsUrl: process.env.UNLOCK_TICKETS_URL,
+  erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
+  erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
 }
 
 const optionalConfigVariables = {
@@ -79,6 +81,7 @@ module.exports = withTypescript(
         '/create': { page: '/create' },
         '/event': { page: '/event' },
         '/checkin': { page: '/checkin' },
+        '/newevent': { page: '/newevent' },
       }
     },
   })

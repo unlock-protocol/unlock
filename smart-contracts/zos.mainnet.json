@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0xBe9A9356C6281f0ED8b0767Bb53920B39c62762B",
-      "constructorCode": "608060405234801561001057600080fd5b5061578b806100206000396000f3fe",
-      "bodyBytecodeHash": "d683bec7802f7b74e345a1c0da047200d67aae6f7d412a279d1f4dadfd322e17",
-      "localBytecodeHash": "bad9afcbc1bd438ed413046aedceaa4f08bbe746004febf269ad8e8cc33318e9",
-      "deployedBytecodeHash": "bad9afcbc1bd438ed413046aedceaa4f08bbe746004febf269ad8e8cc33318e9",
+      "address": "0x49b41D8b11939D7ca9678792F8d93E96dd2D6ED9",
+      "constructorCode": "608060405234801561001057600080fd5b506158d0806100206000396000f3fe",
+      "bodyBytecodeHash": "a1e7ddfa6d9183443aca067a96bd252f3ffa72a55ce36564ab77e79ce6527ac3",
+      "localBytecodeHash": "df67fdda66cc0f91e8b70a2b50b68829b7f5244c440cc0e1ac36487ddb8b5c2c",
+      "deployedBytecodeHash": "df67fdda66cc0f91e8b70a2b50b68829b7f5244c440cc0e1ac36487ddb8b5c2c",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -36,19 +36,19 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 166,
+              "astId": 167,
               "type": "t_bool",
               "src": "2085:13:2"
             },
             {
               "label": "totalSales",
-              "astId": 168,
+              "astId": 169,
               "type": "t_uint256",
               "src": "2104:15:2"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 170,
+              "astId": 171,
               "type": "t_uint256",
               "src": "2143:26:2"
             }
@@ -71,7 +71,7 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 4700,
+          "astId": 4745,
           "type": "t_bool",
           "src": "757:24:38"
         },
@@ -79,7 +79,7 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 4702,
+          "astId": 4747,
           "type": "t_bool",
           "src": "876:25:38"
         },
@@ -87,15 +87,15 @@
           "contract": "Initializable",
           "path": "zos-lib/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 4751,
+          "astId": 4803,
           "type": "t_array:50<t_uint256>",
-          "src": "1891:29:38"
+          "src": "1951:29:38"
         },
         {
           "contract": "Ownable",
           "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
           "label": "_owner",
-          "astId": 3290,
+          "astId": 3324,
           "type": "t_address",
           "src": "302:22:22"
         },
@@ -103,7 +103,7 @@
           "contract": "Ownable",
           "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
           "label": "______gap",
-          "astId": 3401,
+          "astId": 3435,
           "type": "t_array:50<t_uint256>",
           "src": "2186:29:22"
         },
@@ -111,7 +111,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 186,
+          "astId": 187,
           "type": "t_uint256",
           "src": "2281:31:2"
         },
@@ -119,7 +119,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 188,
+          "astId": 189,
           "type": "t_uint256",
           "src": "2317:32:2"
         },
@@ -127,7 +127,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 192,
+          "astId": 193,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
           "src": "2438:46:2"
         },
@@ -135,7 +135,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalBaseTokenURI",
-          "astId": 194,
+          "astId": 195,
           "type": "t_string",
           "src": "2582:33:2"
         },
@@ -143,7 +143,7 @@
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalTokenSymbol",
-          "astId": 196,
+          "astId": 197,
           "type": "t_string",
           "src": "2714:32:2"
         }
@@ -159,37 +159,12 @@
             "contract": "Unlock",
             "path": "contracts/Unlock.sol",
             "label": "locks",
-            "astId": 192,
+            "astId": 193,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
             "src": "2438:46:2"
           }
         ],
-        "storageDiff": [
-          {
-            "action": "append",
-            "updated": {
-              "index": 8,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "globalBaseTokenURI",
-              "astId": 194,
-              "type": "t_string",
-              "src": "2582:33:2"
-            }
-          },
-          {
-            "action": "append",
-            "updated": {
-              "index": 9,
-              "contract": "Unlock",
-              "path": "contracts/Unlock.sol",
-              "label": "globalTokenSymbol",
-              "astId": 196,
-              "type": "t_string",
-              "src": "2714:32:2"
-            }
-          }
-        ]
+        "storageDiff": []
       }
     }
   },
@@ -199,7 +174,7 @@
       {
         "address": "0x3d5409cce1d45233de1d4ebdee74b8e004abdd13",
         "version": "0.1.0",
-        "implementation": "0xD6fd37618ddFb59395ED221FbB08Fb4A52234b07"
+        "implementation": "0x49b41D8b11939D7ca9678792F8d93E96dd2D6ED9"
       }
     ]
   },

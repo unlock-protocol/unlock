@@ -3,7 +3,7 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../../helpers/proxy')
+const getProxy = require('../../helpers/proxy')
 
 let unlock, lock, txObj, event
 
@@ -24,7 +24,7 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
 
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
@@ -32,11 +32,13 @@ contract('Lock / erc721 / tokenURI', accounts => {
 
   describe('the global tokenURI stored in Unlock', () => {
     it('should return the global base token URI', async () => {
-      assert.equal(await unlock.getGlobalBaseTokenURI.call(), '')
+      assert.equal(await unlock.globalBaseTokenURI.call(), '')
     })
 
     it('should allow the owner to set the global base token URI', async () => {
-      txObj = await unlock.setGlobalBaseTokenURI(
+      txObj = await unlock.configUnlock(
+        await unlock.publicLockAddress(),
+        await unlock.globalTokenSymbol(),
         'https://newTokenURI.com/api/key',
         {
           from: accounts[0],
@@ -44,21 +46,26 @@ contract('Lock / erc721 / tokenURI', accounts => {
       )
       event = txObj.logs[0]
       assert.equal(
-        await unlock.getGlobalBaseTokenURI.call(),
+        await unlock.globalBaseTokenURI.call(),
         'https://newTokenURI.com/api/key'
       )
     })
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await shouldFail(
-        unlock.setGlobalBaseTokenURI('https://fakeURI.com', {
-          from: accounts[1],
-        })
+        unlock.configUnlock(
+          await unlock.publicLockAddress(),
+          await unlock.globalTokenSymbol(),
+          'https://fakeURI.com',
+          {
+            from: accounts[1],
+          }
+        )
       )
     })
 
-    it('should emit the NewTokenURI event', async () => {
-      assert.equal(event.event, 'NewTokenURI')
+    it('should emit the ConfigUnlock event', async () => {
+      assert.equal(event.event, 'ConfigUnlock')
     })
   })
 
@@ -69,7 +76,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
       })
       event = txObj.logs[0]
 
-      await lock.purchaseFor(accounts[0], {
+      await lock.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
         value: Units.convert('0.01', 'eth', 'wei'),
       })
       const uri = await lock.tokenURI.call(1)

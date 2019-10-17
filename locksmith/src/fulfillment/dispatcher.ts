@@ -1,6 +1,9 @@
 import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 
-const HDWalletProvider = require('truffle-hdwallet-provider')
+const HDWalletProvider = require('@truffle/hdwallet-provider')
+const {
+  findOrCreateTransaction,
+} = require('../operations/transactionOperations')
 
 export default class Dispatcher {
   unlockAddress: string
@@ -42,12 +45,26 @@ export default class Dispatcher {
       throw new Error('No Available Keys.')
     }
 
-    await walletService.connect(this.provider)
-    await walletService.purchaseKey(
-      lockAddress,
-      recipient,
-      lock.keyPrice,
-      this.buyer
+    walletService.on(
+      'transaction.new',
+      async (
+        transactionHash: string,
+        sender: string,
+        recipient: string,
+        data: string
+      ) => {
+        await findOrCreateTransaction({
+          transactionHash: transactionHash,
+          sender: sender,
+          recipient: recipient,
+          chain: walletService.networkId,
+          for: this.buyer,
+          data: data,
+        })
+      }
     )
+
+    await walletService.connect(this.provider)
+    await walletService.purchaseKey(lockAddress, recipient, '0', this.buyer)
   }
 }

@@ -1,4 +1,4 @@
-import { getCurrentProvider } from '@unlock-protocol/unlock-js'
+import { getCurrentProvider, UnlockProvider } from '@unlock-protocol/unlock-js'
 
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
@@ -39,6 +39,12 @@ export default function configure(
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
   let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+  let ERC20Contract = {
+    name: runtimeConfig.erc20ContractSymbol || 'DEV',
+    address:
+      runtimeConfig.erc20ContractAddress ||
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+  }
   let services = {}
   let supportedProviders = []
   let base64WedlocksPublicKey = runtimeConfig.base64WedlocksPublicKey
@@ -52,6 +58,12 @@ export default function configure(
   let chainExplorerUrlBuilders = {
     etherScan: () => '',
   }
+  // Publishable key from Stripe dashboard, make sure to use the test key when
+  // developing.
+  let stripeApiKey =
+    runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
+  let subgraphURI =
+    'http://localhost:8000/subgraphs/name/unlock-protocol/unlock'
 
   services['currencyPriceLookup'] =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
@@ -78,10 +90,22 @@ export default function configure(
     isRequiredNetwork = networkId => networkId === 1984
   }
 
+  // The `unlock-provider-integration` environment is only used in integration tests
+  // when no provider has been injected so we can test unlock accounts.
+  if (env === 'unlock-provider-integration') {
+    blockTime = 10 // in mseconds.
+    services['storage'] = {
+      host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
+    }
+    services['wedlocks'] = {
+      host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
+    }
+    isRequiredNetwork = networkId => networkId === 1984
+  }
+
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers['HTTP'] = `http://${httpProvider}:8545`
     services['storage'] = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
@@ -117,6 +141,8 @@ export default function configure(
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
+    subgraphURI =
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby'
   }
 
   if (env === 'prod') {
@@ -137,6 +163,8 @@ export default function configure(
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
+    subgraphURI =
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock'
   }
 
   if (env === 'prod' || env === 'staging') {
@@ -148,9 +176,12 @@ export default function configure(
     readOnlyProvider = readOnlyProviderUrl
   }
 
+  providers['Unlock'] = new UnlockProvider({ readOnlyProvider })
+
   return {
     base64WedlocksPublicKey,
     blockTime,
+    ERC20Contract,
     isServer,
     isInIframe,
     env,
@@ -167,5 +198,7 @@ export default function configure(
     supportedProviders,
     unlockStaticUrl,
     chainExplorerUrlBuilders,
+    stripeApiKey,
+    subgraphURI,
   }
 }

@@ -1,13 +1,13 @@
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, lock
 
 contract('Lock / erc721 / unlockUtils', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
   })
@@ -36,7 +36,7 @@ contract('Lock / erc721 / unlockUtils', accounts => {
     // currently returns the address as a string with all chars in lowercase
     it('should convert an ethereum address to an ASCII string', async () => {
       senderAddress = await lock.address2Str.call(accounts[0])
-      assert.equal(senderAddress, '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2')
+      assert.equal(web3.utils.toChecksumAddress(senderAddress), accounts[0])
     })
   })
 })

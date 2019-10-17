@@ -69,6 +69,7 @@ echo "Push new production branch"
 git push origin $BRANCH --no-verify
 
 echo "Open pull request"
+PROD_DEPLOY_TYPE="manual"
 source "${BASH_SOURCE%/*}/production-pull-request-template.sh"
 GITHUB_TOKEN=$GITHUB_API_TOKEN hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r $REVIEWER
 

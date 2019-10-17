@@ -35,13 +35,23 @@ module.exports = () => {
     cache: false,
     mode: 'production',
     devtool: 'source-map',
-    entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.js'),
+    entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.ts'),
     output: {
       path: path.resolve(__dirname, 'src', 'static'),
       filename: 'data-iframe.1.0.min.js',
-      globalObject: 'self',
     },
-
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    resolve: {
+      extensions: ['.ts', '.js'],
+    },
     plugins: [
       new webpack.DefinePlugin({
         'process.env.UNLOCK_ENV': "'" + unlockEnv + "'",

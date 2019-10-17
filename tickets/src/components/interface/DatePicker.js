@@ -27,34 +27,35 @@ export const getDaysMonthsAndYearsForSelect = (now, year, month) => {
 export default class DatePicker extends Component {
   constructor(props) {
     super(props)
-    const { now } = props
+    const { now, date } = props
+
     this.state = {
       ...getDaysMonthsAndYearsForSelect(now),
-      date: now, // defaults to now
+      date: date,
     }
     this.onChange = this.onChange.bind(this)
   }
 
   onChange(method) {
-    const { now } = this.props
+    const { now, disabled, onChange } = this.props
+    if (disabled) {
+      return
+    }
     return selected => {
       this.setState(state => {
         let date = state.date
         // Change the date based on the selected value
         date[method](selected.value)
 
-        // If the day is in the past, we default to today's date
         if (date < now) {
           date = new Date(now)
         }
+        onChange(date)
 
         const newState = {
           ...state,
           date,
         }
-
-        const { onChange } = this.props
-        onChange(date)
 
         // Get the new possible days, months and years
         const dateState = getDaysMonthsAndYearsForSelect(
@@ -62,6 +63,7 @@ export default class DatePicker extends Component {
           newState.date.getFullYear(),
           newState.date.getMonth() + 1
         )
+
         return Object.assign(newState, dateState)
       })
     }
@@ -69,6 +71,7 @@ export default class DatePicker extends Component {
 
   render() {
     const { date, months, days, years } = this.state
+    const { disabled } = this.props
 
     const month = {
       value: date.getMonth(),
@@ -80,6 +83,7 @@ export default class DatePicker extends Component {
     return (
       <EventDate>
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a month"
           className="select-container"
           classNamePrefix="select-option"
@@ -88,6 +92,7 @@ export default class DatePicker extends Component {
           value={month}
         />
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a day"
           className="select-container"
           classNamePrefix="select-option"
@@ -96,6 +101,7 @@ export default class DatePicker extends Component {
           value={day}
         />
         <StyledSelect
+          isDisabled={disabled}
           placeholder="Pick a year"
           className="select-container"
           classNamePrefix="select-option"
@@ -109,12 +115,15 @@ export default class DatePicker extends Component {
 }
 
 DatePicker.propTypes = {
-  now: PropTypes.instanceOf(Date),
+  now: PropTypes.instanceOf(Date).isRequired,
+  date: PropTypes.instanceOf(Date),
   onChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 }
 
 DatePicker.defaultProps = {
-  now: new Date(),
+  date: new Date(),
+  disabled: false,
 }
 
 export const EventDate = styled.div`
@@ -126,7 +135,6 @@ export const EventDate = styled.div`
 export const StyledSelect = styled(Select)`
   background-color: var(--offwhite);
   border-radius: 4px;
-
   .select-option__control {
     background-color: var(--offwhite);
     border: none;
@@ -137,7 +145,7 @@ export const StyledSelect = styled(Select)`
     display: none;
   }
   .select-option__single-value {
-    color: var(--darkgrey);
+    color: ${props => (props.isDisabled ? 'var(--grey)' : 'var(--darkgrey)')};
     font-size: 20px;
   }
 `

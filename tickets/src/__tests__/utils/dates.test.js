@@ -32,17 +32,10 @@ describe('getDaysMonthsAndYears', () => {
       expect(months).toEqual([10, 11, 12])
     })
 
-    it('should show only the remain months including the current month', () => {
-      expect.assertions(1)
-      const now = new Date('2019-07-09 10:30:00 GMT')
-      const months = getDaysMonthsAndYears(now, 2019, 4)[1]
-      expect(months).toEqual([7, 8, 9, 10, 11, 12])
-    })
-
     it('should show all 12 month if the picked date is in the future', () => {
       expect.assertions(1)
-      const now = new Date('2020-07-09 10:30:00 GMT')
-      const months = getDaysMonthsAndYears(now, 2019, 4)[1]
+      const now = new Date('2019-10-09 10:30:00 GMT')
+      const months = getDaysMonthsAndYears(now, 2020, 4)[1]
       expect(months).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     })
   })
@@ -53,6 +46,44 @@ describe('getDaysMonthsAndYears', () => {
       const now = new Date('2019-04-22 10:30:00 GMT')
       const days = getDaysMonthsAndYears(now, 2019, 4)[0]
       expect(days).toEqual([22, 23, 24, 25, 26, 27, 28, 29, 30])
+    })
+
+    it('should show all days of the month if the picked date is in a future month', () => {
+      expect.assertions(1)
+      const now = new Date('2019-04-22 10:30:00 GMT')
+      const days = getDaysMonthsAndYears(now, 2019, 6)[0]
+      expect(days).toEqual([
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+      ])
     })
 
     it('should show all days of the month if the picked date is in the current month but next year', () => {
@@ -131,14 +162,14 @@ describe('getDaysMonthsAndYears', () => {
       let days = getDaysMonthsAndYears(now, 2019, 2)[0]
       expect(days.length).toEqual(28)
 
-      now = new Date('2100-04-22 10:30:00 GMT')
+      now = new Date('2019-04-22 10:30:00 GMT')
       days = getDaysMonthsAndYears(now, 2100, 2)[0]
       expect(days.length).toEqual(28)
     })
 
     it('should show have 29 days if the month is February on a leap year', () => {
       expect.assertions(2)
-      let now = new Date('2020-04-22 10:30:00 GMT')
+      let now = new Date('2019-04-22 10:30:00 GMT')
       let days = getDaysMonthsAndYears(now, 2020, 2)[0]
       expect(days.length).toEqual(29)
 

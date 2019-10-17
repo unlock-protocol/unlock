@@ -1,60 +1,34 @@
 /* eslint promise/prefer-await-to-then: 0 */
-
+import queryString from 'query-string'
 import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { UPDATE_LOCK, updateLock, UPDATE_LOCK_NAME } from '../actions/lock'
+import { UPDATE_LOCK, updateLock, getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
 import { StorageService, success, failure } from '../services/storageService'
 
 import { NEW_TRANSACTION, addTransaction } from '../actions/transaction'
-import { SET_ACCOUNT, setAccount } from '../actions/accounts'
-import UnlockLock from '../structured_data/unlockLock'
-import { SIGNED_DATA, signData } from '../actions/signature'
+import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
+import { gotRecoveryPhrase } from '../actions/recovery'
 import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
-  CHANGE_PASSWORD,
   gotEncryptedPrivateKeyPayload,
   setEncryptedPrivateKey,
+  SIGNED_USER_DATA,
+  SIGNED_PAYMENT_DATA,
+  GET_STORED_PAYMENT_DETAILS,
+  SIGNED_PURCHASE_DATA,
+  keyPurchaseInitiated,
+  welcomeEmail,
 } from '../actions/user'
 import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
-
-export async function changePassword({
-  oldPassword,
-  newPassword,
-  passwordEncryptedPrivateKey,
-  publicKey,
-  emailAddress,
-  dispatch,
-}) {
-  try {
-    const newEncryptedKey = await reEncryptPrivateKey(
-      passwordEncryptedPrivateKey,
-      oldPassword,
-      newPassword
-    )
-
-    const payload = UnlockUser.build({
-      emailAddress,
-      publicKey,
-      passwordEncryptedPrivateKey: newEncryptedKey,
-    })
-
-    dispatch(signData(payload))
-  } catch (e) {
-    dispatch(
-      setError(
-        Storage.Warning('Could not re-encrypt private key -- bad password?')
-      )
-    )
-  }
-}
+import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -93,17 +67,31 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
-    // SIGNED_DATA
-    storageService.on(failure.storeLockDetails, () => {
-      dispatch(setError(Storage.Warning('Could not store some lock metadata.')))
-    })
-
     // SIGNUP_CREDENTIALS
-    storageService.on(success.createUser, publicKey => {
-      // TODO: Dispatch a gotEncryptedPrivateKeyPayload instead of
-      // setting here, will need to change what storageService emits
-      dispatch(setAccount({ address: publicKey }))
-    })
+    storageService.on(
+      success.createUser,
+      async ({
+        passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+        recoveryPhrase,
+      }) => {
+        // Build a recovery key with the private key and recovery phrase
+        const recoveryKey = await reEncryptPrivateKey(
+          passwordEncryptedPrivateKey,
+          password,
+          recoveryPhrase
+        )
+        dispatch(welcomeEmail(emailAddress, recoveryKey))
+        dispatch(
+          gotEncryptedPrivateKeyPayload(
+            passwordEncryptedPrivateKey,
+            emailAddress,
+            password
+          )
+        )
+      }
+    )
     storageService.on(failure.createUser, () => {
       dispatch(setError(Storage.Warning('Could not create this user account.')))
     })
@@ -116,11 +104,13 @@ const storageMiddleware = config => {
     // When updating a user
     // TODO: May have to separately handle different kinds of user updates
     storageService.on(success.updateUser, ({ user, emailAddress }) => {
+      // TODO: this is vestigial, replace with a new action (dismiss loading state?)
       dispatch(
         setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
       )
     })
-    storageService.on(failure.updateUser, () => {
+    storageService.on(failure.updateUser, ({ error }) => {
+      dispatch(setError(Storage.Diagnostic(error)))
       dispatch(
         setError(
           Storage.Warning(
@@ -129,6 +119,95 @@ const storageMiddleware = config => {
         )
       )
     })
+
+    storageService.on(success.addPaymentMethod, ({ emailAddress }) => {
+      // User has added a new payment method, refresh the state with the current
+      // set of methods.
+      storageService.getCards(emailAddress)
+    })
+    storageService.on(failure.addPaymentMethod, () => {
+      dispatch(setError(Storage.Warning('Could not add payment method.')))
+    })
+
+    storageService.on(success.getCards, cards => {
+      if (cards.length > 0) {
+        dispatch(
+          updateAccount({
+            cards,
+          })
+        )
+      }
+    })
+    storageService.on(failure.getCards, () => {
+      // This will happen when a user does not have a stripe id in locksmith
+      // yet.
+      // TODO: better decision on when to dispatch a user-visible error,
+      // because we don't want to show one if they just haven't added any cards
+      // yet.
+      dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
+    })
+
+    // Note: we do not handle failures for now as most locks (except the pending or transfered ones...) should be eventually retrieved thru the transactions anyway
+    storageService.on(success.getLockAddressesForUser, addresses => {
+      // Once we have the locks, we should emit them so they can be retrieved from chain
+      addresses.forEach(address => {
+        dispatch(getLock(address))
+      })
+    })
+
+    storageService.on(success.getKeyPrice, fees => {
+      dispatch(updatePrice(fees))
+    })
+
+    storageService.on(failure.getKeyPrice, () => {
+      dispatch(
+        setError(
+          Storage.Warning(
+            'Unable to get dollar-denominated key price from server.'
+          )
+        )
+      )
+    })
+
+    storageService.on(success.keyPurchase, () => {
+      dispatch(keyPurchaseInitiated())
+    })
+
+    storageService.on(failure.keyPurchase, () => {
+      dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
+    })
+
+    const { router } = getState()
+    if (router && router.location && router.location.pathname === '/recover/') {
+      // Let's get the user's recovery key from locksmith
+      // And log the user in with the recoveryKey (submitted by user thru email) and the recoveryPhase,
+      // from locksmith
+      const query = queryString.parse(router.location.search)
+      if (query && query.email && query.recoveryKey) {
+        storageService.once(
+          success.getUserRecoveryPhrase,
+          ({ recoveryPhrase }) => {
+            dispatch(gotRecoveryPhrase(recoveryPhrase))
+            dispatch(
+              gotEncryptedPrivateKeyPayload(
+                JSON.parse(query.recoveryKey),
+                query.email,
+                recoveryPhrase
+              )
+            )
+          }
+        )
+        storageService.once(failure.getUserRecoveryPhrase, () => {
+          dispatch(
+            setError(Storage.Warning('Could not initiate account recovery.'))
+          )
+        })
+        // We must put in state the email, and the recoveryKey
+        storageService.getUserRecoveryPhrase(query.email)
+      } else {
+        setError(Storage.Warning('Could not initiate account recovery.'))
+      }
+    }
 
     return next => {
       return action => {
@@ -146,6 +225,8 @@ const storageMiddleware = config => {
           dispatch(startLoading())
           // When we set the account, we want to retrieve the list of transactions
           storageService.getTransactionsHashesSentBy(action.account.address)
+          // When we set the account, we want to retrive the list of locks
+          storageService.getLockAddressesForUser(action.account.address)
         }
 
         if (action.type === UPDATE_LOCK) {
@@ -156,30 +237,27 @@ const storageMiddleware = config => {
           }
         }
 
-        if (action.type === SIGNED_DATA) {
-          const { message } = action.data
-          if (message && message.lock) {
-            // Once signed, let's save it!
-            storageService.storeLockDetails(action.data, action.signature)
-          } else if (message && message.user) {
-            const {
-              userDetails: { email },
-            } = getState()
-            // Once signed, let's save it!
-            storageService.updateUser(email, action.data, action.signature)
-          }
+        if (action.type === SIGNED_USER_DATA) {
+          const { data, sig } = action
+          storageService.updateUserEncryptedPrivateKey(
+            data.message.user.emailAddress,
+            data,
+            sig
+          )
         }
 
-        if (action.type === UPDATE_LOCK_NAME) {
-          const lock = getState().locks[action.address]
-          // Build the data to sign
-          let data = UnlockLock.build({
-            name: action.name,
-            owner: lock.owner,
-            address: lock.address,
-          })
-          // Ask someone to sign it!
-          dispatch(signData(data))
+        if (action.type === SIGNED_PAYMENT_DATA) {
+          const { data, sig } = action
+          storageService.addPaymentMethod(
+            data.message.user.emailAddress,
+            data,
+            sig
+          )
+        }
+
+        if (action.type === SIGNED_PURCHASE_DATA) {
+          const { data, sig } = action
+          storageService.purchaseKey(data, btoa(sig))
         }
 
         if (action.type === SIGNUP_CREDENTIALS) {
@@ -192,7 +270,9 @@ const storageMiddleware = config => {
                 publicKey: address,
                 passwordEncryptedPrivateKey,
               })
-              storageService.createUser(user)
+              // Passing credentials through so that the user can be logged in
+              // after signup.
+              storageService.createUser(user, emailAddress, password)
             }
           )
         }
@@ -201,24 +281,17 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
+            dispatch(setEncryptedPrivateKey(key, emailAddress))
           })
         }
+        if (action.type === GET_STORED_PAYMENT_DETAILS) {
+          const { emailAddress } = action
+          storageService.getCards(emailAddress)
+        }
 
-        if (action.type === CHANGE_PASSWORD) {
-          const { oldPassword, newPassword } = action
-          const {
-            userDetails: { key, email },
-            account: { address },
-          } = getState()
-
-          changePassword({
-            oldPassword,
-            newPassword,
-            passwordEncryptedPrivateKey: key,
-            publicKey: address,
-            emailAddress: email,
-            dispatch,
-          })
+        if (action.type === ADD_TO_CART) {
+          const { lock } = action
+          storageService.getKeyPrice(lock.address)
         }
 
         next(action)

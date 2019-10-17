@@ -1,16 +1,16 @@
 /* eslint promise/prefer-await-to-then: 0 */
 import { WalletService } from '@unlock-protocol/unlock-js'
 
+import { diff } from 'deep-object-diff'
 import {
   CREATE_LOCK,
   WITHDRAW_FROM_LOCK,
   deleteLock,
   UPDATE_LOCK_KEY_PRICE,
   updateLock,
-  updateLockName,
 } from '../actions/lock'
 import { PURCHASE_KEY } from '../actions/key'
-import { setAccount } from '../actions/accounts'
+import { setAccount, updateAccount } from '../actions/accounts'
 import { setNetwork } from '../actions/network'
 import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
@@ -18,17 +18,18 @@ import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
 import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
-import { Application, Transaction } from '../utils/Error'
+import { Application, Transaction, Wallet } from '../utils/Error'
 
 import {
   FATAL_NO_USER_ACCOUNT,
   FATAL_WRONG_NETWORK,
   FATAL_NON_DEPLOYED_CONTRACT,
 } from '../errors'
-import { SIGN_DATA, signedData, signatureError } from '../actions/signature'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
 import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { getStoredPaymentDetails } from '../actions/user'
+import { SIGN_DATA, signedData } from '../actions/signature'
 
 // This middleware listen to redux events and invokes the walletService API.
 // It also listen to events from walletService and dispatches corresponding actions
@@ -48,6 +49,25 @@ const walletMiddleware = config => {
       }
       return callback()
     }
+
+    walletService.on('account.updated', update => {
+      if (!getState().account) return
+
+      const currentAccount = getState().account
+      const updatedAccount = Object.assign({}, currentAccount, update)
+      const difference = diff(currentAccount, updatedAccount)
+
+      if (Object.keys(difference).length > 0) {
+        dispatch(updateAccount(update))
+
+        if (difference['emailAddress']) {
+          // if the update contains an email address, that means a user has
+          // successfully logged in. We should fetch any extra information
+          // (payment details...) that locksmith has on them.
+          dispatch(getStoredPaymentDetails(difference['emailAddress']))
+        }
+      }
+    })
 
     /**
      * When an account was changed, we dispatch the corresponding action
@@ -102,11 +122,6 @@ const walletMiddleware = config => {
 
     walletService.on('lock.updated', (address, update) => {
       // This lock is beeing saved to the chain (that is what the update is about)
-      // So we should be able to get its name from the redux store
-      const lock = getState().locks[address]
-      if (lock) {
-        dispatch(updateLockName(address, lock.name))
-      }
       dispatch(updateLock(address, update))
       dispatch(hideForm()) // Close the form
     })
@@ -193,8 +208,7 @@ const walletMiddleware = config => {
           })
         } else if (action.type === WITHDRAW_FROM_LOCK) {
           ensureReadyBefore(() => {
-            const account = getState().account
-            walletService.withdrawFromLock(action.lock.address, account.address)
+            walletService.withdrawFromLock(action.lock.address)
           })
         } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
           ensureReadyBefore(() => {
@@ -206,15 +220,18 @@ const walletMiddleware = config => {
             )
           })
         } else if (action.type === SIGN_DATA) {
-          const account = getState().account
-          walletService.signData(
-            account.address,
-            action.data,
+          const { data, id } = action
+          walletService.signDataPersonal(
+            '', // account address -- unused in walletService
+            data,
             (error, signature) => {
               if (error) {
-                dispatch(signatureError(error))
+                dispatch(
+                  setError(Wallet.Warning('Could not sign identity data.'))
+                )
+              } else {
+                dispatch(signedData(data, id, signature))
               }
-              dispatch(signedData(action.data, signature))
             }
           )
         }

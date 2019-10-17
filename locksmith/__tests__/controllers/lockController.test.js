@@ -52,8 +52,6 @@ const lockPayload = {
     },
   },
 }
-const validLockSignature =
-  'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
 
 beforeEach(async () => {
   await Lock.create(testLockDetails)
@@ -102,14 +100,13 @@ describe('lockController', () => {
         await request(app)
           .post('/lock')
           .set('Accept', /json/)
-          .set('Authorization', `Bearer ${validLockSignature}`)
           .send(lockPayload)
 
         let record = await Lock.findOne({
           where: { address: validLockAddress },
         })
 
-        expect(record.name).toBe('New Lock')
+        expect(record.address).toBe(validLockAddress)
       })
 
       test('it returns an OK status code', async () => {
@@ -118,57 +115,9 @@ describe('lockController', () => {
         let response = await request(app)
           .post('/lock')
           .set('Accept', /json/)
-          .set('Authorization', `Bearer ${validLockSignature}`)
           .send(lockPayload)
 
         expect(response.statusCode).toBe(200)
-      })
-    })
-
-    describe('when the lock exists', () => {
-      describe('when the sender is the lock owner', () => {
-        test('it updates the lock details', async () => {
-          expect.assertions(2)
-          Date.now = jest.fn(() => 1546467262000)
-
-          await Lock.create({
-            name: 'a mighty fine lock',
-            address: validLockAddress,
-            owner: validLockOwner,
-          })
-
-          let response = await request(app)
-            .post('/lock')
-            .set('Accept', /json/)
-            .set('Authorization', `Bearer ${validLockSignature}`)
-            .send(lockPayload)
-
-          let lock = await Lock.findOne({
-            where: { address: validLockAddress },
-          })
-          expect(lock.address).toBe(validLockAddress)
-          expect(response.statusCode).toBe(202)
-        })
-      })
-
-      describe('when the update requester is not the lock owner', () => {
-        test('it returns a 401 status code', async () => {
-          expect.assertions(1)
-          Date.now = jest.fn(() => 1546467262000)
-          await Lock.create({
-            name: 'New Lock',
-            address: validLockAddress,
-            owner: '0',
-          })
-
-          let response = await request(app)
-            .post('/lock')
-            .set('Accept', /json/)
-            .set('Authorization', `Bearer ${validLockSignature}`)
-            .send(lockPayload)
-
-          expect(response.statusCode).toBe(401)
-        })
       })
     })
   })

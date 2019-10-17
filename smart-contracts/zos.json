@@ -1,8 +1,0 @@
-{
-  "zosversion": "2.2",
-  "name": "unlock-protocol",
-  "version": "0.1.0",
-  "contracts": {
-    "Unlock": "Unlock"
-  }
-}

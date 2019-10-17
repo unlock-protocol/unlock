@@ -15,24 +15,55 @@ const config = configure({
 
 const store = createUnlockStore({
   locks: {
-    abc123: { address: 'abc123', owner: '0xuser' },
+    abc123: { address: 'abc123', name: 'Lock with name', owner: '0xuser' },
     def459: { address: 'def456', owner: '0xuser' },
   },
   account: {
     address: '0xuser',
   },
+  loading: 0,
 })
 
-const now = new Date(2019, 3, 25, 12, 35, 0) // March 25th, 2019
+const noLockStore = createUnlockStore({
+  locks: {},
+  account: {
+    address: '0xuser',
+  },
+  loading: 8,
+})
+
+// We MUST NOT specify a TZ otherwise the snapshot fail when executed in a different env.
+const now = new Date('Mar 25 2019 10:00:00')
 
 storiesOf('Create event landing page', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
-  .addDecorator(getStory => <Provider store={store}>{getStory()}</Provider>)
   .add('Create event page', () => {
-    return <CreateContent now={now} />
+    return (
+      <Provider store={store}>
+        <CreateContent now={now} />
+      </Provider>
+    )
+  })
+  .add('Create event page, loading locks', () => {
+    return (
+      <Provider store={noLockStore}>
+        <CreateContent now={now} loading="9" />
+      </Provider>
+    )
   })
   .add('Create event page, event submitted', () => {
-    return <CreateContent now={now} submitted />
+    return (
+      <Provider store={store}>
+        <CreateContent now={now} submitted />
+      </Provider>
+    )
+  })
+  .add('Create event page, event saved', () => {
+    return (
+      <Provider store={store}>
+        <CreateContent now={now} saved />
+      </Provider>
+    )
   })

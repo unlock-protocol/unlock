@@ -4,14 +4,14 @@ title: This is a sample post
 subTitle: And some sample metadata
 publishDate: Dec 31, 1978
 ---
-Here is some markdown 
+Here is some markdown
 `,
   '/foo/bar/blog/test2.md': `---
 title: This is a second sample post
 subTitle: And some sample metadata
 publishDate: Jan 7, 1979
 ---
-Here is some markdown 
+Here is some markdown
 `,
   '/foo/bar/blog/test3.txt': `
 Here is some non-markdown text content
@@ -21,7 +21,7 @@ title: This is a post from the future
 subTitle: And some sample metadata
 publishDate: Jan 7, 2099
 ---
-Here is some markdown 
+Here is some markdown
 `,
 }
 
@@ -40,8 +40,9 @@ describe('blog', () => {
         return ['test1.md', 'test2.md', 'test3.txt']
       }),
       readFileSync: jest.fn(filename => MOCK_FILE_INFO[filename]),
-      writeFile: jest.fn((filename, data) => {
+      writeFile: jest.fn((filename, data, callback) => {
         writtenData = data
+        return callback()
       }),
       statSync: jest.fn(() => {
         return {
@@ -64,12 +65,12 @@ describe('blog', () => {
     expect(feed[1].__content).toEqual(undefined)
   })
 
-  it('should generate a blog pages array from a blog feed', () => {
+  it('should generate a post pages array from a blog feed', () => {
     expect.assertions(4)
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    let pages = blog.generateBlogPages(feed)
+    let pages = blog.generatePostPages(feed)
 
     expect(pages['/blog/test1'].page).toEqual('/post')
     expect(pages['/blog/test1'].query.slug).toEqual('test1')
@@ -77,43 +78,67 @@ describe('blog', () => {
     expect(pages['/blog/test2'].query.slug).toEqual('test2')
   })
 
-  it('should generate a blog index file from a blog index array', () => {
+  it('should generate a blog pages array from a blog feed', () => {
+    expect.assertions(8)
+    const blog = require('../../utils/blog')
+
+    let feed = ['post1', 'post2', 'post3', 'post4', 'post5', 'post6', 'post7']
+    let pages = blog.generateBlogPages(feed.length, 2)
+
+    expect(pages['/blog/1'].page).toEqual('/blog')
+    expect(pages['/blog/1'].query.slug).toEqual('1')
+    expect(pages['/blog/2'].page).toEqual('/blog')
+    expect(pages['/blog/2'].query.slug).toEqual('2')
+    expect(pages['/blog/3'].page).toEqual('/blog')
+    expect(pages['/blog/3'].query.slug).toEqual('3')
+    expect(pages['/blog/4'].page).toEqual('/blog')
+    expect(pages['/blog/4'].query.slug).toEqual('4')
+  })
+
+  it('should generate a blog index file from a blog index array', done => {
     expect.assertions(1)
 
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    blog.generateBlogIndexFile('/foo/bar', feed)
-
-    expect(writtenData).toEqual(blogJson)
+    blog.generateBlogIndexFile('/foo/bar', feed, () => {
+      expect(writtenData).toEqual(blogJson)
+      done()
+    })
   })
 
-  it('should generate a blog RSS feed from a blog index array', () => {
+  it('should generate a blog RSS feed from a blog index array', done => {
     expect.assertions(6)
 
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    blog.generateRSSFile('/foo/bar', feed, 'https://unlock-protocol.com')
+    blog.generateRSSFile(
+      '/foo/bar',
+      feed,
+      'https://unlock-protocol.com',
+      () => {
+        const parser = new DOMParser()
+        let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
 
-    const parser = new DOMParser()
-    let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
+        let items = xmlDoc.getElementsByTagName('item')
 
-    let items = xmlDoc.getElementsByTagName('item')
-
-    expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
-    expect(items.length).toEqual(2)
-    expect(items[0].querySelector('title').textContent).toEqual(
-      'This is a second sample post'
-    )
-    expect(items[1].querySelector('title').textContent).toEqual(
-      'This is a sample post'
-    )
-    expect(items[0].querySelector('link').textContent).toEqual(
-      'https://unlock-protocol.com/blog/test2'
-    )
-    expect(items[1].querySelector('link').textContent).toEqual(
-      'https://unlock-protocol.com/blog/test1'
+        expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
+        expect(items.length).toEqual(2)
+        expect(items[0].querySelector('title').textContent).toEqual(
+          'This is a second sample post'
+        )
+        expect(items[1].querySelector('title').textContent).toEqual(
+          'This is a sample post'
+        )
+        expect(items[0].querySelector('link').textContent).toEqual(
+          'https://unlock-protocol.com/blog/test2'
+        )
+        expect(items[1].querySelector('link').textContent).toEqual(
+          'https://unlock-protocol.com/blog/test1'
+        )
+        done()
+      }
     )
   })
 

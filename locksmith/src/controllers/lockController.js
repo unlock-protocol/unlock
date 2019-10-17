@@ -1,12 +1,12 @@
+import LockOwnership from '../data/lockOwnership'
+
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
 
-const {
-  getLockByAddress,
-  getLocksByOwner,
-  createLock,
-  updateLock,
-} = lockOperations
+const env = process.env.NODE_ENV || 'development'
+const config = require('../../config/config')[env]
+
+const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
 const lockSave = async (req, res) => {
   let lock = req.body.message.lock
@@ -19,17 +19,6 @@ const lockSave = async (req, res) => {
     logger.logLockDetailsStored(lock.address)
     return res.sendStatus(200)
   }
-
-  // If the lock has an owner which is different
-  if (databaseLock.owner !== lock.owner) {
-    logger.logAttemptedOverwrite(lock.address)
-    return res.sendStatus(401)
-  }
-
-  // Update  the lock
-  await updateLock(lock)
-  logger.logLockDetailsStored(lock.address)
-  return res.sendStatus(202)
 }
 
 const lockGet = async (req, res) => {
@@ -48,4 +37,10 @@ const lockOwnerGet = async (req, res) => {
   return res.json({ locks: locks })
 }
 
-module.exports = { lockGet, lockOwnerGet, lockSave }
+const lockOwnershipCheck = async (req, res) => {
+  let lockAddress = req.params.lockAddress
+  LockOwnership.update(config.web3ProviderHost, [lockAddress])
+  return res.sendStatus(200)
+}
+
+module.exports = { lockGet, lockOwnerGet, lockSave, lockOwnershipCheck }

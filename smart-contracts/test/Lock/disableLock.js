@@ -5,24 +5,30 @@ const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks, ID
+
+const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / disableLock', accounts => {
   let lock
   let keyOwner = accounts[1]
   let keyOwner2 = accounts[2]
-
+  let keyOwner3 = accounts[3]
+  let lockOwner = accounts[0]
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    unlock = await getProxy(unlockContract)
+    locks = await deployLocks(unlock, lockOwner)
     lock = locks['FIRST']
-    await lock.purchaseFor(keyOwner, {
-      value: Units.convert('0.01', 'eth', 'wei'),
+    await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
+      value: keyPrice,
     })
-    await lock.purchaseFor(keyOwner2, {
-      value: Units.convert('0.01', 'eth', 'wei'),
+    await lock.purchase(0, keyOwner2, web3.utils.padLeft(0, 40), [], {
+      value: keyPrice,
+    })
+    await lock.purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [], {
+      value: keyPrice,
     })
     ID = new BigNumber(await lock.getTokenIdFor(keyOwner)).toFixed()
   })
@@ -38,7 +44,7 @@ contract('Lock / disableLock', accounts => {
   describe('when the lock has been disabled', () => {
     let txObj, event
     before(async () => {
-      txObj = await lock.disableLock({ from: accounts[0] })
+      txObj = await lock.disableLock({ from: lockOwner })
       event = txObj.logs[0]
     })
 
@@ -52,8 +58,8 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key', async () => {
       await shouldFail(
-        lock.purchaseFor(keyOwner, {
-          value: Units.convert('0.01', 'eth', 'wei'),
+        lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
+          value: keyPrice,
         }),
         'LOCK_DEPRECATED'
       )
@@ -61,8 +67,8 @@ contract('Lock / disableLock', accounts => {
 
     it('should fail if a user tries to purchase a key with a referral', async () => {
       await shouldFail(
-        lock.purchaseForFrom(keyOwner, accounts[3], {
-          value: Units.convert('0.01', 'eth', 'wei'),
+        lock.purchase(0, keyOwner, accounts[3], [], {
+          value: keyPrice,
         }),
         'LOCK_DEPRECATED'
       )
@@ -98,8 +104,15 @@ contract('Lock / disableLock', accounts => {
       })
     })
 
+    it('Lock owners can still fully refund keys', async () => {
+      const refundAmount = Units.convert('0.01', 'eth', 'wei')
+      await lock.fullRefund(keyOwner3, refundAmount, {
+        from: lockOwner,
+      })
+    })
+
     it('Lock owner can still withdraw', async () => {
-      await lock.withdraw(0)
+      await lock.withdraw(await lock.tokenAddress.call(), 0)
     })
 
     it('Lock owner can still expireKeyFor', async () => {
@@ -110,8 +123,8 @@ contract('Lock / disableLock', accounts => {
       await lock.updateLockName('Hardly')
     })
 
-    it('Lock owner can still updateRefundPenaltyDenominator', async () => {
-      await lock.updateRefundPenalty(5, 100)
+    it('Lock owner can still updateBASIS_POINTS_DEN', async () => {
+      await lock.updateRefundPenalty(0, 5000)
     })
 
     it('should fail to setApprovalForAll', async () => {

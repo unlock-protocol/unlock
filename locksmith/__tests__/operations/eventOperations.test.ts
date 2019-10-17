@@ -16,6 +16,10 @@ let eventData = {
   owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
 }
 
+// let eventLinks = {
+
+// }
+
 describe('EventOperations', () => {
   describe('create', () => {
     it('dispatches to the event model with normalized addresses', () => {
@@ -32,7 +36,21 @@ describe('EventOperations', () => {
         owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       })
     })
+
+    // it('saves links if there are any', () => {
+    //   expect.assertions(1)
+    //   Event.create = jest.fn(() => {})
+    //   EventOperations.addLinks = jest.fn()
+    //   const eventDataWithLinks = {
+    //     ...eventData,
+    //     links: eventLinks
+    //   }
+    //   EventOperations.create(eventDataWithLinks)
+    //   expect(EventOperations.addLinks).toHaveBeenCalledWith({
+    //   })
+    // })
   })
+
   describe('update', () => {
     it('dispatches to the event model with a normalized address', () => {
       expect.assertions(1)
@@ -61,7 +79,16 @@ describe('EventOperations', () => {
         }
       )
     })
+    // it.only('should add links if there are any', () => {
+    //   expect.assertions(1)
+    //   Event.update = jest.fn(() => {})
+    //   EventOperations.addLinks = jest.fn()
+    //   EventOperations.update(eventData)
+    //   expect(EventOperations.addLinks).toHaveBeenCalledWith({
+    //   })
+    // })
   })
+
   describe('find', () => {
     it('dispatches to the event model with a normalized address', () => {
       expect.assertions(1)

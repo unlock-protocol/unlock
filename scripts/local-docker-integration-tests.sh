@@ -34,7 +34,8 @@ docker build -t unlock-protocol-com -f $REPO_ROOT/docker/unlock-protocol-com.doc
 docker build -t integration-tests -f $REPO_ROOT/docker/integration-tests.dockerfile $REPO_ROOT &
 wait
 
-
 # Run the tests
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
 
+# shut down the docker file in case we want to do any local dev
+docker-compose -f $DOCKER_COMPOSE_FILE down

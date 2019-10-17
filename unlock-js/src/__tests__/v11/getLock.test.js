@@ -21,6 +21,7 @@ const erc20ContractAddress = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'
 
 jest.mock('../../erc20.js', () => {
   return {
+    getErc20TokenSymbol: jest.fn(() => Promise.resolve('TICKER')),
     getErc20BalanceForAddress: jest.fn(() => Promise.resolve(0)),
     getErc20Decimals: jest.fn(() => Promise.resolve(18)), // 18 is the most frequent default for ERC20
   }
@@ -81,6 +82,12 @@ describe('v11', () => {
       )
 
       // call the attributes
+      nock.ethCallAndYield(
+        contractMethods.name.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
+      )
+
       nock.ethCallAndYield(
         contractMethods.keyPrice.encode([]),
         checksumLockAddress,
@@ -147,6 +154,7 @@ describe('v11', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
+          name: 'My Lock',
           balance: utils.fromWei('3735944941', 'ether'),
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
@@ -163,9 +171,13 @@ describe('v11', () => {
     })
 
     it('should successfully yield a lock with an ERC20 currency, with the right balance', async () => {
-      expect.assertions(3)
+      expect.assertions(4)
       await nockBeforeEach()
       nockGetErc20Lock({ erc20ContractAddress })
+      const symbol = 'SYMBOL'
+      erc20.getErc20TokenSymbol = jest.fn(() => {
+        return Promise.resolve(symbol)
+      })
       const balance = 1929
       erc20.getErc20BalanceForAddress = jest.fn(() => {
         return Promise.resolve(balance)
@@ -178,10 +190,12 @@ describe('v11', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
+          name: 'My Lock',
           balance: '1.929',
           keyPrice: utils.fromDecimal('10000000000000000', decimals),
           expirationDuration: 2592000,
           maxNumberOfKeys: 10,
+          currencySymbol: 'SYMBOL',
           owner,
           outstandingKeys: 17,
           asOf: 1337,
@@ -194,6 +208,10 @@ describe('v11', () => {
       expect(erc20.getErc20BalanceForAddress).toHaveBeenCalledWith(
         erc20ContractAddress,
         lockAddress,
+        web3Service.provider
+      )
+      expect(erc20.getErc20TokenSymbol).toHaveBeenCalledWith(
+        erc20ContractAddress,
         web3Service.provider
       )
     })
@@ -215,6 +233,7 @@ describe('v11', () => {
 
       const lock = await web3Service.getLock(lockAddress)
       expect(lock).toEqual({
+        name: 'My Lock',
         asOf: 1337,
         balance: '0.000000003735944941',
         expirationDuration: 2592000,

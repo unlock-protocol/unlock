@@ -6,16 +6,16 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getUnlockProxy = require('../../helpers/proxy')
+const getProxy = require('../../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / erc721 / transferFrom', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    await locks['FIRST'].updateTransferFee(0, 1) // disable the transfer fee for this test
-    await locks['SINGLE KEY'].updateTransferFee(0, 1) // disable the transfer fee for this test
+    await locks['FIRST'].updateTransferFee(0) // disable the transfer fee for this test
+    await locks['SINGLE KEY'].updateTransferFee(0) // disable the transfer fee for this test
   })
 
   const from = accounts[1]
@@ -31,22 +31,40 @@ contract('Lock / erc721 / transferFrom', accounts => {
 
   before(() => {
     return Promise.all([
-      locks['FIRST'].purchaseFor(accountWithKey, {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithKey,
-      }),
-      locks['FIRST'].purchaseFor(from, {
+      locks['FIRST'].purchase(
+        0,
+        accountWithKey,
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accountWithKey,
+        }
+      ),
+      locks['FIRST'].purchase(0, from, web3.utils.padLeft(0, 40), [], {
         value: Units.convert('0.01', 'eth', 'wei'),
         from,
       }),
-      locks['FIRST'].purchaseFor(accountWithExpiredKey, {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithExpiredKey,
-      }),
-      locks['FIRST'].purchaseFor(accountWithKeyApproved, {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accountWithKeyApproved,
-      }),
+      locks['FIRST'].purchase(
+        0,
+        accountWithExpiredKey,
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accountWithExpiredKey,
+        }
+      ),
+      locks['FIRST'].purchase(
+        0,
+        accountWithKeyApproved,
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accountWithKeyApproved,
+        }
+      ),
     ]).then(async () => {
       keyExpiration = new BigNumber(
         await locks['FIRST'].keyExpirationTimestampFor.call(from)
@@ -90,7 +108,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       it('should transfer the key validity without extending it', async () => {
         // First let's make sure from has a key!
         let fromExpirationTimestamp, ID
-        await locks['FIRST'].purchaseFor(from, {
+        await locks['FIRST'].purchase(0, from, web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.01', 'eth', 'wei'),
           from,
         })
@@ -122,7 +140,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
       let previousExpirationTimestamp
 
       before(async () => {
-        await locks['FIRST'].purchaseFor(from, {
+        await locks['FIRST'].purchase(0, from, web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.01', 'eth', 'wei'),
           from,
         })
@@ -216,7 +234,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
     describe('when the key owner is the sender', () => {
       before(async () => {
         // first, let's purchase a brand new key that we can transfer
-        await locks['FIRST'].purchaseFor(from, {
+        await locks['FIRST'].purchase(0, from, web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.01', 'eth', 'wei'),
           from,
         })
@@ -256,16 +274,28 @@ contract('Lock / erc721 / transferFrom', accounts => {
     describe('when the lock is sold out', () => {
       before(async () => {
         // first we create a lock with only 1 key
-        await locks['SINGLE KEY'].purchaseFor(from, {
-          value: Units.convert('0.01', 'eth', 'wei'),
+        await locks['SINGLE KEY'].purchase(
+          0,
           from,
-        })
+          web3.utils.padLeft(0, 40),
+          [],
+          {
+            value: Units.convert('0.01', 'eth', 'wei'),
+            from,
+          }
+        )
         // confirm that the lock is sold out
         await shouldFail(
-          locks['SINGLE KEY'].purchaseFor(accounts[8], {
-            value: Units.convert('0.01', 'eth', 'wei'),
-            from: accounts[8],
-          }),
+          locks['SINGLE KEY'].purchase(
+            0,
+            accounts[8],
+            web3.utils.padLeft(0, 40),
+            [],
+            {
+              value: Units.convert('0.01', 'eth', 'wei'),
+              from: accounts[8],
+            }
+          ),
           'LOCK_SOLD_OUT'
         )
       })
@@ -283,9 +313,15 @@ contract('Lock / erc721 / transferFrom', accounts => {
   })
 
   it('can transfer a FREE key', async () => {
-    await locks['FREE'].purchaseFor(accounts[1], {
-      from: accounts[1],
-    })
+    await locks['FREE'].purchase(
+      0,
+      accounts[1],
+      web3.utils.padLeft(0, 40),
+      [],
+      {
+        from: accounts[1],
+      }
+    )
     let ID = await locks['FREE'].getTokenIdFor.call(accounts[1])
     await locks['FREE'].transferFrom(accounts[1], accounts[2], ID, {
       from: accounts[1],

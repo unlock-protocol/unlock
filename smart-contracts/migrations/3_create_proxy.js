@@ -1,33 +1,39 @@
 // Load zos scripts and truffle wrapper function
-const { scripts, ConfigVariablesInitializer } = require('zos')
+const { scripts, ConfigManager } = require('@openzeppelin/cli')
 
 const { create } = scripts
+const PublicLock = artifacts.require('PublicLock')
 
 async function deploy(options, accounts) {
   // default account used by ganache
   const unlockOwner = accounts[0]
 
   // Create an instance of MyContract
-  await create(
+  const unlockContract = await create(
     Object.assign(
       {
         contractAlias: 'Unlock',
-        initMethod: 'initialize',
-        initArgs: [unlockOwner],
+        methodName: 'initialize',
+        methodArgs: [unlockOwner],
       },
       options
     )
   )
+
+  // Deploy lock template
+  const lockTemplate = await PublicLock.new()
+  await unlockContract.methods.configUnlock(
+    lockTemplate.address,
+    '',
+    ''
+  ).send({ from: unlockOwner })
 }
 
 module.exports = function(deployer, networkName, accounts) {
   const proxyAdmin = accounts[9]
 
   deployer.then(async () => {
-    const {
-      network,
-      txParams,
-    } = await ConfigVariablesInitializer.initNetworkConfiguration({
+    const { network, txParams } = await ConfigManager.initNetworkConfiguration({
       network: networkName,
       from: proxyAdmin,
     })

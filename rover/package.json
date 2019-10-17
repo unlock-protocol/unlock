@@ -1,43 +1,46 @@
 {
-   "name": "rover",
-   "version": "1.0.0",
-   "description": "",
-   "main": "index.js",
+   "name": "@unlock-protocol/rover",
+   "version": "0.1.4",
+   "description": "Rover persists relevant ethereum transactions to a datastore",
    "bin": {
-      "rover": "./build/index.js"
+      "rover": "./build/server.js"
    },
+   "engines": {
+      "node": "10.16.3"
+    },
    "scripts": {
       "test": "jest",
+      "prebuild": "rm -rf ./build",
       "build": "tsc",
-      "start": "ts-node src/index.ts",
-      "backfill": "ts-node src/backfill.ts",
-      "lint": "eslint --ext .tsx,.ts,.js src/"
+      "start": "node ./build/server.js",
+      "lint": "eslint --ext .tsx,.ts,.js src/",
+      "ci": "npm run test"
    },
    "author": "",
    "license": "ISC",
    "dependencies": {
-      "@types/jest": "^24.0.13",
-      "@types/node": "^12.0.2",
-      "ethers": "^4.0.27",
-      "express": "^4.17.0",
-      "pg": "^7.3.0",
-      "reflect-metadata": "^0.1.10",
-      "tsc": "^1.20150623.0",
-      "typeorm": "0.2.17"
+      "@types/jest": "24.0.18",
+      "@types/node": "8.10.54",
+      "dotenv": "8.1.0",
+      "ethers": "4.0.37",
+      "express": "4.17.1",
+      "pg": "7.12.1",
+      "reflect-metadata": "0.1.13",
+      "tsc": "1.20150623.0",
+      "typeorm": "0.2.19"
    },
    "lint-staged": {
       "linters": {
-        "*.{js,ts,tsx}": [
-          "eslint --fix",
-          "git add"
-        ]
+         "*.{js,ts,tsx}": [
+            "eslint --fix",
+            "git add"
+         ]
       }
-    },
+   },
    "devDependencies": {
-      "@types/node": "^8.0.29",
-      "jest": "^24.8.0",
-      "ts-jest": "^24.0.2",
-      "ts-node": "^3.3.0",
-      "typescript": "^3.4.5"
+      "jest": "24.9.0",
+      "ts-jest": "24.1.0",
+      "ts-node": "8.4.1",
+      "typescript": "3.6.3"
    }
 }

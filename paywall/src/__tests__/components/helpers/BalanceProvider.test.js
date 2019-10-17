@@ -3,21 +3,47 @@ import * as rtl from 'react-testing-library'
 // Note, we use name import to import the non connected version of the component for testing
 import { BalanceProvider } from '../../../components/helpers/BalanceProvider'
 
+let mockConversion = {
+  USD: 195.99,
+}
+
+jest.mock('../../../hooks/useCurrencyConverter.js', () => {
+  return () => mockConversion
+})
+
+beforeEach(() => {
+  mockConversion = {
+    USD: 195.99,
+  }
+})
+
 describe('BalanceProvider Component', () => {
-  function renderIt({ amount, conversion = { USD: 195.99 }, render }) {
+  function renderIt({ amount, convertCurrency = true, render }) {
     return rtl.render(
       <BalanceProvider
         amount={amount}
-        conversion={conversion}
         render={render}
+        convertCurrency={convertCurrency}
       />
     )
   }
+
+  it('does not convert if convertCurrency is false', () => {
+    expect.assertions(2)
+    renderIt({
+      amount: null,
+      convertCurrency: false,
+      render: (ethValue, fiatValue) => {
+        expect(ethValue).toEqual(' - ')
+        expect(fiatValue).toEqual(' - ')
+      },
+    })
+  })
+
   it('renders with - when amount is null (probably unset)', () => {
     expect.assertions(2)
     renderIt({
       amount: null,
-      conversion: {},
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual(' - ')
         expect(fiatValue).toEqual(' - ')
@@ -29,7 +55,6 @@ describe('BalanceProvider Component', () => {
     expect.assertions(2)
     renderIt({
       amount: undefined,
-      conversion: {},
       render: (ethValue, fiatValue) => {
         expect(ethValue).toEqual(' - ')
         expect(fiatValue).toEqual(' - ')
@@ -39,11 +64,11 @@ describe('BalanceProvider Component', () => {
 
   it('USD conversion data is not available', () => {
     expect.assertions(2)
+    mockConversion = {}
     renderIt({
       amount: '100',
-      conversion: {},
       render: (ethValue, fiatValue) => {
-        expect(ethValue).toEqual('100.00')
+        expect(ethValue).toEqual('100')
         expect(fiatValue).toEqual('---')
       },
     })
@@ -54,8 +79,8 @@ describe('BalanceProvider Component', () => {
     renderIt({
       amount: '100',
       render: (ethValue, fiatValue) => {
-        expect(ethValue).toEqual('100.00')
-        expect(fiatValue).toEqual('19,599')
+        expect(ethValue).toEqual('100')
+        expect(fiatValue).toEqual('19.6k')
       },
     })
   })
@@ -73,15 +98,15 @@ describe('BalanceProvider Component', () => {
     })
   })
 
-  describe('when the balance is < 0.0001 Eth', () => {
+  describe('when the balance is < 0.001 Eth', () => {
     const amount = '0.000070'
 
-    it('shows the default minimum value of 三 < 0.0001', () => {
+    it('shows the default minimum value of 三 < 0.001', () => {
       expect.assertions(2)
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('< 0.0001')
+          expect(ethValue).toEqual('< 0.001')
           expect(fiatValue).toEqual('0.014')
         },
       })
@@ -96,7 +121,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('0.0002')
+          expect(ethValue).toEqual('< 0.001')
           expect(fiatValue).toEqual('0.039')
         },
       })
@@ -111,8 +136,8 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('2.00')
-          expect(fiatValue).toEqual('391.98')
+          expect(ethValue).toEqual('2')
+          expect(fiatValue).toEqual('392')
         },
       })
     })
@@ -126,7 +151,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: ethValue => {
-          expect(ethValue).toEqual('1.99')
+          expect(ethValue).toEqual('2')
         },
       })
     })
@@ -140,7 +165,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('20.00')
+          expect(ethValue).toEqual('20')
           expect(fiatValue).toEqual('3,920')
         },
       })
@@ -155,7 +180,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('2000.00')
+          expect(ethValue).toEqual('2,000')
           expect(fiatValue).toEqual('392k')
         },
       })
@@ -170,7 +195,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('20000.00')
+          expect(ethValue).toEqual('20k')
           expect(fiatValue).toEqual('3.9m')
         },
       })
@@ -185,7 +210,7 @@ describe('BalanceProvider Component', () => {
       renderIt({
         amount,
         render: (ethValue, fiatValue) => {
-          expect(ethValue).toEqual('20000000.00')
+          expect(ethValue).toEqual('20m')
           expect(fiatValue).toEqual('3.9b')
         },
       })

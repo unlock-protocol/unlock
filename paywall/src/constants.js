@@ -57,9 +57,9 @@ const lockAddress = accountRegex
  * This regexp matches several important parameters passed in the url for the demo and paywall pages.
  * It does not handle the query parameters or hash, as these are handled separately in lockRoute
  *
- * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/'
- *   will extract 'demo' and the lock address as match 1 and 2
- * '/demo/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/http%3A%2F%2Fexample.com'
+ * '/page/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/'
+ *   will extract 'page' and the lock address as match 1 and 2
+ * '/page/0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9/http%3A%2F%2Fexample.com'
  *   will extract the same variables, and also the url-encoded redirect URL 'http://example.com' as match 3
  *
  * You should not use this directly, instead use the utils/routes.js lockRoute function
@@ -118,3 +118,7 @@ export const MAX_UINT =
 export const POLLING_INTERVAL = 2000
 // the length of time to consider an optimistic key purchase to have become pessimistic
 export const OPTIMISM_POLLING_INTERVAL = 15000
+
+// used to provide a default balance for stablecoins so that the paywall does
+// not show "insufficient funds" for managed user accounts
+export const DEFAULT_STABLECOIN_BALANCE = '35'

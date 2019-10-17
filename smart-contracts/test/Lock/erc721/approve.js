@@ -4,13 +4,13 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../../helpers/proxy')
+const getProxy = require('../../helpers/proxy')
 
 let unlock, locks, ID
 
 contract('Lock / erc721 / approve', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -20,17 +20,23 @@ contract('Lock / erc721 / approve', accounts => {
         locks['FIRST'].approve(accounts[2], 42, {
           from: accounts[1],
         }),
-        'NO_SUCH_KEY'
+        'ONLY_KEY_OWNER_OR_APPROVED'
       )
     })
   })
 
   describe('when the key exists', () => {
     before(() => {
-      return locks['FIRST'].purchaseFor(accounts[1], {
-        value: Units.convert('0.01', 'eth', 'wei'),
-        from: accounts[1],
-      })
+      return locks['FIRST'].purchase(
+        0,
+        accounts[1],
+        web3.utils.padLeft(0, 40),
+        [],
+        {
+          value: Units.convert('0.01', 'eth', 'wei'),
+          from: accounts[1],
+        }
+      )
     })
 
     describe('when the sender is not the token owner', () => {

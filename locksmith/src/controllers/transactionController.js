@@ -2,7 +2,7 @@ const transactionOperations = require('../operations/transactionOperations')
 
 const {
   findOrCreateTransaction,
-  getTransactionsBySender,
+  getTransactionsByFilter,
 } = transactionOperations
 
 const transactionCreate = async (req, res) => {
@@ -22,12 +22,51 @@ const transactionCreate = async (req, res) => {
   }
 }
 
+const transactionCreateLinkdrop = async (req, res) => {
+  let transaction = req.body
+
+  if (
+    transaction.transactionHash &&
+    transaction.sender &&
+    transaction.recipient
+  ) {
+    try {
+      await findOrCreateTransaction(transaction)
+      res.sendStatus(202)
+    } catch (e) {
+      res.sendStatus(400)
+    }
+  }
+}
+
 const transactionsGet = async (req, res) => {
   let transactions = []
-  if (req.query.sender) {
-    transactions = await getTransactionsBySender(req.query.sender)
+
+  let filter = buildFilter(req)
+
+  if (filter.sender || filter.recipients || filter.for) {
+    transactions = await getTransactionsByFilter(filter)
   }
+
   res.json({ transactions: transactions })
+}
+
+const buildFilter = req => {
+  let filter = {}
+
+  if (req.query.sender) {
+    filter.sender = req.query.sender
+  }
+
+  if (req.query.recipient) {
+    filter.recipient = req.query.recipient
+  }
+
+  if (req.query.for) {
+    filter.for = req.query.for
+  }
+
+  return filter
 }
 
 /**
@@ -42,4 +81,9 @@ const transactionGetOdds = async (req, res) => {
   res.json({ willSucceed: 1 })
 }
 
-module.exports = { transactionCreate, transactionsGet, transactionGetOdds }
+module.exports = {
+  transactionCreate,
+  transactionsGet,
+  transactionGetOdds,
+  transactionCreateLinkdrop,
+}

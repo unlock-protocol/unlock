@@ -5,7 +5,7 @@ export class Lock extends Model<Lock> {
   @Column
   name!: string
 
-  @Column
+  @Column({ primaryKey: true })
   address!: string
 
   @Column

@@ -1,31 +1,55 @@
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 
-class KeyPricer {
-  // eslint-disable-next-line no-unused-vars
-  keyPrice(_lockAddress: string): number {
-    return 220
+// Stripe's fee is 30 cents plus 2.9% of the transaction.
+const baseStripeFee = 30
+const stripePercentage = 0.029
+
+export default class KeyPricer {
+  readOnlyEthereumService: any
+
+  constructor(providerURL: string, unlockContractAddress: string) {
+    this.readOnlyEthereumService = new Web3Service({
+      readOnlyProvider: providerURL,
+      unlockAddress: unlockContractAddress,
+      blockTime: 0,
+      requiredConfirmations: 0,
+    })
   }
 
+  async keyPrice(lockAddress: string): Promise<number> {
+    let lock = await this.readOnlyEthereumService.getLock(lockAddress)
+    return Math.round(Number(lock.keyPrice) * 100)
+  }
+
+  // Fee denominated in cents
   gasFee(): number {
-    return 30
+    // For the time being gas fees are covered by the unlockServiceFee
+    return 0
   }
 
-  creditCardProcessingFee(): number {
-    return 450
+  // Fee denominated in cents
+  creditCardProcessingFee(keyPrice: number): number {
+    const subtotal = keyPrice + this.gasFee() + this.unlockServiceFee()
+
+    // This is rounded up to an integer number of cents.
+    const percentageFee = Math.ceil(subtotal * stripePercentage)
+
+    return baseStripeFee + percentageFee
   }
 
+  // Fee denominated in cents
   unlockServiceFee(): number {
-    return 20
+    return 50
   }
 
-  generate(lockAddress: string): ItemizedKeyPrice {
+  async generate(lockAddress: string): Promise<ItemizedKeyPrice> {
+    const keyPrice = await this.keyPrice(lockAddress)
     return {
-      keyPrice: this.keyPrice(lockAddress),
+      keyPrice,
       gasFee: this.gasFee(),
-      creditCardProcessing: this.creditCardProcessingFee(),
+      creditCardProcessing: this.creditCardProcessingFee(keyPrice),
       unlockServiceFee: this.unlockServiceFee(),
     }
   }
 }
-
-export = KeyPricer

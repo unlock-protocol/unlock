@@ -73,6 +73,12 @@ describe('v01', () => {
 
       // call the attributes
       nock.ethCallAndYield(
+        contractMethods.name.encode([]),
+        checksumLockAddress,
+        resultEncoder.encode(['string'], [utils.toRpcResultString('My Lock')])
+      )
+
+      nock.ethCallAndYield(
         contractMethods.keyPrice.encode([]),
         checksumLockAddress,
         resultEncoder.encode(
@@ -112,7 +118,7 @@ describe('v01', () => {
       )
     }
 
-    it('should trigger an event when it has been loaded woth an updated balance', async () => {
+    it('should trigger an event when it has been loaded with an updated balance', async () => {
       expect.assertions(2)
       await nockBeforeEach()
       callReadOnlyFunction({ maxKeys: 10 })
@@ -120,6 +126,7 @@ describe('v01', () => {
       web3Service.on('lock.updated', (address, update) => {
         expect(address).toBe(lockAddress)
         expect(update).toEqual({
+          name: 'My Lock',
           balance: utils.fromWei('3735944941', 'ether'),
           keyPrice: utils.fromWei('10000000000000000', 'ether'),
           expirationDuration: 2592000,
@@ -128,6 +135,7 @@ describe('v01', () => {
           outstandingKeys: 17,
           asOf: 1337,
           publicLockVersion: 1,
+          currencyContractAddress: null,
         })
       })
 
@@ -151,6 +159,7 @@ describe('v01', () => {
 
       const lock = await web3Service.getLock(lockAddress)
       expect(lock).toEqual({
+        name: 'My Lock',
         asOf: 1337,
         balance: '0.000000003735944941',
         expirationDuration: 2592000,
@@ -159,6 +168,7 @@ describe('v01', () => {
         outstandingKeys: 17,
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
         publicLockVersion: 1,
+        currencyContractAddress: null,
       })
     })
   })

@@ -5,7 +5,7 @@ const yamlFront = require('yaml-front-matter')
  * @param maxPosts
  * @returns {Promise<Array>}
  */
-export const loadBlogIndexFile = async maxPosts => {
+export const loadBlogIndexFile = async (maxPosts = 10, pageNumber = 1) => {
   let index
   try {
     const response = await require('../../blog/blog.index')
@@ -15,18 +15,24 @@ export const loadBlogIndexFile = async maxPosts => {
   }
 
   let posts = []
-
+  let totalPages = 0
+  let totalPosts = 0
   if (index.items) {
+    totalPages = Math.ceil(index.items.length / maxPosts)
+    totalPosts = index.items.length
     index.items.forEach(item => {
       if (Date.parse(item.publishDate) <= Date.now()) {
         posts.push(item)
       }
     })
-    // TODO: add pagination
-    posts = posts.slice(0, maxPosts)
+    posts = posts.slice((pageNumber - 1) * maxPosts, pageNumber * maxPosts)
   }
 
-  return posts
+  return {
+    posts,
+    totalPages,
+    totalPosts,
+  }
 }
 
 /**
@@ -45,12 +51,10 @@ export const loadBlogPost = async slug => {
 
 /**
  * Given a page context, returns a slug and post object
- * @param context
+ * @param slug
  * @returns {Promise<{slug: string, post: {}}>}
  */
-export const preparePostProps = async context => {
-  const { slug } = context.query
-
+export const preparePostProps = async slug => {
   const post = await loadBlogPost(slug)
 
   return { slug, post }
@@ -58,10 +62,17 @@ export const preparePostProps = async context => {
 
 /**
  * Loads the blog index and returns an array of posts
+ * @param maxPosts
+ * @param pageNumber
  * @returns {Promise<{posts: Array}>}
  */
-export const prepareBlogProps = async maxPosts => {
-  const posts = await loadBlogIndexFile(maxPosts)
+export const prepareBlogProps = async (maxPosts, pageNumber) => {
+  const byPage = maxPosts || 10
+  const page = pageNumber || 1
+  const { posts, totalPages, totalPosts } = await loadBlogIndexFile(
+    byPage,
+    page
+  )
 
-  return { posts }
+  return { posts, totalPages, totalPosts, byPage, page }
 }

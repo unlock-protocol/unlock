@@ -2,16 +2,27 @@ version: '3'
 services:
   ganache:
     restart: always
-    image: trufflesuite/ganache-cli:v6.4.1
+    image: trufflesuite/ganache-cli:v6.7.0
     expose:
       - 8545
     command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984']
   ganache-integration:
     restart: always
-    image: trufflesuite/ganache-cli:v6.4.1
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    environment:
+      CI: '${CI}'
+      ERC20_CONTRACT_ADDRESS: '${ERC20_CONTRACT_ADDRESS}'
+      LOCKSMITH_PURCHASER_ADDRESS: '${LOCKSMITH_PURCHASER_ADDRESS}'
+      ETHEREUM_ADDRESS: '${ETHEREUM_ADDRESS}'
+      HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
+      HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
+      BLOCKTIME: '${BLOCKTIME}'
+    ports:
+      - 8545:8545
     expose:
       - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-b 1']
   db:
     image: postgres
     expose:
@@ -20,13 +31,6 @@ services:
       POSTGRES_USER: '${DB_USERNAME}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_NAME}'
-  unlock-contract-deployer: # Used for integration tests to deploy the smart contract
-    image: unlock-app
-    environment:
-      CI: '${CI}'
-      HTTP_PROVIDER: '${HTTP_PROVIDER}'
-    depends_on:
-      - ganache-integration
   smart-contracts:
     image: smart-contracts
     depends_on:
@@ -45,6 +49,24 @@ services:
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
+    command: ['npm', 'run', 'start']
+  unlock-provider-unlock-app:
+    image: unlock-app
+    ports:
+      - 9000:9000
+    expose:
+      - 9000
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: 'unlock-provider-integration'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
+      PORT: 9000
     command: ['npm', 'run', 'start']
   unlock-protocol-com:
     image: unlock-protocol-com
@@ -70,6 +92,7 @@ services:
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       LOCKSMITH_URI: '${LOCKSMITH_URI}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      USER_IFRAME_URL: '${USER_IFRAME_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
     command: ['npm', 'run', 'start']
@@ -90,6 +113,12 @@ services:
     image: unlock-js
     environment:
       CI: '${CI}'
+    depends_on:
+      - ganache-integration
+  rover:
+    image: rover
+    environment:
+      CI: '${CI}'
   wedlocks:
     image: wedlocks
     environment:
@@ -104,10 +133,25 @@ services:
       LOCKSMITH_PORT: '${LOCKSMITH_PORT}'
       PAYWALL_PORT: '${PAYWALL_PORT}'
       UNLOCK_HOST: '${UNLOCK_HOST}'
+      LOCKSMITH_HOST: '${LOCKSMITH_HOST}'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
       PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_HOST: '${PAYWALL_HOST}'
+      UNLOCK_PROVIDER_APP_HOST: '${UNLOCK_PROVIDER_APP_HOST}'
+      UNLOCK_PROVIDER_APP_PORT: '${UNLOCK_PROVIDER_APP_PORT}'
+      USER_IFRAME_URL: '${USER_IFRAME_URL}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'
+      ERC20_CONTRACT_ADDRESS: '${ERC20_CONTRACT_ADDRESS}'
+      LOCKSMITH_PURCHASER_ADDRESS: '${LOCKSMITH_PURCHASER_ADDRESS}'
+      ETHEREUM_ADDRESS: '${ETHEREUM_ADDRESS}'
+      HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
+      HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
+      BLOCKTIME: '${BLOCKTIME}'
     depends_on:
       - ganache-integration
+      - unlock-provider-unlock-app
       - unlock-app
       - paywall
       - locksmith
@@ -120,6 +164,7 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_HOSTNAME: '${DB_HOSTNAME}'
       NODE_ENV: 'production' # TODO: verify if this is right?
+      WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080

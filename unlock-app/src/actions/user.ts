@@ -1,9 +1,10 @@
-import { EncryptedPrivateKey } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { EncryptedPrivateKey } from '../unlockTypes'
 
 export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'
 export const LOGIN_FAILED = 'login/FAILED'
 export const SIGNUP_EMAIL = 'signup/GOT_EMAIL'
+export const WELCOME_EMAIL = 'signup/WELCOME_EMAIL'
 export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
 export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
@@ -13,6 +14,14 @@ export const SET_ENCRYPTED_PRIVATE_KEY =
   'userCredentials/SET_ENCRYPTED_PRIVATE_KEY'
 export const GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD =
   'userCredentials/GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD'
+export const SIGN_USER_DATA = 'userCredentials/SIGN_USER_DATA'
+export const SIGNED_USER_DATA = 'userCredentials/SIGNED_USER_DATA'
+export const SIGN_PAYMENT_DATA = 'userCredentials/SIGN_PAYMENT_DATA'
+export const SIGNED_PAYMENT_DATA = 'userCredentials/SIGNED_PAYMENT_DATA'
+export const SIGN_PURCHASE_DATA = 'userCredentials/SIGN_PURCHASE_DATA'
+export const SIGNED_PURCHASE_DATA = 'userCredentials/SIGNED_PURCHASE_DATA'
+export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
+export const KEY_PURCHASE_INITIATED = 'userAccount/KEY_PURCHASE_INITIATED'
 
 export interface Credentials {
   emailAddress: string
@@ -40,6 +49,12 @@ export const loginFailed = (reason: string) => ({
 export const signupEmail = (emailAddress: string) => ({
   type: SIGNUP_EMAIL,
   emailAddress,
+})
+
+export const welcomeEmail = (emailAddress: string, recoveryKey: string) => ({
+  type: WELCOME_EMAIL,
+  emailAddress,
+  recoveryKey,
 })
 
 export const signupCredentials = ({ emailAddress, password }: Credentials) => ({
@@ -92,4 +107,89 @@ export const gotEncryptedPrivateKeyPayload = (
   key,
   emailAddress,
   password,
+})
+
+interface UserData {
+  emailAddress?: string
+  publicKey?: string
+  passwordEncryptedPrivateKey?: EncryptedPrivateKey
+}
+export const signUserData = (data: UserData) => ({
+  type: SIGN_USER_DATA,
+  data,
+})
+
+interface SignedUserData {
+  data: {
+    message: {
+      emailAddress: string
+      publicKey: string
+      passwordEncryptedPrivateKey: EncryptedPrivateKey
+    }
+  }
+  sig: any
+}
+export const signedUserData = ({ data, sig }: SignedUserData) => ({
+  type: SIGNED_USER_DATA,
+  data,
+  sig,
+})
+
+export const signPaymentData = (stripeTokenId: string) => ({
+  type: SIGN_PAYMENT_DATA,
+  stripeTokenId,
+})
+
+interface SignedPaymentData {
+  data: {
+    message: {
+      emailAddress: string
+      publicKey: string
+      stripeTokenId: string
+    }
+  }
+  sig: any
+}
+export const signedPaymentData = ({ data, sig }: SignedPaymentData) => ({
+  type: SIGNED_PAYMENT_DATA,
+  data,
+  sig,
+})
+
+export const getStoredPaymentDetails = (emailAddress: string) => ({
+  type: GET_STORED_PAYMENT_DETAILS,
+  emailAddress,
+})
+
+export interface PurchaseData {
+  recipient: string
+  lock: string
+}
+
+export const signPurchaseData = (data: PurchaseData) => ({
+  type: SIGN_PURCHASE_DATA,
+  data,
+})
+
+interface SignedPurchaseData {
+  data: {
+    message: {
+      purchaseRequest: {
+        recipient: string
+        lock: string
+        expiry: number
+      }
+    }
+  }
+  sig: any
+}
+
+export const signedPurchaseData = ({ data, sig }: SignedPurchaseData) => ({
+  type: SIGNED_PURCHASE_DATA,
+  data,
+  sig,
+})
+
+export const keyPurchaseInitiated = () => ({
+  type: KEY_PURCHASE_INITIATED,
 })

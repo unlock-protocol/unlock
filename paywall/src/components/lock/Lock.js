@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
-
-import { purchaseKey } from '../../actions/key'
 
 import PendingKeyLock from './PendingKeyLock'
 import ConfirmingKeyLock from './ConfirmingKeyLock'
@@ -66,14 +63,4 @@ Lock.defaultProps = {
   account: null,
 }
 
-export const mapDispatchToProps = (dispatch, { showModal }) => ({
-  purchaseKey: key => {
-    showModal()
-    dispatch(purchaseKey(key))
-  },
-})
-
-export default connect(
-  undefined, // no mapStateToProps needed
-  mapDispatchToProps
-)(Lock)
+export default Lock

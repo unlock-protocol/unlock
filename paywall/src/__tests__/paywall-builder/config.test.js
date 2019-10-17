@@ -3,11 +3,7 @@ import {
   setupReadyListener,
   enable,
 } from '../../paywall-builder/config'
-import {
-  POST_MESSAGE_CONFIG,
-  POST_MESSAGE_READY,
-  POST_MESSAGE_ACCOUNT,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('paywall configuration inter-window communication', () => {
   describe('sending configuration to the iframe with sendConfig', () => {
@@ -41,7 +37,7 @@ describe('paywall configuration inter-window communication', () => {
       sendConfig(config, iframe, 'origin')
 
       expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
-        expect.objectContaining({ type: POST_MESSAGE_CONFIG, payload: config }),
+        expect.objectContaining({ type: PostMessages.CONFIG, payload: config }),
         'origin'
       )
     })
@@ -73,7 +69,7 @@ describe('paywall configuration inter-window communication', () => {
       const event = {
         origin: 'origin',
         source: iframe.contentWindow,
-        data: POST_MESSAGE_READY,
+        data: PostMessages.READY,
       }
       setupReadyListener(window, iframe, 'origin')
 
@@ -83,7 +79,7 @@ describe('paywall configuration inter-window communication', () => {
 
       expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: POST_MESSAGE_CONFIG,
+          type: PostMessages.CONFIG,
           payload: 'hi',
         }),
         'origin'
@@ -107,7 +103,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'origin')
 
@@ -141,7 +137,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'origin')
 
@@ -167,7 +163,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'origin')
 
@@ -187,7 +183,7 @@ describe('paywall configuration inter-window communication', () => {
 
               expect(iframe.contentWindow.postMessage).toHaveBeenCalledWith(
                 expect.objectContaining({
-                  type: POST_MESSAGE_ACCOUNT,
+                  type: PostMessages.ACCOUNT,
                   payload: 'hi',
                 }),
                 'origin'
@@ -200,7 +196,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'origin')
 
@@ -218,7 +214,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: iframe.contentWindow,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'not origin')
 
@@ -236,7 +232,7 @@ describe('paywall configuration inter-window communication', () => {
         const event = {
           origin: 'origin',
           source: window,
-          data: POST_MESSAGE_READY,
+          data: PostMessages.READY,
         }
         setupReadyListener(window, iframe, 'origin')
 
@@ -247,7 +243,7 @@ describe('paywall configuration inter-window communication', () => {
         expect(iframe.contentWindow.postMessage).not.toHaveBeenCalled()
       })
 
-      it('should not post if message is not POST_MESSAGE_READY', () => {
+      it('should not post if message is not PostMessages.READY', () => {
         expect.assertions(1)
 
         window.unlockProtocolConfig = 'hi'

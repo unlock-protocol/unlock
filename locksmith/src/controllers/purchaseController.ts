@@ -21,14 +21,18 @@ namespace PurchaseController {
     } else if (!(await authorizedLock(lock))) {
       return res.sendStatus(451)
     } else {
-      let paymentProcessor = new PaymentProcessor(config.stripeSecret)
+      let paymentProcessor = new PaymentProcessor(
+        config.stripeSecret,
+        config.web3ProviderHost,
+        config.unlockContractAddress
+      )
 
       await paymentProcessor.initiatePurchase(
         purchaser,
         lock,
         config.purchaserCredentails,
         config.web3ProviderHost,
-        config.purchaserAddress
+        purchaser
       )
 
       return res.sendStatus(202)

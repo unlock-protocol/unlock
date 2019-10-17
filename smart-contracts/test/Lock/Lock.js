@@ -3,13 +3,13 @@ const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
 contract('Lock / Lock', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -47,7 +47,7 @@ contract('Lock / Lock', accounts => {
         assert.equal(maxNumberOfKeys.toFixed(), 10)
         assert.equal(totalSupply.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
-        assert.equal(publicLockVersion.toFixed(), 4) // needs updating each lock-version change
+        assert.equal(publicLockVersion.toFixed(), 5) // needs updating each lock-version change
         assert.equal(isAlive, true)
       }
     )

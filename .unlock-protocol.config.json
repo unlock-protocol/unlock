@@ -1,0 +1,15 @@
+{
+  "persistentCheckout": true,
+  "icon":"https://donate.unlock-protocol.com/unlock-word-mark-red.svg",
+  "callToAction":{
+     "default": "Support our work by becoming a member of the Unlock community. It’s free, you’ll get your own Non Fungible Token and you can then leave comments on our blog!",
+     "expired": "Unfortunately your previous key has expired... But you can get a new one now!",
+     "pending": "Your transaction has been sent but not mined yet... you'll get your Non Fungible Token right after.",
+     "confirmed": "Thanks a lot for your support. It means a lot to us. Please send us feedback, question and suggestions!"
+  },
+  "locks":{
+     "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F":{
+        "name":"Unlock Community"
+     }
+  }
+}

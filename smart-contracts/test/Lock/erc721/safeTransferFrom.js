@@ -4,16 +4,16 @@ const deployLocks = require('../../helpers/deployLocks')
 const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../../helpers/proxy')
+const getProxy = require('../../helpers/proxy')
 
 let unlock, lock
 
 contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.updateTransferFee(0, 1) // disable the transfer fee for this test
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   // function safeTransferFrom() still uses transferFrom() under the hood, but adds an additional check afterwards. transferFrom is already well-tested, so here we add a few checks to test only the new functionality.
@@ -23,7 +23,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
 
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
-    await lock.purchaseFor(from, {
+    await lock.purchase(0, from, web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from,
     })
@@ -39,7 +39,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   })
 
   it('should work if some data is passed in', async () => {
-    await lock.purchaseFor(accounts[7], {
+    await lock.purchase(0, accounts[7], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[7],
     })
@@ -60,7 +60,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    await lock.purchaseFor(accounts[5], {
+    await lock.purchase(0, accounts[5], web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[5],
     })
@@ -70,8 +70,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     await shouldFail(
       lock.safeTransferFrom(accounts[5], nonCompliantContract, ID, {
         from: accounts[5],
-      }),
-      'NO_FALLBACK'
+      })
     )
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf.call(ID)

@@ -5,12 +5,13 @@ import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
-import EmbedCodeSnippet from './lock/EmbedCodeSnippet'
+import AppStore from './lock/AppStore'
 import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
 import { NoPhone, Phone } from '../../theme/media'
+import withConfig from '../../utils/withConfig'
 
 import {
   LockPanel,
@@ -23,16 +24,31 @@ import {
   DoubleHeightCell,
   BalanceContainer,
 } from './LockStyles'
-import { updateKeyPrice, updateLockName, updateLock } from '../../actions/lock'
-
+import { updateKeyPrice, updateLock } from '../../actions/lock'
+import { currencySymbol } from '../../utils/lock'
 import { INFINITY } from '../../constants'
 
-const KeyPrice = ({ lock }) => (
-  <Balance className="price" amount={lock.keyPrice} />
+const BalanceOnLock = withConfig(
+  ({ lock, attribute, skipConversion, config }) => {
+    const currency = currencySymbol(lock, config.ERC20Contract)
+    return (
+      <Balance
+        amount={lock[attribute]}
+        currency={currency}
+        convertCurrency={!skipConversion && !currency}
+      />
+    )
+  }
 )
 
-KeyPrice.propTypes = {
+BalanceOnLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
+  attribute: PropTypes.string.isRequired,
+  skipConversion: PropTypes.bool,
+}
+
+BalanceOnLock.defaultProps = {
+  skipConversion: false,
 }
 
 const LockKeysNumbers = ({ lock }) => (
@@ -94,6 +110,14 @@ export class CreatorLock extends React.Component {
 
     // Some sanitization of strings to display
     let name = lock.name || 'New Lock'
+
+    const edit = () =>
+      this.setState({
+        editing: true,
+        showEmbedCode: false,
+        showKeys: false,
+      })
+
     return (
       <LockRow
         className="lock" // Used by integration tests
@@ -111,30 +135,24 @@ export class CreatorLock extends React.Component {
           <Duration seconds={lock.expirationDuration} />
         </LockDuration>
         <LockKeysNumbers lock={lock} />
-        <KeyPrice lock={lock} />
+        <BalanceOnLock lock={lock} attribute="keyPrice" />
         <BalanceContainer>
           <NoPhone>
-            <Balance amount={lock.balance} />
+            <BalanceOnLock lock={lock} attribute="balance" />
           </NoPhone>
           <Phone>
-            <Balance amount={lock.balance} convertCurrency={false} />
+            <BalanceOnLock lock={lock} attribute="balance" skipConversion />
           </Phone>
         </BalanceContainer>
         <LockIconBar
           lock={lock}
           toggleCode={this.toggleEmbedCode}
-          edit={() =>
-            this.setState({
-              editing: true,
-              showEmbedCode: false,
-              showKeys: false,
-            })
-          }
+          edit={edit}
         />
         {showEmbedCode && (
           <LockPanel>
             <LockDivider />
-            <EmbedCodeSnippet lock={lock} />
+            <AppStore lock={lock} />
           </LockPanel>
         )}
         {!showEmbedCode && showKeys && (
@@ -159,11 +177,6 @@ export const mapDispatchToProps = (dispatch, { lock }) => {
       // If the price has changed
       if (lock.keyPrice !== newLock.keyPrice) {
         dispatch(updateKeyPrice(lock.address, newLock.keyPrice))
-      }
-
-      // If the name has changed
-      if (lock.name !== newLock.name) {
-        dispatch(updateLockName(lock.address, newLock.name))
       }
 
       // Reflect all changes

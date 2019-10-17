@@ -102,7 +102,7 @@ describe('User creation', () => {
       })
 
       let result = await UserOperations.createUser(userCreationDetails)
-      expect(result).toBe(true)
+      expect(result).toBe(RecoveryPhrase.generate())
     })
   })
 
@@ -114,7 +114,7 @@ describe('User creation', () => {
       })
 
       let result = await UserOperations.createUser(userCreationDetails)
-      expect(result).toBe(false)
+      expect(result).toBe(undefined)
     })
   })
 })
@@ -254,6 +254,7 @@ describe("Retrieving a user's cards", () => {
     })
     it('returns an empty array', async () => {
       expect.assertions(1)
+
       let cards = await UserOperations.getCards(
         'user_without_stripe_customer_id@example.com'
       )

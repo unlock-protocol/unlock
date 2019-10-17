@@ -18,21 +18,45 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
       transactionHash: transaction.transactionHash,
       sender: ethJsUtil.toChecksumAddress(transaction.sender),
       recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
+      for: transactionForPackaging(transaction.for),
       chain: transaction.chain,
       data: transaction.data,
     },
   })
 }
 
+const transactionForPackaging = (transactionFor: string) => {
+  return transactionFor ? ethJsUtil.toChecksumAddress(transactionFor) : null
+}
+
 /**
  * get all the transactions sent by a given address
  * @param {*} _sender
  */
-export const getTransactionsBySender = async (_sender: string) => {
-  const sender = ethJsUtil.toChecksumAddress(_sender)
+export const getTransactionsByFilter = async (filter: any) => {
   return await Transaction.findAll({
-    where: {
-      sender: { [Op.eq]: sender },
-    },
+    where: queryFilter(filter),
   })
+}
+
+const queryFilter = (filter: any) => {
+  var target: any = {}
+
+  if (filter.recipient) {
+    target.recipient = {
+      [Op.in]: filter.recipient.map((recipient: string) =>
+        ethJsUtil.toChecksumAddress(recipient)
+      ),
+    }
+  }
+
+  if (filter.for) {
+    target.for = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.for) }
+  }
+
+  if (filter.sender) {
+    target.sender = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.sender) }
+  }
+
+  return target
 }

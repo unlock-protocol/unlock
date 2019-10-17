@@ -12,15 +12,12 @@ interface Props {
 
 export const NoWallet = ({ config }: Props) => {
   return (
-    <React.Fragment>
+    <>
       <Header>
-        <Title>
-          {config.icon && <Logo src={config.icon} />}
-          <UnlockedText>Unlocked</UnlockedText>
-        </Title>
+        <Title>{config.icon && <Logo src={config.icon} />}</Title>
         <p>
-          To enjoy content without any ads you&apos;ll need to use a
-          crypto-enabled browser that has a wallet. Here are a few options
+          To buy a key you&apos;ll need to use a crypto-enabled browser that has
+          a wallet. Here are a few options:
         </p>
       </Header>
       <WalletOptions>
@@ -47,11 +44,11 @@ export const NoWallet = ({ config }: Props) => {
           </div>
         </WalletDescription>
         <WalletDescription
-          href="https://play.google.com/store/apps/details?id=com.opera.browser"
+          href="https://www.opera.com/crypto"
           target="_blank"
           rel="noopener"
         >
-          <span>Mobile Android</span>
+          <span>Mobile iOS &amp; Android</span>
           <div>
             <Opera />
             <Caption>Opera</Caption>
@@ -62,7 +59,7 @@ export const NoWallet = ({ config }: Props) => {
         <span>Powered by</span>
         <NoWalletWordMark alt="Unlock" />
       </Footer>
-    </React.Fragment>
+    </>
   )
 }
 
@@ -91,6 +88,7 @@ const WalletDescription = styled.a`
     letter-spacing: 1px;
     text-transform: uppercase;
     padding-bottom: 8px;
+    width: 160px;
   }
   & div {
     display: flex;
@@ -105,6 +103,9 @@ const WalletDescription = styled.a`
     & svg {
       padding-top: 20px;
     }
+  }
+  & div:hover {
+    border: 1px solid var(--link);
   }
   & div ${Caption} {
     text-transform: none;
@@ -133,13 +134,6 @@ const CoinbaseWallet = styled(Svg.CoinbaseWallet)`
 
 const Opera = styled(Svg.Opera)`
   width: 120px;
-`
-
-const UnlockedText = styled.span`
-  padding-left: 10px;
-  ${Media.phone`
-    padding-left: 0;
-  `}
 `
 
 const Header = styled.header`
@@ -178,8 +172,7 @@ const Footer = styled.footer`
 `
 
 const WalletOptions = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   list-style: none;
   margin: 0px;
   padding: 0px;

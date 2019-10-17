@@ -21,6 +21,24 @@ import {
   setEncryptedPrivateKey,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   gotEncryptedPrivateKeyPayload,
+  SIGN_USER_DATA,
+  signUserData,
+  SIGNED_USER_DATA,
+  signedUserData,
+  SIGN_PAYMENT_DATA,
+  signPaymentData,
+  SIGNED_PAYMENT_DATA,
+  signedPaymentData,
+  GET_STORED_PAYMENT_DETAILS,
+  getStoredPaymentDetails,
+  SIGN_PURCHASE_DATA,
+  signPurchaseData,
+  SIGNED_PURCHASE_DATA,
+  signedPurchaseData,
+  KEY_PURCHASE_INITIATED,
+  keyPurchaseInitiated,
+  WELCOME_EMAIL,
+  welcomeEmail,
 } from '../../actions/user'
 
 const key = {
@@ -107,6 +125,18 @@ describe('user account actions', () => {
         gotEncryptedPrivateKeyPayload(key, emailAddress, password)
       ).toEqual(expectedAction)
     })
+
+    it('should create an action requesting stored payment details', () => {
+      expect.assertions(1)
+
+      const emailAddress = 'jenny@8675.309'
+      const expectedAction = {
+        type: GET_STORED_PAYMENT_DETAILS,
+        emailAddress,
+      }
+
+      expect(getStoredPaymentDetails(emailAddress)).toEqual(expectedAction)
+    })
   })
 
   describe('signup actions', () => {
@@ -152,6 +182,19 @@ describe('user account actions', () => {
 
       expect(signupSucceeded()).toEqual(expectedAction)
     })
+
+    it('should create an action to send a welcome email with the recovery key', () => {
+      expect.assertions(1)
+      const recoveryKey = 'do not lose this'
+      const emailAddress = 'julien@unlock-protocol.com'
+      const expectedAction = {
+        type: WELCOME_EMAIL,
+        emailAddress,
+        recoveryKey,
+      }
+
+      expect(welcomeEmail(emailAddress, recoveryKey)).toEqual(expectedAction)
+    })
   })
 
   describe('user account maintenance actions', () => {
@@ -167,6 +210,120 @@ describe('user account actions', () => {
       }
 
       expect(changePassword(oldPassword, newPassword)).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting the signature for a user structure', () => {
+      expect.assertions(1)
+      const data = {
+        emailAddress: 'geoff@bitconnect.gov',
+      }
+
+      const expectedAction = {
+        type: SIGN_USER_DATA,
+        data,
+      }
+
+      expect(signUserData(data)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a user structure', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          emailAddress,
+          publicKey: '0x123abc',
+          passwordEncryptedPrivateKey: key,
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_USER_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedUserData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting the signature for a stripe token', () => {
+      expect.assertions(1)
+      const stripeTokenId = 'tok_1EPsocIsiZS2oQBMRXzw21xh'
+
+      const expectedAction = {
+        type: SIGN_PAYMENT_DATA,
+        stripeTokenId,
+      }
+
+      expect(signPaymentData(stripeTokenId)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a stripe token', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          emailAddress,
+          publicKey: '0x123abc',
+          stripeTokenId: 'tok_1EPsocIsiZS2oQBMRXzw21xh',
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_PAYMENT_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedPaymentData({ data, sig })).toEqual(expectedAction)
+    })
+  })
+
+  describe('user transaction actions', () => {
+    it('should create an action requesting the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        recipient: '0x123abc',
+        lock: '0x321bca',
+      }
+
+      const expectedAction = {
+        type: SIGN_PURCHASE_DATA,
+        data,
+      }
+
+      expect(signPurchaseData(data)).toEqual(expectedAction)
+    })
+
+    it('should create an action returning the signature for a key purchase', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          purchaseRequest: {
+            recipient: '0x123abc',
+            lock: 'ox321bca',
+            expiry: 60,
+          },
+        },
+      }
+      const sig = {}
+
+      const expectedAction = {
+        type: SIGNED_PURCHASE_DATA,
+        data,
+        sig,
+      }
+
+      expect(signedPurchaseData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action indicating that locksmith has accepted a key purchase request', () => {
+      expect.assertions(1)
+      const expectedAction = {
+        type: KEY_PURCHASE_INITIATED,
+      }
+
+      expect(keyPurchaseInitiated()).toEqual(expectedAction)
     })
   })
 

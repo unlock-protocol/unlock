@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../../propTypes'
-import { signAddress } from '../../../actions/ticket'
 import { sendConfirmation } from '../../../actions/email'
 import Media from '../../../theme/media'
 
@@ -22,27 +21,9 @@ export class Ticket extends Component {
     super(props)
 
     this.state = {
-      signed: false,
       email: '',
       sent: false,
     }
-  }
-
-  componentDidUpdate = () => {
-    const { lock, signAddress, signedLockAddress, keyStatus } = this.props
-    if (keyStatus === KeyStatus.VALID) {
-      const { signed } = this.state
-      if (signedLockAddress && !signed) {
-        this.setAsSigned()
-      } else if (!signed && !signedLockAddress) {
-        signAddress(lock.address)
-        this.setAsSigned()
-      }
-    }
-  }
-
-  setAsSigned = () => {
-    this.setState({ signed: true })
   }
 
   handleChange = event => {
@@ -116,9 +97,6 @@ export class Ticket extends Component {
 }
 
 export const mapDispatchToProps = dispatch => ({
-  signAddress: address => {
-    dispatch(signAddress(address))
-  },
   sendConfirmation: (recipient, ticket, eventName, eventDate, ticketLink) => {
     dispatch(
       sendConfirmation(recipient, ticket, eventName, eventDate, ticketLink)
@@ -144,7 +122,6 @@ export const mapStateToProps = ({ tickets, event }, props) => {
 Ticket.propTypes = {
   account: UnlockPropTypes.account.isRequired,
   lock: UnlockPropTypes.lock.isRequired,
-  signAddress: PropTypes.func.isRequired,
   sendConfirmation: PropTypes.func.isRequired,
   signedLockAddress: PropTypes.string,
   keyStatus: PropTypes.string,

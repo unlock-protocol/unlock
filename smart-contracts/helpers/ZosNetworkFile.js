@@ -1,7 +1,4 @@
-const Zos = require('zos')
-
-const { ZosPackageFile } = Zos.files
-const packageFile = new ZosPackageFile()
+const Zos = require('@openzeppelin/cli')
 
 module.exports = function getNetworkFile(web3) {
   return web3.eth.net.getId().then(_Id => {
@@ -16,6 +13,6 @@ module.exports = function getNetworkFile(web3) {
       default:
         network = `dev-${_Id}`
     }
-    return packageFile.networkFile(network)
+    return new Zos.files.NetworkFile(new Zos.files.ProjectFile(), network)
   })
 }

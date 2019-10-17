@@ -1,0 +1,16 @@
+{
+  "name": "@unlock-protocol/unlock-web",
+  "version": "0.0.3",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unlock-protocol/unlock/issues"
+  }
+}

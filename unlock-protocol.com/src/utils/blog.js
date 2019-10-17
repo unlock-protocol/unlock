@@ -42,8 +42,8 @@ const generateBlogFeed = basedir => {
  * @param postFeed
  * @returns {Array}
  */
-const generateBlogPages = postFeed => {
-  let pages = []
+const generatePostPages = postFeed => {
+  let pages = {}
 
   postFeed.forEach(postFile => {
     pages['/blog/' + postFile.slug] = {
@@ -60,13 +60,30 @@ const generateBlogPages = postFeed => {
  * @param baseDir
  * @param postFeed
  */
-const generateBlogIndexFile = (baseDir, postFeed) => {
+const generateBlogIndexFile = (baseDir, postFeed, callback) => {
   // Write blog post index to output baseDirectory
   fs.writeFile(
     join(baseDir, 'blog', 'blog.index'),
     JSON.stringify({ items: postFeed }),
-    'utf8'
+    callback
   )
+}
+
+/**
+ * This function generates the URL for each paginated page
+ */
+const generateBlogPages = (numberOfPosts, postsPerPage) => {
+  let pages = {}
+
+  const numberOfPages = Math.ceil(numberOfPosts / postsPerPage)
+
+  Array.apply(null, Array(numberOfPages)).forEach((x, i) => {
+    pages[`/blog/${i + 1}`] = {
+      page: '/blog',
+      query: { slug: `${i + 1}` },
+    }
+  })
+  return pages
 }
 
 /**
@@ -75,7 +92,7 @@ const generateBlogIndexFile = (baseDir, postFeed) => {
  * @param postFeed
  * @param unlockUrl
  */
-const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
+const generateRSSFile = (baseDir, postFeed, unlockUrl, callback) => {
   // Build list of items that don't have future publish dates
   let now = Date.now()
 
@@ -100,8 +117,9 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
   })
 
   fs.writeFile(
-    join(baseDir, 'static', 'blog.rss'),
-    rssFeed.xml({ indent: true })
+    join(baseDir, 'src', 'static', 'blog.rss'),
+    rssFeed.xml({ indent: true }),
+    callback
   )
 }
 
@@ -113,13 +131,14 @@ const generateRSSFile = (baseDir, postFeed, unlockUrl) => {
  */
 const addBlogPagesToPageObject = (dir, pages) => {
   let blogFeed = generateBlogFeed(dir)
-  let blogPages = generateBlogPages(blogFeed)
-
-  return { ...pages, ...blogPages }
+  let postPages = generatePostPages(blogFeed)
+  let blogPages = generateBlogPages(blogFeed.length, 10)
+  return { ...pages, ...postPages, ...blogPages }
 }
 
 module.exports = {
   generateBlogFeed,
+  generatePostPages,
   generateBlogPages,
   generateBlogIndexFile,
   generateRSSFile,

@@ -1,6 +1,6 @@
 import {
   findOrCreateTransaction,
-  getTransactionsBySender,
+  getTransactionsByFilter,
 } from '../../src/operations/transactionOperations'
 
 const Sequelize = require('sequelize')
@@ -47,7 +47,7 @@ describe('lockOperations', () => {
     })
   })
 
-  describe('getTransactionsBySender', () => {
+  describe('getTransactionsByFilter', () => {
     it('should get the list of transactions by that sender after having checksummed the address', async () => {
       expect.assertions(2)
       const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
@@ -56,8 +56,32 @@ describe('lockOperations', () => {
           '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
         )
       })
-      await getTransactionsBySender(sender)
+      await getTransactionsByFilter({ sender: sender })
       expect(Transaction.findAll).toHaveBeenCalled()
+    })
+
+    describe('when passed a recipient filter', () => {
+      it('only returns transactions for the appropriate recipient', async () => {
+        expect.assertions(2)
+        const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+        Transaction.findAll = jest.fn(query => {
+          expect(query.where.sender[Op.eq]).toEqual(
+            '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
+          )
+        })
+        await getTransactionsByFilter({
+          sender: sender,
+          recipient: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
+        })
+        expect(Transaction.findAll).toHaveBeenCalledWith({
+          where: {
+            recipient: {
+              [Op.in]: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
+            },
+            sender: { [Op.eq]: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5' },
+          },
+        })
+      })
     })
   })
 })

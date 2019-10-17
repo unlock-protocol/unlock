@@ -41,12 +41,14 @@ const exportPaths = (defaultPathMap, { dev, dir, outDir }) => {
   // Our statically-defined pages to export
   return {
     '/': { page: '/home' },
+    '/account': { page: '/account' },
     '/dashboard': { page: '/dashboard' },
     '/keychain': { page: '/keyChain' },
     '/login': { page: '/login' },
     '/signup': { page: '/signup' },
     '/log': { page: '/log' },
     '/settings': { page: '/settings' },
+    '/recover': { page: '/recover' },
   }
 }
 

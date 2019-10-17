@@ -19,12 +19,12 @@ export const isPositiveNumber = val => {
   return !isNaN(parsedFloat) && +parsedFloat >= 0
 }
 
-export const isAccountOrNull = val => {
-  return val === null || val.match(ACCOUNT_REGEXP)
+export const isAccount = val => {
+  return val && typeof val === 'string' && val.match(ACCOUNT_REGEXP)
 }
 
-export const isAccount = val => {
-  return val && val.match(ACCOUNT_REGEXP)
+export const isAccountOrNull = val => {
+  return val === null || isAccount(val)
 }
 
 /**
@@ -57,12 +57,7 @@ export const isAccount = val => {
  */
 export const isValidPaywallConfig = config => {
   if (!config) return false
-  if (typeof config !== 'object') return false
-  const keys = Object.keys(config)
-  if (keys.length !== 3) return false
-  keys.sort()
-  const testKeys = ['callToAction', 'icon', 'locks']
-  if (keys.filter((key, index) => testKeys[index] !== key).length) return false
+  if (!isValidObject(config, ['callToAction', 'locks'])) return false
   // allow false for icon
   if (config.icon) {
     if (typeof config.icon !== 'string') return false
@@ -98,6 +93,7 @@ export const isValidPaywallConfig = config => {
       if (!isAccount(lock)) return false
       const thisLock = config.locks[lock]
       if (!thisLock || typeof thisLock !== 'object') return false
+      if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
       if (!thisLock.name || typeof thisLock.name !== 'string') return false
       return true
@@ -105,6 +101,27 @@ export const isValidPaywallConfig = config => {
   ) {
     return false
   }
+
+  if (
+    config.unlockUserAccounts &&
+    !(
+      typeof config.unlockUserAccounts === 'boolean' ||
+      config.unlockUserAccounts === 'true' ||
+      config.unlockUserAccounts === 'false'
+    )
+  ) {
+    return false
+  }
+
+  // persistentCheckout can ne not set, a boolean, or true or false.
+  if (
+    typeof config.persistentCheckout !== 'undefined' &&
+    (typeof config.persistentCheckout !== 'boolean' &&
+      ['true', 'false'].indexOf(config.persistentCheckout) === -1)
+  ) {
+    return false
+  }
+
   return true
 }
 
@@ -114,13 +131,31 @@ export const isValidPaywallConfig = config => {
  *
  * No assertion on the types of the values is done here
  */
-function isValidObject(obj, validKeys, optionalKeys = []) {
+function isValidObject(obj, validKeys) {
   if (!obj || typeof obj !== 'object') return false
   const keys = Object.keys(obj)
 
-  if (keys.length > validKeys.length + optionalKeys.length) return false
-  if (keys.filter(key => !validKeys.includes(key)).length) {
-    if (optionalKeys.filter(key => !key.includes(key)).length) return false
+  if (keys.length < validKeys.length) return false
+  if (validKeys.filter(key => !keys.includes(key)).length) return false
+  return true
+}
+
+function isValidKeyStatus(status) {
+  if (typeof status !== 'string') return false
+  if (
+    ![
+      'none',
+      'confirming',
+      'confirmed',
+      'expired',
+      'valid',
+      'submitted',
+      'pending',
+      'failed',
+      'stale',
+    ].includes(status)
+  ) {
+    return false
   }
   return true
 }
@@ -130,18 +165,14 @@ function isValidObject(obj, validKeys, optionalKeys = []) {
  */
 export const isValidKey = key => {
   if (
-    !isValidObject(
-      key,
-      [
-        'expiration',
-        'transactions',
-        'status',
-        'confirmations',
-        'owner',
-        'lock',
-      ],
-      ['id']
-    )
+    !isValidObject(key, [
+      'expiration',
+      'transactions',
+      'status',
+      'confirmations',
+      'owner',
+      'lock',
+    ])
   ) {
     return false
   }
@@ -153,29 +184,15 @@ export const isValidKey = key => {
     return false
   }
   if (!Array.isArray(key.transactions)) return false
-  if (typeof key.status !== 'string') return false
-  if (
-    ![
-      'none',
-      'confirming',
-      'confirmed',
-      'expired',
-      'valid',
-      'submitted',
-      'pending',
-      'failed',
-    ].includes(key.status)
-  ) {
-    return false
-  }
+  if (!isValidKeyStatus(key.status)) return false
   if (
     typeof key.confirmations !== 'number' ||
     !isPositiveInteger(key.confirmations)
   ) {
     return false
   }
-  if (typeof key.owner !== 'string' || !isAccount(key.owner)) return false
-  if (typeof key.lock !== 'string' || !isAccount(key.lock)) return false
+  if (!isAccount(key.owner)) return false
+  if (!isAccount(key.lock)) return false
   // NOTE: transactions are not used in the UI, and may be removed, so
   // for now we do not validate them. If this ever changes, they must
   // be validated
@@ -195,25 +212,19 @@ export const isValidKey = key => {
  */
 export const isValidLock = lock => {
   if (
-    !isValidObject(
-      lock,
-      ['address', 'keyPrice', 'expirationDuration', 'key'],
-      [
-        'name',
-        'asOf',
-        'maxNumberOfKeys',
-        'outstandingKeys',
-        'balance',
-        'owner',
-        'currencyContractAddress',
-      ]
-    )
+    !isValidObject(lock, ['address', 'keyPrice', 'expirationDuration', 'key'])
   ) {
     return false
   }
 
   if (lock.hasOwnProperty('name') && typeof lock.name !== 'string') return false
-  if (typeof lock.address !== 'string' || !isAccount(lock.address)) return false
+  if (
+    lock.hasOwnProperty('currencyContractAddress') &&
+    !isAccountOrNull(lock.currencyContractAddress)
+  ) {
+    return false
+  }
+  if (!isAccount(lock.address)) return false
   if (typeof lock.keyPrice !== 'string' || !isDecimal(lock.keyPrice)) {
     return false
   }
@@ -237,4 +248,36 @@ export const isValidLocks = locks => {
   const lockValues = Object.values(locks)
   if (lockValues.filter(lock => !isValidLock(lock)).length) return false
   return true
+}
+
+/**
+ * validate the list of keys returned from the data iframe
+ * TODO: consider if validation is actually required
+ */
+export const isValidKeys = () => {
+  return true
+}
+
+/**
+ * validate the list of transactions returned from the data iframe
+ * TODO: consider if validation is actually required
+ */
+export const isValidTransactions = () => {
+  return true
+}
+
+/**
+ * validate a balance as an object of currency: balance
+ */
+export const isValidBalance = balance => {
+  if (!balance || typeof balance !== 'object' || Array.isArray(balance)) {
+    return false
+  }
+  return Object.keys(balance).reduce((accumulator, currency) => {
+    return (
+      accumulator &&
+      (isPositiveNumber(balance[currency]) &&
+        typeof balance[currency] === 'string')
+    )
+  }, true)
 }

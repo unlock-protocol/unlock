@@ -18,7 +18,7 @@ export function googleCalendarLinkBuilder(
   duration: number,
   location: string
 ) {
-  const start = formatDateForCalendar(date, !duration)
+  const start = formatDateForCalendar(date, false)
   let end
   if (duration) {
     // Duration is in seconds
@@ -28,15 +28,15 @@ export function googleCalendarLinkBuilder(
     )
   } else {
     const endDate = new Date(date)
-    endDate.setDate(date.getDate() + 1)
-    end = formatDateForCalendar(endDate, true)
+    endDate.setHours(date.getHours() + 1) // Set events to last an hour by default
+    end = formatDateForCalendar(endDate, false)
   }
 
   let googleCalendarLink = `https://calendar.google.com/calendar/r/eventedit?`
-  googleCalendarLink += `&text=${name}`
+  googleCalendarLink += `&text=${encodeURIComponent(name)}`
   googleCalendarLink += `&dates=${start}/${end}`
-  googleCalendarLink += `&details=${details}`
-  googleCalendarLink += `&location=${location}`
+  googleCalendarLink += `&details=${encodeURIComponent(details)}`
+  googleCalendarLink += `&location=${encodeURIComponent(location)}`
   googleCalendarLink += `&sf=true&output=xml`
   return googleCalendarLink
 }

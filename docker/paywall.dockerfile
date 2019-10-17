@@ -11,7 +11,7 @@ RUN npm ci --production
 WORKDIR /home/unlock/
 RUN npm run link-parent-bin
 
-# Build smart contract
+# Build paywall
 WORKDIR /home/unlock/paywall
 COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN npm run build

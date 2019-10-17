@@ -3,9 +3,11 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import UnlockPropTypes from '../../propTypes'
+import withConfig from '../../utils/withConfig'
+import { currencySymbol } from '../../utils/lock'
 
 import Icon from '../lock/Icon'
-import { BalanceWithUnit, Eth } from '../helpers/Balance'
+import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
 import {
   LockRow,
   LockName,
@@ -51,6 +53,11 @@ export const lockToFormValues = lockValues => {
     formValues.maxNumberOfKeys = INFINITY
   }
 
+  // ERC20 Locks
+  if (lockValues.currencyContractAddress) {
+    formValues.currency = lockValues.currencyContractAddress
+  }
+
   return formValues
 }
 
@@ -60,11 +67,11 @@ export const lockToFormValues = lockValues => {
  */
 export const formValuesToLock = formValues => {
   const lockValues = {}
-
   lockValues.keyPrice = formValues.keyPrice
   lockValues.maxNumberOfKeys = formValues.maxNumberOfKeys
   lockValues.name = formValues.name
   lockValues.address = formValues.address
+  lockValues.currencyContractAddress = formValues.currency
 
   // In the form, duration is shown in days, vs seconds in the lock object
   lockValues.expirationDuration =
@@ -92,6 +99,7 @@ export class CreatorLockForm extends React.Component {
       expirationDurationUnit: 86400, // days
       keyPrice: '0.01',
       maxNumberOfKeys: 10,
+      currency: null, // Defaults to Eth
       name: 'New Lock',
       address: null,
     }
@@ -102,6 +110,7 @@ export class CreatorLockForm extends React.Component {
     this.handleUnlimitedClick = this.handleUnlimitedClick.bind(this)
     this.saveLock = this.saveLock.bind(this)
     this.processFormErrors = this.sendErrorsToRedux.bind(this)
+    this.toggleCurrency = this.toggleCurrency.bind(this)
 
     // State represents the values in the form... and we may get a different format for them
     this.state = lockToFormValues(Object.assign(newLockDefaults, props.lock))
@@ -109,6 +118,14 @@ export class CreatorLockForm extends React.Component {
     const { validityState: valid, errors } = this.formValidity(this.state)
     this.state.valid = valid
     this.state.errors = errors
+
+    // Set up the ERC20 address, based on query string or defaults to config.
+    const url = new window.URL(document.location)
+    this.ERC20Contract = props.config.ERC20Contract
+    if (url.searchParams.get('erc20')) {
+      this.ERC20Contract.address = url.searchParams.get('erc20')
+      this.ERC20Contract.name = url.searchParams.get('ticker') || 'ERC20'
+    }
   }
 
   /**
@@ -216,6 +233,13 @@ export class CreatorLockForm extends React.Component {
     }))
   }
 
+  toggleCurrency() {
+    this.setState(state => ({
+      ...state,
+      currency: !state.currency ? this.ERC20Contract.address : null,
+    }))
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState(state => ({
       unlimitedKeys:
@@ -245,12 +269,18 @@ export class CreatorLockForm extends React.Component {
       expirationDuration,
       maxNumberOfKeys,
       keyPrice,
+      currency,
       name,
       unlimitedKeys,
       valid,
     } = this.state
     const lockAddress = lock ? lock.address : ''
     // NOTE: maxNumberOfKeys must be a text input in order to support the infinity symbol
+
+    const symbol = currencySymbol(lock, this.ERC20Contract)
+
+    this.ERC20Contract.name
+
     return (
       <FormLockRow className="lockForm" data-address={lockAddress}>
         <Icon />
@@ -262,6 +292,7 @@ export class CreatorLockForm extends React.Component {
             defaultValue={name}
             data-valid={valid.name}
             required={isNew}
+            disabled={!isNew}
           />
         </FormLockName>
         <FormLockDuration>
@@ -295,7 +326,8 @@ export class CreatorLockForm extends React.Component {
           )}
         </FormLockKeys>
         <FormBalanceWithUnit>
-          <Eth />
+          {!currency && <Eth />}
+          {!!currency && <ERC20 name={symbol} />}
           <input
             type="number"
             step="0.00001"
@@ -306,7 +338,18 @@ export class CreatorLockForm extends React.Component {
             data-valid={valid.keyPrice}
             required
           />
+          {isNew && !currency && (
+            <LockLabelCurrency onClick={this.toggleCurrency}>
+              {`Use ${this.ERC20Contract.name}`}
+            </LockLabelCurrency>
+          )}
+          {isNew && !!currency && (
+            <LockLabelCurrency onClick={this.toggleCurrency}>
+              Use Ether
+            </LockLabelCurrency>
+          )}
         </FormBalanceWithUnit>
+
         <div>-</div>
         <Status>
           <Button onClick={this.handleSubmit}>Submit</Button>
@@ -326,6 +369,7 @@ CreatorLockForm.propTypes = {
   setError: PropTypes.func.isRequired,
   resetError: PropTypes.func.isRequired,
   lock: UnlockPropTypes.lock,
+  config: UnlockPropTypes.configuration.isRequired,
 }
 
 CreatorLockForm.defaultProps = {
@@ -340,15 +384,26 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = { setError, resetError }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreatorLockForm)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(CreatorLockForm)
+)
 
 const LockLabelUnlimited = styled(LockLabel)`
   font-size: 11px;
   width: 100%;
   padding: 5px;
+`
+
+const LockLabelCurrency = styled(LockLabel).attrs(() => ({
+  className: 'currency',
+}))`
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+  padding-left: 25px;
 `
 
 const FormLockRow = styled(LockRow)`

@@ -1,13 +1,13 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.12;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
-import 'openzeppelin-solidity/contracts/utils/Address.sol';
-import 'openzeppelin-solidity/contracts/token/ERC721/IERC721Receiver.sol';
-import 'openzeppelin-solidity/contracts/math/SafeMath.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Receiver.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
 
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
@@ -27,10 +27,7 @@ contract MixinTransfer is
   using Address for address;
 
   event TransferFeeChanged(
-    uint oldTransferFeeNumerator,
-    uint oldTransferFeeDenominator,
-    uint transferFeeNumerator,
-    uint transferFeeDenominator
+    uint transferFeeBasisPoints
   );
 
   // 0x150b7a02 == bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'))
@@ -38,9 +35,8 @@ contract MixinTransfer is
 
   // The fee relative to keyPrice to charge when transfering a Key to another account
   // (potentially on a 0x marketplace).
-  // This is calculated as `keyPrice * transferFeeNumerator / transferFeeDenominator`.
-  uint public transferFeeNumerator = 0;
-  uint public transferFeeDenominator = 100;
+  // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
+  uint public transferFeeBasisPoints;
 
   /**
    * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
@@ -58,10 +54,10 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
-    _chargeAtLeast(getTransferFee(_from));
+    uint fee = getTransferFee(_from);
 
-    Key storage fromKey = _getKeyFor(_from);
-    Key storage toKey = _getKeyFor(_recipient);
+    Key storage fromKey = keyByOwner[_from];
+    Key storage toKey = keyByOwner[_recipient];
 
     uint previousExpiration = toKey.expirationTimestamp;
 
@@ -99,6 +95,8 @@ contract MixinTransfer is
       _recipient,
       _tokenId
     );
+
+    _chargeAtLeast(fee);
   }
 
   /**
@@ -141,7 +139,7 @@ contract MixinTransfer is
     payable
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
-    hasValidKey(ownerOf(_tokenId))
+    hasValidKey(ownerOf[_tokenId])
   {
     transferFrom(_from, _to, _tokenId);
     require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NON_COMPLIANT_ERC721_RECEIVER');
@@ -152,21 +150,15 @@ contract MixinTransfer is
    * Allow the Lock owner to change the transfer fee.
    */
   function updateTransferFee(
-    uint _transferFeeNumerator,
-    uint _transferFeeDenominator
+    uint _transferFeeBasisPoints
   )
     external
     onlyOwner
   {
-    require(_transferFeeDenominator != 0, 'INVALID_RATE');
     emit TransferFeeChanged(
-      transferFeeNumerator,
-      transferFeeDenominator,
-      _transferFeeNumerator,
-      _transferFeeDenominator
+      _transferFeeBasisPoints
     );
-    transferFeeNumerator = _transferFeeNumerator;
-    transferFeeDenominator = _transferFeeDenominator;
+    transferFeeBasisPoints = _transferFeeBasisPoints;
   }
 
   /**
@@ -182,7 +174,7 @@ contract MixinTransfer is
     hasValidKey(_owner)
     returns (uint)
   {
-    Key storage key = _getKeyFor(_owner);
+    Key storage key = keyByOwner[_owner];
     // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
     uint timeRemaining = key.expirationTimestamp - block.timestamp;
     uint fee;
@@ -193,7 +185,7 @@ contract MixinTransfer is
       // Math: using safeMul in case keyPrice or timeRemaining is very large
       fee = keyPrice.mul(timeRemaining) / expirationDuration;
     }
-    return fee.mul(transferFeeNumerator) / transferFeeDenominator;
+    return fee.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
   }
 
   /**

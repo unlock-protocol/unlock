@@ -1,27 +1,14 @@
-import { formatCurrency, formatEth } from '../../selectors/currency'
+import { formatCurrency } from '../../selectors/currency'
 
 describe('currency conversion and formatting selectors', () => {
-  describe('formatEth', () => {
-    it('small values', () => {
-      expect.assertions(1)
-      expect(formatEth('0.00001')).toBe('< 0.0001')
-    })
-    it('decimal values', () => {
-      expect.assertions(3)
-      expect(formatEth('0.01')).toBe('0.01')
-      expect(formatEth('0.99')).toBe('0.99')
-      expect(formatEth('0.91111111')).toBe('0.91')
-    })
-    it('larger values', () => {
-      expect.assertions(2)
-      expect(formatEth('2')).toBe('2.00')
-      expect(formatEth('22222222')).toBe('22222222.00')
-    })
-  })
   describe('formatCurrency', () => {
+    it('< 0.0001', () => {
+      expect.assertions(1)
+      expect(formatCurrency('0.00009')).toBe('< 0.0001')
+    })
     it('< 0.01', () => {
       expect.assertions(1)
-      expect(formatCurrency('0.004')).toBe('0')
+      expect(formatCurrency('0.004')).toBe('0.004')
     })
     it('0.01 to 1', () => {
       expect.assertions(2)

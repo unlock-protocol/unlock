@@ -14,9 +14,13 @@ export const BlogIndex = ({ posts }) => (
     {posts.map(
       ({ title, authorName, publishDate, slug, description, image }) => (
         <Post key={slug}>
-          <NoPhone>
-            <Image src={image} />
-          </NoPhone>
+          <NoPhoneIllustration>
+            <Link href={'/blog/' + slug}>
+              <a>
+                <Image src={image} />
+              </a>
+            </Link>
+          </NoPhoneIllustration>
           <Details>
             <Title>
               <Link href={'/blog/' + slug}>
@@ -25,8 +29,8 @@ export const BlogIndex = ({ posts }) => (
             </Title>
             <Description>{description}</Description>
             <IndexByline>
-              <AuthorName>{authorName}</AuthorName>
-              <PublishDate>On {publishDate}</PublishDate>
+              <AuthorName>{authorName}</AuthorName>&nbsp;
+              <PublishDate>on {publishDate}</PublishDate>
             </IndexByline>
           </Details>
         </Post>
@@ -40,6 +44,12 @@ BlogIndex.propTypes = {
 }
 
 export default BlogIndex
+
+const NoPhoneIllustration = styled(NoPhone)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 const Index = styled.div`
   margin: auto;

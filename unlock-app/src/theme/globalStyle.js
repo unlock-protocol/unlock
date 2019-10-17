@@ -18,11 +18,13 @@ const globalStyle = `
     --darkgrey: #4a4a4a;
     --slate: #333333;
     --link: #4d8be8;
+    --blue: #4d8be8;
     --green: #74ce63;
     --darkgreen: #368043;
     --activegreen: #59c245;
     --pink: #ed6e82;
     --yellow: #f6c61b;
+    --labelgrey: #7d7d7d;
 
     --foreground: 9001;
     --alwaysontop: 100000;
@@ -54,6 +56,15 @@ const globalStyle = `
 
   a:visited {
     color: var(--link);
+  }
+
+  .StripeElement {
+    background-color: var(--lightgrey);
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+    height: 60px;
+    font-size: 16px;
   }
 `
 

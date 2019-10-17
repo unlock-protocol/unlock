@@ -12,8 +12,7 @@ mkdir -p /tmp/screenshots
 chmod 0777 /tmp/screenshots
 
 # Deploy the smart contract
-COMMAND="npm run deploy-unlock-contract"
-docker-compose -f $DOCKER_COMPOSE_FILE run -v /tmp/screenshots:/screenshots $EXTRA_ARGS unlock-contract-deployer bash -c "$COMMAND"
+docker-compose -f $DOCKER_COMPOSE_FILE build ganache-integration
 
 # And then run the integration tests
 COMMAND="npm run ci"

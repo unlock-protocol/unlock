@@ -90,6 +90,9 @@ export default class WalletService extends UnlockService {
     let address = accounts[0]
 
     this.emit('account.changed', address)
+    if (this.provider.emailAddress) {
+      this.emit('account.updated', { emailAddress: this.provider.emailAddress })
+    }
     this.emit('ready')
     return Promise.resolve(address)
   }
@@ -98,6 +101,8 @@ export default class WalletService extends UnlockService {
    * This function submits a web3 transaction and will trigger an event as soon as it receives its
    * hash. We then use the web3Service to handle the ongoing transaction (watch for confirmation
    * receipt... etc)
+   * A the moment the dispatcher relies on the strict emission, it is imperitive that the emission
+   * of these fields not change for the time being!
    * @private
    * @param {Promise} the result of calling a contract method (ethersjs contract)
    * @param {string} the Unlock protocol transaction type
@@ -115,87 +120,63 @@ export default class WalletService extends UnlockService {
       transactionType,
       'submitted'
     )
-    const finalTransaction = await transaction.wait()
+    const finalTransaction = await transaction.wait() // TODO: why do we wait here? This should return instantly: getting a hash should not require i/o
     return finalTransaction.hash
     // errors fall through
   }
 
   /**
-   *
-   * @param {PropTypes.address} lock : address of the lock for which we update the price
-   * @param {PropTypes.address} account: account who owns the lock
+   * Updates the key price on a lock
+   * @param {PropTypes.address} lockAddress : address of the lock for which we update the price
    * @param {string} price : new price for the lock
+   * @return Promise<PropTypes.number> newKeyPrice
+   * TODO: add a callback @param which is invoked with the transaction hash of the transaction (this pattern should actually be implemented for all calls)
    */
-  async updateKeyPrice(lock, account, price) {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.updateKeyPrice.bind(this)(lock, account, price)
+  async updateKeyPrice(params = {}) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.updateKeyPrice.bind(this)(params)
   }
 
   /**
    * Creates a lock on behalf of the user.
    * @param {PropTypes.lock} lock
-   * @param {PropTypes.address} owner
+   * @return Promise<PropTypes.address> lockAddress
    */
-  async createLock(lock, owner) {
+  async createLock(lock) {
     const version = await this.unlockContractAbiVersion()
-    return version.createLock.bind(this)(lock, owner)
+    return version.createLock.bind(this)(lock)
   }
 
   /**
    * Purchase a key to a lock by account.
-   * The key object is passed so we can kepe track of it from the application
-   * The lock object is required to get the price data
-   * We pass both the owner and the account because at some point, these may be different (someone
-   * purchases a key for someone else)
-   * @param {PropTypes.address} lock
-   * @param {PropTypes.address} owner
-   * @param {string} keyPrice
-   * @param {string} data
-   * @param {string} account
-   * @param {string} erc20Address
+   * The key object is passed so we can keep track of it from the application
+   * TODO: retrieve the keyPrice, erc20Address from chain when applicablle
+   * - {PropTypes.address} lockAddress
+   * - {PropTypes.address} owner
+   * - {string} keyPrice
+   * - {string} data
+   * - {PropTypes.address} erc20Address
+   * - {number} decimals
+   * TODO: add an exta callback param which will be invoked with the transaction hash
    */
-  async purchaseKey(lock, owner, keyPrice, account, data = '', erc20Address) {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.purchaseKey.bind(this)(
-      lock,
-      owner,
-      keyPrice,
-      account,
-      data,
-      erc20Address
-    )
-  }
-
-  /**
-   * Triggers a transaction to withdraw some funds from the lock and assign them
-   * to the owner.
-   * TODO: REMOVE ME AS withdraw supports this
-   * @param {PropTypes.address} lock
-   * @param {PropTypes.address} account
-   * @param {string} ethAmount
-   * @param {Function} callback
-   */
-  async partialWithdrawFromLock(lock, account, ethAmount, callback) {
-    // DEPRECATED ! [note I do not think we every used it anway...]
-    const version = await this.lockContractAbiVersion(lock)
-    return version.partialWithdrawFromLock.bind(this)(
-      lock,
-      account,
-      ethAmount,
-      callback
-    )
+  async purchaseKey(params = {}) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.purchaseKey.bind(this)(params)
   }
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
-   * TODO: remove the unused account and add support for amount (which will be ignored for old locks)
-   * @param {PropTypes.address} lock
-   * @param {PropTypes.address} account
-   * @param {Function} callback TODO: implement...
+   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
+   * @param {object} params
+   * - {PropTypes.address} lockAddress
+   * - {string} amount
    */
-  async withdrawFromLock(lock, account) {
-    const version = await this.lockContractAbiVersion(lock)
-    return version.withdrawFromLock.bind(this)(lock, account)
+  async withdrawFromLock(params = {}) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.withdrawFromLock.bind(this)(params)
   }
 
   /**
@@ -236,7 +217,10 @@ export default class WalletService extends UnlockService {
 
   async signDataPersonal(account, data, callback) {
     try {
-      const method = this.web3Provider ? 'personal_sign' : 'eth_sign'
+      let method = 'eth_sign'
+      if (this.web3Provider || this.provider.isUnlock) {
+        method = 'personal_sign'
+      }
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {

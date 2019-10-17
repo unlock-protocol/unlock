@@ -2,17 +2,17 @@ import {
   addLock,
   createLock,
   deleteLock,
+  getLock,
   updateLock,
   withdrawFromLock,
   updateKeyPrice,
   CREATE_LOCK,
   ADD_LOCK,
   DELETE_LOCK,
+  GET_LOCK,
   UPDATE_LOCK,
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
-  updateLockName,
-  UPDATE_LOCK_NAME,
 } from '../../actions/lock'
 
 describe('lock actions', () => {
@@ -50,6 +50,16 @@ describe('lock actions', () => {
     expect(addLock(address, lock)).toEqual(expectedAction)
   })
 
+  it('should create an action to get the lock', () => {
+    expect.assertions(1)
+    const address = '0x123'
+    const expectedAction = {
+      type: GET_LOCK,
+      address,
+    }
+    expect(getLock(address)).toEqual(expectedAction)
+  })
+
   it('should create an action to delete a lock', () => {
     expect.assertions(1)
     const address = '0x123'
@@ -81,18 +91,5 @@ describe('lock actions', () => {
     }
 
     expect(updateKeyPrice(address, price)).toEqual(expectedAction)
-  })
-
-  it('should create an action to update the lock name', () => {
-    expect.assertions(1)
-    const address = '0x123'
-    const name = 'The Lock'
-    const expectedAction = {
-      type: UPDATE_LOCK_NAME,
-      address,
-      name,
-    }
-
-    expect(updateLockName(address, name)).toEqual(expectedAction)
   })
 })

@@ -38,6 +38,7 @@ describe('linkKeysToLocks', () => {
       hash: {
         hash: 'hash',
         from: 'account',
+        for: 'account',
         to: '0x123',
         key: '0x123-account',
         lock: '0x123',
@@ -47,7 +48,8 @@ describe('linkKeysToLocks', () => {
       },
       old: {
         hash: 'old',
-        from: 'account',
+        from: 'another account',
+        for: 'account',
         to: '0x123',
         key: '0x123-account',
         lock: '0x123',

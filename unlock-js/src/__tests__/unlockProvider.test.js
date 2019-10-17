@@ -1,5 +1,9 @@
+import nock from 'nock'
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+import utils from '../utils'
+
+// TODO: move this to the integration tests directory
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -25,48 +29,121 @@ const key = {
 }
 const publicKey = '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
 const password = 'foo'
-
-const userData = {
-  types: {
-    EIP712Domain: [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-      { name: 'salt', type: 'bytes32' },
-    ],
-    User: [
-      { name: 'emailAddress', type: 'string' },
-      { name: 'publicKey', type: 'address' },
-      { name: 'passwordEncryptedPrivateKey', type: 'string' },
-    ],
-  },
-  domain: {
-    name: 'Unlock',
-    version: '1',
-  },
-  primaryType: 'User',
-  message: {
-    user: {
-      emailAddress: 'geoff@bitconnect.gov',
-      publicKey: publicKey,
-      passwordEncryptedPrivateKey: key,
-    },
-  },
-}
+const emailAddress = 'geoff@bitconnect.gov'
 
 describe('Unlock Provider', () => {
   let provider
-  beforeEach(async () => {
-    const readOnlyProvider = 'http://localhost:8545'
+  beforeAll(async () => {
+    nock.enableNetConnect()
+
+    const readOnlyProvider = process.env.CI
+      ? 'http://ganache-integration::8545'
+      : 'http://127.0.0.1:8545'
+
     provider = new UnlockProvider({ readOnlyProvider })
-    await provider.connect({ key, password })
+    await provider.connect({ key, password, emailAddress })
   })
 
   describe('object properties', () => {
     it('should have a property `isUnlock` that is set to `true`', () => {
       expect.assertions(1)
       expect(provider.isUnlock).toBeTruthy()
+    })
+
+    it('should have a property `wallet` that is set to an ethers wallet', () => {
+      expect.assertions(1)
+      expect(provider.wallet).toEqual(
+        expect.objectContaining({
+          address: publicKey,
+        })
+      )
+    })
+
+    it('should have a property `emailAddress` that is set to the provided email address', () => {
+      expect.assertions(1)
+      expect(provider.emailAddress).toEqual(emailAddress)
+    })
+
+    it('should have a property `passwordEncryptedPrivateKey` that is set to the provided key', () => {
+      expect.assertions(1)
+      expect(provider.passwordEncryptedPrivateKey).toEqual(key)
+    })
+  })
+
+  describe('signing data', () => {
+    describe('signUserData', () => {
+      it('should sign an object with all fields passed', () => {
+        expect.assertions(1)
+        const input = {
+          emailAddress,
+          publicKey,
+          passwordEncryptedPrivateKey: key,
+        }
+
+        const output = provider.signUserData(input)
+        // sigutil seems to downcase things
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+
+      it('should also sign an object with default values when not everything is passed', () => {
+        expect.assertions(1)
+        const input = {}
+
+        const output = provider.signUserData(input)
+        // sigutil seems to downcase things
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
+
+    describe('signPaymentData', () => {
+      it('should sign a stripe card token', () => {
+        expect.assertions(1)
+        const token = 'tok_1EPsocIsiZS2oQBMRXzw21xh'
+        const output = provider.signPaymentData(token)
+
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
+
+    describe('signKeyPurchaseRequestData', () => {
+      it('should sign a key purchase request with a valid expiration time', () => {
+        expect.assertions(2)
+        const input = {
+          recipient: publicKey,
+          lock: '0xaC6b4470B0cba92b823aB96762972e67a1C851d5',
+        }
+        const output = provider.signKeyPurchaseRequestData(input)
+        const currentTime = Math.floor(Date.now() / 1000)
+
+        expect(sigUtil.recoverTypedSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+        // Expiration must be some amount of time after right now
+        expect(
+          output.data.message.purchaseRequest.expiry > currentTime
+        ).toBeTruthy()
+      })
+    })
+
+    describe('personal_sign', () => {
+      it('should sign some hex data with the user account private key', () => {
+        expect.assertions(1)
+        const someData = 'this is the data I want to sign'
+        const messageHash = utils.utf8ToHex(someData)
+
+        // second param is unused, but in keeping with what we receive from WalletService
+        const output = provider.personal_sign([messageHash, ''])
+
+        expect(sigUtil.recoverPersonalSignature(output)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
     })
   })
 
@@ -78,16 +155,15 @@ describe('Unlock Provider', () => {
       expect(accounts[0]).toEqual(publicKey)
     })
 
-    it('should respond to eth_signTypedData with a valid signature', async () => {
+    it('should respond to personal_sign by calling the defined method', async () => {
       expect.assertions(1)
-      const sig = await provider.send('eth_signTypedData', [
-        'account',
-        { data: userData },
+      provider.personal_sign = jest.fn()
+      await provider.send('personal_sign', ['some data', 'an address'])
+
+      expect(provider.personal_sign).toHaveBeenCalledWith([
+        'some data',
+        'an address',
       ])
-      // sigutil seems to downcase things
-      expect(sigUtil.recoverTypedSignature({ data: userData, sig })).toEqual(
-        publicKey.toLowerCase()
-      )
     })
   })
 })

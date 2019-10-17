@@ -19,6 +19,7 @@ module.exports = {
         vars: 'all',
         args: 'after-used',
         ignoreRestSiblings: true,
+        argsIgnorePattern: /^_$/,
       },
     ],
     'react/prefer-stateless-function': [2],

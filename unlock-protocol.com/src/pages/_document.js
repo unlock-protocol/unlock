@@ -1,3 +1,5 @@
+/* eslint react/no-danger: 0 */
+
 import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
@@ -10,7 +12,30 @@ export default class MyDocument extends Document {
       sheet.collectStyles(<App {...props} />)
     )
     const styleTags = sheet.getStyleElement()
-    return { ...page, styleTags }
+    const unlockTag = {
+      __html: `
+      (function(d, s) {
+        var js = d.createElement(s),
+        sc = d.getElementsByTagName(s)[0];
+        js.src="https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+        sc.parentNode.insertBefore(js, sc); }(document, "script"))`,
+    }
+    const unlockConfigTag = {
+      __html: `
+      var unlockProtocolConfig = {
+        locks: {
+          '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
+            name: 'Unlock Blog Members',
+          }
+        },
+        icon: 'https://unlock-protocol.com/static/images/svg/unlock-word-mark.svg',
+        callToAction: {
+          default:
+            'Unlock lets you easily offer paid memberships to your website or application. On this website, members can leave comments and participate in discussion. It is free to try! Just click "purchase" below.',
+        },
+      }`,
+    }
+    return { ...page, styleTags, unlockTag, unlockConfigTag }
   }
 
   render() {
@@ -21,6 +46,8 @@ export default class MyDocument extends Document {
           <Fonts />
           <link rel="shortcut icon" href="/static/favicon.ico" />
           {this.props.styleTags}
+          <script dangerouslySetInnerHTML={this.props.unlockTag} />
+          <script dangerouslySetInnerHTML={this.props.unlockConfigTag} />
         </Head>
         <body>
           <Main />

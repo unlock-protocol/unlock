@@ -4,15 +4,12 @@ import React from 'react'
 import { ConfigContext } from '../../utils/withConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import useBlockchainData from '../../hooks/useBlockchainData'
-import {
-  POST_MESSAGE_UPDATE_ACCOUNT,
-  POST_MESSAGE_UPDATE_NETWORK,
-  POST_MESSAGE_UPDATE_ACCOUNT_BALANCE,
-  POST_MESSAGE_UPDATE_LOCKS,
-} from '../../paywall-builder/constants'
+import { PostMessages } from '../../messageTypes'
 
 describe('useBlockchainData hook', () => {
   const { Provider } = ConfigContext
+  const address = '0x1234567890123456789012345678901234567890'
+  const address2 = '0xa234567890123456789012345678901234567890'
 
   let fakeWindow
   let config
@@ -28,20 +25,24 @@ describe('useBlockchainData hook', () => {
     )
   }
 
-  function getAddressListener() {
+  function getCheckWalletListener() {
     return fakeWindow.addEventListener.mock.calls[0][1]
   }
 
-  function getNetworkListener() {
+  function getAddressListener() {
     return fakeWindow.addEventListener.mock.calls[1][1]
   }
 
-  function getBalanceListener() {
+  function getNetworkListener() {
     return fakeWindow.addEventListener.mock.calls[2][1]
   }
 
-  function getLocksListener() {
+  function getBalanceListener() {
     return fakeWindow.addEventListener.mock.calls[3][1]
+  }
+
+  function getLocksListener() {
+    return fakeWindow.addEventListener.mock.calls[4][1]
   }
 
   function getPMEvent(type, payload) {
@@ -56,12 +57,14 @@ describe('useBlockchainData hook', () => {
   }
 
   function MockBlockchainData() {
-    const { account, network, locks } = useBlockchainData(
+    const { checkWallet, account, network, locks } = useBlockchainData(
       fakeWindow,
       paywallConfig
     )
+
     return (
       <div>
+        <div title="checkWallet">{JSON.stringify(checkWallet)}</div>
         <div title="account">{JSON.stringify(account)}</div>
         <div title="network">{JSON.stringify(network)}</div>
         <div title="locks">{JSON.stringify(locks)}</div>
@@ -75,22 +78,36 @@ describe('useBlockchainData hook', () => {
       removeEventListener: jest.fn(),
       parent: {},
       location: {
-        pathname: '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
+        pathname: '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         search: '?origin=origin',
         hash: '',
+      },
+      console: {
+        warn: jest.fn(),
+      },
+    }
+    paywallConfig = {
+      locks: {
+        [address]: {
+          name: 'hi there!',
+        },
       },
     }
     config = { isServer: false, isInIframe: true, requiredNetworkId: 3 }
   })
 
   it('should return default values', () => {
-    expect.assertions(3)
+    expect.assertions(4)
 
     const component = rtl.render(<Wrapper />)
     const account = null
     const network = 3
     const locks = {}
+    const checkWallet = false
 
+    expect(component.getByTitle('checkWallet')).toHaveTextContent(
+      JSON.stringify(checkWallet)
+    )
     expect(component.getByTitle('account')).toHaveTextContent(
       JSON.stringify(account)
     )
@@ -102,19 +119,35 @@ describe('useBlockchainData hook', () => {
     )
   })
 
+  it('should update when checkWallet status is changed', () => {
+    expect.assertions(1)
+
+    const component = rtl.render(<Wrapper />)
+
+    const checkWalletUpdater = getCheckWalletListener()
+
+    rtl.act(() => {
+      checkWalletUpdater(getPMEvent(PostMessages.UPDATE_WALLET, true))
+    })
+
+    expect(component.getByTitle('checkWallet')).toHaveTextContent(
+      JSON.stringify(true)
+    )
+  })
+
   it('should update when account is changed', () => {
     expect.assertions(1)
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
-      balance: '0',
+      address,
+      balance: {},
     }
 
     const accountUpdater = getAddressListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
     })
 
     expect(component.getByTitle('account')).toHaveTextContent(
@@ -131,7 +164,7 @@ describe('useBlockchainData hook', () => {
     const networkUpdater = getNetworkListener()
 
     rtl.act(() => {
-      networkUpdater(getPMEvent(POST_MESSAGE_UPDATE_NETWORK, network))
+      networkUpdater(getPMEvent(PostMessages.UPDATE_NETWORK, network))
     })
 
     expect(component.getByTitle('network')).toHaveTextContent(
@@ -144,17 +177,19 @@ describe('useBlockchainData hook', () => {
 
     const component = rtl.render(<Wrapper />)
     const account = {
-      address: '0x1234567890123456789012345678901234567890',
-      balance: '5.3',
+      address,
+      balance: {
+        eth: '5.3',
+      },
     }
 
     const accountUpdater = getAddressListener()
     const balanceUpdater = getBalanceListener()
 
     rtl.act(() => {
-      accountUpdater(getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT, account.address))
+      accountUpdater(getPMEvent(PostMessages.UPDATE_ACCOUNT, account.address))
       balanceUpdater(
-        getPMEvent(POST_MESSAGE_UPDATE_ACCOUNT_BALANCE, account.balance)
+        getPMEvent(PostMessages.UPDATE_ACCOUNT_BALANCE, account.balance)
       )
     })
 
@@ -167,14 +202,6 @@ describe('useBlockchainData hook', () => {
     expect.assertions(1)
 
     const component = rtl.render(<Wrapper />)
-    const address = '0x1234567890123456789012345678901234567890'
-    paywallConfig = {
-      locks: {
-        [address]: {
-          name: 'hi there!',
-        },
-      },
-    }
     const locks = {
       [address]: {
         address,
@@ -194,7 +221,7 @@ describe('useBlockchainData hook', () => {
     const locksUpdater = getLocksListener()
 
     rtl.act(() => {
-      locksUpdater(getPMEvent(POST_MESSAGE_UPDATE_LOCKS, locks))
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
     })
 
     expect(component.getByTitle('locks')).toHaveTextContent(
@@ -204,6 +231,58 @@ describe('useBlockchainData hook', () => {
           name: 'hi there!',
         },
       })
+    )
+  })
+
+  it('should ignore unknown locks and warn about them', () => {
+    expect.assertions(2)
+
+    const component = rtl.render(<Wrapper />)
+    const locks = {
+      [address]: {
+        address,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+      [address2]: {
+        address: address2,
+        keyPrice: '1',
+        expirationDuration: 123,
+        key: {
+          expiration: 0,
+          transactions: [],
+          status: 'none',
+          confirmations: 0,
+          owner: address,
+          lock: address,
+        },
+      },
+    }
+
+    const locksUpdater = getLocksListener()
+
+    rtl.act(() => {
+      locksUpdater(getPMEvent(PostMessages.UPDATE_LOCKS, locks))
+    })
+
+    expect(component.getByTitle('locks')).toHaveTextContent(
+      JSON.stringify({
+        [address]: {
+          ...locks[address],
+          name: 'hi there!',
+        },
+      })
+    )
+    expect(fakeWindow.console.warn).toHaveBeenCalledWith(
+      'internal error: data iframe returned locks not known to the paywall'
     )
   })
 })

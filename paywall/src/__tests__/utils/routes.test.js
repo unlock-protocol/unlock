@@ -45,12 +45,12 @@ describe('route utilities', () => {
       })
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         origin: 'origin/',
       })
       expect(
@@ -68,12 +68,12 @@ describe('route utilities', () => {
       expect.assertions(1)
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         origin: 'origin/',
       })
@@ -83,24 +83,24 @@ describe('route utilities', () => {
       expect.assertions(2)
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',
       })
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',
       })
@@ -110,12 +110,12 @@ describe('route utilities', () => {
       expect.assertions(2)
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58d3'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58d3'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         transaction:
           '0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58d3',
@@ -123,12 +123,12 @@ describe('route utilities', () => {
       })
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',
       })
@@ -139,12 +139,12 @@ describe('route utilities', () => {
       expect(
         lockRoute(
           // address is too short
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         origin: 'origin/',
       })
@@ -155,12 +155,12 @@ describe('route utilities', () => {
       expect(
         lockRoute(
           // address is too short
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58dz'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere?origin=origin%2F#0xd22ddf19c1ef9631e6c150b9260f9a4f2f7d4105fabf41d114eef2f0f1ae58dz'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         origin: 'origin/',
       })
@@ -171,12 +171,12 @@ describe('route utilities', () => {
 
       expect(
         lockRoute(
-          '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
+          '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54?origin=origin%2F#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54'
         )
       ).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',
       })
@@ -211,7 +211,7 @@ describe('route utilities', () => {
       const fakeWindow = {
         location: {
           pathname:
-            '/demo/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
+            '/page/0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54/http%3a%2f%2fhithere',
           search: '?origin=origin%2F',
           hash: '#0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         },
@@ -219,7 +219,7 @@ describe('route utilities', () => {
       expect(getRouteFromWindow(fakeWindow)).toEqual({
         ...baseRoute,
         lockAddress: '0x79b8825a3e7Fb15263D0DD455B8aAfc08503bb54',
-        prefix: 'demo',
+        prefix: 'page',
         redirect: 'http://hithere',
         account: '0xaaa8825a3e7Fb15263D0DD455B8aAfc08503bb54',
         origin: 'origin/',

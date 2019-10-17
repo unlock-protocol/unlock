@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+/**
+ * Approval Script - This script provides Locks approval to
+ * withdraw tokens from an ERC20 contract on behalf of a given
+ * address
+ *
+ * approve_erc20_transfer --value <approval amount> --provider <provider uri>
+ *                        --lockContractAddress <address of lock contract>
+ *                        --erc20ContractAddress <address of erc20 contract>
+ *                        --privateKey <privateKey of address approving transfer>
+ */
+const args = require('yargs').argv
+const TokenTransferApproval = require('../build/src/fulfillment/tokenTransferApproval')
+  .default
+
+let provider = args.provider
+let value = args.value
+let lockContractAddress = args.lockContractAddress
+let erc20ContractAddress = args.erc20ContractAddress
+let privateKey = args.privateKey
+
+async function main() {
+  let tokenTransferApproval = new TokenTransferApproval(provider, privateKey)
+  let result = await tokenTransferApproval.approve(
+    value,
+    lockContractAddress,
+    erc20ContractAddress
+  )
+
+  console.log(result)
+}
+
+main()

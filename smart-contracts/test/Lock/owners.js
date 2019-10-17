@@ -1,37 +1,38 @@
 const BigNumber = require('bignumber.js')
 
+const truffleAssert = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
-const getUnlockProxy = require('../helpers/proxy')
+const getProxy = require('../helpers/proxy')
 
 let lock, locks, unlock
 
 contract('Lock / owners', accounts => {
   before(async () => {
-    unlock = await getUnlockProxy(unlockContract)
+    unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    await lock.updateTransferFee(0, 1) // disable the transfer fee for this test
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   before(() => {
     // Purchase keys!
     return Promise.all([
-      lock.purchaseFor(accounts[1], {
+      lock.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0],
       }),
-      lock.purchaseFor(accounts[2], {
+      lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0],
       }),
-      lock.purchaseFor(accounts[3], {
+      lock.purchase(0, accounts[3], web3.utils.padLeft(0, 40), [], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0],
       }),
-      lock.purchaseFor(accounts[4], {
+      lock.purchase(0, accounts[4], web3.utils.padLeft(0, 40), [], {
         value: lock.params.keyPrice.toFixed(),
         from: accounts[0],
       }),
@@ -60,7 +61,7 @@ contract('Lock / owners', accounts => {
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {
-    await shouldFail(lock.owners.call(6), 'invalid opcode')
+    await truffleAssert.fails(lock.owners.call(6), 'revert')
   })
 
   describe('after a transfer to a new address', () => {

@@ -9,17 +9,19 @@ export function signatureError(error) {
   }
 }
 
-export function signData(data) {
+export function signData(data, id) {
   return {
     type: SIGN_DATA,
     data,
+    id,
   }
 }
 
-export function signedData(data, signature) {
+export function signedData(data, id, signature) {
   return {
     type: SIGNED_DATA,
     data,
+    id,
     signature,
   }
 }

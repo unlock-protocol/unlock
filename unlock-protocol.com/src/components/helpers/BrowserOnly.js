@@ -2,9 +2,6 @@ import { Component } from 'react'
 import PropTypes from 'prop-types'
 
 export default class BrowserOnly extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  }
   constructor(props) {
     super(props)
     this.state = {
@@ -24,4 +21,8 @@ export default class BrowserOnly extends Component {
     const { children } = this.props
     return children
   }
+}
+
+BrowserOnly.propTypes = {
+  children: PropTypes.node.isRequired,
 }

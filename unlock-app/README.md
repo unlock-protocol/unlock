@@ -11,22 +11,15 @@ application.
 
 ## Requirements
 
-This is a Node project that depends on React and [NextJS](https://nextjs.org/). You must have Node and npm installed 
+This is a Node project that depends on React and [NextJS](https://nextjs.org/). You must have Node and npm installed
 to run.
 
-In addition, this application uses [Ganache](https://truffleframework.com/ganache) in order to support blockchain testing
-during development.
-
-On the front-end, you should have a [web3](https://web3js.readthedocs.io/en/1.0/)-compatible wallet like 
+On the front-end, you should have a [web3](https://web3js.readthedocs.io/en/1.0/)-compatible wallet like
 [Metamask](https://metamask.io/) installed in your browser, or be using a natively web3-compatible browser.
 
 ## Getting Started
 
- 1. Make sure you have installed required libraries by running `npm install`.
- 2. To launch the application, run `npm run dev` at the command line while inside this sub-repository.
-
-The above steps will automatically run ganache in the background. However, you may wish to keep it consistently running
-between instances of the application. In this case, you can start it separately by running `npm run start-ganache`.
+See README at the root of the repo;
 
 ## Default accounts for testing (set up thru ganache-cli)
 

@@ -6,11 +6,10 @@ import {
   WITHDRAW_FROM_LOCK,
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
-  UPDATE_LOCK_NAME,
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
 import { PURCHASE_KEY } from '../../actions/key'
-import { SET_ACCOUNT } from '../../actions/accounts'
+import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
@@ -22,12 +21,9 @@ import {
   FATAL_NON_DEPLOYED_CONTRACT,
   FATAL_WRONG_NETWORK,
 } from '../../errors'
-import {
-  SIGN_DATA,
-  SIGNED_DATA,
-  SIGNATURE_ERROR,
-} from '../../actions/signature'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
+import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
+import { SIGN_DATA } from '../../actions/signature'
 
 let mockConfig
 
@@ -131,6 +127,49 @@ beforeEach(() => {
 })
 
 describe('Wallet middleware', () => {
+  describe('when receiving account.updated events triggered by the walletService', () => {
+    it('should handle non-redundant account.updated events', () => {
+      expect.assertions(2)
+      const { store } = create()
+      const emailAddress = 'geoff@bitconnect.gov'
+      const update = {
+        emailAddress,
+      }
+
+      mockWalletService.emit('account.updated', update)
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          type: UPDATE_ACCOUNT,
+          update: {
+            emailAddress,
+          },
+        })
+      )
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          type: GET_STORED_PAYMENT_DETAILS,
+          emailAddress,
+        })
+      )
+    })
+
+    it('should not dispatch redundant updates triggered by the walletService', () => {
+      expect.assertions(1)
+      const { store } = create()
+      const update = {
+        address: '0xabc',
+      }
+
+      mockWalletService.emit('account.updated', update)
+
+      expect(store.dispatch).not.toHaveBeenCalled()
+    })
+  })
+
   it('should handle account.changed events triggered by the walletService', () => {
     expect.assertions(3)
     const { store } = create()
@@ -138,6 +177,7 @@ describe('Wallet middleware', () => {
     const account = {
       address,
     }
+    setTimeout.mockClear()
     mockWalletService.getAccount = jest.fn()
 
     mockWalletService.emit('account.changed', address)
@@ -233,21 +273,13 @@ describe('Wallet middleware', () => {
   })
 
   it('it should handle lock.updated events triggered by the walletService', () => {
-    expect.assertions(3)
+    expect.assertions(2)
     const { store } = create()
     const update = {
       transaction: '0x123',
     }
 
     mockWalletService.emit('lock.updated', lock.address, update)
-
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: UPDATE_LOCK_NAME,
-        address: lock.address,
-        name: lock.name,
-      })
-    )
 
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -511,14 +543,13 @@ describe('Wallet middleware', () => {
 
     it('should handle WITHDRAW_FROM_LOCK by calling withdrawFromLock from walletService', () => {
       expect.assertions(2)
-      const { next, invoke, store } = create()
+      const { next, invoke } = create()
       const action = { type: WITHDRAW_FROM_LOCK, lock }
       mockWalletService.withdrawFromLock = jest.fn()
       mockWalletService.ready = true
       invoke(action)
       expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address
+        lock.address
       )
       expect(next).toHaveBeenCalledWith(action)
     })
@@ -627,58 +658,74 @@ describe('Wallet middleware', () => {
   })
 
   describe('SIGN_DATA', () => {
-    it('should invoke the walletService to sign the data and dispatch an event with the signature', () => {
-      expect.assertions(3)
-
-      const data = 'data to sign'
-      const signature = 'signature'
-
-      const { next, invoke, store } = create()
+    it("should handle SIGN_DATA by calling walletService's signDataPersonal", () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
       const action = {
         type: SIGN_DATA,
-        data,
+        data: 'neat',
+        id: 'track this signature',
       }
-      mockWalletService.signData = jest.fn((signer, data, callback) => {
-        return callback(null, signature)
-      })
+
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve())
+      mockWalletService.ready = true
+
       invoke(action)
-      expect(mockWalletService.signData).toHaveBeenCalledWith(
-        store.getState().account.address,
-        data,
+      expect(mockWalletService.signDataPersonal).toHaveBeenCalledWith(
+        '',
+        'neat',
         expect.any(Function)
       )
+
       expect(next).toHaveBeenCalledWith(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SIGNED_DATA,
-        data,
-        signature,
-      })
     })
 
-    it('should invoke the walletService to sign the data and handle failures to sign', () => {
-      expect.assertions(3)
+    it('should dispatch an error if the error param in the callback is defined', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+      const action = { type: SIGN_DATA, data: 'neat' }
 
-      const data = 'data to sign'
-      const error = new Error('error')
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) =>
+          callback(new Error('an error'), undefined)
+        )
+      mockWalletService.ready = true
 
-      const { next, invoke, store } = create()
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'error/SET_ERROR',
+        })
+      )
+    })
+
+    it('should dispatch some typed data if there is no error', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
       const action = {
         type: SIGN_DATA,
-        data,
+        data: 'neat',
+        id: 'track this signature',
       }
-      mockWalletService.signData = jest.fn((signer, data, callback) => {
-        return callback(error)
-      })
+
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) =>
+          callback(undefined, 'here is your signature')
+        )
+      mockWalletService.ready = true
+
       invoke(action)
-      expect(mockWalletService.signData).toHaveBeenCalledWith(
-        store.getState().account.address,
-        data,
-        expect.any(Function)
-      )
-      expect(next).toHaveBeenCalledWith(action)
+
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: SIGNATURE_ERROR,
-        error,
+        type: 'signature/SIGNED_DATA',
+        data: 'neat',
+        signature: 'here is your signature',
+        id: 'track this signature',
       })
     })
   })

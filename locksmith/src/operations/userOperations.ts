@@ -17,7 +17,7 @@ const Op = Sequelize.Op
 namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
-  ): Promise<Boolean> => {
+  ): Promise<String | undefined> => {
     let recoveryPhrase = RecoveryPhrase.generate()
     let userReference = await UserReference.create(
       {
@@ -34,9 +34,9 @@ namespace UserOperations {
     )
 
     if (userReference) {
-      return true
+      return recoveryPhrase
     } else {
-      return false
+      return
     }
   }
 
@@ -55,17 +55,59 @@ namespace UserOperations {
     }
   }
 
+  export const ejectionStatus = async (
+    emailAddress: string
+  ): Promise<boolean> => {
+    try {
+      let user = await UserReference.findOne({
+        where: {
+          emailAddress: Normalizer.emailAddress(emailAddress),
+        },
+        include: [{ model: User, attributes: ['ejection'] }],
+      })
+
+      return user.User.ejection ? true : false
+    } catch (e) {
+      return false
+    }
+  }
+
+  export const ejectionStatusByAddress = async (
+    publicKey: string
+  ): Promise<boolean> => {
+    try {
+      let ejectedUser = await User.findOne({
+        where: {
+          publicKey: Normalizer.ethereumAddress(publicKey),
+          ejection: {
+            [Op.ne]: null,
+          },
+        },
+      })
+
+      return ejectedUser ? true : false
+    } catch (e) {
+      return false
+    }
+  }
+
   export const getUserRecoveryPhraseByEmailAddress = async (
     emailAddress: string
   ): Promise<string | null> => {
-    let user = await UserReference.findOne({
-      where: { emailAddress: Normalizer.emailAddress(emailAddress) },
-      include: [{ model: User, attributes: ['recoveryPhrase'] }],
-    })
+    try {
+      let user = await UserReference.findOne({
+        where: {
+          emailAddress: Normalizer.emailAddress(emailAddress),
+        },
+        include: [{ model: User, attributes: ['recoveryPhrase'] }],
+      })
 
-    if (user) {
-      return user.User.recoveryPhrase
-    } else {
+      if (user) {
+        return user.User.recoveryPhrase
+      } else {
+        return null
+      }
+    } catch (e) {
       return null
     }
   }
@@ -74,23 +116,32 @@ namespace UserOperations {
     existingEmailAddress: string,
     updatedEmailAddress: string
   ) => {
-    return await UserReference.update(
-      { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
-      {
-        where: {
-          emailAddress: {
-            [Op.eq]: Normalizer.emailAddress(existingEmailAddress),
+    try {
+      let result = await UserReference.update(
+        { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
+        {
+          where: {
+            emailAddress: {
+              [Op.eq]: Normalizer.emailAddress(existingEmailAddress),
+            },
           },
-        },
-      }
-    )
+        }
+      )
+      return result
+    } catch (e) {
+      return null
+    }
   }
 
   export const updatePaymentDetails = async (
     token: string,
     publicKey: string
   ): Promise<boolean> => {
-    let paymentProcessor = new PaymentProcessor(config.stripeSecret)
+    let paymentProcessor = new PaymentProcessor(
+      config.stripeSecret,
+      config.web3ProviderHost,
+      config.unlockContractAddress
+    )
     return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
 
@@ -134,6 +185,19 @@ namespace UserOperations {
     } catch (_e) {
       return []
     }
+  }
+
+  export const eject = async (publicKey: ethereumAddress): Promise<any> => {
+    return await User.update(
+      { ejection: Date.now() },
+      {
+        where: {
+          publicKey: {
+            [Op.eq]: Normalizer.ethereumAddress(publicKey),
+          },
+        },
+      }
+    )
   }
 }
 

@@ -16,7 +16,7 @@ export default class EventService {
    * @returns {Promise<*>}
    */
   async saveEvent(
-    { lockAddress, name, description, location, date, owner, logo },
+    { lockAddress, name, description, location, date, owner, logo, links },
     token
   ) {
     const opts = {}
@@ -31,6 +31,7 @@ export default class EventService {
       date,
       owner,
       logo,
+      links,
     })
 
     // First check if the event exists
@@ -65,7 +66,40 @@ export default class EventService {
    */
   async getEvent(lockAddress) {
     try {
-      return await axios.get(`${this.host}/events/${lockAddress}`)
+      const response = await axios.get(`${this.host}/events/${lockAddress}`)
+      let {
+        name,
+        date,
+        description,
+        location,
+        duration,
+        logo,
+        image,
+        eventLinks,
+      } = response.data
+
+      // Hardcoding values
+      if (lockAddress === '0xB0ad425cA5792DD4C4Af9177c636e5b0e6c317BF') {
+        image =
+          'https://assets.unlock-protocol.com/nft-images/ethwaterloo/ethwaterloo-logomark.png'
+      }
+
+      if (lockAddress === '0xaA23E8ceBd3817eeEC735Cd9aaF557cCB8e8407C') {
+        image =
+          'https://assets.unlock-protocol.com/events/coinfund-rabbithole.png'
+      }
+
+      return {
+        name,
+        date: new Date(date),
+        lockAddress,
+        description,
+        location,
+        duration,
+        logo,
+        image,
+        links: eventLinks,
+      }
     } catch (error) {
       return Promise.reject(error)
     }

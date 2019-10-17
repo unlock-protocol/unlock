@@ -1,12 +1,11 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { actions } from '@storybook/addon-actions'
-import { Provider } from 'react-redux'
 import { Lock } from '../../components/lock/Lock'
-import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import { WindowContext } from '../../hooks/browser/useWindow'
+import configure from '../../config'
 
 // lock, account, keys, purchaseKey
 const lockActions = actions({
@@ -36,34 +35,99 @@ const lock = {
   expirationDuration: 2592000,
 }
 
+const lockWithLongName = {
+  address: '0x123',
+  name: 'Hitting406 Crypto Category',
+  keyPrice: '0.23',
+  fiatPrice: 240.38,
+  expirationDuration: 2592000,
+}
+
 const soldOutLock = Object.assign(
   { maxNumberOfKeys: 1, outstandingKeys: 1 },
   lock
 )
 
-const store = createUnlockStore({
-  currency: {
-    USD: 195.99,
-  },
-})
-
 const ConfigProvider = ConfigContext.Provider
 const WindowProvider = WindowContext.Provider
 
-const storyConfig = {
-  requiredConfirmations: 12,
-  isInIframe: false,
-  isServer: false,
+const storyConfig = configure()
+
+const accountWithBalance = {
+  balance: {
+    eth: '9001',
+    '0x123ERC20': '9001',
+    [storyConfig.erc20Contract.address]: '9001',
+  },
 }
 
 storiesOf('Lock', module)
   .addDecorator(getStory => (
     <ConfigProvider value={storyConfig}>
-      <WindowProvider value={fakeWindow}>
-        <Provider store={store}>{getStory()}</Provider>
-      </WindowProvider>
+      <WindowProvider value={fakeWindow}>{getStory()}</WindowProvider>
     </ConfigProvider>
   ))
+  .addDecorator(getStory => (
+    <div
+      style={{
+        backgroundColor: 'var(--offwhite)',
+        width: '100vw',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'row',
+        placeContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          height: '200px',
+          display: 'grid',
+        }}
+      >
+        {getStory()}
+      </div>
+    </div>
+  ))
+  .add('with no key, ERC20 Lock, known currency', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '10.0',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    return (
+      <Lock
+        account={accountWithBalance}
+        lock={erc20Lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
+  .add('with no key, ERC20 Lock, unknown currency', () => {
+    const erc20Lock = {
+      currencyContractAddress: '0x123ERC20',
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    return (
+      <Lock
+        account={accountWithBalance}
+        lock={erc20Lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
   .add('with no key, for a short duration (check hover state too)', () => {
     const shortLock = {
       address: '0x123',
@@ -74,32 +138,46 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={shortLock}
         transaction={null}
         lockKey={null}
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
   .add('with no key (check hover state too)', () => {
     return (
       <Lock
+        account={accountWithBalance}
         lock={lock}
         transaction={null}
         lockKey={null}
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
+      />
+    )
+  })
+  .add('with very long name', () => {
+    return (
+      <Lock
+        account={accountWithBalance}
+        lock={lockWithLongName}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
       />
     )
   })
   .add('disabled - another lock has a pending key', () => {
     return (
       <Lock
+        account={accountWithBalance}
         disabled
         lock={lock}
         transaction={null}
@@ -107,7 +185,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -120,27 +197,85 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
-  .add('disabled - too expensive for current user', () => {
-    const account = {
-      balance: '0',
+  .add('disabled - too expensive for current user in eth', () => {
+    const accountWithNotEnoughEth = {
+      balance: {
+        eth: '0',
+      },
+      name: 'julien',
     }
     return (
       <Lock
-        account={account}
+        account={accountWithNotEnoughEth}
         lock={lock}
         transaction={null}
         lockKey={null}
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
+  .add('disabled - too expensive for current user in erc20', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '10.0',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+
+    const accountWithNotEnoughErc20 = {
+      balance: {
+        [storyConfig.erc20Contract.address]: '0',
+      },
+      name: 'julien',
+    }
+    return (
+      <Lock
+        account={accountWithNotEnoughErc20}
+        lock={erc20Lock}
+        transaction={null}
+        lockKey={null}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="none"
+      />
+    )
+  })
+  .add(
+    'not disabled - even if the price in eth is too expensive for current user',
+    () => {
+      const erc20Lock = {
+        currencyContractAddress: storyConfig.erc20Contract.address,
+        address: '0x123',
+        name: 'Monthly',
+        keyPrice: '66',
+        expirationDuration: 5 * 60, // 5 minutes
+      }
+      const accountWithNotEnoughEth = {
+        balance: {
+          eth: '0',
+          [storyConfig.erc20Contract.address]: '75',
+        },
+        name: 'julien',
+      }
+      return (
+        <Lock
+          account={accountWithNotEnoughEth}
+          lock={erc20Lock}
+          transaction={null}
+          lockKey={null}
+          {...lockActions}
+          openInNewWindow={false}
+          keyStatus="none"
+        />
+      )
+    }
+  )
   .add('with a pending key (not yet mined)', () => {
     const k = {
       lock: lock.address,
@@ -157,7 +292,31 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="submitted"
-        requiredConfirmations={3}
+      />
+    )
+  })
+  .add('with a pending key (not yet mined) for an know ERC20 Lock', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+    }
+    const k = {
+      lock: erc20Lock.address,
+    }
+    const t = {
+      status: 'submitted',
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={t}
+        lockKey={k}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="submitted"
       />
     )
   })
@@ -178,10 +337,38 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="confirming"
-        requiredConfirmations={3}
       />
     )
   })
+  .add(
+    'with a mined key which was not confirmed for an know ERC20 Lock',
+    () => {
+      const erc20Lock = {
+        currencyContractAddress: storyConfig.erc20Contract.address,
+        address: '0x123',
+        name: 'Monthly',
+        keyPrice: '66',
+        expirationDuration: 5 * 60, // 5 minutes
+      }
+      const k = {
+        lock: erc20Lock.address,
+      }
+      const t = {
+        status: 'mined',
+        confirmations: config.requiredConfirmations - 1,
+      }
+      return (
+        <Lock
+          lock={erc20Lock}
+          transaction={t}
+          lockKey={k}
+          {...lockActions}
+          openInNewWindow={false}
+          keyStatus="confirming"
+        />
+      )
+    }
+  )
   .add('with a mined key.', () => {
     const k = {
       lock: lock.address,
@@ -190,16 +377,48 @@ storiesOf('Lock', module)
       status: 'mined',
       confirmations: config.requiredConfirmations + 1,
     }
+
+    const lockWithKey = {
+      ...lock,
+      key: {},
+    }
     return (
       <Lock
-        lock={lock}
+        lock={lockWithKey}
         transaction={t}
         lockKey={k}
         config={config}
         {...lockActions}
         openInNewWindow={false}
         keyStatus="valid"
-        requiredConfirmations={3}
+      />
+    )
+  })
+
+  .add('with a mined key for an know ERC20 Lock', () => {
+    const erc20Lock = {
+      currencyContractAddress: storyConfig.erc20Contract.address,
+      address: '0x123',
+      name: 'Monthly',
+      keyPrice: '66',
+      expirationDuration: 5 * 60, // 5 minutes
+      key: {},
+    }
+    const k = {
+      lock: erc20Lock.address,
+    }
+    const t = {
+      status: 'mined',
+      confirmations: config.requiredConfirmations + 1,
+    }
+    return (
+      <Lock
+        lock={erc20Lock}
+        transaction={t}
+        lockKey={k}
+        {...lockActions}
+        openInNewWindow={false}
+        keyStatus="valid"
       />
     )
   })
@@ -214,6 +433,7 @@ storiesOf('Lock', module)
     }
     return (
       <Lock
+        account={accountWithBalance}
         lock={lockWithBalance}
         transaction={null}
         lockKey={null}
@@ -221,7 +441,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })
@@ -232,6 +451,7 @@ storiesOf('Lock', module)
     )
     return (
       <Lock
+        account={accountWithBalance}
         lock={lockWithInfiniteNumberOfKeys}
         transaction={null}
         lockKey={null}
@@ -239,7 +459,6 @@ storiesOf('Lock', module)
         {...lockActions}
         openInNewWindow={false}
         keyStatus="none"
-        requiredConfirmations={3}
       />
     )
   })

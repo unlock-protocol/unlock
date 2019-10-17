@@ -55,6 +55,21 @@ const globalStyle = `
   a:visited {
     color: var(--link);
   }
+
+  .responsiveWrapper{
+    position: relative;
+    width: 100%;
+    padding-top: 60%;
+    overflow: hidden;
+}
+
+.responsiveWrapper iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
 `
 
 export default createGlobalStyle`

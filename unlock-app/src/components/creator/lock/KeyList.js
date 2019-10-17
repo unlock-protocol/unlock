@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import Link from 'next/link'
+import Svg from '../../interface/svg'
 import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
@@ -26,6 +26,29 @@ export class KeyList extends React.Component {
         )
       })
     }
+
+    /*
+      <Pagination> takes a list of items
+      and a function that takes list of items and renders the list.
+      This is so that the Pagination component can be reused across the app
+    */
+    const pagination =
+      keys.length > 0 ? (
+        <Pagination
+          items={keys}
+          currentPage={page + 1}
+          itemCount={lock.outstandingKeys}
+          renderItems={renderItems}
+          goToPage={loadPage}
+        />
+      ) : (
+        <Message>
+          No keys have been purchased yet. See how you can integrate your lock
+          into an application by clicking on <InlineIcon /> the icon in the bar
+          above.
+        </Message>
+      )
+
     return (
       <KeyListWrapper>
         <Table>
@@ -34,28 +57,7 @@ export class KeyList extends React.Component {
             <Cell>Expiration</Cell>
           </Header>
         </Table>
-        {/*
-          <Pagination> takes a list of items
-          and a function that takes list of items and renders the list.
-          This is so that the Pagination component can be reused across the app
-          */
-        keys.length > 0 ? (
-          <Pagination
-            items={keys}
-            currentPage={page + 1}
-            itemCount={lock.outstandingKeys}
-            renderItems={renderItems}
-            goToPage={loadPage}
-          />
-        ) : (
-          <Message>
-            No keys have been purchased yet.{' '}
-            <Link href="https://github.com/unlock-protocol/unlock/wiki/Introduction-to-Unlock#access-permissions-on-the-blockchain">
-              Embed your code snippet
-            </Link>{' '}
-            to sell keys.
-          </Message>
-        )}
+        {pagination}
       </KeyListWrapper>
     )
   }
@@ -106,12 +108,17 @@ const Table = styled.div`
   margin-bottom: 10px;
 `
 
+const InlineIcon = styled(Svg.AppStore)`
+  vertical-align: middle;
+  width: 20px;
+`
+
 const Row = styled.div`
   display: grid;
   margin-top: 20px;
   margin-left: 48px;
   display: grid;
-  grid-template-columns: 450px 150px;
+  grid-template-columns: 450px 1fr;
   grid-gap: 20px;
 `
 

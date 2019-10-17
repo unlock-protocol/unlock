@@ -1,4 +1,4 @@
-/* eslint react/prop-types: 0 */
+/* eslint react/prop-types: 0, react/display-name: 0 */
 import React from 'react'
 import * as rtl from 'react-testing-library'
 import 'jest-dom/extend-expect'
@@ -44,37 +44,55 @@ describe('DatePicker', () => {
     expect(wrapper.queryByText('2')).not.toBeNull()
   })
 
+  it('should show a date in the future if it has been initialized with this', () => {
+    expect.assertions(3)
+    const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
+    const date = new Date('2020-03-02T00:00:00.000Z') // March 2nd, 2020
+    let wrapper = rtl.render(
+      <DatePicker now={now} date={date} onChange={jest.fn()} />
+    )
+    expect(wrapper.queryByText('2020')).not.toBeNull()
+    expect(wrapper.queryByText('Mar')).not.toBeNull()
+    expect(wrapper.queryByText('2')).not.toBeNull()
+  })
+
   it('should let the user pick a year and trigger onChange', () => {
-    expect.assertions(1)
-    const onChange = jest.fn()
+    expect.assertions(2)
+    const onChange = jest.fn(date => {
+      expect(date.getFullYear()).toEqual(2020)
+    })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
     let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a year'), {
       target: { value: '2020' }, // Changed to 2020
     })
-    expect(onChange).toHaveBeenCalledWith(new Date('2020-03-02T00:00:00.000Z'))
+    expect(onChange).toHaveBeenCalledTimes(1)
   })
 
   it('should let the user pick a month and trigger onChange', () => {
-    expect.assertions(1)
-    const onChange = jest.fn()
+    expect.assertions(2)
+    const onChange = jest.fn(date => {
+      expect(date.getMonth()).toEqual(0)
+    })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
     let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a month'), {
       target: { value: '0' }, // Changed to January
     })
-    expect(onChange).toHaveBeenCalledWith(new Date('2019-01-02T00:00:00.000Z'))
+    expect(onChange).toHaveBeenCalledTimes(1)
   })
 
   it('should let the user pick a day and trigger onChange', () => {
-    expect.assertions(1)
-    const onChange = jest.fn()
+    expect.assertions(2)
+    const onChange = jest.fn(date => {
+      expect(date.getDate()).toEqual(3)
+    })
     const now = new Date('2019-03-02T00:00:00.000') // March 2nd, 2019
     let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a day'), {
       target: { value: '3' }, // Changed to the 3rd
     })
-    expect(onChange).toHaveBeenCalledWith(new Date('2019-03-03T00:00:00.000'))
+    expect(onChange).toHaveBeenCalledTimes(1)
   })
 
   describe('getDaysMonthsAndYearsForSelect', () => {

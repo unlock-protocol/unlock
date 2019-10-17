@@ -6,27 +6,35 @@ import { EventEmitter } from 'events'
 // these objects, and nothing that isn't emitted should be in one of these
 // objects.
 export const success = {
+  addPaymentMethod: 'addPaymentMethod.success',
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
+  getLockAddressesForUser: 'getLockAddressesForUser.success',
   lockLookUp: 'lockLookUp.success',
   storeLockDetails: 'storeLockDetails.success',
-  updateLockDetails: 'updateLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
+  getCards: 'getCards.success',
+  keyPurchase: 'keyPurchase.success',
+  getKeyPrice: 'getKeyPrice.success',
 }
 
 export const failure = {
+  addPaymentMethod: 'addPaymentMethod.failure',
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
+  getLockAddressesForUser: 'getLockAddressesForUser.failure',
   lockLookUp: 'lockLookUp.failure',
   storeLockDetails: 'storeLockDetails.failure',
-  updateLockDetails: 'updateLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
+  getCards: 'getCards.failure',
+  keyPurchase: 'keyPurchase.failure',
+  getKeyPrice: 'getKeyPrice.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -138,53 +146,41 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   *  Updates a lock with with details provided. In the case of failure a rejected promise is
-   * returned to the caller.
-   *
-   * @param {*} address
-   * @param {*} update
-   * @param {*} token
-   */
-  async updateLockDetails(address, update, token) {
-    const opts = {}
-    if (token) {
-      // TODO: Tokens aren't optional
-      opts.headers = this.genAuthorizationHeader(token)
-    }
-    try {
-      await axios.put(`${this.host}/lock/${address}`, update, opts)
-      this.emit(success.updateLockDetails, address)
-    } catch (error) {
-      this.emit(failure.updateLockDetails, { address, error })
-    }
-  }
-
-  /**
-   * Creates a user. In the case of failure a rejected promise is returned to the caller.
+   * Creates a user. In the case of failure a rejected promise is returned to
+   * the caller.  On success, the encrypted key payload and the credentials are
+   * emitted so that the user can automatically be signed in.
    *
    * @param {*} user
+   * @param {string} emailAddress (do not send to locksmith)
+   * @param {string} password (do not send to locksmith)
    * @returns {Promise<*>}
    */
-  async createUser(user) {
+  async createUser(user, emailAddress, password) {
     const opts = {}
     try {
-      await axios.post(`${this.host}/users/`, user, opts)
-      this.emit(success.createUser, user.message.user.publicKey)
+      const response = await axios.post(`${this.host}/users/`, user, opts)
+      this.emit(success.createUser, {
+        passwordEncryptedPrivateKey:
+          user.message.user.passwordEncryptedPrivateKey,
+        emailAddress,
+        password,
+        recoveryPhrase: response.data.recoveryPhrase,
+      })
     } catch (error) {
       this.emit(failure.createUser, error)
     }
   }
 
   /**
-   * Updates a user, using their email address as key. In the case of failure a rejected promise
-   * is returned to the caller.
+   * Updates a user's private key, using their email address as key. In the case
+   * of failure a rejected promise is returned to the caller.
    *
    * @param {*} email
    * @param {*} user
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async updateUser(emailAddress, user, token) {
+  async updateUserEncryptedPrivateKey(emailAddress, user, token) {
     const opts = {}
     if (token) {
       // TODO: tokens aren't optional
@@ -192,13 +188,40 @@ export class StorageService extends EventEmitter {
     }
     try {
       await axios.put(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}`,
+        `${this.host}/users/${encodeURIComponent(
+          emailAddress
+        )}/passwordEncryptedPrivateKey`,
         user,
         opts
       )
       this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
       this.emit(failure.updateUser, { emailAddress, error })
+    }
+  }
+
+  /**
+   * Adds a payment method to a user's account, using their email address as key.
+   *
+   * @param {*} emailAddress
+   * @param {*} paymentDetails structured_data used to generate signature
+   * @param {*} token
+   */
+  async addPaymentMethod(emailAddress, stripeTokenId, token) {
+    const opts = {}
+    if (token) {
+      // TODO: tokens aren't optional
+      opts.headers = this.genAuthorizationHeader(token)
+    }
+    try {
+      await axios.put(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/paymentdetails`,
+        stripeTokenId,
+        opts
+      )
+      this.emit(success.addPaymentMethod, { emailAddress, stripeTokenId })
+    } catch (error) {
+      this.emit(failure.addPaymentMethod, { emailAddress, error })
     }
   }
 
@@ -256,6 +279,76 @@ export class StorageService extends EventEmitter {
       }
     } catch (error) {
       this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
+    }
+  }
+
+  /**
+   * Given a user's email address, retrieves the payment methods associated with
+   * their account. Except in event of error, will always respond with an array
+   * of 0 or more elements.
+   */
+  async getCards(emailAddress) {
+    try {
+      const response = await axios.get(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`
+      )
+      this.emit(success.getCards, response.data)
+    } catch (error) {
+      this.emit(failure.getCards, { error })
+    }
+  }
+
+  async purchaseKey(purchaseRequest, token) {
+    const opts = {
+      headers: this.genAuthorizationHeader(token),
+    }
+    try {
+      await axios.post(`${this.host}/purchase`, purchaseRequest, opts)
+      this.emit(
+        success.keyPurchase,
+        purchaseRequest.message.purchaseRequest.lock
+      )
+    } catch (error) {
+      this.emit(failure.keyPurchase, error)
+    }
+  }
+
+  /**
+   * Retrieves the list of known lock adresses for this user
+   * [Note: locksmith may not know of all the locks by a user at a given point as the lock may not be deployed yet, or the lock might have been transfered]
+   * @param {*} address
+   */
+  async getLockAddressesForUser(address) {
+    try {
+      const result = await axios.get(`${this.host}/${address}/locks`)
+      if (result.data && result.data.locks) {
+        this.emit(
+          success.getLockAddressesForUser,
+          result.data.locks.map(lock => lock.address)
+        )
+      } else {
+        this.emit(
+          failure.getLockAddressesForUser,
+          'We could not retrieve lock addresses for that user'
+        )
+      }
+    } catch (error) {
+      this.emit(failure.getLockAddressesForUser, error)
+    }
+  }
+
+  /**
+   * Given a lock address (ERC20), return the price of a key for that lock in dollars
+   * On success returns an object of { creditCardProcessing, gasFee, keyPrice, unlockServiceFee }
+   * all denominated in cents.
+   * @param {string} lockAddress
+   */
+  async getKeyPrice(lockAddress) {
+    try {
+      const result = await axios.get(`${this.host}/price/${lockAddress}`)
+      this.emit(success.getKeyPrice, result.data)
+    } catch (error) {
+      this.emit(failure.getKeyPrice, error)
     }
   }
 }

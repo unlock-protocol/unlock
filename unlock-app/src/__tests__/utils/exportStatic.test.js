@@ -41,12 +41,14 @@ describe('exportStatic', () => {
 
     expect(paths).toEqual({
       '/': { page: '/home' },
+      '/account': { page: '/account' },
       '/dashboard': { page: '/dashboard' },
       '/keychain': { page: '/keyChain' },
       '/log': { page: '/log' },
       '/login': { page: '/login' },
       '/signup': { page: '/signup' },
       '/settings': { page: '/settings' },
+      '/recover': { page: '/recover' },
     })
   })
 })

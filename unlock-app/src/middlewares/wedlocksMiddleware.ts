@@ -1,6 +1,6 @@
 import WedlockService from '../services/wedlockService'
-import { SIGNUP_EMAIL } from '../actions/user'
-import { Action } from '../unlockTypes' // eslint-disable-line no-unused-vars
+import { SIGNUP_EMAIL, WELCOME_EMAIL } from '../actions/user'
+import { Action } from '../unlockTypes'
 
 const wedlocksMiddleware = (config: any) => {
   const { services } = config
@@ -17,6 +17,20 @@ const wedlocksMiddleware = (config: any) => {
           // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.confirmEmail(action.emailAddress, `${origin}/signup`)
         }
+
+        if (action.type === WELCOME_EMAIL && window && window.location) {
+          const { origin } = window.location
+          // TODO: then and catch? I think we really only need to worry about errors.
+          wedlockService.welcomeEmail(
+            action.emailAddress,
+            `${origin}/recover/?email=${encodeURIComponent(
+              action.emailAddress
+            )}&recoveryKey=${encodeURIComponent(
+              JSON.stringify(action.recoveryKey)
+            )}`
+          )
+        }
+
         next(action)
       }
     }

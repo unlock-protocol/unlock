@@ -1,4 +1,4 @@
-pragma solidity 0.5.9;
+pragma solidity 0.5.12;
 
 
 /**
@@ -15,12 +15,15 @@ interface IUnlock {
     address indexed newLockAddress
   );
 
-  event NewTokenURI(
-    string tokenURI
+  event ConfigUnlock(
+    address publicLockAddress,
+    string globalTokenSymbol,
+    string globalTokenURI
   );
 
-  event NewGlobalTokenSymbol(
-    string tokenSymbol
+  event ResetTrackedValue(
+    uint grossNetworkProduct,
+    uint totalDiscountGranted
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
@@ -79,31 +82,30 @@ interface IUnlock {
     returns (uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
-  function getGlobalBaseTokenURI()
+  function globalBaseTokenURI()
     external
     view
     returns (string memory);
 
-  /** Function to set the globalTokenURI field.
-   *  Should throw if called by other than owner
+  // Function to read the globalTokenSymbol field.
+  function globalTokenSymbol()
+    external
+    view
+    returns (string memory);
+
+  /** Function for the owner to update configuration variables.
+   *  Should throw if called by other than owner.
    */
-  function setGlobalBaseTokenURI(
+  function configUnlock(
+    address _publicLockAddress,
+    string calldata _symbol,
     string calldata _URI
   )
     external;
 
-  // Function to read the globalTokenSymbol field.
-  function getGlobalTokenSymbol()
-    external
-    view
-    returns (string memory);
-
-  /** Function to set the globalTokenSymbol field.
-   *  Should throw if called by other than owner.
-   */
-  function setGlobalTokenSymbol(
-    string calldata _symbol
-  )
-    external;
-
+  // Allows the owner to change the value tracking variables as needed.
+  function resetTrackedValue(
+    uint _grossNetworkProduct,
+    uint _totalDiscountGranted
+  ) external;
 }

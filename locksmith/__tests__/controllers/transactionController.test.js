@@ -4,21 +4,33 @@ const Transaction = require('../../src/models').Transaction
 
 describe('transactionController', () => {
   beforeEach(async () => {
+    await Transaction.truncate()
     await Transaction.bulkCreate([
       {
         transactionHash: '0x345546565',
         sender: '0xcAFe',
-        recipient: '0xbeefe',
+        recipient: '0xBeeFE',
       },
       {
         transactionHash: '0x445546565',
         sender: '0xcAFe',
-        recipient: '0xbeefe',
+        recipient: '0xBeeFE',
       },
       {
         transactionHash: '0x545546565',
-        sender: '0xcafe2',
-        recipient: '0xbeefe',
+        sender: '0xcAFe2',
+        recipient: '0xBeeFE',
+      },
+      {
+        transactionHash: '0x645546565',
+        sender: '0xcAFe2',
+        recipient: '0xBEefb',
+      },
+      {
+        transactionHash: '0x645546567',
+        sender: '0xcAFe2',
+        recipient: '0xBEefb',
+        for: '0xcAFe2',
       },
     ])
   })
@@ -50,6 +62,58 @@ describe('transactionController', () => {
           .set('Accept', /json/)
 
         expect(response.body.transactions.length).toEqual(2)
+      })
+    })
+
+    describe('when the address has transactions to the recipient', () => {
+      it("returns the addresses' transactions", async () => {
+        expect.assertions(1)
+        let sender = '0xcAFe2'
+
+        let response = await request(app)
+          .get('/transactions')
+          .query({ sender: sender, recipient: ['0xBeeFE', '0x4565t'] })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(1)
+      })
+    })
+
+    describe('when filtering on for', () => {
+      it("returns the addresses' transactions", async () => {
+        expect.assertions(2)
+        let sender = '0xcAFe2'
+
+        let response = await request(app)
+          .get('/transactions')
+          .query({
+            sender: sender,
+            for: '0xcAFe2',
+          })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(1)
+        expect(response.body.transactions[0].transactionHash).toEqual(
+          '0x645546567'
+        )
+      })
+    })
+
+    describe('when filtering on for -> recipients', () => {
+      it('returns the matching transactions', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/transactions')
+          .query({
+            recipient: ['0xBeeFB', '0xBeeFB'],
+            for: '0xcAFe2',
+          })
+          .set('Accept', /json/)
+
+        expect(response.body.transactions.length).toEqual(1)
+        expect(response.body.transactions[0].transactionHash).toEqual(
+          '0x645546567'
+        )
       })
     })
   })
@@ -91,7 +155,7 @@ describe('transactionController', () => {
           .send({
             transactionHash: '0x345546565',
             sender: '0xcAFe',
-            recipient: '0xbeefe',
+            recipient: '0xBeeFE',
           })
 
         expect(response.statusCode).toBe(202)

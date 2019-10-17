@@ -9,6 +9,16 @@ let passwordEncryptedPrivateKeyPathRegex = new RegExp(
   'i'
 )
 let userUpdatePathRegex = new RegExp('^/users/?$', 'i')
+let ejectionPathRegex = '/:ethereumAddress/eject'
+
+router.post(
+  ejectionPathRegex,
+  signatureValidationMiddleware.generateProcessor({
+    name: 'user',
+    required: ['publicKey'],
+    signee: 'publicKey',
+  })
+)
 
 router.put(
   userUpdatePathRegex,
@@ -45,5 +55,6 @@ router.put(
   '/:emailAddress/passwordEncryptedPrivateKey',
   userController.updatePasswordEncryptedPrivateKey
 )
+router.post('/:ethereumAddress/eject', userController.eject)
 
 module.exports = router

@@ -1,4 +1,4 @@
-export MESSAGE="Production Automated Deploy $BRANCH
+export MESSAGE="Production $PROD_DEPLOY_TYPE Deploy $BRANCH
 
 This is a production deployment. Please treat with great caution!
 This deploys the code from master as of commit $COMMIT_TO_DEPLOY.
@@ -14,10 +14,11 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Update the price on this new lock or an older lock
 
 ## Paywall
-* [ ] Go to https://www.ouvre-boite.com/members-staging/ and make sure the paywall is in place (no scrolling)
-* [ ] Purchase a key and ensure that the optimistic paywall lets you access the content (scrolling works)
-* [ ] Wait 5 minutes (the key should expire) and reload the page
-* [ ] Purchase another key
+* [ ] Go to https://www.ouvre-boite.com/page-with-ads-staging.html and make sure ads (red blocks are loading)
+* [ ] Purchase a key to unlock the ad free experience
+* [ ] Make sure the ads go away immediately (even before you close the modal)
+* [ ] Refresh the page and make sure the page has no more ads
+* [ ] When clicking on the button again, before the key expires, the lock should show the status (pending, confirming, or valid)
 
 ## Tickets
 * [ ] Go to https://tickets-staging.unlock-protocol.com/ and create or update a existing event

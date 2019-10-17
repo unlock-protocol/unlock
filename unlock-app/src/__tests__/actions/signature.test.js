@@ -25,9 +25,10 @@ describe('signature actions', () => {
     const expectation = {
       type: SIGN_DATA,
       data,
+      id: 'track this signature',
     }
 
-    expect(signData(data)).toEqual(expectation)
+    expect(signData(data, 'track this signature')).toEqual(expectation)
   })
 
   it('should have an action to show signed data', () => {
@@ -38,8 +39,11 @@ describe('signature actions', () => {
       type: SIGNED_DATA,
       data,
       signature,
+      id: 'track this signature',
     }
 
-    expect(signedData(data, signature)).toEqual(expectation)
+    expect(signedData(data, 'track this signature', signature)).toEqual(
+      expectation
+    )
   })
 })

@@ -1,10 +1,116 @@
 # Changes
 
+## Next Version (minor!)
+
+- createLock now returns a Promise of the deployed lock address
+- updateKeyPrice now uses the right decimals for erc20 contracts
+- getting erc20Address and decimals from the contract when purchasing a key
+- Removed the 'owner' param on createLock since it is not really used (just emitted back)
+- Refactored signature to accept objects to be more flexible (this is a breaking change)
+
+## 0.3.18
+- walletService dispatches personal_sign to unlock-provider
+
+## 0.3.17
+- unlock-provider can personal_sign data
+
+## 0.3.16
+
+- Using the right decimals number for ERC20 balances
+
+## 0.3.15
+
+- TODO cleanup in web3Service tests
+- Randomizing retries on error 419 (rate limiting)
+- Hanlding missing ERC20 methods
+
+## 0.3.14
+
+- Adding retries on error 419 (rate limiting)
+
+## 0.3.13
+
+- Returning the token symbol when retrieving an ERC20 lock.
+
+## 0.3.12
+
+- fixed a difference between pending transactions (node knows about them) and submitted transactions (which may be transactions that have been cancelled and will never succeed)
+
+## 0.3.11
+
+- add `getTokenSymbol` method to web3Service to identify arbitrary ERC20 tokens (#4481)
+- add `getTokenBalance` method to web3Service to get the user's balance of arbitrary ERC20 tokens (#4431)
+
+## 0.3.10
+
+- Add "for" field for pending/submitted key purchase transactions (#4190)
+- ignore events from other contracts (erc20 for instance) (#4187)
+
+## 0.3.9
+
+- If a transaction is unknown poll immediately for it (#4149)
+
+## 0.3.8
+
+- Moved scrypt/N back to the default from Web3 for speed of account interaction
+
+## 0.3.7
+
+- Add "for" field for key purchase transactions to describe who the key was purchased for
+
+## 0.3.6
+
+- Bugfix: using the right default amount on withdraw when no amount has been provided
+
+## 0.3.5
+
+- Bugfix: key purchase request signatures are no longer always expired
+
+## 0.3.4
+
+- Bugfix: using correctly formatted structured data for key purchase requests
+
+## 0.3.3
+
+- UnlockProvider gains the capability to sign key purchase requests
+
+## 0.3.2
+
+- UnlockProvider gains a `signPaymentData` method that will allow it to sign
+  payment details in a way that locksmith can verify and associate with the user
+
+## 0.3.1
+
+- walletService now emits an `account.updated` event with an account's email
+  address if available
+
+## 0.3.0
+
+- erc20 transfer approval returns immediately
+- UnlockProvider now stores user email address and encrypted private key
+- UnlockProvider gains new methods for signing typed data, replacing the old
+  strategy of intercepting JSON-RPC calls
+
+## 0.2.9
+
+- Fixing approvals
+
+## 0.2.8
+
+- Approving the right amount when using an ERC20 lock
+
+## 0.2.7
+
+- Removed `partialWithdraw` since it is unused and, starting from v11, `withdraw` implements the required logic
+- `getLock` yields the lock name from the on chain data.
+
 ## 0.2.6
+
 - `UnlockProvider` now inherits from `ethers.providers.JsonRpcProvider` instead
   of storing one as a property.
 
 ## 0.2.5
+
 - Allow `walletService` to properly connect to `UnlockProvider`
 - Provides pre-purchase approval for the purchase of ERC20 keys
 
