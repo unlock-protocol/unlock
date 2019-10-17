@@ -6,7 +6,6 @@ import {
 } from '../utils/postOffice'
 import { PostMessages } from '../messageTypes'
 import { isValidLocks, isAccount } from '../utils/validators'
-import { web3MethodResult } from '../windowTypes'
 
 export enum PostOfficeEvents {
   LockUpdate = 'update.locks',
@@ -14,7 +13,6 @@ export enum PostOfficeEvents {
   Error = 'error',
   Locked = 'locked',
   Unlocked = 'unlocked',
-  Web3Call = 'web3.call',
 }
 
 export class PostOfficeService extends EventEmitter {
@@ -69,9 +67,6 @@ export class PostOfficeService extends EventEmitter {
     this.postOffice.addHandler(PostMessages.UNLOCKED, () => {
       this.emit(PostOfficeEvents.Unlocked)
     })
-    this.postOffice.addHandler(PostMessages.WEB3, payload => {
-      this.emit(PostOfficeEvents.Web3Call, payload)
-    })
   }
 
   private sendAccount() {
@@ -80,10 +75,6 @@ export class PostOfficeService extends EventEmitter {
 
   private sendNetwork() {
     this.postOffice.postMessage(PostMessages.UPDATE_NETWORK, this.network)
-  }
-
-  sendWeb3Result(payload: web3MethodResult) {
-    this.postOffice.postMessage(PostMessages.WEB3_RESULT, payload)
   }
 
   setAccount(account: string | null) {
