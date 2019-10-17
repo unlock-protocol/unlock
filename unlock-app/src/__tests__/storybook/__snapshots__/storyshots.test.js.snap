@@ -66576,6 +66576,10 @@ Object {
   background-color: var(--grey);
 }
 
+.c4 .c14:hover {
+  background-color: var(--grey);
+}
+
 .c6 {
   color: var(--red);
   margin-top: 0;
@@ -66773,12 +66777,12 @@ Object {
         class="sc-dnqmqq dtvAnC"
       >
         <p
-          class="sc-ckVGcZ kXsDtD"
+          class="sc-ckVGcZ efHSCv"
         >
           Exporting your account will eject it from the Unlock platform. You will be able to import your account into a Web3 wallet such as MetaMask, but it will also remove your account from Unlock permanently, along with the ability to recover it with the link in your welcome email.
         </p>
         <div
-          class="sc-jKJlTe cMPJAF"
+          class="sc-jKJlTe jMLFEM"
         >
           <div>
             <svg
@@ -66800,7 +66804,7 @@ Object {
               Danger Zone
             </h1>
             <p
-              class="sc-ckVGcZ kXsDtD"
+              class="sc-ckVGcZ efHSCv"
             >
               Clicking the Eject Account button below will delete your Unlock account and download a JSON file containing your encrypted private key. You can import the JSON file into a Web3 wallet using your account password.
             </p>

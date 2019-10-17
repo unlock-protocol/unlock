@@ -274,9 +274,12 @@ export const Box = styled.div`
   }
   ${DisabledButton} {
     background-color: var(--grey);
+    &:hover {
+      background-color: var(--grey);
+    }
   }
   ${Media.phone`
-        justify-items: center;
+justify-items: center;
 grid-template-columns: 1fr;
 ${SubmitButton} {
   width: 100%;
