@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import FileSaver from 'file-saver'
 import {
   Grid,
   SectionHeader,
@@ -26,9 +28,9 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
         <Description>
           Exporting your account will eject it from the Unlock platform. You
           will be able to import your account into a Web3 wallet such as
-          MetaMask, but it will also remove your account from Unlock
-          permanently, along with the ability to recover it with the link in
-          your welcome email.
+          MetaMask, but it will also remove your account and personal
+          information from Unlock permanently, along with the ability to recover
+          it with the link in your welcome email.
         </Description>
         <Box>
           <div>
@@ -45,7 +47,10 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
             <SuperWarning>
               Do not lose this file, we cannot recover it if you do.
             </SuperWarning>
-            <EjectionForm encryptedPrivateKey={encryptedPrivateKey} />
+            <EjectionForm
+              download={downloadObjectAsJSON}
+              encryptedPrivateKey={encryptedPrivateKey}
+            />
           </div>
         </Box>
       </Column>
@@ -53,8 +58,25 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
   )
 }
 
+interface ReduxState {
+  userDetails: {
+    key: EncryptedPrivateKey
+  }
+}
+
+export const mapStateToProps = ({
+  userDetails: { key },
+}: ReduxState): EjectAccountProps => {
+  return {
+    encryptedPrivateKey: key,
+  }
+}
+
+export default connect(mapStateToProps)(EjectAccount)
+
 interface EjectionFormProps {
   encryptedPrivateKey: EncryptedPrivateKey
+  download: typeof downloadObjectAsJSON
 }
 
 interface EjectionFormState {
@@ -80,9 +102,18 @@ export class EjectionForm extends React.Component<
   }
 
   submitButton = () => {
+    const { download, encryptedPrivateKey } = this.props
     const { checked } = this.state
     if (checked) {
-      return <SubmitButton>Eject</SubmitButton>
+      return (
+        <SubmitButton
+          onClick={() => {
+            download(encryptedPrivateKey, 'encrypted-private-key.json')
+          }}
+        >
+          Eject
+        </SubmitButton>
+      )
     }
     return <DisabledButton>Eject</DisabledButton>
   }
@@ -107,4 +138,9 @@ export class EjectionForm extends React.Component<
   }
 }
 
-export default EjectAccount
+function downloadObjectAsJSON(value: any, filename: string) {
+  const blob = new Blob([JSON.stringify(value)], {
+    type: 'text/plain;charset=utf-8',
+  })
+  FileSaver.saveAs(blob, filename)
+}
