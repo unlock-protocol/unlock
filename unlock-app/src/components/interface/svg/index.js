@@ -15,6 +15,7 @@ import EthSub from './EthSub'
 import Export from './Export'
 import Github from './Github'
 import Heart from './Heart'
+import Key from './Key'
 import Lemniscate from './Lemniscate'
 import LiveDemo from './LiveDemo'
 import Loading from './Loading'
@@ -57,6 +58,7 @@ export default {
   Export: wrapViewBox(Export, '0 0 24 24'),
   Github: wrapViewBox(Github, '0 0 24 24'),
   Heart: wrapViewBox(Heart, '-6 -6 36 36'),
+  Key: wrapViewBox(Key, '0 0 24 24'),
   Lemniscate: wrapViewBox(Lemniscate, '0 0 24 24'),
   LiveDemo: wrapViewBox(LiveDemo, '0 0 64 64'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
