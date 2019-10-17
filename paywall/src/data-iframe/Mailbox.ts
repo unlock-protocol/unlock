@@ -23,12 +23,7 @@ import {
 } from '../windowTypes'
 import { waitFor } from '../utils/promises'
 import { iframePostOffice, PostMessageListener } from '../utils/postOffice'
-import {
-  MessageTypes,
-  PostMessages,
-  ExtractPayload,
-  PersonalSignPayload,
-} from '../messageTypes'
+import { MessageTypes, PostMessages, ExtractPayload } from '../messageTypes'
 import {
   normalizeAddressKeys,
   normalizeLockAddress,
@@ -150,7 +145,6 @@ export default class Mailbox {
     )
     this.emitChanges = this.emitChanges.bind(this)
     this.emitError = this.emitError.bind(this)
-    this.signData = this.signData.bind(this)
     const { postMessage, addHandler } = iframePostOffice(
       this.window,
       'data iframe'
@@ -180,7 +174,6 @@ export default class Mailbox {
       PostMessages.INITIATED_TRANSACTION,
       this.refreshBlockchainTransactions
     )
-    this.addPostMessageListener(PostMessages.PERSONAL_SIGN, this.signData)
     this.postMessage(PostMessages.READY, undefined)
   }
 
@@ -581,34 +574,5 @@ export default class Mailbox {
       // safety first: clear cache on *any* error
       this.window.localStorage.clear()
     }
-  }
-
-  /**
-   * Handling PostMessages.PERSONAL_SIGN
-   */
-  signData({ dataToSign, callbackId }: PersonalSignPayload) {
-    if (!this.handler) {
-      return
-    }
-    this.handler.signData(dataToSign, (error: Error, signedData: string) => {
-      if (error) {
-        this.emitError(error)
-        return
-      }
-
-      let sig = signedData
-      // walletService's signDataPersonal base64s its signatures. For
-      // the time being, we'll handle that here by decoding it so that
-      // end users get exactly a signature and nothing more.
-      const resultIsHex = signedData.startsWith('0x')
-      if (!resultIsHex) {
-        sig = Buffer.from(signedData, 'base64').toString()
-      }
-
-      this.postMessage(PostMessages.PERSONAL_SIGN_RESULT, {
-        signedData: sig,
-        callbackId,
-      })
-    })
   }
 }

@@ -194,7 +194,6 @@ export interface IframeManagingWindow {
 export interface UnlockProtocolObject {
   loadCheckoutModal: () => void
   getState: () => LockStatus
-  signData: (dataToSign: any, callback: (payload: any) => void) => void
 }
 
 export interface UnlockProtocolWindow {

@@ -9,8 +9,6 @@ import {
   BlockchainData,
   unlockNetworks,
 } from '../data-iframe/blockchainHandler/blockChainTypes'
-import Callbacker from '../utils/Callbacker'
-import { SIGN_DATA_NAMESPACE } from '../constants'
 
 interface hasPrototype {
   prototype?: any
@@ -40,12 +38,10 @@ export default class MainWindowHandler {
     keys: {},
     transactions: {},
   }
-  private callbacker: Callbacker
 
   constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
-    this.callbacker = new Callbacker()
   }
 
   init() {
@@ -100,14 +96,6 @@ export default class MainWindowHandler {
     this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
       this.blockchainData.transactions = transactions
     })
-
-    // when the data iframe returns some signed data, call the callback associated with it
-    this.iframes.data.on(
-      PostMessages.PERSONAL_SIGN_RESULT,
-      ({ signedData, callbackId }) => {
-        this.callbacker.call(callbackId, signedData)
-      }
-    )
 
     // handle display of checkout and account UI
     this.iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
@@ -178,14 +166,6 @@ export default class MainWindowHandler {
     const getState = () => this.lockStatus
     const blockchainData = () => this.blockchainData
 
-    const signData = (dataToSign: any, cb: (payload: any) => void) => {
-      const callbackId = this.callbacker.addCallback(SIGN_DATA_NAMESPACE, cb)
-      this.iframes.data.postMessage(PostMessages.PERSONAL_SIGN, {
-        dataToSign,
-        callbackId,
-      })
-    }
-
     const unlockProtocol: hasPrototype = {}
 
     const immutable = {
@@ -205,10 +185,6 @@ export default class MainWindowHandler {
       },
       blockchainData: {
         value: blockchainData,
-        ...immutable,
-      },
-      signData: {
-        value: signData,
         ...immutable,
       },
     })
