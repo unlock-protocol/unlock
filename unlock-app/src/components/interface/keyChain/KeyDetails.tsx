@@ -165,6 +165,7 @@ const Box = styled.div`
   border: thin #dddddd solid;
   width: 212px;
   padding: 16px;
+  border-radius: 4px;
   ${Media.phone`
 width: 100%;
 margin: 0 0 16px 0;
