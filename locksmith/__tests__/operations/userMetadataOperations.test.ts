@@ -1,7 +1,7 @@
 import {
   addMetadata,
   getMetadata,
-} from '../../src/operations/userMetadataOperations'
+} from '../../src/tokens/userMetadataOperations'
 
 const models = require('../../src/models')
 

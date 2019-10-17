@@ -1,5 +1,5 @@
-import { KeyMetadata } from '../models/keyMetadata'
-import { LockMetadata } from '../models/lockMetadata'
+import { KeyMetadata } from './models/keyMetadata'
+import { LockMetadata } from './models/lockMetadata'
 import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'

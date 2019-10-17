@@ -1,4 +1,4 @@
-const metadataOperations = require('../../src/operations/metadataOperations')
+const metadataOperations = require('../../src/tokens/metadataOperations')
 require('../../src/models')
 
 describe('metadataOperations', () => {

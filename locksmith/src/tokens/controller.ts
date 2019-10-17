@@ -2,12 +2,11 @@ import { Request, Response } from 'express-serve-static-core' // eslint-disable-
 import Normalizer from '../utils/normalizer'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
-
-import { addMetadata } from '../operations/userMetadataOperations'
+import { addMetadata } from './userMetadataOperations'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
-const metadataOperations = require('../operations/metadataOperations')
+const metadataOperations = require('./metadataOperations')
 
 namespace MetadataController {
   export const data = async (req: Request, res: Response): Promise<any> => {

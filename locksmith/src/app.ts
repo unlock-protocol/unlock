@@ -22,7 +22,7 @@ let userRouter = require('./routes/user')
 let eventRouter = require('./routes/event')
 let purchaseRouter = require('./routes/purchase')
 let priceRouter = require('./routes/price')
-let metadataRouter = require('./routes/metadata')
+let metadataRouter = require('./tokens')
 let healthCheckRouter = require('./routes/health')
 let linkdropRouter = require('./routes/linkdrop')
 

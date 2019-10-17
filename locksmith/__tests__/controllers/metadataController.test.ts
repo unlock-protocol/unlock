@@ -1,9 +1,9 @@
 import request from 'supertest'
 import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
-import { LockMetadata } from '../../src/models/lockMetadata'
-import { KeyMetadata } from '../../src/models/keyMetadata'
-import { addMetadata } from '../../src/operations/userMetadataOperations'
+import { LockMetadata } from '../../src/tokens/models/lockMetadata'
+import { KeyMetadata } from '../../src/tokens/models/keyMetadata'
+import { addMetadata } from '../../src/tokens/userMetadataOperations'
 
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')

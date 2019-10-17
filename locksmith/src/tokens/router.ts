@@ -1,7 +1,8 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
 
-var router = express.Router()
+let router = express.Router()
+let metaDataController = require('./controller')
 
 let metaDataConfiguration = {
   name: 'LockMetaData',
@@ -35,8 +36,6 @@ router.put(
   '/:address/user/:userAddress',
   signatureValidationMiddleware.generateProcessor(userMetaDataConfiguration)
 )
-
-var metaDataController = require('../controllers/metadataController')
 
 router.get('/:address/:keyId', metaDataController.data)
 router.put('/:address/:keyId', metaDataController.updateKeyMetadata)
