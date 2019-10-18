@@ -2,6 +2,7 @@ import React from 'react'
 import About from './About'
 import AppStore from './AppStore'
 import Arrow from './Arrow'
+import Attention from './Attention'
 import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
@@ -45,6 +46,7 @@ export default {
   AppStore: wrapViewBox(AppStore, '0 0 24 24'),
   About: wrapViewBox(About, '0 0 24 24'),
   Arrow: wrapViewBox(Arrow, '0 0 24 24'),
+  Attention: wrapViewBox(Attention, '0 0 96 96'),
   Checkmark: wrapViewBox(Checkmark, '0 0 24 24'),
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),

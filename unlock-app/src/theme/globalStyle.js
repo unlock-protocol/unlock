@@ -10,6 +10,7 @@ const globalStyle = `
     --white: #ffffff;
     --red: #ed663a;
     --lightred: #ffb79f;
+    --sharpred: #f24c15;
     --offwhite: #f6f6f6;
     --lightgrey: #eeeeee;
     --grey: #a6a6a6;
