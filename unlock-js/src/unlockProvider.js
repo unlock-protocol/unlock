@@ -66,11 +66,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   // eslint-disable-next-line no-unused-vars
   personal_sign([data, _]) {
     const privateKey = toBuffer(this.wallet.privateKey)
-    const sig = sigUtil.personalSign(privateKey, { data })
-    return {
-      data,
-      sig,
-    }
+    return sigUtil.personalSign(privateKey, { data })
   }
 
   // Signature methods
