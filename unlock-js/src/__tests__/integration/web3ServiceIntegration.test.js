@@ -1,13 +1,10 @@
-import nock from 'nock'
 import Web3Service from '../../web3Service'
 
 describe('Web3 Service Integration', () => {
   let web3Service
   beforeAll(() => {
-    nock.enableNetConnect()
-
     let provider = process.env.CI
-      ? 'http://ganache-integration::8545'
+      ? 'http://ganache-integration:8545'
       : 'http://127.0.0.1:8545'
 
     web3Service = new Web3Service({
@@ -22,6 +19,8 @@ describe('Web3 Service Integration', () => {
     it('returns the next expected Lock Address', async () => {
       expect.assertions(1)
 
+      // Is this always going to be the case?
+      // I guess it depends on the order in which tests are run.
       expect(await web3Service.generateLockAddress()).toEqual(
         '0x8E7Ed961eF591C664c81bF72180A023b76eC03E1'
       )

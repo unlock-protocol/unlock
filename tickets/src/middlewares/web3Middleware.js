@@ -25,6 +25,7 @@ import {
 } from '../actions/ticket'
 import UnlockEventRSVP from '../structured_data/unlockEventRSVP'
 import keyStatus, { KeyStatus } from '../selectors/keys'
+import { StorageService, success } from '../services/storageService'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -34,6 +35,7 @@ const web3Middleware = config => {
     unlockAddress,
     blockTime,
     requiredConfirmations,
+    services,
   } = config
   return ({ dispatch, getState }) => {
     const web3Service = new Web3Service({
@@ -41,6 +43,15 @@ const web3Middleware = config => {
       unlockAddress,
       blockTime,
       requiredConfirmations,
+    })
+
+    const storageService = new StorageService(services.storage.host)
+
+    // Get the lock details from chain
+    storageService.on(success.getLockAddressesForUser, addresses => {
+      addresses.forEach(address => {
+        web3Service.getLock(address)
+      })
     })
 
     // When explicitly retrieved
@@ -116,13 +127,16 @@ const web3Middleware = config => {
         // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
         // reducer has a chance to populate state removes this race condition.
         if (action.type === SET_ACCOUNT) {
-          // If there is no lock address
           if (!lockAddress) {
             // TODO: when the account has been updated we should reset web3Service and remove all listeners
             // So that pending API calls do not interract with our "new" state.
             web3Service.refreshAccountBalance(action.account)
             dispatch(startLoading())
-            // TODO: only do that when on the page to create events because we do not need the list of locks for other users.
+
+            // Get lock addresses from locksmith (hint)
+            storageService.getLockAddressesForUser(action.account.address)
+
+            // Get lock addresses from chain (slow but trusted)...
             web3Service
               .getPastLockCreationsTransactionsForUser(action.account.address)
               .then(lockCreations => {

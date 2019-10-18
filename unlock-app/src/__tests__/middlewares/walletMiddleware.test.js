@@ -23,6 +23,7 @@ import {
 } from '../../errors'
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
 import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
+import { SIGN_DATA } from '../../actions/signature'
 
 let mockConfig
 
@@ -653,6 +654,79 @@ describe('Wallet middleware', () => {
         '0.03'
       )
       expect(next).toHaveBeenCalledWith(action)
+    })
+  })
+
+  describe('SIGN_DATA', () => {
+    it("should handle SIGN_DATA by calling walletService's signDataPersonal", () => {
+      expect.assertions(2)
+      const { next, invoke } = create()
+      const action = {
+        type: SIGN_DATA,
+        data: 'neat',
+        id: 'track this signature',
+      }
+
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve())
+      mockWalletService.ready = true
+
+      invoke(action)
+      expect(mockWalletService.signDataPersonal).toHaveBeenCalledWith(
+        '',
+        'neat',
+        expect.any(Function)
+      )
+
+      expect(next).toHaveBeenCalledWith(action)
+    })
+
+    it('should dispatch an error if the error param in the callback is defined', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+      const action = { type: SIGN_DATA, data: 'neat' }
+
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) =>
+          callback(new Error('an error'), undefined)
+        )
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'error/SET_ERROR',
+        })
+      )
+    })
+
+    it('should dispatch some typed data if there is no error', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+      const action = {
+        type: SIGN_DATA,
+        data: 'neat',
+        id: 'track this signature',
+      }
+
+      mockWalletService.signDataPersonal = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) =>
+          callback(undefined, 'here is your signature')
+        )
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: 'signature/SIGNED_DATA',
+        data: 'neat',
+        signature: 'here is your signature',
+        id: 'track this signature',
+      })
     })
   })
 })

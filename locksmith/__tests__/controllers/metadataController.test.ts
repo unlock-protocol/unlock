@@ -3,6 +3,7 @@ import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
 import { LockMetadata } from '../../src/models/lockMetadata'
 import { KeyMetadata } from '../../src/models/keyMetadata'
+import { addMetadata } from '../../src/operations/userMetadataOperations'
 
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
@@ -184,6 +185,34 @@ describe('Metadata Controller', () => {
         )
       })
     })
+
+    describe('when the user has provided metadata', () => {
+      beforeAll(async () => {
+        await addMetadata({
+          tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+          userAddress: '0xaBCD',
+          data: {
+            mock: 'values',
+          },
+        })
+      })
+
+      it('returns their payload in the response', async () => {
+        expect.assertions(2)
+        let response = await request(app)
+          .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
+          .set('Accept', 'json')
+
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            description:
+              'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+            userMetadata: { mock: 'values' },
+          })
+        )
+      })
+    })
   })
 
   describe('updateDefaults', () => {
@@ -298,6 +327,94 @@ describe('Metadata Controller', () => {
 
         let response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
+          .set('Accept', 'json')
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .send(typedData)
+
+        expect(response.status).toEqual(401)
+      })
+    })
+  })
+
+  describe('updating address holder metadata', () => {
+    it('stores the passed data', async () => {
+      expect.assertions(1)
+
+      let typedData = generateKeyTypedData({
+        UserMetaData: {
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          data: {
+            emailAddress: 'emailAddress@example.com',
+          },
+        },
+      })
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+        from: '',
+      })
+
+      let response = await request(app)
+        .put(
+          '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+        .set('Accept', 'json')
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.status).toEqual(202)
+    })
+
+    it('should update existing data if it already exists', async () => {
+      expect.assertions(1)
+
+      let typedData = generateKeyTypedData({
+        UserMetaData: {
+          owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+          data: {
+            emailAddress: 'updatedEmailAddress@example.com',
+          },
+        },
+      })
+
+      const sig = sigUtil.signTypedData(privateKey, {
+        data: typedData,
+        from: '',
+      })
+
+      let response = await request(app)
+        .put(
+          '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        )
+        .set('Accept', 'json')
+        .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+        .send(typedData)
+
+      expect(response.status).toEqual(202)
+    })
+
+    describe('when an invalid signature is passed', () => {
+      it('', async () => {
+        expect.assertions(1)
+
+        let typedData = generateKeyTypedData({
+          UserMetaData: {
+            owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+            data: {
+              emailAddress: 'updatedEmailAddress@example.com',
+            },
+          },
+        })
+
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+          from: '',
+        })
+
+        let response = await request(app)
+          .put(
+            '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c'
+          )
           .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)

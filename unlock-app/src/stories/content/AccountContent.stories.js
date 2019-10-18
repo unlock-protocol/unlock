@@ -8,10 +8,11 @@ import AccountContent from '../../components/content/AccountContent'
 
 const baseState = {
   account: {},
+  pageIsLocked: true,
 }
 
 const baseStateWithError = {
-  account: {},
+  ...baseState,
   errors: [
     {
       kind: 'LogIn',
@@ -21,11 +22,24 @@ const baseStateWithError = {
   ],
 }
 const loggedInState = {
+  ...baseState,
   account: {
     emailAddress: 'jenny@googlemail.com',
   },
 }
+
+const loggedInWithError = {
+  ...loggedInState,
+  errors: [
+    {
+      kind: 'Storage',
+      level: 'Warning',
+      message: 'An error',
+    },
+  ],
+}
 const loggedInWithCards = {
+  ...baseState,
   account: {
     emailAddress: 'jenny@googlemail.com',
     cards: [
@@ -60,6 +74,22 @@ const loggedInWithCards = {
   },
 }
 
+const loggedInWithCardsAndError = {
+  ...loggedInWithCards,
+  errors: [
+    {
+      kind: 'Storage',
+      level: 'Warning',
+      message: 'An error',
+    },
+  ],
+}
+
+const loggedInWithCardsAndUnlocked = {
+  ...loggedInWithCards,
+  pageIsLocked: false,
+}
+
 const config = {
   stripeApiKey: 'pk_this_is_not_a_real_key',
 }
@@ -72,7 +102,10 @@ storiesOf('AccountContent (iframe embed for paywall)', module)
       'Not logged in yet': baseState,
       'Not logged in yet (error)': baseStateWithError,
       'Logged in': loggedInState,
+      'Logged in (error)': loggedInWithError,
       'Logged in with cards': loggedInWithCards,
+      'Logged in with cards (error)': loggedInWithCardsAndError,
+      'Logged in with cards (unlocked page)': loggedInWithCardsAndUnlocked,
     }
     const defaultValue = baseState
     const groupId = 'Group1'

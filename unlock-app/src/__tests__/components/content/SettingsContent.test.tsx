@@ -43,7 +43,7 @@ describe('SettingsContent', () => {
           </ConfigContext.Provider>
         </Provider>
       )
-      getByText('Pay For Content Seamlessly')
+      getByText('Log In to Your Account')
     })
 
     it('should tell crypto users that they do not need the settings page', () => {
@@ -58,23 +58,6 @@ describe('SettingsContent', () => {
       getByText(
         "This page contains settings for managed account users. Crypto users (like you!) don't need it."
       )
-    })
-
-    it('should show the account settings page for logged in managed account users', () => {
-      expect.assertions(0)
-      const { getByText } = rtl.render(
-        <Provider store={store}>
-          <ConfigContext.Provider value={config}>
-            <SettingsContent
-              config={config}
-              account={{ emailAddress: 'geoff@bitconnect.gov' }}
-              cards={[]}
-            />
-          </ConfigContext.Provider>
-        </Provider>
-      )
-      // We'll only ever see the change password text in this case!
-      getByText('Change Password')
     })
   })
 

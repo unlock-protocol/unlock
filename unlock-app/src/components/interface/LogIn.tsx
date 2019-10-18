@@ -7,11 +7,16 @@ import { Account } from '../../unlockTypes'
 import SignupSuccess from './SignupSuccess'
 // eslint-disable-next-line no-unused-vars
 import { loginCredentials, Credentials } from '../../actions/user'
+import { LoadingButton } from './user-account/styles'
+import { UnlockError, WarningError, isWarningError } from '../../utils/Error'
+import { resetError } from '../../actions/error'
 
 interface Props {
   toggleSignup: () => void
   loginCredentials: (credentials: Credentials) => void
   account?: Account
+  errors: WarningError[]
+  close: (e: WarningError) => void
 }
 
 interface State {
@@ -61,6 +66,26 @@ export class LogIn extends React.Component<Props, State> {
     toggleSignup()
   }
 
+  handleReset = () => {
+    const { errors, close } = this.props
+    errors.forEach(e => close(e))
+  }
+
+  submitButton = () => {
+    const { submitted } = this.state
+    const { errors } = this.props
+
+    if (submitted) {
+      return <LoadingButton>Logging In...</LoadingButton>
+    } else if (errors.length) {
+      return (
+        <ErrorButton type="submit" value="Retry" onClick={this.handleReset} />
+      )
+    }
+
+    return <SubmitButton type="submit" value="Submit" />
+  }
+
   render = () => {
     const { account } = this.props
 
@@ -71,7 +96,7 @@ export class LogIn extends React.Component<Props, State> {
     return (
       <div>
         <Heading>Log In to Your Account</Heading>
-        <form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit}>
           <Label htmlFor="emailInput">Email Address</Label>
           <Input
             name="emailAddress"
@@ -90,8 +115,8 @@ export class LogIn extends React.Component<Props, State> {
             onChange={this.handleInputChange}
           />
           <br />
-          <SubmitButton type="submit" value="Submit" />
-        </form>
+          <SubmitContainer>{this.submitButton()}</SubmitContainer>
+        </Form>
         <Description>
           Don&#39;t have an account?{' '}
           <LinkButton onClick={this.handleClick}>Sign up here.</LinkButton>
@@ -104,15 +129,26 @@ export class LogIn extends React.Component<Props, State> {
 const mapDispatchToProps = (dispatch: any) => ({
   loginCredentials: ({ emailAddress, password }: Credentials) =>
     dispatch(loginCredentials({ emailAddress, password })),
+  close: (e: WarningError) => {
+    dispatch(resetError(e))
+  },
 })
 
 interface ReduxState {
   account?: Account
+  errors: UnlockError[]
 }
 
-const mapStateToProps = ({ account }: ReduxState) => ({
-  account,
-})
+const mapStateToProps = ({ account, errors }: ReduxState) => {
+  const logInWarnings = errors.filter(
+    e => isWarningError(e) && (e.kind === 'LogIn' || e.kind === 'Storage')
+  )
+
+  return {
+    account,
+    errors: logInWarnings as WarningError[],
+  }
+}
 
 export default connect(
   mapStateToProps,
@@ -146,13 +182,25 @@ const Input = styled.input`
 
 const SubmitButton = styled.input`
   height: 60px;
-  width: 385px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
-  margin-top: 25px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
+`
+
+const ErrorButton = styled(SubmitButton)`
+  background-color: var(--red);
+`
+
+const Form = styled.form`
+  max-width: 385px;
+`
+
+const SubmitContainer = styled.div`
+  margin-top: 25px;
 `
 
 const Label = styled.label`

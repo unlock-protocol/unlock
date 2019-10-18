@@ -28,6 +28,7 @@ contract('Lock / erc721 / approve', accounts => {
   describe('when the key exists', () => {
     before(() => {
       return locks['FIRST'].purchase(
+        0,
         accounts[1],
         web3.utils.padLeft(0, 40),
         [],

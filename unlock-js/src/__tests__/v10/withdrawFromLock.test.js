@@ -17,7 +17,6 @@ let setupFail
 describe('v10', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
-    const account = '0xdeadbeef'
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -58,7 +57,7 @@ describe('v10', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.withdrawFromLock({ lockAddress })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -83,7 +82,7 @@ describe('v10', () => {
       walletService.on('error', error => {
         expect(error.message).toBe(FAILED_TO_WITHDRAW_FROM_LOCK)
       })
-      await walletService.withdrawFromLock(lockAddress, account)
+      await walletService.withdrawFromLock({ lockAddress })
       await nock.resolveWhenAllNocksUsed()
     })
   })

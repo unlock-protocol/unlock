@@ -4,6 +4,7 @@ export const LOGIN_CREDENTIALS = 'login/GOT_CREDENTIALS'
 export const LOGIN_SUCCEEDED = 'login/SUCCESS'
 export const LOGIN_FAILED = 'login/FAILED'
 export const SIGNUP_EMAIL = 'signup/GOT_EMAIL'
+export const WELCOME_EMAIL = 'signup/WELCOME_EMAIL'
 export const SIGNUP_CREDENTIALS = 'signup/GOT_CREDENTIALS'
 export const SIGNUP_FAILED = 'signup/FAILED'
 export const SIGNUP_SUCCEEDED = 'signup/SUCCESS'
@@ -48,6 +49,12 @@ export const loginFailed = (reason: string) => ({
 export const signupEmail = (emailAddress: string) => ({
   type: SIGNUP_EMAIL,
   emailAddress,
+})
+
+export const welcomeEmail = (emailAddress: string, recoveryKey: string) => ({
+  type: WELCOME_EMAIL,
+  emailAddress,
+  recoveryKey,
 })
 
 export const signupCredentials = ({ emailAddress, password }: Credentials) => ({

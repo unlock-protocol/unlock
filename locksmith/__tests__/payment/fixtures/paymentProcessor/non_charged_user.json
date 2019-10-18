@@ -4,22 +4,55 @@
         "method": "POST",
         "path": "/",
         "body": {
-            "method": "eth_blockNumber",
-            "params": [],
-            "id": 42,
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267",
+                    "data": "0x74b6c106"
+                },
+                "latest"
+            ],
+            "id": 60,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 60,
             "jsonrpc": "2.0",
-            "result": "0x33a8"
+            "result": "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
         },
         "rawHeaders": [
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ]
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_blockNumber",
+            "params": [],
+            "id": 56,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 56,
+            "jsonrpc": "2.0",
+            "result": "0x24c"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -39,20 +72,20 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 57,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 57,
             "jsonrpc": "2.0",
-            "result": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000084e6577204c6f636b000000000000000000000000000000000000000000000000"
+            "result": "0x00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000008455448204c6f636b000000000000000000000000000000000000000000000000"
         },
         "rawHeaders": [
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -72,12 +105,12 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 58,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 58,
             "jsonrpc": "2.0",
             "result": "0x000000000000000000000000000000000000000000000000002386f26fc10000"
         },
@@ -85,7 +118,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -105,53 +138,20 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 59,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 59,
             "jsonrpc": "2.0",
-            "result": "0x0000000000000000000000000000000000000000000000000000000000278d00"
+            "result": "0x000000000000000000000000000000000000000000000000000000000000012c"
         },
         "rawHeaders": [
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ]
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267",
-                    "data": "0x74b6c106"
-                },
-                "latest"
-            ],
-            "id": 42,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 42,
-            "jsonrpc": "2.0",
-            "result": "0x000000000000000000000000000000000000000000000000000000000000000a"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -171,12 +171,12 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 61,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 61,
             "jsonrpc": "2.0",
             "result": "0x000000000000000000000000aaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2"
         },
@@ -184,7 +184,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -204,12 +204,12 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 62,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 62,
             "jsonrpc": "2.0",
             "result": "0x0000000000000000000000000000000000000000000000000000000000000000"
         },
@@ -217,40 +217,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
-            "Connection",
-            "close",
-            "Transfer-Encoding",
-            "chunked"
-        ]
-    },
-    {
-        "scope": "http://0.0.0.0:8545",
-        "method": "POST",
-        "path": "/",
-        "body": {
-            "method": "eth_call",
-            "params": [
-                {
-                    "to": "0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267",
-                    "data": "0x9d76ea58"
-                },
-                "latest"
-            ],
-            "id": 42,
-            "jsonrpc": "2.0"
-        },
-        "status": 200,
-        "response": {
-            "id": 42,
-            "jsonrpc": "2.0",
-            "result": "0x0000000000000000000000000000000000000000000000000000000000000000"
-        },
-        "rawHeaders": [
-            "Content-Type",
-            "application/json",
-            "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -270,12 +237,12 @@
                 },
                 "latest"
             ],
-            "id": 42,
+            "id": 64,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 64,
             "jsonrpc": "2.0",
             "result": "0x0000000000000000000000000000000000000000000000000000000000000004"
         },
@@ -283,7 +250,40 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
+            "Connection",
+            "close",
+            "Transfer-Encoding",
+            "chunked"
+        ]
+    },
+    {
+        "scope": "http://0.0.0.0:8545",
+        "method": "POST",
+        "path": "/",
+        "body": {
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": "0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267",
+                    "data": "0x9d76ea58"
+                },
+                "latest"
+            ],
+            "id": 63,
+            "jsonrpc": "2.0"
+        },
+        "status": 200,
+        "response": {
+            "id": 63,
+            "jsonrpc": "2.0",
+            "result": "0x0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        "rawHeaders": [
+            "Content-Type",
+            "application/json",
+            "Date",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",
@@ -300,12 +300,12 @@
                 "0x5cd3fc283c42b4d5083dba4a6be5ac58fc0f0267",
                 "latest"
             ],
-            "id": 42,
+            "id": 65,
             "jsonrpc": "2.0"
         },
         "status": 200,
         "response": {
-            "id": 42,
+            "id": 65,
             "jsonrpc": "2.0",
             "result": "0x0"
         },
@@ -313,7 +313,7 @@
             "Content-Type",
             "application/json",
             "Date",
-            "Tue, 25 Jun 2019 03:22:41 GMT",
+            "Fri, 04 Oct 2019 20:25:43 GMT",
             "Connection",
             "close",
             "Transfer-Encoding",

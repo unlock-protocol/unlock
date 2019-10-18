@@ -11,6 +11,8 @@ export enum PostOfficeEvents {
   LockUpdate = 'update.locks',
   KeyPurchase = 'purchase.key.request',
   Error = 'error',
+  Locked = 'locked',
+  Unlocked = 'unlocked',
 }
 
 export class PostOfficeService extends EventEmitter {
@@ -59,6 +61,12 @@ export class PostOfficeService extends EventEmitter {
         }
       }
     )
+    this.postOffice.addHandler(PostMessages.LOCKED, () => {
+      this.emit(PostOfficeEvents.Locked)
+    })
+    this.postOffice.addHandler(PostMessages.UNLOCKED, () => {
+      this.emit(PostOfficeEvents.Unlocked)
+    })
   }
 
   private sendAccount() {

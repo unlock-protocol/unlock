@@ -1,5 +1,7 @@
-import { createAccountAndPasswordEncryptKey } from '@unlock-protocol/unlock-js'
+import * as unlockJs from '@unlock-protocol/unlock-js'
+
 import providerMiddleware, {
+  changePassword,
   initializeUnlockProvider,
 } from '../../middlewares/providerMiddleware'
 import { SET_PROVIDER, providerReady } from '../../actions/provider'
@@ -11,7 +13,12 @@ import {
   SIGN_USER_DATA,
   SIGN_PAYMENT_DATA,
   SIGN_PURCHASE_DATA,
+  signUserData,
 } from '../../actions/user'
+import { resetRecoveryPhrase } from '../../actions/recovery'
+import { EncryptedPrivateKey } from '../../unlockTypes'
+
+jest.mock('@unlock-protocol/unlock-js')
 
 const config = {
   providers: {
@@ -76,14 +83,8 @@ describe('provider middleware', () => {
   describe('initializeUnlockProvider', () => {
     const emailAddress = 'test@us.er'
     const password = 'guest'
-    let key: any
-    let address: string
-
-    beforeEach(async () => {
-      const info = await createAccountAndPasswordEncryptKey(password)
-      key = info.passwordEncryptedPrivateKey
-      address = info.address
-    })
+    let key: any = {}
+    let address: string = 'address'
 
     it('should dispatch an error if it cannot decrypt', async () => {
       expect.assertions(1)
@@ -246,5 +247,114 @@ describe('provider middleware', () => {
         data,
       })
     })
+  })
+
+  describe('CHANGE_PASSWORD', () => {
+    const encryptedPrivateKey = {
+      version: 3,
+      id: 'edbe0942-593b-4027-8688-07b7d3ec56c5',
+      address: '0272742cbe9b4d4c81cffe8dfc0c33b5fb8893e5',
+      crypto: {
+        ciphertext:
+          '6f2a3ed499a2962cc48e6f7f0a90a0c817c83024cc4878f624ad251fccd0b706',
+        cipherparams: { iv: '69f031944591eed34c4d4f5841d283b0' },
+        cipher: 'aes-128-ctr',
+        kdf: 'scrypt',
+        kdfparams: {
+          dklen: 32,
+          salt:
+            '5ac866336768f9613a505acd18dab463f4d10152ffefba5772125f5807539c36',
+          n: 8192,
+          r: 8,
+          p: 1,
+        },
+        mac: 'cc8efad3b534336ecffc0dbf6f51fd558301873d322edc6cbc1c9398ee0953ec',
+      },
+    }
+    const oldPassword = 'guest'
+
+    it('should dispatch a new user object to be signed', async () => {
+      expect.assertions(1)
+      const dispatch = jest.fn()
+
+      await changePassword({
+        oldPassword,
+        newPassword: 'visitor',
+        passwordEncryptedPrivateKey: encryptedPrivateKey,
+        dispatch,
+      })
+
+      expect(dispatch).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: SIGN_USER_DATA,
+        })
+      )
+    })
+  })
+})
+
+describe('changePassword', () => {
+  let oldPassword = 'oldPassword'
+  let newPassword = 'newPassword'
+  let passwordEncryptedPrivateKey: EncryptedPrivateKey = {
+    version: 1,
+  }
+  let newEncryptedKey: EncryptedPrivateKey = {
+    version: 1,
+  }
+  let dispatch = jest.fn()
+
+  describe('success', () => {
+    beforeEach(async () => {
+      unlockJs.reEncryptPrivateKey = jest.fn(() =>
+        Promise.resolve(newEncryptedKey)
+      )
+      await changePassword({
+        oldPassword,
+        newPassword,
+        passwordEncryptedPrivateKey,
+        dispatch,
+      })
+    })
+
+    it('should reEncryptPrivateKey', () => {
+      expect.assertions(1)
+      expect(unlockJs.reEncryptPrivateKey).toHaveBeenCalledWith(
+        passwordEncryptedPrivateKey,
+        oldPassword,
+        newPassword
+      )
+    })
+
+    it('should dispatch signUserData', () => {
+      expect.assertions(1)
+      const expectedAction = signUserData({
+        passwordEncryptedPrivateKey: newEncryptedKey,
+      })
+      expect(dispatch).toHaveBeenCalledWith(expectedAction)
+    })
+
+    it('should dispatch resetRecoveryPhrase', () => {
+      expect.assertions(1)
+      const expectedAction = resetRecoveryPhrase()
+      expect(dispatch).toHaveBeenCalledWith(expectedAction)
+    })
+  })
+
+  it('should dispatch a warning when the private could not be re-encrypted', async () => {
+    expect.assertions(1)
+    unlockJs.reEncryptPrivateKey = jest.fn(() =>
+      Promise.reject('failed to decrypt key')
+    )
+    await changePassword({
+      oldPassword,
+      newPassword,
+      passwordEncryptedPrivateKey,
+      dispatch,
+    })
+    const expectedAction = setError(
+      LogIn.Warning('Could not re-encrypt private key -- bad password?')
+    )
+    expect(dispatch).toHaveBeenCalledWith(expectedAction)
   })
 })

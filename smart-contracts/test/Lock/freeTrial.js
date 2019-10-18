@@ -18,7 +18,7 @@ contract('Lock / freeTrial', accounts => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
-      return lock.purchase(account, web3.utils.padLeft(0, 40), [], {
+      return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
         from: account,
       })
@@ -35,7 +35,7 @@ contract('Lock / freeTrial', accounts => {
     let initialLockBalance
 
     beforeEach(async () => {
-      await lock.updateRefundPenalty(5, 2, 10)
+      await lock.updateRefundPenalty(5, 2000)
       initialLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       )

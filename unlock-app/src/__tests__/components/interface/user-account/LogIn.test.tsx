@@ -1,9 +1,13 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { LogIn } from '../../../../components/interface/user-account/LogIn'
+import {
+  LogIn,
+  mapDispatchToProps,
+  mapStateToProps,
+} from '../../../../components/interface/user-account/LogIn'
 // eslint-disable-next-line no-unused-vars
 import { Credentials } from '../../../../actions/user'
-import Errors, { WarningError } from '../../../../utils/Error'
+import Errors, { WarningError, UnlockError } from '../../../../utils/Error'
 
 let loginCredentials: (c: Credentials) => any
 let toggleSignup: () => any
@@ -131,5 +135,102 @@ describe('LogIn', () => {
     expect(close).toHaveBeenCalledWith(errors[0])
     // And then submit the login request
     expect(loginCredentials).toHaveBeenCalled()
+  })
+
+  describe('mapStateToProps', () => {
+    it('should include the account and relevant errors in state', () => {
+      expect.assertions(1)
+
+      const errors: UnlockError[] = [
+        {
+          level: 'Warning',
+          kind: 'Storage',
+          message: 'An error occurred',
+        },
+        {
+          level: 'Fatal',
+          kind: 'LogIn',
+          message: 'An error occurred',
+        },
+        {
+          level: 'Warning',
+          kind: 'LogIn',
+          message: 'An error occurred',
+        },
+        {
+          level: 'Fatal',
+          kind: 'Storage',
+          message: 'An error occurred',
+        },
+      ]
+
+      const account = {
+        address: '',
+        balance: '',
+      }
+
+      const state = {
+        account,
+        errors,
+      }
+
+      expect(mapStateToProps(state)).toEqual({
+        account,
+        errors: [
+          {
+            level: 'Warning',
+            kind: 'Storage',
+            message: 'An error occurred',
+          },
+          {
+            level: 'Warning',
+            kind: 'LogIn',
+            message: 'An error occurred',
+          },
+        ],
+      })
+    })
+  })
+
+  describe('mapDispatchToProps', () => {
+    let dispatch: any
+    let props: any
+    beforeEach(() => {
+      dispatch = jest.fn()
+      props = mapDispatchToProps(dispatch)
+    })
+    it('should create a loginCredentials function', () => {
+      expect.assertions(1)
+
+      const emailAddress = 'com@com.com'
+      const password = 'guest'
+
+      props.loginCredentials({
+        emailAddress,
+        password,
+      })
+
+      expect(dispatch).toHaveBeenCalledWith({
+        type: 'login/GOT_CREDENTIALS',
+        emailAddress,
+        password,
+      })
+    })
+    it('should create a close function', () => {
+      expect.assertions(1)
+
+      const error: UnlockError = {
+        level: 'Warning',
+        kind: 'Storage',
+        message: 'An error occurred',
+      }
+
+      props.close(error)
+
+      expect(dispatch).toHaveBeenCalledWith({
+        type: 'error/RESET_ERROR',
+        error,
+      })
+    })
   })
 })

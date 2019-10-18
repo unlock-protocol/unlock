@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
@@ -50,6 +50,9 @@ contract MixinLockCore is
 
   // The account which will receive funds on withdrawal
   address public beneficiary;
+
+  // The denominator component for values specified in basis points.
+  uint public constant BASIS_POINTS_DEN = 10000;
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {

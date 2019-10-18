@@ -51,6 +51,15 @@ import privateKeyReducer, {
 import cartReducer, {
   initialState as defaultCartState,
 } from './reducers/cartReducer'
+import recoveryReducer, {
+  initialState as defaultRecoveryPhrase,
+} from './reducers/recoveryReducer'
+import pageStatusReducer, {
+  initialState as defaultPageStatus,
+} from './reducers/pageStatusReducer'
+import signatureReducer, {
+  initialState as defaultSignatureState,
+} from './reducers/signatureReducer'
 
 const config = configure()
 
@@ -75,6 +84,9 @@ export const createUnlockStore = (
     fullScreenModalStatus: fullScreenModalsReducer,
     userDetails: privateKeyReducer,
     cart: cartReducer,
+    recoveryPhrase: recoveryReducer,
+    pageIsLocked: pageStatusReducer,
+    signature: signatureReducer,
   }
 
   // Cleanup the defaultState to remove all null values so that we do not overwrite existing
@@ -101,7 +113,10 @@ export const createUnlockStore = (
       lockFormStatus: defaultLockFormVisibility,
       fullScreenModalStatus: defaultFullScreenModalsStatus,
       userDetails: defaultPrivateKeyState,
+      recoveryPhrase: defaultRecoveryPhrase,
       cart: defaultCartState,
+      pageIsLocked: defaultPageStatus,
+      signature: defaultSignatureState,
     },
     {
       provider: Object.keys(config.providers)[0],

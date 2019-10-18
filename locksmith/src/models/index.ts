@@ -10,6 +10,7 @@ import { EventLink } from './eventLink'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
 import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
+import { UserTokenMetadata } from './usertokenmetadata'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -28,6 +29,7 @@ sequelize.addModels([
   LockMetadata,
   KeyMetadata,
   ParsedBlockForLockCreation,
+  UserTokenMetadata,
 ])
 
 User.removeAttribute('id')
@@ -44,3 +46,4 @@ export * from './lock'
 export * from './transaction'
 export * from './authorizedLock'
 export * from './eventLink'
+export * from './usertokenmetadata'

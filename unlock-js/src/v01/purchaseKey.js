@@ -4,30 +4,41 @@ import TransactionTypes from '../transactionTypes'
 import Errors from '../errors'
 
 /**
- * Purchase a key to a lock by account.
- * The key object is passed so we can kepe track of it from the application
- * The lock object is required to get the price data
- * We pass both the owner and the account because at some point, these may be different (someone
- * purchases a key for someone else)
- * @param {PropTypes.address} lock
- * @param {PropTypes.address} owner
- * @param {string} keyPrice
- * @param {string} data
- * @param {string} account
+ * Purchase key function. This implementation requires the following
+ * @param {object} params:
+ * - {PropTypes.address} lockAddress
+ * - {PropTypes.address} owner
+ * - {string} keyPrice
  */
-export default async function(lockAddress, owner, keyPrice) {
+export default async function({ lockAddress, owner, keyPrice }) {
   const lockContract = await this.getLockContract(lockAddress)
   let transactionPromise
   try {
     transactionPromise = lockContract['purchaseFor(address)'](owner, {
-      gasLimit: GAS_AMOUNTS.purchaseFor, // overrides default value for transaction gas price
-      value: Web3Utils.toWei(keyPrice, 'ether'), // overrides default value
+      gasLimit: GAS_AMOUNTS.purchaseFor,
+      value: Web3Utils.toWei(keyPrice, 'ether'),
     })
-    const ret = await this._handleMethodCall(
+    const hash = await this._handleMethodCall(
       transactionPromise,
       TransactionTypes.KEY_PURCHASE
     )
-    return ret
+    // Let's now wait for the transaction to go thru to return the token id
+    const receipt = await this.provider.waitForTransaction(hash)
+    const parser = lockContract.interface
+
+    const transferEvent = receipt.logs
+      .map(log => {
+        return parser.parseLog(log)
+      })
+      .filter(event => {
+        return event.name === 'Transfer'
+      })[0]
+    if (transferEvent) {
+      return transferEvent.values._tokenId.toString()
+    } else {
+      // There was no Transfer log (transaction failed?)
+      return null
+    }
   } catch (error) {
     this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
   }

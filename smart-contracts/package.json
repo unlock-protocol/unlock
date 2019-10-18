@@ -7,7 +7,7 @@
     "test": "test"
   },
   "engines": {
-    "node": "8.16.1"
+    "node": "10.16.3"
   },
   "engineStrict": true,
   "dependencies": {
@@ -23,14 +23,17 @@
     "eth-gas-reporter": "0.2.11",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.7.0",
-    "hardlydifficult-test-helpers": "0.4.0",
-    "public-lock-abi-0": "1.0.0",
+    "hardlydifficult-ethereum-contracts": "0.5.5",
     "solium": "1.2.5",
     "truffle": "5.0.37",
     "truffle-assertions": "0.9.1",
     "truffle-hdwallet-provider": "1.0.17",
     "unlock-abi-0": "1.0.4",
     "unlock-abi-0-1": "1.0.0",
+    "unlock-abi-0-2": "1.0.0",
+    "unlock-abi-1-0": "1.0.0",
+    "unlock-abi-1-1": "1.0.0",
+    "unlock-abi-1-2": "1.0.0",
     "web3-eth-abi": "1.2.1",
     "web3-utils": "1.2.1"
   },

@@ -1,4 +1,4 @@
-pragma solidity 0.5.11;
+pragma solidity 0.5.12;
 
 
 /**
@@ -16,8 +16,14 @@ interface IUnlock {
   );
 
   event ConfigUnlock(
+    address publicLockAddress,
     string globalTokenSymbol,
     string globalTokenURI
+  );
+
+  event ResetTrackedValue(
+    uint grossNetworkProduct,
+    uint totalDiscountGranted
   );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via zos).
@@ -91,8 +97,15 @@ interface IUnlock {
    *  Should throw if called by other than owner.
    */
   function configUnlock(
+    address _publicLockAddress,
     string calldata _symbol,
     string calldata _URI
   )
     external;
+
+  // Allows the owner to change the value tracking variables as needed.
+  function resetTrackedValue(
+    uint _grossNetworkProduct,
+    uint _totalDiscountGranted
+  ) external;
 }

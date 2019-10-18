@@ -31,6 +31,8 @@ describe('Wallet.setupUserAccounts()', () => {
     debug: 0,
     paywallUrl: 'http://paywall',
     accountsUrl: 'http://app/accounts',
+    managedPurchaseStablecoinAddress:
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
   }
 
   function makeWallet() {
@@ -121,6 +123,14 @@ describe('Wallet.setupUserAccounts()', () => {
       purchaseRequest,
       iframes.checkout.iframe,
       checkoutOrigin
+    )
+
+    // Accounts iframe buffers postmessages until it receives READY
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.READY,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
     )
 
     fakeWindow.expectPostMessageSentToIframe(

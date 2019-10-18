@@ -22,6 +22,14 @@ import {
   UserAccountsIframeEvents,
 } from '../../EventEmitterTypes'
 
+// This just keeps the typechecker happy. It may not be possible to
+// represent an array of heterogeneous generic types in TS, but this
+// gets the job done.
+interface Message {
+  type: any
+  payload: any
+}
+
 // eslint is too stupid to parse this if the extends is in the class declaration below, so we extract it
 class FancyEmitter extends (EventEmitter as {
   new (): UserAccountsIframeEventEmitter
@@ -47,6 +55,9 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     listener: PostMessageListener
   ) => void
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
+
+  buffer: Message[] = []
+  private ready: boolean = false
 
   private _postMessage?: PostMessageResponder<PostMessages>
   public iframe: IframeType
@@ -105,7 +116,14 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
   }
 
   private setupListeners() {
-    this.addHandler(PostMessages.READY, () => this.emit(PostMessages.READY))
+    this.addHandler(PostMessages.READY, () => {
+      this.ready = true
+      // When we receive READY, the iframe exists and the postOffice
+      // is set up. Now we can be confident that the buffered messages
+      // have been received.
+      this.sendBufferedMessages()
+      this.emit(PostMessages.READY)
+    })
     this.addHandler(PostMessages.UPDATE_ACCOUNT, account =>
       this.emit(PostMessages.UPDATE_ACCOUNT, account)
     )
@@ -123,6 +141,13 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     )
   }
 
+  private sendBufferedMessages() {
+    this.buffer.forEach(({ type, payload }: Message) => {
+      this.postMessage(type, payload)
+    })
+    this.buffer = []
+  }
+
   /**
    * This is a proxy that ignores requests if the account iframe is not active yet
    */
@@ -135,13 +160,28 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
   }
 
   /**
-   * This is a proxy that ignores requests if the account iframe is not active yet
+   * This is a proxy that buffers requests if the account iframe is not active yet
    */
   async postMessage<T extends MessageTypes = MessageTypes>(
     type: T,
     payload: ExtractPayload<T>
   ) {
-    if (!this._postMessage) return
-    this._postMessage(type, payload)
+    if (this.ready) {
+      // if ready === true, then we necessarily have _postMessage, but
+      // the linter can't statically determine that so we have to
+      // check.
+      if (this._postMessage) {
+        this._postMessage(type, payload)
+      }
+
+      return
+    }
+
+    // We're not ready yet: add message to the buffer, it will be
+    // called when _postMessage is set.
+    this.buffer.push({
+      type,
+      payload,
+    })
   }
 }
