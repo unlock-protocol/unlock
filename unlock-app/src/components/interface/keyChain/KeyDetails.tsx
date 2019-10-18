@@ -71,16 +71,7 @@ export const KeyDetails = ({
   }
 
   if (data.keyHolders.length == 0) {
-    return (
-      <DefaultError
-        title="Manage your keys here"
-        illustration="/static/images/illustrations/lock.svg"
-        critical={false}
-      >
-        The Keychain lets you view and manage the keys that you own. As soon as
-        you have one, you&apos;ll see it on this page.
-      </DefaultError>
-    )
+    return <NoKeys />
   }
 
   return (
@@ -100,6 +91,19 @@ export const KeyDetails = ({
 }
 
 export default KeyDetails
+
+export const NoKeys = () => {
+  return (
+    <DefaultError
+      title="Manage your keys here"
+      illustration="/static/images/illustrations/key.svg"
+      critical={false}
+    >
+      The Keychain lets you view and manage the keys that you own. As soon as
+      you have one, you&apos;ll see it on this page.
+    </DefaultError>
+  )
+}
 
 export class Key extends React.Component<KeyProps> {
   constructor(props: KeyProps) {
