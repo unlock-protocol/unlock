@@ -51,7 +51,7 @@ You could also use these tokens to transfer memberships to somebody else, or eve
 
 # It’s not (just) about the money
 
-Memberships are powerful things. They can be about social status, showing support, or just belonging. And they can include financial elements too. Many people proudly show their love for a brand by showing the logos on their clothes, their cars, their laptop. Non-profits realized a long time ago that getting somebody to wear a colored ribbon 🎗was sometimes as powerful as getting a donation from them. And sports teams are already experts at monetizing their relationships with members by selling hats, jerseys, and gear with the club colors.
+Memberships are powerful things. They can be about social status, showing support, or just belonging. And they can include financial elements too. Many people proudly show their love for a brand by showing the logos on their clothes, their cars, their laptop. Non-profits realized a long time ago that getting somebody to wear a colored ribbon 🎗 was sometimes as powerful as getting a donation from them. And sports teams are already experts at monetizing their relationships with members by selling hats, jerseys, and gear with the club colors.
 
 Because Unlock is underpinned with the Ethereum blockchain, it means that payment is already built into the infrastructure: the currencies, the wallets, and the exchanges already exist to make it easy for members to purchase or sell their memberships.
 
