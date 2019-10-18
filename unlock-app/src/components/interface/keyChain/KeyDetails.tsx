@@ -95,7 +95,7 @@ export default KeyDetails
 export const NoKeys = () => {
   return (
     <DefaultError
-      title="Manage your keys here"
+      title="You don't have any keys yet"
       illustration="/static/images/illustrations/key.svg"
       critical={false}
     >

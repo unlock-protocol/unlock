@@ -156,7 +156,7 @@ describe('keyChain -- KeyDetails', () => {
     )
 
     await rtl.wait(() => {
-      expect(getByText('Manage your keys here')).toBeInTheDocument()
+      expect(getByText("You don't have any keys yet")).toBeInTheDocument()
     })
   })
 
