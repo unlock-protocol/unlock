@@ -303,6 +303,16 @@ export const DangerIllustration = styled(Svg.Attention)`
   fill: var(--grey);
 `
 
+export const OrderedList = styled.ol`
+  margin-top: 0px;
+  list-style: decimal;
+  font-size: 16px;
+  li {
+    color: var(--slate);
+    margin-bottom: 10px;
+  }
+`
+
 export const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   // Hide checkbox visually but remain accessible to screen readers.
   // Source: https://polished.js.org/docs/#hidevisually

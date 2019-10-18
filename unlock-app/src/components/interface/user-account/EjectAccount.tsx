@@ -13,6 +13,7 @@ import {
   Checkbox,
   SubmitButton,
   DisabledButton,
+  OrderedList,
 } from './styles'
 import { EncryptedPrivateKey } from '../../../unlockTypes'
 
@@ -26,26 +27,34 @@ export function EjectAccount({ encryptedPrivateKey }: EjectAccountProps) {
       <SectionHeader>Export Account</SectionHeader>
       <Column size="full">
         <Description>
-          Exporting your account will eject it from the Unlock platform. You
-          will be able to import your account into a Web3 wallet such as
-          MetaMask, but it will also remove your account and personal
-          information from Unlock permanently, along with the ability to recover
-          it with the link in your welcome email.
+          Exporting your account will eject it from the Unlock platform. The
+          following things will happen:
         </Description>
+        <OrderedList>
+          <li>
+            A JSON file will be downloaded to your computer. This file includes
+            your private key, encrypted with your Unlock password. You should
+            then import it into a wallet like MetaMask.
+          </li>
+          <li>
+            Your Unlock account will be deleted permanently, including all
+            personal information.
+          </li>
+          <li>
+            After that, you will not be able to log back in with Unlock and the
+            recovery link we sent by email will not work anymore either.
+          </li>
+        </OrderedList>
         <Box>
           <div>
             <DangerIllustration />
           </div>
           <div>
             <DangerHeader>Danger Zone</DangerHeader>
-            <Description>
-              Clicking the Eject Account button below will delete your Unlock
-              account and download a JSON file containing your encrypted private
-              key. You can import the JSON file into a Web3 wallet using your
-              account password.
-            </Description>
             <SuperWarning>
-              Do not lose this file, we cannot recover it if you do.
+              Clicking the eject button below is final. There is no way back
+              after that. Do not delete the JSON file until you have safely
+              imported it in another crypto wallet.
             </SuperWarning>
             <EjectionForm
               download={downloadObjectAsJSON}
