@@ -9,7 +9,7 @@ image: /static/images/blog/tokenized-memberships.jpg
 
 The web needs a [new business model](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1) — one which doesn’t erode people’s privacy or centralize control into the hands of a few powerful entities.
 
-Luckily, the web is resilient, it’s reliable, and it’s really, really good at lots of things. Here’s one example: it’s great at creating communities.
+Luckily, the web is resilient, reliable, and really, really good at lots of things. Here’s one example: it’s great at creating communities.
 
 Today we’re all members of dozens of communities online, from the obvious ones like our own social circles or neighborhood groups, to the less obvious ones like the people we follow and the apps we use. For example, I read [Macbidouille](https://macbidouille.com) in my [feed reader](https://feedbin.com/) and use [Medium](https://medium.com/) on my phone as I commute: I’m an implicit member of those communities, even if I don’t wear a badge that says so.
 
