@@ -138,11 +138,14 @@ describe('Unlock Provider', () => {
         const messageHash = utils.utf8ToHex(someData)
 
         // second param is unused, but in keeping with what we receive from WalletService
-        const output = provider.personal_sign([messageHash, ''])
+        const sig = provider.personal_sign([messageHash, ''])
 
-        expect(sigUtil.recoverPersonalSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
+        expect(
+          sigUtil.recoverPersonalSignature({
+            data: messageHash,
+            sig,
+          })
+        ).toEqual(publicKey.toLowerCase())
       })
     })
   })
