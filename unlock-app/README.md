@@ -2,13 +2,6 @@
 
 This sub-repository contains the Unlock dashboard application, used to create and administer locks.
 
-## Demo
-
-We recorded a screencast to show how Unlock works for a paywall. The dashboard components are represented by this
-application.
-
-[![Demo Unlock](https://img.youtube.com/vi/B1OVnU2Rw8A/0.jpg)](https://www.youtube.com/watch?v=B1OVnU2Rw8A)
-
 ## Requirements
 
 This is a Node project that depends on React and [NextJS](https://nextjs.org/). You must have Node and npm installed
