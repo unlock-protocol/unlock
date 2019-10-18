@@ -16,7 +16,10 @@ export async function addMetadata(metadata: UserTokenMetadataInput) {
       tokenAddress: Normalizer.ethereumAddress(metadata.tokenAddress),
       userAddress: Normalizer.ethereumAddress(metadata.userAddress),
       data: {
-        userMetadata: metadata.data,
+        userMetadata: {
+          protected: metadata.data.protected,
+          public: metadata.data.public,
+        },
       },
     },
     {
