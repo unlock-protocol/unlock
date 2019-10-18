@@ -1,6 +1,7 @@
 import nock from 'nock'
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+import WalletService from '../walletService'
 import utils from '../utils'
 
 // TODO: move this to the integration tests directory
@@ -146,6 +147,17 @@ describe('Unlock Provider', () => {
             sig,
           })
         ).toEqual(publicKey.toLowerCase())
+      })
+
+      it('should be compatible with walletService', async done => {
+        expect.assertions(1)
+
+        const ws = new WalletService({ unlockAddress: 'does not matter here' })
+        await ws.connect(provider)
+        ws.signDataPersonal('', 'this is my data', error => {
+          expect(error).toBeNull()
+          done()
+        })
       })
     })
   })
