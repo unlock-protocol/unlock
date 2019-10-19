@@ -192,7 +192,9 @@ describe('Metadata Controller', () => {
           tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
           userAddress: '0xaBCD',
           data: {
-            mock: 'values',
+            public: {
+              mock: 'values',
+            },
           },
         })
       })
@@ -208,7 +210,7 @@ describe('Metadata Controller', () => {
           expect.objectContaining({
             description:
               'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
-            userMetadata: { mock: 'values' },
+            userMetadata: { public: { mock: 'values' } },
           })
         )
       })
