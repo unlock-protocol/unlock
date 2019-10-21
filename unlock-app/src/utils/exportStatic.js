@@ -49,6 +49,7 @@ const exportPaths = (defaultPathMap, { dev, dir, outDir }) => {
     '/log': { page: '/log' },
     '/settings': { page: '/settings' },
     '/recover': { page: '/recover' },
+    '/verification': { page: '/verification' },
   }
 }
 
