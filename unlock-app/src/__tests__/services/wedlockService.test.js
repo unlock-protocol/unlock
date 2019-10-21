@@ -3,7 +3,7 @@ import WedlockService, { emailTemplate } from '../../services/wedlockService'
 
 jest.mock('axios')
 
-let w
+let w = new WedlockService('http://notareal.host')
 describe('Wedlocks Service', () => {
   beforeEach(() => {
     w = new WedlockService('http://notareal.host')
@@ -23,6 +23,7 @@ describe('Wedlocks Service', () => {
           value: recipient,
         },
       },
+      attachments: [],
     }
     axios.post.mockReturnValue()
     await w.confirmEmail(recipient, 'https://mcdonalds.gov')
@@ -48,6 +49,7 @@ describe('Wedlocks Service', () => {
         recoveryLink: 'https://recovery',
         email: encodeURIComponent(recipient),
       },
+      attachments: [],
     }
     axios.post.mockReturnValue()
     await w.welcomeEmail(recipient, 'https://recovery')
@@ -73,9 +75,39 @@ describe('Wedlocks Service', () => {
         recoveryLink: 'https://recovery',
         email: encodeURIComponent(recipient),
       },
+      attachments: [],
     }
     axios.post.mockReturnValue()
     await w.welcomeEmail(recipient, 'https://recovery')
+
+    expect(axios.post).toHaveBeenCalledWith(
+      'http://notareal.host',
+      expectedPayload,
+      {
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+    )
+  })
+
+  it('should request a QR code email, with the right headers and params', async () => {
+    expect.assertions(1)
+    const recipient = 'jefferson@airpla.ne'
+    const keychainLink = 'https://app.unlock-protocol.com/keychain'
+    const lockName = 'Unlock Blog Members'
+    const qrData = 'image a huge base64 string of image data'
+    const expectedPayload = {
+      template: emailTemplate.keyOwnership,
+      recipient,
+      params: {
+        keychainLink,
+        lockName,
+      },
+      attachments: [{ path: qrData }],
+    }
+    axios.post.mockReturnValue()
+    await w.keychainQREmail(recipient, keychainLink, lockName, qrData)
 
     expect(axios.post).toHaveBeenCalledWith(
       'http://notareal.host',
