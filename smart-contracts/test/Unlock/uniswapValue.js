@@ -40,7 +40,7 @@ contract('Unlock / uniswapValue', accounts => {
         tx.logs[0].args.exchange
       )
 
-      // Approve transfering tokens to the exchange
+      // Approve transferring tokens to the exchange
       await token.approve(exchange.address, -1, { from: accounts[0] })
 
       // And seed it

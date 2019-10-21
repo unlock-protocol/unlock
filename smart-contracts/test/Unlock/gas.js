@@ -20,6 +20,7 @@ contract('Unlock / gas', accounts => {
       Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
+      '0x000000000000000000000000',
       {
         from: accounts[0],
       }
