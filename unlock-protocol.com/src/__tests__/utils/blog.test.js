@@ -40,8 +40,9 @@ describe('blog', () => {
         return ['test1.md', 'test2.md', 'test3.txt']
       }),
       readFileSync: jest.fn(filename => MOCK_FILE_INFO[filename]),
-      writeFile: jest.fn((filename, data) => {
+      writeFile: jest.fn((filename, data, callback) => {
         writtenData = data
+        return callback()
       }),
       statSync: jest.fn(() => {
         return {
@@ -94,43 +95,50 @@ describe('blog', () => {
     expect(pages['/blog/4'].query.slug).toEqual('4')
   })
 
-  it('should generate a blog index file from a blog index array', () => {
+  it('should generate a blog index file from a blog index array', done => {
     expect.assertions(1)
 
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    blog.generateBlogIndexFile('/foo/bar', feed)
-
-    expect(writtenData).toEqual(blogJson)
+    blog.generateBlogIndexFile('/foo/bar', feed, () => {
+      expect(writtenData).toEqual(blogJson)
+      done()
+    })
   })
 
-  it('should generate a blog RSS feed from a blog index array', () => {
+  it('should generate a blog RSS feed from a blog index array', done => {
     expect.assertions(6)
 
     const blog = require('../../utils/blog')
 
     let feed = blog.generateBlogFeed('/foo/bar')
-    blog.generateRSSFile('/foo/bar', feed, 'https://unlock-protocol.com')
+    blog.generateRSSFile(
+      '/foo/bar',
+      feed,
+      'https://unlock-protocol.com',
+      () => {
+        const parser = new DOMParser()
+        let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
 
-    const parser = new DOMParser()
-    let xmlDoc = parser.parseFromString(writtenData, 'text/xml')
+        let items = xmlDoc.getElementsByTagName('item')
 
-    let items = xmlDoc.getElementsByTagName('item')
-
-    expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
-    expect(items.length).toEqual(2)
-    expect(items[0].querySelector('title').textContent).toEqual(
-      'This is a second sample post'
-    )
-    expect(items[1].querySelector('title').textContent).toEqual(
-      'This is a sample post'
-    )
-    expect(items[0].querySelector('link').textContent).toEqual(
-      'https://unlock-protocol.com/blog/test2'
-    )
-    expect(items[1].querySelector('link').textContent).toEqual(
-      'https://unlock-protocol.com/blog/test1'
+        expect(xmlDoc.getElementsByTagName('channel').length).toEqual(1)
+        expect(items.length).toEqual(2)
+        expect(items[0].querySelector('title').textContent).toEqual(
+          'This is a second sample post'
+        )
+        expect(items[1].querySelector('title').textContent).toEqual(
+          'This is a sample post'
+        )
+        expect(items[0].querySelector('link').textContent).toEqual(
+          'https://unlock-protocol.com/blog/test2'
+        )
+        expect(items[1].querySelector('link').textContent).toEqual(
+          'https://unlock-protocol.com/blog/test1'
+        )
+        done()
+      }
     )
   })
 

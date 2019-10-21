@@ -118,7 +118,7 @@ describe('v02', () => {
       )
     }
 
-    it('should trigger an event when it has been loaded woth an updated balance', async () => {
+    it('should trigger an event when it has been loaded with an updated balance', async () => {
       expect.assertions(2)
       await nockBeforeEach()
       callReadOnlyFunction({ maxKeys: 10 })
@@ -135,6 +135,7 @@ describe('v02', () => {
           outstandingKeys: 17,
           asOf: 1337,
           publicLockVersion: 2,
+          currencyContractAddress: null,
         })
       })
 
@@ -167,6 +168,7 @@ describe('v02', () => {
         outstandingKeys: 17,
         owner: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
         publicLockVersion: 2,
+        currencyContractAddress: null,
       })
     })
   })

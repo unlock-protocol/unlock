@@ -3,10 +3,8 @@ import {
   DISMISS_MODAL,
   waitForWallet,
   dismissWalletCheck,
-  promptForPassword,
-  dismissPasswordPrompt,
-  promptForResetPassword,
-  dismissResetPasswordPrompt,
+  displayQR,
+  dismissQR,
 } from '../../actions/fullScreenModals'
 import { KindOfModal } from '../../unlockTypes'
 
@@ -31,43 +29,24 @@ describe('FullScreenModals actions', () => {
     expect(dismissWalletCheck()).toEqual(expectedAction)
   })
 
-  it('should create an action to prompt for password', () => {
+  it('should create an action to display a QR code', () => {
     expect.assertions(1)
     const expectedAction = {
       type: LAUNCH_MODAL,
-      kindOfModal: KindOfModal.PasswordPrompt,
+      kindOfModal: KindOfModal.QRDisplay,
+      data: 'some data',
     }
 
-    expect(promptForPassword()).toEqual(expectedAction)
+    expect(displayQR('some data')).toEqual(expectedAction)
   })
 
-  it('should create an action to dismiss a password prompt', () => {
+  it('should create an action to dismiss a QR code', () => {
     expect.assertions(1)
     const expectedAction = {
       type: DISMISS_MODAL,
-      kindOfModal: KindOfModal.PasswordPrompt,
+      kindOfModal: KindOfModal.QRDisplay,
     }
 
-    expect(dismissPasswordPrompt()).toEqual(expectedAction)
-  })
-
-  it('should create an action to prompt for password reset', () => {
-    expect.assertions(1)
-    const expectedAction = {
-      type: LAUNCH_MODAL,
-      kindOfModal: KindOfModal.ResetPasswordPrompt,
-    }
-
-    expect(promptForResetPassword()).toEqual(expectedAction)
-  })
-
-  it('should create an action to dismiss a password reset prompt', () => {
-    expect.assertions(1)
-    const expectedAction = {
-      type: DISMISS_MODAL,
-      kindOfModal: KindOfModal.ResetPasswordPrompt,
-    }
-
-    expect(dismissResetPasswordPrompt()).toEqual(expectedAction)
+    expect(dismissQR()).toEqual(expectedAction)
   })
 })
