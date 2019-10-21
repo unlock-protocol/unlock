@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Media from '../../theme/media'
+import Address from '../interface/Address'
 
 export const LockRowGrid =
   'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
@@ -60,9 +61,10 @@ export const LockName = styled.div.attrs({
 `};
 `
 
-export const LockAddress = styled.div.attrs({
+export const LockAddress = styled(Address).attrs({
   className: 'address',
 })`
+  display: block;
   color: var(--grey);
   font-weight: 200;
   white-space: nowrap;
