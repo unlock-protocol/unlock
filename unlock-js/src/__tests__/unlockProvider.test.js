@@ -166,6 +166,18 @@ describe('Unlock Provider', () => {
         )
       })
     })
+
+    describe('generateEjectionRequest', () => {
+      it('should return a signed ejection request for the current account', () => {
+        expect.assertions(1)
+
+        const signature = provider.generateSignedEjectionRequest()
+
+        expect(sigUtil.recoverTypedSignature(signature)).toEqual(
+          publicKey.toLowerCase()
+        )
+      })
+    })
   })
 
   describe('implemented JSON-RPC calls', () => {
