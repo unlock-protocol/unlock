@@ -3,16 +3,21 @@ import keyOwnership from '../../templates/keyOwnership'
 describe('keyOwnership', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
-    expect(keyOwnership.subject({
-      lockName: 'Unlock Blog Members',
-    })).toEqual('Your proof of key ownership for "Unlock Blog Members"')
+    expect(
+      keyOwnership.subject({
+        lockName: 'Unlock Blog Members',
+      })
+    ).toEqual('Your proof of key ownership for "Unlock Blog Members"')
   })
 
   it('should have the right text', () => {
-    expect(keyOwnership.text({
-      lockName: 'Unlock Blog Members',
-      keychainLink: 'https://app.unlock-protocol.com/keychain',
-    })).toEqual(
+    expect.assertions(1)
+    expect(
+      keyOwnership.text({
+        lockName: 'Unlock Blog Members',
+        keychainLink: 'https://app.unlock-protocol.com/keychain',
+      })
+    ).toEqual(
       `Hello,
 
 The QR code attached to this email proves that you own a key for Unlock Blog Members.
@@ -22,6 +27,7 @@ If you're asked to demonstrate that you own this key, simply show the QR code at
 Thanks!
 
 The Unlock Team
-`)
+`
+    )
   })
 })
