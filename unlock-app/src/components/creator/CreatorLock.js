@@ -129,7 +129,7 @@ export class CreatorLock extends React.Component {
         </DoubleHeightCell>
         <LockName>
           {name}
-          <LockAddress>{!lock.pending && lock.address}</LockAddress>
+          <LockAddress address={!lock.pending && lock.address} />
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
