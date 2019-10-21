@@ -218,7 +218,7 @@ contract MixinKeys is
   ) internal
   {
     if (_key.tokenId == 0) {
-      // This is a brand new owner, else an owner of an expired key buying an extension.
+      // This is a brand new owner
       // We increment the tokenId counter
       totalSupply++;
       // we assign the incremented `totalSupply` as the tokenId for the new key
