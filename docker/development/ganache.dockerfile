@@ -21,8 +21,10 @@ COPY ./package.json .
 RUN npm install
 
 COPY ./TestErc20Token.json .
+COPY ./ExternalRefund.json .
 COPY ./deploy-unlock.js .
 COPY ./deploy-locks.js .
+COPY ./deploy-external-refund.js .
 
 WORKDIR /app
 
