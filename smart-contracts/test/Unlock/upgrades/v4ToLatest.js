@@ -154,7 +154,7 @@ contract('Unlock / upgrades', accounts => {
       })
 
       it('re-purchasing 2 expired keys from V4 should not duplicate tokenIDs', async () => {
-        let keyOwners = [keyOwner3, keyOwner4]
+        let keyOwners = [keyOwner3, keyOwner4, accounts[5], accounts[6]]
         const purchases = keyOwners.map(account => {
           return lockV4.methods.purchaseFor(account).send({
             value: keyPrice,
@@ -164,6 +164,12 @@ contract('Unlock / upgrades', accounts => {
         })
         // buy some keys
         await Promise.all(purchases)
+        let tokenId3Before = await lockV4.methods
+          .getTokenIdFor(keyOwner3)
+          .call()
+        let tokenId4Before = await lockV4.methods
+          .getTokenIdFor(keyOwner4)
+          .call()
         const keyExpirations = keyOwners.map(account => {
           return lockV4.methods.expireKeyFor(account).send({
             from: lockOwner,
@@ -184,10 +190,16 @@ contract('Unlock / upgrades', accounts => {
         })
         let ID3 = tx3.events.Transfer.returnValues._tokenId
         let ID4 = tx4.events.Transfer.returnValues._tokenId
-        tokenId3 = await lockV4.methods.getTokenIdFor(keyOwner3).call()
-        tokenId4 = await lockV4.methods.getTokenIdFor(keyOwner4).call()
-        assert.equal(tokenId3, ID3) // AssertionError: expected '4' to equal '5'
-        assert.equal(tokenId4, ID4)
+        let tokenId3After = await lockV4.methods.getTokenIdFor(keyOwner3).call()
+        let tokenId4After = await lockV4.methods.getTokenIdFor(keyOwner4).call()
+        // console.log(ID3) // 6
+        // console.log(ID4) // 6
+        // console.log(tokenId3After) // 4
+        // console.log(tokenId4After) // 5
+        assert.equal(tokenId3Before, tokenId3After)
+        assert.equal(tokenId4Before, tokenId4After)
+        assert.equal(tokenId3After, ID3) // AssertionError: expected '4' to equal '5'
+        assert.equal(tokenId4After, ID4)
       })
     })
 
