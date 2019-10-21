@@ -4,6 +4,7 @@ import ejectionWarningEmail from './ejectionWarningEmail'
 import welcome from './welcome'
 import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
+import keyOwnership from './keyOwnership'
 
 export default {
   confirmEmail,
@@ -12,4 +13,5 @@ export default {
   welcome,
   recoveryKeyConfirmEmail,
   confirmEvent,
+  keyOwnership,
 }
