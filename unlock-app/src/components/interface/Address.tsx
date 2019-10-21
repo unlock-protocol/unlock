@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
+import useEns from '../../hooks/useEns'
 
 interface Props {
   address: string
@@ -8,9 +9,10 @@ interface Props {
 }
 
 const Address = ({ id, className, address }: Props) => {
+  const name = useEns({ address })
   return (
     <Abbrevation id={id} className={className} title={address}>
-      {address}
+      {name}
     </Abbrevation>
   )
 }
