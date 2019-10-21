@@ -12,12 +12,14 @@ const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
 const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
-let project, proxy, unlock
+let project, proxy, unlock, tokenId3, tokenId4
 
 contract('Unlock / upgrades', accounts => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
+  const keyOwner3 = accounts[3]
+  const keyOwner4 = accounts[4]
   const keyPrice = Units.convert('0.01', 'eth', 'wei')
   let lockV4
   let v4LockData
@@ -41,7 +43,7 @@ contract('Unlock / upgrades', accounts => {
         60 * 60 * 24, // expirationDuration 1 day
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
-        5, // maxNumberOfKeys
+        20, // maxNumberOfKeys
         'UpgradeTestingLock'
       )
       .send({ from: lockOwner, gas: 6000000 })
@@ -150,6 +152,43 @@ contract('Unlock / upgrades', accounts => {
           v4LockData.yieldedDiscountTokens
         )
       })
+
+      it('re-purchasing 2 expired keys from V4 should not duplicate tokenIDs', async () => {
+        let keyOwners = [keyOwner3, keyOwner4]
+        const purchases = keyOwners.map(account => {
+          return lockV4.methods.purchaseFor(account).send({
+            value: keyPrice,
+            from: account,
+            gas: 4000000,
+          })
+        })
+        // buy some keys
+        await Promise.all(purchases)
+        const keyExpirations = keyOwners.map(account => {
+          return lockV4.methods.expireKeyFor(account).send({
+            from: lockOwner,
+          })
+        })
+        // expire keys
+        await Promise.all(keyExpirations)
+        // repurchase keys
+        let tx3 = await lockV4.methods.purchaseFor(keyOwner3).send({
+          value: keyPrice,
+          from: keyOwner3,
+          gas: 4000000,
+        })
+        let tx4 = await lockV4.methods.purchaseFor(keyOwner4).send({
+          value: keyPrice,
+          from: keyOwner4,
+          gas: 4000000,
+        })
+        let ID3 = tx3.events.Transfer.returnValues._tokenId
+        let ID4 = tx4.events.Transfer.returnValues._tokenId
+        tokenId3 = await lockV4.methods.getTokenIdFor(keyOwner3).call()
+        tokenId4 = await lockV4.methods.getTokenIdFor(keyOwner4).call()
+        assert.equal(tokenId3, ID3) // AssertionError: expected '4' to equal '5'
+        assert.equal(tokenId4, ID4)
+      })
     })
 
     describe('Using latest version after an upgrade', () => {
@@ -216,6 +255,49 @@ contract('Unlock / upgrades', accounts => {
           .publicLockVersion()
           .call()
         assert.equal(publicLockVersion, LatestLockVersion)
+      })
+
+      it('re-purchasing 2 expired keys should not duplicate tokenIDs', async () => {
+        let keyOwners = [keyOwner3, keyOwner4]
+        const purchases = keyOwners.map(account => {
+          return lockLatest.methods
+            .purchase(0, account, web3.utils.padLeft(0, 40), [])
+            .send({
+              value: keyPrice,
+              from: account,
+              gas: 4000000,
+            })
+        })
+        // buy some keys
+        await Promise.all(purchases)
+        const keyExpirations = keyOwners.map(account => {
+          return lockLatest.methods.expireKeyFor(account).send({
+            from: lockOwner,
+          })
+        })
+        // expire keys
+        await Promise.all(keyExpirations)
+        // repurchase keys
+        let tx3 = await lockLatest.methods
+          .purchase(0, keyOwner3, web3.utils.padLeft(0, 40), [])
+          .send({
+            value: keyPrice,
+            from: keyOwner3,
+            gas: 4000000,
+          })
+        let tx4 = await lockLatest.methods
+          .purchase(0, keyOwner4, web3.utils.padLeft(0, 40), [])
+          .send({
+            value: keyPrice,
+            from: keyOwner4,
+            gas: 4000000,
+          })
+        let ID3 = tx3.events.Transfer.returnValues._tokenId
+        let ID4 = tx4.events.Transfer.returnValues._tokenId
+        tokenId3 = await lockLatest.methods.getTokenIdFor(keyOwner3).call()
+        tokenId4 = await lockLatest.methods.getTokenIdFor(keyOwner4).call()
+        assert.equal(tokenId3, ID3) // AssertionError: expected '4' to equal '5'
+        assert.equal(tokenId4, ID4)
       })
     })
   })
