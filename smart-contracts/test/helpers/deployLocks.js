@@ -2,6 +2,8 @@ const PublicLock = artifacts.require('./PublicLock.sol')
 const Web3Utils = require('web3-utils')
 const Locks = require('../fixtures/locks')
 
+let saltCounter = 100
+
 module.exports = function deployLocks(
   unlock,
   from,
@@ -17,6 +19,8 @@ module.exports = function deployLocks(
           Locks[name].keyPrice.toFixed(),
           Locks[name].maxNumberOfKeys.toFixed(),
           Locks[name].lockName,
+          // This ensures that the salt is unique even if we deploy locks multiple times
+          `0x${(saltCounter++).toString(16)}`,
           { from }
         )
         .then(tx => {
