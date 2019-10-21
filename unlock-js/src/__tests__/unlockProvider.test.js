@@ -158,12 +158,6 @@ describe('Unlock Provider', () => {
           expect(error).toBeNull()
           done()
         })
-
-        const output = provider.personal_sign([messageHash, ''])
-
-        expect(sigUtil.recoverPersonalSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
       })
     })
 
