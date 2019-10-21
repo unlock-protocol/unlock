@@ -19,5 +19,12 @@ storiesOf('InlineModal', module)
     )
   })
   .add('In QR Code form', () => {
-    return <QRModal active dismiss={() => {}} value="Just some test data" />
+    return (
+      <QRModal
+        active
+        dismiss={() => {}}
+        value="Just some test data"
+        sendEmail={() => {}}
+      />
+    )
   })
