@@ -36,6 +36,7 @@
     "cross-fetch": "3.0.4",
     "deep-object-diff": "1.1.0",
     "dotenv": "8.1.0",
+    "ethers": "4.0.38",
     "file-saver": "2.0.2",
     "fork-ts-checker-webpack-plugin": "1.5.0",
     "graphql": "14.5.7",
