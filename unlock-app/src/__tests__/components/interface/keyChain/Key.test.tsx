@@ -34,6 +34,18 @@ const render = (signature?: Props['signature']) => {
 }
 
 describe('keyChain -- Key', () => {
+  beforeAll(() => {
+    ;(global as any).window = {
+      location: {
+        origin: 'http://localhost',
+      },
+    }
+  })
+
+  afterAll(() => {
+    delete (global as any).window
+  })
+
   it('should render the lock name', () => {
     expect.assertions(0)
     const { getByText } = render()
@@ -61,5 +73,19 @@ describe('keyChain -- Key', () => {
     )
 
     global.Date.now = realDateNow
+  })
+
+  it('should display a qr code on button click when there is a signature', () => {
+    expect.assertions(1)
+
+    const { getByText, container } = render({
+      data: 'some data',
+      signature: 'a signature',
+    })
+
+    const button = getByText('Display QR Code')
+    rtl.fireEvent.click(button)
+
+    expect(container.querySelector('canvas')).not.toBeNull()
   })
 })
