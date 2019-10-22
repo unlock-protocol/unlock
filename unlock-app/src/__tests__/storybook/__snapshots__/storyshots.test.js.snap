@@ -36771,8 +36771,8 @@ Object {
 
 .c4 {
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 16px;
+  top: 16px;
 }
 
 .c1 {
@@ -36888,7 +36888,7 @@ Object {
         class="sc-esjQYD kvqsOx"
       >
         <a
-          class="sc-850ddk-0 iabPtF sc-iyvyFf bmwayE"
+          class="sc-850ddk-0 iabPtF sc-iyvyFf bRQNAj"
           data-testid="qr-quit-button"
           target="_self"
         >
@@ -37407,8 +37407,8 @@ Object {
 
 .c3 {
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 16px;
+  top: 16px;
 }
 
 .c0 {
@@ -37492,7 +37492,7 @@ Object {
       class="sc-esjQYD kvqsOx"
     >
       <a
-        class="sc-850ddk-0 iabPtF sc-iyvyFf bmwayE"
+        class="sc-850ddk-0 iabPtF sc-iyvyFf bRQNAj"
         data-testid="qr-quit-button"
         target="_self"
       >
@@ -40721,6 +40721,343 @@ Object {
 }
 `;
 
+exports[`Storyshots InlineModal In QR Code form 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c3 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: var(--link);
+}
+
+.c3:hover > svg {
+  fill: white;
+}
+
+.c3:focus {
+  outline: none;
+}
+
+.c2:hover .c7 {
+  display: inline-block;
+}
+
+.c5 {
+  height: 60px;
+  border: none;
+  background-color: var(--lightgrey);
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.c6 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+  text-align: -webkit-center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: not-allowed;
+  background-color: var(--grey);
+}
+
+.c8 .c2 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c8 .c2:nth-child(1) {
+  pointer-events: none;
+}
+
+.c8 .c2:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c8 .c2 > svg {
+  fill: var(--grey);
+}
+
+.c8 .c2:hover > svg {
+  fill: var(--grey);
+}
+
+.c9 .c2 {
+  margin: 24px;
+}
+
+.c9 .c2 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+
+.c1 {
+  background: var(--white);
+  position: relative;
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c0 {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: var(--alwaysontop);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            class="c2 c3 c4"
+            target="_self"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+          <canvas
+            height="256"
+            style="height: 256px; width: 256px;"
+            width="256"
+          />
+          <input
+            class="c5"
+            placeholder="Email address"
+            required=""
+            type="email"
+            value=""
+          />
+          <button
+            class="c6"
+            type="button"
+          >
+            Send Email
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-kIPQKe hGOjcr"
+    >
+      <div
+        class="sc-esjQYD kvqsOx"
+      >
+        <a
+          class="sc-850ddk-0 iabPtF sc-iyvyFf bRQNAj"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <canvas
+          height="256"
+          style="height: 256px; width: 256px;"
+          width="256"
+        />
+        <input
+          class="sc-gqjmRU huKqqv"
+          placeholder="Email address"
+          required=""
+          type="email"
+          value=""
+        />
+        <button
+          class="sc-jTzLTM sc-kgoBCf iJCBHl"
+          type="button"
+        >
+          Send Email
+        </button>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots InlineModal When active 1`] = `
 Object {
   "asFragment": [Function],
@@ -40802,8 +41139,8 @@ Object {
 
 .c4 {
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 16px;
+  top: 16px;
 }
 
 .c1 {
@@ -40905,7 +41242,7 @@ Object {
         class="sc-esjQYD kvqsOx"
       >
         <a
-          class="sc-850ddk-0 iabPtF sc-iyvyFf bmwayE"
+          class="sc-850ddk-0 iabPtF sc-iyvyFf bRQNAj"
           target="_self"
         >
           <svg
