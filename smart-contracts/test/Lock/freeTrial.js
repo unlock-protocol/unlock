@@ -35,7 +35,7 @@ contract('Lock / freeTrial', accounts => {
     let initialLockBalance
 
     beforeEach(async () => {
-      await lock.updateRefundPenalty(5, 2000)
+      await lock.updateRefundPenalty(20, 2000)
       initialLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       )
@@ -58,7 +58,7 @@ contract('Lock / freeTrial', accounts => {
 
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
-        await sleep(6000)
+        await sleep(21000)
         await lock.cancelAndRefund({
           from: keyOwners[0],
         })
