@@ -11,6 +11,7 @@ import EventInfo from '../interface/EventInfo'
 import EventLinks from '../interface/EventLinks'
 import EventDescription from '../interface/EventDescription'
 import PurchaseTicket from '../interface/PurchaseTicket'
+import PurchaseSuccess from '../interface/PurchaseSuccess'
 import Media from '../../theme/media'
 
 interface UnlockWindow extends Window {
@@ -116,8 +117,6 @@ export class EventContent extends Component<
       return <Layout>Loading...</Layout>
     }
 
-    const keychainURL = `${config.unlockAppUrl}/keychain`
-
     return (
       <Layout>
         <Head>
@@ -142,32 +141,7 @@ export class EventContent extends Component<
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
-              <div>
-                <h2>
-                  You&apos;ve got a ticket!{' '}
-                  <span role="img" aria-label="Celebration">
-                    🎉
-                  </span>
-                </h2>
-                <p>
-                  Get your QR code from the{' '}
-                  <a
-                    href={keychainURL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Unlock Keychain
-                  </a>
-                  . You can create it on-demand as needed, or do it in advance
-                  and have the code emailed to you.
-                </p>
-                <p>
-                  You&apos;ll need the QR code when you check in to the event,
-                  so bring a device that can access the keychain to generate the
-                  code or can access your email to get the code you generated in
-                  advance.
-                </p>
-              </div>
+              <PurchaseSuccess unlockAppUrl={config.unlockAppUrl} />
             )}
           </Column>
         </Columns>
