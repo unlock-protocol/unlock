@@ -1,4 +1,4 @@
-import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
@@ -10,11 +10,11 @@ const config = require('../../config/config')[env]
 const metadataOperations = require('../operations/metadataOperations')
 
 namespace MetadataController {
-  export const data = async (req: Request, res: Response): Promise<any> => {
+  export const data = async (req: any, res: Response): Promise<any> => {
     let address = Normalizer.ethereumAddress(req.params.address)
     let keyId = req.params.keyId.toLowerCase()
-    let lockOwner = false
 
+    let lockOwner = await presentProtectedData(req, address)
     let keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
@@ -115,6 +115,32 @@ namespace MetadataController {
       Normalizer.ethereumAddress(signeeAddress) ===
       Normalizer.ethereumAddress(await lockData.owner(lockAddress))
     )
+  }
+
+  const expiredSignature = (
+    signatureTimestamp: number,
+    gracePeriod = 10000
+  ): boolean => {
+    let serverTime = Date.now() / 1000
+    let signatureTime = signatureTimestamp / 1000
+
+    return signatureTime + gracePeriod < serverTime
+  }
+
+  const presentProtectedData = async (
+    req: any,
+    address: string
+  ): Promise<boolean> => {
+    if (req.signee && req.body.message) {
+      let signatureTime = req.body.message.LockMetaData.timestamp
+
+      return (
+        !expiredSignature(signatureTime) &&
+        (await evaluateLockOwnership(address, req.signee))
+      )
+    } else {
+      return false
+    }
   }
 }
 
