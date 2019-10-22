@@ -29,13 +29,21 @@ export async function addMetadata(metadata: UserTokenMetadataInput) {
   )
 }
 
-export async function getMetadata(tokenAddress: string, userAddress: string) {
+export async function getMetadata(
+  tokenAddress: string,
+  userAddress: string,
+  includeProtected = false
+) {
   let data = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(tokenAddress),
       userAddress: Normalizer.ethereumAddress(userAddress),
     },
   })
+
+  if (data && !includeProtected) {
+    delete data.data.userMetadata.protected
+  }
 
   return data ? data.data : data
 }

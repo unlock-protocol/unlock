@@ -28,7 +28,11 @@ export const updateDefaultLockMetadata = async (data: any) => {
   }
 }
 
-export const generateKeyMetadata = async (address: string, keyId: string) => {
+export const generateKeyMetadata = async (
+  address: string,
+  keyId: string,
+  isLockOwner: boolean
+) => {
   let onChainKeyMetadata = await fetchChainData(address, keyId)
   if (Object.keys(onChainKeyMetadata).length == 0) {
     return {}
@@ -36,7 +40,9 @@ export const generateKeyMetadata = async (address: string, keyId: string) => {
 
   let kd = new KeyData(config.web3ProviderHost)
   let data = await kd.get(address, keyId)
-  let userMetadata = data.owner ? await getMetadata(address, data.owner) : {}
+  let userMetadata = data.owner
+    ? await getMetadata(address, data.owner, isLockOwner)
+    : {}
 
   let keyCentricData = await getKeyCentricData(address, keyId)
   let baseTokenData = await getBaseTokenData(address)

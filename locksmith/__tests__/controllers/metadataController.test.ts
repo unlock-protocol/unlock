@@ -187,32 +187,37 @@ describe('Metadata Controller', () => {
     })
 
     describe('when the user has provided metadata', () => {
-      beforeAll(async () => {
-        await addMetadata({
-          tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
-          userAddress: '0xaBCD',
-          data: {
-            public: {
-              mock: 'values',
+      describe('when the user has provided public & protected metadata', () => {
+        beforeEach(async () => {
+          await addMetadata({
+            tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+            userAddress: '0xaBCD',
+            data: {
+              protected: {
+                hidden: 'metadata',
+              },
+              public: {
+                mock: 'values',
+              },
             },
-          },
-        })
-      })
-
-      it('returns their payload in the response', async () => {
-        expect.assertions(2)
-        let response = await request(app)
-          .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
-          .set('Accept', 'json')
-
-        expect(response.status).toBe(200)
-        expect(response.body).toEqual(
-          expect.objectContaining({
-            description:
-              'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
-            userMetadata: { public: { mock: 'values' } },
           })
-        )
+        })
+
+        it('returns their payload in the response excluding the protected fields', async () => {
+          expect.assertions(2)
+          let response = await request(app)
+            .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
+            .set('Accept', 'json')
+
+          expect(response.status).toBe(200)
+          expect(response.body).toEqual(
+            expect.objectContaining({
+              description:
+                'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+              userMetadata: { public: { mock: 'values' } },
+            })
+          )
+        })
       })
     })
   })
