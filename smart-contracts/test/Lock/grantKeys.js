@@ -13,7 +13,7 @@ let unlock, lock, locks, tx
 contract('Lock / grantKeys', accounts => {
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
-  const validExpirationTimestamp = Math.round(Date.now() / 1000 + 600)
+  const validExpirationTimestamp = Math.round(Date.now() / 1000 + 86400) // 24 hrs
 
   before(async () => {
     unlock = await getProxy(unlockContract)
@@ -96,6 +96,7 @@ contract('Lock / grantKeys', accounts => {
           expirationDates,
           { from: lockOwner }
         )
+        await sleep(20000)
       })
 
       it('should acknowledge that user owns key', async () => {
