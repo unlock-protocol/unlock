@@ -53,6 +53,10 @@ jobs:
       - run:
           name: unlock-js tests
           command: scripts/unlockjs-tests.sh unlock-js
+      - run:
+          name: Log failing tests
+          command: ./scripts/docker-compose-log.sh
+          when: on_fail
 
   rover-tests:
     machine: true
@@ -166,6 +170,7 @@ jobs:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh
           when: on_fail
+
   deploy-unlock-app-netlify:
     machine: true
     environment:

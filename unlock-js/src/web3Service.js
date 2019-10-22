@@ -551,6 +551,8 @@ export default class Web3Service extends UnlockService {
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
+   * TODO: return the tokenId here because this is probably useful in some context
+   * TODO: add a method to retrieve a token by its id
    */
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
