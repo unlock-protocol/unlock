@@ -11,7 +11,7 @@ import EventInfo from '../interface/EventInfo'
 import EventLinks from '../interface/EventLinks'
 import EventDescription from '../interface/EventDescription'
 import PurchaseTicket from '../interface/PurchaseTicket'
-import EventTicket from '../interface/EventTicket'
+import PurchaseSuccess from '../interface/PurchaseSuccess'
 import Media from '../../theme/media'
 
 interface UnlockWindow extends Window {
@@ -29,7 +29,10 @@ enum PaywallStatus {
 
 interface EventContentProps {
   lockAddress: string
-  config: { env: string }
+  config: {
+    env: string
+    unlockAppUrl: string
+  }
   event: any
 }
 
@@ -107,7 +110,7 @@ export class EventContent extends Component<
 
   render() {
     const { paywallStatus } = this.state
-    const { event, lockAddress } = this.props
+    const { event, config } = this.props
 
     // TODO: make this better (get event faster? SSR?)
     if (Object.keys(event).length === 0) {
@@ -138,7 +141,7 @@ export class EventContent extends Component<
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
-              <EventTicket lockAddress={lockAddress} event={event} />
+              <PurchaseSuccess unlockAppUrl={config.unlockAppUrl} />
             )}
           </Column>
         </Columns>
