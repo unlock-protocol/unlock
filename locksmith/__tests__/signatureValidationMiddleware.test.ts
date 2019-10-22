@@ -1,8 +1,12 @@
 import signatureValidationMiddleware from '../src/middlewares/signatureValidationMiddleware'
 
-var httpMocks = require('node-mocks-http')
+const ethJsUtil = require('ethereumjs-util')
+const sigUtil = require('eth-sig-util')
+const httpMocks = require('node-mocks-http')
+const Base64 = require('../src/utils/base64')
 
-let request, response
+let request: any, response: any
+
 let validSignature =
   'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
 let validSig2 =
@@ -14,12 +18,81 @@ let processor = signatureValidationMiddleware.generateProcessor({
   signee: 'owner',
 })
 
+let evaluator = signatureValidationMiddleware.evaluateSignature({
+  name: 'user',
+  required: ['publicKey'],
+  signee: 'publicKey',
+})
+
 beforeAll(() => {
   request = httpMocks.createRequest()
   response = httpMocks.createResponse()
 })
 
 describe('Signature Validation Middleware', () => {
+  describe('evaluateSignature', () => {
+    describe('when the request has a token', () => {
+      it('returns the signee', done => {
+        expect.assertions(1)
+
+        let body = {
+          types: {
+            EIP712Domain: [
+              { name: 'name', type: 'string' },
+              { name: 'version', type: 'string' },
+              { name: 'chainId', type: 'uint256' },
+              { name: 'verifyingContract', type: 'address' },
+              { name: 'salt', type: 'bytes32' },
+            ],
+            User: [{ name: 'publickKey', type: 'address' }],
+          },
+          domain: { name: 'Unlock', version: '1' },
+          primaryType: 'User',
+          message: {
+            user: {
+              publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+            },
+          },
+        }
+
+        let privateKey = ethJsUtil.toBuffer(
+          '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
+        )
+
+        let sig = sigUtil.signTypedData(privateKey, {
+          data: body,
+        })
+
+        let request = httpMocks.createRequest({
+          headers: { Authorization: `Bearer ${Base64.encode(sig)}` },
+          body,
+        })
+
+        evaluator(request, response, function next() {
+          expect(request.signee).toBe(
+            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+          )
+          done()
+        })
+      })
+    })
+
+    describe('when the request does not have a token', () => {
+      it('does not return a signee', done => {
+        expect.assertions(1)
+
+        let request = httpMocks.createRequest({
+          body: 'a sample body',
+        })
+
+        evaluator(request, response, function next() {
+          expect(request.signee).toBe(undefined)
+          done()
+        })
+      })
+    })
+  })
+
   describe('when a valid signature is received', () => {
     describe('a signature for User creation', () => {
       it('moves the request to the application', done => {

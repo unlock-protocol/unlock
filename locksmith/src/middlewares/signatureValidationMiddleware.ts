@@ -96,6 +96,30 @@ namespace SignatureValidationMiddleware {
       }
     }
   }
+
+  export const evaluateSignature = (
+    configuration: SignatureValidationConfiguration
+  ): any => {
+    return (req: any, _res: Response, next: any) => {
+      var signature = extractToken(req)
+
+      if (signature === null) {
+        next()
+      } else {
+        let decodedSignature = Base64.decode(signature)
+        let signee = handleSignaturePresent(
+          req.body,
+          decodedSignature,
+          configuration
+        )
+
+        if (signee) {
+          req.signee = signee
+        }
+        next()
+      }
+    }
+  }
 }
 
 export default SignatureValidationMiddleware
