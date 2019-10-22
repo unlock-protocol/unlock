@@ -1,5 +1,5 @@
 import WedlockService from '../services/wedlockService'
-import { SIGNUP_EMAIL, WELCOME_EMAIL } from '../actions/user'
+import { SIGNUP_EMAIL, WELCOME_EMAIL, QR_EMAIL } from '../actions/user'
 import { Action } from '../unlockTypes'
 
 const wedlocksMiddleware = (config: any) => {
@@ -16,9 +16,7 @@ const wedlocksMiddleware = (config: any) => {
           const { origin } = window.location
           // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.confirmEmail(action.emailAddress, `${origin}/signup`)
-        }
-
-        if (action.type === WELCOME_EMAIL && window && window.location) {
+        } else if (action.type === WELCOME_EMAIL && window && window.location) {
           const { origin } = window.location
           // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.welcomeEmail(
@@ -28,6 +26,15 @@ const wedlocksMiddleware = (config: any) => {
             )}&recoveryKey=${encodeURIComponent(
               JSON.stringify(action.recoveryKey)
             )}`
+          )
+        } else if (action.type === QR_EMAIL) {
+          const { recipient, lockName, keyQR } = action
+          const { origin } = window.location
+          wedlockService.keychainQREmail(
+            recipient,
+            `${origin}/keychain`,
+            lockName,
+            keyQR
           )
         }
 
