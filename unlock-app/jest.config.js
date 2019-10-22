@@ -1,5 +1,9 @@
 module.exports = {
-  setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
+  setupFiles: [
+    '<rootDir>/.jest/env.js',
+    '<rootDir>/.jest/register-context.js',
+    'jest-canvas-mock',
+  ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
