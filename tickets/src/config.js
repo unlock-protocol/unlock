@@ -27,6 +27,7 @@ export default function configure(
   const unlockTicketsUrl =
     runtimeConfig.unlockTicketsUrl || 'http://0.0.0.0:3003'
   let unlockAppUrl = 'http://0.0.0.0:3000'
+  let unlockStaticUrl = 'http://0.0.0.0:3000'
   let providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
@@ -93,7 +94,8 @@ export default function configure(
     // rinkeby block time is roughly same as main net
     blockTime = 8000
 
-    unlockAppUrl = 'https://staging.unlock-protocol.com/'
+    unlockAppUrl = 'https://staging-app.unlock-protocol.com'
+    unlockStaticUrl = 'https://staging.unlock-protocol.com'
   }
 
   if (env === 'prod') {
@@ -107,7 +109,8 @@ export default function configure(
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
 
-    unlockAppUrl = 'https://unlock-protocol.com/'
+    unlockAppUrl = 'https://app.unlock-protocol.com'
+    unlockStaticUrl = 'https://unlock-protocol.com'
   }
 
   if (env === 'prod' || env === 'staging') {
@@ -135,5 +138,6 @@ export default function configure(
     unlockTicketsUrl,
     services,
     unlockAppUrl,
+    unlockStaticUrl,
   }
 }
