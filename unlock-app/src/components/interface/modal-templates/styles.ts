@@ -9,8 +9,8 @@ export const QRCode = styled(BasicQRCode)`
 
 export const Quit = styled(Close)`
   position: absolute;
-  right: 8px;
-  top: 8px;
+  right: 16px;
+  top: 16px;
 `
 
 export const Dismiss = styled.button`
