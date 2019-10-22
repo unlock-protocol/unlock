@@ -11,7 +11,6 @@ import EventInfo from '../interface/EventInfo'
 import EventLinks from '../interface/EventLinks'
 import EventDescription from '../interface/EventDescription'
 import PurchaseTicket from '../interface/PurchaseTicket'
-import EventTicket from '../interface/EventTicket'
 import Media from '../../theme/media'
 
 interface UnlockWindow extends Window {
@@ -29,7 +28,10 @@ enum PaywallStatus {
 
 interface EventContentProps {
   lockAddress: string
-  config: { env: string }
+  config: {
+    env: string
+    unlockAppUrl: string
+  }
   event: any
 }
 
@@ -107,12 +109,14 @@ export class EventContent extends Component<
 
   render() {
     const { paywallStatus } = this.state
-    const { event, lockAddress } = this.props
+    const { event, config } = this.props
 
     // TODO: make this better (get event faster? SSR?)
     if (Object.keys(event).length === 0) {
       return <Layout>Loading...</Layout>
     }
+
+    const keychainURL = `${config.unlockAppUrl}/keychain`
 
     return (
       <Layout>
@@ -138,7 +142,32 @@ export class EventContent extends Component<
               />
             )}
             {paywallStatus === PaywallStatus.Unlocked && (
-              <EventTicket lockAddress={lockAddress} event={event} />
+              <div>
+                <h2>
+                  You&apos;ve got a ticket!{' '}
+                  <span role="img" aria-label="Celebration">
+                    🎉
+                  </span>
+                </h2>
+                <p>
+                  Get your QR code from the{' '}
+                  <a
+                    href={keychainURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Unlock Keychain
+                  </a>
+                  . You can create it on-demand as needed, or do it in advance
+                  and have the code emailed to you.
+                </p>
+                <p>
+                  You&apos;ll need the QR code when you check in to the event,
+                  so bring a device that can access the keychain to generate the
+                  code or can access your email to get the code you generated in
+                  advance.
+                </p>
+              </div>
             )}
           </Column>
         </Columns>
