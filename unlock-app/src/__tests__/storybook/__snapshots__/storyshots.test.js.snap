@@ -40932,7 +40932,8 @@ Object {
           <input
             class="c5"
             placeholder="Email address"
-            type="text"
+            required=""
+            type="email"
             value=""
           />
           <button
@@ -40982,7 +40983,8 @@ Object {
         <input
           class="sc-gqjmRU huKqqv"
           placeholder="Email address"
-          type="text"
+          required=""
+          type="email"
           value=""
         />
         <button

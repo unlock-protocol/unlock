@@ -12,21 +12,24 @@ interface Props {
 
 export const QRModal = ({ active, dismiss, value, sendEmail }: Props) => {
   const [recipient, setRecipient] = useState('')
+  const [isValid, setIsValid] = useState(false)
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setRecipient(evt.currentTarget.value)
+    setIsValid(evt.currentTarget.validity.valid)
   }
 
   return (
     <InlineModal active={active} dismiss={dismiss}>
       <QRCode value={value} size={256} includeMargin />
       <Input
-        type="text"
+        type="email"
+        required
         value={recipient}
         onChange={handleChange}
         placeholder="Email address"
       />
       <Submit
-        active={recipient.length > 0}
+        active={isValid}
         submit={() => {
           const canvas = document.querySelector('canvas')
           if (canvas) {
@@ -45,8 +48,20 @@ interface SubmitProps {
   submit: () => void
 }
 const Submit = ({ active, submit }: SubmitProps) => {
-  if (active) {
-    return <SubmitButton onClick={submit}>Send Email</SubmitButton>
+  const [submitted, setSubmitted] = useState(false)
+  if (submitted) {
+    return <DisabledButton>Sent!</DisabledButton>
+  } else if (active) {
+    return (
+      <SubmitButton
+        onClick={() => {
+          setSubmitted(true)
+          submit()
+        }}
+      >
+        Send Email
+      </SubmitButton>
+    )
   }
   return <DisabledButton>Send Email</DisabledButton>
 }
