@@ -18,7 +18,7 @@ let processor = signatureValidationMiddleware.generateProcessor({
   signee: 'owner',
 })
 
-let evaluator = signatureValidationMiddleware.evaluateSignature({
+let evaluator = signatureValidationMiddleware.generateSignatureEvaluator({
   name: 'user',
   required: ['publicKey'],
   signee: 'publicKey',
@@ -30,7 +30,7 @@ beforeAll(() => {
 })
 
 describe('Signature Validation Middleware', () => {
-  describe('evaluateSignature', () => {
+  describe('generateSignatureEvaluator', () => {
     describe('when the request has a token', () => {
       it('returns the signee', done => {
         expect.assertions(1)

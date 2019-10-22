@@ -97,7 +97,7 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  export const evaluateSignature = (
+  export const generateSignatureEvaluator = (
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, _res: Response, next: any) => {
