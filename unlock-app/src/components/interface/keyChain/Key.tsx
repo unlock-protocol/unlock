@@ -12,6 +12,7 @@ export interface Props {
   ownedKey: OwnedKey
   accountAddress: string
   signData: (data: any, id: any) => void
+  qrEmail: (recipient: string, lockName: string, keyQR: string) => void
   signature: null | {
     data: string
     signature: string

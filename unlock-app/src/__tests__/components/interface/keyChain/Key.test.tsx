@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from 'react-testing-library'
-import { Key } from '../../../../components/interface/keyChain/Key'
+import { Key, Props } from '../../../../components/interface/keyChain/Key'
 import { OwnedKey } from '../../../../components/interface/keyChain/KeychainTypes'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -17,36 +17,36 @@ const aKey: OwnedKey = {
   },
 }
 
+let signData: jest.Mock<any, any>
+let qrEmail: jest.Mock<any, any>
+const render = (signature?: Props['signature']) => {
+  signData = jest.fn()
+  qrEmail = jest.fn()
+  return rtl.render(
+    <Key
+      signData={signData}
+      qrEmail={qrEmail}
+      signature={signature || null}
+      accountAddress={accountAddress}
+      ownedKey={aKey}
+    />
+  )
+}
+
 describe('keyChain -- Key', () => {
   it('should render the lock name', () => {
     expect.assertions(0)
-    const signData = jest.fn()
-    const { getByText } = rtl.render(
-      <Key
-        signData={signData}
-        signature={null}
-        accountAddress={accountAddress}
-        ownedKey={aKey}
-      />
-    )
+    const { getByText } = render()
 
     getByText(aKey.lock.name)
   })
 
   it('should dispatch a payload to be signed', () => {
     expect.assertions(1)
-    const signData = jest.fn()
     const realDateNow = Date.now.bind(global.Date)
     const dateNowStub = jest.fn(() => 1530518207007)
     global.Date.now = dateNowStub
-    const { getByText } = rtl.render(
-      <Key
-        signData={signData}
-        signature={null}
-        accountAddress={accountAddress}
-        ownedKey={aKey}
-      />
-    )
+    const { getByText } = render()
 
     const button = getByText('Assert Ownership')
     rtl.fireEvent.click(button)
