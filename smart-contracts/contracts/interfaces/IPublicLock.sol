@@ -6,7 +6,7 @@ pragma solidity 0.5.12;
 * @author Nick Furfaro (unlock-protocol.com)
  */
 
- interface IPublicLock {
+interface IPublicLock {
 
   // Events
   event Destroy(
@@ -421,4 +421,4 @@ pragma solidity 0.5.12;
     address _keyOwner,
     address _txSender
   ) external view returns (bytes32 approvalHash);
- }
+}
