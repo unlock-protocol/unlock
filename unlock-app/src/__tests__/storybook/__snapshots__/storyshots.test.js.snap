@@ -65219,6 +65219,22 @@ Object {
 }
 
 .c37:hover:before {
+  content: 'Qr';
+  position: absolute;
+}
+
+.c38 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c38:hover {
+  background-color: var(--offwhite);
+}
+
+.c38:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -65930,6 +65946,41 @@ Object {
           </div>
           <div
             class="c37"
+            name="Qr"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 60 60"
+            >
+              <title />
+              <path
+                d="M16.364 10.91h-5.455v5.454h5.455v-5.455z"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M0 4a4 4 0 014-4h23.273v27.273H0V4zm5.455 1.455h16.363v16.363H5.455V5.455z"
+              />
+              <path
+                d="M10.91 43.636h5.454v5.455h-5.455v-5.455z"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M0 32.727h27.273V60H4a4 4 0 01-4-4V32.727zm5.455 5.455h16.363v16.363H5.455V38.182z"
+              />
+              <path
+                d="M43.636 10.91h5.455v5.454h-5.455v-5.455z"
+              />
+              <path
+                clip-rule="evenodd"
+                d="M32.727 0v27.273H60V4a4 4 0 00-4-4H32.727zm21.819 5.455H38.181v16.363h16.363V5.455z"
+              />
+              <path
+                d="M49.09 32.727H32.728v5.455h10.91v5.454h5.454V32.727zM43.636 54.545V60H32.727v-5.455h10.91zM49.09 54.545h-5.454v-5.454h5.455v5.454zM49.09 54.545H60V56a4 4 0 01-4 4h-6.91v-5.455zM54.545 32.727H60v5.455h-5.455v-5.455zM54.545 43.636H60v5.455h-5.455v-5.455zM38.182 43.636h-5.455v5.455h5.455v-5.455z"
+              />
+            </svg>
+          </div>
+          <div
+            class="c38"
             name="Wordpress"
           >
             <svg
@@ -66652,6 +66703,41 @@ Object {
             <title />
             <path
               d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 fXxDDk"
+          name="Qr"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 60 60"
+          >
+            <title />
+            <path
+              d="M16.364 10.91h-5.455v5.454h5.455v-5.455z"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M0 4a4 4 0 014-4h23.273v27.273H0V4zm5.455 1.455h16.363v16.363H5.455V5.455z"
+            />
+            <path
+              d="M10.91 43.636h5.454v5.455h-5.455v-5.455z"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M0 32.727h27.273V60H4a4 4 0 01-4-4V32.727zm5.455 5.455h16.363v16.363H5.455V38.182z"
+            />
+            <path
+              d="M43.636 10.91h5.455v5.454h-5.455v-5.455z"
+            />
+            <path
+              clip-rule="evenodd"
+              d="M32.727 0v27.273H60V4a4 4 0 00-4-4H32.727zm21.819 5.455H38.181v16.363h16.363V5.455z"
+            />
+            <path
+              d="M49.09 32.727H32.728v5.455h10.91v5.454h5.454V32.727zM43.636 54.545V60H32.727v-5.455h10.91zM49.09 54.545h-5.454v-5.454h5.455v5.454zM49.09 54.545H60V56a4 4 0 01-4 4h-6.91v-5.455zM54.545 32.727H60v5.455h-5.455v-5.455zM54.545 43.636H60v5.455h-5.455v-5.455zM38.182 43.636h-5.455v5.455h5.455v-5.455z"
             />
           </svg>
         </div>
