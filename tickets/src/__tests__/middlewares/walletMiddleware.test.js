@@ -321,7 +321,7 @@ describe('Wallet middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  it('should handle SIGN_ADDRESS and emit a signed address', () => {
+  it('should handle SIGN_ADDRESS and emit a signed address on the event page', () => {
     expect.assertions(3)
     const {
       next,
@@ -332,6 +332,12 @@ describe('Wallet middleware', () => {
     const action = {
       type: SIGN_ADDRESS,
       address,
+    }
+
+    state.router = {
+      location: {
+        pathname: '/event/0x3628D7170209c58DC1e8F51AD190b69d044FbBF2',
+      },
     }
 
     const data = UnlockEventRSVP.build({
@@ -353,6 +359,27 @@ describe('Wallet middleware', () => {
         `ENCRYPTED: ${JSON.stringify(JSON.stringify(data))}`
       )
     )
+    expect(next).toHaveBeenCalledWith(action)
+  })
+
+  it('should ignore SIGN_ADDRESS on other pages', () => {
+    expect.assertions(2)
+    const { next, invoke } = create()
+    const address = '0x12345678'
+    const action = {
+      type: SIGN_ADDRESS,
+      address,
+    }
+
+    state.router = {
+      location: {
+        pathname: '/newevent/0x3628D7170209c58DC1e8F51AD190b69d044FbBF2',
+      },
+    }
+
+    mockWalletService.signDataPersonal = jest.fn()
+    invoke(action)
+    expect(mockWalletService.signDataPersonal).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalledWith(action)
   })
 
