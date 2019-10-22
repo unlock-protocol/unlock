@@ -7,7 +7,7 @@ interface Props {
   active: boolean
   dismiss: () => void
   value: string
-  sendEmail: (recipient: string) => void
+  sendEmail: (recipient: string, qrImage: string) => void
 }
 
 export const QRModal = ({ active, dismiss, value, sendEmail }: Props) => {
@@ -27,11 +27,18 @@ export const QRModal = ({ active, dismiss, value, sendEmail }: Props) => {
       />
       <Submit
         active={recipient.length > 0}
-        submit={() => sendEmail(recipient)}
+        submit={() => {
+          const canvas = document.querySelector('canvas')
+          if (canvas) {
+            sendEmail(recipient, canvas.toDataURL())
+          }
+        }}
       />
     </InlineModal>
   )
 }
+
+export default QRModal
 
 interface SubmitProps {
   active: boolean
@@ -43,5 +50,3 @@ const Submit = ({ active, submit }: SubmitProps) => {
   }
   return <DisabledButton>Send Email</DisabledButton>
 }
-
-export default QRModal

@@ -45,6 +45,10 @@ describe('QRModal', () => {
 
     const submit = getByText('Send Email')
     rtl.fireEvent.click(submit)
-    expect(sendEmail).toHaveBeenCalledWith('ronald@mcdonalds.gov')
+    // second param here is the default mock result for the canvas mock
+    expect(sendEmail).toHaveBeenCalledWith(
+      'ronald@mcdonalds.gov',
+      'data:image/png;base64,00'
+    )
   })
 })
