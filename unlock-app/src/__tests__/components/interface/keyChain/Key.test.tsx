@@ -17,9 +17,21 @@ const aKey: OwnedKey = {
   },
 }
 
+const aKeyWithNoName: OwnedKey = {
+  ...aKey,
+  lock: {
+    ...aKey.lock,
+    name: '',
+  },
+}
+
 let signData: jest.Mock<any, any>
 let qrEmail: jest.Mock<any, any>
-const render = (signature?: Props['signature']) => {
+interface RenderProps {
+  signature?: Props['signature']
+  ownedKey?: OwnedKey
+}
+const render = ({ signature, ownedKey }: RenderProps) => {
   signData = jest.fn()
   qrEmail = jest.fn()
   return rtl.render(
@@ -28,7 +40,7 @@ const render = (signature?: Props['signature']) => {
       qrEmail={qrEmail}
       signature={signature || null}
       accountAddress={accountAddress}
-      ownedKey={aKey}
+      ownedKey={ownedKey || aKey}
     />
   )
 }
@@ -48,7 +60,7 @@ describe('keyChain -- Key', () => {
 
   it('should render the lock name', () => {
     expect.assertions(0)
-    const { getByText } = render()
+    const { getByText } = render({})
 
     getByText(aKey.lock.name)
   })
@@ -58,7 +70,7 @@ describe('keyChain -- Key', () => {
     const realDateNow = Date.now.bind(global.Date)
     const dateNowStub = jest.fn(() => 1530518207007)
     global.Date.now = dateNowStub
-    const { getByText } = render()
+    const { getByText } = render({})
 
     const button = getByText('Assert Ownership')
     rtl.fireEvent.click(button)
@@ -76,16 +88,77 @@ describe('keyChain -- Key', () => {
   })
 
   it('should display a qr code on button click when there is a signature', () => {
-    expect.assertions(1)
+    expect.assertions(2)
 
     const { getByText, container } = render({
-      data: 'some data',
-      signature: 'a signature',
+      signature: {
+        data: 'some data',
+        signature: 'a signature',
+      },
     })
+
+    expect(container.querySelector('canvas')).toBeNull()
 
     const button = getByText('Display QR Code')
     rtl.fireEvent.click(button)
 
     expect(container.querySelector('canvas')).not.toBeNull()
+  })
+
+  it('should send an email when the send button is clicked', () => {
+    expect.assertions(1)
+
+    const { getByText, getByPlaceholderText } = render({
+      signature: {
+        data: 'some data',
+        signature: 'a signature',
+      },
+    })
+
+    const qrButton = getByText('Display QR Code')
+    rtl.fireEvent.click(qrButton)
+
+    const emailInput = getByPlaceholderText('Email address')
+    rtl.fireEvent.change(emailInput, {
+      target: { value: 'ronald@mcdonalds.gov' },
+    })
+
+    const emailSubmit = getByText('Send Email')
+    rtl.fireEvent.click(emailSubmit)
+
+    expect(qrEmail).toHaveBeenCalledWith(
+      'ronald@mcdonalds.gov',
+      'ERC20 paywall lock',
+      'data:image/png;base64,00'
+    )
+  })
+
+  it('should send an email when the send button is clicked (unnamed lock)', () => {
+    expect.assertions(1)
+
+    const { getByText, getByPlaceholderText } = render({
+      signature: {
+        data: 'some data',
+        signature: 'a signature',
+      },
+      ownedKey: aKeyWithNoName,
+    })
+
+    const qrButton = getByText('Display QR Code')
+    rtl.fireEvent.click(qrButton)
+
+    const emailInput = getByPlaceholderText('Email address')
+    rtl.fireEvent.change(emailInput, {
+      target: { value: 'ronald@mcdonalds.gov' },
+    })
+
+    const emailSubmit = getByText('Send Email')
+    rtl.fireEvent.click(emailSubmit)
+
+    expect(qrEmail).toHaveBeenCalledWith(
+      'ronald@mcdonalds.gov',
+      '0x80bc6d2870bb72cb3e37b648c160da20733386f7',
+      'data:image/png;base64,00'
+    )
   })
 })

@@ -67,6 +67,18 @@ export class Key extends React.Component<Props, State> {
     )
   }
 
+  sendEmail = (recipient: string, qrImage: string) => {
+    const {
+      ownedKey: { lock },
+      qrEmail,
+    } = this.props
+
+    // Some small number of early locks do not have names on-chain. We'll use
+    // the address to identify those.
+    const name = lock.name || lock.address
+    qrEmail(recipient, name, qrImage)
+  }
+
   QRUrl = () => {
     const { signature } = this.props
     let url = new URL(window.location.origin + '/verification')
@@ -91,7 +103,7 @@ export class Key extends React.Component<Props, State> {
           <QRModal
             active={showingQR}
             dismiss={this.toggleShowingQR}
-            sendEmail={() => {}}
+            sendEmail={this.sendEmail}
             value={this.QRUrl()}
           />
         )}
