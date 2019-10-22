@@ -12,6 +12,8 @@
     "@storybook/addon-viewport": "5.2.1",
     "@storybook/addons": "5.2.1",
     "@storybook/react": "5.2.1",
+    "@testing-library/react-hooks": "3.1.0",
+    "@types/file-saver": "2.0.1",
     "@types/jest": "24.0.18",
     "@types/next": "8.0.6",
     "@types/qrcode.react": "0.9.0",
@@ -21,7 +23,7 @@
     "@types/storybook__react": "4.0.2",
     "@types/stripe-v3": "3.1.7",
     "@types/styled-components": "4.1.19",
-    "@unlock-protocol/unlock-js": "0.3.17",
+    "@unlock-protocol/unlock-js": "0.3.20",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
     "apollo-boost": "0.4.4",
@@ -35,8 +37,11 @@
     "cross-fetch": "3.0.4",
     "deep-object-diff": "1.1.0",
     "dotenv": "8.1.0",
+    "ethers": "4.0.38",
+    "file-saver": "2.0.2",
     "fork-ts-checker-webpack-plugin": "1.5.0",
     "graphql": "14.5.7",
+    "jest-canvas-mock": "2.1.2",
     "jest-dom": "3.5.0",
     "jest-mock-axios": "3.1.1",
     "jest-styled-components": "6.3.3",
@@ -44,7 +49,6 @@
     "next": "8.1.0",
     "node-forge": "0.9.0",
     "prop-types": "15.7.2",
-    "qr-scanner": "1.1.1",
     "qrcode.react": "0.9.3",
     "query-string": "6.8.3",
     "react": "16.9.0",
@@ -66,7 +70,7 @@
     "npm-check": "5.9.0"
   },
   "engines": {
-    "node": "8.16.1"
+    "node": "10.16.3"
   },
   "engineStrict": true,
   "scripts": {

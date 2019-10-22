@@ -65,7 +65,11 @@ export function startup(
   iframes.init(config)
 
   // set up the communication with the checkout iframe
-  const checkoutIframeHandler = new CheckoutUIHandler(iframes, config)
+  const checkoutIframeHandler = new CheckoutUIHandler(
+    iframes,
+    config,
+    constants
+  )
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
   // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError

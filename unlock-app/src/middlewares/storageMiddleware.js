@@ -90,6 +90,9 @@ const storageMiddleware = config => {
             password
           )
         )
+        dispatch(
+          setEncryptedPrivateKey(passwordEncryptedPrivateKey, emailAddress)
+        )
       }
     )
     storageService.on(failure.createUser, () => {
@@ -281,6 +284,7 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
+            dispatch(setEncryptedPrivateKey(key, emailAddress))
           })
         }
         if (action.type === GET_STORED_PAYMENT_DETAILS) {

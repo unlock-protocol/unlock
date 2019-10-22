@@ -35,7 +35,10 @@ export default async function(address) {
     update.asOf = blockNumber
   }
 
-  const update = {}
+  const update = {
+    currencyContractAddress: null, // v01 only supports Ether locks
+    name: null, // v01 does not support lock names
+  }
 
   const constantPromises = Object.keys(attributes).map(async attribute => {
     const result = await contract.functions[`${attribute}()`]()

@@ -19,7 +19,12 @@ describe('userMetadataOperations', () => {
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {
-            name: 'Bruce wayne',
+            public: {
+              name: 'Bruce wayne',
+            },
+            protected: {
+              email: 'batman@email.com',
+            },
           },
         })
 
@@ -27,7 +32,14 @@ describe('userMetadataOperations', () => {
 
         expect(result[0]).toEqual(
           expect.objectContaining({
-            data: { userMetadata: { name: 'Bruce wayne' } },
+            data: {
+              userMetadata: {
+                public: { name: 'Bruce wayne' },
+                protected: {
+                  email: 'batman@email.com',
+                },
+              },
+            },
             tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
             userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           })
@@ -42,7 +54,7 @@ describe('userMetadataOperations', () => {
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {
-            name: 'Clark Kent',
+            public: { name: 'Clark Kent' },
           },
         })
 
@@ -50,7 +62,13 @@ describe('userMetadataOperations', () => {
 
         expect(result[0]).toEqual(
           expect.objectContaining({
-            data: { userMetadata: { name: 'Clark Kent' } },
+            data: {
+              userMetadata: {
+                public: {
+                  name: 'Clark Kent',
+                },
+              },
+            },
             tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
             userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           })

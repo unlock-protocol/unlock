@@ -39,6 +39,8 @@ import {
   keyPurchaseInitiated,
   WELCOME_EMAIL,
   welcomeEmail,
+  QR_EMAIL,
+  qrEmail,
 } from '../../actions/user'
 
 const key = {
@@ -337,6 +339,24 @@ describe('user account actions', () => {
       }
 
       expect(gotPassword(password)).toEqual(expectedAction)
+    })
+  })
+
+  describe('QR code email action', () => {
+    it('should create an action to send an email with a QR code', () => {
+      expect.assertions(1)
+      const recipient = 'hank@minerals.co'
+      const lockName = 'Quartz Gang'
+      const keyQR = 'data:png;base64,etcetcetc'
+
+      const expectedAction = {
+        type: QR_EMAIL,
+        recipient,
+        lockName,
+        keyQR,
+      }
+
+      expect(qrEmail(recipient, lockName, keyQR)).toEqual(expectedAction)
     })
   })
 })

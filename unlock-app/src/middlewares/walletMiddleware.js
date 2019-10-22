@@ -220,7 +220,7 @@ const walletMiddleware = config => {
             )
           })
         } else if (action.type === SIGN_DATA) {
-          const { data } = action
+          const { data, id } = action
           walletService.signDataPersonal(
             '', // account address -- unused in walletService
             data,
@@ -230,7 +230,7 @@ const walletMiddleware = config => {
                   setError(Wallet.Warning('Could not sign identity data.'))
                 )
               } else {
-                dispatch(signedData(data, signature))
+                dispatch(signedData(data, id, signature))
               }
             }
           )

@@ -31,6 +31,8 @@ describe('Wallet.setupUserAccounts()', () => {
     debug: 0,
     paywallUrl: 'http://paywall',
     accountsUrl: 'http://app/accounts',
+    managedPurchaseStablecoinAddress:
+      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
   }
 
   function makeWallet() {
@@ -284,42 +286,6 @@ describe('Wallet.setupUserAccounts()', () => {
       },
       iframes.data.iframe,
       dataOrigin
-    )
-  })
-
-  it('should forward personal_sign requests to the accounts iframe', () => {
-    expect.assertions(1)
-
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.WEB3,
-      {
-        method: 'personal_sign',
-        jsonrpc: '2.0',
-        params: [],
-        id: 2,
-      },
-      iframes.data.iframe,
-      dataOrigin
-    )
-
-    // Accounts iframe buffers postmessages until it receives READY
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.READY,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-
-    fakeWindow.expectPostMessageSentToIframe(
-      PostMessages.WEB3,
-      {
-        method: 'personal_sign',
-        jsonrpc: '2.0',
-        params: [],
-        id: 2,
-      },
-      iframes.accounts.iframe,
-      accountsOrigin
     )
   })
 
