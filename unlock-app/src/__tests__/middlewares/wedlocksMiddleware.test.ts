@@ -1,9 +1,10 @@
 import wedlocksMiddleware from '../../middlewares/wedlocksMiddleware'
-import { SIGNUP_EMAIL, WELCOME_EMAIL } from '../../actions/user'
+import { SIGNUP_EMAIL, WELCOME_EMAIL, qrEmail } from '../../actions/user'
 
 const wedlocksService = {
   welcomeEmail: jest.fn(),
   confirmEmail: jest.fn(),
+  keychainQREmail: jest.fn(),
 }
 jest.mock('../../services/wedlockService', () => () => wedlocksService)
 
@@ -54,5 +55,25 @@ describe('Wedlocks Middleware', () => {
         'tim@cern.ch'
       )}&recoveryKey=${encodeURIComponent(JSON.stringify(recoveryKey))}`
     )
+  })
+
+  it('should send an email with a QR code on receiving QR_EMAIL', () => {
+    expect.assertions(2)
+    const recipient = 'shaggy_rogers@mystery.inc'
+    const lockName = 'Like, zoinks man'
+    const keyQR = 'data:png;base64,oldmanjenkins'
+    const keychainLink = 'http://localhost/keychain'
+
+    const action = qrEmail(recipient, lockName, keyQR)
+
+    wedlocksMiddleware(config)({ dispatch })(next)(action)
+
+    expect(wedlocksService.keychainQREmail).toHaveBeenCalledWith(
+      recipient,
+      keychainLink,
+      lockName,
+      keyQR
+    )
+    expect(next).toHaveBeenCalledWith(action)
   })
 })
