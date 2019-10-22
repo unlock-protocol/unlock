@@ -11,7 +11,6 @@ import Key from './Key'
 export interface KeyDetailsProps {
   address: string
   signData: (data: any, id: any) => void
-  displayQR: (data: string) => void
   signatures: {
     [id: string]: {
       data: string
@@ -23,7 +22,6 @@ export interface KeyDetailsProps {
 export const KeyDetails = ({
   address,
   signData,
-  displayQR,
   signatures,
 }: KeyDetailsProps) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
@@ -55,7 +53,6 @@ export const KeyDetails = ({
           ownedKey={key}
           accountAddress={address}
           signData={signData}
-          displayQR={displayQR}
           signature={signatures[key.lock.address] || null}
         />
       ))}

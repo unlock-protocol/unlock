@@ -25,7 +25,6 @@ describe('keyChain -- Key', () => {
       <Key
         signData={signData}
         signature={null}
-        displayQR={jest.fn()}
         accountAddress={accountAddress}
         ownedKey={aKey}
       />
@@ -44,7 +43,6 @@ describe('keyChain -- Key', () => {
       <Key
         signData={signData}
         signature={null}
-        displayQR={jest.fn()}
         accountAddress={accountAddress}
         ownedKey={aKey}
       />

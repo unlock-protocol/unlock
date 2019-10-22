@@ -6,21 +6,28 @@ import {
   durationsAsTextFromSeconds,
 } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
+import QRModal from './QRModal'
 
-export interface KeyProps {
+export interface Props {
   ownedKey: OwnedKey
   accountAddress: string
   signData: (data: any, id: any) => void
-  displayQR: (data: string) => void
   signature: null | {
     data: string
     signature: string
   }
 }
 
-export class Key extends React.Component<KeyProps> {
-  constructor(props: KeyProps) {
+export interface State {
+  showingQR: boolean
+}
+
+export class Key extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
+    this.state = {
+      showingQR: false,
+    }
   }
 
   handleSignature = () => {
@@ -37,18 +44,17 @@ export class Key extends React.Component<KeyProps> {
     signData(payload, lock.address)
   }
 
-  showQRCode = () => {
-    const { displayQR, signature } = this.props
-    if (signature) {
-      displayQR(signature.data)
-    }
+  toggleShowingQR = () => {
+    this.setState(({ showingQR }) => ({
+      showingQR: !showingQR,
+    }))
   }
 
   qrButton = () => {
     const { signature } = this.props
     if (signature) {
       return (
-        <button type="button" onClick={this.showQRCode}>
+        <button type="button" onClick={this.toggleShowingQR}>
           Display QR Code
         </button>
       )
@@ -60,12 +66,34 @@ export class Key extends React.Component<KeyProps> {
     )
   }
 
+  QRUrl = () => {
+    const { signature } = this.props
+    let url = new URL(window.origin + '/verification')
+    if (signature) {
+      const data = encodeURIComponent(signature.data)
+      const sig = encodeURIComponent(signature.signature)
+      url.searchParams.append('data', data)
+      url.searchParams.append('sig', sig)
+    }
+    return url.toString()
+  }
+
   render = () => {
     const {
       ownedKey: { lock, expiration },
+      signature,
     } = this.props
+    const { showingQR } = this.state
     return (
       <Box>
+        {signature && (
+          <QRModal
+            active={showingQR}
+            dismiss={this.toggleShowingQR}
+            sendEmail={() => {}}
+            value={this.QRUrl()}
+          />
+        )}
         <LockName>{lock.name}</LockName>
         <LockExpirationDuration>
           {durationsAsTextFromSeconds(parseInt(lock.expirationDuration))}

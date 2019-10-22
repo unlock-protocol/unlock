@@ -29,7 +29,6 @@ describe('keyChain -- KeyDetails', () => {
         <KeyDetails
           address={accountAddress}
           signData={signData}
-          displayQR={jest.fn}
           signatures={{}}
         />
       </MockedProvider>
@@ -57,7 +56,6 @@ describe('keyChain -- KeyDetails', () => {
         <KeyDetails
           address={accountAddress}
           signData={signData}
-          displayQR={jest.fn}
           signatures={{}}
         />
       </MockedProvider>
@@ -93,7 +91,6 @@ describe('keyChain -- KeyDetails', () => {
         <KeyDetails
           address={accountAddress}
           signData={signData}
-          displayQR={jest.fn}
           signatures={{}}
         />
       </MockedProvider>
@@ -133,7 +130,6 @@ describe('keyChain -- KeyDetails', () => {
         <KeyDetails
           address={accountAddress}
           signData={signData}
-          displayQR={jest.fn}
           signatures={{}}
         />
       </MockedProvider>
