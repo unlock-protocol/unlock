@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const sleep = require('../helpers/sleep')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -74,7 +75,3 @@ contract('Lock / freeTrial', accounts => {
     })
   })
 })
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
