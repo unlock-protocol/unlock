@@ -9,14 +9,14 @@ import { pageTitle } from '../../constants'
 import LogInSignUp from '../interface/LogInSignUp'
 import { Account as AccountType, Network } from '../../unlockTypes'
 import { signData } from '../../actions/signature'
-import { displayQR } from '../../actions/fullScreenModals'
+import { qrEmail } from '../../actions/user'
 import KeyDetails from '../interface/keyChain/KeyDetails'
 
 interface KeyChainContentProps {
   account: AccountType
   network: Network
   signData: (data: any, id: any) => void
-  displayQR: (data: string) => void
+  qrEmail: (recipient: string, lockName: string, keyQR: string) => void
   signatures: Signatures
 }
 
@@ -32,7 +32,7 @@ export const KeyChainContent = ({
   network,
   signatures,
   signData,
-  displayQR,
+  qrEmail,
 }: KeyChainContentProps) => {
   return (
     <Layout title="Key Chain">
@@ -45,8 +45,8 @@ export const KeyChainContent = ({
           <KeyDetails
             address={account.address.toLowerCase()}
             signData={signData}
-            displayQR={displayQR}
             signatures={signatures}
+            qrEmail={qrEmail}
           />
           <DeveloperOverlay />
         </BrowserOnly>
@@ -80,5 +80,5 @@ export const mapStateToProps = ({
 
 export default connect(
   mapStateToProps,
-  { signData, displayQR }
+  { signData, qrEmail }
 )(KeyChainContent)

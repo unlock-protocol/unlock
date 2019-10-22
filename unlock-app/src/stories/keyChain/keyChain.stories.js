@@ -44,6 +44,18 @@ const keyHolderStore = createUnlockStore({
   router,
 })
 
+const keyHolderStoreSignatures = createUnlockStore({
+  account: keyHoldingAccount,
+  network,
+  router,
+  signature: {
+    '0x80bc6d2870bb72cb3e37b648c160da20733386f7': {
+      data: 'some data',
+      signature: 'a signature',
+    },
+  },
+})
+
 const manyKeyHolderStore = createUnlockStore({
   account: manyKeyHoldingAccount,
   network,
@@ -152,6 +164,13 @@ storiesOf('KeyChainContent', module)
   .add('the key chain, with keys', () => {
     return (
       <Provider store={keyHolderStore}>
+        <KeyChainContent />
+      </Provider>
+    )
+  })
+  .add('the key chain, with keys and signatures', () => {
+    return (
+      <Provider store={keyHolderStoreSignatures}>
         <KeyChainContent />
       </Provider>
     )
