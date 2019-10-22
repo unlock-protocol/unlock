@@ -181,13 +181,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-jnlKLf jKMWma"
+      class="sc-jwKygS fBWxJW"
     >
       <div
-        class="sc-tilXH jqgYeL"
+        class="sc-lhVmIH dAbRfX"
       >
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         >
           <div
             class="paper"
@@ -244,36 +244,36 @@ Object {
           </div>
         </div>
         <div
-          class="sc-ktHwxA hHPiDD"
+          class="sc-elJkPf dYrTfF"
         >
           Address
           <span
-            class="sc-fYxtnH iWHWCo"
+            class="sc-btzYZH kkTvlt"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-cIShpX ePXlrt"
+          class="sc-jtRfpW wKYHJ"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -524,13 +524,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-jnlKLf jKMWma"
+      class="sc-jwKygS fBWxJW"
     >
       <div
-        class="sc-tilXH jqgYeL"
+        class="sc-lhVmIH dAbRfX"
       >
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         >
           <div
             class="paper"
@@ -587,36 +587,36 @@ Object {
           </div>
         </div>
         <div
-          class="sc-ktHwxA hHPiDD"
+          class="sc-elJkPf dYrTfF"
         >
           Address
           <span
-            class="sc-fYxtnH iWHWCo"
+            class="sc-btzYZH kkTvlt"
             id="NetworkName"
           >
             Rinkeby
           </span>
         </div>
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-hEsumM kQujec"
+          class="sc-bYSBpT bTbVCi"
         />
         <div
-          class="sc-cIShpX ePXlrt"
+          class="sc-jtRfpW wKYHJ"
           id="UserAddress"
         >
           0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -931,13 +931,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-chPdSV dMmbvM"
+      class="sc-dxgOiQ fLzZN"
     >
       <div
-        class="sc-kAzzGY konVKw"
+        class="sc-kpOJdX jfHwdA"
       >
         <a
-          class="sc-850ddk-0 bqpIVT sc-TOsTZ jzgUSu"
+          class="sc-850ddk-0 bqpIVT sc-jnlKLf haKUML"
           target="_self"
         >
           <svg
@@ -955,28 +955,28 @@ Object {
           
         </a>
         <div
-          class="sc-kgAjT etRONu"
+          class="sc-fYxtnH yOhpk"
         />
         <div
-          class="sc-kpOJdX LsipW"
+          class="sc-cMljjf ezXcOn"
         >
           <h1
-            class="sc-dxgOiQ bjveIj"
+            class="sc-jAaTju bpZQeU"
           >
             Log In
           </h1>
           <form>
             <div
-              class="sc-kkGfuU dTGOmL"
+              class="sc-csuQGl cuqwDh"
             >
               <label
-                class="sc-hMqMXs hMxlwy"
+                class="sc-jlyJG irDrTO"
                 for="emailInput"
               >
                 Email
               </label>
               <input
-                class="sc-jKJlTe kQfwwT"
+                class="sc-gPEVay gGlkQU"
                 id="emailInput"
                 name="emailAddress"
                 placeholder="Enter your email"
@@ -984,25 +984,25 @@ Object {
               />
               <br />
               <label
-                class="sc-hMqMXs hMxlwy"
+                class="sc-jlyJG irDrTO"
                 for="passwordInput"
               >
                 Password
               </label>
               <input
-                class="sc-jKJlTe kQfwwT"
+                class="sc-gPEVay gGlkQU"
                 id="passwordInput"
                 name="password"
                 placeholder="Enter your password"
                 type="password"
               />
               <p
-                class="sc-ckVGcZ fkiXIW"
+                class="sc-jDwBTQ qPozA"
               >
                 Don't have an account?
                  
                 <a
-                  class="sc-kEYyzF jLlbDB"
+                  class="sc-gipzik CqOgR"
                 >
                   Sign up here.
                 </a>
@@ -1010,7 +1010,7 @@ Object {
             </div>
             <br />
             <input
-              class="sc-eNQAEJ gnfvLE"
+              class="sc-iRbamj iAwkEA"
               type="submit"
               value="Submit"
             />
@@ -7823,7 +7823,7 @@ Object {
           class="sc-9upljg-3 kjuFdI"
         >
           <button
-            class="sc-kafWEX sc-9upljg-0 cTMzWy"
+            class="sc-kTUwUJ sc-9upljg-0 cTMzWy"
           >
             Go to Your Dashboard
           </button>
@@ -8631,7 +8631,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -8667,7 +8667,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9481,7 +9481,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -9517,7 +9517,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10192,7 +10192,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -10214,7 +10214,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11050,7 +11050,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11086,7 +11086,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11814,7 +11814,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -11850,7 +11850,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12430,7 +12430,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -12452,7 +12452,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13263,7 +13263,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -13299,7 +13299,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14231,7 +14231,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -14267,7 +14267,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15199,7 +15199,7 @@ Object {
         class="mlglvd-3 VbhUE"
       >
         <div
-          class="sc-frDJqD cUzIMQ"
+          class="sc-htpNat ZSMPP"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -15235,7 +15235,7 @@ Object {
           </div>
         </div>
         <div
-          class="sc-kvZOFW iRNTBN"
+          class="sc-bxivhb jXfCFv"
         >
           <div
             class="buwkmd-0 bYclZI"
@@ -20872,12 +20872,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
@@ -21021,7 +21021,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21057,7 +21057,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21319,7 +21319,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21355,7 +21355,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -21480,7 +21480,7 @@ Object {
         </div>
       </div>
       <section
-        class="sc-dNLxif jEFmuO"
+        class="sc-cIShpX jkFMTG"
       >
         <svg
           alt="loading"
@@ -22060,19 +22060,19 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-dNLxif jEFmuO"
+        class="sc-cIShpX jkFMTG"
       >
         <svg
           alt="loading"
@@ -23357,12 +23357,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
@@ -23506,7 +23506,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23542,7 +23542,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23804,7 +23804,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -23840,7 +23840,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -24289,26 +24289,26 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
         </div>
       </div>
       <section
-        class="sc-uJMKN jdudSz"
+        class="sc-feJyhm bKTfGV"
       >
         <img
-          class="sc-bbmXgH dChXtj"
+          class="sc-iELTvK jwizkf"
           src="/static/images/illustrations/lock.svg"
         />
         <div
-          class="sc-gGBfsJ dPJdVq"
+          class="sc-cmTdod Vqecg"
         >
           <h1>
             Create a lock to get started
@@ -24953,12 +24953,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
@@ -25953,12 +25953,12 @@ Object {
           class="sc-1olgoav-3 hxpbwC"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             Balance
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             Balance
           </div>
@@ -26102,7 +26102,7 @@ Object {
           class="mlglvd-3 VbhUE"
         >
           <div
-            class="sc-frDJqD cUzIMQ"
+            class="sc-htpNat ZSMPP"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -26138,7 +26138,7 @@ Object {
             </div>
           </div>
           <div
-            class="sc-kvZOFW iRNTBN"
+            class="sc-bxivhb jXfCFv"
           >
             <div
               class="buwkmd-0 bYclZI"
@@ -29451,16 +29451,16 @@ Object {
           />
         </header>
         <div
-          class="sc-iELTvK cSEIZI"
+          class="sc-gxMtzJ fXvfuG"
         >
           <section
-            class="sc-jnlKLf jKMWma"
+            class="sc-jwKygS fBWxJW"
           >
             <div
-              class="sc-tilXH jqgYeL"
+              class="sc-lhVmIH dAbRfX"
             >
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               >
                 <div
                   class="paper"
@@ -29517,36 +29517,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-ktHwxA hHPiDD"
+                class="sc-elJkPf dYrTfF"
               >
                 Address
                 <span
-                  class="sc-fYxtnH iWHWCo"
+                  class="sc-btzYZH kkTvlt"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-cIShpX ePXlrt"
+                class="sc-jtRfpW wKYHJ"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -29554,7 +29554,7 @@ Object {
             </div>
           </section>
           <button
-            class="sc-kafWEX sc-feJyhm kFPMYx"
+            class="sc-kTUwUJ sc-dqBHgY hZanLT"
             id="CreateLockButton"
           >
             Create Lock
@@ -29595,12 +29595,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 Balance
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 Balance
               </div>
@@ -29744,7 +29744,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -29780,7 +29780,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30042,7 +30042,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30078,7 +30078,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30340,7 +30340,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -30376,7 +30376,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -31192,6 +31192,7 @@ Object {
 
 .c1 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -32731,16 +32732,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-bYSBpT gXcQiX"
+      class="sc-esjQYD guseNj"
     >
       <div
-        class="sc-lhVmIH gZGkEg"
+        class="sc-kfGgVZ eUEmJT"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-cmTdod ftojYZ"
+          class="sc-iyvyFf bDHHTO"
         >
           Dismiss
         </button>
@@ -32988,16 +32989,16 @@ Object {
           />
         </header>
         <div
-          class="sc-iELTvK cSEIZI"
+          class="sc-gxMtzJ fXvfuG"
         >
           <section
-            class="sc-jnlKLf jKMWma"
+            class="sc-jwKygS fBWxJW"
           >
             <div
-              class="sc-tilXH jqgYeL"
+              class="sc-lhVmIH dAbRfX"
             >
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               >
                 <div
                   class="paper"
@@ -33054,36 +33055,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-ktHwxA hHPiDD"
+                class="sc-elJkPf dYrTfF"
               >
                 Address
                 <span
-                  class="sc-fYxtnH iWHWCo"
+                  class="sc-btzYZH kkTvlt"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-cIShpX ePXlrt"
+                class="sc-jtRfpW wKYHJ"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -33091,7 +33092,7 @@ Object {
             </div>
           </section>
           <button
-            class="sc-kafWEX sc-feJyhm kFPMYx"
+            class="sc-kTUwUJ sc-dqBHgY hZanLT"
             id="CreateLockButton"
           >
             Create Lock
@@ -33132,12 +33133,12 @@ Object {
               class="sc-1olgoav-3 hxpbwC"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 Balance
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 Balance
               </div>
@@ -33281,7 +33282,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33317,7 +33318,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33579,7 +33580,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33615,7 +33616,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33877,7 +33878,7 @@ Object {
               class="mlglvd-3 VbhUE"
             >
               <div
-                class="sc-frDJqD cUzIMQ"
+                class="sc-htpNat ZSMPP"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -33913,7 +33914,7 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-kvZOFW iRNTBN"
+                class="sc-bxivhb jXfCFv"
               >
                 <div
                   class="buwkmd-0 bYclZI"
@@ -35055,14 +35056,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Need account
@@ -35218,14 +35219,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Fatal Error
@@ -35381,14 +35382,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/network.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Network mismatch
@@ -35540,13 +35541,13 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
       />
       <div
-        class="sc-gGBfsJ dPJdVq"
+        class="sc-cmTdod Vqecg"
       >
         <h1>
           Non-critical error
@@ -35699,14 +35700,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Not enabled in provider
@@ -35862,14 +35863,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/error.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Unlock not deployed
@@ -36032,14 +36033,14 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-uJMKN jdudSz"
+      class="sc-feJyhm bKTfGV"
     >
       <img
-        class="sc-bbmXgH dChXtj"
+        class="sc-iELTvK jwizkf"
         src="/static/images/illustrations/wallet.svg"
       />
       <div
-        class="sc-gGBfsJ iYeVWi"
+        class="sc-cmTdod cqKWIn"
       >
         <h1>
           Wallet missing
@@ -36510,6 +36511,387 @@ Object {
 }
 `;
 
+exports[`Storyshots Full Screen Modals The QRDisplay Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c3 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c3 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c3:hover {
+  background-color: var(--link);
+}
+
+.c3:hover > svg {
+  fill: white;
+}
+
+.c3:focus {
+  outline: none;
+}
+
+.c2:hover .c6 {
+  display: inline-block;
+}
+
+.c7 .c2 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c7 .c2:nth-child(1) {
+  pointer-events: none;
+}
+
+.c7 .c2:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c7 .c2 > svg {
+  fill: var(--grey);
+}
+
+.c7 .c2:hover > svg {
+  fill: var(--grey);
+}
+
+.c8 .c2 {
+  margin: 24px;
+}
+
+.c8 .c2 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c5 {
+  padding: 8px;
+  border: thin black solid;
+}
+
+.c4 {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.c1 {
+  background: var(--white);
+  position: relative;
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+.c0 {
+  background: rgba(0,0,0,0.5);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  z-index: var(--alwaysontop);
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            class="c2 c3 c4"
+            data-testid="qr-quit-button"
+            target="_self"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title>
+                Close
+              </title>
+              <path
+                clip-rule="evenodd"
+                d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            
+          </a>
+          <svg
+            class="c5"
+            height="256"
+            shape-rendering="crispEdges"
+            viewBox="0 0 21 21"
+            width="256"
+          >
+            <path
+              d="M0,0 h21v21H0z"
+              fill="#FFFFFF"
+            />
+            <path
+              d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+              fill="#000000"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-esjQYD guseNj"
+    >
+      <div
+        class="sc-kfGgVZ eUEmJT"
+      >
+        <a
+          class="sc-850ddk-0 iabPtF sc-gzOgki EcayX"
+          data-testid="qr-quit-button"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <svg
+          class="sc-dfVpRl hkgGel"
+          height="256"
+          shape-rendering="crispEdges"
+          viewBox="0 0 21 21"
+          width="256"
+        >
+          <path
+            d="M0,0 h21v21H0z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+            fill="#000000"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots Full Screen Modals The QRDisplay Overlay, inactive 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Full Screen Modals The Wallet Check Overlay 1`] = `
 Object {
   "asFragment": [Function],
@@ -36530,6 +36912,7 @@ Object {
 
 .c1 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -36607,16 +36990,16 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-bYSBpT gXcQiX"
+      class="sc-esjQYD guseNj"
     >
       <div
-        class="sc-lhVmIH gZGkEg"
+        class="sc-kfGgVZ eUEmJT"
       >
         <p>
           Please check your browser wallet.
         </p>
         <button
-          class="sc-cmTdod ftojYZ"
+          class="sc-iyvyFf bDHHTO"
         >
           Dismiss
         </button>
@@ -36764,6 +37147,275 @@ Object {
 }
 `;
 
+exports[`Storyshots Full Screen Modals/templates The QRDisplay Overlay 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c2 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c2:hover {
+  background-color: var(--link);
+}
+
+.c2:hover > svg {
+  fill: white;
+}
+
+.c2:focus {
+  outline: none;
+}
+
+.c1:hover .c5 {
+  display: inline-block;
+}
+
+.c6 .c1 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c6 .c1:nth-child(1) {
+  pointer-events: none;
+}
+
+.c6 .c1:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c6 .c1 > svg {
+  fill: var(--grey);
+}
+
+.c6 .c1:hover > svg {
+  fill: var(--grey);
+}
+
+.c7 .c1 {
+  margin: 24px;
+}
+
+.c7 .c1 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c4 {
+  padding: 8px;
+  border: thin black solid;
+}
+
+.c3 {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.c0 {
+  background: var(--white);
+  position: relative;
+  min-width: 50%;
+  max-width: 98%;
+  border-radius: 4px;
+  padding: 24px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  color: var(--darkgrey);
+  font-size: 20px;
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <a
+          class="c1 c2 c3"
+          data-testid="qr-quit-button"
+          target="_self"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title>
+              Close
+            </title>
+            <path
+              clip-rule="evenodd"
+              d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          
+        </a>
+        <svg
+          class="c4"
+          height="256"
+          shape-rendering="crispEdges"
+          viewBox="0 0 21 21"
+          width="256"
+        >
+          <path
+            d="M0,0 h21v21H0z"
+            fill="#FFFFFF"
+          />
+          <path
+            d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+            fill="#000000"
+          />
+        </svg>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-kfGgVZ eUEmJT"
+    >
+      <a
+        class="sc-850ddk-0 iabPtF sc-gzOgki EcayX"
+        data-testid="qr-quit-button"
+        target="_self"
+      >
+        <svg
+          viewBox="0 0 24 24"
+        >
+          <title>
+            Close
+          </title>
+          <path
+            clip-rule="evenodd"
+            d="M8.237 7.177a.75.75 0 10-1.06 1.06L10.939 12l-3.762 3.763a.75.75 0 101.06 1.06L12 13.061l3.763 3.762a.75.75 0 101.06-1.06L13.061 12l3.762-3.763a.75.75 0 00-1.06-1.06L12 10.939 8.237 7.177z"
+            fill-rule="evenodd"
+          />
+        </svg>
+        
+      </a>
+      <svg
+        class="sc-dfVpRl hkgGel"
+        height="256"
+        shape-rendering="crispEdges"
+        viewBox="0 0 21 21"
+        width="256"
+      >
+        <path
+          d="M0,0 h21v21H0z"
+          fill="#FFFFFF"
+        />
+        <path
+          d="M0 0h7v1H0zM8 0h1v1H8zM10 0h3v1H10zM14,0 h7v1H14zM0 1h1v1H0zM6 1h1v1H6zM10 1h2v1H10zM14 1h1v1H14zM20,1 h1v1H20zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h2v1H8zM11 2h1v1H11zM14 2h1v1H14zM16 2h3v1H16zM20,2 h1v1H20zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM12 3h1v1H12zM14 3h1v1H14zM16 3h3v1H16zM20,3 h1v1H20zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM8 4h1v1H8zM11 4h1v1H11zM14 4h1v1H14zM16 4h3v1H16zM20,4 h1v1H20zM0 5h1v1H0zM6 5h1v1H6zM9 5h4v1H9zM14 5h1v1H14zM20,5 h1v1H20zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14,6 h7v1H14zM11 7h2v1H11zM0 8h4v1H0zM6 8h1v1H6zM8 8h6v1H8zM16 8h3v1H16zM20,8 h1v1H20zM2 9h1v1H2zM5 9h1v1H5zM8 9h6v1H8zM16 9h2v1H16zM20,9 h1v1H20zM0 10h3v1H0zM5 10h3v1H5zM11 10h1v1H11zM14 10h2v1H14zM18,10 h3v1H18zM3 11h1v1H3zM5 11h1v1H5zM9 11h3v1H9zM15 11h3v1H15zM20,11 h1v1H20zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM14 12h2v1H14zM8 13h2v1H8zM11 13h1v1H11zM14 13h1v1H14zM16 13h1v1H16zM18 13h2v1H18zM0 14h7v1H0zM10 14h3v1H10zM15 14h3v1H15zM0 15h1v1H0zM6 15h1v1H6zM9 15h2v1H9zM15 15h1v1H15zM17 15h3v1H17zM0 16h1v1H0zM2 16h3v1H2zM6 16h1v1H6zM12 16h1v1H12zM14 16h2v1H14zM17 16h2v1H17zM0 17h1v1H0zM2 17h3v1H2zM6 17h1v1H6zM8 17h4v1H8zM14 17h1v1H14zM17 17h1v1H17zM19 17h1v1H19zM0 18h1v1H0zM2 18h3v1H2zM6 18h1v1H6zM8 18h1v1H8zM12 18h1v1H12zM14 18h1v1H14zM17 18h2v1H17zM0 19h1v1H0zM6 19h1v1H6zM8 19h2v1H8zM13 19h1v1H13zM17 19h1v1H17zM20,19 h1v1H20zM0 20h7v1H0zM8 20h1v1H8zM13 20h1v1H13zM16 20h1v1H16zM18 20h1v1H18z"
+          fill="#000000"
+        />
+      </svg>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots Full Screen Modals/templates The Wallet Check Overlay 1`] = `
 Object {
   "asFragment": [Function],
@@ -36784,6 +37436,7 @@ Object {
 
 .c0 {
   background: var(--white);
+  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;
@@ -36832,13 +37485,13 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-lhVmIH gZGkEg"
+      class="sc-kfGgVZ eUEmJT"
     >
       <p>
         Please check your browser wallet.
       </p>
       <button
-        class="sc-cmTdod ftojYZ"
+        class="sc-iyvyFf bDHHTO"
       >
         Dismiss
       </button>
@@ -39009,7 +39662,7 @@ Object {
         href="/dashboard"
       >
         <button
-          class="sc-kafWEX sc-9upljg-1 cKpQTs"
+          class="sc-kTUwUJ sc-9upljg-1 cKpQTs"
         >
           I Agree
         </button>
@@ -39152,7 +39805,7 @@ Object {
       class="sc-9upljg-3 kjuFdI"
     >
       <button
-        class="sc-kafWEX sc-9upljg-0 cTMzWy"
+        class="sc-kTUwUJ sc-9upljg-0 cTMzWy"
       >
         Go to Your Dashboard
       </button>
@@ -40142,6 +40795,16 @@ Object {
   width: 100%;
 }
 
+.c21 {
+  display: grid;
+  justify-items: center;
+}
+
+.c21 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c19 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
@@ -40268,7 +40931,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c22 {
     display: none;
   }
 }
@@ -40586,12 +41249,164 @@ Object {
               </div>
             </div>
           </section>
-          <p>
-            Loading...
-          </p>
+          <section
+            class="c21"
+          >
+            <svg
+              alt="loading"
+              viewBox="0 0 32 32"
+            >
+              <title>
+                loading
+              </title>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
+          </section>
         </div>
         <div
-          class="c21"
+          class="c22"
         />
       </div>
     </div>
@@ -40796,13 +41611,13 @@ Object {
           />
         </header>
         <section
-          class="sc-jnlKLf jKMWma"
+          class="sc-jwKygS fBWxJW"
         >
           <div
-            class="sc-tilXH jqgYeL"
+            class="sc-lhVmIH dAbRfX"
           >
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             >
               <div
                 class="paper"
@@ -40859,45 +41674,197 @@ Object {
               </div>
             </div>
             <div
-              class="sc-ktHwxA hHPiDD"
+              class="sc-elJkPf dYrTfF"
             >
               Address
               <span
-                class="sc-fYxtnH iWHWCo"
+                class="sc-btzYZH kkTvlt"
                 id="NetworkName"
               >
                 Winston
               </span>
             </div>
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-cIShpX ePXlrt"
+              class="sc-jtRfpW wKYHJ"
               id="UserAddress"
             >
               0x3ca206264762caf81a8f0a843bbb850987b41e16
             </div>
           </div>
         </section>
-        <p>
-          Loading...
-        </p>
+        <section
+          class="sc-dNLxif jEFmuO"
+        >
+          <svg
+            alt="loading"
+            viewBox="0 0 32 32"
+          >
+            <title>
+              loading
+            </title>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
+        </section>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
@@ -41812,22 +42779,22 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-iQKALj koADYe"
+            class="sc-esOvli kAzQe"
           >
             Pay For Content Seamlessly
           </h1>
           <h2
-            class="sc-bwCtUz gMSTMj"
+            class="sc-cmthru ktyKAB"
           >
             Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
           </h2>
           <p
-            class="sc-hrWEMg hWCxgO"
+            class="sc-hMFtBS cHQZbS"
           >
             At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
           </p>
           <p
-            class="sc-hrWEMg hWCxgO"
+            class="sc-hMFtBS cHQZbS"
           >
             If you want to know more about Unlock's decentralized payment protocol, check out
              
@@ -41842,25 +42809,25 @@ Object {
             .
           </p>
           <form
-            class="sc-eTuwsz eeROGq"
+            class="sc-cLQEGU gbMtat"
           >
             <input
-              class="sc-gwVKww jnKnAF"
+              class="sc-gqPbQI fGIWlY"
               name="emailAddress"
               placeholder="Enter your email to get started"
               type="email"
             />
             <input
-              class="sc-hXRMBi fZLkLx"
+              class="sc-hORach dUTayx"
               type="submit"
               value="Sign Up"
             />
             <p
-              class="sc-hrWEMg hWCxgO"
+              class="sc-hMFtBS cHQZbS"
             >
               Already have an account? 
               <a
-                class="sc-iQNlJl fYRuoc"
+                class="sc-bAeIUo cnGcbp"
               >
                 Log in here
               </a>
@@ -42184,6 +43151,16 @@ Object {
   width: 100%;
 }
 
+.c21 {
+  display: grid;
+  justify-items: center;
+}
+
+.c21 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
 .c19 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
@@ -42310,7 +43287,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c21 {
+  .c22 {
     display: none;
   }
 }
@@ -42628,12 +43605,164 @@ Object {
               </div>
             </div>
           </section>
-          <p>
-            Loading...
-          </p>
+          <section
+            class="c21"
+          >
+            <svg
+              alt="loading"
+              viewBox="0 0 32 32"
+            >
+              <title>
+                loading
+              </title>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
+          </section>
         </div>
         <div
-          class="c21"
+          class="c22"
         />
       </div>
     </div>
@@ -42838,13 +43967,13 @@ Object {
           />
         </header>
         <section
-          class="sc-jnlKLf jKMWma"
+          class="sc-jwKygS fBWxJW"
         >
           <div
-            class="sc-tilXH jqgYeL"
+            class="sc-lhVmIH dAbRfX"
           >
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             >
               <div
                 class="paper"
@@ -42901,45 +44030,1583 @@ Object {
               </div>
             </div>
             <div
-              class="sc-ktHwxA hHPiDD"
+              class="sc-elJkPf dYrTfF"
             >
               Address
               <span
-                class="sc-fYxtnH iWHWCo"
+                class="sc-btzYZH kkTvlt"
                 id="NetworkName"
               >
                 Winston
               </span>
             </div>
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-hEsumM kQujec"
+              class="sc-bYSBpT bTbVCi"
             />
             <div
-              class="sc-cIShpX ePXlrt"
+              class="sc-jtRfpW wKYHJ"
               id="UserAddress"
             >
               0x3ca206264762caf81a8f0a843bbb850987b41e17
             </div>
           </div>
         </section>
-        <p>
-          Loading...
-        </p>
+        <section
+          class="sc-dNLxif jEFmuO"
+        >
+          <svg
+            alt="loading"
+            viewBox="0 0 32 32"
+          >
+            <title>
+              loading
+            </title>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
+        </section>
+      </div>
+      <div
+        class="hm3mhg-2 dBxAQT"
+      />
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots KeyChainContent the key chain, with many keys 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c11 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c11 > svg {
+  fill: white;
+  height: 24px;
+  width: 24px;
+}
+
+.c11:hover {
+  background-color: var(--link);
+}
+
+.c11:hover > svg {
+  fill: white;
+}
+
+.c11:focus {
+  outline: none;
+}
+
+.c14 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c14 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c14:hover {
+  background-color: var(--link);
+}
+
+.c14:hover > svg {
+  fill: white;
+}
+
+.c14:focus {
+  outline: none;
+}
+
+.c12 {
+  display: none;
+  position: relative;
+  z-index: var(--alwaysontop);
+  white-space: nowrap;
+  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  color: var(--link);
+}
+
+.c10:hover .c12 {
+  display: inline-block;
+}
+
+.c2 {
+  background-color: var(--brand);
+  height: 56px;
+  width: 56px;
+  border-radius: 50%;
+}
+
+.c2 > svg {
+  fill: white;
+}
+
+.c7 {
+  background-color: var(--brand);
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+}
+
+.c7 > svg {
+  fill: white;
+}
+
+.c4 {
+  display: grid;
+  grid-gap: 0;
+  grid-template-columns: 256px 1fr auto;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 70px;
+}
+
+.c5 {
+  color: var(--grey);
+}
+
+.c9 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+}
+
+.c8 {
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(4,24px);
+  grid-auto-flow: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  height: 100%;
+  grid-template-columns: repeat(3,24px);
+}
+
+.c13 {
+  display: none;
+  height: auto;
+  grid-column: second;
+}
+
+.c13 .c10 {
+  background-color: var(--white);
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  opacity: 1;
+  pointer-events: visible;
+  -webkit-align-self: center;
+  -ms-flex-item-align: center;
+  align-self: center;
+}
+
+.c13 .c10:nth-child(1) {
+  pointer-events: none;
+}
+
+.c13 .c10:nth-child(2) {
+  pointer-events: none;
+  display: none;
+}
+
+.c13 .c10 > svg {
+  fill: var(--grey);
+}
+
+.c13 .c10:hover > svg {
+  fill: var(--grey);
+}
+
+.c15 {
+  background-color: var(--white);
+  width: 100%;
+  height: auto;
+  z-index: var(--foreground);
+  padding-bottom: 30px;
+  display: inline-block;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-gap: 0px;
+  grid-row: second;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
+  height: 0%;
+  pointer-events: none;
+  top: 50px;
+}
+
+.c15 .c10 {
+  margin: 24px;
+}
+
+.c15 .c10 small {
+  display: block;
+  color: var(--grey);
+  text-align: center;
+  top: 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.c6 {
+  padding-top: 2px;
+}
+
+.c0 {
+  display: grid;
+  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+}
+
+.c1 {
+  display: grid;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  height: 24px;
+}
+
+.c3 {
+  color: var(--darkgrey);
+  display: grid;
+  row-gap: 24px;
+  width: 100%;
+}
+
+.c21 {
+  display: grid;
+  justify-items: center;
+}
+
+.c21 svg {
+  fill: var(--lightgrey);
+  width: 60px;
+}
+
+.c19 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--red);
+  margin-left: 1em;
+  text-transform: none;
+}
+
+.c16 {
+  font-family: 'IBM Plex Mono',monospace;
+  display: grid;
+  row-gap: 8px;
+  -webkit-column-gap: 16px;
+  column-gap: 16px;
+  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
+}
+
+.c17 {
+  display: grid;
+  height: 40px;
+  grid-row: span 2;
+  -webkit-align-self: start;
+  -ms-flex-item-align: start;
+  align-self: start;
+  font-size: 24px;
+  -webkit-align-content: start;
+  -ms-flex-line-pack: start;
+  align-content: start;
+}
+
+.c18 {
+  font-weight: 100;
+  text-transform: uppercase;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  font-size: 8px;
+}
+
+.c20 {
+  font-family: 'IBM Plex Mono',monospace;
+  font-size: 10px;
+  width: 128px;
+  font-weight: 300;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c4 {
+    grid-template-columns: [first] 1fr [second] 48px;
+    grid-template-rows: [first] auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: 50px auto;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c8 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c15 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c6 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c1 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c22 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c16 {
+    -webkit-column-gap: 2px;
+    column-gap: 2px;
+    grid-template-columns: 45px 145px repeat(2,0px);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    height: 0px;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <a
+            href="/"
+          >
+            <div
+              class="c2"
+            >
+              <svg
+                viewBox="0 0 56 56"
+              >
+                <title />
+                <path
+                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                />
+              </svg>
+            </div>
+          </a>
+        </div>
+        <div
+          class="c3"
+        >
+          <header
+            class="c4"
+          >
+            <h1
+              class="c5"
+            >
+              <div
+                class="c6"
+              >
+                <a
+                  href="/"
+                >
+                  <div
+                    class="c7"
+                  >
+                    <svg
+                      viewBox="0 0 56 56"
+                    >
+                      <title />
+                      <path
+                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                      />
+                    </svg>
+                  </div>
+                </a>
+              </div>
+              Key Chain
+            </h1>
+            <div
+              class="c8"
+            />
+            <div
+              class="c9"
+            >
+              <a
+                class="c10 c11"
+                href="http://localhost:3002/about"
+                target="_self"
+                title="About"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    About
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  About
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="http://localhost:3002/jobs"
+                target="_self"
+                title="Join us"
+              >
+                <svg
+                  name="Jobs"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Join us
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://github.com/unlock-protocol/unlock"
+                target="_self"
+                title="Source Code"
+              >
+                <svg
+                  name="Github"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Source Code
+                </small>
+              </a>
+              <a
+                class="c10 c11"
+                href="https://t.me/unlockprotocol"
+                target="_self"
+                title="Telegram"
+              >
+                <svg
+                  name="Telegram"
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c12"
+                >
+                  Telegram
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 56 42"
+                >
+                  <title>
+                    Bars
+                  </title>
+                  <path
+                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                  />
+                </svg>
+                
+              </a>
+              <a
+                class="c10 c14"
+                target="_self"
+              >
+                <svg
+                  viewBox="0 0 58 32"
+                >
+                  <title>
+                    Chevron Up
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                
+              </a>
+            </div>
+            <div
+              class="c15"
+            />
+          </header>
+          <section
+            class=""
+          >
+            <div
+              class="c16"
+            >
+              <div
+                class="c17"
+              >
+                <div
+                  class="paper"
+                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+                >
+                  <svg
+                    height="40"
+                    width="40"
+                    x="0"
+                    xmlns="http://www.w3.org/2000/svg"
+                    y="0"
+                  >
+                    <rect
+                      fill="#F5B400"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#F92F01"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#FB186F"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                    <rect
+                      fill="#18A9F2"
+                      height="40"
+                      rx="0"
+                      ry="0"
+                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                      width="40"
+                      x="0"
+                      y="0"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="c18"
+              >
+                Address
+                <span
+                  class="c19"
+                  id="NetworkName"
+                >
+                  Winston
+                </span>
+              </div>
+              <div
+                class="c17"
+              />
+              <div
+                class="c17"
+              />
+              <div
+                class="c17"
+              />
+              <div
+                class="c17"
+              />
+              <div
+                class="c17"
+              />
+              <div
+                class="c17"
+              />
+              <div
+                class="c20"
+                id="UserAddress"
+              >
+                0x3ca206264762caf81a8f0a843bbb850987b31337
+              </div>
+            </div>
+          </section>
+          <section
+            class="c21"
+          >
+            <svg
+              alt="loading"
+              viewBox="0 0 32 32"
+            >
+              <title>
+                loading
+              </title>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
+          </section>
+        </div>
+        <div
+          class="c22"
+        />
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="hm3mhg-0 iMlWOh"
+    >
+      <div
+        class="hm3mhg-1 iBEace"
+      >
+        <a
+          href="/"
+        >
+          <div
+            class="cenpj1-0 eJifmz"
+          >
+            <svg
+              viewBox="0 0 56 56"
+            >
+              <title />
+              <path
+                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+              />
+            </svg>
+          </div>
+        </a>
+      </div>
+      <div
+        class="hm3mhg-3 yKIjT"
+      >
+        <header
+          class="sc-1glv5oz-0 dmdEhu"
+        >
+          <h1
+            class="sc-1glv5oz-1 kBUdQa"
+          >
+            <div
+              class="sc-1glv5oz-6 gMXOkk"
+            >
+              <a
+                href="/"
+              >
+                <div
+                  class="cenpj1-0 eCEwze"
+                >
+                  <svg
+                    viewBox="0 0 56 56"
+                  >
+                    <title />
+                    <path
+                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
+                    />
+                  </svg>
+                </div>
+              </a>
+            </div>
+            Key Chain
+          </h1>
+          <div
+            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+          />
+          <div
+            class="sc-1glv5oz-2 bwZQqD"
+          >
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="http://localhost:3002/about"
+              target="_self"
+              title="About"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  About
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                About
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="http://localhost:3002/jobs"
+              target="_self"
+              title="Join us"
+            >
+              <svg
+                name="Jobs"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Join us
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://github.com/unlock-protocol/unlock"
+              target="_self"
+              title="Source Code"
+            >
+              <svg
+                name="Github"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Source Code
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 iabPtF"
+              href="https://t.me/unlockprotocol"
+              target="_self"
+              title="Telegram"
+            >
+              <svg
+                name="Telegram"
+                viewBox="0 0 24 24"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Telegram
+              </small>
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-4 fkpKLc"
+          >
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 56 42"
+              >
+                <title>
+                  Bars
+                </title>
+                <path
+                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
+                />
+              </svg>
+              
+            </a>
+            <a
+              class="sc-850ddk-0 cVcBAp"
+              target="_self"
+            >
+              <svg
+                viewBox="0 0 58 32"
+              >
+                <title>
+                  Chevron Up
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              
+            </a>
+          </div>
+          <div
+            class="sc-1glv5oz-5 bjHPyP"
+          />
+        </header>
+        <section
+          class="sc-jwKygS fBWxJW"
+        >
+          <div
+            class="sc-lhVmIH dAbRfX"
+          >
+            <div
+              class="sc-bYSBpT bTbVCi"
+            >
+              <div
+                class="paper"
+                style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
+              >
+                <svg
+                  height="40"
+                  width="40"
+                  x="0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  y="0"
+                >
+                  <rect
+                    fill="#F5B400"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#F92F01"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#FB186F"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                  <rect
+                    fill="#18A9F2"
+                    height="40"
+                    rx="0"
+                    ry="0"
+                    transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
+                    width="40"
+                    x="0"
+                    y="0"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="sc-elJkPf dYrTfF"
+            >
+              Address
+              <span
+                class="sc-btzYZH kkTvlt"
+                id="NetworkName"
+              >
+                Winston
+              </span>
+            </div>
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-bYSBpT bTbVCi"
+            />
+            <div
+              class="sc-jtRfpW wKYHJ"
+              id="UserAddress"
+            >
+              0x3ca206264762caf81a8f0a843bbb850987b31337
+            </div>
+          </div>
+        </section>
+        <section
+          class="sc-dNLxif jEFmuO"
+        >
+          <svg
+            alt="loading"
+            viewBox="0 0 32 32"
+          >
+            <title>
+              loading
+            </title>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
+        </section>
       </div>
       <div
         class="hm3mhg-2 dBxAQT"
@@ -51510,21 +54177,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-eTuwsz gHqaLx"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-bsbRJL kVRdDy"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -51532,13 +54199,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -51546,22 +54213,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-hZSUBg dfTGqc"
         >
           <input
-            class="sc-kfGgVZ sc-esjQYD cTKJOx"
+            class="sc-epnACN sc-iQNlJl vsRYX"
             type="submit"
             value="Retry"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-gwVKww fRHzKi"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-iuJeZd gDhnDJ"
         >
           Sign up here.
         </a>
@@ -51764,21 +54431,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-eTuwsz gHqaLx"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-bsbRJL kVRdDy"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -51786,13 +54453,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -51800,22 +54467,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-hZSUBg dfTGqc"
         >
           <input
-            class="sc-kfGgVZ brJDaE"
+            class="sc-epnACN coDyVW"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-gwVKww fRHzKi"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-iuJeZd gDhnDJ"
         >
           Sign up here.
         </a>
@@ -52012,22 +54679,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-esOvli kAzQe"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-cmthru ktyKAB"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -52042,25 +54709,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-cLQEGU gbMtat"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-gqPbQI fGIWlY"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-hORach dUTayx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-hMFtBS cHQZbS"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-bAeIUo cnGcbp"
           >
             Log in here
           </a>
@@ -52297,23 +54964,23 @@ Object {
     />
     <div>
       <h1
-        class="sc-jAaTju kNpzMJ"
+        class="sc-eqIVtm hHuKKY"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-jDwBTQ hyFtCE"
+        class="sc-fAjcbJ bYKePZ"
       >
         Create a password for your account.
       </p>
       <label
-        class="sc-gPEVay cqKage"
+        class="sc-caSCKo jVjNRj"
         for="emailPlaceholder"
       >
         Email
       </label>
       <input
-        class="sc-iRbamj eyutGH"
+        class="sc-gisBJw dbUsPJ"
         disabled=""
         id="emailPlaceholder"
         name="emailPlaceholder"
@@ -52321,16 +54988,16 @@ Object {
         value="geoff@bitconnect.gov"
       />
       <form
-        class="sc-brqgnP jcXrgR"
+        class="sc-fMiknA ipJsrQ"
       >
         <label
-          class="sc-eHgmQL iuyghs"
+          class="sc-hzDkRC fGvqFK"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-cvbbAY kZWFpu"
+          class="sc-jhAzac fFTxjT"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -52338,13 +55005,13 @@ Object {
         />
         <br />
         <label
-          class="sc-eHgmQL iuyghs"
+          class="sc-hzDkRC fGvqFK"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-cvbbAY kZWFpu"
+          class="sc-jhAzac fFTxjT"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -52352,11 +55019,11 @@ Object {
         />
         <br />
         <span
-          class="sc-cMljjf RlOhw"
+          class="sc-dVhcbM dtkvLy"
         />
         <br />
         <input
-          class="sc-jWBwVP iGzEEB"
+          class="sc-fBuWsC itIPkB"
           disabled=""
           type="submit"
           value="Submit"
@@ -52478,12 +55145,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-iAyFgw VebZM"
+        class="sc-Rmtcm wiFKz"
       >
         Sign Up
       </h1>
       <p
-        class="sc-hSdWYo gmEejV"
+        class="sc-bRBYWo eVPHVS"
       >
         The link you used is invalid. Please try again.
          
@@ -52692,21 +55359,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-iyvyFf iwStxs"
+        class="sc-eTuwsz gHqaLx"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-kIPQKe gmPiyO"
+        class="sc-bsbRJL kVRdDy"
       >
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -52714,13 +55381,13 @@ Object {
         />
         <br />
         <label
-          class="sc-ibxdXY OeiNk"
+          class="sc-cMhqgX glmZJN"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-kPVwWT kvXvce"
+          class="sc-hXRMBi gPEbSW"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -52728,22 +55395,22 @@ Object {
         />
         <br />
         <div
-          class="sc-eXEjpC eVbGxa"
+          class="sc-hZSUBg dfTGqc"
         >
           <input
-            class="sc-kfGgVZ brJDaE"
+            class="sc-epnACN coDyVW"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-hwwEjo jLOWeM"
+        class="sc-gwVKww fRHzKi"
       >
         Don't have an account?
          
         <a
-          class="sc-RefOD isLSKU"
+          class="sc-iuJeZd gDhnDJ"
         >
           Sign up here.
         </a>
@@ -52940,22 +55607,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-esOvli kAzQe"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-cmthru ktyKAB"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -52970,25 +55637,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-cLQEGU gbMtat"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-gqPbQI fGIWlY"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-hORach dUTayx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-hMFtBS cHQZbS"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-bAeIUo cnGcbp"
           >
             Log in here
           </a>
@@ -53111,12 +55778,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-kgoBCf hHzssk"
+        class="sc-jWBwVP jxrhEF"
       >
         Sign Up
       </h1>
       <p
-        class="sc-kGXeez ccCTgV"
+        class="sc-brqgnP kLeLPN"
       >
         You are now signed in! Visit
          
@@ -56405,12 +59072,12 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-jAaTju kNpzMJ"
+            class="sc-eqIVtm hHuKKY"
           >
             Recover your Unlock Account
           </h1>
           <p
-            class="sc-jDwBTQ hyFtCE"
+            class="sc-fAjcbJ bYKePZ"
           >
             Your recovery link is not valid. Please try again.
           </p>
@@ -57434,17 +60101,17 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-jAaTju kNpzMJ"
+            class="sc-eqIVtm hHuKKY"
           >
             Recover your Unlock Account
           </h1>
           <p
-            class="sc-jDwBTQ hyFtCE"
+            class="sc-fAjcbJ bYKePZ"
           >
             Please, set a new password for your account.
           </p>
           <label
-            class="sc-gPEVay cqKage"
+            class="sc-caSCKo jVjNRj"
             for="emailPlaceholder"
           >
             Email
@@ -57455,7 +60122,7 @@ Object {
         </div>
         <div>
           <section
-            class="sc-dNLxif jEFmuO"
+            class="sc-cIShpX jkFMTG"
           >
             <svg
               alt="loading"
@@ -58467,17 +61134,17 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-jAaTju kNpzMJ"
+            class="sc-eqIVtm hHuKKY"
           >
             Recover your Unlock Account
           </h1>
           <p
-            class="sc-jDwBTQ hyFtCE"
+            class="sc-fAjcbJ bYKePZ"
           >
             Please, set a new password for your account.
           </p>
           <label
-            class="sc-gPEVay cqKage"
+            class="sc-caSCKo jVjNRj"
             for="emailPlaceholder"
           >
             Email
@@ -59427,17 +62094,17 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-jAaTju kNpzMJ"
+            class="sc-eqIVtm hHuKKY"
           >
             Recover your Unlock Account
           </h1>
           <p
-            class="sc-jDwBTQ hyFtCE"
+            class="sc-fAjcbJ bYKePZ"
           >
             Please, set a new password for your account.
           </p>
           <label
-            class="sc-gPEVay cqKage"
+            class="sc-caSCKo jVjNRj"
             for="emailPlaceholder"
           >
             Email
@@ -59447,16 +62114,16 @@ Object {
           </p>
         </div>
         <form
-          class="sc-brqgnP jcXrgR"
+          class="sc-fMiknA ipJsrQ"
         >
           <label
-            class="sc-eHgmQL iuyghs"
+            class="sc-hzDkRC fGvqFK"
             for="passwordInput"
           >
             Password
           </label>
           <input
-            class="sc-cvbbAY kZWFpu"
+            class="sc-jhAzac fFTxjT"
             id="passwordInput"
             name="password"
             placeholder="Password"
@@ -59464,13 +62131,13 @@ Object {
           />
           <br />
           <label
-            class="sc-eHgmQL iuyghs"
+            class="sc-hzDkRC fGvqFK"
             for="passwordConfirmationInput"
           >
             Confirm Password
           </label>
           <input
-            class="sc-cvbbAY kZWFpu"
+            class="sc-jhAzac fFTxjT"
             id="passwordConfirmationInput"
             name="passwordConfirmation"
             placeholder="Confirm Password"
@@ -59478,11 +62145,11 @@ Object {
           />
           <br />
           <span
-            class="sc-cMljjf RlOhw"
+            class="sc-dVhcbM dtkvLy"
           />
           <br />
           <input
-            class="sc-jWBwVP iGzEEB"
+            class="sc-fBuWsC itIPkB"
             disabled=""
             type="submit"
             value="Submit"
@@ -59635,7 +62302,7 @@ Object {
 }
 
 .c4:hover:before {
-  content: 'Checkmark';
+  content: 'Attention';
   position: absolute;
 }
 
@@ -59651,7 +62318,7 @@ Object {
 }
 
 .c5:hover:before {
-  content: 'Close';
+  content: 'Checkmark';
   position: absolute;
 }
 
@@ -59667,7 +62334,7 @@ Object {
 }
 
 .c6:hover:before {
-  content: 'Code';
+  content: 'Close';
   position: absolute;
 }
 
@@ -59683,7 +62350,7 @@ Object {
 }
 
 .c7:hover:before {
-  content: 'Copy';
+  content: 'Code';
   position: absolute;
 }
 
@@ -59699,7 +62366,7 @@ Object {
 }
 
 .c8:hover:before {
-  content: 'Documentation';
+  content: 'Copy';
   position: absolute;
 }
 
@@ -59715,7 +62382,7 @@ Object {
 }
 
 .c9:hover:before {
-  content: 'Download';
+  content: 'Documentation';
   position: absolute;
 }
 
@@ -59731,7 +62398,7 @@ Object {
 }
 
 .c10:hover:before {
-  content: 'Edit';
+  content: 'Download';
   position: absolute;
 }
 
@@ -59747,7 +62414,7 @@ Object {
 }
 
 .c11:hover:before {
-  content: 'Eth';
+  content: 'Edit';
   position: absolute;
 }
 
@@ -59763,7 +62430,7 @@ Object {
 }
 
 .c12:hover:before {
-  content: 'Etherscan';
+  content: 'Eth';
   position: absolute;
 }
 
@@ -59779,7 +62446,7 @@ Object {
 }
 
 .c13:hover:before {
-  content: 'EthSub';
+  content: 'Etherscan';
   position: absolute;
 }
 
@@ -59795,7 +62462,7 @@ Object {
 }
 
 .c14:hover:before {
-  content: 'Export';
+  content: 'EthSub';
   position: absolute;
 }
 
@@ -59811,7 +62478,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'Github';
+  content: 'Export';
   position: absolute;
 }
 
@@ -59827,7 +62494,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'Heart';
+  content: 'Github';
   position: absolute;
 }
 
@@ -59843,7 +62510,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'Lemniscate';
+  content: 'Heart';
   position: absolute;
 }
 
@@ -59859,7 +62526,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'LiveDemo';
+  content: 'Key';
   position: absolute;
 }
 
@@ -59875,7 +62542,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Loading';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -59891,7 +62558,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'LockClosed';
+  content: 'LiveDemo';
   position: absolute;
 }
 
@@ -59907,7 +62574,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'Log';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -59923,7 +62590,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'Preview';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -59939,7 +62606,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Jobs';
+  content: 'Log';
   position: absolute;
 }
 
@@ -59955,7 +62622,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Unlock';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -59971,7 +62638,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -59987,7 +62654,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Upload';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -60003,7 +62670,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Withdraw';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -60019,7 +62686,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Newsletter';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -60035,7 +62702,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Telegram';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -60051,7 +62718,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Ticket';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -60067,7 +62734,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'Twitter';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -60083,7 +62750,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Bars';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -60099,7 +62766,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'ChevronUp';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -60115,7 +62782,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Home';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -60131,6 +62798,38 @@ Object {
 }
 
 .c35:hover:before {
+  content: 'ChevronUp';
+  position: absolute;
+}
+
+.c36 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c36:hover {
+  background-color: var(--offwhite);
+}
+
+.c36:hover:before {
+  content: 'Home';
+  position: absolute;
+}
+
+.c37 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c37:hover {
+  background-color: var(--offwhite);
+}
+
+.c37:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -60194,6 +62893,21 @@ Object {
           </div>
           <div
             class="c4"
+            name="Attention"
+          >
+            <svg
+              viewBox="0 0 96 96"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M95.316 84.437L53.012 5.663c-1.008-1.878-2.88-2.996-5.011-2.996-2.131 0-4.003 1.12-5.011 2.997L.684 84.437a5.64 5.64 0 00.13 5.61 5.642 5.642 0 004.882 2.769h84.608a5.645 5.645 0 004.883-2.769 5.64 5.64 0 00.129-5.61zM46.513 7.557L4.208 86.33c-.29.54-.276 1.14.038 1.663.315.527.836.823 1.45.823h84.608c.613 0 1.136-.296 1.45-.823a1.641 1.641 0 00.038-1.663L49.489 7.556c-.312-.58-.83-.89-1.488-.89-.656 0-1.175.31-1.487.891zm-.576 40.29l-2.424-9.582a4.654 4.654 0 01.699-4.187A4.656 4.656 0 0148 32.161c1.511 0 2.892.7 3.788 1.917a4.653 4.653 0 01.7 4.187l-2.425 9.582L48 56l-2.063-8.153zm10.405-8.509a8.652 8.652 0 00-1.332-7.63A8.66 8.66 0 0048 28.16a8.655 8.655 0 00-7.011 3.548 8.652 8.652 0 00-1.331 7.63l4.464 17.642a4 4 0 007.756 0l4.464-17.643zM48 64.636a7.518 7.518 0 00-7.514 7.514A7.518 7.518 0 0048 79.664a7.518 7.518 0 007.514-7.514A7.518 7.518 0 0048 64.636zm0 4a3.518 3.518 0 00-3.514 3.514A3.518 3.518 0 0048 75.664a3.518 3.518 0 003.514-3.514A3.518 3.518 0 0048 68.636z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c5"
             name="Checkmark"
           >
             <svg
@@ -60208,7 +62922,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c5"
+            class="c6"
             name="Close"
           >
             <svg
@@ -60223,7 +62937,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c6"
+            class="c7"
             name="Code"
           >
             <svg
@@ -60238,7 +62952,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c7"
+            class="c8"
             name="Copy"
           >
             <svg
@@ -60253,7 +62967,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c8"
+            class="c9"
             name="Documentation"
           >
             <svg
@@ -60268,7 +62982,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c9"
+            class="c10"
             name="Download"
           >
             <svg
@@ -60283,7 +62997,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c10"
+            class="c11"
             name="Edit"
           >
             <svg
@@ -60301,7 +63015,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c11"
+            class="c12"
             name="Eth"
           >
             <svg
@@ -60316,7 +63030,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c12"
+            class="c13"
             name="Etherscan"
           >
             <svg
@@ -60331,7 +63045,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c13"
+            class="c14"
             name="EthSub"
           >
             <svg
@@ -60345,7 +63059,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c14"
+            class="c15"
             name="Export"
           >
             <svg
@@ -60360,7 +63074,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c15"
+            class="c16"
             name="Github"
           >
             <svg
@@ -60373,7 +63087,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="Heart"
           >
             <svg
@@ -60386,7 +63100,26 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
+            name="Key"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                d="M6.424 12.89a3.417 3.417 0 013.892-.66l6.614-6.614 1.616 1.616-.808.809 1.616 1.616-1.616 1.616-1.616-1.616-4.19 4.19a3.417 3.417 0 01-3.083 4.895 3.428 3.428 0 01-2.425-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+                fill="#000"
+              />
+              <path
+                d="M15.314 10.465l1.616 1.616-1.616 1.617-1.617-1.617 1.617-1.616z"
+                fill="#000"
+              />
+            </svg>
+          </div>
+          <div
+            class="c19"
             name="Lemniscate"
           >
             <svg
@@ -60402,7 +63135,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c20"
             name="LiveDemo"
           >
             <svg
@@ -60431,7 +63164,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c21"
             name="Loading"
           >
             <svg
@@ -60584,7 +63317,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c22"
             name="LockClosed"
           >
             <svg
@@ -60599,7 +63332,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c23"
             name="Log"
           >
             <svg
@@ -60614,7 +63347,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c24"
             name="Preview"
           >
             <svg
@@ -60635,7 +63368,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c25"
             name="Jobs"
           >
             <svg
@@ -60650,7 +63383,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c26"
             name="Unlock"
           >
             <svg
@@ -60663,7 +63396,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c27"
             name="UnlockWordMark"
           >
             <svg
@@ -60676,7 +63409,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c28"
             name="Upload"
           >
             <svg
@@ -60691,7 +63424,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c29"
             name="Withdraw"
           >
             <svg
@@ -60706,7 +63439,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c30"
             name="Newsletter"
           >
             <svg
@@ -60721,7 +63454,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c31"
             name="Telegram"
           >
             <svg
@@ -60736,7 +63469,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c32"
             name="Ticket"
           >
             <svg
@@ -60751,7 +63484,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c33"
             name="Twitter"
           >
             <svg
@@ -60766,7 +63499,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c34"
             name="Bars"
           >
             <svg
@@ -60779,7 +63512,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c35"
             name="ChevronUp"
           >
             <svg
@@ -60794,7 +63527,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c36"
             name="Home"
           >
             <svg
@@ -60807,7 +63540,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c37"
             name="Wordpress"
           >
             <svg
@@ -60881,6 +63614,21 @@ Object {
             <path
               clip-rule="evenodd"
               d="M17.5 12a.5.5 0 01-.175.38l-3.5 3a.5.5 0 11-.65-.76l2.473-2.12H7a.5.5 0 010-1h8.648l-2.473-2.12a.5.5 0 11.65-.76l3.5 3a.5.5 0 01.175.38z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 dblZOC"
+          name="Attention"
+        >
+          <svg
+            viewBox="0 0 96 96"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M95.316 84.437L53.012 5.663c-1.008-1.878-2.88-2.996-5.011-2.996-2.131 0-4.003 1.12-5.011 2.997L.684 84.437a5.64 5.64 0 00.13 5.61 5.642 5.642 0 004.882 2.769h84.608a5.645 5.645 0 004.883-2.769 5.64 5.64 0 00.129-5.61zM46.513 7.557L4.208 86.33c-.29.54-.276 1.14.038 1.663.315.527.836.823 1.45.823h84.608c.613 0 1.136-.296 1.45-.823a1.641 1.641 0 00.038-1.663L49.489 7.556c-.312-.58-.83-.89-1.488-.89-.656 0-1.175.31-1.487.891zm-.576 40.29l-2.424-9.582a4.654 4.654 0 01.699-4.187A4.656 4.656 0 0148 32.161c1.511 0 2.892.7 3.788 1.917a4.653 4.653 0 01.7 4.187l-2.425 9.582L48 56l-2.063-8.153zm10.405-8.509a8.652 8.652 0 00-1.332-7.63A8.66 8.66 0 0048 28.16a8.655 8.655 0 00-7.011 3.548 8.652 8.652 0 00-1.331 7.63l4.464 17.642a4 4 0 007.756 0l4.464-17.643zM48 64.636a7.518 7.518 0 00-7.514 7.514A7.518 7.518 0 0048 79.664a7.518 7.518 0 007.514-7.514A7.518 7.518 0 0048 64.636zm0 4a3.518 3.518 0 00-3.514 3.514A3.518 3.518 0 0048 75.664a3.518 3.518 0 003.514-3.514A3.518 3.518 0 0048 68.636z"
               fill-rule="evenodd"
             />
           </svg>
@@ -61075,6 +63823,25 @@ Object {
             <title />
             <path
               d="M22.15 2.945a6.303 6.303 0 00-2.05-1.44A6.05 6.05 0 0017.683 1a6.05 6.05 0 00-2.417.505 6.304 6.304 0 00-2.05 1.44l-.854.898a.5.5 0 01-.725 0l-.854-.898C9.598 1.7 7.992 1.001 6.316 1.001 4.641 1 3.035 1.7 1.85 2.945S0 5.878 0 7.639c0 1.76.665 3.449 1.85 4.694l1.217 1.279 8.57 9.007a.5.5 0 00.725 0l8.57-9.007 1.217-1.28a6.667 6.667 0 001.37-2.153A6.93 6.93 0 0024 7.64a6.93 6.93 0 00-.481-2.54 6.668 6.668 0 00-1.37-2.154z"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 lahNHZ"
+          name="Key"
+        >
+          <svg
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              d="M6.424 12.89a3.417 3.417 0 013.892-.66l6.614-6.614 1.616 1.616-.808.809 1.616 1.616-1.616 1.616-1.616-1.616-4.19 4.19a3.417 3.417 0 01-3.083 4.895 3.428 3.428 0 01-2.425-5.853zm3.233 3.232a1.145 1.145 0 000-1.616 1.145 1.145 0 00-1.616 0 1.145 1.145 0 000 1.616 1.145 1.145 0 001.616 0z"
+              fill="#000"
+            />
+            <path
+              d="M15.314 10.465l1.616 1.616-1.616 1.617-1.617-1.617 1.617-1.616z"
+              fill="#000"
             />
           </svg>
         </div>
@@ -61748,23 +64515,23 @@ Object {
     />
     <div>
       <h1
-        class="sc-jAaTju kNpzMJ"
+        class="sc-eqIVtm hHuKKY"
       >
         Create Your Unlock Wallet
       </h1>
       <p
-        class="sc-jDwBTQ hyFtCE"
+        class="sc-fAjcbJ bYKePZ"
       >
         Create a password for your account.
       </p>
       <label
-        class="sc-gPEVay cqKage"
+        class="sc-caSCKo jVjNRj"
         for="emailPlaceholder"
       >
         Email
       </label>
       <input
-        class="sc-iRbamj eyutGH"
+        class="sc-gisBJw dbUsPJ"
         disabled=""
         id="emailPlaceholder"
         name="emailPlaceholder"
@@ -61772,16 +64539,16 @@ Object {
         value="geoff@bitconnect.gov"
       />
       <form
-        class="sc-brqgnP jcXrgR"
+        class="sc-fMiknA ipJsrQ"
       >
         <label
-          class="sc-eHgmQL iuyghs"
+          class="sc-hzDkRC fGvqFK"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-cvbbAY kZWFpu"
+          class="sc-jhAzac fFTxjT"
           id="passwordInput"
           name="password"
           placeholder="Password"
@@ -61789,13 +64556,13 @@ Object {
         />
         <br />
         <label
-          class="sc-eHgmQL iuyghs"
+          class="sc-hzDkRC fGvqFK"
           for="passwordConfirmationInput"
         >
           Confirm Password
         </label>
         <input
-          class="sc-cvbbAY kZWFpu"
+          class="sc-jhAzac fFTxjT"
           id="passwordConfirmationInput"
           name="passwordConfirmation"
           placeholder="Confirm Password"
@@ -61803,11 +64570,11 @@ Object {
         />
         <br />
         <span
-          class="sc-cMljjf RlOhw"
+          class="sc-dVhcbM dtkvLy"
         />
         <br />
         <input
-          class="sc-jWBwVP iGzEEB"
+          class="sc-fBuWsC itIPkB"
           disabled=""
           type="submit"
           value="Submit"
@@ -61929,12 +64696,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-iAyFgw VebZM"
+        class="sc-Rmtcm wiFKz"
       >
         Sign Up
       </h1>
       <p
-        class="sc-hSdWYo gmEejV"
+        class="sc-bRBYWo eVPHVS"
       >
         The link you used is invalid. Please try again.
          
@@ -62137,22 +64904,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-iQKALj koADYe"
+        class="sc-esOvli kAzQe"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-bwCtUz gMSTMj"
+        class="sc-cmthru ktyKAB"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hrWEMg hWCxgO"
+        class="sc-hMFtBS cHQZbS"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -62167,25 +64934,25 @@ Object {
         .
       </p>
       <form
-        class="sc-eTuwsz eeROGq"
+        class="sc-cLQEGU gbMtat"
       >
         <input
-          class="sc-gwVKww jnKnAF"
+          class="sc-gqPbQI fGIWlY"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hXRMBi fZLkLx"
+          class="sc-hORach dUTayx"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hrWEMg hWCxgO"
+          class="sc-hMFtBS cHQZbS"
         >
           Already have an account? 
           <a
-            class="sc-iQNlJl fYRuoc"
+            class="sc-bAeIUo cnGcbp"
           >
             Log in here
           </a>
@@ -62308,12 +65075,12 @@ Object {
     />
     <div>
       <h1
-        class="sc-kgoBCf hHzssk"
+        class="sc-jWBwVP jxrhEF"
       >
         Sign Up
       </h1>
       <p
-        class="sc-kGXeez ccCTgV"
+        class="sc-brqgnP kLeLPN"
       >
         You are now signed in! Visit
          
@@ -63610,16 +66377,16 @@ Object {
           />
         </header>
         <div
-          class="sc-iELTvK cSEIZI"
+          class="sc-gxMtzJ fXvfuG"
         >
           <section
-            class="sc-jnlKLf jKMWma"
+            class="sc-jwKygS fBWxJW"
           >
             <div
-              class="sc-tilXH jqgYeL"
+              class="sc-lhVmIH dAbRfX"
             >
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               >
                 <div
                   class="paper"
@@ -63676,36 +66443,36 @@ Object {
                 </div>
               </div>
               <div
-                class="sc-ktHwxA hHPiDD"
+                class="sc-elJkPf dYrTfF"
               >
                 Address
                 <span
-                  class="sc-fYxtnH iWHWCo"
+                  class="sc-btzYZH kkTvlt"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-hEsumM kQujec"
+                class="sc-bYSBpT bTbVCi"
               />
               <div
-                class="sc-cIShpX ePXlrt"
+                class="sc-jtRfpW wKYHJ"
                 id="UserAddress"
               >
                 0x3ca206264762caf81a8f0a843bbb850987b41e16
@@ -63713,80 +66480,80 @@ Object {
             </div>
           </section>
           <button
-            class="sc-kafWEX sc-feJyhm kFPMYx"
+            class="sc-kTUwUJ sc-dqBHgY hZanLT"
             id="CreateLockButton"
           >
             Create Lock
           </button>
         </div>
         <div
-          class="sc-jtRfpW fVThxy"
+          class="sc-eXEjpC fmXPXL"
         >
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-ibxdXY jCLxAs"
           >
             Block Number
           </div>
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-ibxdXY jCLxAs"
           >
             Lock Name/Address
           </div>
           <div
-            class="sc-kTUwUJ dXMwOn"
+            class="sc-ibxdXY jCLxAs"
           >
             Type
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-RefOD sc-iQKALj hkAbiH"
           >
             3
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-bwCtUz khEyfe"
             href=""
             target="_blank"
           >
             0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki lnZrbI"
+            class="sc-RefOD sc-hrWEMg gaDRSA"
             type="Lock Creation"
           >
             Lock Creation
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-RefOD sc-iQKALj hkAbiH"
           >
             2
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-bwCtUz khEyfe"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki fQssos"
+            class="sc-RefOD sc-hrWEMg jbEDwt"
             type="Update Key Price"
           >
             Update Key Price
           </div>
           <div
-            class="sc-dqBHgY sc-gxMtzJ cnLuhM"
+            class="sc-RefOD sc-iQKALj hkAbiH"
           >
             1
           </div>
           <a
-            class="sc-dfVpRl cfxeIL"
+            class="sc-bwCtUz khEyfe"
             href=""
             target="_blank"
           >
             0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
           </a>
           <div
-            class="sc-dqBHgY sc-gzOgki lnZrbI"
+            class="sc-RefOD sc-hrWEMg gaDRSA"
             type="Lock Creation"
           >
             Lock Creation
@@ -63989,37 +66756,37 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat bdsJly"
+      class="sc-bZQynM heNffj"
     >
       <span
-        class="sc-ifAKCX fFulVS"
+        class="sc-htoDjs kvEwSq"
       >
         Account
       </span>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           Email
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         >
           gordon@lonsdale.me
         </span>
       </div>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           Wallet Address
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         >
           0x09438E46Ea66647EA65E4b104C125c82076FDcE5
         </span>
@@ -64213,35 +66980,35 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat bdsJly"
+      class="sc-bZQynM heNffj"
     >
       <span
-        class="sc-ifAKCX fFulVS"
+        class="sc-htoDjs kvEwSq"
       >
         Account
       </span>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           Email
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         />
       </div>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           Wallet Address
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         />
       </div>
     </div>
@@ -64505,6 +67272,7 @@ Object {
           />
           <button
             class="c6"
+            type="button"
           >
             Update Password
           </button>
@@ -64518,26 +67286,26 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat bdsJly"
+      class="sc-bZQynM heNffj"
     >
       <span
-        class="sc-ifAKCX fFulVS"
+        class="sc-htoDjs kvEwSq"
       >
         Change Password
       </span>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Old Password
           </span>
           <input
-            class="sc-htoDjs eDspCZ"
+            class="sc-gqjmRU huKqqv"
             id="currentPassword"
             name="currentPassword"
             placeholder="Enter your current password"
@@ -64545,15 +67313,15 @@ Object {
           />
         </div>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             New Password
           </span>
           <input
-            class="sc-htoDjs eDspCZ"
+            class="sc-gqjmRU huKqqv"
             id="newPassword"
             name="newPassword"
             placeholder="Enter your desired new password"
@@ -64561,15 +67329,15 @@ Object {
           />
         </div>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Confirm New Password
           </span>
           <input
-            class="sc-htoDjs eDspCZ"
+            class="sc-gqjmRU huKqqv"
             id="confirmNewPassword"
             name="confirmNewPassword"
             placeholder="Confirm your desired new password"
@@ -64578,16 +67346,486 @@ Object {
         </div>
       </div>
       <div
-        class="sc-EHOje fYLMhW"
+        class="sc-dnqmqq cChXrH"
       >
         <span
-          class="sc-dnqmqq kkgxkC"
+          class="sc-VigVT iDEznG"
         />
         <button
-          class="sc-iwsKbI sc-bsbRJL foHgoP"
+          class="sc-jTzLTM sc-iujRgT dRblkC"
+          type="button"
         >
           Update Password
         </button>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllBySelectText": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getAllByValue": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getBySelectText": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "getByValue": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllBySelectText": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryAllByValue": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryBySelectText": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "queryByValue": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots User Account/Components EjectAccount 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  max-width: 896px;
+  display: grid;
+  grid-template-columns: repeat(12,[col-start] 1fr);
+  grid-gap: 16px;
+}
+
+.c0 > * {
+  grid-column: col-start / span 12;
+}
+
+.c1 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 19px;
+  color: var(--slate);
+}
+
+.c2 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-content: flex-end;
+  -ms-flex-line-pack: end;
+  align-content: flex-end;
+}
+
+.c2 > :first-child {
+  margin-top: auto;
+}
+
+.c16 {
+  height: 60px;
+  width: 100%;
+  border: none;
+  background-color: var(--green);
+  border-radius: 4px;
+  margin: 0;
+  font-size: 16px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  text-align: center;
+  text-align: -webkit-center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: not-allowed;
+  background-color: var(--grey);
+}
+
+.c3 {
+  color: var(--slate);
+  font-size: 16px;
+  line-height: 21px;
+}
+
+.c5 {
+  width: 100%;
+  border: thin var(--lightgrey) solid;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: 128px 1fr;
+}
+
+.c5 .c14 {
+  margin-top: 16px;
+  width: 384px;
+  background-color: var(--red);
+}
+
+.c5 .c14:hover {
+  background-color: var(--sharpred);
+}
+
+.c5 .c15 {
+  background-color: var(--grey);
+}
+
+.c5 .c15:hover {
+  background-color: var(--grey);
+}
+
+.c7 {
+  color: var(--red);
+  margin-top: 0;
+}
+
+.c8 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 19px;
+  color: var(--slate);
+  display: block;
+  color: var(--red);
+  margin-bottom: 16px;
+}
+
+.c6 {
+  width: 96px;
+  fill: var(--grey);
+}
+
+.c4 {
+  margin-top: 0px;
+  list-style: decimal;
+  font-size: 16px;
+}
+
+.c4 li {
+  color: var(--slate);
+  margin-bottom: 10px;
+}
+
+.c11 {
+  border: 0;
+  -webkit-clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0);
+  -webkit-clippath: inset(50%);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.c12 {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background: var(--lightgrey);
+  border: thin var(--lightgrey) solid;
+  border-radius: 3px;
+  margin-right: 16px;
+  -webkit-transition: all 100ms;
+  transition: all 100ms;
+}
+
+.c10:focus + .c12 {
+  box-shadow: 0 0 0 3px var(--blue);
+}
+
+.c12 .c13 {
+  visibility: hidden;
+}
+
+.c9 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (min-width:500px) {
+  .c2 {
+    grid-column: span 12;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c5 {
+    justify-items: center;
+    grid-template-columns: 1fr;
+  }
+
+  .c5 .c14 {
+    width: 100%;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <div
+        class="c0"
+      >
+        <span
+          class="c1"
+        >
+          Export Account
+        </span>
+        <div
+          class="c2"
+        >
+          <p
+            class="c3"
+          >
+            Exporting your account will eject it from the Unlock platform. The following things will happen:
+          </p>
+          <ol
+            class="c4"
+          >
+            <li>
+              A JSON file will be downloaded to your computer. This file includes your private key, encrypted with your Unlock password. You should then import it into a wallet like MetaMask.
+            </li>
+            <li>
+              Your Unlock account will be deleted permanently, including all personal information.
+            </li>
+            <li>
+              After that, you will not be able to log back in with Unlock and the recovery link we sent by email will not work anymore either.
+            </li>
+          </ol>
+          <div
+            class="c5"
+          >
+            <div>
+              <svg
+                class="c6"
+                viewBox="0 0 96 96"
+              >
+                <title />
+                <path
+                  clip-rule="evenodd"
+                  d="M95.316 84.437L53.012 5.663c-1.008-1.878-2.88-2.996-5.011-2.996-2.131 0-4.003 1.12-5.011 2.997L.684 84.437a5.64 5.64 0 00.13 5.61 5.642 5.642 0 004.882 2.769h84.608a5.645 5.645 0 004.883-2.769 5.64 5.64 0 00.129-5.61zM46.513 7.557L4.208 86.33c-.29.54-.276 1.14.038 1.663.315.527.836.823 1.45.823h84.608c.613 0 1.136-.296 1.45-.823a1.641 1.641 0 00.038-1.663L49.489 7.556c-.312-.58-.83-.89-1.488-.89-.656 0-1.175.31-1.487.891zm-.576 40.29l-2.424-9.582a4.654 4.654 0 01.699-4.187A4.656 4.656 0 0148 32.161c1.511 0 2.892.7 3.788 1.917a4.653 4.653 0 01.7 4.187l-2.425 9.582L48 56l-2.063-8.153zm10.405-8.509a8.652 8.652 0 00-1.332-7.63A8.66 8.66 0 0048 28.16a8.655 8.655 0 00-7.011 3.548 8.652 8.652 0 00-1.331 7.63l4.464 17.642a4 4 0 007.756 0l4.464-17.643zM48 64.636a7.518 7.518 0 00-7.514 7.514A7.518 7.518 0 0048 79.664a7.518 7.518 0 007.514-7.514A7.518 7.518 0 0048 64.636zm0 4a3.518 3.518 0 00-3.514 3.514A3.518 3.518 0 0048 75.664a3.518 3.518 0 003.514-3.514A3.518 3.518 0 0048 68.636z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <div>
+              <h1
+                class="c7"
+              >
+                Danger Zone
+              </h1>
+              <span
+                class="c8"
+              >
+                Clicking the eject button below is final. There is no way back after that. Do not delete the JSON file until you have safely imported it in another crypto wallet.
+              </span>
+              <form>
+                <label
+                  for="ejection-confirmation-checkbox"
+                >
+                  <div
+                    class="c9"
+                  >
+                    <input
+                      class="c10 c11"
+                      id="ejection-confirmation-checkbox"
+                      type="checkbox"
+                    />
+                    <div
+                      class="c12"
+                    >
+                      <svg
+                        class="c13 "
+                        fill="var(--red)"
+                        viewBox="0 0 24 24"
+                      >
+                        <title />
+                        <path
+                          clip-rule="evenodd"
+                          d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <span
+                    class="c1"
+                  >
+                    Yes, I want to export and delete my account
+                  </span>
+                  <button
+                    class="c14 c15 c16"
+                    type="button"
+                  >
+                    Eject
+                  </button>
+                </label>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="sc-bZQynM heNffj"
+    >
+      <span
+        class="sc-htoDjs kvEwSq"
+      >
+        Export Account
+      </span>
+      <div
+        class="sc-dnqmqq dtvAnC"
+      >
+        <p
+          class="sc-ckVGcZ kXsDtD"
+        >
+          Exporting your account will eject it from the Unlock platform. The following things will happen:
+        </p>
+        <ol
+          class="sc-kkGfuU cyinHv"
+        >
+          <li>
+            A JSON file will be downloaded to your computer. This file includes your private key, encrypted with your Unlock password. You should then import it into a wallet like MetaMask.
+          </li>
+          <li>
+            Your Unlock account will be deleted permanently, including all personal information.
+          </li>
+          <li>
+            After that, you will not be able to log back in with Unlock and the recovery link we sent by email will not work anymore either.
+          </li>
+        </ol>
+        <div
+          class="sc-jKJlTe cgUrlJ"
+        >
+          <div>
+            <svg
+              class="sc-kEYyzF ikAqIM"
+              viewBox="0 0 96 96"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M95.316 84.437L53.012 5.663c-1.008-1.878-2.88-2.996-5.011-2.996-2.131 0-4.003 1.12-5.011 2.997L.684 84.437a5.64 5.64 0 00.13 5.61 5.642 5.642 0 004.882 2.769h84.608a5.645 5.645 0 004.883-2.769 5.64 5.64 0 00.129-5.61zM46.513 7.557L4.208 86.33c-.29.54-.276 1.14.038 1.663.315.527.836.823 1.45.823h84.608c.613 0 1.136-.296 1.45-.823a1.641 1.641 0 00.038-1.663L49.489 7.556c-.312-.58-.83-.89-1.488-.89-.656 0-1.175.31-1.487.891zm-.576 40.29l-2.424-9.582a4.654 4.654 0 01.699-4.187A4.656 4.656 0 0148 32.161c1.511 0 2.892.7 3.788 1.917a4.653 4.653 0 01.7 4.187l-2.425 9.582L48 56l-2.063-8.153zm10.405-8.509a8.652 8.652 0 00-1.332-7.63A8.66 8.66 0 0048 28.16a8.655 8.655 0 00-7.011 3.548 8.652 8.652 0 00-1.331 7.63l4.464 17.642a4 4 0 007.756 0l4.464-17.643zM48 64.636a7.518 7.518 0 00-7.514 7.514A7.518 7.518 0 0048 79.664a7.518 7.518 0 007.514-7.514A7.518 7.518 0 0048 64.636zm0 4a3.518 3.518 0 00-3.514 3.514A3.518 3.518 0 0048 75.664a3.518 3.518 0 003.514-3.514A3.518 3.518 0 0048 68.636z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1
+              class="sc-eNQAEJ KwsqH"
+            >
+              Danger Zone
+            </h1>
+            <span
+              class="sc-htoDjs sc-hMqMXs eSlJgu"
+            >
+              Clicking the eject button below is final. There is no way back after that. Do not delete the JSON file until you have safely imported it in another crypto wallet.
+            </span>
+            <form>
+              <label
+                for="ejection-confirmation-checkbox"
+              >
+                <div
+                  class="sc-cvbbAY fIkKqI"
+                >
+                  <input
+                    class="sc-iAyFgw csHghB"
+                    id="ejection-confirmation-checkbox"
+                    type="checkbox"
+                  />
+                  <div
+                    class="sc-eHgmQL jHCCBS"
+                  >
+                    <svg
+                      class="sc-hSdWYo bIQQAp"
+                      fill="var(--red)"
+                      viewBox="0 0 24 24"
+                    >
+                      <title />
+                      <path
+                        clip-rule="evenodd"
+                        d="M16.857 7.6a.5.5 0 01.099.7l-5.32 7.07a.5.5 0 01-.704.096l-3.236-2.482a.5.5 0 11.608-.794l2.836 2.175L16.157 7.7a.5.5 0 01.7-.098z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <span
+                  class="sc-htoDjs kvEwSq"
+                >
+                  Yes, I want to export and delete my account
+                </span>
+                <button
+                  class="sc-jTzLTM sc-kgoBCf iJCBHl"
+                  type="button"
+                >
+                  Eject
+                </button>
+              </label>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>,
@@ -64719,7 +67957,7 @@ Object {
   -ms-flex-pack: center;
   justify-content: center;
   color: var(--white);
-  cursor: disabled;
+  cursor: not-allowed;
   background-color: var(--grey);
 }
 
@@ -64987,6 +68225,7 @@ Object {
         </div>
         <button
           class="c7"
+          type="button"
         >
           No lock found
         </button>
@@ -64999,46 +68238,46 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-caSCKo kUcExl"
+      class="sc-bZQynM sc-jqCOkK kUYGUq"
     >
       <div
-        class="sc-gisBJw eXuuWC"
+        class="sc-uJMKN hgmSjX"
       >
         <h1
-          class="sc-kjoXOD fdLUaa"
+          class="sc-bbmXgH fxAtJS"
         >
           Confirm Purchase
         </h1>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-cHGsZl nWmve"
+            class="sc-gZMcBi sc-gGBfsJ eVtkWC"
           >
             jenny@googlemail.com
           </span>
         </div>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-cHGsZl nWmve"
+            class="sc-gZMcBi sc-gGBfsJ eVtkWC"
           >
             -
           </span>
         </div>
         <div
-          class="sc-fMiknA cADPiH"
+          class="sc-kvZOFW kXPPaq"
         >
           <svg
             viewBox="0 0 32 32"
@@ -65191,7 +68430,8 @@ Object {
         </div>
       </div>
       <button
-        class="sc-iwsKbI sc-jzJRlG btXmdY"
+        class="sc-jTzLTM sc-kgoBCf cfrmSj"
+        type="button"
       >
         No lock found
       </button>
@@ -65488,6 +68728,7 @@ Object {
         </div>
         <button
           class="c10"
+          type="button"
         >
           Confirm Purchase
         </button>
@@ -65500,70 +68741,71 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat sc-caSCKo kUcExl"
+      class="sc-bZQynM sc-jqCOkK kUYGUq"
     >
       <div
-        class="sc-gisBJw eXuuWC"
+        class="sc-uJMKN hgmSjX"
       >
         <h1
-          class="sc-kjoXOD fdLUaa"
+          class="sc-bbmXgH fxAtJS"
         >
           Confirm Purchase
         </h1>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Account
           </span>
           <span
-            class="sc-gzVnrw sc-cHGsZl nWmve"
+            class="sc-gZMcBi sc-gGBfsJ eVtkWC"
           >
             jenny@googlemail.com
           </span>
         </div>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Credit Card
           </span>
           <span
-            class="sc-gzVnrw sc-cHGsZl nWmve"
+            class="sc-gZMcBi sc-gGBfsJ eVtkWC"
           >
             Visa ending in 4242
           </span>
         </div>
         <div
-          class="sc-fMiknA cADPiH"
+          class="sc-kvZOFW kXPPaq"
         >
           <div>
             <span
-              class="sc-dVhcbM gSpTla"
+              class="sc-hqyNC bBgSyO"
             >
               <span>
                 143 days
               </span>
             </span>
             <span
-              class="sc-dVhcbM sc-fAjcbJ jzYITq"
+              class="sc-hqyNC sc-dNLxif daWTCa"
             >
               $6.00
             </span>
           </div>
           <p
-            class="sc-eqIVtm hadSPH"
+            class="sc-jbKcbu guuvSj"
           >
             The total price includes the base key price of $1.00, credit card processing fee of $4.50, and the Unlock service fee of $0.20.
           </p>
         </div>
       </div>
       <button
-        class="sc-iwsKbI ekNeOx"
+        class="sc-jTzLTM CPlRV"
+        type="button"
       >
         Confirm Purchase
       </button>
@@ -65770,23 +69012,23 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat bdsJly"
+      class="sc-bZQynM heNffj"
     >
       <span
-        class="sc-ifAKCX fFulVS"
+        class="sc-htoDjs kvEwSq"
       >
         Payment Options
       </span>
       <div
-        class="sc-EHOje DuFgP"
+        class="sc-dnqmqq dtvAnC"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           Visa Card
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         >
           Ending in 
           4242
@@ -65797,15 +69039,15 @@ Object {
         </span>
       </div>
       <div
-        class="sc-EHOje DuFgP"
+        class="sc-dnqmqq dtvAnC"
       >
         <span
-          class="sc-bZQynM fEiirC"
+          class="sc-iwsKbI bbpqbg"
         >
           American Express Card
         </span>
         <span
-          class="sc-gzVnrw bgjxWh"
+          class="sc-gZMcBi diUFnp"
         >
           Ending in 
           0005
@@ -65920,7 +69162,7 @@ Object {
   margin-top: auto;
 }
 
-.c8 {
+.c9 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -65933,7 +69175,7 @@ Object {
   align-content: flex-end;
 }
 
-.c8 > :first-child {
+.c9 > :first-child {
   margin-top: auto;
 }
 
@@ -65997,7 +69239,17 @@ Object {
   margin-top: 13px;
 }
 
-.c7 {
+.c10 .c7 {
+  margin-top: 16px;
+  width: 384px;
+  background-color: var(--red);
+}
+
+.c10 .c7:hover {
+  background-color: var(--sharpred);
+}
+
+.c8 {
   height: 60px;
   width: 100%;
   border: none;
@@ -66031,8 +69283,14 @@ Object {
 }
 
 @media (min-width:500px) {
-  .c8 {
+  .c9 {
     grid-column: span 12;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c10 .c7 {
+    width: 100%;
   }
 }
 
@@ -66148,7 +69406,8 @@ Object {
               class="c6"
             />
             <button
-              class="c7"
+              class="c7 c8"
+              type="button"
             >
               Update Password
             </button>
@@ -66163,7 +69422,7 @@ Object {
             Payment Options
           </span>
           <div
-            class="c8"
+            class="c9"
           >
             <span
               class="c3"
@@ -66182,7 +69441,7 @@ Object {
             </span>
           </div>
           <div
-            class="c8"
+            class="c9"
           >
             <span
               class="c3"
@@ -66210,66 +69469,66 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-htpNat bdsJly"
+      class="sc-bZQynM heNffj"
     >
       <div
-        class="sc-htpNat bdsJly"
+        class="sc-bZQynM heNffj"
       >
         <span
-          class="sc-ifAKCX fFulVS"
+          class="sc-htoDjs kvEwSq"
         >
           Account
         </span>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Email
           </span>
           <span
-            class="sc-gzVnrw bgjxWh"
+            class="sc-gZMcBi diUFnp"
           >
             gordon@lonsdale.me
           </span>
         </div>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Wallet Address
           </span>
           <span
-            class="sc-gzVnrw bgjxWh"
+            class="sc-gZMcBi diUFnp"
           >
             0x09438E46Ea66647EA65E4b104C125c82076FDcE5
           </span>
         </div>
       </div>
       <div
-        class="sc-htpNat bdsJly"
+        class="sc-bZQynM heNffj"
       >
         <span
-          class="sc-ifAKCX fFulVS"
+          class="sc-htoDjs kvEwSq"
         >
           Change Password
         </span>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <div
-            class="sc-EHOje fYLMhW"
+            class="sc-dnqmqq cChXrH"
           >
             <span
-              class="sc-bZQynM fEiirC"
+              class="sc-iwsKbI bbpqbg"
             >
               Old Password
             </span>
             <input
-              class="sc-htoDjs eDspCZ"
+              class="sc-gqjmRU huKqqv"
               id="currentPassword"
               name="currentPassword"
               placeholder="Enter your current password"
@@ -66277,15 +69536,15 @@ Object {
             />
           </div>
           <div
-            class="sc-EHOje fYLMhW"
+            class="sc-dnqmqq cChXrH"
           >
             <span
-              class="sc-bZQynM fEiirC"
+              class="sc-iwsKbI bbpqbg"
             >
               New Password
             </span>
             <input
-              class="sc-htoDjs eDspCZ"
+              class="sc-gqjmRU huKqqv"
               id="newPassword"
               name="newPassword"
               placeholder="Enter your desired new password"
@@ -66293,15 +69552,15 @@ Object {
             />
           </div>
           <div
-            class="sc-EHOje fYLMhW"
+            class="sc-dnqmqq cChXrH"
           >
             <span
-              class="sc-bZQynM fEiirC"
+              class="sc-iwsKbI bbpqbg"
             >
               Confirm New Password
             </span>
             <input
-              class="sc-htoDjs eDspCZ"
+              class="sc-gqjmRU huKqqv"
               id="confirmNewPassword"
               name="confirmNewPassword"
               placeholder="Confirm your desired new password"
@@ -66310,36 +69569,37 @@ Object {
           </div>
         </div>
         <div
-          class="sc-EHOje fYLMhW"
+          class="sc-dnqmqq cChXrH"
         >
           <span
-            class="sc-dnqmqq kkgxkC"
+            class="sc-VigVT iDEznG"
           />
           <button
-            class="sc-iwsKbI sc-bsbRJL foHgoP"
+            class="sc-jTzLTM sc-iujRgT dRblkC"
+            type="button"
           >
             Update Password
           </button>
         </div>
       </div>
       <div
-        class="sc-htpNat bdsJly"
+        class="sc-bZQynM heNffj"
       >
         <span
-          class="sc-ifAKCX fFulVS"
+          class="sc-htoDjs kvEwSq"
         >
           Payment Options
         </span>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             Visa Card
           </span>
           <span
-            class="sc-gzVnrw bgjxWh"
+            class="sc-gZMcBi diUFnp"
           >
             Ending in 
             4242
@@ -66350,15 +69610,15 @@ Object {
           </span>
         </div>
         <div
-          class="sc-EHOje DuFgP"
+          class="sc-dnqmqq dtvAnC"
         >
           <span
-            class="sc-bZQynM fEiirC"
+            class="sc-iwsKbI bbpqbg"
           >
             American Express Card
           </span>
           <span
-            class="sc-gzVnrw bgjxWh"
+            class="sc-gZMcBi diUFnp"
           >
             Ending in 
             0005

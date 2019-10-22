@@ -129,6 +129,8 @@ export default class WalletService extends UnlockService {
    * Updates the key price on a lock
    * @param {PropTypes.address} lockAddress : address of the lock for which we update the price
    * @param {string} price : new price for the lock
+   * @return Promise<PropTypes.number> newKeyPrice
+   * TODO: add a callback @param which is invoked with the transaction hash of the transaction (this pattern should actually be implemented for all calls)
    */
   async updateKeyPrice(params = {}) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -156,6 +158,7 @@ export default class WalletService extends UnlockService {
    * - {string} data
    * - {PropTypes.address} erc20Address
    * - {number} decimals
+   * TODO: add an exta callback param which will be invoked with the transaction hash
    */
   async purchaseKey(params = {}) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -214,7 +217,10 @@ export default class WalletService extends UnlockService {
 
   async signDataPersonal(account, data, callback) {
     try {
-      const method = this.web3Provider ? 'personal_sign' : 'eth_sign'
+      let method = 'eth_sign'
+      if (this.web3Provider || this.provider.isUnlock) {
+        method = 'personal_sign'
+      }
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {

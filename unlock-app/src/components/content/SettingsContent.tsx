@@ -8,6 +8,7 @@ import Errors from '../interface/Errors'
 import AccountInfo from '../interface/user-account/AccountInfo'
 import PaymentDetails from '../interface/user-account/PaymentDetails'
 import PaymentMethods from '../interface/user-account/PaymentMethods'
+import EjectAccount from '../interface/user-account/EjectAccount'
 import LogInSignUp from '../interface/LogInSignUp'
 
 // TODO: tighten up this type
@@ -87,6 +88,7 @@ export class SettingsContent extends React.Component<
             <AccountInfo />
             {cards.length > 0 && <PaymentMethods cards={cards} />}
             {stripe && !cards.length && <PaymentDetails stripe={stripe} />}
+            <EjectAccount />
           </>
         )}
         {!account && <LogInSignUp login />}

@@ -19,6 +19,7 @@ import {
   KEY_PURCHASE_INITIATED,
   WELCOME_EMAIL,
   gotEncryptedPrivateKeyPayload,
+  SET_ENCRYPTED_PRIVATE_KEY,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -424,8 +425,8 @@ describe('Storage middleware', () => {
     })
 
     describe('success', () => {
-      it('should dispatch gotEncryptedPrivateKeyPayload and welcomeEmail after an account is created', async () => {
-        expect.assertions(2)
+      it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', async () => {
+        expect.assertions(3)
         const { store } = create()
 
         const passwordEncryptedPrivateKey = {
@@ -445,6 +446,11 @@ describe('Storage middleware', () => {
           password,
         })
 
+        expect(store.dispatch).toHaveBeenNthCalledWith(3, {
+          type: SET_ENCRYPTED_PRIVATE_KEY,
+          key: passwordEncryptedPrivateKey,
+          emailAddress,
+        })
         expect(store.dispatch).toHaveBeenNthCalledWith(2, {
           type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
           key: passwordEncryptedPrivateKey,
@@ -480,7 +486,7 @@ describe('Storage middleware', () => {
     let key
 
     it('should dispatch the payload when it can get an encrypted private key', () => {
-      expect.assertions(4)
+      expect.assertions(5)
       const { next, invoke, store } = create()
 
       const action = {
@@ -495,7 +501,8 @@ describe('Storage middleware', () => {
 
       invoke(action)
       expect(mockStorageService.getUserPrivateKey).toHaveBeenCalled()
-      expect(store.dispatch).toHaveBeenCalledWith(
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        1,
         expect.objectContaining({
           type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
           key,
@@ -503,7 +510,15 @@ describe('Storage middleware', () => {
           password,
         })
       )
-      expect(store.dispatch).toHaveBeenCalledTimes(1)
+      expect(store.dispatch).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          type: SET_ENCRYPTED_PRIVATE_KEY,
+          key,
+          emailAddress,
+        })
+      )
+      expect(store.dispatch).toHaveBeenCalledTimes(2)
       expect(next).toHaveBeenCalledTimes(1)
     })
 
