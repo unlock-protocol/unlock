@@ -150,27 +150,32 @@ const walletMiddleware = config => {
         }
 
         if (action.type === SIGN_ADDRESS) {
-          const { account } = getState()
+          const { account, router } = getState()
           const { address } = action
 
-          // Because signData uses eth_signTypedData, we need to use structured data
-          const data = UnlockEventRSVP.build({
-            publicKey: account.address,
-            eventAddress: address,
-          })
+          const pathname = router.location.pathname
 
-          walletService.signDataPersonal(
-            account.address,
-            JSON.stringify(data),
-            (error, signedAddress) => {
-              if (error) {
-                // TODO: Does this need to be handled in the error consumer?
-                dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
-              } else {
-                dispatch(gotSignedAddress(address, signedAddress))
+          // We only want to sign on the original event page, not on newevent
+          if (pathname.startsWith('/event/')) {
+            // Because signData uses eth_signTypedData, we need to use structured data
+            const data = UnlockEventRSVP.build({
+              publicKey: account.address,
+              eventAddress: address,
+            })
+
+            walletService.signDataPersonal(
+              account.address,
+              JSON.stringify(data),
+              (error, signedAddress) => {
+                if (error) {
+                  // TODO: Does this need to be handled in the error consumer?
+                  dispatch(setError(FAILED_TO_SIGN_ADDRESS, error))
+                } else {
+                  dispatch(gotSignedAddress(address, signedAddress))
+                }
               }
-            }
-          )
+            )
+          }
         }
 
         if (action.type === SIGN_DATA) {
