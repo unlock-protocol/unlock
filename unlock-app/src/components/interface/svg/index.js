@@ -35,6 +35,7 @@ import Twitter from './Twitter'
 import Bars from './Bars'
 import ChevronUp from './ChevronUp'
 import Home from './Home'
+import Qr from './Qr'
 import Wordpress from './Wordpress'
 
 function wrapViewBox(WrappedComponent, viewBox) {
@@ -79,5 +80,6 @@ export default {
   Bars: wrapViewBox(Bars, '0 0 56 42'),
   ChevronUp: wrapViewBox(ChevronUp, '0 0 58 32'),
   Home: wrapViewBox(Home, '0 0 24 24'),
+  Qr: wrapViewBox(Qr, '0 0 60 60'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
 }
