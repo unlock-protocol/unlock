@@ -218,6 +218,45 @@ describe('Metadata Controller', () => {
             })
           )
         })
+
+        describe('when the lock owner has signed the request', () => {
+          it('returns the protected metadata', async () => {
+            expect.assertions(2)
+
+            let typedData = generateKeyTypedData({
+              LockMetaData: {
+                address: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+                owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+                timestamp: Date.now(),
+              },
+            })
+
+            const sig = sigUtil.signTypedData(privateKey, {
+              data: typedData,
+              from: '',
+            })
+
+            let response = await request(app)
+              .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
+              .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+              .set('Accept', 'json')
+              .send(typedData)
+
+            expect(response.status).toBe(200)
+            expect(response.body).toEqual(
+              expect.objectContaining({
+                description:
+                  'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+                userMetadata: {
+                  protected: {
+                    hidden: 'metadata',
+                  },
+                  public: { mock: 'values' },
+                },
+              })
+            )
+          })
+        })
       })
     })
   })
