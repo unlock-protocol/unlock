@@ -123,7 +123,7 @@ contract('Lock / disableLock', accounts => {
       await lock.updateLockName('Hardly')
     })
 
-    it('Lock owner can still updateBASIS_POINTS_DEN', async () => {
+    it('Lock owner can still update refund penalty', async () => {
       await lock.updateRefundPenalty(0, 5000)
     })
 

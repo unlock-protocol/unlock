@@ -15,7 +15,8 @@ exports.shouldCreateLock = function(accounts) {
             Web3Utils.padLeft(0, 40),
             Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
             100, // maxNumberOfKeys
-            'New Lock'
+            'New Lock',
+            '0x000000000000000000000000'
           )
           .send({
             from: accounts[0],
@@ -65,7 +66,8 @@ exports.shouldCreateLock = function(accounts) {
               Web3Utils.padLeft(0, 40),
               Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
               100, // maxNumberOfKeys
-              'Too Big Expiration Lock'
+              'Too Big Expiration Lock',
+              '0x000000000000000000000000'
             )
             .send({
               from: accounts[0],

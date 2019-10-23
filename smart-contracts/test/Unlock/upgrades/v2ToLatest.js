@@ -14,7 +14,7 @@ const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
 let project, proxy, unlock
 
-contract('Unlock / upgrades', accounts => {
+contract('Unlock / upgrades / v2ToLatest', accounts => {
   const unlockOwner = accounts[9]
   const lockOwner = accounts[1]
   const keyOwner = accounts[2]
@@ -162,7 +162,8 @@ contract('Unlock / upgrades', accounts => {
             Web3Utils.padLeft(0, 40),
             keyPrice,
             5, // maxNumberOfKeys
-            'After-Upgrade Lock'
+            'After-Upgrade Lock',
+            '0x000000000000000000000000'
           )
           .send({
             from: lockOwner,

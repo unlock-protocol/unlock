@@ -7,6 +7,7 @@ const {
   Web3Service,
 } = require('@unlock-protocol/unlock-js')
 const TokenDeployer = require('./deploy-locks')
+const ExternalRefundDeployer = require('./deploy-external-refund')
 
 /*
  * This script is meant to be used in dev environment to deploy a version of the Unlock smart
@@ -64,13 +65,23 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
 
       wallet.on('account.changed', async account => {
         // Once Unlock is deployed, we proceed to building the rest of the environment
-        TokenDeployer.prepareEnvironment(
+        await TokenDeployer.prepareEnvironment(
           web3Service,
           wallet,
           account,
           provider,
           programmaticPurchaser,
           userAddress
+        )
+
+        let lockAddress = '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'
+        let tokenAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+
+        await ExternalRefundDeployer.deployExternalRefund(
+          lockAddress,
+          424242,
+          tokenAddress,
+          provider
         )
       })
 

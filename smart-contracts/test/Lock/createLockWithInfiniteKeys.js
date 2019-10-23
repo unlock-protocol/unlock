@@ -22,7 +22,8 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         Web3Utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         -1, // maxNumberOfKeys
-        'Infinite Keys Lock'
+        'Infinite Keys Lock',
+        '0x000000000000000000000000'
       )
     })
 
@@ -49,7 +50,8 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         Web3Utils.padLeft(0, 40),
         Units.convert(1, 'eth', 'wei'), // keyPrice: in wei
         0, // maxNumberOfKeys
-        'Zero-Key Lock'
+        'Zero-Key Lock',
+        '0x000000000000000000000001'
       )
     })
 

@@ -64,7 +64,7 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
-          keyPrice: utils.fromWei(keyPrice, 'ether'),
+          keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
         })
       },
       Withdrawal: (transactionHash, contractAddress) => {
@@ -542,13 +542,17 @@ export default class Web3Service extends UnlockService {
    */
   async getLock(address) {
     const version = await this.lockContractAbiVersion(address)
-    return version.getLock.bind(this)(address)
+    const lock = version.getLock.bind(this)(address)
+    lock.address = address
+    return lock
   }
 
   /**
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lock
    * @param {PropTypes.string} owner
+   * TODO: return the tokenId here because this is probably useful in some context
+   * TODO: add a method to retrieve a token by its id
    */
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)

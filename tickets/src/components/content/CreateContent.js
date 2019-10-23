@@ -78,7 +78,7 @@ export class CreateContent extends Component {
                     <Label>&nbsp;</Label>
                     <Text>
                       Don’t have a lock? <br />
-                      <Cta href={config.unlockAppUrl} target="_blank">
+                      <Cta href={config.unlockStaticUrl} target="_blank">
                         Create a new lock on unlock-protocol.com
                       </Cta>
                     </Text>

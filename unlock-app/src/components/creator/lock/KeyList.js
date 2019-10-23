@@ -7,6 +7,7 @@ import UnlockPropTypes from '../../../propTypes'
 import { expirationAsDate } from '../../../utils/durations'
 import Pagination from '../../interface/pagination/Pagination'
 import { setKeysOnPageForLock } from '../../../actions/keysPages'
+import Address from '../../interface/Address'
 
 export class KeyList extends React.Component {
   componentDidMount() {
@@ -20,7 +21,7 @@ export class KeyList extends React.Component {
       return lockKeys.map(({ id, owner, expiration }) => {
         return (
           <Row key={id}>
-            <Data>{owner}</Data>
+            <OwnerAddress address={owner} />
             <Cell>{expirationAsDate(expiration)}</Cell>
           </Row>
         )
@@ -130,7 +131,7 @@ const Header = styled(Row)`
 
 const Cell = styled.div``
 
-const Data = styled(Cell)`
+const OwnerAddress = styled(Address)`
   overflow: hidden;
   text-overflow: ellipsis;
   padding-right: 72px;

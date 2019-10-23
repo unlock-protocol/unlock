@@ -2,11 +2,21 @@
 
 ## Next Version (minor!)
 
+- Not catching errors on transaction emitted. These should be caught by the applications
 - createLock now returns a Promise of the deployed lock address
 - updateKeyPrice now uses the right decimals for erc20 contracts
 - getting erc20Address and decimals from the contract when purchasing a key
 - Removed the 'owner' param on createLock since it is not really used (just emitted back)
 - Refactored signature to accept objects to be more flexible (this is a breaking change)
+
+## 0.3.20
+- unlock-provider can generate a signed ejection request
+
+## 0.3.19
+- unlock-provider has a more consistent personal_sign output
+
+## 0.3.18
+- walletService dispatches personal_sign to unlock-provider
 
 ## 0.3.17
 - unlock-provider can personal_sign data

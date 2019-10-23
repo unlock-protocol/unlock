@@ -22,6 +22,7 @@ export const SIGN_PURCHASE_DATA = 'userCredentials/SIGN_PURCHASE_DATA'
 export const SIGNED_PURCHASE_DATA = 'userCredentials/SIGNED_PURCHASE_DATA'
 export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
 export const KEY_PURCHASE_INITIATED = 'userAccount/KEY_PURCHASE_INITIATED'
+export const QR_EMAIL = 'keychain/QR_EMAIL'
 
 export interface Credentials {
   emailAddress: string
@@ -192,4 +193,15 @@ export const signedPurchaseData = ({ data, sig }: SignedPurchaseData) => ({
 
 export const keyPurchaseInitiated = () => ({
   type: KEY_PURCHASE_INITIATED,
+})
+
+export const qrEmail = (
+  recipient: string,
+  lockName: string,
+  keyQR: string
+) => ({
+  type: QR_EMAIL,
+  recipient,
+  lockName,
+  keyQR,
 })

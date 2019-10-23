@@ -1,6 +1,7 @@
 import nock from 'nock'
 import sigUtil from 'eth-sig-util'
 import UnlockProvider from '../unlockProvider'
+import WalletService from '../walletService'
 import utils from '../utils'
 
 // TODO: move this to the integration tests directory
@@ -138,9 +139,35 @@ describe('Unlock Provider', () => {
         const messageHash = utils.utf8ToHex(someData)
 
         // second param is unused, but in keeping with what we receive from WalletService
-        const output = provider.personal_sign([messageHash, ''])
+        const sig = provider.personal_sign([messageHash, ''])
 
-        expect(sigUtil.recoverPersonalSignature(output)).toEqual(
+        expect(
+          sigUtil.recoverPersonalSignature({
+            data: messageHash,
+            sig,
+          })
+        ).toEqual(publicKey.toLowerCase())
+      })
+
+      it('should be compatible with walletService', async done => {
+        expect.assertions(1)
+
+        const ws = new WalletService({ unlockAddress: 'does not matter here' })
+        await ws.connect(provider)
+        ws.signDataPersonal('', 'this is my data', error => {
+          expect(error).toBeNull()
+          done()
+        })
+      })
+    })
+
+    describe('generateEjectionRequest', () => {
+      it('should return a signed ejection request for the current account', () => {
+        expect.assertions(1)
+
+        const signature = provider.generateSignedEjectionRequest()
+
+        expect(sigUtil.recoverTypedSignature(signature)).toEqual(
           publicKey.toLowerCase()
         )
       })

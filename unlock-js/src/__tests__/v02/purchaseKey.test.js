@@ -1,24 +1,56 @@
+import { ethers } from 'ethers'
 import * as UnlockV02 from 'unlock-abi-0-2'
-import Errors from '../../errors'
+import abis from '../../abis'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_PURCHASE_KEY } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
+
+const UnlockVersion = abis.v02
 
 let walletService
 let transaction
 let transactionResult
 let setupSuccess
-let setupFail
 
 describe('v02', () => {
   describe('purchaseKey', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const tokenId = '1'
+    const EventInfo = new ethers.utils.Interface(UnlockVersion.PublicLock.abi)
+    const encoder = ethers.utils.defaultAbiCoder
+    const receipt = {
+      logs: [
+        {
+          transactionIndex: 1,
+          blockNumber: 19759,
+          transactionHash:
+            '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+          address: lockAddress,
+          topics: [
+            EventInfo.events['Transfer(address,address,uint256)'].topic,
+            encoder.encode(
+              ['address'],
+              ['0x0000000000000000000000000000000000000000']
+            ),
+            encoder.encode(['address'], [owner]),
+            encoder.encode(['uint256'], [tokenId]),
+          ],
+          data: encoder.encode(
+            ['address', 'address', 'uint256'],
+            ['0x0000000000000000000000000000000000000000', owner, tokenId]
+          ),
+          logIndex: 0,
+          blockHash:
+            '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+          transactionLogIndex: 0,
+        },
+      ],
+    }
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -40,17 +72,15 @@ describe('v02', () => {
         testTransaction,
         testTransactionResult,
         success,
-        fail,
       } = callMethodData(owner)
 
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
-      setupFail = fail
     }
 
     it('should invoke _handleMethodCall with the right params', async () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       await nockBeforeEach()
       setupSuccess()
@@ -60,7 +90,15 @@ describe('v02', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve(receipt)
+      )
+
+      const newTokenId = await walletService.purchaseKey({
+        lockAddress,
+        owner,
+        keyPrice,
+      })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -72,21 +110,7 @@ describe('v02', () => {
       const result = await mock.mock.calls[0][0]
       await result.wait()
       expect(result).toEqual(transactionResult)
-      await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should emit an error if the transaction could not be sent', async () => {
-      expect.assertions(1)
-
-      const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
-      setupFail(error)
-
-      walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
-      })
-
-      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
+      expect(newTokenId).toEqual(tokenId)
       await nock.resolveWhenAllNocksUsed()
     })
   })
