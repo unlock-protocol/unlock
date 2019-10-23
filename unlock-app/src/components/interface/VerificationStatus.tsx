@@ -39,6 +39,11 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   const { accountAddress, lockAddress, timestamp } = data
 
+  // We pass down the { loading, error, data } results from this hook
+  // to `OwnsKey`, which uses them to determine whether or not the user
+  // owns the key.
+  // TODO: craft a better query to let us directly ask about the single
+  // lock under consideration. This will simplify the logic.
   const queryResults = useQuery(keyHolderQuery(), {
     variables: { address: accountAddress },
   })
