@@ -32,6 +32,7 @@ contract PublicLock is
   Initializable,
   ERC165,
   Ownable,
+  IPublicLock,
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
