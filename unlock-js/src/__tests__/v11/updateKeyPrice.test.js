@@ -2,13 +2,11 @@ import { ethers } from 'ethers'
 import * as UnlockV11 from 'unlock-abi-1-1'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
-import Errors from '../../errors'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import erc20 from '../../erc20'
 import abis from '../../abis'
 
-const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 const UnlockVersion = abis.v11
@@ -17,7 +15,6 @@ let walletService
 let transaction
 let transactionResult
 let setupSuccess
-let setupFail
 
 jest.mock('../../erc20.js', () => {
   return { getErc20Decimals: jest.fn() }
@@ -61,13 +58,11 @@ describe('v11', () => {
         testTransaction,
         testTransactionResult,
         success,
-        fail,
       } = callMethodData(utils.toDecimal(keyPrice, decimals))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
-      setupFail = fail
     }
 
     describe('when the decimals are passed', () => {
@@ -148,21 +143,6 @@ describe('v11', () => {
         await result.wait()
         expect(result).toEqual(transactionResult)
         expect(newKeyPrice).toEqual(keyPrice)
-        await nock.resolveWhenAllNocksUsed()
-      })
-
-      it('should emit an error if the transaction could not be sent', async () => {
-        expect.assertions(1)
-
-        const error = { code: 404, data: 'oops' }
-        await nockBeforeEach(decimals)
-        setupFail(error)
-
-        walletService.on('error', error => {
-          expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
-        })
-
-        await walletService.updateKeyPrice({ lockAddress, keyPrice, decimals })
         await nock.resolveWhenAllNocksUsed()
       })
     })

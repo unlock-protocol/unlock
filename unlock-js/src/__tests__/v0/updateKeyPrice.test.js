@@ -3,11 +3,9 @@ import * as UnlockV0 from 'unlock-abi-0'
 import abis from '../../abis'
 
 import utils from '../../utils'
-import Errors from '../../errors'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 
-const { FAILED_TO_UPDATE_KEY_PRICE } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 const UnlockVersion = abis.v0
@@ -16,7 +14,6 @@ let walletService
 let transaction
 let transactionResult
 let setupSuccess
-let setupFail
 
 describe('v0', () => {
   describe('updateKeyPrice', () => {
@@ -42,13 +39,11 @@ describe('v0', () => {
         testTransaction,
         testTransactionResult,
         success,
-        fail,
       } = callMethodData(utils.toWei(keyPrice, 'ether'))
 
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
-      setupFail = fail
     }
 
     it('should invoke _handleMethodCall with the right params', async () => {
@@ -114,21 +109,6 @@ describe('v0', () => {
       expect(result).toEqual(transactionResult)
 
       expect(newKeyPrice).toEqual(newPrice)
-      await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should emit an error if the transaction could not be sent', async () => {
-      expect.assertions(1)
-
-      const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
-      setupFail(error)
-
-      walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_UPDATE_KEY_PRICE)
-      })
-
-      await walletService.updateKeyPrice({ lockAddress, keyPrice })
       await nock.resolveWhenAllNocksUsed()
     })
   })
