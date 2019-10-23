@@ -1,13 +1,11 @@
 import { ethers } from 'ethers'
 import * as UnlockV01 from 'unlock-abi-0-1'
 import utils from '../../utils'
-import Errors from '../../errors'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import { UNLIMITED_KEYS_COUNT, ETHERS_MAX_UINT } from '../../../lib/constants'
 
-const { FAILED_TO_CREATE_LOCK } = Errors
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 
@@ -15,7 +13,7 @@ let walletService
 let transaction
 let transactionResult
 let setupSuccess
-let setupFail
+
 const lock = {
   address: '0x0987654321098765432109876543210987654321',
   expirationDuration: 86400, // 1 day
@@ -50,7 +48,6 @@ describe('v01', () => {
         testTransaction,
         testTransactionResult,
         success,
-        fail,
       } = callMethodData(
         lock.expirationDuration,
         ethers.constants.AddressZero,
@@ -65,7 +62,6 @@ describe('v01', () => {
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
-      setupFail = fail
     }
 
     it('should invoke _handleMethodCall with the right params', async () => {
@@ -141,21 +137,6 @@ describe('v01', () => {
         maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
       })
 
-      await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should emit an error if the transaction could not be sent', async () => {
-      expect.assertions(1)
-
-      const error = { code: 404, data: 'oops' }
-      await nockBeforeEach()
-      setupFail(error)
-
-      walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_CREATE_LOCK)
-      })
-
-      await walletService.createLock(lock)
       await nock.resolveWhenAllNocksUsed()
     })
 
