@@ -152,15 +152,6 @@ export const prepContract = ({
           nock,
         })
       },
-      fail: error => {
-        errorTransactionNocks({
-          params: testParams,
-          transaction: testTransaction,
-          contract,
-          nock,
-          error,
-        })
-      },
     }
   }
 }

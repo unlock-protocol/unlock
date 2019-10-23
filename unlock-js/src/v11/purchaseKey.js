@@ -1,7 +1,6 @@
 import utils from '../utils'
 import { GAS_AMOUNTS, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import Errors from '../errors'
 import { approveTransfer, getErc20Decimals } from '../erc20'
 
 /**
@@ -55,39 +54,33 @@ export default async function({
     purchaseForOptions.value = actualAmount
   }
 
-  let transactionPromise
-  try {
-    transactionPromise = lockContract['purchaseFor(address)'](
-      owner,
-      purchaseForOptions
-    )
+  const transactionPromise = lockContract['purchaseFor(address)'](
+    owner,
+    purchaseForOptions
+  )
 
-    const hash = await this._handleMethodCall(
-      transactionPromise,
-      TransactionTypes.KEY_PURCHASE
-    )
+  const hash = await this._handleMethodCall(
+    transactionPromise,
+    TransactionTypes.KEY_PURCHASE
+  )
 
-    // Let's now wait for the transaction to go thru to return the token id
-    const receipt = await this.provider.waitForTransaction(hash)
-    const parser = lockContract.interface
+  // Let's now wait for the transaction to go thru to return the token id
+  const receipt = await this.provider.waitForTransaction(hash)
+  const parser = lockContract.interface
 
-    const transferEvent = receipt.logs
-      .map(log => {
-        if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
-        return parser.parseLog(log)
-      })
-      .filter(event => {
-        return event && event.name === 'Transfer'
-      })[0]
+  const transferEvent = receipt.logs
+    .map(log => {
+      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      return parser.parseLog(log)
+    })
+    .filter(event => {
+      return event && event.name === 'Transfer'
+    })[0]
 
-    if (transferEvent) {
-      return transferEvent.values._tokenId.toString()
-    } else {
-      // There was no Transfer log (transaction failed?)
-      return null
-    }
-  } catch (error) {
-    // TODO remove all try catch non sense.
-    this.emit('error', new Error(Errors.FAILED_TO_PURCHASE_KEY))
+  if (transferEvent) {
+    return transferEvent.values._tokenId.toString()
+  } else {
+    // There was no Transfer log (transaction failed?)
+    return null
   }
 }
