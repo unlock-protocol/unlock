@@ -11,15 +11,12 @@ import { approveTransfer, getErc20Decimals } from '../erc20'
  * - {string} keyPrice
  * - {PropTypes.address} erc20Address
  * - {number} decimals
- * @return {string} hash of the transaction
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({
-  lockAddress,
-  owner,
-  keyPrice,
-  erc20Address,
-  decimals,
-}) {
+export default async function(
+  { lockAddress, owner, keyPrice, erc20Address, decimals },
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!erc20Address || erc20Address !== ZERO) {
@@ -63,6 +60,10 @@ export default async function({
     transactionPromise,
     TransactionTypes.KEY_PURCHASE
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
 
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
