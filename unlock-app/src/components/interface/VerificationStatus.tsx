@@ -64,8 +64,9 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
         lockAddress={lockAddress}
       />
 
-      <h2>Signed At</h2>
-      <p>{durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.</p>
+      <p>
+        Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
+      </p>
     </div>
   )
 }
