@@ -112,7 +112,6 @@ describe('Mailbox - constructor', () => {
       'refreshBlockchainTransactions',
       'emitChanges',
       'emitError',
-      'signData',
     ])('this.%s should be bound to the current instance', func => {
       expect.assertions(1)
 

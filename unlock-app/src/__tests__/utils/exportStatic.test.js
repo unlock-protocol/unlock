@@ -49,7 +49,7 @@ describe('exportStatic', () => {
       '/signup': { page: '/signup' },
       '/settings': { page: '/settings' },
       '/recover': { page: '/recover' },
-      '/identity': { page: '/identity' },
+      '/verification': { page: '/verification' },
     })
   })
 })

@@ -16,7 +16,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlockprotocol $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
       - run:
           name: Build unlock-protocol-com Image
           command: scripts/build-image.sh unlock-protocol-com
@@ -31,7 +31,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
           name: Build unlock-app Image
           command: scripts/build-image.sh unlock-app
@@ -46,13 +46,17 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-js $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-js $CIRCLE_BRANCH
       - run:
           name: Build unlock-js Image
           command: scripts/build-image.sh unlock-js
       - run:
           name: unlock-js tests
           command: scripts/unlockjs-tests.sh unlock-js
+      - run:
+          name: Log failing tests
+          command: ./scripts/docker-compose-log.sh
+          when: on_fail
 
   rover-tests:
     machine: true
@@ -61,7 +65,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh rover $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh rover $CIRCLE_BRANCH
       - run:
           name: Build rover Image
           command: scripts/build-image.sh rover
@@ -76,7 +80,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh smart-contracts $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh smart-contracts $CIRCLE_BRANCH
       - run:
           name: Build smart-contracts Image
           command: scripts/build-image.sh smart-contracts
@@ -95,7 +99,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
           name: Build Locksmith Image
           command: scripts/build-image.sh locksmith
@@ -110,7 +114,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
       - run:
           name: Build paywall Image
           command: scripts/build-image.sh paywall
@@ -125,7 +129,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh tickets $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh tickets $CIRCLE_BRANCH
       - run:
           name: Build tickets Image
           command: scripts/build-image.sh tickets
@@ -140,7 +144,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
       - run:
           name: Build wedlocks Image
           command: scripts/build-image.sh wedlocks
@@ -166,6 +170,7 @@ jobs:
           name: Log failing tests
           command: ./scripts/docker-compose-log.sh
           when: on_fail
+
   deploy-unlock-app-netlify:
     machine: true
     environment:
@@ -173,7 +178,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-app $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-app $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -194,7 +199,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh unlock-protocol-com $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh unlock-protocol.com $CIRCLE_BRANCH
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -212,7 +217,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh paywall $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh paywall $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -233,7 +238,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh tickets $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh tickets $CIRCLE_BRANCH
       - run:
           name: Set ENV_TARGET
           command: scripts/circleci/set-env-target.sh >> $BASH_ENV
@@ -254,7 +259,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh wedlocks $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh wedlocks $CIRCLE_BRANCH
       - run:
           name: Set IS_FORKED_PR
           command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
@@ -272,7 +277,7 @@ jobs:
     steps:
       - checkout
       - run:
-          command: scripts/monorepo.sh locksmith $CIRCLE_SHA1 $CIRCLE_BRANCH
+          command: scripts/monorepo.sh locksmith $CIRCLE_BRANCH
       - run:
           name: Set IS_FORKED_PR
           command: ./scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV

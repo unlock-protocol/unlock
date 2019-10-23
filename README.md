@@ -12,10 +12,6 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 
 ## Demo
 
-We recorded a screencast to show how Unlock works for a paywall.
-
-[![Demo Unlock](https://img.youtube.com/vi/B1OVnU2Rw8A/0.jpg)](https://www.youtube.com/watch?v=B1OVnU2Rw8A)
-
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).

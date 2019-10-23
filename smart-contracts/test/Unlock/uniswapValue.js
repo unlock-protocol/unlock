@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
-const { protocols } = require('hardlydifficult-test-helpers')
+const { protocols } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
@@ -40,7 +40,7 @@ contract('Unlock / uniswapValue', accounts => {
         tx.logs[0].args.exchange
       )
 
-      // Approve transfering tokens to the exchange
+      // Approve transferring tokens to the exchange
       await token.approve(exchange.address, -1, { from: accounts[0] })
 
       // And seed it

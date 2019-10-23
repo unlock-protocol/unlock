@@ -23,7 +23,6 @@ export interface WalletServiceType extends EventEmitter {
     data: any,
     erc20Address: string | null
   ) => Promise<string>
-  signDataPersonal: (account: any, data: any, callback: any) => void
 }
 
 export interface Web3ServiceType extends EventEmitter {

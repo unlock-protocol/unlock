@@ -1,7 +1,6 @@
 import utils from '../utils'
 import { GAS_AMOUNTS, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import Errors from '../errors'
 import { getErc20Decimals } from '../erc20'
 
 /**
@@ -34,17 +33,31 @@ export default async function({
   }
   const actualAmount = utils.toDecimal(keyPrice, decimals)
 
-  let transactionPromise
-  try {
-    transactionPromise = lockContract['updateKeyPrice(uint256)'](actualAmount, {
+  const transactionPromise = lockContract['updateKeyPrice(uint256)'](
+    actualAmount,
+    {
       gasLimit: GAS_AMOUNTS.updateKeyPrice,
+    }
+  )
+  const hash = await this._handleMethodCall(
+    transactionPromise,
+    TransactionTypes.UPDATE_KEY_PRICE
+  )
+  // Let's now wait for the keyPrice to have been changed before we return it
+  const receipt = await this.provider.waitForTransaction(hash)
+  const parser = lockContract.interface
+
+  const priceChangedEvent = receipt.logs
+    .map(log => {
+      return parser.parseLog(log)
     })
-    const ret = await this._handleMethodCall(
-      transactionPromise,
-      TransactionTypes.UPDATE_KEY_PRICE
-    )
-    return ret
-  } catch (error) {
-    this.emit('error', new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE))
+    .filter(event => {
+      return event.name === 'PriceChanged'
+    })[0]
+  if (priceChangedEvent) {
+    return utils.fromDecimal(priceChangedEvent.values.keyPrice, decimals)
+  } else {
+    // There was no NewEvent log (transaction failed?)
+    return null
   }
 }

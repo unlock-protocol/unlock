@@ -16,6 +16,10 @@ const keyHoldingAccount = {
   address: '0x3ca206264762caf81a8f0a843bbb850987b41e17',
 }
 
+const manyKeyHoldingAccount = {
+  address: '0x3ca206264762caf81a8f0a843bbb850987b31337',
+}
+
 const network = {
   name: 1984,
 }
@@ -40,6 +44,24 @@ const keyHolderStore = createUnlockStore({
   router,
 })
 
+const keyHolderStoreSignatures = createUnlockStore({
+  account: keyHoldingAccount,
+  network,
+  router,
+  signature: {
+    '0x80bc6d2870bb72cb3e37b648c160da20733386f7': {
+      data: 'some data',
+      signature: 'a signature',
+    },
+  },
+})
+
+const manyKeyHolderStore = createUnlockStore({
+  account: manyKeyHoldingAccount,
+  network,
+  router,
+})
+
 const noUserStore = createUnlockStore({
   account: undefined,
   network,
@@ -47,6 +69,29 @@ const noUserStore = createUnlockStore({
 })
 
 const ConfigProvider = ConfigContext.Provider
+
+// generate `n' fake keys to use in mock
+const generateKeys = n => {
+  let keys = []
+  for (let i = 0; i < n; i++) {
+    // TODO: generate diverse keys for more realistic story
+    keys.push({
+      __typename: 'Key',
+      id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
+      keyId: '1',
+      expiration: '132546546',
+      lock: {
+        __typename: 'Lock',
+        address: '0x80bc6d2870bb72cb3e37b648c160da20733386f7',
+        expirationDuration: '300',
+        name: 'ERC20 paywall lock',
+        price: '1000000000000000000',
+        tokenAddress: '0x591ad9066603f5499d12ff4bc207e2f577448c46',
+      },
+    })
+  }
+  return keys
+}
 
 const mocks = [
   {
@@ -76,22 +121,27 @@ const mocks = [
             __typename: 'KeyHolder',
             address: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
             id: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-            keys: [
-              {
-                __typename: 'Key',
-                id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
-                keyId: '1',
-                expiration: '132546546',
-                lock: {
-                  __typename: 'Lock',
-                  address: '0x80bc6d2870bb72cb3e37b648c160da20733386f7',
-                  expirationDuration: '300',
-                  name: 'ERC20 paywall lock',
-                  price: '1000000000000000000',
-                  tokenAddress: '0x591ad9066603f5499d12ff4bc207e2f577448c46',
-                },
-              },
-            ],
+            keys: generateKeys(1),
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: keyHolderQuery(),
+      variables: {
+        address: manyKeyHoldingAccount.address,
+      },
+    },
+    result: {
+      data: {
+        keyHolders: [
+          {
+            __typename: 'KeyHolder',
+            address: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            id: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+            keys: generateKeys(10),
           },
         ],
       },
@@ -114,6 +164,20 @@ storiesOf('KeyChainContent', module)
   .add('the key chain, with keys', () => {
     return (
       <Provider store={keyHolderStore}>
+        <KeyChainContent />
+      </Provider>
+    )
+  })
+  .add('the key chain, with keys and signatures', () => {
+    return (
+      <Provider store={keyHolderStoreSignatures}>
+        <KeyChainContent />
+      </Provider>
+    )
+  })
+  .add('the key chain, with many keys', () => {
+    return (
+      <Provider store={manyKeyHolderStore}>
         <KeyChainContent />
       </Provider>
     )

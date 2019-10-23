@@ -1,7 +1,6 @@
 import utils from '../utils'
 import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import Errors from '../errors'
 
 /**
  * Changes the price of keys on a given lock
@@ -11,20 +10,31 @@ import Errors from '../errors'
  */
 export default async function({ lockAddress, keyPrice }) {
   const lockContract = await this.getLockContract(lockAddress)
-  let transactionPromise
-  try {
-    transactionPromise = lockContract['updateKeyPrice(uint256)'](
-      utils.toWei(keyPrice, 'ether'),
-      {
-        gasLimit: GAS_AMOUNTS.updateKeyPrice,
-      }
-    )
-    const ret = await this._handleMethodCall(
-      transactionPromise,
-      TransactionTypes.UPDATE_KEY_PRICE
-    )
-    return ret
-  } catch (error) {
-    this.emit('error', new Error(Errors.FAILED_TO_UPDATE_KEY_PRICE))
+  const transactionPromise = lockContract['updateKeyPrice(uint256)'](
+    utils.toWei(keyPrice, 'ether'),
+    {
+      gasLimit: GAS_AMOUNTS.updateKeyPrice,
+    }
+  )
+  const hash = await this._handleMethodCall(
+    transactionPromise,
+    TransactionTypes.UPDATE_KEY_PRICE
+  )
+  // Let's now wait for the keyPrice to have been changed before we return it
+  const receipt = await this.provider.waitForTransaction(hash)
+  const parser = lockContract.interface
+
+  const priceChangedEvent = receipt.logs
+    .map(log => {
+      return parser.parseLog(log)
+    })
+    .filter(event => {
+      return event.name === 'PriceChanged'
+    })[0]
+  if (priceChangedEvent) {
+    return utils.fromWei(priceChangedEvent.values.keyPrice, 'ether')
+  } else {
+    // There was no NewEvent log (transaction failed?)
+    return null
   }
 }

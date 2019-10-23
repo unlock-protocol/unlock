@@ -4,7 +4,7 @@ import Jazzicon from 'react-jazzicon'
 
 import * as UnlockTypes from '../../unlockTypes'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
-
+import Address from './Address'
 import Media from '../../theme/media'
 
 interface Props {
@@ -35,9 +35,7 @@ export function Account({ account, network }: Props) {
         <DoubleHeightCell />
         <DoubleHeightCell />
         <DoubleHeightCell />
-        {/* eslint-disable-line */
-        /* prettier formats this as 12 spaces, eslint wants 10 :/ */}
-        <Address id="UserAddress">{account.address}</Address>
+        <UserAddress id="UserAddress" address={account.address} />
       </AccountDetails>
     </AccountWrapper>
   )
@@ -86,7 +84,8 @@ const Label = styled.div`
   letter-spacing: 1px;
   font-size: 8px;
 `
-const Address = styled.div`
+
+const UserAddress = styled(Address)`
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   width: 128px;

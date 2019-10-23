@@ -5,6 +5,7 @@ import { getAccountFromPrivateKey } from './accounts'
 import UnlockUser from './structured_data/unlockUser'
 import UnlockPaymentDetails from './structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from './structured_data/unlockPurchaseRequest'
+import EjectionRequest from './structured_data/ejectionRequest'
 
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
@@ -66,11 +67,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   // eslint-disable-next-line no-unused-vars
   personal_sign([data, _]) {
     const privateKey = toBuffer(this.wallet.privateKey)
-    const sig = sigUtil.personalSign(privateKey, { data })
-    return {
-      data,
-      sig,
-    }
+    return sigUtil.personalSign(privateKey, { data })
   }
 
   // Signature methods
@@ -119,6 +116,16 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
       input
     )
     const data = UnlockPurchaseRequest.build(purchaseRequest)
+    return this.signData(data)
+  }
+
+  generateSignedEjectionRequest() {
+    const ejectionRequest = {
+      user: {
+        publicKey: this.wallet.publicKey,
+      },
+    }
+    const data = EjectionRequest.build(ejectionRequest)
     return this.signData(data)
   }
 }

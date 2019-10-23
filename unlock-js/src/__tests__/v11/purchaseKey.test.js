@@ -1,6 +1,8 @@
 import { ethers } from 'ethers'
+
 import * as UnlockV11 from 'unlock-abi-1-1'
-import Errors from '../../errors'
+import abis from '../../abis'
+
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
@@ -8,14 +10,14 @@ import erc20 from '../../erc20'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 
-const { FAILED_TO_PURCHASE_KEY } = Errors
+const UnlockVersion = abis.v02
+
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 let walletService
 let transaction
 let transactionResult
 let setupSuccess
-let setupFail
 
 jest.mock('../../erc20.js', () => {
   return { approveTransfer: jest.fn(), getErc20Decimals: jest.fn() }
@@ -27,6 +29,39 @@ describe('v11', () => {
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const erc20Address = '0x6F7a54D6629b7416E17fc472B4003aE8EF18EF4c'
+
+    const EventInfo = new ethers.utils.Interface(UnlockVersion.PublicLock.abi)
+    const encoder = ethers.utils.defaultAbiCoder
+    const tokenId = '1'
+
+    const receipt = {
+      logs: [
+        {
+          transactionIndex: 1,
+          blockNumber: 19759,
+          transactionHash:
+            '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+          address: lockAddress,
+          topics: [
+            EventInfo.events['Transfer(address,address,uint256)'].topic,
+            encoder.encode(
+              ['address'],
+              ['0x0000000000000000000000000000000000000000']
+            ),
+            encoder.encode(['address'], [owner]),
+            encoder.encode(['uint256'], [tokenId]),
+          ],
+          data: encoder.encode(
+            ['address', 'address', 'uint256'],
+            ['0x0000000000000000000000000000000000000000', owner, tokenId]
+          ),
+          logIndex: 0,
+          blockHash:
+            '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+          transactionLogIndex: 0,
+        },
+      ],
+    }
 
     async function nockBeforeEach(
       purchaseForOptions = {},
@@ -75,17 +110,15 @@ describe('v11', () => {
         testTransaction,
         testTransactionResult,
         success,
-        fail,
       } = callMethodData(owner)
 
       transaction = testTransaction
       transactionResult = testTransactionResult
       setupSuccess = success
-      setupFail = fail
     }
 
     it('should invoke _handleMethodCall with the right params', async () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       await nockBeforeEach({ value: keyPrice })
       setupSuccess()
@@ -96,7 +129,15 @@ describe('v11', () => {
 
       const mock = walletService._handleMethodCall
 
-      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve(receipt)
+      )
+
+      const newTokenId = await walletService.purchaseKey({
+        lockAddress,
+        owner,
+        keyPrice,
+      })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -108,6 +149,7 @@ describe('v11', () => {
       const result = await mock.mock.calls[0][0]
       await result.wait()
       expect(result).toEqual(transactionResult)
+      expect(newTokenId).toEqual(tokenId)
       await nock.resolveWhenAllNocksUsed()
     })
 
@@ -125,6 +167,9 @@ describe('v11', () => {
           }
         )
 
+        walletService.provider.waitForTransaction = jest.fn(() =>
+          Promise.resolve(receipt)
+        )
         await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
         expect(erc20.approveTransfer).toHaveBeenCalledWith(
@@ -150,6 +195,9 @@ describe('v11', () => {
           }
         )
 
+        walletService.provider.waitForTransaction = jest.fn(() =>
+          Promise.resolve(receipt)
+        )
         await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
         expect(erc20.getErc20Decimals).toHaveBeenCalledWith(
@@ -181,24 +229,12 @@ describe('v11', () => {
         }
       )
 
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve(receipt)
+      )
       await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
       expect(erc20.approveTransfer).not.toHaveBeenCalled()
-      await nock.resolveWhenAllNocksUsed()
-    })
-
-    it('should emit an error if the transaction could not be sent', async () => {
-      expect.assertions(1)
-
-      const error = { code: 404, data: 'oops' }
-      await nockBeforeEach({ value: keyPrice })
-      setupFail(error)
-
-      walletService.on('error', error => {
-        expect(error.message).toBe(FAILED_TO_PURCHASE_KEY)
-      })
-
-      await walletService.purchaseKey({ lockAddress, owner, keyPrice })
       await nock.resolveWhenAllNocksUsed()
     })
   })
