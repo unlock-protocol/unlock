@@ -168,10 +168,10 @@ export default class WalletService extends UnlockService {
 
   /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
-   * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
    * - {string} amount
+   * TODO: add a callback param which yields the transaction hash
    */
   async withdrawFromLock(params = {}) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')

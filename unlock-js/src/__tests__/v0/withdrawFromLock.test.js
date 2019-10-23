@@ -1,7 +1,12 @@
+import { ethers } from 'ethers'
 import * as UnlockV0 from 'unlock-abi-0'
+import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
 import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
+import abis from '../../abis'
+
+const UnlockVersion = abis.v0
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
@@ -14,6 +19,7 @@ let setupSuccess
 describe('v0', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
+    const beneficiary = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
 
     async function nockBeforeEach() {
       nock.cleanAll()
@@ -42,7 +48,7 @@ describe('v0', () => {
     }
 
     it('should invoke _handleMethodCall with the right params', async () => {
-      expect.assertions(2)
+      expect.assertions(3)
 
       await nockBeforeEach()
       setupSuccess()
@@ -52,7 +58,38 @@ describe('v0', () => {
       )
       const mock = walletService._handleMethodCall
 
-      await walletService.withdrawFromLock({ lockAddress })
+      const EventInfo = new ethers.utils.Interface(UnlockVersion.PublicLock.abi)
+      const encoder = ethers.utils.defaultAbiCoder
+      const amount = '1'
+
+      walletService.provider.waitForTransaction = jest.fn(() =>
+        Promise.resolve({
+          logs: [
+            {
+              transactionIndex: 0,
+              blockNumber: 8861,
+              transactionHash:
+                '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
+              address: lockAddress,
+              topics: [
+                EventInfo.events['Withdrawal(address,uint256)'].topic,
+                encoder.encode(['address'], [beneficiary]),
+              ],
+              data: encoder.encode(
+                ['uint256'],
+                [utils.toRpcResultNumber(utils.toWei(amount, 'ether'))]
+              ),
+              logIndex: 0,
+              blockHash:
+                '0xcb27b74a5ff04b129b645bbcfde46fe1a221c2d341223df4ad2ca87e9864678a',
+              transactionLogIndex: 0,
+            },
+          ],
+        })
+      )
+      const withdrawnAmount = await walletService.withdrawFromLock({
+        lockAddress,
+      })
 
       expect(mock).toHaveBeenCalledWith(
         expect.any(Promise),
@@ -65,6 +102,7 @@ describe('v0', () => {
       await result.wait()
       expect(result).toEqual(transactionResult)
       await nock.resolveWhenAllNocksUsed()
+      expect(withdrawnAmount).toEqual(amount)
     })
   })
 })

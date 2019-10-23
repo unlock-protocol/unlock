@@ -3,6 +3,8 @@
 ## Next Version (minor!)
 
 - Not catching errors on transaction emitted. These should be caught by the applications
+- withdrawFromLock now returns a Promise of the withdrawn amount
+- purchaseKey now returns a Promise of the token id
 - createLock now returns a Promise of the deployed lock address
 - updateKeyPrice now uses the right decimals for erc20 contracts
 - getting erc20Address and decimals from the contract when purchasing a key
