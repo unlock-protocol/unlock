@@ -3,7 +3,7 @@ const Web3Utils = require('web3-utils')
 const truffleAssert = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
-const sleep = require('../helpers/sleep')
+const { sleep, sleepTime } = require('../helpers/sleep')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -27,7 +27,7 @@ contract('Lock / grantKeys', accounts => {
         tx = await lock.grantKeys([keyOwner], [validExpirationTimestamp], {
           from: lockOwner,
         })
-        await sleep(20000)
+        await sleep(sleepTime)
       })
 
       it('should log Transfer event', async () => {
@@ -52,7 +52,7 @@ contract('Lock / grantKeys', accounts => {
         tx = await lock.grantKeys([keyOwner], [extendedExpiration], {
           from: lockOwner,
         })
-        await sleep(20000) // allow enough time for tx to be mined.
+        await sleep(sleepTime) // allow enough time for tx to be mined.
       })
 
       it('should log Transfer event', async () => {
@@ -96,7 +96,7 @@ contract('Lock / grantKeys', accounts => {
           expirationDates,
           { from: lockOwner }
         )
-        await sleep(20000)
+        await sleep(sleepTime)
       })
 
       it('should acknowledge that user owns key', async () => {
