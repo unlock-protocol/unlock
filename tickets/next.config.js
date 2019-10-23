@@ -21,6 +21,8 @@ const requiredConfigVariables = {
   locksmithUri: process.env.LOCKSMITH_URI,
   wedlocksUri: process.env.WEDLOCKS_URI,
   unlockTicketsUrl: process.env.UNLOCK_TICKETS_URL,
+  unlockAppUrl: process.env.UNLOCK_APP_URL,
+  unlockStaticUrl: process.env.UNLOCK_STATIC_URL,
   erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
   erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
 }
