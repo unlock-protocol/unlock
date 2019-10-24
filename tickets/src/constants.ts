@@ -72,6 +72,11 @@ export const EVENT_PATH_NAME_REGEXP = new RegExp(
   `(?:/(${prefix}))?/(${lockAddress})/(${userAddress})/(${signature})`
 )
 
+// This regex matches the URL in early QR codes generated for EthWaterloo.
+export const UNSIGNED_TICKET_PATH_NAME_REGEXP = new RegExp(
+  `(?:/(${prefix}))?/(${lockAddress})`
+)
+
 export const PAGE_DESCRIPTION =
   'Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.'
 
