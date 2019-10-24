@@ -9,8 +9,12 @@ import TransactionTypes from '../transactionTypes'
  * @param {string} amount
  * @param {number} decimals
  * TODO: get the decimal from the ERC20 contract
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress, amount = '0', decimals = 18 }) {
+export default async function(
+  { lockAddress, amount = '0', decimals = 18 },
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   const actualAmount = utils.toDecimal(amount, decimals)
@@ -22,6 +26,10 @@ export default async function({ lockAddress, amount = '0', decimals = 18 }) {
     transactionPromise,
     TransactionTypes.WITHDRAWAL
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
 
   // Let's now wait for the funds to have been withdrawn
   const receipt = await this.provider.waitForTransaction(hash)

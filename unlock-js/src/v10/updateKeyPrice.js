@@ -10,13 +10,12 @@ import { getErc20Decimals } from '../erc20'
  * - {string} keyPrice : new price for the lock, as a string (as wei)
  * - {string} decimals : Optional number of decimals (read from contract if unset)
  * - {string} erc20Address : Optional address of ERC20, to retrieve decimals (read from contract if unset)
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({
-  lockAddress,
-  keyPrice,
-  decimals,
-  erc20Address,
-}) {
+export default async function(
+  { lockAddress, keyPrice, decimals, erc20Address },
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (decimals == null) {
@@ -43,6 +42,11 @@ export default async function({
     transactionPromise,
     TransactionTypes.UPDATE_KEY_PRICE
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
+
   // Let's now wait for the keyPrice to have been changed before we return it
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = lockContract.interface

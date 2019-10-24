@@ -129,41 +129,42 @@ export default class WalletService extends UnlockService {
    * Updates the key price on a lock
    * @param {PropTypes.address} lockAddress : address of the lock for which we update the price
    * @param {string} price : new price for the lock
+   * @param {function} callback : callback invoked with the transaction hash
    * @return Promise<PropTypes.number> newKeyPrice
-   * TODO: add a callback @param which is invoked with the transaction hash of the transaction (this pattern should actually be implemented for all calls)
    */
-  async updateKeyPrice(params = {}) {
+  async updateKeyPrice(params = {}, callback) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.updateKeyPrice.bind(this)(params)
+    return version.updateKeyPrice.bind(this)(params, callback)
   }
 
   /**
    * Creates a lock on behalf of the user.
    * @param {PropTypes.lock} lock
+   * @param {function} callback : callback invoked with the transaction hash
    * @return Promise<PropTypes.address> lockAddress
    */
-  async createLock(lock) {
+  async createLock(lock, callback) {
     const version = await this.unlockContractAbiVersion()
-    return version.createLock.bind(this)(lock)
+    return version.createLock.bind(this)(lock, callback)
   }
 
   /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can keep track of it from the application
-   * TODO: retrieve the keyPrice, erc20Address from chain when applicablle
+   * TODO: retrieve the keyPrice, erc20Address from chain when applicable
    * - {PropTypes.address} lockAddress
    * - {PropTypes.address} owner
    * - {string} keyPrice
    * - {string} data
    * - {PropTypes.address} erc20Address
    * - {number} decimals
-   * TODO: add an exta callback param which will be invoked with the transaction hash
+   * @param {function} callback : callback invoked with the transaction hash
    */
-  async purchaseKey(params = {}) {
+  async purchaseKey(params = {}, callback) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.purchaseKey.bind(this)(params)
+    return version.purchaseKey.bind(this)(params, callback)
   }
 
   /**
@@ -171,12 +172,12 @@ export default class WalletService extends UnlockService {
    * @param {object} params
    * - {PropTypes.address} lockAddress
    * - {string} amount
-   * TODO: add a callback param which yields the transaction hash
+   * @param {function} callback : callback invoked with the transaction hash
    */
-  async withdrawFromLock(params = {}) {
+  async withdrawFromLock(params = {}, callback) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.withdrawFromLock.bind(this)(params)
+    return version.withdrawFromLock.bind(this)(params, callback)
   }
 
   /**

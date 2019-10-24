@@ -81,11 +81,21 @@ describe('Wallet Service Integration', () => {
     describe.each(
       locks[versionName].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
-      let lock, lockAddress
+      let lock, lockAddress, lockCreationHash
 
       beforeAll(async () => {
-        lockAddress = await walletService.createLock(lockParams)
+        lockAddress = await walletService.createLock(
+          lockParams,
+          (error, hash) => {
+            lockCreationHash = hash
+          }
+        )
         lock = await web3Service.getLock(lockAddress)
+      })
+
+      it('should have yielded a transaction hash', () => {
+        expect.assertions(1)
+        expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
 
       it('should have deployed the right lock version', async () => {
@@ -129,14 +139,24 @@ describe('Wallet Service Integration', () => {
       })
 
       describe('updateKeyPrice', () => {
-        let oldKeyPrice, newPrice
+        let oldKeyPrice, newPrice, transactionHash
         beforeAll(async () => {
           oldKeyPrice = lock.keyPrice
-          newPrice = await walletService.updateKeyPrice({
-            lockAddress: lockAddress,
-            keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
-          })
+          newPrice = await walletService.updateKeyPrice(
+            {
+              lockAddress: lockAddress,
+              keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
+            },
+            (error, hash) => {
+              transactionHash = hash
+            }
+          )
           lock = await web3Service.getLock(lockAddress)
+        })
+
+        it('should have yielded a transaction hash', () => {
+          expect.assertions(1)
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
         it('should have changed the keyPrice', () => {
@@ -152,6 +172,7 @@ describe('Wallet Service Integration', () => {
         let keyOwner, keyPurchaser
         let lockBalanceBefore
         let userBalanceBefore
+        let transactionHash
 
         beforeAll(async () => {
           keyPurchaser = accounts[0] // This is the default in walletService
@@ -184,12 +205,22 @@ describe('Wallet Service Integration', () => {
             )
           }
 
-          tokenId = await walletService.purchaseKey({
-            lockAddress,
-            owner: keyOwner,
-            keyPrice: lock.keyPrice,
-          })
+          tokenId = await walletService.purchaseKey(
+            {
+              lockAddress,
+              owner: keyOwner,
+              keyPrice: lock.keyPrice,
+            },
+            (error, hash) => {
+              transactionHash = hash
+            }
+          )
           key = await web3Service.getKeyByLockForOwner(lockAddress, keyOwner)
+        })
+
+        it('should have yielded a transaction hash', () => {
+          expect.assertions(1)
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
         it('should yield the tokenId', () => {
@@ -264,6 +295,7 @@ describe('Wallet Service Integration', () => {
         let lockBalanceBefore
         let userBalanceBefore
         let withdrawnAmount
+        let transactionHash
         // TODO: support partial withdraws
         // TODO: get the beneficiary address from the lock
 
@@ -286,9 +318,19 @@ describe('Wallet Service Integration', () => {
             )
           }
 
-          withdrawnAmount = await walletService.withdrawFromLock({
-            lockAddress,
-          })
+          withdrawnAmount = await walletService.withdrawFromLock(
+            {
+              lockAddress,
+            },
+            (error, hash) => {
+              transactionHash = hash
+            }
+          )
+        })
+
+        it('should have yielded a transaction hash', () => {
+          expect.assertions(1)
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
         it('should have withdrawn an non null amount', () => {
