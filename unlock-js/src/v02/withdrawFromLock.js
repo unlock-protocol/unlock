@@ -7,8 +7,9 @@ import utils from '../utils'
  * Note: this version of the contract actually supports partialWithdraw() which we could use here.
  * @param {object} params
  * - {PropTypes.address} lockAddress
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress }) {
+export default async function({ lockAddress }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise = lockContract['withdraw()']({
     gasLimit: GAS_AMOUNTS.withdraw,
@@ -17,6 +18,10 @@ export default async function({ lockAddress }) {
     transactionPromise,
     TransactionTypes.WITHDRAWAL
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
 
   // Let's now wait for the funds to have been withdrawn
   const receipt = await this.provider.waitForTransaction(hash)
