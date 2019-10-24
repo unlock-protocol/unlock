@@ -43057,15 +43057,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c17 {
-  font-family: 'IBM Plex Serif',serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
-  color: var(--darkgrey);
-}
-
-.c18 {
+.c22 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
@@ -43073,14 +43065,8 @@ Object {
 }
 
 .c19 {
-  display: grid;
-  grid-template-columns: 70% 30%;
-  grid-column-gap: 16px;
-  max-width: 600px;
-}
-
-.c20 {
   height: 60px;
+  width: 385px;
   border: none;
   background-color: var(--lightgrey);
   border-radius: 4px;
@@ -43090,14 +43076,33 @@ Object {
 
 .c21 {
   height: 60px;
+  width: 100%;
   border: none;
   background-color: var(--green);
   border-radius: 4px;
   font-size: 16px;
   cursor: pointer;
+  color: var(--white);
 }
 
-.c22 {
+.c17 {
+  max-width: 385px;
+}
+
+.c20 {
+  margin-top: 25px;
+}
+
+.c18 {
+  display: block;
+  text-transform: uppercase;
+  font-size: 10px;
+  color: var(--darkgrey);
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.c23 {
   cursor: pointer;
 }
 
@@ -43177,7 +43182,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c24 {
     display: none;
   }
 }
@@ -43385,63 +43390,64 @@ Object {
             <h1
               class="c16"
             >
-              Pay For Content Seamlessly
+              Log In to Your Account
             </h1>
-            <h2
+            <form
               class="c17"
             >
-              Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
-            </h2>
-            <p
-              class="c18"
-            >
-              At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
-            </p>
-            <p
-              class="c18"
-            >
-              If you want to know more about Unlock's decentralized payment protocol, check out
-               
-              <a
-                href="https://unlock-protocol.com/blog"
-                target="_blank"
+              <label
+                class="c18"
+                for="emailInput"
               >
-                <span>
-                  our blog
-                </span>
-              </a>
-              .
-            </p>
-            <form
-              class="c19"
-            >
+                Email Address
+              </label>
               <input
-                class="c20"
+                class="c19"
+                id="emailInput"
                 name="emailAddress"
-                placeholder="Enter your email to get started"
+                placeholder="Enter your email"
                 type="email"
               />
-              <input
-                class="c21"
-                type="submit"
-                value="Sign Up"
-              />
-              <p
+              <br />
+              <label
                 class="c18"
+                for="passwordInput"
               >
-                Already have an account? 
-                <a
-                  class="c22"
-                >
-                  Log in here
-                </a>
-                .
-              </p>
+                Password
+              </label>
+              <input
+                class="c19"
+                id="passwordInput"
+                name="password"
+                placeholder="Enter your password"
+                type="password"
+              />
+              <br />
+              <div
+                class="c20"
+              >
+                <input
+                  class="c21"
+                  type="submit"
+                  value="Submit"
+                />
+              </div>
             </form>
+            <p
+              class="c22"
+            >
+              Don't have an account?
+               
+              <a
+                class="c23"
+              >
+                Sign up here.
+              </a>
+            </p>
           </div>
         </div>
         <div
-          class="c23"
+          class="c24"
         />
       </div>
     </div>
@@ -43647,61 +43653,62 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-cmthru kBvUSL"
+            class="sc-gwVKww ecJskg"
           >
-            Pay For Content Seamlessly
+            Log In to Your Account
           </h1>
-          <h2
-            class="sc-hMFtBS egPSoq"
-          >
-            Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
-          </h2>
-          <p
-            class="sc-cLQEGU hDWiZb"
-          >
-            At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
-          </p>
-          <p
-            class="sc-cLQEGU hDWiZb"
-          >
-            If you want to know more about Unlock's decentralized payment protocol, check out
-             
-            <a
-              href="https://unlock-protocol.com/blog"
-              target="_blank"
-            >
-              <span>
-                our blog
-              </span>
-            </a>
-            .
-          </p>
           <form
-            class="sc-gqPbQI gNiQbz"
+            class="sc-hZSUBg jvvsfL"
           >
+            <label
+              class="sc-iuJeZd lleFCu"
+              for="emailInput"
+            >
+              Email Address
+            </label>
             <input
-              class="sc-hORach flMqNX"
+              class="sc-epnACN faILpI"
+              id="emailInput"
               name="emailAddress"
-              placeholder="Enter your email to get started"
+              placeholder="Enter your email"
               type="email"
             />
-            <input
-              class="sc-bMVAic chdRCE"
-              type="submit"
-              value="Sign Up"
-            />
-            <p
-              class="sc-cLQEGU hDWiZb"
+            <br />
+            <label
+              class="sc-iuJeZd lleFCu"
+              for="passwordInput"
             >
-              Already have an account? 
-              <a
-                class="sc-iujRgT cmLBll"
-              >
-                Log in here
-              </a>
-              .
-            </p>
+              Password
+            </label>
+            <input
+              class="sc-epnACN faILpI"
+              id="passwordInput"
+              name="password"
+              placeholder="Enter your password"
+              type="password"
+            />
+            <br />
+            <div
+              class="sc-cMhqgX kOOgtJ"
+            >
+              <input
+                class="sc-iQNlJl gjNLWb"
+                type="submit"
+                value="Submit"
+              />
+            </div>
           </form>
+          <p
+            class="sc-hXRMBi kjdQiQ"
+          >
+            Don't have an account?
+             
+            <a
+              class="sc-esOvli guwJEH"
+            >
+              Sign up here.
+            </a>
+          </p>
         </div>
       </div>
       <div
