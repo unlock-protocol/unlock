@@ -52,9 +52,8 @@ export const KeyChainContent = ({
         </BrowserOnly>
       )}
       {!account && (
-        // Default to sign up form. User can toggle to login. If email
-        // address is truthy, do the signup flow.
-        <LogInSignUp signup />
+        // Default to log in form. User can toggle to signup.
+        <LogInSignUp login />
       )}
     </Layout>
   )
