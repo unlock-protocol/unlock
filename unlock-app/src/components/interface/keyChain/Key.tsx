@@ -31,6 +31,14 @@ export class Key extends React.Component<Props, State> {
     }
   }
 
+  componentDidUpdate = ({ signature: prevSignature }: Props) => {
+    const { signature } = this.props
+    // If we have just received a signature, we should immediately display the QR code.
+    if (prevSignature === null && signature) {
+      this.toggleShowingQR()
+    }
+  }
+
   handleSignature = () => {
     const {
       accountAddress,
