@@ -21,7 +21,11 @@ let transactionResult
 let setupSuccess
 
 jest.mock('../../erc20.js', () => {
-  return { approveTransfer: jest.fn(), getErc20Decimals: jest.fn() }
+  return {
+    approveTransfer: jest.fn(),
+    getErc20Decimals: jest.fn(),
+    getAllowance: jest.fn(),
+  }
 })
 
 describe('v10', () => {
@@ -154,32 +158,73 @@ describe('v10', () => {
     })
 
     describe('if the lock is an ERC20 lock', () => {
-      it('should call approveTransfer', async () => {
-        expect.assertions(1)
-        await nockBeforeEach({ value: keyPrice }, { erc20Address, decimals: 4 })
-        setupSuccess()
+      describe('if the allowance of ERC20 is too small', () => {
+        beforeEach(() => {
+          erc20.getAllowance = jest.fn(() => Promise.resolve(0))
+        })
+        it('should call approveTransfer', async () => {
+          expect.assertions(1)
+          await nockBeforeEach(
+            { value: keyPrice },
+            { erc20Address, decimals: 4 }
+          )
+          setupSuccess()
 
-        walletService._handleMethodCall = jest.fn(
-          async sendTransactionPromise => {
-            const result = await sendTransactionPromise
-            await result.wait()
-            return Promise.resolve(transaction.hash)
-          }
-        )
-        walletService.provider.waitForTransaction = jest.fn(() =>
-          Promise.resolve(receipt)
-        )
+          walletService._handleMethodCall = jest.fn(
+            async sendTransactionPromise => {
+              const result = await sendTransactionPromise
+              await result.wait()
+              return Promise.resolve(transaction.hash)
+            }
+          )
+          walletService.provider.waitForTransaction = jest.fn(() =>
+            Promise.resolve(receipt)
+          )
 
-        await walletService.purchaseKey({ lockAddress, owner, keyPrice })
+          await walletService.purchaseKey({ lockAddress, owner, keyPrice })
 
-        expect(erc20.approveTransfer).toHaveBeenCalledWith(
-          erc20Address,
-          lockAddress,
-          utils.toDecimal(keyPrice, 4),
-          walletService.provider
-        )
+          expect(erc20.approveTransfer).toHaveBeenCalledWith(
+            erc20Address,
+            lockAddress,
+            utils.toDecimal(keyPrice, 4),
+            walletService.provider
+          )
 
-        await nock.resolveWhenAllNocksUsed()
+          await nock.resolveWhenAllNocksUsed()
+        })
+      })
+
+      describe('if the allowance of ERC20 is large enough small', () => {
+        beforeEach(() => {
+          erc20.getAllowance = jest.fn(() =>
+            Promise.resolve(utils.toDecimal(keyPrice, 4))
+          )
+        })
+        it('should not call approveTransfer', async () => {
+          expect.assertions(1)
+          await nockBeforeEach(
+            { value: keyPrice },
+            { erc20Address, decimals: 4 }
+          )
+          setupSuccess()
+
+          walletService._handleMethodCall = jest.fn(
+            async sendTransactionPromise => {
+              const result = await sendTransactionPromise
+              await result.wait()
+              return Promise.resolve(transaction.hash)
+            }
+          )
+          walletService.provider.waitForTransaction = jest.fn(() =>
+            Promise.resolve(receipt)
+          )
+
+          await walletService.purchaseKey({ lockAddress, owner, keyPrice })
+
+          expect(erc20.approveTransfer).not.toHaveBeenCalled()
+
+          await nock.resolveWhenAllNocksUsed()
+        })
       })
 
       it('should retrieve the decimals from the ERC20 contract', async () => {

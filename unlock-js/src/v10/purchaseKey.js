@@ -1,7 +1,7 @@
 import utils from '../utils'
 import { GAS_AMOUNTS, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
-import { approveTransfer, getErc20Decimals } from '../erc20'
+import { approveTransfer, getErc20Decimals, getAllowance } from '../erc20'
 
 /**
  * Purchase key function. This implementation requires the following
@@ -40,12 +40,19 @@ export default async function(
   }
 
   if (erc20Address && erc20Address !== ZERO) {
-    await approveTransfer(
+    const approvedAmount = await getAllowance(
       erc20Address,
       lockAddress,
-      actualAmount,
       this.provider
     )
+    if (approvedAmount < actualAmount) {
+      await approveTransfer(
+        erc20Address,
+        lockAddress,
+        actualAmount,
+        this.provider
+      )
+    }
   } else {
     purchaseForOptions.value = actualAmount
   }
