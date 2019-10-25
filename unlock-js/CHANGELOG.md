@@ -2,6 +2,7 @@
 
 ## Next Version (minor!)
 
+- Only approving if the approved amount is lower than the required price
 - WalletService method which change state take a callback as argument which yields the transaction hash.
 - Not catching errors on transaction emitted. These should be caught by the applications
 - withdrawFromLock now returns a Promise of the withdrawn amount
