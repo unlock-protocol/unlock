@@ -95,7 +95,12 @@ export const isValidPaywallConfig = config => {
       if (!thisLock || typeof thisLock !== 'object') return false
       if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
-      if (!thisLock.name || typeof thisLock.name !== 'string') return false
+      if (
+        typeof thisLock.name !== 'undefined' &&
+        typeof thisLock.name !== 'string'
+      ) {
+        return false
+      }
       return true
     }).length !== locks.length
   ) {
