@@ -230,7 +230,7 @@ describe('v11', () => {
         })
       })
 
-      describe('if the allowance of ERC20 is high enought small', () => {
+      describe('if the allowance of ERC20 is high enough', () => {
         beforeEach(() => {
           erc20.getAllowance = jest.fn(() =>
             Promise.resolve(utils.toDecimal(keyPrice, 4))
