@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Fri, 18 Oct 2019 19:09:11 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 25 Oct 2019 14:42:26 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Ethereum Name Service Support]]></title>
+            <description><![CDATA[Humans are not equiped to make sense of Ethereum addresses, the Ethereum Name Service makes it easy to recognize, remember and type addresses, in a fully decentralized way!]]></description>
+            <link>https://unlock-protocol.com/blog/ethereum-name-service</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ethereum-name-service</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Thu, 24 Oct 2019 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Tokenizing Memberships]]></title>
             <description><![CDATA[What if there was a new way to interact with the communities you are part of?]]></description>
