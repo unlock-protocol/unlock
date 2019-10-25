@@ -101,14 +101,12 @@ describe('BlockchainHandler - purchaseKey', () => {
         erc20Address: addresses[2], // verify we pass this in too
       })
 
-      expect(walletService.purchaseKey).toHaveBeenCalledWith(
-        lockAddresses[0],
-        addresses[1],
-        '123',
-        null,
-        null,
-        addresses[2]
-      )
+      expect(walletService.purchaseKey).toHaveBeenCalledWith({
+        lockAddress: lockAddresses[0],
+        owner: addresses[1],
+        keyPrice: '123',
+        erc20Address: addresses[2],
+      })
     })
   })
 })

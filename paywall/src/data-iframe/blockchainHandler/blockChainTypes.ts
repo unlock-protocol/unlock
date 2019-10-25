@@ -15,14 +15,7 @@ export interface WalletServiceType extends EventEmitter {
   provider?: any
   connect: (provider: Web3ProviderType) => Promise<void>
   getAccount: () => Promise<string | false>
-  purchaseKey: (
-    lock: string,
-    owner: string,
-    keyPrice: string,
-    account: any,
-    data: any,
-    erc20Address: string | null
-  ) => Promise<string>
+  purchaseKey: (params: PurchaseKeyParams) => Promise<string>
 }
 
 export interface Web3ServiceType extends EventEmitter {
@@ -37,6 +30,13 @@ export interface Web3ServiceType extends EventEmitter {
     tokenAddress: string,
     accountAddress: string
   ) => Promise<string>
+}
+
+export interface PurchaseKeyParams {
+  lockAddress: string
+  owner: string
+  keyPrice: string
+  erc20Address: string | null
 }
 
 export interface TransactionDefaults {
