@@ -78,6 +78,31 @@ describe('EventVerify', () => {
 
     expect(wrapper.getByText('Ticket Validating')).not.toBeNull()
   })
+
+  it('should display the secondary checkin notice when only the lock address is set', () => {
+    expect.assertions(0)
+
+    const { getByText } = rtl.render(
+      <Provider store={store}>
+        <ConfigProvider value={config}>
+          <EventVerify
+            lock={{}}
+            event={{}}
+            valid={null}
+            publicKey={null}
+            signature={null}
+            config={{
+              unlockAppUrl: 'http://localhost:3000',
+            }}
+            lockAddress="0x123abc"
+            loadEvent={() => {}}
+          />
+        </ConfigProvider>
+      </Provider>
+    )
+
+    getByText('This QR code cannot be verified.')
+  })
 })
 
 describe('mapStateToProps', () => {
@@ -118,6 +143,7 @@ describe('mapStateToProps', () => {
       },
       publicKey: '0x49dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
       signature: decodedSignature,
+      lockAddress: '0x42dbdc4CdBda8dc99c82D66d97B264386E41c0E9',
     }
 
     expect(props).toEqual(expectedProps)

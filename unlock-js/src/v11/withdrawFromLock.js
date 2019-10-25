@@ -9,8 +9,12 @@ import TransactionTypes from '../transactionTypes'
  * @param {string} amount
  * @param {number} decimals
  * TODO: get the decimal from the ERC20 contract
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress, amount = '0', decimals = 18 }) {
+export default async function(
+  { lockAddress, amount = '0', decimals = 18 },
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   const actualAmount = utils.toDecimal(amount, decimals)
@@ -18,9 +22,30 @@ export default async function({ lockAddress, amount = '0', decimals = 18 }) {
   const transactionPromise = lockContract['withdraw(uint256)'](actualAmount, {
     gasLimit: GAS_AMOUNTS.withdraw,
   })
-  const ret = await this._handleMethodCall(
+  const hash = await this._handleMethodCall(
     transactionPromise,
     TransactionTypes.WITHDRAWAL
   )
-  return ret
+
+  if (callback) {
+    callback(null, hash)
+  }
+
+  // Let's now wait for the funds to have been withdrawn
+  const receipt = await this.provider.waitForTransaction(hash)
+  const parser = lockContract.interface
+  const withdrawalEvent = receipt.logs
+    .map(log => {
+      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+      return parser.parseLog(log)
+    })
+    .filter(event => {
+      return event && event.name === 'Withdrawal'
+    })[0]
+  if (withdrawalEvent) {
+    return utils.fromWei(withdrawalEvent.values.amount.toString(), 'ether')
+  } else {
+    // There was no Withdrawal log (transaction failed?)
+    return null
+  }
 }

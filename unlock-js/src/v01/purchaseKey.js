@@ -8,8 +8,9 @@ import TransactionTypes from '../transactionTypes'
  * - {PropTypes.address} lockAddress
  * - {PropTypes.address} owner
  * - {string} keyPrice
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function({ lockAddress, owner, keyPrice }) {
+export default async function({ lockAddress, owner, keyPrice }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise = lockContract['purchaseFor(address)'](owner, {
     gasLimit: GAS_AMOUNTS.purchaseFor,
@@ -19,6 +20,11 @@ export default async function({ lockAddress, owner, keyPrice }) {
     transactionPromise,
     TransactionTypes.KEY_PURCHASE
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
+
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = lockContract.interface
