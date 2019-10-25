@@ -65,6 +65,7 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
   local: string,
   remote: string
 ) {
+  // TODO We should not read from process.env
   const debug = process.env.DEBUG
   if (!targetOrigin || !target) {
     throw new Error(

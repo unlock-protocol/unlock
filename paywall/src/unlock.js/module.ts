@@ -1,5 +1,6 @@
 import startupWhenReady from './startup'
-import constants from './constants'
+
+declare var __ENVIRONMENT_VARIABLES__: any
 
 // Using require here so that we can use CSS modules without creating types for each declaration
 const styles = require('../static/iframe.css')
@@ -9,8 +10,5 @@ export default function startup() {
   // prevents issues with `document` being undefined in SSR
   styles.use()
 
-  const env = process.env.UNLOCK_ENV || 'dev'
-  const startupConstants = constants[env]
-
-  startupWhenReady(window, startupConstants)
+  startupWhenReady(window, __ENVIRONMENT_VARIABLES__)
 }
