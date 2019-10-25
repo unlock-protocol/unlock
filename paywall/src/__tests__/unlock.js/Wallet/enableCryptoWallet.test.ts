@@ -24,8 +24,7 @@ describe('Wallet.setupProxyWallet()', () => {
     debug: 0,
     paywallUrl: 'http://paywall',
     accountsUrl: 'http://app/accounts',
-    managedPurchaseStablecoinAddress:
-      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
   }
 
   function makeWallet() {

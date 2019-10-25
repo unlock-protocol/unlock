@@ -6,12 +6,12 @@ import StartupConstants from './startupTypes'
 
 export const injectDefaultBalance = (
   oldBalance: Balance,
-  managedPurchaseStablecoinAddress: string
+  erc20ContractAddress: string
 ): Balance => {
   const newBalance: Balance = {}
   const tokens = Object.keys(oldBalance)
   tokens.forEach(token => {
-    if (token === managedPurchaseStablecoinAddress) {
+    if (token === erc20ContractAddress) {
       // If the token is the one we allow, we give the user a default
       // balance. TODO: only do this if the corresponding lock is approved.
       newBalance[token] = DEFAULT_STABLECOIN_BALANCE
@@ -56,11 +56,8 @@ export default class CheckoutUIHandler {
     this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
       let balanceUpdate = balance
       if (usingManagedAccount) {
-        const { managedPurchaseStablecoinAddress } = this.constants
-        balanceUpdate = injectDefaultBalance(
-          balance,
-          managedPurchaseStablecoinAddress
-        )
+        const { erc20ContractAddress } = this.constants
+        balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
       }
       this.iframes.checkout.postMessage(
         PostMessages.UPDATE_ACCOUNT_BALANCE,

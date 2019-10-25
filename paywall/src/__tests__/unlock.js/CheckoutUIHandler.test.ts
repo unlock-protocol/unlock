@@ -64,8 +64,7 @@ describe('CheckoutUIHandler', () => {
     debug: 0,
     paywallUrl: 'http://paywall',
     accountsUrl: 'http://app/accounts',
-    managedPurchaseStablecoinAddress:
-      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
   }
 
   function makeCheckoutUIHandler(fakeWindow: FakeWindow) {
@@ -285,12 +284,10 @@ describe('CheckoutUIHandler', () => {
 })
 
 describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
-  const managedPurchaseStablecoinAddress = '0xdeadbeef'
+  const erc20ContractAddress = '0xdeadbeef'
   it('should return empty object given an empty object', () => {
     expect.assertions(1)
-    expect(injectDefaultBalance({}, managedPurchaseStablecoinAddress)).toEqual(
-      {}
-    )
+    expect(injectDefaultBalance({}, erc20ContractAddress)).toEqual({})
   })
 
   it('should zero out eth', () => {
@@ -301,9 +298,9 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
     const expectedBalance = {
       eth: '0',
     }
-    expect(
-      injectDefaultBalance(balance, managedPurchaseStablecoinAddress)
-    ).toEqual(expectedBalance)
+    expect(injectDefaultBalance(balance, erc20ContractAddress)).toEqual(
+      expectedBalance
+    )
   })
 
   it('should update balances for the managed purchase stablecoin address with the default', () => {
@@ -313,9 +310,7 @@ describe('CheckoutUIHandler - injectDefaultBalance helper', () => {
       '0x123abc': '0',
       '0xdeadbeef': '0',
     }
-    expect(
-      injectDefaultBalance(balance, managedPurchaseStablecoinAddress)
-    ).toEqual({
+    expect(injectDefaultBalance(balance, erc20ContractAddress)).toEqual({
       eth: '0',
       '0x123abc': '0',
       '0xdeadbeef': DEFAULT_STABLECOIN_BALANCE,
