@@ -1,7 +1,6 @@
 # Changes
 
-## Next Version (minor!)
-
+## 0.4.0
 - Only approving if the approved amount is lower than the required price
 - WalletService method which change state take a callback as argument which yields the transaction hash.
 - Not catching errors on transaction emitted. These should be caught by the applications
