@@ -161,16 +161,12 @@ export default class BlockchainHandler {
   }) {
     if (!this.store.account) return
     const account = this.store.account as string
-
-    // Support the currency!
-    return this.walletService.purchaseKey(
+    return this.walletService.purchaseKey({
       lockAddress,
-      account,
-      amountToSend,
-      null /* account */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
-      null /* data */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
-      erc20Address
-    )
+      owner: account,
+      keyPrice: amountToSend,
+      erc20Address,
+    })
   }
 
   /**
