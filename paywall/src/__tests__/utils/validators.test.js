@@ -498,21 +498,6 @@ describe('Form field validators', () => {
           ).toBe(false)
         })
 
-        it('lock has no name', () => {
-          expect.assertions(1)
-
-          expect(
-            validators.isValidPaywallConfig({
-              ...validConfig,
-              locks: {
-                [lock]: {
-                  whatthe: 'hey?',
-                },
-              },
-            })
-          ).toBe(false)
-        })
-
         it('lock name is not a string', () => {
           expect.assertions(4)
 
@@ -784,6 +769,36 @@ describe('Form field validators', () => {
           })
         ).toBe(true)
       })
+    })
+
+    it('is valid when lock has no name', () => {
+      expect.assertions(1)
+
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          locks: {
+            [lock]: {
+              whatthe: 'hey?',
+            },
+          },
+        })
+      ).toBe(true)
+    })
+
+    it('is valid when lock name is an empty string', () => {
+      expect.assertions(1)
+
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          locks: {
+            [lock]: {
+              name: '',
+            },
+          },
+        })
+      ).toBe(true)
     })
   })
 
