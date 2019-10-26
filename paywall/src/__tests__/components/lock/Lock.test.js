@@ -17,7 +17,6 @@ describe('Lock', () => {
       address: '0xaaaaaaaaa0c4d48d1bdad5dcb26153fc8780f83e',
       name: 'Monthly',
       keyPrice: '0.23',
-      fiatPrice: 240.38,
       expirationDuration: 2592000,
     }
 
