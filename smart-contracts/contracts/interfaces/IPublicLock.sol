@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity ^0.5.0;
 
 
 /**
@@ -289,19 +289,6 @@ interface IPublicLock {
   ) external payable;
 
   /**
-   * This approves _approved to get ownership of _tokenId.
-   * Note: that since this is used for both purchase and transfer approvals
-   * the approved token may not exist.
-   * @param _approved The address to approve
-   * @param _tokenId The tokenId to approve
-   * @dev Throws if lock is disabled. Throws if called by other than key owner of =r approved address.
-   */
-  function approve(
-    address _approved,
-    uint _tokenId
-  ) external payable;
-
-  /**
    * @dev Sets or unsets the approval of a given operator
    * An operator is allowed to transfer all tokens of the sender on their behalf
    * @dev Throws if lock is disabled, or if _to == msg.sender.
@@ -421,4 +408,37 @@ interface IPublicLock {
     address _keyOwner,
     address _txSender
   ) external view returns (bytes32 approvalHash);
+
+  /**
+  *@notice A utility function for erc721 metadata
+  * @param _a String 1
+  * @param _b String 2
+  * @param _c String 3
+  * @param _d String 4
+  * @return _concatenatedString The returned string
+  */
+  function strConcat(
+    string calldata _a,
+    string calldata _b,
+    string calldata _c,
+    string calldata _d
+  ) external pure returns (string memory _concatenatedString);
+
+  /**
+  * @notice A utility function for erc721 metadata
+  * @param _i A uint to convert
+  * @return _uintAsString the returned string
+  */
+  function uint2Str(
+    uint256 _i
+  ) external pure returns (string memory _uintAsString);
+
+  /**
+  * @notice A utility function for erc721 metadata
+  * @param _addr An address to convert
+  * @return A string
+  */
+  function address2Str(
+    address _addr
+  ) external pure returns (string memory);
 }
