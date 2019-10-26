@@ -31,7 +31,6 @@ const lock = {
   address: '0x123',
   name: 'Monthly',
   keyPrice: '0.23',
-  fiatPrice: 240.38,
   expirationDuration: 2592000,
 }
 
@@ -39,7 +38,6 @@ const lockWithLongName = {
   address: '0x123',
   name: 'Hitting406 Crypto Category',
   keyPrice: '0.23',
-  fiatPrice: 240.38,
   expirationDuration: 2592000,
 }
 
@@ -133,7 +131,6 @@ storiesOf('Lock', module)
       address: '0x123',
       name: 'Monthly',
       keyPrice: '0.23',
-      fiatPrice: 240.38,
       expirationDuration: 5 * 60, // 5 minutes
     }
     return (
@@ -427,7 +424,6 @@ storiesOf('Lock', module)
       address: '0x123',
       name: 'Monthly',
       keyPrice: '0.23',
-      fiatPrice: 240.38,
       expirationDuration: 2592000,
       balance: '5',
     }
