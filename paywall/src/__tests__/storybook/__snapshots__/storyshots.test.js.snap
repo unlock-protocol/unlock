@@ -2202,14 +2202,14 @@ exports[`Storyshots Checkout Checkout with 1 lock and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c16 {
+    .c15 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c16 > svg {
+.c15 > svg {
   fill: white;
 }
 
@@ -2270,7 +2270,7 @@ Object {
   cursor: pointer;
 }
 
-.c14 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2318,7 +2318,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c9:hover .c13 {
+.c9:hover .c12 {
   background-color: var(--activegreen);
 }
 
@@ -2329,17 +2329,6 @@ Object {
 }
 
 .c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c12 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -2366,13 +2355,13 @@ Object {
   max-width: 200px;
 }
 
-.c15 {
+.c14 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c15 div {
+.c14 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2415,7 +2404,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c16 {
+  .c15 {
     height: 16px;
     width: 16px;
   }
@@ -2490,19 +2479,13 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     7 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
@@ -2510,10 +2493,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c15"
+          class="c14"
         >
           <div
-            class="c16"
+            class="c15"
           >
             <svg
               viewBox="0 0 56 56"
@@ -2596,13 +2579,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   7 days
@@ -2702,14 +2679,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and no pending keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c16 {
+    .c15 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c16 > svg {
+.c15 > svg {
   fill: white;
 }
 
@@ -2770,7 +2747,7 @@ Object {
   cursor: pointer;
 }
 
-.c14 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -2818,7 +2795,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c9:hover .c13 {
+.c9:hover .c12 {
   background-color: var(--activegreen);
 }
 
@@ -2829,17 +2806,6 @@ Object {
 }
 
 .c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c12 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -2866,13 +2832,13 @@ Object {
   max-width: 200px;
 }
 
-.c15 {
+.c14 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c15 div {
+.c14 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -2915,7 +2881,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c16 {
+  .c15 {
     height: 16px;
     width: 16px;
   }
@@ -2990,19 +2956,13 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     7 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
@@ -3031,19 +2991,13 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
@@ -3072,19 +3026,13 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     365 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
@@ -3092,10 +3040,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c15"
+          class="c14"
         >
           <div
-            class="c16"
+            class="c15"
           >
             <svg
               viewBox="0 0 56 56"
@@ -3178,13 +3126,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   7 days
@@ -3219,13 +3161,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -3260,13 +3196,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -3366,14 +3296,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one confirming key purcha
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c23 {
+    .c21 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: white;
 }
 
@@ -3449,20 +3379,6 @@ Object {
 }
 
 .c12 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -3519,7 +3435,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c14 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3540,7 +3456,7 @@ Object {
   margin-top: 13px;
 }
 
-.c15 {
+.c14 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -3553,7 +3469,7 @@ Object {
   cursor: pointer;
 }
 
-.c21 {
+.c19 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -3573,7 +3489,7 @@ Object {
   color: var(--white);
 }
 
-.c16 {
+.c15 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -3597,32 +3513,21 @@ Object {
   padding-top: 13px;
 }
 
-.c16:hover {
+.c15:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c16:hover .c20 {
+.c15:hover .c18 {
   background-color: var(--activegreen);
 }
 
-.c17 {
+.c16 {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c18 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c18::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c19 {
+.c17 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -3649,13 +3554,13 @@ Object {
   max-width: 200px;
 }
 
-.c22 {
+.c20 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c22 div {
+.c20 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -3698,7 +3603,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c23 {
+  .c21 {
     height: 16px;
     width: 16px;
   }
@@ -3769,15 +3674,9 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c12"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c13"
+                class="c12"
               >
                 Waiting for confirmations
                 <br />
@@ -3786,14 +3685,14 @@ Object {
                 12
               </div>
               <footer
-                class="c14"
+                class="c13"
               >
                 Payment Confirming
               </footer>
             </div>
           </li>
           <li
-            class="c15 lock"
+            class="c14 lock"
             data-address="0x456"
           >
             <header
@@ -3802,10 +3701,10 @@ Object {
               One Month
             </header>
             <div
-              class="c16"
+              class="c15"
             >
               <div
-                class="c17 price"
+                class="c16 price"
               >
                 0.3
                  
@@ -3813,13 +3712,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c18"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c19"
+                  class="c17"
                 >
                   <span>
                     30 days
@@ -3827,14 +3720,14 @@ Object {
                 </span>
               </div>
               <footer
-                class="c20 c21"
+                class="c18 c19"
               >
                 Purchase
               </footer>
             </div>
           </li>
           <li
-            class="c15 lock"
+            class="c14 lock"
             data-address="0x789"
           >
             <header
@@ -3843,10 +3736,10 @@ Object {
               One Year at a discount of 20%
             </header>
             <div
-              class="c16"
+              class="c15"
             >
               <div
-                class="c17 price"
+                class="c16 price"
               >
                 3
                  
@@ -3854,13 +3747,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c18"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c19"
+                  class="c17"
                 >
                   <span>
                     365 days
@@ -3868,7 +3755,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c20 c21"
+                class="c18 c19"
               >
                 Purchase
               </footer>
@@ -3876,10 +3763,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c22"
+          class="c20"
         >
           <div
-            class="c23"
+            class="c21"
           >
             <svg
               viewBox="0 0 56 56"
@@ -3960,12 +3847,6 @@ Object {
                  
                 Eth
               </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
-              </div>
             </div>
             <div
               class="sc-1549ebs-5 eUmWhY"
@@ -4004,13 +3885,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -4045,13 +3920,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -4151,14 +4020,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one pending key purchase 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c23 {
+    .c21 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: white;
 }
 
@@ -4234,20 +4103,6 @@ Object {
 }
 
 .c12 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c13 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -4280,7 +4135,7 @@ Object {
   align-content: center;
 }
 
-.c14 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4325,7 +4180,7 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c15 {
+.c14 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -4338,7 +4193,7 @@ Object {
   cursor: pointer;
 }
 
-.c21 {
+.c19 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -4358,7 +4213,7 @@ Object {
   color: var(--white);
 }
 
-.c16 {
+.c15 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -4382,32 +4237,21 @@ Object {
   padding-top: 13px;
 }
 
-.c16:hover {
+.c15:hover {
   border: 1px solid var(--activegreen);
 }
 
-.c16:hover .c20 {
+.c15:hover .c18 {
   background-color: var(--activegreen);
 }
 
-.c17 {
+.c16 {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c18 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c18::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c19 {
+.c17 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -4434,13 +4278,13 @@ Object {
   max-width: 200px;
 }
 
-.c22 {
+.c20 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c22 div {
+.c20 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -4483,7 +4327,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c23 {
+  .c21 {
     height: 16px;
     width: 16px;
   }
@@ -4554,27 +4398,21 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c12"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c13"
+                class="c12"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c14"
+                class="c13"
               >
                 Payment Sent
               </footer>
             </div>
           </li>
           <li
-            class="c15 lock"
+            class="c14 lock"
             data-address="0x456"
           >
             <header
@@ -4583,10 +4421,10 @@ Object {
               One Month
             </header>
             <div
-              class="c16"
+              class="c15"
             >
               <div
-                class="c17 price"
+                class="c16 price"
               >
                 0.3
                  
@@ -4594,13 +4432,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c18"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c19"
+                  class="c17"
                 >
                   <span>
                     30 days
@@ -4608,14 +4440,14 @@ Object {
                 </span>
               </div>
               <footer
-                class="c20 c21"
+                class="c18 c19"
               >
                 Purchase
               </footer>
             </div>
           </li>
           <li
-            class="c15 lock"
+            class="c14 lock"
             data-address="0x789"
           >
             <header
@@ -4624,10 +4456,10 @@ Object {
               One Year at a discount of 20%
             </header>
             <div
-              class="c16"
+              class="c15"
             >
               <div
-                class="c17 price"
+                class="c16 price"
               >
                 3
                  
@@ -4635,13 +4467,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c18"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c19"
+                  class="c17"
                 >
                   <span>
                     365 days
@@ -4649,7 +4475,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c20 c21"
+                class="c18 c19"
               >
                 Purchase
               </footer>
@@ -4657,10 +4483,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c22"
+          class="c20"
         >
           <div
-            class="c23"
+            class="c21"
           >
             <svg
               viewBox="0 0 56 56"
@@ -4741,12 +4567,6 @@ Object {
                  
                 Eth
               </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
-              </div>
             </div>
             <div
               class="sc-1549ebs-5 eUmWhY"
@@ -4781,13 +4601,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -4822,13 +4636,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -4928,14 +4736,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and one submitted key purchas
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c23 {
+    .c21 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c23 > svg {
+.c21 > svg {
   fill: white;
 }
 
@@ -4965,7 +4773,7 @@ Object {
   fill: white;
 }
 
-.c15 {
+.c14 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -4995,7 +4803,7 @@ Object {
   color: var(--grey);
 }
 
-.c18 {
+.c17 {
   white-space: nowrap;
   font-weight: bold;
   -webkit-align-content: center;
@@ -5010,21 +4818,7 @@ Object {
   align-self: center;
 }
 
-.c19 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c20 {
+.c18 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -5040,7 +4834,7 @@ Object {
   padding: 0px;
 }
 
-.c17 {
+.c16 {
   display: grid;
   font-size: 15px;
   grid-auto-columns: min-content;
@@ -5057,7 +4851,7 @@ Object {
   align-content: center;
 }
 
-.c21 {
+.c19 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5078,7 +4872,7 @@ Object {
   margin-top: 13px;
 }
 
-.c16 {
+.c15 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -5115,7 +4909,7 @@ Object {
   cursor: pointer;
 }
 
-.c14 {
+.c13 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5163,7 +4957,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c9:hover .c13 {
+.c9:hover .c12 {
   background-color: var(--activegreen);
 }
 
@@ -5174,17 +4968,6 @@ Object {
 }
 
 .c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c12 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -5211,13 +4994,13 @@ Object {
   max-width: 200px;
 }
 
-.c22 {
+.c20 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c22 div {
+.c20 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -5260,7 +5043,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c23 {
+  .c21 {
     height: 16px;
     width: 16px;
   }
@@ -5332,26 +5115,20 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     7 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
             </div>
           </li>
           <li
-            class="c15 lock"
+            class="c14 lock"
             data-address="0x456"
           >
             <header
@@ -5360,32 +5137,26 @@ Object {
               One Month
             </header>
             <div
-              class="c16"
+              class="c15"
             >
               <div
-                class="c17"
+                class="c16"
               >
                 <div
-                  class="c18"
+                  class="c17"
                 >
                   0.3
                    
                   Eth
                 </div>
-                <div
-                  class="c19"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c20"
+                class="c18"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c21"
+                class="c19"
               >
                 Payment Sent
               </footer>
@@ -5414,19 +5185,13 @@ Object {
                 <span
                   class="c11"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c12"
-                >
                   <span>
                     365 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c13 c14"
+                class="c12 c13"
               >
                 Purchase
               </footer>
@@ -5434,10 +5199,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c22"
+          class="c20"
         >
           <div
-            class="c23"
+            class="c21"
           >
             <svg
               viewBox="0 0 56 56"
@@ -5517,13 +5282,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   7 days
@@ -5559,12 +5318,6 @@ Object {
                  
                 Eth
               </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
-              </div>
             </div>
             <div
               class="sc-1549ebs-5 eUmWhY"
@@ -5599,13 +5352,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -5705,14 +5452,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and two valid key purchases 1
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c34 {
+    .c31 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c34 > svg {
+.c31 > svg {
   fill: white;
 }
 
@@ -5742,7 +5489,7 @@ Object {
   fill: white;
 }
 
-.c16 {
+.c14 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -5754,17 +5501,17 @@ Object {
   line-height: 50px;
 }
 
-.c16 > svg {
+.c14 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c16:hover {
+.c14:hover {
   background-color: var(--green);
 }
 
-.c16:hover > svg {
+.c14:hover > svg {
   fill: white;
 }
 
@@ -5798,25 +5545,25 @@ Object {
   color: var(--grey);
 }
 
-.c21 {
+.c19 {
   display: none;
 }
 
-.c18 {
+.c16 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c18:hover .c20 {
+.c16:hover .c18 {
   display: block;
 }
 
-.c18:hover .c19 {
+.c16:hover .c17 {
   display: none;
 }
 
-.c25 {
+.c23 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5840,7 +5587,7 @@ Object {
   display: none;
 }
 
-.c23 {
+.c21 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5869,18 +5616,7 @@ Object {
   font-weight: bold;
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c14::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c15 {
+.c13 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -5911,17 +5647,17 @@ Object {
   padding-top: 13px;
 }
 
-.c9 .c24 {
+.c9 .c22 {
   display: none;
 }
 
-.c9 .c22 {
+.c9 .c20 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c9 .c17 {
+.c9 .c15 {
   display: none;
 }
 
@@ -5929,15 +5665,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   background-color: var(--green);
 }
 
-.c9:hover .c17 svg {
+.c9:hover .c15 svg {
   fill: var(--white);
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   display: block;
 }
 
@@ -5949,29 +5685,25 @@ Object {
   font-size: 15px;
 }
 
-.c9:hover .c13 {
-  font-weight: bold;
+.c9:hover .c18 {
+  display: none;
+}
+
+.c9:hover .c17 {
+  display: block;
+}
+
+.c9:hover .c22 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
 }
 
 .c9:hover .c20 {
   display: none;
 }
 
-.c9:hover .c19 {
-  display: block;
-}
-
-.c9:hover .c24 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c9:hover .c22 {
-  display: none;
-}
-
-.c26 {
+.c24 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -5984,7 +5716,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c32 {
+.c29 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -6004,11 +5736,11 @@ Object {
   color: var(--white);
 }
 
-.c35:hover .c31 {
+.c32:hover .c28 {
   background-color: var(--activegreen);
 }
 
-.c27 {
+.c25 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -6032,24 +5764,13 @@ Object {
   padding-top: 13px;
 }
 
-.c28 {
+.c26 {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c29 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c29::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c30 {
+.c27 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -6076,13 +5797,13 @@ Object {
   max-width: 200px;
 }
 
-.c33 {
+.c30 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c33 div {
+.c30 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6125,7 +5846,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c34 {
+  .c31 {
     height: 16px;
     width: 16px;
   }
@@ -6140,15 +5861,15 @@ Object {
     display: none;
   }
 
-  .c9 .c17 {
+  .c9 .c15 {
     display: block;
   }
 
-  .c9 .c20 {
+  .c9 .c18 {
     display: none;
   }
 
-  .c9 .c19 {
+  .c9 .c17 {
     display: block;
   }
 }
@@ -6219,13 +5940,7 @@ Object {
                 class="c12 "
               >
                 <span
-                  class="c13 c14"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c15"
+                  class="c13"
                 >
                   <span>
                     7 days
@@ -6233,10 +5948,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c16 c17 c18"
+                class="c14 c15 c16"
               >
                 <svg
-                  class="c19 "
+                  class="c17 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -6247,7 +5962,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c20 c21"
+                  class="c18 c19"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -6260,12 +5975,12 @@ Object {
                 
               </a>
               <footer
-                class="c22 c23"
+                class="c20 c21"
               >
                 Expires in &lt; 1 Minute
               </footer>
               <footer
-                class="c24 c25"
+                class="c22 c23"
               >
                 Go to Content
               </footer>
@@ -6294,13 +6009,7 @@ Object {
                 class="c12 "
               >
                 <span
-                  class="c13 c14"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c15"
+                  class="c13"
                 >
                   <span>
                     30 days
@@ -6308,10 +6017,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c16 c17 c18"
+                class="c14 c15 c16"
               >
                 <svg
-                  class="c19 "
+                  class="c17 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -6322,7 +6031,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c20 c21"
+                  class="c18 c19"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -6335,19 +6044,19 @@ Object {
                 
               </a>
               <footer
-                class="c22 c23"
+                class="c20 c21"
               >
                 Expires in 20 Minutes
               </footer>
               <footer
-                class="c24 c25"
+                class="c22 c23"
               >
                 Go to Content
               </footer>
             </div>
           </li>
           <li
-            class="c26 lock"
+            class="c24 lock"
             data-address="0x789"
             disabled=""
           >
@@ -6357,11 +6066,11 @@ Object {
               One Year at a discount of 20%
             </header>
             <div
-              class="c27"
+              class="c25"
               disabled=""
             >
               <div
-                class="c28 price"
+                class="c26 price"
               >
                 3
                  
@@ -6369,13 +6078,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c29"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c30"
+                  class="c27"
                 >
                   <span>
                     365 days
@@ -6383,7 +6086,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c31 c32"
+                class="c28 c29"
                 disabled=""
               >
                 Purchase
@@ -6392,10 +6095,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c33"
+          class="c30"
         >
           <div
-            class="c34"
+            class="c31"
           >
             <svg
               viewBox="0 0 56 56"
@@ -6464,7 +6167,7 @@ Object {
             One Week
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -6477,13 +6180,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   7 days
@@ -6539,7 +6236,7 @@ Object {
             One Month
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -6552,13 +6249,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   30 days
@@ -6627,13 +6318,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -6734,14 +6419,14 @@ exports[`Storyshots Checkout Checkout with lock with config name override 1`] = 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c34 {
+    .c31 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c34 > svg {
+.c31 > svg {
   fill: white;
 }
 
@@ -6771,7 +6456,7 @@ Object {
   fill: white;
 }
 
-.c16 {
+.c14 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -6783,17 +6468,17 @@ Object {
   line-height: 50px;
 }
 
-.c16 > svg {
+.c14 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c16:hover {
+.c14:hover {
   background-color: var(--green);
 }
 
-.c16:hover > svg {
+.c14:hover > svg {
   fill: white;
 }
 
@@ -6827,25 +6512,25 @@ Object {
   color: var(--grey);
 }
 
-.c21 {
+.c19 {
   display: none;
 }
 
-.c18 {
+.c16 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c18:hover .c20 {
+.c16:hover .c18 {
   display: block;
 }
 
-.c18:hover .c19 {
+.c16:hover .c17 {
   display: none;
 }
 
-.c25 {
+.c23 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -6869,7 +6554,7 @@ Object {
   display: none;
 }
 
-.c23 {
+.c21 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -6898,18 +6583,7 @@ Object {
   font-weight: bold;
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c14::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c15 {
+.c13 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -6940,17 +6614,17 @@ Object {
   padding-top: 13px;
 }
 
-.c9 .c24 {
+.c9 .c22 {
   display: none;
 }
 
-.c9 .c22 {
+.c9 .c20 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c9 .c17 {
+.c9 .c15 {
   display: none;
 }
 
@@ -6958,15 +6632,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   background-color: var(--green);
 }
 
-.c9:hover .c17 svg {
+.c9:hover .c15 svg {
   fill: var(--white);
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   display: block;
 }
 
@@ -6978,29 +6652,25 @@ Object {
   font-size: 15px;
 }
 
-.c9:hover .c13 {
-  font-weight: bold;
+.c9:hover .c18 {
+  display: none;
+}
+
+.c9:hover .c17 {
+  display: block;
+}
+
+.c9:hover .c22 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
 }
 
 .c9:hover .c20 {
   display: none;
 }
 
-.c9:hover .c19 {
-  display: block;
-}
-
-.c9:hover .c24 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c9:hover .c22 {
-  display: none;
-}
-
-.c26 {
+.c24 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -7013,7 +6683,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c32 {
+.c29 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -7033,11 +6703,11 @@ Object {
   color: var(--white);
 }
 
-.c35:hover .c31 {
+.c32:hover .c28 {
   background-color: var(--activegreen);
 }
 
-.c27 {
+.c25 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -7061,24 +6731,13 @@ Object {
   padding-top: 13px;
 }
 
-.c28 {
+.c26 {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c29 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c29::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c30 {
+.c27 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -7105,13 +6764,13 @@ Object {
   max-width: 200px;
 }
 
-.c33 {
+.c30 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c33 div {
+.c30 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -7154,7 +6813,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c34 {
+  .c31 {
     height: 16px;
     width: 16px;
   }
@@ -7169,15 +6828,15 @@ Object {
     display: none;
   }
 
-  .c9 .c17 {
+  .c9 .c15 {
     display: block;
   }
 
-  .c9 .c20 {
+  .c9 .c18 {
     display: none;
   }
 
-  .c9 .c19 {
+  .c9 .c17 {
     display: block;
   }
 }
@@ -7248,13 +6907,7 @@ Object {
                 class="c12 "
               >
                 <span
-                  class="c13 c14"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c15"
+                  class="c13"
                 >
                   <span>
                     7 days
@@ -7262,10 +6915,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c16 c17 c18"
+                class="c14 c15 c16"
               >
                 <svg
-                  class="c19 "
+                  class="c17 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -7276,7 +6929,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c20 c21"
+                  class="c18 c19"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -7289,19 +6942,19 @@ Object {
                 
               </a>
               <footer
-                class="c22 c23"
+                class="c20 c21"
               >
                 Expires in 8 Days
               </footer>
               <footer
-                class="c24 c25"
+                class="c22 c23"
               >
                 Go to Content
               </footer>
             </div>
           </li>
           <li
-            class="c26 lock"
+            class="c24 lock"
             data-address="0x456"
             disabled=""
           >
@@ -7309,11 +6962,11 @@ Object {
               class="c8"
             />
             <div
-              class="c27"
+              class="c25"
               disabled=""
             >
               <div
-                class="c28 price"
+                class="c26 price"
               >
                 0.3
                  
@@ -7321,13 +6974,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c29"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c30"
+                  class="c27"
                 >
                   <span>
                     30 days
@@ -7335,7 +6982,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c31 c32"
+                class="c28 c29"
                 disabled=""
               >
                 Purchase
@@ -7343,7 +6990,7 @@ Object {
             </div>
           </li>
           <li
-            class="c26 lock"
+            class="c24 lock"
             data-address="0x789"
             disabled=""
           >
@@ -7351,11 +6998,11 @@ Object {
               class="c8"
             />
             <div
-              class="c27"
+              class="c25"
               disabled=""
             >
               <div
-                class="c28 price"
+                class="c26 price"
               >
                 3
                  
@@ -7363,13 +7010,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c29"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c30"
+                  class="c27"
                 >
                   <span>
                     365 days
@@ -7377,7 +7018,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c31 c32"
+                class="c28 c29"
                 disabled=""
               >
                 Purchase
@@ -7386,10 +7027,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c33"
+          class="c30"
         >
           <div
-            class="c34"
+            class="c31"
           >
             <svg
               viewBox="0 0 56 56"
@@ -7458,7 +7099,7 @@ Object {
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -7471,13 +7112,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   7 days
@@ -7544,13 +7179,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -7586,13 +7215,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -7693,14 +7316,14 @@ exports[`Storyshots Checkout Checkout with lock with no name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c34 {
+    .c31 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c34 > svg {
+.c31 > svg {
   fill: white;
 }
 
@@ -7730,7 +7353,7 @@ Object {
   fill: white;
 }
 
-.c16 {
+.c14 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -7742,17 +7365,17 @@ Object {
   line-height: 50px;
 }
 
-.c16 > svg {
+.c14 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c16:hover {
+.c14:hover {
   background-color: var(--green);
 }
 
-.c16:hover > svg {
+.c14:hover > svg {
   fill: white;
 }
 
@@ -7786,25 +7409,25 @@ Object {
   color: var(--grey);
 }
 
-.c21 {
+.c19 {
   display: none;
 }
 
-.c18 {
+.c16 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c18:hover .c20 {
+.c16:hover .c18 {
   display: block;
 }
 
-.c18:hover .c19 {
+.c16:hover .c17 {
   display: none;
 }
 
-.c25 {
+.c23 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -7828,7 +7451,7 @@ Object {
   display: none;
 }
 
-.c23 {
+.c21 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -7857,18 +7480,7 @@ Object {
   font-weight: bold;
 }
 
-.c14 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c14::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c15 {
+.c13 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -7899,17 +7511,17 @@ Object {
   padding-top: 13px;
 }
 
-.c9 .c24 {
+.c9 .c22 {
   display: none;
 }
 
-.c9 .c22 {
+.c9 .c20 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c9 .c17 {
+.c9 .c15 {
   display: none;
 }
 
@@ -7917,15 +7529,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   background-color: var(--green);
 }
 
-.c9:hover .c17 svg {
+.c9:hover .c15 svg {
   fill: var(--white);
 }
 
-.c9:hover .c17 {
+.c9:hover .c15 {
   display: block;
 }
 
@@ -7937,29 +7549,25 @@ Object {
   font-size: 15px;
 }
 
-.c9:hover .c13 {
-  font-weight: bold;
+.c9:hover .c18 {
+  display: none;
+}
+
+.c9:hover .c17 {
+  display: block;
+}
+
+.c9:hover .c22 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
 }
 
 .c9:hover .c20 {
   display: none;
 }
 
-.c9:hover .c19 {
-  display: block;
-}
-
-.c9:hover .c24 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c9:hover .c22 {
-  display: none;
-}
-
-.c26 {
+.c24 {
   display: grid;
   justify-items: stretch;
   margin: 0px;
@@ -7972,7 +7580,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c32 {
+.c29 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -7992,11 +7600,11 @@ Object {
   color: var(--white);
 }
 
-.c35:hover .c31 {
+.c32:hover .c28 {
   background-color: var(--activegreen);
 }
 
-.c27 {
+.c25 {
   display: grid;
   height: 140px;
   width: 200px;
@@ -8020,24 +7628,13 @@ Object {
   padding-top: 13px;
 }
 
-.c28 {
+.c26 {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
 }
 
-.c29 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c29::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c30 {
+.c27 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -8064,13 +7661,13 @@ Object {
   max-width: 200px;
 }
 
-.c33 {
+.c30 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c33 div {
+.c30 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -8113,7 +7710,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c34 {
+  .c31 {
     height: 16px;
     width: 16px;
   }
@@ -8128,15 +7725,15 @@ Object {
     display: none;
   }
 
-  .c9 .c17 {
+  .c9 .c15 {
     display: block;
   }
 
-  .c9 .c20 {
+  .c9 .c18 {
     display: none;
   }
 
-  .c9 .c19 {
+  .c9 .c17 {
     display: block;
   }
 }
@@ -8207,13 +7804,7 @@ Object {
                 class="c12 "
               >
                 <span
-                  class="c13 c14"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c15"
+                  class="c13"
                 >
                   <span>
                     7 days
@@ -8221,10 +7812,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c16 c17 c18"
+                class="c14 c15 c16"
               >
                 <svg
-                  class="c19 "
+                  class="c17 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -8235,7 +7826,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c20 c21"
+                  class="c18 c19"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -8248,12 +7839,12 @@ Object {
                 
               </a>
               <footer
-                class="c22 c23"
+                class="c20 c21"
               >
                 Expires in 1 Hour
               </footer>
               <footer
-                class="c24 c25"
+                class="c22 c23"
               >
                 Go to Content
               </footer>
@@ -8280,13 +7871,7 @@ Object {
                 class="c12 "
               >
                 <span
-                  class="c13 c14"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c15"
+                  class="c13"
                 >
                   <span>
                     30 days
@@ -8294,10 +7879,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c16 c17 c18"
+                class="c14 c15 c16"
               >
                 <svg
-                  class="c19 "
+                  class="c17 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -8308,7 +7893,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c20 c21"
+                  class="c18 c19"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -8321,19 +7906,19 @@ Object {
                 
               </a>
               <footer
-                class="c22 c23"
+                class="c20 c21"
               >
                 Expires in 1 Hour
               </footer>
               <footer
-                class="c24 c25"
+                class="c22 c23"
               >
                 Go to Content
               </footer>
             </div>
           </li>
           <li
-            class="c26 lock"
+            class="c24 lock"
             data-address="0x789"
             disabled=""
           >
@@ -8343,11 +7928,11 @@ Object {
               Has Name
             </header>
             <div
-              class="c27"
+              class="c25"
               disabled=""
             >
               <div
-                class="c28 price"
+                class="c26 price"
               >
                 3
                  
@@ -8355,13 +7940,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c29"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c30"
+                  class="c27"
                 >
                   <span>
                     365 days
@@ -8369,7 +7948,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c31 c32"
+                class="c28 c29"
                 disabled=""
               >
                 Purchase
@@ -8378,10 +7957,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c33"
+          class="c30"
         >
           <div
-            class="c34"
+            class="c31"
           >
             <svg
               viewBox="0 0 56 56"
@@ -8450,7 +8029,7 @@ Object {
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -8463,13 +8042,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   7 days
@@ -8523,7 +8096,7 @@ Object {
             class="sc-1549ebs-1 kSQjXI"
           />
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -8536,13 +8109,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   30 days
@@ -8611,13 +8178,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   365 days
@@ -19883,20 +19444,6 @@ Object {
 }
 
 .c14 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c15 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -19953,7 +19500,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -19996,7 +19543,7 @@ Object {
   position: relative;
 }
 
-.c18 {
+.c17 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -20011,11 +19558,11 @@ Object {
   height: 60px;
 }
 
-.c18 :hover {
+.c17 :hover {
   background-color: var(--activegreen);
 }
 
-.c20 {
+.c19 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
@@ -20045,17 +19592,17 @@ Object {
   height: 30px;
 }
 
-.c19 {
+.c18 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c19 span {
+.c18 span {
   padding-right: 1px;
 }
 
-.c19 div {
+.c18 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -20109,13 +19656,13 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     width: 100%;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c17 {
+  .c16 {
     display: none;
   }
 }
@@ -20207,15 +19754,9 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c14"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c15"
+                class="c14"
               >
                 Waiting for confirmations
                 <br />
@@ -20224,7 +19765,7 @@ Object {
                 12
               </div>
               <footer
-                class="c16"
+                class="c15"
               >
                 Payment Confirming
               </footer>
@@ -20235,26 +19776,26 @@ Object {
               Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
             </p>
             <p
-              class="c17"
+              class="c16"
             >
               You'll see the status of your order on the left.
             </p>
             <button
-              class="c18"
+              class="c17"
             >
               Continue
             </button>
           </div>
         </ul>
         <footer
-          class="c19"
+          class="c18"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="c20"
+            class="c19"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -20328,12 +19869,6 @@ Object {
                 0.3
                  
                 Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
               </div>
             </div>
             <div
@@ -20525,20 +20060,6 @@ Object {
 }
 
 .c14 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c15 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -20571,7 +20092,7 @@ Object {
   align-content: center;
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -20638,7 +20159,7 @@ Object {
   position: relative;
 }
 
-.c18 {
+.c17 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -20653,11 +20174,11 @@ Object {
   height: 60px;
 }
 
-.c18 :hover {
+.c17 :hover {
   background-color: var(--activegreen);
 }
 
-.c20 {
+.c19 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
@@ -20687,17 +20208,17 @@ Object {
   height: 30px;
 }
 
-.c19 {
+.c18 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c19 span {
+.c18 span {
   padding-right: 1px;
 }
 
-.c19 div {
+.c18 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -20751,13 +20272,13 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     width: 100%;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c17 {
+  .c16 {
     display: none;
   }
 }
@@ -20849,20 +20370,14 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c14"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c15"
+                class="c14"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c16"
+                class="c15"
               >
                 Payment Sent
               </footer>
@@ -20873,26 +20388,26 @@ Object {
               Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
             </p>
             <p
-              class="c17"
+              class="c16"
             >
               You'll see the status of your order on the left.
             </p>
             <button
-              class="c18"
+              class="c17"
             >
               Continue
             </button>
           </div>
         </ul>
         <footer
-          class="c19"
+          class="c18"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="c20"
+            class="c19"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -20966,12 +20481,6 @@ Object {
                 0.3
                  
                 Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
               </div>
             </div>
             <div
@@ -21159,20 +20668,6 @@ Object {
 }
 
 .c14 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c15 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -21205,7 +20700,7 @@ Object {
   align-content: center;
 }
 
-.c16 {
+.c15 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -21272,7 +20767,7 @@ Object {
   position: relative;
 }
 
-.c18 {
+.c17 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -21287,11 +20782,11 @@ Object {
   height: 60px;
 }
 
-.c18 :hover {
+.c17 :hover {
   background-color: var(--activegreen);
 }
 
-.c20 {
+.c19 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
@@ -21321,17 +20816,17 @@ Object {
   height: 30px;
 }
 
-.c19 {
+.c18 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c19 span {
+.c18 span {
   padding-right: 1px;
 }
 
-.c19 div {
+.c18 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -21385,13 +20880,13 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c18 {
+  .c17 {
     width: 100%;
   }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c17 {
+  .c16 {
     display: none;
   }
 }
@@ -21483,20 +20978,14 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c14"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c15"
+                class="c14"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c16"
+                class="c15"
               >
                 Payment Sent
               </footer>
@@ -21507,26 +20996,26 @@ Object {
               Your transaction was sent and is currently being confirmed on the Ethereum blockchain. Please enjoy our content while it is confirming!
             </p>
             <p
-              class="c17"
+              class="c16"
             >
               You'll see the status of your order on the left.
             </p>
             <button
-              class="c18"
+              class="c17"
             >
               Continue
             </button>
           </div>
         </ul>
         <footer
-          class="c19"
+          class="c18"
         >
           <span>
             Powered by
           </span>
           <svg
             alt="Unlock"
-            class="c20"
+            class="c19"
             viewBox="0 0 1200 256"
           >
             <title />
@@ -21600,12 +21089,6 @@ Object {
                 0.3
                  
                 Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
               </div>
             </div>
             <div
@@ -24730,7 +24213,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -24750,7 +24233,7 @@ Object {
   color: var(--white);
 }
 
-.c10:hover .c8 {
+.c9:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -24790,22 +24273,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11 .c0 {
+.c10 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c11 .c2 {
+.c10 .c2 {
   height: 0;
 }
 
@@ -24845,19 +24317,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
                 disabled=""
               >
                 Purchase
@@ -24902,13 +24368,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -25023,7 +24483,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -25043,7 +24503,7 @@ Object {
   color: var(--white);
 }
 
-.c10:hover .c8 {
+.c9:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -25083,22 +24543,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11 .c0 {
+.c10 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c11 .c2 {
+.c10 .c2 {
   height: 0;
 }
 
@@ -25138,19 +24587,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
                 disabled=""
               >
                 Sold Out
@@ -25195,13 +24638,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -25412,7 +24849,7 @@ Object {
               <div
                 class="c5 price"
               >
-                10
+                10.0
                  
                 DEV
               </div>
@@ -25465,13 +24902,13 @@ Object {
             <div
               class="sc-5sgq84-3 jSlcrK price"
             >
-              10
+              10.0
                
               DEV
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   5 minutes
@@ -25586,7 +25023,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -25606,7 +25043,7 @@ Object {
   color: var(--white);
 }
 
-.c10:hover .c8 {
+.c9:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -25646,22 +25083,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c11 .c0 {
+.c10 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c11 .c2 {
+.c10 .c2 {
   height: 0;
 }
 
@@ -25701,19 +25127,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
                 disabled=""
               >
                 Insufficient funds
@@ -25758,13 +25178,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -26033,7 +25447,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   5 minutes
@@ -26147,7 +25561,7 @@ Object {
   cursor: pointer;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -26195,7 +25609,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c4:hover .c8 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -26211,22 +25625,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -26264,19 +25667,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -26318,13 +25715,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -26453,20 +25844,6 @@ Object {
 }
 
 .c7 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c8 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -26523,7 +25900,7 @@ Object {
   border: 1px solid var(--yellow);
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -26544,11 +25921,11 @@ Object {
   margin-top: 13px;
 }
 
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -26585,15 +25962,9 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c7"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c8"
+                class="c7"
               >
                 Waiting for confirmations
                 <br />
@@ -26602,7 +25973,7 @@ Object {
                 12
               </div>
               <footer
-                class="c9"
+                class="c8"
               >
                 Payment Confirming
               </footer>
@@ -26644,12 +26015,6 @@ Object {
                 0.23
                  
                 Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
               </div>
             </div>
             <div
@@ -26978,10 +26343,6 @@ Object {
   font-size: 15px;
 }
 
-.c4:hover .c24 {
-  font-weight: bold;
-}
-
 .c4:hover .c14 {
   display: none;
 }
@@ -27135,7 +26496,7 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -27148,7 +26509,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   5 minutes
@@ -27567,7 +26928,7 @@ exports[`Storyshots Lock with a mined key. 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c12 {
+    .c10 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
@@ -27579,25 +26940,25 @@ Object {
   line-height: 50px;
 }
 
-.c12 > svg {
+.c10 > svg {
   fill: var(--grey);
   height: 50px;
   width: 50px;
 }
 
-.c12:hover {
+.c10:hover {
   background-color: var(--green);
 }
 
-.c12:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:hover .c22 {
+.c9:hover .c20 {
   display: inline-block;
 }
 
-.c23 .c11 {
+.c21 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -27608,28 +26969,28 @@ Object {
   align-self: center;
 }
 
-.c23 .c11:nth-child(1) {
+.c21 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c23 .c11:nth-child(2) {
+.c21 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c23 .c11 > svg {
+.c21 .c9 > svg {
   fill: var(--grey);
 }
 
-.c23 .c11:hover > svg {
+.c21 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c24 .c11 {
+.c22 .c9 {
   margin: 24px;
 }
 
-.c24 .c11 small {
+.c22 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -27668,25 +27029,25 @@ Object {
   color: var(--grey);
 }
 
-.c17 {
+.c15 {
   display: none;
 }
 
-.c14 {
+.c12 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
 }
 
-.c14:hover .c16 {
+.c12:hover .c14 {
   display: block;
 }
 
-.c14:hover .c15 {
+.c12:hover .c13 {
   display: none;
 }
 
-.c21 {
+.c19 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -27710,7 +27071,7 @@ Object {
   display: none;
 }
 
-.c19 {
+.c17 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -27739,18 +27100,7 @@ Object {
   font-weight: bold;
 }
 
-.c9 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c9::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c10 {
+.c8 {
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
@@ -27781,17 +27131,17 @@ Object {
   padding-top: 13px;
 }
 
-.c4 .c20 {
+.c4 .c18 {
   display: none;
 }
 
-.c4 .c18 {
+.c4 .c16 {
   display: grid;
   background-color: var(--white);
   color: var(--green);
 }
 
-.c4 .c13 {
+.c4 .c11 {
   display: none;
 }
 
@@ -27799,15 +27149,15 @@ Object {
   grid-template-rows: 20px 60px 30px;
 }
 
-.c4:hover .c13 {
+.c4:hover .c11 {
   background-color: var(--green);
 }
 
-.c4:hover .c13 svg {
+.c4:hover .c11 svg {
   fill: var(--white);
 }
 
-.c4:hover .c13 {
+.c4:hover .c11 {
   display: block;
 }
 
@@ -27819,33 +27169,29 @@ Object {
   font-size: 15px;
 }
 
-.c4:hover .c8 {
-  font-weight: bold;
+.c4:hover .c14 {
+  display: none;
+}
+
+.c4:hover .c13 {
+  display: block;
+}
+
+.c4:hover .c18 {
+  display: grid;
+  background-color: var(--white);
+  color: var(--green);
 }
 
 .c4:hover .c16 {
   display: none;
 }
 
-.c4:hover .c15 {
-  display: block;
-}
-
-.c4:hover .c20 {
-  display: grid;
-  background-color: var(--white);
-  color: var(--green);
-}
-
-.c4:hover .c18 {
-  display: none;
-}
-
-.c25 .c0 {
+.c23 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c25 .c2 {
+.c23 .c2 {
   height: 0;
 }
 
@@ -27858,15 +27204,15 @@ Object {
     display: none;
   }
 
-  .c4 .c13 {
+  .c4 .c11 {
     display: block;
   }
 
-  .c4 .c16 {
+  .c4 .c14 {
     display: none;
   }
 
-  .c4 .c15 {
+  .c4 .c13 {
     display: block;
   }
 }
@@ -27905,13 +27251,7 @@ Object {
                 class="c7 "
               >
                 <span
-                  class="c8 c9"
-                >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c10"
+                  class="c8"
                 >
                   <span>
                     30 days
@@ -27919,10 +27259,10 @@ Object {
                 </span>
               </div>
               <a
-                class="c11 c12 c13 c14"
+                class="c9 c10 c11 c12"
               >
                 <svg
-                  class="c15 "
+                  class="c13 "
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -27933,7 +27273,7 @@ Object {
                   />
                 </svg>
                 <svg
-                  class="c16 c17"
+                  class="c14 c15"
                   viewBox="0 0 24 24"
                 >
                   <title />
@@ -27946,12 +27286,12 @@ Object {
                 
               </a>
               <footer
-                class="c18 c19"
+                class="c16 c17"
               >
                 Never Expires
               </footer>
               <footer
-                class="c20 c21"
+                class="c18 c19"
               >
                 Go to Content
               </footer>
@@ -27982,7 +27322,7 @@ Object {
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-5 fUiyRE"
+            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -27995,13 +27335,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 imuio"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="ynhyps-2 ynhyps-4 fUQtfi"
+                class="ynhyps-2 ynhyps-3 AwgYZ"
               >
                 <span>
                   30 days
@@ -28162,20 +27496,6 @@ Object {
 }
 
 .c7 {
-  white-space: nowrap;
-  -webkit-align-content: center;
-  -ms-flex-line-pack: center;
-  align-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c8 {
   display: grid;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
@@ -28208,7 +27528,7 @@ Object {
   align-content: center;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -28253,11 +27573,11 @@ Object {
   border: 1px solid var(--link);
 }
 
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -28294,20 +27614,14 @@ Object {
                    
                   Eth
                 </div>
-                <div
-                  class="c7"
-                >
-                  $
-                  ---
-                </div>
               </div>
               <div
-                class="c8"
+                class="c7"
               >
                 Waiting for mining confirmation.
               </div>
               <footer
-                class="c9"
+                class="c8"
               >
                 Payment Sent
               </footer>
@@ -28349,12 +27663,6 @@ Object {
                 0.23
                  
                 Eth
-              </div>
-              <div
-                class="sc-1549ebs-4 kUlrFA"
-              >
-                $
-                ---
               </div>
             </div>
             <div
@@ -28765,7 +28073,7 @@ Object {
   cursor: pointer;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -28813,7 +28121,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c4:hover .c8 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -28829,22 +28137,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -28882,19 +28179,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -28936,13 +28227,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -29056,7 +28341,7 @@ Object {
   cursor: pointer;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -29104,7 +28389,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c4:hover .c8 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -29120,22 +28405,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -29173,19 +28447,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -29227,13 +28495,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
@@ -29445,7 +28707,7 @@ Object {
               <div
                 class="c5 price"
               >
-                10
+                10.0
                  
                 DEV
               </div>
@@ -29495,13 +28757,13 @@ Object {
             <div
               class="sc-5sgq84-3 jSlcrK price"
             >
-              10
+              10.0
                
               DEV
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   5 minutes
@@ -29769,7 +29031,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   5 minutes
@@ -29883,7 +29145,7 @@ Object {
   cursor: pointer;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -29931,7 +29193,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c4:hover .c8 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -29947,22 +29209,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -30000,19 +29251,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     5 minutes
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -30054,13 +29299,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   5 minutes
@@ -30174,7 +29413,7 @@ Object {
   cursor: pointer;
 }
 
-.c9 {
+.c8 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -30222,7 +29461,7 @@ Object {
   border: 1px solid var(--activegreen);
 }
 
-.c4:hover .c8 {
+.c4:hover .c7 {
   background-color: var(--activegreen);
 }
 
@@ -30238,22 +29477,11 @@ Object {
   color: var(--grey);
 }
 
-.c6::after {
-  color: var(--lightgrey);
-  content: ' | ';
-}
-
-.c7 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
-.c10 .c0 {
+.c9 .c0 {
   grid-template-rows: 4px 140px;
 }
 
-.c10 .c2 {
+.c9 .c2 {
   height: 0;
 }
 
@@ -30291,19 +29519,13 @@ Object {
                 <span
                   class="c6"
                 >
-                  $
-                  ---
-                </span>
-                <span
-                  class="c7"
-                >
                   <span>
                     30 days
                   </span>
                 </span>
               </div>
               <footer
-                class="c8 c9"
+                class="c7 c8"
               >
                 Purchase
               </footer>
@@ -30345,13 +29567,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 bjYoJT"
-              >
-                $
-                ---
-              </span>
-              <span
-                class="sc-5sgq84-4 sc-5sgq84-6 ickXrh"
+                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
               >
                 <span>
                   30 days
