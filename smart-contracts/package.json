@@ -38,7 +38,6 @@
     "web3-utils": "1.2.1"
   },
   "devDependencies": {
-    "remixd": "0.1.8",
     "truffle-flattener": "1.4.2",
     "truffle-security": "1.5.5"
   },
@@ -51,7 +50,6 @@
     }
   },
   "scripts": {
-    "remix": "remixd -s contracts --remix-ide https://remix.ethereum.org",
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
     "dev": "npm run lint && npm run build && npm run test",
