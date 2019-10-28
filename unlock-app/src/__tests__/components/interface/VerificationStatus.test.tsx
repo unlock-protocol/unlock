@@ -2,13 +2,17 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import * as apolloHooks from '@apollo/react-hooks'
 import sigUtil from 'eth-sig-util'
+import { ethers } from 'ethers'
 import {
   VerificationStatus,
   Identity,
   OwnsKey,
+  RefundButton,
 } from '../../../components/interface/VerificationStatus'
 import * as durations from '../../../utils/durations'
 import { OwnedKey } from '../../../components/interface/keyChain/KeychainTypes'
+
+jest.mock('ethers')
 
 const ownedKey: OwnedKey = {
   lock: {
@@ -30,7 +34,21 @@ const config = {
   },
 }
 
+let refundFunction = jest.fn()
+
 describe('VerificationStatus', () => {
+  beforeAll(() => {
+    ;(ethers.providers.Web3Provider as any).mockImplementation(() => {
+      return {
+        getSigner: jest.fn(),
+      }
+    })
+    ;(ethers.Contract as any).mockImplementation(() => {
+      return {
+        refund: refundFunction,
+      }
+    })
+  })
   describe('Main component', () => {
     it('should show an error if any required data is missing', () => {
       expect.assertions(0)
@@ -143,6 +161,29 @@ describe('VerificationStatus', () => {
       getByText(
         'This user DOES own a key, which is valid until November 14, 3021'
       )
+    })
+  })
+
+  describe('RefundButton', () => {
+    it('should render a button to initiate a refund', async () => {
+      expect.assertions(1)
+
+      const { getByText, findByText } = rtl.render(
+        <RefundButton
+          provider={{}}
+          accountAddress="0xdeadbeef"
+          externalRefundContractAddress="0xbadc0ffee"
+        />
+      )
+
+      const refundButton = getByText('Perform refund')
+
+      rtl.fireEvent.click(refundButton)
+
+      expect(refundFunction).toHaveBeenCalledWith('0xdeadbeef')
+
+      // Button text changes after click
+      await findByText('Refund Initiated')
     })
   })
 })
