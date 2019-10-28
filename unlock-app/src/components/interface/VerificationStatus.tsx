@@ -2,6 +2,7 @@ import React from 'react'
 import sigUtil from 'eth-sig-util'
 import { useQuery } from '@apollo/react-hooks'
 import { ApolloError } from 'apollo-boost'
+import { ethers } from 'ethers'
 import { DefaultError } from '../creator/FatalError'
 import {
   durationsAsTextFromSeconds,
@@ -11,7 +12,6 @@ import { OwnedKey } from './keyChain/KeychainTypes'
 import keyHolderQuery from '../../queries/keyHolder'
 import withConfig from '../../utils/withConfig'
 import 'cross-fetch/polyfill'
-import { ethers } from 'ethers'
 
 interface VerificationData {
   accountAddress: string
@@ -29,7 +29,7 @@ interface Props {
   }
 }
 
-const refund = async (
+export const refund = async (
   contractAddress: string,
   provider: any,
   recipient: string
@@ -38,12 +38,12 @@ const refund = async (
   const web3Provider = new ethers.providers.Web3Provider(provider)
   const signer = web3Provider.getSigner()
   const contract = new ethers.Contract(contractAddress, abi, signer)
-  console.log('contract created, performing refund')
+
   try {
-    const result: any = await contract.refund(recipient)
-    console.log(result)
+    await contract.refund(recipient)
   } catch (e) {
-    console.log(e)
+    // eslint-disable-next-line no-console
+    console.error(e)
   }
 }
 
@@ -112,8 +112,9 @@ export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
           '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'.toLowerCase() && (
           <button
             type="button"
-            onClick={() =>
-              refund(externalRefundContractAddress, provider, accountAddress)}
+            onClick={() => {
+              refund(externalRefundContractAddress, provider, accountAddress)
+            }}
           >
             Perform refund
           </button>

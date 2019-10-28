@@ -2,7 +2,8 @@ import React from 'react'
 import * as rtl from 'react-testing-library'
 import * as apolloHooks from '@apollo/react-hooks'
 import sigUtil from 'eth-sig-util'
-import VerificationStatus, {
+import {
+  VerificationStatus,
   Identity,
   OwnsKey,
 } from '../../../components/interface/VerificationStatus'
@@ -22,12 +23,19 @@ const ownedKey: OwnedKey = {
   keyId: 'a key id',
 }
 
+const config = {
+  externalRefundContractAddress: '0x123abc',
+  providers: {
+    Metamask: {},
+  },
+}
+
 describe('VerificationStatus', () => {
   describe('Main component', () => {
     it('should show an error if any required data is missing', () => {
       expect.assertions(0)
 
-      const { getByText } = rtl.render(<VerificationStatus />)
+      const { getByText } = rtl.render(<VerificationStatus config={config} />)
 
       getByText('No Signature Data Found')
     })
@@ -54,6 +62,7 @@ describe('VerificationStatus', () => {
           }}
           sig="this is a signature string, essentially"
           hexData="this is some hex data"
+          config={config}
         />
       )
 
