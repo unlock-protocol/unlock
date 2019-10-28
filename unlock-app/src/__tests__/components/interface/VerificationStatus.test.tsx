@@ -7,6 +7,20 @@ import VerificationStatus, {
   OwnsKey,
 } from '../../../components/interface/VerificationStatus'
 import * as durations from '../../../utils/durations'
+import { OwnedKey } from '../../../components/interface/keyChain/KeychainTypes'
+
+const ownedKey: OwnedKey = {
+  lock: {
+    address: '0x123abc',
+    name: 'Lock Around the Clock',
+    expirationDuration: '123456',
+    tokenAddress: 'a token address',
+    price: '5',
+  },
+  expiration: '12345678',
+  id: 'an id',
+  keyId: 'a key id',
+}
 
 describe('VerificationStatus', () => {
   describe('Main component', () => {
@@ -69,9 +83,7 @@ describe('VerificationStatus', () => {
     it('should indicate when it is loading', () => {
       expect.assertions(0)
 
-      const { getByText } = rtl.render(
-        <OwnsKey loading error={undefined} data={{}} lockAddress="0x123abc" />
-      )
+      const { getByText } = rtl.render(<OwnsKey loading error={undefined} />)
 
       getByText('Checking if user has a valid key...')
     })
@@ -80,12 +92,7 @@ describe('VerificationStatus', () => {
       expect.assertions(0)
 
       const { getByText } = rtl.render(
-        <OwnsKey
-          loading={false}
-          error={new Error('oh bother') as any}
-          data={{}}
-          lockAddress="0x123abc"
-        />
+        <OwnsKey loading={false} error={new Error('oh bother') as any} />
       )
 
       getByText('Error: oh bother')
@@ -95,18 +102,7 @@ describe('VerificationStatus', () => {
       expect.assertions(0)
 
       const { getByText } = rtl.render(
-        <OwnsKey
-          loading={false}
-          error={undefined}
-          data={{
-            keyHolders: [
-              {
-                keys: [],
-              },
-            ],
-          }}
-          lockAddress="0x123abc"
-        />
+        <OwnsKey loading={false} error={undefined} />
       )
 
       getByText('This user does not have a key to the lock.')
@@ -119,25 +115,7 @@ describe('VerificationStatus', () => {
       spy.mockReturnValue('Expired')
 
       const { getByText } = rtl.render(
-        <OwnsKey
-          loading={false}
-          error={undefined}
-          data={{
-            keyHolders: [
-              {
-                keys: [
-                  {
-                    lock: {
-                      address: '0x123abc',
-                    },
-                    expiration: '12345678',
-                  },
-                ],
-              },
-            ],
-          }}
-          lockAddress="0x123abc"
-        />
+        <OwnsKey loading={false} error={undefined} matchingKey={ownedKey} />
       )
 
       getByText('The key has EXPIRED')
@@ -147,28 +125,10 @@ describe('VerificationStatus', () => {
       expect.assertions(0)
 
       const spy = jest.spyOn(durations, 'expirationAsDate')
-      spy.mockReturnValue('November 14, 3021')
+      spy.mockReturnValueOnce('November 14, 3021')
 
       const { getByText } = rtl.render(
-        <OwnsKey
-          loading={false}
-          error={undefined}
-          data={{
-            keyHolders: [
-              {
-                keys: [
-                  {
-                    lock: {
-                      address: '0x123abc',
-                    },
-                    expiration: '12345678',
-                  },
-                ],
-              },
-            ],
-          }}
-          lockAddress="0x123abc"
-        />
+        <OwnsKey loading={false} error={undefined} matchingKey={ownedKey} />
       )
 
       getByText(
