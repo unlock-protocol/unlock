@@ -29,24 +29,6 @@ interface Props {
   }
 }
 
-export const refund = async (
-  contractAddress: string,
-  provider: any,
-  recipient: string
-) => {
-  const abi = ['function refund(address recipient)']
-  const web3Provider = new ethers.providers.Web3Provider(provider)
-  const signer = web3Provider.getSigner()
-  const contract = new ethers.Contract(contractAddress, abi, signer)
-
-  try {
-    await contract.refund(recipient)
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e)
-  }
-}
-
 export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
   if (!data || !sig || !hexData) {
     return (
@@ -110,17 +92,69 @@ export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
         identityIsValid &&
         lockAddress.toLowerCase() ===
           '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'.toLowerCase() && (
-          <button
-            type="button"
-            onClick={() => {
-              refund(externalRefundContractAddress, provider, accountAddress)
-            }}
-          >
-            Perform refund
-          </button>
+          <RefundButton
+            provider={provider}
+            externalRefundContractAddress={externalRefundContractAddress}
+            accountAddress={accountAddress}
+          />
         )}
     </div>
   )
+}
+
+interface RefundButtonProps {
+  externalRefundContractAddress: string
+  accountAddress: string
+  provider: any
+}
+interface RefundButtonState {
+  refundInitiated: boolean
+}
+export class RefundButton extends React.Component<
+  RefundButtonProps,
+  RefundButtonState
+> {
+  private contract: ethers.Contract
+  constructor(props: RefundButtonProps) {
+    super(props)
+    const { provider, externalRefundContractAddress } = props
+    const web3Provider = new ethers.providers.Web3Provider(provider)
+    const signer = web3Provider.getSigner()
+    const abi = ['function refund(address recipient)']
+    this.contract = new ethers.Contract(
+      externalRefundContractAddress,
+      abi,
+      signer
+    )
+
+    this.state = {
+      refundInitiated: false,
+    }
+  }
+
+  initiateRefund = async () => {
+    const { accountAddress } = this.props
+    await this.contract.refund(accountAddress)
+    this.setState({
+      refundInitiated: true,
+    })
+  }
+
+  render() {
+    const { refundInitiated } = this.state
+    if (refundInitiated) {
+      return (
+        <button type="button" disabled>
+          Refund Initiated
+        </button>
+      )
+    }
+    return (
+      <button type="button" onClick={this.initiateRefund}>
+        Perform refund
+      </button>
+    )
+  }
 }
 
 export const Identity = ({ valid }: { valid: boolean }) => (
