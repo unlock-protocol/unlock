@@ -10,7 +10,6 @@ import {
 import { OwnedKey } from './keyChain/KeychainTypes'
 import RefundButton from './RefundButton'
 import keyHolderQuery from '../../queries/keyHolder'
-import withConfig from '../../utils/withConfig'
 import 'cross-fetch/polyfill'
 
 interface VerificationData {
@@ -23,13 +22,9 @@ interface Props {
   data?: VerificationData
   sig?: string
   hexData?: string
-  config: {
-    externalRefundContractAddress: string
-    providers: { [name: string]: any }
-  }
 }
 
-export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
+export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   if (!data || !sig || !hexData) {
     return (
       <DefaultError
@@ -72,9 +67,6 @@ export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
       sig,
     }) === accountAddress.toLowerCase()
 
-  const { providers, externalRefundContractAddress } = config
-  const provider = providers[Object.keys(providers)[0]]
-
   return (
     <div>
       <Identity valid={identityIsValid} />
@@ -88,16 +80,12 @@ export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
       <p>
         Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
       </p>
-      {matchingKey &&
-        identityIsValid &&
-        lockAddress.toLowerCase() ===
-          '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'.toLowerCase() && (
-          <RefundButton
-            provider={provider}
-            externalRefundContractAddress={externalRefundContractAddress}
-            accountAddress={accountAddress}
-          />
-        )}
+      {matchingKey && identityIsValid && (
+        <RefundButton
+          accountAddress={accountAddress}
+          lockAddress={lockAddress}
+        />
+      )}
     </div>
   )
 }
@@ -131,4 +119,4 @@ export const OwnsKey = ({ loading, error, matchingKey }: OwnsKeyProps) => {
   return <p>This user DOES own a key, which is valid until {expiresIn}</p>
 }
 
-export default withConfig(VerificationStatus)
+export default VerificationStatus
