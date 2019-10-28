@@ -8,3 +8,4 @@ export {
 export { getCurrentProvider, getWeb3Provider } from './providers'
 export { default as deploy } from './deploy'
 export { default as UnlockProvider } from './unlockProvider'
+export const latest = 'v11'
