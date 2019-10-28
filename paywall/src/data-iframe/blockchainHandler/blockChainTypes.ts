@@ -62,8 +62,6 @@ export interface ConstantsType {
   unlockAddress: string
   blockTime: number
   requiredConfirmations: number
-  locksmithHost: string
-  readOnlyProvider: string
   defaultNetwork: unlockNetworks
 }
 
