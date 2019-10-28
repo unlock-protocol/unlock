@@ -5,7 +5,6 @@ import {
   LocksmithTransactionsResult,
   FetchWindow,
   SetTimeoutWindow,
-  ConstantsType,
   BlockchainData,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import {
@@ -103,7 +102,7 @@ export interface BlockchainTestDefaults {
   emitChanges: () => void
   listeners: { [key: string]: Function }
   store: PaywallState
-  constants: ConstantsType
+  constants: any
   configuration: PaywallConfig
 }
 
@@ -163,7 +162,7 @@ export function setupTestDefaults(
   result.listeners = {}
   result.constants = {
     requiredConfirmations: 12,
-    locksmithHost: 'http://fun.times',
+    locksmithUri: 'http://fun.times',
     unlockAddress: '0x123',
     blockTime: 5000,
     readOnlyProvider: 'http://readonly',

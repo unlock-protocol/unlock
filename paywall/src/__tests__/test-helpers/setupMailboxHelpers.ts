@@ -3,14 +3,13 @@ import { IframePostOfficeWindow } from '../../windowTypes'
 import {
   SetTimeoutWindow,
   FetchWindow,
-  ConstantsType,
 } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { PaywallConfig } from '../../unlockTypes'
 import { addresses } from './setupBlockchainHelpers'
 
 export interface MailboxTestDefaults {
   fakeWindow: FetchWindow & SetTimeoutWindow & IframePostOfficeWindow
-  constants: ConstantsType
+  constants: any
   configuration: PaywallConfig
 }
 
@@ -20,7 +19,7 @@ export function setupTestDefaults() {
   result.fakeWindow = new FakeWindow()
   result.constants = {
     requiredConfirmations: 12,
-    locksmithHost: 'http://fun.times',
+    locksmithUri: 'http://fun.times',
     unlockAddress: '0x123',
     blockTime: 5000,
     readOnlyProvider: 'http://readonly',

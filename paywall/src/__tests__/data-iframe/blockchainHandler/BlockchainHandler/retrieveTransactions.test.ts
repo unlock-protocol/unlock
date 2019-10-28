@@ -162,20 +162,6 @@ describe('BlockchainHandler - retrieveTransactions', () => {
           undefined
         )
       })
-
-      it('should pass on errors to emitError', async () => {
-        expect.assertions(1)
-
-        const error = new Error('fail')
-
-        const mock: any = web3Service.getTransaction as any
-
-        mock.mockImplementationOnce(() => Promise.reject(error))
-
-        await callRetrieveTransactions()
-
-        expect(emitError).toHaveBeenCalledWith(error)
-      })
     })
   })
 })

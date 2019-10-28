@@ -380,6 +380,7 @@ export default class Mailbox {
     const cachedLocksSize = Object.keys(oldChainData.locks).length
     const newLocksSize = Object.keys(newData.locks).length
     if (newLocksSize < cachedLocksSize) {
+      // TODO We should not read from process.env
       if (process.env.DEBUG) {
         this.window.console.log('[CACHE] using cached values')
       }
@@ -498,6 +499,7 @@ export default class Mailbox {
       const blockchainData = this.window.localStorage.getItem(
         this.getCacheKey()
       )
+      // TODO We should not read from process.env
       if (process.env.DEBUG) {
         this.window.console.log('[CACHE] got', blockchainData)
       }
