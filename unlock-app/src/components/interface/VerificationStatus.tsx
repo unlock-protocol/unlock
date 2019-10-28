@@ -9,7 +9,9 @@ import {
 } from '../../utils/durations'
 import { OwnedKey } from './keyChain/KeychainTypes'
 import keyHolderQuery from '../../queries/keyHolder'
+import withConfig from '../../utils/withConfig'
 import 'cross-fetch/polyfill'
+import { ethers } from 'ethers'
 
 interface VerificationData {
   accountAddress: string
@@ -21,9 +23,31 @@ interface Props {
   data?: VerificationData
   sig?: string
   hexData?: string
+  config: {
+    externalRefundContractAddress: string
+    providers: { [name: string]: any }
+  }
 }
 
-export const VerificationStatus = ({ data, sig, hexData }: Props) => {
+const refund = async (
+  contractAddress: string,
+  provider: any,
+  recipient: string
+) => {
+  const abi = ['function refund(address recipient)']
+  const web3Provider = new ethers.providers.Web3Provider(provider)
+  const signer = web3Provider.getSigner()
+  const contract = new ethers.Contract(contractAddress, abi, signer)
+  console.log('contract created, performing refund')
+  try {
+    const result: any = await contract.refund(recipient)
+    console.log(result)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+export const VerificationStatus = ({ data, sig, hexData, config }: Props) => {
   if (!data || !sig || !hexData) {
     return (
       <DefaultError
@@ -66,6 +90,9 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
       sig,
     }) === accountAddress.toLowerCase()
 
+  const { providers, externalRefundContractAddress } = config
+  const provider = providers[Object.keys(providers)[0]]
+
   return (
     <div>
       <Identity valid={identityIsValid} />
@@ -79,9 +106,18 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
       <p>
         Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
       </p>
-      {matchingKey && identityIsValid && (
-        <p>Everything is good, render a button here.</p>
-      )}
+      {matchingKey &&
+        identityIsValid &&
+        lockAddress.toLowerCase() ===
+          '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'.toLowerCase() && (
+          <button
+            type="button"
+            onClick={() =>
+              refund(externalRefundContractAddress, provider, accountAddress)}
+          >
+            Perform refund
+          </button>
+        )}
     </div>
   )
 }
@@ -115,4 +151,4 @@ export const OwnsKey = ({ loading, error, matchingKey }: OwnsKeyProps) => {
   return <p>This user DOES own a key, which is valid until {expiresIn}</p>
 }
 
-export default VerificationStatus
+export default withConfig(VerificationStatus)
