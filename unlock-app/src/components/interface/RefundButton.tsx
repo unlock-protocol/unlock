@@ -18,7 +18,7 @@ interface RefundButtonState {
 const lockAddressesByEnv = {
   dev: '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5',
   test: '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5',
-  staging: '',
+  staging: '0x5611E3b7092A9e14ACd2Eadf7252cbBe723fFD81',
   prod: '0xB0ad425cA5792DD4C4Af9177c636e5b0e6c317BF',
 }
 
