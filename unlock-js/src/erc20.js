@@ -48,6 +48,30 @@ export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
   return symbol
 }
 
+/**
+ * Yields the amount that a purchaser have approved a lock for
+ * @param {*} erc20ContractAddress
+ * @param {*} purchaser
+ * @param {*} lockContractAddress
+ * @param {*} provider
+ */
+export async function getAllowance(
+  erc20ContractAddress,
+  lockContractAddress,
+  provider
+) {
+  const signer = provider.getSigner()
+  const purchaser = await signer.getAddress()
+  const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
+  let amount = '0'
+  try {
+    amount = await contract.allowance(purchaser, lockContractAddress)
+  } catch (e) {
+    // if no amount was allowed, some provider will fail.
+  }
+  return amount
+}
+
 export async function approveTransfer(
   erc20ContractAddress,
   lockContractAddress,
@@ -58,13 +82,13 @@ export async function approveTransfer(
   // to succeed.
   // TODO: add test to ensure that this is actually retuning instantly?
   const signer = new FastJsonRpcSigner(provider.getSigner())
-
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
   return contract.approve(lockContractAddress, value)
 }
 
 export default {
   approveTransfer,
+  getAllowance,
   getErc20BalanceForAddress,
   getErc20Decimals,
   getErc20TokenSymbol,

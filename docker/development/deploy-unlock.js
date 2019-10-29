@@ -79,7 +79,7 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
 
         await ExternalRefundDeployer.deployExternalRefund(
           lockAddress,
-          424242,
+          '21500000000000000000',
           tokenAddress,
           provider
         )

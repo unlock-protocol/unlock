@@ -55,12 +55,24 @@ export const isAccountOrNull = val => {
  *
  * The fields in callToAction are all optional, and icon can be false for none
  */
+/* eslint-disable no-console */
 export const isValidPaywallConfig = config => {
-  if (!config) return false
-  if (!isValidObject(config, ['callToAction', 'locks'])) return false
+  if (!config) {
+    console.error('No paywall config provided.')
+    return false
+  }
+  if (!isValidObject(config, ['callToAction', 'locks'])) {
+    console.error(
+      'The paywall config does not contain at least one of the required fields: "callToAction", "locks".'
+    )
+    return false
+  }
   // allow false for icon
   if (config.icon) {
-    if (typeof config.icon !== 'string') return false
+    if (typeof config.icon !== 'string') {
+      console.error('The paywall config\'s "icon" property is not a string.')
+      return false
+    }
     if (
       config.icon &&
       !isURL(config.icon, {
@@ -70,22 +82,49 @@ export const isValidPaywallConfig = config => {
       }) &&
       !isDataURI(config.icon)
     ) {
+      console.error('The paywall config\'s "icon" property is not a valid URL.')
       return false
     }
   }
-  if (!config.callToAction || typeof config.callToAction !== 'object')
+  // TODO: !callToAction should have been checked already in the isValidObject check above?
+  if (!config.callToAction || typeof config.callToAction !== 'object') {
+    console.error(
+      'The paywall config\'s "callToAction" property is not a valid object.'
+    )
     return false
+  }
   const callsToAction = ['default', 'expired', 'pending', 'confirmed']
   const ctaKeys = Object.keys(config.callToAction)
-  if (ctaKeys.length > callsToAction.length) return false
-  if (ctaKeys.filter(key => !callsToAction.includes(key)).length) return false
+  if (ctaKeys.length > callsToAction.length) {
+    console.error(
+      'The paywall config\'s "callToAction" properties contain an unexpected entry.'
+    )
+    return false
+  }
+  if (ctaKeys.filter(key => !callsToAction.includes(key)).length) {
+    // TODO: log which key is bad, or remove this check
+    console.error(
+      `The paywall config's "callToAction" properties contain an unexpected entry.`
+    )
+    return false
+  }
   if (
     ctaKeys.filter(key => typeof config.callToAction[key] !== 'string').length
   ) {
+    console.error(
+      `The paywall config's "callToAction" properties contain an entry whose value is not a string.`
+    )
     return false
   }
-  if (!config.locks) return false
-  if (typeof config.locks !== 'object') return false
+  // TODO: !locks should have been checked already in the isValidObject check above?
+  if (!config.locks) {
+    console.error(`The paywall config's "locks" fields is not set.`)
+    return false
+  }
+  if (typeof config.locks !== 'object') {
+    console.error(`The paywall configs's "locks" field is not an object.`)
+    return false
+  }
   const locks = Object.keys(config.locks)
   if (!locks.length) return false
   if (
@@ -95,10 +134,20 @@ export const isValidPaywallConfig = config => {
       if (!thisLock || typeof thisLock !== 'object') return false
       if (!Object.keys(thisLock).length) return true
       if (Object.keys(thisLock).length !== 1) return false
-      if (!thisLock.name || typeof thisLock.name !== 'string') return false
+      if (
+        typeof thisLock.name !== 'undefined' &&
+        typeof thisLock.name !== 'string'
+      ) {
+        // TODO: which of the above conditions did it fail on?
+        console.error(
+          `The paywall config's "locks" field contains a key "${lock}" which has an invalid value.`
+        )
+        return false
+      }
       return true
     }).length !== locks.length
   ) {
+    // The internal logging of lock failures above should make it clear which lock caused this to fail.
     return false
   }
 
@@ -110,20 +159,27 @@ export const isValidPaywallConfig = config => {
       config.unlockUserAccounts === 'false'
     )
   ) {
+    console.error(
+      `The paywall config's "unlockUserAccounts" field has an invalid value.`
+    )
     return false
   }
 
-  // persistentCheckout can ne not set, a boolean, or true or false.
+  // persistentCheckout can be undefined (not set), a boolean, or "true" or "false".
   if (
     typeof config.persistentCheckout !== 'undefined' &&
     (typeof config.persistentCheckout !== 'boolean' &&
       ['true', 'false'].indexOf(config.persistentCheckout) === -1)
   ) {
+    console.error(
+      `The paywall config's "persistentCheckout" field has an invalid value.`
+    )
     return false
   }
 
   return true
 }
+/* eslint-enable no-console */
 
 /**
  * helper function to assert on a thing being an

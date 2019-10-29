@@ -28,8 +28,9 @@ async function _getKeyPrice(lock, provider) {
 /**
  * Creates a lock on behalf of the user, using version v10
  * @param {PropTypes.lock} lock
+ * @param {function} callback invoked with the transaction hash
  */
-export default async function(lock) {
+export default async function(lock, callback) {
   const unlockContract = await this.getUnlockContract()
   let maxNumberOfKeys = lock.maxNumberOfKeys
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
@@ -57,6 +58,10 @@ export default async function(lock) {
     transactionPromise,
     TransactionTypes.LOCK_CREATION
   )
+
+  if (callback) {
+    callback(null, hash)
+  }
 
   // Let's update the lock to reflect that it is linked to this
   // This is an exception because, until we are able to determine the lock address

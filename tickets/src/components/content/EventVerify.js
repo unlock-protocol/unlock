@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
+import withConfig from '../../utils/withConfig'
 import GlobalErrorConsumer from '../interface/GlobalErrorConsumer'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
@@ -20,8 +21,41 @@ export const EventVerify = ({
   publicKey,
   signature,
   loadEvent,
+  lockAddress,
+  config,
 }) => {
   if (lock.address && !event) loadEvent(lock.address)
+
+  if (lockAddress && !publicKey && !signature) {
+    // This is the route provided by early EthWaterloo QR codes.
+    return (
+      <GlobalErrorConsumer>
+        <BrowserOnly>
+          <Layout forContent>
+            <Head>
+              <title>{pageTitle('Verification')}</title>
+            </Head>
+            <h1>This QR code cannot be verified.</h1>
+            <p>
+              Please ask the ticket holder to go to their{' '}
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href={`${config.unlockAppUrl}/keychain`}
+              >
+                Unlock Keychain
+              </a>{' '}
+              to generate a fresh QR code.
+            </p>
+            <p>
+              Alternately, direct them to the secondary verification agent so we
+              can check them in!
+            </p>
+          </Layout>
+        </BrowserOnly>
+      </GlobalErrorConsumer>
+    )
+  }
 
   if (!lock.address || !event.name) return null // Wait for the lock and event to load
   const { name } = event
@@ -50,8 +84,10 @@ EventVerify.propTypes = {
   lock: UnlockPropTypes.lock,
   event: UnlockPropTypes.ticketedEvent,
   publicKey: UnlockPropTypes.address,
+  config: UnlockPropTypes.configuration.isRequired,
   signature: PropTypes.string,
   loadEvent: PropTypes.func.isRequired,
+  lockAddress: PropTypes.string,
 }
 
 EventVerify.defaultProps = {
@@ -59,6 +95,7 @@ EventVerify.defaultProps = {
   event: {},
   publicKey: null,
   signature: null,
+  lockAddress: null,
 }
 
 export const mapDispatchToProps = dispatch => ({
@@ -85,16 +122,19 @@ export const mapStateToProps = ({ router, locks, account, event }) => {
   return {
     lock,
     event,
+    lockAddress,
     publicKey,
     signature,
     account,
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventVerify)
+export default withConfig(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(EventVerify)
+)
 
 const EventTitle = styled.h2`
   font-family: 'IBM Plex Sans', sans serif;

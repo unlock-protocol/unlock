@@ -1,8 +1,6 @@
 import startupWhenReady from './startup'
 import '../static/iframe.css'
-import constants from './constants'
 
-const env = process.env.UNLOCK_ENV || 'dev'
-const startupConstants = constants[env]
+declare var __ENVIRONMENT_VARIABLES__: any
 
-startupWhenReady(window, startupConstants)
+startupWhenReady(window, __ENVIRONMENT_VARIABLES__)
