@@ -47,12 +47,12 @@ export class RefundButton extends React.Component<
 
   initiateRefund = async () => {
     const { accountAddress } = this.props
+    this.setState({
+      refundInitiated: true,
+    })
     await this.contract.refund(accountAddress, {
       gasPrice: 20000000000,
       gasLimit: 600000,
-    })
-    this.setState({
-      refundInitiated: true,
     })
   }
 
