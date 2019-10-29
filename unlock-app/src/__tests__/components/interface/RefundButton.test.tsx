@@ -42,7 +42,10 @@ describe('RefundButton', () => {
 
     rtl.fireEvent.click(refundButton)
 
-    expect(refundFunction).toHaveBeenCalledWith('0xdeadbeef')
+    expect(refundFunction).toHaveBeenCalledWith('0xdeadbeef', {
+      gasLimit: 600000,
+      gasPrice: 20000000000,
+    })
 
     // Button text changes after click
     await findByText('Refund Initiated')
