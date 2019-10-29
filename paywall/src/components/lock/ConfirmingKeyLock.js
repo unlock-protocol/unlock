@@ -10,32 +10,21 @@ import {
   LockDetail,
   LockFooter,
 } from './LockStyles'
-import BalanceProvider from '../helpers/BalanceProvider'
 import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
 
 export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
-  const convertCurrency = !lock.currencyContractAddress
   let currency = currencySymbolForLock(lock, config)
 
   return (
     <LockWrapper lock={lock}>
       <LockHeader>{lock.name}</LockHeader>
       <Body>
-        <BalanceProvider
-          convertCurrency={convertCurrency}
-          amount={lock.keyPrice}
-          render={(ethPrice, fiatPrice) => (
-            <>
-              <LockDetails>
-                <LockDetail bold>
-                  {ethPrice} {currency}
-                </LockDetail>
-                {convertCurrency && <LockDetail>${fiatPrice}</LockDetail>}
-              </LockDetails>
-            </>
-          )}
-        />
+        <LockDetails>
+          <LockDetail bold>
+            {lock.keyPrice} {currency}
+          </LockDetail>
+        </LockDetails>
         <TransactionStatus>
           Waiting for confirmations
           <br />

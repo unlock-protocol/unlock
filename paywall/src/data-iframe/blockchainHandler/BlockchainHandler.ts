@@ -13,7 +13,6 @@ import {
   KeyResult,
   WalletServiceType,
   Web3ServiceType,
-  ConstantsType,
   BlockchainData,
   LocksmithTransactionsResult,
   TransactionDefaults,
@@ -53,7 +52,7 @@ export function makeDefaultKeys(
 interface BlockchainHandlerParams {
   walletService: WalletServiceType
   web3Service: Web3ServiceType
-  constants: ConstantsType
+  constants: any
   configuration: PaywallConfig
   emitChanges: (data: BlockchainData) => void
   emitError: (error: Error) => void
@@ -72,7 +71,7 @@ export { Web3Service, WalletService }
 export default class BlockchainHandler {
   private walletService: WalletServiceType
   private web3Service: Web3ServiceType
-  private constants: ConstantsType
+  private constants: any
   private emitChanges: (data: BlockchainData) => void
   private emitError: (error: Error) => void
   private window: FetchWindow & SetTimeoutWindow
@@ -161,16 +160,12 @@ export default class BlockchainHandler {
   }) {
     if (!this.store.account) return
     const account = this.store.account as string
-
-    // Support the currency!
-    return this.walletService.purchaseKey(
+    return this.walletService.purchaseKey({
       lockAddress,
-      account,
-      amountToSend,
-      null /* account */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
-      null /* data */, // THIS FIELD HAS BEEN DEPRECATED AND WILL BE IGNORED
-      erc20Address
-    )
+      owner: account,
+      keyPrice: amountToSend,
+      erc20Address,
+    })
   }
 
   /**
@@ -540,7 +535,7 @@ export default class BlockchainHandler {
       .map(lockAddress => `recipient[]=${encodeURIComponent(lockAddress)}`)
       .join('&')
 
-    const url = `${this.constants.locksmithHost}/transactions?for=${this.store.account}&${filterLocks}`
+    const url = `${this.constants.locksmithUri}/transactions?for=${this.store.account}&${filterLocks}`
 
     const response = await this.window.fetch(url)
     const result: {
@@ -577,7 +572,16 @@ export default class BlockchainHandler {
               transaction.hash,
               transaction.input ? transaction : undefined
             )
-            .catch(error => this.emitError(error))
+            .catch(() => {
+              // For now, ignore failure: this means locksmith knows of a transaction
+              // Which does not exist. Probably stale?
+              // this.emitError(error)
+              // eslint-disable-next-line no-console
+              console.log(
+                'unable to retrieve saved transaction from blockchain'
+              )
+              // eslint-disable-next-line no-console
+            })
         })
     }
   }
@@ -592,7 +596,7 @@ export default class BlockchainHandler {
     // we use the transaction lock as the recipient
     const recipient = transaction.lock || transaction.to
 
-    const url = `${this.constants.locksmithHost}/transaction`
+    const url = `${this.constants.locksmithUri}/transaction`
 
     const payload = {
       transactionHash: transaction.hash,

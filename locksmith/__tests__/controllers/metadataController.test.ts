@@ -390,7 +390,9 @@ describe('Metadata Controller', () => {
         UserMetaData: {
           owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
           data: {
-            emailAddress: 'emailAddress@example.com',
+            protected: {
+              emailAddress: 'emailAddress@example.com',
+            },
           },
         },
       })
@@ -418,7 +420,9 @@ describe('Metadata Controller', () => {
         UserMetaData: {
           owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
           data: {
-            emailAddress: 'updatedEmailAddress@example.com',
+            protected: {
+              emailAddress: 'updatedEmailAddress@example.com',
+            },
           },
         },
       })
@@ -446,8 +450,10 @@ describe('Metadata Controller', () => {
         let typedData = generateKeyTypedData({
           UserMetaData: {
             owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-            data: {
-              emailAddress: 'updatedEmailAddress@example.com',
+            protected: {
+              data: {
+                emailAddress: 'updatedEmailAddress@example.com',
+              },
             },
           },
         })

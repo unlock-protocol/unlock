@@ -22,7 +22,7 @@
     "babel-plugin-styled-components": "1.10.6",
     "cross-env": "6.0.0",
     "dotenv": "8.1.0",
-    "fork-ts-checker-webpack-plugin": "1.5.0",
+    "fork-ts-checker-webpack-plugin": "2.0.0",
     "jest-dom": "3.5.0",
     "jest-styled-components": "6.3.3",
     "next": "8.1.0",

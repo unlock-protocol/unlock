@@ -87,6 +87,37 @@ describe('keyChain -- Key', () => {
     global.Date.now = realDateNow
   })
 
+  it('should display a QR code immediately after a signature is received', () => {
+    expect.assertions(2)
+
+    const { container, rerender } = rtl.render(
+      <Key
+        signData={signData}
+        qrEmail={qrEmail}
+        signature={null}
+        accountAddress={accountAddress}
+        ownedKey={aKey}
+      />
+    )
+
+    expect(container.querySelector('canvas')).toBeNull()
+
+    rerender(
+      <Key
+        signData={signData}
+        qrEmail={qrEmail}
+        signature={{
+          data: 'some data',
+          signature: 'a signature',
+        }}
+        accountAddress={accountAddress}
+        ownedKey={aKey}
+      />
+    )
+
+    expect(container.querySelector('canvas')).not.toBeNull()
+  })
+
   it('should display a qr code on button click when there is a signature', () => {
     expect.assertions(2)
 

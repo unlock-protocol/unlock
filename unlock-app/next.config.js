@@ -23,6 +23,8 @@ let requiredConfigVariables = {
   erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
   erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
   stripeApiKey: process.env.STRIPE_KEY,
+  // TODO: remove after EthWaterloo, this is temporary
+  externalRefundContractAddress: process.env.EXTERNAL_REFUND_CONTRACT_ADDRESS,
 }
 
 let optionalConfigVariables = {

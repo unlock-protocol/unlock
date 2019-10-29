@@ -3,5 +3,5 @@ export default interface StartupConstants {
   debug: any
   paywallUrl: string
   accountsUrl: string
-  managedPurchaseStablecoinAddress: string
+  erc20ContractAddress: string
 }

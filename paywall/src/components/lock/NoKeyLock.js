@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
 import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
-import BalanceProvider from '../helpers/BalanceProvider'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
@@ -39,8 +38,6 @@ export const NoKeyLock = ({
     footerMessage = 'Insufficient funds'
   }
 
-  const convertCurrency = !lock.currencyContractAddress
-
   let currency = currencySymbolForLock(lock, config)
 
   return (
@@ -52,24 +49,17 @@ export const NoKeyLock = ({
       }}
     >
       <LockHeader>{lock.name}</LockHeader>
-      <BalanceProvider
-        convertCurrency={convertCurrency}
-        amount={lock.keyPrice}
-        render={(ethPrice, fiatPrice) => (
-          <Body disabled={disableClick}>
-            <EthPrice>
-              {ethPrice} {currency}
-            </EthPrice>
-            <div>
-              {convertCurrency && <FiatPrice>${fiatPrice}</FiatPrice>}
-              <ExpirationDuration>
-                <Duration seconds={lock.expirationDuration} round />
-              </ExpirationDuration>
-            </div>
-            <Footer disabled={disableClick}>{footerMessage}</Footer>
-          </Body>
-        )}
-      />
+      <Body disabled={disableClick}>
+        <EthPrice>
+          {lock.keyPrice} {currency}
+        </EthPrice>
+        <div>
+          <ExpirationDuration>
+            <Duration seconds={lock.expirationDuration} round />
+          </ExpirationDuration>
+        </div>
+        <Footer disabled={disableClick}>{footerMessage}</Footer>
+      </Body>
     </Wrapper>
   )
 }
@@ -98,7 +88,7 @@ const Wrapper = styled(LockWrapper)`
 const Footer = styled(LockFooter)`
   background-color: ${props =>
     props.disabled ? 'var(--lightgrey)' : 'var(--green)'};
-  color: var(--white);
+  color: ${props => (props.disabled ? 'var(--darkgrey)' : 'var(--white)')};
 `
 
 const Body = styled(LockBody)`
@@ -126,13 +116,6 @@ const LockDetails = styled.span`
   font-size: 20px;
   font-weight: 300;
   color: var(--grey);
-`
-
-const FiatPrice = styled(LockDetails)`
-  ::after {
-    color: var(--lightgrey);
-    content: ' | ';
-  }
 `
 
 const ExpirationDuration = styled(LockDetails)``
