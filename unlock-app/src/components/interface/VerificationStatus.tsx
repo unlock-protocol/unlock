@@ -8,6 +8,7 @@ import {
   expirationAsDate,
 } from '../../utils/durations'
 import { OwnedKey } from './keyChain/KeychainTypes'
+import RefundButton from './RefundButton'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 
@@ -39,14 +40,22 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   const { accountAddress, lockAddress, timestamp } = data
 
-  // We pass down the { loading, error, data } results from this hook
-  // to `OwnsKey`, which uses them to determine whether or not the user
-  // owns the key.
+  // We pass down the { loading, error } results from this hook
+  // to `OwnsKey`, which uses them to render loading and error states.
   // TODO: craft a better query to let us directly ask about the single
-  // lock under consideration. This will simplify the logic.
+  // lock under consideration. This will remove the need to iterate over
+  // all the user's keys to determine if they own a key to this lock.
   const queryResults = useQuery(keyHolderQuery(), {
     variables: { address: accountAddress },
   })
+
+  let matchingKey: OwnedKey | undefined
+
+  if (queryResults.data) {
+    matchingKey = queryResults.data.keyHolders[0].keys.find((key: OwnedKey) => {
+      return key.lock.address === lockAddress
+    })
+  }
 
   const secondsElapsedFromSignature = Math.floor(
     (Date.now() - timestamp) / 1000
@@ -65,13 +74,18 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
       <OwnsKey
         loading={queryResults.loading}
         error={queryResults.error}
-        data={queryResults.data}
-        lockAddress={lockAddress}
+        matchingKey={matchingKey}
       />
 
       <p>
         Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
       </p>
+      {matchingKey && identityIsValid && (
+        <RefundButton
+          accountAddress={accountAddress}
+          lockAddress={lockAddress}
+        />
+      )}
     </div>
   )
 }
@@ -83,26 +97,14 @@ export const Identity = ({ valid }: { valid: boolean }) => (
 interface OwnsKeyProps {
   loading: boolean
   error: ApolloError | undefined
-  data: any
-  lockAddress: string
+  matchingKey?: OwnedKey
 }
-export const OwnsKey = ({
-  loading,
-  error,
-  data,
-  lockAddress,
-}: OwnsKeyProps) => {
+export const OwnsKey = ({ loading, error, matchingKey }: OwnsKeyProps) => {
   if (loading) {
     return <p>Checking if user has a valid key...</p>
   } else if (error) {
     return <p>Error: {error.message}</p>
   }
-
-  const matchingKey: OwnedKey | undefined = data.keyHolders[0].keys.find(
-    (key: OwnedKey) => {
-      return key.lock.address === lockAddress
-    }
-  )
 
   if (!matchingKey) {
     return <p>This user does not have a key to the lock.</p>
