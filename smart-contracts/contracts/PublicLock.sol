@@ -29,10 +29,10 @@ import './mixins/MixinTransfer.sol';
 contract PublicLock is
   IERC721Enumerable,
   IERC721,
+  IPublicLock,
   Initializable,
   ERC165,
   Ownable,
-  IPublicLock,
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
