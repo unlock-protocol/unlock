@@ -69,11 +69,10 @@ namespace SignatureValidationMiddleware {
 
   const handleSignaturePresent = (
     body: any,
-    signature: string,
+    signee: string,
     configuration: SignatureValidationConfiguration
   ) => {
     try {
-      let signee = signature
       let potentialSignee: string =
         body.message[configuration.name][configuration.signee]
 
