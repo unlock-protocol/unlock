@@ -5733,7 +5733,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c32:hover .c28 {
@@ -6326,7 +6326,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Purchase
@@ -6700,7 +6700,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c32:hover .c28 {
@@ -7187,7 +7187,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Purchase
@@ -7223,7 +7223,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Purchase
@@ -7597,7 +7597,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c32:hover .c28 {
@@ -8186,7 +8186,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Purchase
@@ -24230,7 +24230,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c9:hover .c7 {
@@ -24376,7 +24376,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Purchase
@@ -24500,7 +24500,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c9:hover .c7 {
@@ -24646,7 +24646,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Sold Out
@@ -24770,7 +24770,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c9:hover .c7 {
@@ -24916,7 +24916,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Insufficient funds
@@ -25040,7 +25040,7 @@ Object {
   padding: 0px;
   width: 200px;
   background-color: var(--lightgrey);
-  color: var(--white);
+  color: var(--darkgrey);
 }
 
 .c9:hover .c7 {
@@ -25186,7 +25186,7 @@ Object {
               </span>
             </div>
             <footer
-              class="sc-1549ebs-2 sc-5sgq84-1 IxeZt"
+              class="sc-1549ebs-2 sc-5sgq84-1 jTvMBU"
               disabled=""
             >
               Insufficient funds

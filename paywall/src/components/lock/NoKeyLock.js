@@ -88,7 +88,7 @@ const Wrapper = styled(LockWrapper)`
 const Footer = styled(LockFooter)`
   background-color: ${props =>
     props.disabled ? 'var(--lightgrey)' : 'var(--green)'};
-  color: var(--white);
+  color: ${props => (props.disabled ? 'var(--darkgrey)' : 'var(--white)')};
 `
 
 const Body = styled(LockBody)`
