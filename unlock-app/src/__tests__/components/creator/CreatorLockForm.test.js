@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import configure from '../../../config'
 
 import {
@@ -224,13 +224,13 @@ describe('CreatorLockForm', () => {
     it('name is empty', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ name: '' })
-      expect(wrapper.getByValue('').dataset.valid).toBe('false')
+      expect(wrapper.getByDisplayValue('').dataset.valid).toBe('false')
     })
 
     it('key expiration is not a positive whole number', () => {
       expect.assertions(2)
       const wrapper = makeLockForm({ expirationDuration: -2 * secondsInADay })
-      expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
+      expect(wrapper.getByDisplayValue('-2').dataset.valid).toBe('false')
 
       const { container } = makeLockForm({ expirationDuration: 0 })
       expect(container.querySelector('.duration > input').dataset.valid).toBe(
@@ -254,7 +254,7 @@ describe('CreatorLockForm', () => {
       console.error = () => {} // eslint-disable-line
       try {
         const wrapper = makeLockForm({ maxNumberOfKeys: '' })
-        expect(wrapper.getByValue('').dataset.valid).toBe('false')
+        expect(wrapper.getByDisplayValue('').dataset.valid).toBe('false')
       } finally {
         console.error = save // eslint-disable-line
       }
@@ -266,7 +266,7 @@ describe('CreatorLockForm', () => {
       console.error = () => {} // eslint-disable-line
       try {
         const wrapper = makeLockForm({ maxNumberOfKeys: 'abc' })
-        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
+        expect(wrapper.getByDisplayValue('abc').dataset.valid).toBe('false')
       } finally {
         console.error = save // eslint-disable-line
       }
@@ -275,7 +275,7 @@ describe('CreatorLockForm', () => {
     it('max number of keys is a negative number', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ maxNumberOfKeys: -2 })
-      expect(wrapper.getByValue('-2').dataset.valid).toBe('false')
+      expect(wrapper.getByDisplayValue('-2').dataset.valid).toBe('false')
     })
 
     it('key price is not a number', () => {
@@ -284,7 +284,10 @@ describe('CreatorLockForm', () => {
       console.error = () => {} // eslint-disable-line
       try {
         const wrapper = makeLockForm({ keyPrice: 'abc' })
-        expect(wrapper.getByValue('abc').dataset.valid).toBe('false')
+        expect(
+          wrapper.container.querySelector('input[name="keyPrice"]').dataset
+            .valid
+        ).toBe('false')
       } finally {
         console.error = save // eslint-disable-line
       }
@@ -293,7 +296,7 @@ describe('CreatorLockForm', () => {
     it('key price is a negative number', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ keyPrice: '-1' })
-      expect(wrapper.getByValue('-1').dataset.valid).toBe('false')
+      expect(wrapper.getByDisplayValue('-1').dataset.valid).toBe('false')
     })
 
     describe('submit button triggers setError once for each possible error', () => {
@@ -398,34 +401,33 @@ describe('CreatorLockForm', () => {
     it('name is a string', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ name: 'One Month Subscription' })
-      expect(wrapper.getByValue('One Month Subscription').dataset.valid).toBe(
-        'true'
-      )
+      expect(
+        wrapper.getByDisplayValue('One Month Subscription').dataset.valid
+      ).toBe('true')
     })
 
     it('key expiration is a positive number', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ expirationDuration: 35 * secondsInADay })
-      expect(wrapper.getByValue('35').dataset.valid).toBe('true')
+      expect(wrapper.getByDisplayValue('35').dataset.valid).toBe('true')
     })
 
     it('max number of keys is a positive number', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ maxNumberOfKeys: 35 })
-      expect(wrapper.getByValue('35').dataset.valid).toBe('true')
+      expect(wrapper.getByDisplayValue('35').dataset.valid).toBe('true')
     })
 
     it('max number of keys is infinity', () => {
-      expect.assertions(2)
+      expect.assertions(1)
       const wrapper = makeLockForm({ maxNumberOfKeys: UNLIMITED_KEYS_COUNT })
-      expect(wrapper.getByDisplayValue(INFINITY)).not.toBeNull()
-      expect(wrapper.getByValue(INFINITY).dataset.valid).toBe('true')
+      expect(wrapper.getByDisplayValue(INFINITY).dataset.valid).toBe('true')
     })
 
     it('key price is a positive number', () => {
       expect.assertions(1)
       const wrapper = makeLockForm({ keyPrice: '0.01' })
-      expect(wrapper.getByValue('0.01').dataset.valid).toBe('true')
+      expect(wrapper.getByDisplayValue('0.01').dataset.valid).toBe('true')
     })
 
     it('submit button is enabled and activates on submit', () => {
@@ -481,7 +483,7 @@ describe('CreatorLockForm', () => {
       const wrapper = makeLockForm(lock, { saveLock })
 
       // Change the keyPrice
-      const input = wrapper.getByValue('999')
+      const input = wrapper.getByDisplayValue('999')
       rtl.fireEvent.change(input, {
         target: {
           value: '1000',

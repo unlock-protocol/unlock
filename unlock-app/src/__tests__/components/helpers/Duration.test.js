@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 // Note, we use name import to import the non connected version of the component for testing
 import { Duration } from '../../../components/helpers/Duration'
 
@@ -9,10 +9,10 @@ describe('Duration Component', () => {
   it('shows - when the seconds are null or undefined', () => {
     expect.assertions(2)
     let wrapper = rtl.render(<Duration seconds={null} />)
-    expect(wrapper.queryByText('-')).not.toBe(null)
+    expect(wrapper.queryAllByText('-')).not.toBe(null)
 
     wrapper = rtl.render(<Duration seconds={undefined} />)
-    expect(wrapper.queryByText('-')).not.toBe(null)
+    expect(wrapper.queryAllByText('-')).not.toBe(null)
   })
 
   it('shows the duration in seconds', () => {

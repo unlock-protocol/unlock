@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import LockInfo from '../../../../components/interface/user-account/LockInfo'
 
 describe('LockInfo component', () => {

@@ -1,7 +1,7 @@
 import initStoryshots, {
   snapshotWithOptions,
 } from '@storybook/addon-storyshots'
-import { render as renderer } from 'react-testing-library'
+import { render as renderer } from '@testing-library/react'
 
 initStoryshots({
   renderer,

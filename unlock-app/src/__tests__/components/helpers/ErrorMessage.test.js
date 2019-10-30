@@ -1,4 +1,4 @@
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import * as Errors from '../../../errors'
 import ErrorMessage from '../../../components/helpers/ErrorMessage'
 

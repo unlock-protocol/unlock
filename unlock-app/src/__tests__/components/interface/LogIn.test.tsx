@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import { LogIn } from '../../../components/interface/LogIn'
 // eslint-disable-next-line no-unused-vars
 import { Credentials } from '../../../actions/user'

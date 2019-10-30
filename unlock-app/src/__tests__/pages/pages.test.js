@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 
 import Home from '../../pages/home'
 import Log from '../../pages/log'
