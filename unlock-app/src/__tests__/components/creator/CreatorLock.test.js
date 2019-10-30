@@ -88,7 +88,7 @@ describe('CreatorLock', () => {
   })
 
   it('should open the edit form when the button is clicked', () => {
-    expect.assertions(1)
+    expect.assertions(0)
     const config = configure()
 
     const store = createUnlockStore({
@@ -109,7 +109,7 @@ describe('CreatorLock', () => {
     let editButton = wrapper.getByTitle('Edit')
     rtl.fireEvent.click(editButton)
 
-    expect(wrapper.getByValue('0.1')).not.toBeNull()
+    wrapper.getByDisplayValue('0.1')
   })
 
   it('should display the correct number of keys', () => {
