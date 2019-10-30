@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import { Provider } from 'react-redux'
 import createUnlockStore from '../../../createUnlockStore'
 import {
@@ -47,9 +47,7 @@ describe('AccountContent', () => {
           />
         </Provider>
       )
-      getByText((_, node) => {
-        return !!node.textContent && !!node.textContent.match('Log In')
-      })
+      getByText('Log In')
     })
 
     it('Should show the message about already having a key if the page is unlocked after logging in', () => {

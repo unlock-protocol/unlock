@@ -5,12 +5,46 @@ import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types' // eslint-disable-line no-unused-vars
 
 namespace SignatureValidationMiddleware {
-  const extractToken = (req: Request): string | null => {
+  const extractTypeDataSignee = (header: string, body: string) => {
+    let decodedSignature = Base64.decode(header)
+
+    try {
+      return sigUtil.recoverTypedSignature({
+        data: body,
+        sig: decodedSignature,
+      })
+    } catch {
+      return null
+    }
+  }
+
+  const extractPersonalSignSignee = (header: string, body: string) => {
+    let decodedSignature = Base64.decode(header)
+
+    try {
+      return sigUtil.recoverPersonalSignature({
+        data: JSON.stringify(body),
+        sig: decodedSignature,
+      })
+    } catch {
+      return null
+    }
+  }
+
+  const extractSignee = (req: Request): string | null => {
     if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer'
     ) {
-      return req.headers.authorization.split(' ')[1]
+      let header = req.headers.authorization.split(' ')[1]
+
+      return extractTypeDataSignee(header, req.body)
+    } else if (
+      req.headers.authorization &&
+      req.headers.authorization.split(' ')[0] === 'Bearer-Simple'
+    ) {
+      let header = req.headers.authorization.split(' ')[1]
+      return extractPersonalSignSignee(header, req.body)
     } else {
       return null
     }
@@ -35,15 +69,10 @@ namespace SignatureValidationMiddleware {
 
   const handleSignaturePresent = (
     body: any,
-    signature: string,
+    signee: string,
     configuration: SignatureValidationConfiguration
   ) => {
     try {
-      let signee = sigUtil.recoverTypedSignature({
-        data: body,
-        sig: signature,
-      })
-
       let potentialSignee: string =
         body.message[configuration.name][configuration.signee]
 
@@ -73,18 +102,13 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, res: Response, next: any) => {
-      var signature = extractToken(req)
+      var signature = extractSignee(req)
 
       if (signature === null) {
         res.sendStatus(401)
         return
       } else {
-        let decodedSignature = Base64.decode(signature)
-        let owner = handleSignaturePresent(
-          req.body,
-          decodedSignature,
-          configuration
-        )
+        let owner = handleSignaturePresent(req.body, signature, configuration)
 
         if (owner) {
           req.owner = owner
@@ -101,17 +125,12 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, _res: Response, next: any) => {
-      var signature = extractToken(req)
+      var signature = extractSignee(req)
 
       if (signature === null) {
         next()
       } else {
-        let decodedSignature = Base64.decode(signature)
-        let signee = handleSignaturePresent(
-          req.body,
-          decodedSignature,
-          configuration
-        )
+        let signee = handleSignaturePresent(req.body, signature, configuration)
 
         if (signee) {
           req.signee = signee
