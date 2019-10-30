@@ -59,7 +59,7 @@ describe('DeveloperOverlay', () => {
       />
     )
 
-    expect(component.queryBySelectText('Metamask')).not.toBeNull()
+    expect(component.getByDisplayValue('Metamask')).not.toBeNull()
   })
 
   it('selects provider', () => {
@@ -71,9 +71,9 @@ describe('DeveloperOverlay', () => {
         setProvider={callback}
       />
     )
-    expect(component.queryBySelectText('Metamask')).not.toBeNull()
+    expect(component.getByDisplayValue('Metamask')).not.toBeNull()
 
-    rtl.fireEvent.change(component.getBySelectText('Metamask'), {
+    rtl.fireEvent.change(component.getByDisplayValue('Metamask'), {
       target: { value: 'HTTP' },
     })
     expect(callback).toHaveBeenCalledWith('HTTP')
