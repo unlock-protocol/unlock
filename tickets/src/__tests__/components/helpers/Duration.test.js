@@ -7,12 +7,12 @@ describe('Duration Component', () => {
   const seconds = 10000000
 
   it('shows - when the seconds are null or undefined', () => {
-    expect.assertions(2)
+    expect.assertions(1)
     let wrapper = rtl.render(<Duration seconds={null} />)
-    expect(wrapper.queryByText('-')).not.toBe(null)
+    wrapper.getByText('-')
 
     wrapper = rtl.render(<Duration seconds={undefined} />)
-    expect(wrapper.queryByText('-')).not.toBe(null)
+    expect(wrapper.queryAllByText('-')).toHaveLength(2)
   })
 
   it('shows the duration in seconds', () => {

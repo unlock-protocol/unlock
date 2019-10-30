@@ -40,16 +40,29 @@ describe('DeveloperOverlay', () => {
   })
 
   it('has a dropdown that can be used to choose between providers', () => {
-    expect.assertions(2)
+    expect.assertions(1)
     const component = rtl.render(
       <DeveloperOverlay config={config} setProvider={callback} />
     )
 
-    expect(component.queryByText('HTTP')).not.toBeNull()
+    component.getByText('HTTP')
     expect(component.queryByText('Metamask')).not.toBeNull()
   })
 
   it('sets selected provider from prop', () => {
+    expect.assertions(0)
+    const component = rtl.render(
+      <DeveloperOverlay
+        config={config}
+        selected="Metamask"
+        setProvider={callback}
+      />
+    )
+
+    component.getByDisplayValue('Metamask')
+  })
+
+  it('selects provider', () => {
     expect.assertions(1)
     const component = rtl.render(
       <DeveloperOverlay
@@ -58,22 +71,9 @@ describe('DeveloperOverlay', () => {
         setProvider={callback}
       />
     )
+    component.getByDisplayValue('Metamask')
 
-    expect(component.queryBySelectText('Metamask')).not.toBeNull()
-  })
-
-  it('selects provider', () => {
-    expect.assertions(2)
-    const component = rtl.render(
-      <DeveloperOverlay
-        config={config}
-        selected="Metamask"
-        setProvider={callback}
-      />
-    )
-    expect(component.queryBySelectText('Metamask')).not.toBeNull()
-
-    rtl.fireEvent.change(component.getBySelectText('Metamask'), {
+    rtl.fireEvent.change(component.getByDisplayValue('Metamask'), {
       target: { value: 'HTTP' },
     })
     expect(callback).toHaveBeenCalledWith('HTTP')
