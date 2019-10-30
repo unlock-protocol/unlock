@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import {
   SignUp,
   mapDispatchToProps,
@@ -289,15 +289,9 @@ describe('Sign Up Page', () => {
 
     // RTL got confused by the DOM structure here, needed to write a matcher function
     getByText((_, node) => {
-      if (
-        node.textContent &&
-        node.textContent.match(
-          'The link you used is invalid. Please try again.'
-        )
-      ) {
-        return true
-      }
-      return false
+      return node.innerHTML.startsWith(
+        'The link you used is invalid. Please try again.'
+      )
     })
   })
 
@@ -316,13 +310,7 @@ describe('Sign Up Page', () => {
     )
 
     getByText((_, node) => {
-      if (
-        node.textContent &&
-        node.textContent.match('You are now signed in!')
-      ) {
-        return true
-      }
-      return false
+      return node.innerHTML.startsWith('You are now signed in!')
     })
   })
 })

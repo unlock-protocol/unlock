@@ -118,7 +118,7 @@ export class PaymentProcessor {
         buyer
       )
 
-      await fulfillmentDispatcher.purchase(lock, recipient)
+      return fulfillmentDispatcher.purchase(lock, recipient)
     }
   }
 }

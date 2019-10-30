@@ -1,5 +1,8 @@
 # Changes
 
+# Next (patch)
+- Adding a "latest" export which returns the latest supported lock version
+
 ## 0.4.0
 - Only approving if the approved amount is lower than the required price
 - WalletService method which change state take a callback as argument which yields the transaction hash.
