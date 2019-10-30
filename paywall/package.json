@@ -58,7 +58,7 @@
     "react-dom": "16.8.6",
     "react-hooks-testing-library": "0.6.0",
     "react-test-renderer": "16.8.6",
-    "react-testing-library": "6.1.2",
+    "react-testing-library": "8.0.1",
     "rollup": "1.21.4",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-postcss": "2.0.3",
