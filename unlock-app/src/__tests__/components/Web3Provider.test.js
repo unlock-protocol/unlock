@@ -29,7 +29,7 @@ describe('Provider Component', () => {
       />
     )
     wrapper = rtl.render(component)
-    select = wrapper.queryBySelectText(provider)
+    select = wrapper.getByDisplayValue(provider)
   })
 
   it('shows the provider picker', () => {
