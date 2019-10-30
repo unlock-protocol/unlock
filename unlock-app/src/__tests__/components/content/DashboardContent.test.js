@@ -41,34 +41,34 @@ describe('DashboardContent', () => {
     })
 
     it('should open the creator lock form when the create lock button is clicked', () => {
-      expect.assertions(4)
+      expect.assertions(2)
 
-      expect(wrapper.queryByValue('New Lock')).toBeNull()
+      expect(wrapper.queryByDisplayValue('New Lock')).toBeNull()
       expect(wrapper.queryByText('Submit')).toBeNull()
 
       const createButton = wrapper.getByText('Create Lock')
       rtl.fireEvent.click(createButton)
 
-      expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-      expect(wrapper.queryByText('Submit')).not.toBeNull()
+      wrapper.getByDisplayValue('New Lock')
+      wrapper.getByText('Submit')
     })
 
     it('should disappear when cancel button is clicked', () => {
       // This is really testing the behavior of the creator lock form...  But in
       // order to test it end-to-end, it has to happen at this level so we have
       // access to the button.
-      expect.assertions(4)
+      expect.assertions(2)
 
       let createButton = wrapper.getByText('Create Lock')
       rtl.fireEvent.click(createButton)
 
-      expect(wrapper.queryByValue('New Lock')).not.toBeNull()
-      expect(wrapper.queryByText('Submit')).not.toBeNull()
+      wrapper.getByDisplayValue('New Lock')
+      wrapper.getByText('Submit')
 
       let cancelButton = wrapper.getByText('Cancel')
       rtl.fireEvent.click(cancelButton)
 
-      expect(wrapper.queryByValue('New Lock')).toBeNull()
+      expect(wrapper.queryByDisplayValue('New Lock')).toBeNull()
       expect(wrapper.queryByText('Submit')).toBeNull()
     })
   })
