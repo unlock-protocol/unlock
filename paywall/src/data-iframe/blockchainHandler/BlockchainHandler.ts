@@ -552,7 +552,6 @@ export default class BlockchainHandler {
           from: t.sender,
           for: t.for,
         }))
-        .filter(transaction => transaction.network === this.store.network)
         .map((transaction: TransactionDefaults) => {
           // we pass the transaction as defaults if it has input set, so that we can
           // parse out the transaction type and other details. If input is not set,
