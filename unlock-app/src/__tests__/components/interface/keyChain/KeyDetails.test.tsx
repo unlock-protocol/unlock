@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import { MockedProvider, MockedResponse } from '@apollo/react-testing'
 import { KeyDetails } from '../../../../components/interface/keyChain/KeyDetails'
 import { OwnedKey } from '../../../../components/interface/keyChain/KeychainTypes'

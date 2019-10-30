@@ -1,6 +1,6 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 // Note, we use name import to import the non connected version of the component for testing
 import { Balance } from '../../../components/helpers/Balance'
 import createUnlockStore from '../../../createUnlockStore'
