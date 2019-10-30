@@ -1,9 +1,9 @@
-import signatureValidationMiddleware from '../src/middlewares/signatureValidationMiddleware'
+import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
 const ethJsUtil = require('ethereumjs-util')
 const sigUtil = require('eth-sig-util')
 const httpMocks = require('node-mocks-http')
-const Base64 = require('../src/utils/base64')
+const Base64 = require('../../src/utils/base64')
 
 let request: any, response: any
 
