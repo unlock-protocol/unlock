@@ -16,7 +16,7 @@ let privateKey = ethJsUtil.toBuffer(
 )
 let mockPaymentProcessor = {
   chargeUser: jest.fn().mockResolvedValue('true'),
-  initiatePurchase: jest.fn().mockResolvedValue('true'),
+  initiatePurchase: jest.fn().mockResolvedValue('this is a transaction hash'),
 }
 
 function generateTypedData(message: any) {
@@ -86,8 +86,8 @@ describe('Purchase Controller', () => {
         data: typedData,
       })
 
-      it('responds with a 202', async () => {
-        expect.assertions(2)
+      it('responds with a 200 and transaction hash', async () => {
+        expect.assertions(3)
 
         let response = await request(app)
           .post('/purchase')
@@ -95,7 +95,10 @@ describe('Purchase Controller', () => {
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .send(typedData)
 
-        expect(response.status).toBe(202)
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+          transactionHash: 'this is a transaction hash',
+        })
         expect(mockPaymentProcessor.initiatePurchase).toHaveBeenCalled()
       })
     })

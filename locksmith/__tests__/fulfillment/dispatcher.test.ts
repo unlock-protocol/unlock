@@ -1,8 +1,9 @@
+import { EventEmitter } from 'events'
 import Dispatcher from '../../src/fulfillment/dispatcher'
 
-let mockWeb3Service: { getLock: any },
-  mockWalletService: { connect?: any; purchaseKey: any; on: any },
-  dispatcher: Dispatcher
+jest.mock('../../src/operations/transactionOperations')
+
+let mockWeb3Service: { getLock: any }, dispatcher: Dispatcher
 let lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
@@ -28,11 +29,19 @@ mockWeb3Service = {
     .mockResolvedValueOnce(standardLock),
 }
 
-mockWalletService = {
-  connect: jest.fn(),
-  purchaseKey: jest.fn(),
-  on: jest.fn(),
+class MockWalletService extends EventEmitter {
+  connect = jest.fn()
+  purchaseKey = jest.fn(() => {
+    this.emit(
+      'transaction.new',
+      'a transaction hash',
+      'the sender',
+      'the recipient',
+      'some data'
+    )
+  })
 }
+const mockWalletService = new MockWalletService()
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: function() {
@@ -76,17 +85,18 @@ describe('Dispatcher', () => {
 
   describe('purchase', () => {
     describe('when the key is purchasable', () => {
-      it("purchases a key on the recipient's behalf", async () => {
-        expect.assertions(1)
+      it("purchases a key on the recipient's behalf and returns the transaction hash", async () => {
+        expect.assertions(2)
         dispatcher.retrieveLock = jest.fn().mockResolvedValue(standardLock)
 
-        await dispatcher.purchase(lockAddress, recipient)
+        const result = await dispatcher.purchase(lockAddress, recipient)
         expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
           lockAddress,
           recipient,
           '0',
           buyer
         )
+        expect(result).toEqual('a transaction hash')
       })
     })
 

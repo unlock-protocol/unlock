@@ -27,7 +27,7 @@ namespace PurchaseController {
         config.unlockContractAddress
       )
 
-      await paymentProcessor.initiatePurchase(
+      const hash = await paymentProcessor.initiatePurchase(
         purchaser,
         lock,
         config.purchaserCredentails,
@@ -35,7 +35,9 @@ namespace PurchaseController {
         purchaser
       )
 
-      return res.sendStatus(202)
+      return res.send({
+        transactionHash: hash,
+      })
     }
   }
 

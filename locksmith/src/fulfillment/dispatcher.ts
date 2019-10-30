@@ -45,26 +45,31 @@ export default class Dispatcher {
       throw new Error('No Available Keys.')
     }
 
-    walletService.on(
-      'transaction.new',
-      async (
-        transactionHash: string,
-        sender: string,
-        recipient: string,
-        data: string
-      ) => {
-        await findOrCreateTransaction({
-          transactionHash: transactionHash,
-          sender: sender,
-          recipient: recipient,
-          chain: walletService.networkId,
-          for: this.buyer,
-          data: data,
-        })
-      }
-    )
+    const txHashPromise = new Promise(resolve => {
+      walletService.on(
+        'transaction.new',
+        async (
+          transactionHash: string,
+          sender: string,
+          recipient: string,
+          data: string
+        ) => {
+          await findOrCreateTransaction({
+            transactionHash: transactionHash,
+            sender: sender,
+            recipient: recipient,
+            chain: walletService.networkId,
+            for: this.buyer,
+            data: data,
+          })
+
+          resolve(transactionHash)
+        }
+      )
+    })
 
     await walletService.connect(this.provider)
     await walletService.purchaseKey(lockAddress, recipient, '0', this.buyer)
+    return txHashPromise
   }
 }
