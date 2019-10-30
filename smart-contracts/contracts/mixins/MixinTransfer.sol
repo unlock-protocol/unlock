@@ -202,7 +202,7 @@ contract MixinTransfer is
     address _owner,
     uint256 _deltaT,
     bool _addTime
-  ) internal
+  ) public // This should probably be internal, but I wanted to test it directly.
     hasValidKey(_owner)
   {
     Key storage key = keyByOwner[_owner];
