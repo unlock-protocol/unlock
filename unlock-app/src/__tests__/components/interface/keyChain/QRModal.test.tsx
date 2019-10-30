@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import QRModal from '../../../../components/interface/keyChain/QRModal'
 
 let dismiss: jest.Mock<any, any>

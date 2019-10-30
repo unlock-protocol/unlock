@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 // Note, we use name import to import the non connected version of the component for testing
 import { Web3Provider } from '../../components/Web3Provider'
 
@@ -29,7 +29,7 @@ describe('Provider Component', () => {
       />
     )
     wrapper = rtl.render(component)
-    select = wrapper.queryBySelectText(provider)
+    select = wrapper.getByDisplayValue(provider)
   })
 
   it('shows the provider picker', () => {

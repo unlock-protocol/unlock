@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 
 import { Errors, mapStateToProps } from '../../../components/interface/Errors'
 import Error from '../../../utils/Error'
