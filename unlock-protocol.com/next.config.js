@@ -4,7 +4,6 @@ const path = require('path')
 const fs = require('fs')
 const { join, resolve } = require('path')
 const { promisify } = require('util')
-const withTypescript = require('@zeit/next-typescript')
 const { addBlogPagesToPageObject } = require('./src/utils/blog')
 
 const copyFile = promisify(fs.copyFile)
@@ -41,7 +40,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withTypescript({
+module.exports = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
@@ -79,4 +78,4 @@ module.exports = withTypescript({
 
     return addBlogPagesToPageObject(resolve(dir, '..'), pages)
   },
-})
+}
