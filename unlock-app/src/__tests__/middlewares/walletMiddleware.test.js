@@ -8,7 +8,6 @@ import {
   UPDATE_LOCK,
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
-import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
@@ -39,12 +38,6 @@ let lock = {
   owner: account,
 }
 let state = {}
-
-let key = {
-  id: '123',
-  lock: lock.address,
-  owner: account.address,
-}
 
 const transaction = {
   hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
@@ -479,45 +472,6 @@ describe('Wallet middleware', () => {
       mockConfig.providers[state.provider]
     )
     expect(next).toHaveBeenCalledWith(action)
-  })
-
-  describe('PURCHASE_KEY', () => {
-    it('when the service is not ready it should set an error and not try to purchase the key', () => {
-      expect.assertions(3)
-      const { next, invoke, store } = create()
-      const action = { type: PURCHASE_KEY, key }
-      mockWalletService.purchaseKey = jest.fn()
-      mockWalletService.ready = false
-      invoke(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_ERROR,
-        error: {
-          level: 'Fatal',
-          kind: 'Application',
-          message: FATAL_NO_USER_ACCOUNT,
-        },
-      })
-
-      expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it("should handle PURCHASE_KEY by calling walletService's purchaseKey when the walletService is ready", () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: PURCHASE_KEY, key }
-      mockWalletService.purchaseKey = jest.fn()
-      mockWalletService.ready = true
-      invoke(action)
-      expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
-        key.lock,
-        key.owner,
-        lock.keyPrice,
-        account.address,
-        key.data
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
   })
 
   describe('WITHDRAW_FROM_LOCK', () => {
