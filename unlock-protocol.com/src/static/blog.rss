@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:dc="http://purl.org/dc/elements/1.1/" 
-    xmlns:content="http://purl.org/rss/1.0/modules/content/" 
-    xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title><![CDATA[Unlock Blog]]></title>
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Thu, 31 Oct 2019 18:49:06 GMT</lastBuildDate>
+        <lastBuildDate>Thu, 31 Oct 2019 18:50:27 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Unlocking Smart Contracts]]></title>
+            <description><![CDATA[Unlock value-added features directly in your smart contract. Trivial to implement with endless opportunities. We show you how and discuss some reasons why this might be interesting to you.]]></description>
+            <link>https://unlock-protocol.com/blog/unlocking-smart-contracts</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlocking-smart-contracts</guid>
+            <dc:creator><![CDATA[Nick Mancuso]]></dc:creator>
+            <pubDate>Thu, 31 Oct 2019 04:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Ethereum Name Service Support]]></title>
             <description><![CDATA[Humans are not equiped to make sense of Ethereum addresses, the Ethereum Name Service makes it easy to recognize, remember and type addresses, in a fully decentralized way!]]></description>
@@ -24,14 +29,6 @@
             <guid isPermaLink="true">https://unlock-protocol.com/blog/tokenizing-memberships</guid>
             <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
             <pubDate>Fri, 18 Oct 2019 04:00:00 GMT</pubDate>
-        </item>
-        <item>
-            <title><![CDATA[Unlocking Smart Contracts]]></title>
-            <description><![CDATA[Unlock value-added features directly in your smart contract. Trivial to implement with endless opportunities. We show you how and discuss some reasons why this might be interesting to you.]]></description>
-            <link>https://unlock-protocol.com/blog/unlocking-smart-contracts</link>
-            <guid isPermaLink="true">https://unlock-protocol.com/blog/unlocking-smart-contracts</guid>
-            <dc:creator><![CDATA[Nick Mancuso]]></dc:creator>
-            <pubDate>Thu, 10 Oct 2019 04:00:00 GMT</pubDate>
         </item>
         <item>
             <title><![CDATA[Linkdrop: granting keys through links!]]></title>
