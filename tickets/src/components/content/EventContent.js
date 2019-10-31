@@ -18,7 +18,6 @@ import Media, { NoPhone } from '../../theme/media'
 import { transactionTypeMapping } from '../../utils/types'
 import keyStatus from '../../selectors/keys'
 import withConfig from '../../utils/withConfig'
-import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Ticket from './purchase/Ticket'
 import { getTimeString } from '../../utils/dates'
 import { currencySymbolForLock } from '../../utils/locks'
@@ -176,7 +175,6 @@ export const EventContent = ({
             {(!lock.address || !keyStatus) && loadingTicket}
           </Columns>
         </Layout>
-        <DeveloperOverlay />
       </BrowserOnly>
     </GlobalErrorConsumer>
   )
