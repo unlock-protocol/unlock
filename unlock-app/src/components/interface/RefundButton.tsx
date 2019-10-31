@@ -50,8 +50,8 @@ export class RefundButton extends React.Component<
     this.setState({
       refundInitiated: true,
     })
-    // We override the gas price and gas limit here because web3
-    // wallets would error when they automatically calculated the values.
+    // We override the gas limit here because web3 wallets would error when they
+    //automatically calculated the value.
     await this.contract.refund(accountAddress, {
       gasLimit: 600000,
     })
