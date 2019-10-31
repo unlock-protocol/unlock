@@ -394,43 +394,47 @@ describe('Storage middleware', () => {
     })
 
     describe('success', () => {
-      it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', async () => {
+      it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', done => {
         expect.assertions(3)
         const { store } = create()
 
         const passwordEncryptedPrivateKey = {
           id: 'this is the encrypted key',
         }
-        const emailAddress = 'paul@bunyan.io'
-        const password = 'guest'
+
         const recoveryKey = {}
 
         unlockJs.reEncryptPrivateKey = jest.fn(() =>
           Promise.resolve(recoveryKey)
         )
 
-        await mockStorageService.emit(success.createUser, {
+        mockStorageService.emit(success.createUser, {
           passwordEncryptedPrivateKey,
           emailAddress,
           password,
         })
 
-        expect(store.dispatch).toHaveBeenNthCalledWith(3, {
-          type: SET_ENCRYPTED_PRIVATE_KEY,
-          key: passwordEncryptedPrivateKey,
-          emailAddress,
-        })
-        expect(store.dispatch).toHaveBeenNthCalledWith(2, {
-          type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-          key: passwordEncryptedPrivateKey,
-          emailAddress,
-          password,
-        })
-        expect(store.dispatch).toHaveBeenNthCalledWith(1, {
-          type: WELCOME_EMAIL,
-          emailAddress,
-          recoveryKey,
-        })
+        // Can't await the event handler, but it fires almost immediately. Add a
+        // small timeout so we can see that it is called.
+        setTimeout(() => {
+          expect(store.dispatch).toHaveBeenNthCalledWith(1, {
+            type: WELCOME_EMAIL,
+            emailAddress,
+            recoveryKey,
+          })
+          expect(store.dispatch).toHaveBeenNthCalledWith(2, {
+            type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
+            key: passwordEncryptedPrivateKey,
+            emailAddress,
+            password,
+          })
+          expect(store.dispatch).toHaveBeenNthCalledWith(3, {
+            type: SET_ENCRYPTED_PRIVATE_KEY,
+            key: passwordEncryptedPrivateKey,
+            emailAddress,
+          })
+          done()
+        }, 50)
       })
     })
 

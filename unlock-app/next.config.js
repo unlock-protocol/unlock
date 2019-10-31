@@ -1,5 +1,4 @@
 /* eslint no-console: 0 */
-const withTypescript = require('@zeit/next-typescript')
 const dotenv = require('dotenv')
 const path = require('path')
 const { exportPaths } = require('./src/utils/exportStatic')
@@ -50,7 +49,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withTypescript({
+module.exports = {
   publicRuntimeConfig: {
     ...optionalConfigVariables,
     ...requiredConfigVariables,
@@ -59,4 +58,4 @@ module.exports = withTypescript({
     return config
   },
   exportPathMap: exportPaths,
-})
+}

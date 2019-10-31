@@ -1,13 +1,18 @@
 import { setConversionRate } from '../../actions/currencyConvert'
 import configure from '../../config'
 
-jest.mock('../../services/currencyLookupService', () => () => ({
-  lookupPrice: jest
+class MockCurrencyLookupService {
+  lookupPrice = jest
     .fn()
     .mockResolvedValueOnce({ currency: 'USD', amount: '195.99' })
     .mockResolvedValueOnce({ currency: 'USD', amount: '198.20' })
-    .mockResolvedValueOnce({ currency: 'USD', amount: '195.99' }),
-}))
+    .mockResolvedValueOnce({ currency: 'USD', amount: '195.99' })
+}
+
+jest.mock(
+  '../../services/currencyLookupService',
+  () => MockCurrencyLookupService
+)
 
 describe('Currency conversion service retrieval middleware', () => {
   it('service called, action dispatched to set currency conversion rate', async () => {
