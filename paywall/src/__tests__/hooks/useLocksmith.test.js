@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 
 import useLocksmith from '../../hooks/useLocksmith'
 import { WindowContext } from '../../hooks/browser/useWindow'
