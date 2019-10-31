@@ -53,7 +53,6 @@ describe('useOptimism hook', () => {
     let wrapper
     rtl.act(() => {
       wrapper = rtl.render(<MockOptimism />)
-      finishFetch(fakeResponse)
     })
 
     expect(
