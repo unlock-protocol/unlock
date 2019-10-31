@@ -10,7 +10,6 @@ import {
 } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
-import { updateKey, addKey } from '../actions/key'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
 import { setError } from '../actions/error'
 import {
@@ -68,27 +67,6 @@ const web3Middleware = config => {
         }
       } else {
         dispatch(addLock(address, update))
-      }
-    })
-
-    /**
-     * When a key was saved, we reload the corresponding lock because
-     * it might have been updated (balance, outstanding keys...)
-     */
-    web3Service.on('key.saved', (keyId, key) => {
-      web3Service.getLock(key.lock)
-      if (getState().account.address === key.owner) {
-        web3Service.refreshAccountBalance(getState().account)
-      }
-      web3Service.getKeyByLockForOwner(key.lock, key.owner)
-    })
-
-    web3Service.on('key.updated', (id, update) => {
-      if (getState().keys[id]) {
-        dispatch(updateKey(id, update))
-      } else {
-        // That key does not exist yet
-        dispatch(addKey(id, update))
       }
     })
 

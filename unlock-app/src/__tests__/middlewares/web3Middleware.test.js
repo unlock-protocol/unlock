@@ -7,7 +7,6 @@ import {
   UPDATE_LOCK,
   CREATE_LOCK,
 } from '../../actions/lock'
-import { UPDATE_KEY } from '../../actions/key'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
@@ -219,61 +218,6 @@ describe('Lock middleware', () => {
             maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
             unlimitedKeys: true,
           }),
-        })
-      )
-    })
-  })
-
-  describe('when handling the key.saved events triggered by the web3Service', () => {
-    it('it should reload the lock, the account and get the corresponding key for the current user', () => {
-      expect.assertions(3)
-      create()
-
-      const key = {
-        id: '0xabc',
-        lock: lock.address,
-        owner: state.account.address,
-      }
-      mockWeb3Service.getLock = jest.fn()
-      mockWeb3Service.refreshAccountBalance = jest.fn()
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-
-      mockWeb3Service.emit('key.saved', '0xabc', key)
-      expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lock.address)
-      expect(mockWeb3Service.getKeyByLockForOwner).toHaveBeenCalledWith(
-        lock.address,
-        state.account.address
-      )
-      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-        state.account
-      )
-    })
-  })
-
-  describe('when handling the key.updated events triggered by the web3Service', () => {
-    it('it dispatch updateKey', () => {
-      expect.assertions(1)
-      const { store } = create()
-
-      const keyId = 'keyId'
-      const key = {
-        id: keyId,
-        lock: lock.address,
-      }
-
-      state.keys = {
-        [keyId]: key,
-      }
-      const update = {
-        data: 'hello',
-      }
-
-      mockWeb3Service.emit('key.updated', keyId, update)
-      expect(store.dispatch).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: UPDATE_KEY,
-          id: key.id,
-          update,
         })
       )
     })
