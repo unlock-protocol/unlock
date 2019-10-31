@@ -4,7 +4,6 @@ const path = require('path')
 const fs = require('fs')
 const { join } = require('path')
 const { promisify } = require('util')
-const withTypescript = require('@zeit/next-typescript')
 const withCSS = require('@zeit/next-css')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
@@ -44,46 +43,54 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
   }
 })
 
-module.exports = withTypescript(
-  withCSS({
-    publicRuntimeConfig: {
-      ...optionalConfigVariables,
-      ...requiredConfigVariables,
-    },
-    webpack: config => {
-      // Fixes npm packages that depend on `fs` module
-      config.node = {
-        fs: 'empty',
-      }
+module.exports = withCSS({
+  publicRuntimeConfig: {
+    ...optionalConfigVariables,
+    ...requiredConfigVariables,
+  },
+  webpack: config => {
+    // Fixes npm packages that depend on `fs` module
+    config.node = {
+      fs: 'empty',
+    }
 
-      return config
-    },
-    exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
-      // Export robots.txt and humans.txt in non-dev environments
-      if (!dev && outDir) {
-        await copyFile(
-          join(dir, 'static', 'robots.txt'),
-          join(outDir, 'robots.txt')
-        )
+    return config
+  },
+  exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
+    // Export robots.txt and humans.txt in non-dev environments
+    if (!dev && outDir) {
+      await copyFile(
+        join(dir, 'static', 'robots.txt'),
+        join(outDir, 'robots.txt')
+      )
 
-        await copyFile(
-          join(dir, 'static', 'humans.txt'),
-          join(outDir, 'humans.txt')
-        )
+      await copyFile(
+        join(dir, 'static', 'humans.txt'),
+        join(outDir, 'humans.txt')
+      )
 
-        // Export _redirects which is used by netlify for URL rewrites
-        await copyFile(
-          join(dir, 'static', '_redirects'),
-          join(outDir, '_redirects')
-        )
-      }
+      // Export _redirects which is used by netlify for URL rewrites
+      await copyFile(
+        join(dir, 'static', '_redirects'),
+        join(outDir, '_redirects')
+      )
+    }
 
-      return {
-        '/': { page: '/home' },
-        '/create': { page: '/create' },
-        '/event': { page: '/newevent' },
-        '/newevent': { page: '/newevent' },
-      }
-    },
-  })
-)
+    return {
+      '/': { page: '/home' },
+      '/create': { page: '/create' },
+      '/event': { page: '/newevent' },
+      '/newevent': { page: '/newevent' },
+    }
+  },
+})
+
+
+
+
+
+
+
+
+
+

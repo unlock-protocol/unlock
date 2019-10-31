@@ -41,16 +41,6 @@ function getOrCreateStore(initialState) {
 const ConfigProvider = ConfigContext.Provider
 
 class UnlockApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {}
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-
-    return { pageProps }
-  }
-
   constructor(props, context) {
     super(props, context)
 
