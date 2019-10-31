@@ -29,22 +29,11 @@ let mockConfig
 /**
  * Fake state
  */
-let account = {
-  address: '0xabc',
-}
-let lock = {
-  address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-  keyPrice: '100',
-  owner: account,
-}
+let account = {}
+let lock = {}
 let state = {}
-
-const transaction = {
-  hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
-}
-const network = {
-  name: 'test',
-}
+const transaction = {}
+const network = {}
 
 /**
  * This is a "fake" middleware caller
@@ -103,6 +92,9 @@ beforeEach(() => {
     address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
     keyPrice: '100',
     owner: account.address,
+    expirationDuration: 60 * 60 * 24 * 30,
+    maxNumberOfKeys: -1,
+    name: 'My Fancy Lock',
   }
   state = {
     account,
@@ -502,9 +494,9 @@ describe('Wallet middleware', () => {
       mockWalletService.withdrawFromLock = jest.fn()
       mockWalletService.ready = true
       invoke(action)
-      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address
-      )
+      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith({
+        lockAddress: lock.address,
+      })
       expect(next).toHaveBeenCalledWith(action)
     })
   })
@@ -533,7 +525,7 @@ describe('Wallet middleware', () => {
 
       it("should handle CREATE_LOCK by calling walletService's createLock", () => {
         expect.assertions(2)
-        const { next, invoke, store } = create()
+        const { next, invoke } = create()
         const action = { type: CREATE_LOCK, lock }
 
         mockWalletService.createLock = jest
@@ -542,10 +534,14 @@ describe('Wallet middleware', () => {
         mockWalletService.ready = true
 
         invoke(action)
-        expect(mockWalletService.createLock).toHaveBeenCalledWith(
-          lock,
-          store.getState().account.address
-        )
+        expect(mockWalletService.createLock).toHaveBeenCalledWith({
+          currencyContractAddress: lock.currencyContractAddress,
+          expirationDuration: lock.expirationDuration,
+          keyPrice: lock.keyPrice,
+          maxNumberOfKeys: lock.maxNumberOfKeys,
+          name: lock.name,
+          owner: lock.owner,
+        })
 
         expect(next).toHaveBeenCalledWith(action)
       })
@@ -593,7 +589,7 @@ describe('Wallet middleware', () => {
 
     it('should invoke updateKeyPrice on receiving an update request', () => {
       expect.assertions(2)
-      const { next, invoke, store } = create()
+      const { next, invoke } = create()
       const action = {
         type: UPDATE_LOCK_KEY_PRICE,
         address: lock.address,
@@ -602,11 +598,10 @@ describe('Wallet middleware', () => {
       mockWalletService.updateKeyPrice = jest.fn()
       mockWalletService.ready = true
       invoke(action)
-      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address,
-        '0.03'
-      )
+      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith({
+        lockAddress: lock.address,
+        keyPrice: '0.03',
+      })
       expect(next).toHaveBeenCalledWith(action)
     })
   })
