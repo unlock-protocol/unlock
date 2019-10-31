@@ -90,12 +90,11 @@ describe('Dispatcher', () => {
         dispatcher.retrieveLock = jest.fn().mockResolvedValue(standardLock)
 
         const result = await dispatcher.purchase(lockAddress, recipient)
-        expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
+        expect(mockWalletService.purchaseKey).toHaveBeenCalledWith({
           lockAddress,
-          recipient,
-          '0',
-          buyer
-        )
+          keyPrice: '0.01',
+          owner: recipient,
+        })
         expect(result).toEqual('a transaction hash')
       })
     })

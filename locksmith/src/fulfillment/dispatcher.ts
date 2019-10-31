@@ -46,6 +46,7 @@ export default class Dispatcher {
     }
 
     const txHashPromise = new Promise(resolve => {
+      // TODO: do not rely on 'transaction.new' event (as future versions of unlockjs may not be an event emitter anymore, but on the optional callback to purchaseKey. Unfortunately, that callback only includes the transaction hash for now. We will need unlock-js to yield the sender, recipient and data too)
       walletService.on(
         'transaction.new',
         async (
@@ -69,7 +70,12 @@ export default class Dispatcher {
     })
 
     await walletService.connect(this.provider)
-    await walletService.purchaseKey(lockAddress, recipient, '0', this.buyer)
+    // Let's not await on the transaction to be mined
+    walletService.purchaseKey({
+      lockAddress,
+      owner: recipient,
+      keyPrice: lock.keyPrice,
+    })
     return txHashPromise
   }
 }
