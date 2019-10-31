@@ -20,6 +20,14 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 * [ ] Refresh the page and make sure the page has no more ads
 * [ ] When clicking on the button again, before the key expires, the lock should show the status (pending, confirming, or valid)
 
+## Unlock User Accounts
+* [ ] Go to https://www.ouvre-boite.com/members-staging/ on a browser without a web3 wallet
+* [ ] Click to become a member!
+* [ ] Make sure only the WEENUS option is available
+* [ ] Log in with your Unlock account (you should have a staging account)
+* [ ] Purchase a key, make sure the flow is correct
+* [ ] Once the key has been purchased, make sure you see the page's full content.
+
 ## Tickets
 * [ ] Go to https://tickets-staging.unlock-protocol.com/ and create or update a existing event
 * [ ] Once saved, click on the event link and make sure it shows the right information
