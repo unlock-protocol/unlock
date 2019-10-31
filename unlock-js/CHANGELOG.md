@@ -1,7 +1,8 @@
 # Changes
 
-# Next (patch)
+# 0.4.1
 - Adding a "latest" export which returns the latest supported lock version
+- Loosening the required node version to anything compatible with v10
 
 ## 0.4.0
 - Only approving if the approved amount is lower than the required price
