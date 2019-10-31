@@ -188,20 +188,27 @@ const walletMiddleware = config => {
           walletService.connect(config.providers[getState().provider])
         } else if (action.type === CREATE_LOCK && action.lock.address) {
           ensureReadyBefore(() => {
-            walletService.createLock(action.lock, getState().account.address)
+            walletService.createLock({
+              expirationDuration: action.lock.expirationDuration,
+              keyPrice: action.lock.keyPrice,
+              maxNumberOfKeys: action.lock.maxNumberOfKeys,
+              owner: action.lock.owner,
+              name: action.lock.name,
+              currencyContractAddress: action.lock.currencyContractAddress,
+            })
           })
         } else if (action.type === WITHDRAW_FROM_LOCK) {
           ensureReadyBefore(() => {
-            walletService.withdrawFromLock(action.lock.address)
+            walletService.withdrawFromLock({
+              lockAddress: action.lock.address,
+            })
           })
         } else if (action.type === UPDATE_LOCK_KEY_PRICE) {
           ensureReadyBefore(() => {
-            const account = getState().account
-            walletService.updateKeyPrice(
-              action.address,
-              account.address,
-              action.price
-            )
+            walletService.updateKeyPrice({
+              lockAddress: action.address,
+              keyPrice: action.price,
+            })
           })
         } else if (action.type === SIGN_DATA) {
           const { data, id } = action
