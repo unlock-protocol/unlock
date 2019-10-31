@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 
 import usePostMessage from '../../hooks/browser/usePostMessage'
 import usePurchaseKey from '../../hooks/usePurchaseKey'

@@ -1,4 +1,4 @@
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import React from 'react'
 
 import { ConfigContext } from '../../../utils/withConfig'
