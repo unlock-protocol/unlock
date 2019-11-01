@@ -78,10 +78,11 @@ describe('The Unlock Dashboard', () => {
         return !existingLocks.includes(lock)
       })
 
+      // Let's wait for the lock to at least be not "Submitted" anymore
       await wait.untilIsTrue(address => {
         return !!document
           .querySelector(`[data-address="${address}"]`)
-          .innerText.match(/Confirming|Submitted/)
+          .innerText.match(/Confirming/)
       }, newLock)
 
       // Get the locks' innerText
