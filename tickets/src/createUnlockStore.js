@@ -5,9 +5,6 @@ import { createMemoryHistory } from 'history'
 import configure from './config'
 
 // Reducers
-import keysReducer, {
-  initialState as defaultKeys,
-} from './reducers/keysReducer'
 import locksReducer, {
   initialState as defaultLocks,
 } from './reducers/locksReducer'
@@ -20,12 +17,6 @@ import networkReducer, {
 import providerReducer, {
   initialState as defaultProvider,
 } from './reducers/providerReducer'
-import transactionsReducer, {
-  initialState as defaultTransactions,
-} from './reducers/transactionsReducer'
-import currencyReducer, {
-  initialState as defaultCurrency,
-} from './reducers/currencyReducer'
 import errorsReducer, {
   initialState as defaultError,
 } from './reducers/errorsReducer'
@@ -35,9 +26,6 @@ import accountReducer, {
 import walletStatusReducer, {
   initialState as defaultWalletStatus,
 } from './reducers/walletStatusReducer'
-import ticketsReducer, {
-  initialState as defaultTicket,
-} from './reducers/ticketsReducer'
 import eventReducer, {
   initialState as defaultEvent,
 } from './reducers/eventReducer'
@@ -52,16 +40,12 @@ export const createUnlockStore = (
   const reducers = {
     router: connectRouter(history),
     account: accountReducer,
-    keys: keysReducer,
     locks: locksReducer,
     loading: loadingReducer,
     network: networkReducer,
     provider: providerReducer,
-    transactions: transactionsReducer,
-    currency: currencyReducer,
     errors: errorsReducer,
     walletStatus: walletStatusReducer,
-    tickets: ticketsReducer,
     event: eventReducer,
   }
 
@@ -76,16 +60,12 @@ export const createUnlockStore = (
   const initialState = Object.assign(
     {
       account: defaultAccount,
-      keys: defaultKeys,
       locks: defaultLocks,
       loading: defaultLoading,
       network: defaultNetwork,
       provider: defaultProvider,
-      transactions: defaultTransactions,
-      currency: defaultCurrency,
       errors: defaultError,
       walletStatus: defaultWalletStatus,
-      tickets: defaultTicket,
       event: defaultEvent,
     },
     {
