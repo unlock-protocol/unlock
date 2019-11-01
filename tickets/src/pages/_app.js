@@ -9,12 +9,10 @@ import GlobalStyle from '../theme/globalStyle'
 import { ConfigContext } from '../utils/withConfig'
 
 // Middlewares
-import currencyConversionMiddleware from '../middlewares/currencyConversionMiddleware'
 import providerMiddleware from '../middlewares/providerMiddleware'
-import walletMiddleware from '../middlewares/walletMiddleware'
 import web3Middleware from '../middlewares/web3Middleware'
 import eventMiddleware from '../middlewares/eventMiddleware'
-import wedlockMiddleware from '../middlewares/wedlockMiddleware'
+import walletMiddleware from '../middlewares/walletMiddleware'
 import WalletCheckOverlay from '../components/interface/FullScreenModals'
 
 const config = configure()
@@ -25,10 +23,8 @@ function getOrCreateStore(initialState, history) {
   const middlewares = [
     providerMiddleware(config),
     web3Middleware(config),
-    currencyConversionMiddleware(config),
     walletMiddleware(config),
     eventMiddleware(config),
-    wedlockMiddleware(config),
   ]
 
   // Always make a new store if server, otherwise state is shared between requests
