@@ -1809,7 +1809,7 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3002/about"
-        target="_self"
+        target="_blank"
         title="About"
       >
         <svg
@@ -1840,7 +1840,7 @@ Object {
     <a
       class="sc-850ddk-0 iabPtF"
       href="http://localhost:3002/about"
-      target="_self"
+      target="_blank"
       title="About"
     >
       <svg
@@ -2743,7 +2743,7 @@ Object {
       <a
         class="c0 c1"
         href="https://github.com/unlock-protocol/unlock"
-        target="_self"
+        target="_blank"
         title="Source Code"
       >
         <svg
@@ -2770,7 +2770,7 @@ Object {
     <a
       class="sc-850ddk-0 iabPtF"
       href="https://github.com/unlock-protocol/unlock"
-      target="_self"
+      target="_blank"
       title="Source Code"
     >
       <svg
@@ -2945,7 +2945,7 @@ Object {
       <a
         class="c0 c1"
         href="http://localhost:3002/jobs"
-        target="_self"
+        target="_blank"
         title="Join us"
       >
         <svg
@@ -2974,7 +2974,7 @@ Object {
     <a
       class="sc-850ddk-0 iabPtF"
       href="http://localhost:3002/jobs"
-      target="_self"
+      target="_blank"
       title="Join us"
     >
       <svg
@@ -3357,7 +3357,7 @@ Object {
       <a
         class="c0 c1"
         href="https://t.me/unlockprotocol"
-        target="_self"
+        target="_blank"
         title="Telegram"
       >
         <svg
@@ -3386,7 +3386,7 @@ Object {
     <a
       class="sc-850ddk-0 iabPtF"
       href="https://t.me/unlockprotocol"
-      target="_self"
+      target="_blank"
       title="Telegram"
     >
       <svg
@@ -6559,7 +6559,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -6583,7 +6583,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -6605,7 +6605,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -6625,7 +6625,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -6889,7 +6889,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -6913,7 +6913,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -6935,7 +6935,7 @@ Object {
             <a
               class="c7 c8"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -6955,7 +6955,7 @@ Object {
             <a
               class="c7 c8"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -7027,7 +7027,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -7051,7 +7051,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -7073,7 +7073,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -7093,7 +7093,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -7357,7 +7357,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/about"
-            target="_self"
+            target="_blank"
             title="About"
           >
             <svg
@@ -7381,7 +7381,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/jobs"
-            target="_self"
+            target="_blank"
             title="Join us"
           >
             <svg
@@ -7403,7 +7403,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="https://github.com/unlock-protocol/unlock"
-            target="_self"
+            target="_blank"
             title="Source Code"
           >
             <svg
@@ -7423,7 +7423,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="https://t.me/unlockprotocol"
-            target="_self"
+            target="_blank"
             title="Telegram"
           >
             <svg
@@ -26538,7 +26538,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -26562,7 +26562,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -26584,7 +26584,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -26604,7 +26604,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -26780,7 +26780,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -26804,7 +26804,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -26826,7 +26826,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -26846,7 +26846,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -27996,7 +27996,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -28020,7 +28020,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -28042,7 +28042,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -28062,7 +28062,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -29403,7 +29403,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -29427,7 +29427,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -29449,7 +29449,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -29469,7 +29469,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -31792,7 +31792,7 @@ Object {
               <a
                 class="c12 c17"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -31816,7 +31816,7 @@ Object {
               <a
                 class="c12 c17"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -31838,7 +31838,7 @@ Object {
               <a
                 class="c12 c17"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -31858,7 +31858,7 @@ Object {
               <a
                 class="c12 c17"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -33215,7 +33215,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -33239,7 +33239,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -33261,7 +33261,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -33281,7 +33281,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -36378,7 +36378,7 @@ Object {
         <a
           class="c1 c2"
           href="http://localhost:3002/about"
-          target="_self"
+          target="_blank"
           title="About"
         >
           <svg
@@ -36402,7 +36402,7 @@ Object {
         <a
           class="c1 c2"
           href="http://localhost:3002/jobs"
-          target="_self"
+          target="_blank"
           title="Join us"
         >
           <svg
@@ -36424,7 +36424,7 @@ Object {
         <a
           class="c1 c2"
           href="https://github.com/unlock-protocol/unlock"
-          target="_self"
+          target="_blank"
           title="Source Code"
         >
           <svg
@@ -36444,7 +36444,7 @@ Object {
         <a
           class="c1 c2"
           href="https://t.me/unlockprotocol"
-          target="_self"
+          target="_blank"
           title="Telegram"
         >
           <svg
@@ -36482,7 +36482,7 @@ Object {
       <a
         class="sc-850ddk-0 iabPtF"
         href="http://localhost:3002/about"
-        target="_self"
+        target="_blank"
         title="About"
       >
         <svg
@@ -36506,7 +36506,7 @@ Object {
       <a
         class="sc-850ddk-0 iabPtF"
         href="http://localhost:3002/jobs"
-        target="_self"
+        target="_blank"
         title="Join us"
       >
         <svg
@@ -36528,7 +36528,7 @@ Object {
       <a
         class="sc-850ddk-0 iabPtF"
         href="https://github.com/unlock-protocol/unlock"
-        target="_self"
+        target="_blank"
         title="Source Code"
       >
         <svg
@@ -36548,7 +36548,7 @@ Object {
       <a
         class="sc-850ddk-0 iabPtF"
         href="https://t.me/unlockprotocol"
-        target="_self"
+        target="_blank"
         title="Telegram"
       >
         <svg
@@ -37275,7 +37275,7 @@ Object {
           <a
             class="c4 c5"
             href="http://localhost:3002/about"
-            target="_self"
+            target="_blank"
             title="About"
           >
             <svg
@@ -37299,7 +37299,7 @@ Object {
           <a
             class="c4 c5"
             href="http://localhost:3002/jobs"
-            target="_self"
+            target="_blank"
             title="Join us"
           >
             <svg
@@ -37321,7 +37321,7 @@ Object {
           <a
             class="c4 c5"
             href="https://github.com/unlock-protocol/unlock"
-            target="_self"
+            target="_blank"
             title="Source Code"
           >
             <svg
@@ -37341,7 +37341,7 @@ Object {
           <a
             class="c4 c5"
             href="https://t.me/unlockprotocol"
-            target="_self"
+            target="_blank"
             title="Telegram"
           >
             <svg
@@ -37436,7 +37436,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
-          target="_self"
+          target="_blank"
           title="About"
         >
           <svg
@@ -37460,7 +37460,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
-          target="_self"
+          target="_blank"
           title="Join us"
         >
           <svg
@@ -37482,7 +37482,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
-          target="_self"
+          target="_blank"
           title="Source Code"
         >
           <svg
@@ -37502,7 +37502,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
-          target="_self"
+          target="_blank"
           title="Telegram"
         >
           <svg
@@ -37933,7 +37933,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/about"
-            target="_self"
+            target="_blank"
             title="About"
           >
             <svg
@@ -37957,7 +37957,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/jobs"
-            target="_self"
+            target="_blank"
             title="Join us"
           >
             <svg
@@ -37979,7 +37979,7 @@ Object {
           <a
             class="c6 c7"
             href="https://github.com/unlock-protocol/unlock"
-            target="_self"
+            target="_blank"
             title="Source Code"
           >
             <svg
@@ -37999,7 +37999,7 @@ Object {
           <a
             class="c6 c7"
             href="https://t.me/unlockprotocol"
-            target="_self"
+            target="_blank"
             title="Telegram"
           >
             <svg
@@ -38104,7 +38104,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
-          target="_self"
+          target="_blank"
           title="About"
         >
           <svg
@@ -38128,7 +38128,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
-          target="_self"
+          target="_blank"
           title="Join us"
         >
           <svg
@@ -38150,7 +38150,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
-          target="_self"
+          target="_blank"
           title="Source Code"
         >
           <svg
@@ -38170,7 +38170,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
-          target="_self"
+          target="_blank"
           title="Telegram"
         >
           <svg
@@ -38601,7 +38601,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/about"
-            target="_self"
+            target="_blank"
             title="About"
           >
             <svg
@@ -38625,7 +38625,7 @@ Object {
           <a
             class="c6 c7"
             href="http://localhost:3002/jobs"
-            target="_self"
+            target="_blank"
             title="Join us"
           >
             <svg
@@ -38647,7 +38647,7 @@ Object {
           <a
             class="c6 c7"
             href="https://github.com/unlock-protocol/unlock"
-            target="_self"
+            target="_blank"
             title="Source Code"
           >
             <svg
@@ -38667,7 +38667,7 @@ Object {
           <a
             class="c6 c7"
             href="https://t.me/unlockprotocol"
-            target="_self"
+            target="_blank"
             title="Telegram"
           >
             <svg
@@ -38772,7 +38772,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/about"
-          target="_self"
+          target="_blank"
           title="About"
         >
           <svg
@@ -38796,7 +38796,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="http://localhost:3002/jobs"
-          target="_self"
+          target="_blank"
           title="Join us"
         >
           <svg
@@ -38818,7 +38818,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://github.com/unlock-protocol/unlock"
-          target="_self"
+          target="_blank"
           title="Source Code"
         >
           <svg
@@ -38838,7 +38838,7 @@ Object {
         <a
           class="sc-850ddk-0 iabPtF"
           href="https://t.me/unlockprotocol"
-          target="_self"
+          target="_blank"
           title="Telegram"
         >
           <svg
@@ -40929,7 +40929,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -40953,7 +40953,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -40975,7 +40975,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -40995,7 +40995,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -41474,7 +41474,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -41498,7 +41498,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -41520,7 +41520,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -41540,7 +41540,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -42498,7 +42498,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -42522,7 +42522,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -42544,7 +42544,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -42564,7 +42564,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -42799,7 +42799,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -42823,7 +42823,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -42845,7 +42845,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -42865,7 +42865,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -43757,7 +43757,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -43781,7 +43781,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -43803,7 +43803,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -43823,7 +43823,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -44302,7 +44302,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -44326,7 +44326,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -44348,7 +44348,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -44368,7 +44368,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -45457,7 +45457,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -45481,7 +45481,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -45503,7 +45503,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -45523,7 +45523,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -46002,7 +46002,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -46026,7 +46026,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -46048,7 +46048,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -46068,7 +46068,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -47157,7 +47157,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -47181,7 +47181,7 @@ Object {
               <a
                 class="c9 c14"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -47203,7 +47203,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -47223,7 +47223,7 @@ Object {
               <a
                 class="c9 c14"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -47702,7 +47702,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -47726,7 +47726,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -47748,7 +47748,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -47768,7 +47768,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -48624,7 +48624,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -48648,7 +48648,7 @@ Object {
               <a
                 class="c7 c8"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -48670,7 +48670,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -48690,7 +48690,7 @@ Object {
               <a
                 class="c7 c8"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -48799,7 +48799,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -48823,7 +48823,7 @@ Object {
             <a
               class="c7 c8"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -48845,7 +48845,7 @@ Object {
             <a
               class="c7 c8"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -48865,7 +48865,7 @@ Object {
             <a
               class="c7 c8"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -48937,7 +48937,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -48961,7 +48961,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -48983,7 +48983,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -49003,7 +49003,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -49112,7 +49112,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/about"
-            target="_self"
+            target="_blank"
             title="About"
           >
             <svg
@@ -49136,7 +49136,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="http://localhost:3002/jobs"
-            target="_self"
+            target="_blank"
             title="Join us"
           >
             <svg
@@ -49158,7 +49158,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="https://github.com/unlock-protocol/unlock"
-            target="_self"
+            target="_blank"
             title="Source Code"
           >
             <svg
@@ -49178,7 +49178,7 @@ Object {
           <a
             class="sc-850ddk-0 iabPtF"
             href="https://t.me/unlockprotocol"
-            target="_self"
+            target="_blank"
             title="Telegram"
           >
             <svg
@@ -49745,7 +49745,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -49769,7 +49769,7 @@ Object {
               <a
                 class="c10 c11"
                 href="http://localhost:3002/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -49791,7 +49791,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -49811,7 +49811,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -49987,7 +49987,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -50011,7 +50011,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="http://localhost:3002/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -50033,7 +50033,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -50053,7 +50053,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -57696,7 +57696,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -57720,7 +57720,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -57742,7 +57742,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -57762,7 +57762,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -57950,7 +57950,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -57974,7 +57974,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -57996,7 +57996,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -58016,7 +58016,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -58707,7 +58707,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -58731,7 +58731,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -58753,7 +58753,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -58773,7 +58773,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -59130,7 +59130,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -59154,7 +59154,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -59176,7 +59176,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -59196,7 +59196,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -60046,7 +60046,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -60070,7 +60070,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -60092,7 +60092,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -60112,7 +60112,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -60314,7 +60314,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -60338,7 +60338,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -60360,7 +60360,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -60380,7 +60380,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
@@ -61120,7 +61120,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/about"
-                target="_self"
+                target="_blank"
                 title="About"
               >
                 <svg
@@ -61144,7 +61144,7 @@ Object {
               <a
                 class="c10 c11"
                 href="undefined/jobs"
-                target="_self"
+                target="_blank"
                 title="Join us"
               >
                 <svg
@@ -61166,7 +61166,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://github.com/unlock-protocol/unlock"
-                target="_self"
+                target="_blank"
                 title="Source Code"
               >
                 <svg
@@ -61186,7 +61186,7 @@ Object {
               <a
                 class="c10 c11"
                 href="https://t.me/unlockprotocol"
-                target="_self"
+                target="_blank"
                 title="Telegram"
               >
                 <svg
@@ -61425,7 +61425,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/about"
-              target="_self"
+              target="_blank"
               title="About"
             >
               <svg
@@ -61449,7 +61449,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="undefined/jobs"
-              target="_self"
+              target="_blank"
               title="Join us"
             >
               <svg
@@ -61471,7 +61471,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://github.com/unlock-protocol/unlock"
-              target="_self"
+              target="_blank"
               title="Source Code"
             >
               <svg
@@ -61491,7 +61491,7 @@ Object {
             <a
               class="sc-850ddk-0 iabPtF"
               href="https://t.me/unlockprotocol"
-              target="_self"
+              target="_blank"
               title="Telegram"
             >
               <svg
