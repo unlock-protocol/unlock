@@ -54,6 +54,10 @@ module.exports = withCSS({
       fs: 'empty',
     }
 
+    // Even though next is allegedly configured to use TS by default, you still
+    // have to add the typescript file extensions to webpack
+    config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
+
     return config
   },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
