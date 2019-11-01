@@ -3,6 +3,24 @@
   "version": "1.0.0",
   "description": "Unlock is a protocol for decentralized access control",
   "main": "index.js",
+  "private": true,
+  "workspaces": [
+    "docker/development",
+    "locksmith",
+    "paywall",
+    "rover",
+    "smart-contracts",
+    "tests",
+    "tickets",
+    "unlock-app",
+    "unlock-js",
+    "unlock-protocol.com",
+    "wedlocks"
+  ],
+  "resolutions": {
+    "**/react": "16.9.0",
+    "**/react-dom": "16.9.0"
+  },
   "directories": {
     "doc": "docs"
   },
@@ -41,9 +59,7 @@
     "husky": "3.1.0"
   },
   "scripts": {
-    "link-parent-bin": "link-parent-bin -c . -s true",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "./scripts/postinstall.sh",
     "build": "cd smart-contracts && npm run build && cd ../unlock-app && npm run build && cd ../locksmith && npm run build",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
