@@ -12,18 +12,17 @@ describe('adRemoverUtils', () => {
     let status
 
     beforeEach(() => {
+      class MockUrl {
+        searchParams = {
+          // return the provider we specify, or what the variable
+          // was we asked to retrieve
+          get: askedFor => (provider === undefined ? askedFor : provider),
+        }
+      }
       status = 404
       ok = true
       fakeWindow = {
-        URL: () => {
-          return {
-            searchParams: {
-              // return the provider we specify, or what the variable
-              // was we asked to retrieve
-              get: askedFor => (provider === undefined ? askedFor : provider),
-            },
-          }
-        },
+        URL: MockUrl,
       }
     })
 
@@ -40,17 +39,16 @@ describe('adRemoverUtils', () => {
     describe('sendAsync', () => {
       let json
       beforeEach(() => {
+        class MockUrl {
+          searchParams = {
+            // return the provider we specify, or what the variable
+            // was we asked to retrieve
+            get: askedFor => (provider === undefined ? askedFor : provider),
+          }
+        }
         json = jest.fn(() => Promise.resolve(result))
         fakeWindow = {
-          URL: () => {
-            return {
-              searchParams: {
-                // return the provider we specify, or what the variable
-                // was we asked to retrieve
-                get: askedFor => (provider === undefined ? askedFor : provider),
-              },
-            }
-          },
+          URL: MockUrl,
           fetch: jest.fn(() =>
             Promise.resolve({
               ok,
@@ -131,26 +129,26 @@ describe('adRemoverUtils', () => {
     let unlockUserAccounts = null
 
     beforeEach(() => {
+      class MockUrl {
+        searchParams = {
+          // return the provider we specify, or what the variable
+          // was we asked to retrieve
+          get: variable => {
+            if (variable === 'locks') {
+              return JSON.stringify(locks)
+            }
+            if (variable === 'unlockUserAccounts') {
+              return unlockUserAccounts
+            }
+            return null
+          },
+        }
+      }
       fakeWindow = {
         document: {
           location: {},
         },
-        URL: () => {
-          return {
-            searchParams: {
-              // return locks,
-              get: variable => {
-                if (variable === 'locks') {
-                  return JSON.stringify(locks)
-                }
-                if (variable === 'unlockUserAccounts') {
-                  return unlockUserAccounts
-                }
-                return null
-              },
-            },
-          }
-        },
+        URL: MockUrl,
       }
     })
 
