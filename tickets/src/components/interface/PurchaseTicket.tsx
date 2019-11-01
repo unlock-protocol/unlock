@@ -1,30 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import BalanceProvider from '../helpers/BalanceProvider'
 
 interface PurchaseTicketProps {
   onClick: () => void
-  keyPrice?: string
 }
-export const PurchaseTicket = ({ onClick, keyPrice }: PurchaseTicketProps) => {
-  // The price rendering is vestigial -- this should come from the paywall
-  const currency = 'Eth'
-  const convertCurrency = true
+export const PurchaseTicket = ({ onClick }: PurchaseTicketProps) => {
   return (
     <div>
-      {keyPrice && (
-        <BalanceProvider
-          amount={keyPrice}
-          render={(ethWithPresentation: string, convertedUSDValue: string) => (
-            <Price>
-              <Eth>
-                {ethWithPresentation} {currency}
-              </Eth>
-              {convertCurrency && <Fiat>${convertedUSDValue}</Fiat>}
-            </Price>
-          )}
-        />
-      )}
+      <Title>Purchase Ticket</Title>
       <PayButton onClick={onClick}>Pay &amp; Register for This Event</PayButton>
     </div>
   )
@@ -32,6 +15,21 @@ export const PurchaseTicket = ({ onClick, keyPrice }: PurchaseTicketProps) => {
 
 export default PurchaseTicket
 
+const Title = styled.h2`
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+
+  /* identical to box height */
+  display: flex;
+  align-items: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  color: #4a4a4a;
+`
 const PayButton = styled.button`
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
   background-color: var(--green);
@@ -46,24 +44,4 @@ const PayButton = styled.button`
   }
   cursor: pointer;
   width: 100%;
-`
-
-const Price = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-`
-
-const Eth = styled.div`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: bold;
-  font-size: 30px;
-  color: var(--dimgrey);
-`
-
-const Fiat = styled.div`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 20px;
-  text-align: left;
-  color: var(--grey);
 `
