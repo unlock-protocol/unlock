@@ -8,6 +8,7 @@ import UnlockPropTypes from '../../../../propTypes'
 const About = ({ config, ...props }) => (
   <LayoutButton
     href={config.unlockStaticUrl + '/about'}
+    target="_blank"
     label="About"
     {...props}
   >

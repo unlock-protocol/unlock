@@ -5,6 +5,7 @@ import LayoutButton from '../LayoutButton'
 const Github = props => (
   <LayoutButton
     href="https://github.com/unlock-protocol/unlock"
+    target="_blank"
     label="Source Code"
     {...props}
   >
