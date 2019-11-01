@@ -10394,10 +10394,10 @@ Object {
           </p>
         </div>
         <section
-          class="sc-gzVnrw iKhxuL"
+          class="sc-EHOje cSOQLT"
         >
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <div
               class="sc-1yqikln-18 dWysOE"
@@ -10441,16 +10441,16 @@ Object {
             </ul>
           </div>
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <div>
               <h2
-                class="sc-EHOje fPLTsp"
+                class="sc-bxivhb dlMdgg"
               >
                 Your Ticket
               </h2>
               <a
-                class="sc-bZQynM kfJxxE"
+                class="sc-ifAKCX lntDBX"
                 href="http://0.0.0.0:3000/keychain"
                 rel="noopener noreferrer"
                 target="_blank"
@@ -10963,10 +10963,10 @@ Object {
           </p>
         </div>
         <section
-          class="sc-gzVnrw iKhxuL"
+          class="sc-EHOje cSOQLT"
         >
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <div
               class="sc-1yqikln-18 dWysOE"
@@ -11010,7 +11010,7 @@ Object {
             </ul>
           </div>
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <p>
               Loading...
@@ -11100,14 +11100,14 @@ exports[`Storyshots New Event RSVP page Event RSVP page without a valid key (loc
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c18 {
+    .c19 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c18 > svg {
+.c19 > svg {
   fill: white;
 }
 
@@ -11126,7 +11126,7 @@ Object {
   height: 24px;
 }
 
-.c17 {
+.c18 {
   position: relative;
   bottom: 0;
   display: grid;
@@ -11227,6 +11227,28 @@ Object {
 }
 
 .c16 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #4a4a4a;
+}
+
+.c17 {
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
   background-color: var(--green);
   color: var(--white);
@@ -11240,7 +11262,7 @@ Object {
   width: 100%;
 }
 
-.c16 :hover {
+.c17 :hover {
   background-color: var(--activegreen);
 }
 
@@ -11258,7 +11280,7 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c18 {
+  .c19 {
     height: 16px;
     width: 16px;
   }
@@ -11282,13 +11304,13 @@ Object {
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c19 {
+  .c20 {
     display: none;
   }
 }
 
 @media only screen and (min-width:135px) and (max-width:736px) {
-  .c17 {
+  .c18 {
     display: none;
   }
 }
@@ -11421,8 +11443,13 @@ Object {
               class="c10"
             >
               <div>
-                <button
+                <h2
                   class="c16"
+                >
+                  Purchase Ticket
+                </h2>
+                <button
+                  class="c17"
                 >
                   Pay & Register for This Event
                 </button>
@@ -11430,10 +11457,10 @@ Object {
             </div>
           </section>
           <div
-            class="c17"
+            class="c18"
           >
             <div
-              class="c18"
+              class="c19"
             >
               <svg
                 viewBox="0 0 56 56"
@@ -11450,7 +11477,7 @@ Object {
           </div>
         </div>
         <div
-          class="c19"
+          class="c20"
         />
       </div>
     </div>
@@ -11502,10 +11529,10 @@ Object {
           </p>
         </div>
         <section
-          class="sc-gzVnrw iKhxuL"
+          class="sc-EHOje cSOQLT"
         >
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <div
               class="sc-1yqikln-18 dWysOE"
@@ -11549,11 +11576,16 @@ Object {
             </ul>
           </div>
           <div
-            class="sc-htoDjs kQPiNL"
+            class="sc-bZQynM fbijPR"
           >
             <div>
+              <h2
+                class="sc-bwzfXH ljCFQz"
+              >
+                Purchase Ticket
+              </h2>
               <button
-                class="sc-bwzfXH jfLLEQ"
+                class="sc-htpNat bfPrst"
               >
                 Pay & Register for This Event
               </button>
