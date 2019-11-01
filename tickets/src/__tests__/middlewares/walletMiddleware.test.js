@@ -3,18 +3,9 @@ import walletMiddleware from '../../middlewares/walletMiddleware'
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
-import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ERROR } from '../../actions/error'
-import { POLLING_INTERVAL } from '../../constants'
 import { FATAL_NON_DEPLOYED_CONTRACT, FATAL_WRONG_NETWORK } from '../../errors'
-import { SIGN_ADDRESS, gotSignedAddress } from '../../actions/ticket'
-import {
-  DISMISS_CHECK,
-  GOT_WALLET,
-  WAIT_FOR_WALLET,
-} from '../../actions/walletStatus'
-import { NEW_TRANSACTION } from '../../actions/transaction'
-import UnlockEventRSVP from '../../structured_data/unlockEventRSVP'
+import { DISMISS_CHECK, WAIT_FOR_WALLET } from '../../actions/walletStatus'
 
 let mockConfig
 
@@ -35,10 +26,6 @@ let state = {}
 
 const network = {
   name: 'test',
-}
-
-const transaction = {
-  hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
 }
 
 /**
@@ -121,7 +108,7 @@ describe('Wallet middleware', () => {
   })
 
   it('should handle account.changed events triggered by the walletService', () => {
-    expect.assertions(3)
+    expect.assertions(1)
     const { store } = create()
     const address = '0x123'
     const account = {
@@ -137,12 +124,6 @@ describe('Wallet middleware', () => {
         account,
       })
     )
-
-    expect(setTimeout).toHaveBeenCalledTimes(1)
-    expect(setTimeout).toHaveBeenCalledWith(
-      expect.any(Function),
-      POLLING_INTERVAL
-    )
   })
 
   it('should handle transaction.pending events triggered by the walletService', () => {
@@ -151,29 +132,6 @@ describe('Wallet middleware', () => {
     mockWalletService.emit('transaction.pending')
     expect(store.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({ type: WAIT_FOR_WALLET })
-    )
-  })
-
-  it('should handle transaction.new events triggered by the walletService', () => {
-    expect.assertions(2)
-    const { store } = create()
-    const from = '0xjulien'
-    const to = '0xunlock'
-    const input = 'input'
-    mockWalletService.emit('transaction.new', transaction.hash, from, to, input)
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ type: GOT_WALLET })
-    )
-    expect(store.dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({
-        type: NEW_TRANSACTION,
-        transaction: expect.objectContaining({
-          hash: transaction.hash,
-          to,
-          from,
-          input,
-        }),
-      })
     )
   })
 
@@ -319,99 +277,5 @@ describe('Wallet middleware', () => {
       mockConfig.providers[state.provider]
     )
     expect(next).toHaveBeenCalledWith(action)
-  })
-
-  it('should handle SIGN_ADDRESS and emit a signed address on the event page', () => {
-    expect.assertions(3)
-    const {
-      next,
-      invoke,
-      store: { dispatch, getState },
-    } = create()
-    const address = '0x12345678'
-    const action = {
-      type: SIGN_ADDRESS,
-      address,
-    }
-
-    state.router = {
-      location: {
-        pathname: '/event/0x3628D7170209c58DC1e8F51AD190b69d044FbBF2',
-      },
-    }
-
-    const data = UnlockEventRSVP.build({
-      publicKey: account.address,
-      eventAddress: address,
-    })
-    mockWalletService.signDataPersonal = jest.fn((_, address, cb) =>
-      cb(null, `ENCRYPTED: ${JSON.stringify(address)}`)
-    )
-    invoke(action)
-    expect(mockWalletService.signDataPersonal).toHaveBeenCalledWith(
-      getState().account.address,
-      JSON.stringify(data),
-      expect.any(Function)
-    )
-    expect(dispatch).toHaveBeenCalledWith(
-      gotSignedAddress(
-        address,
-        `ENCRYPTED: ${JSON.stringify(JSON.stringify(data))}`
-      )
-    )
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
-  it('should ignore SIGN_ADDRESS on other pages', () => {
-    expect.assertions(2)
-    const { next, invoke } = create()
-    const address = '0x12345678'
-    const action = {
-      type: SIGN_ADDRESS,
-      address,
-    }
-
-    state.router = {
-      location: {
-        pathname: '/newevent/0x3628D7170209c58DC1e8F51AD190b69d044FbBF2',
-      },
-    }
-
-    mockWalletService.signDataPersonal = jest.fn()
-    invoke(action)
-    expect(mockWalletService.signDataPersonal).not.toHaveBeenCalled()
-    expect(next).toHaveBeenCalledWith(action)
-  })
-
-  describe('PURCHASE_KEY', () => {
-    it('should call purchaseKey on the walletService with the right values', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      state.locks = {
-        '0xLock': {
-          keyPrice: '0.01',
-          currencyContractAddress: '0xERC20Contract',
-          address: '0xLock',
-        },
-      }
-      const action = {
-        type: PURCHASE_KEY,
-        key: {
-          lock: '0xLock',
-          owner: '0xOwner',
-        },
-      }
-      mockWalletService.purchaseKey = jest.fn()
-      invoke(action)
-      expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
-        action.key.lock,
-        action.key.owner,
-        state.locks['0xLock'].keyPrice,
-        null,
-        null,
-        state.locks['0xLock'].currencyContractAddress
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
   })
 })
