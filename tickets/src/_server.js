@@ -20,7 +20,7 @@ function _server(port, dev) {
             app.render(req, res, '/create', Object.assign({}, query))
           } else if (path === 'event') {
             const params = route('/event/:lockAddress')(pathname)
-            app.render(req, res, '/event', Object.assign(params, query))
+            app.render(req, res, '/newevent', Object.assign(params, query))
           } else if (path === 'newevent') {
             const params = route('/newevent/:lockAddress')(pathname)
             app.render(req, res, '/newevent', Object.assign(params, query))
