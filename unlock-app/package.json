@@ -42,7 +42,7 @@
     "eth-sig-util": "2.5.0",
     "ethers": "4.0.39",
     "file-saver": "2.0.2",
-    "fork-ts-checker-webpack-plugin": "2.0.0",
+    "fork-ts-checker-webpack-plugin": "3.0.1",
     "graphql": "14.5.8",
     "jest-canvas-mock": "2.1.2",
     "jest-mock-axios": "3.1.2",
