@@ -51,7 +51,7 @@
   },
   "engineStrict": true,
   "scripts": {
-    "predev": "npm run build-blog",
+    "predev": "yarn build-blog",
     "dev": "nodemon src/server.js",
     "build": "next build src",
     "build-blog": "node scripts/build-blog.js",
@@ -62,7 +62,7 @@
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "storybook": "start-storybook -p 9001 -c .storybook -s src",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
-    "ci": "npm run lint && npm test",
+    "ci": "yarn lint && yarn test",
     "tsc": "tsc"
   },
   "lint-staged": {
