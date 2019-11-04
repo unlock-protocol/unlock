@@ -208,12 +208,13 @@ Object {
 .c27 {
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
 .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -990,7 +991,7 @@ Look at us! We're posting on our very own blog! How exciting!
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 hxYMAy"
+      class="hm3mhg-0 yzvAs"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -1533,7 +1534,7 @@ Look at us! We're posting on our very own blog! How exciting!
             </small>
           </a>
           <span
-            class="sc-2ix2yp-1 gloJyL"
+            class="sc-2ix2yp-1 cUlYrj"
           >
             Made with passion in New York
           </span>
@@ -1805,12 +1806,13 @@ Object {
 .c21 {
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
 .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -2474,7 +2476,7 @@ are intentionally not generated from this file date, in case we want to override
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 hxYMAy"
+      class="hm3mhg-0 yzvAs"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -2915,7 +2917,7 @@ are intentionally not generated from this file date, in case we want to override
             </small>
           </a>
           <span
-            class="sc-2ix2yp-1 gloJyL"
+            class="sc-2ix2yp-1 cUlYrj"
           >
             Made with passion in New York
           </span>
@@ -8587,7 +8589,7 @@ Object {
 .c4 {
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
@@ -8881,7 +8883,7 @@ Object {
         </small>
       </a>
       <span
-        class="sc-2ix2yp-1 gloJyL"
+        class="sc-2ix2yp-1 cUlYrj"
       >
         Made with passion in New York
       </span>
@@ -11094,6 +11096,829 @@ Object {
 }
 `;
 
+exports[`Storyshots HomeContent Demo loading 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  width: 50%;
+}
+
+.c2 svg {
+  fill: var(--silver);
+}
+
+.c0 {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 20px;
+  display: grid;
+  max-width: 600px;
+}
+
+.c1 {
+  text-align: center;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--grey);
+  font-weight: 300;
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.c3 {
+  padding: 20px;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <svg
+              viewBox="0 0 32 32"
+            >
+              <title />
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
+              >
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c3"
+        >
+          Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="hzj1u1-2 ezGDEr"
+    >
+      <div
+        class="hzj1u1-3 duzVPv"
+      >
+        <div
+          class="hzj1u1-0 jLYVat"
+        >
+          <svg
+            viewBox="0 0 32 32"
+          >
+            <title />
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+            >
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
+        </div>
+      </div>
+      <div
+        class="hzj1u1-8 fkfHfo"
+      >
+        Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots HomeContent Demo locked 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c0 {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 20px;
+  display: grid;
+  max-width: 600px;
+}
+
+.c1 {
+  text-align: center;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--grey);
+  font-weight: 300;
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.c2 {
+  margin: 10px;
+  border: 2px solid var(--green);
+  border-radius: 4px;
+  width: 180px;
+  cursor: pointer;
+}
+
+.c3 {
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 39px;
+  margin: 10px;
+  color: var(--slate);
+}
+
+.c4 {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 300;
+  color: var(--grey);
+  margin: 7px;
+}
+
+.c5 {
+  background: var(--green);
+  color: var(--white);
+  font-size: 20px;
+  line-height: 26px;
+  padding: 5px;
+}
+
+.c6 {
+  padding: 20px;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <div
+              class="c3"
+            >
+              $0.00
+            </div>
+            <div
+              class="c4"
+            >
+              1 Month
+            </div>
+            <div
+              class="c5"
+            >
+              Purchase
+            </div>
+          </div>
+        </div>
+        <div
+          class="c6"
+        >
+          Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="hzj1u1-2 ezGDEr"
+    >
+      <div
+        class="hzj1u1-3 duzVPv"
+      >
+        <div
+          class="hzj1u1-4 dhCWFm"
+        >
+          <div
+            class="hzj1u1-5 iHzSu"
+          >
+            $0.00
+          </div>
+          <div
+            class="hzj1u1-6 kcJBhI"
+          >
+            1 Month
+          </div>
+          <div
+            class="hzj1u1-7 dOIxwX"
+          >
+            Purchase
+          </div>
+        </div>
+      </div>
+      <div
+        class="hzj1u1-8 fkfHfo"
+      >
+        Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Storyshots HomeContent Demo unlocked 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    .c2 {
+  background-color: var(--green);
+  width: 88px;
+  height: 88px;
+  border-radius: 44px;
+}
+
+.c2 svg {
+  fill: white;
+}
+
+.c0 {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 20px;
+  display: grid;
+  max-width: 600px;
+}
+
+.c1 {
+  text-align: center;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--grey);
+  font-weight: 300;
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.c3 {
+  padding: 20px;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+<div>
+      <link
+        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+        rel="stylesheet"
+      />
+      <section
+        class="c0"
+      >
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          >
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <div
+          class="c3"
+        >
+          Thanks for being an Unlock Member! Your wallet now includes your unique Unlock key!
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="hzj1u1-2 ezGDEr"
+    >
+      <div
+        class="hzj1u1-3 duzVPv"
+      >
+        <div
+          class="hzj1u1-1 bxjAJe"
+        >
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="hzj1u1-8 fkfHfo"
+      >
+        Thanks for being an Unlock Member! Your wallet now includes your unique Unlock key!
+      </div>
+    </section>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
 exports[`Storyshots HomeContent Homepage content 1`] = `
 Object {
   "asFragment": [Function],
@@ -11286,7 +12111,7 @@ Object {
   line-height: 0;
 }
 
-.c30 {
+.c33 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -11299,15 +12124,16 @@ Object {
   align-items: center;
 }
 
-.c31 {
+.c34 {
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
 .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -11329,11 +12155,11 @@ Object {
   width: 100%;
 }
 
-.c24 {
+.c26 {
   margin-top: 30px;
 }
 
-.c24:before {
+.c26:before {
   display: block;
   content: '';
   width: 87px;
@@ -11342,99 +12168,62 @@ Object {
   margin-bottom: 16px;
 }
 
-.c13 {
+.c32 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
-  margin-top: 0px;
-}
-
-.c29 {
-  font-size: 32px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-}
-
-.c19 {
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-}
-
-.c17 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  grid-gap: 24px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--darkgrey);
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.c18 {
-  display: grid;
-  justify-items: center;
-}
-
-.c15 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  max-width: 400px;
-  padding: 20px 50px;
-  color: var(--white);
-}
-
-.c15:hover {
-  background-color: var(--activegreen);
-}
-
-.c14 {
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
 }
 
 .c16 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  text-align: left;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  -webkit-transition: background-color 200ms ease;
+  transition: background-color 200ms ease;
+  color: var(--brand);
+  background-color: var(--white);
 }
 
-.c26 {
+.c16 span {
+  vertical-align: middle;
+}
+
+.c16 > svg {
+  margin: 5px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+}
+
+.c16 > svg {
+  fill: var(--brand);
+}
+
+.c16:hover {
+  color: var(--white);
+  background-color: var(--brand);
+}
+
+.c16:hover > svg {
+  fill: var(--white);
+}
+
+.c29 {
   display: grid;
   grid-gap: 16px;
   margin: auto;
   margin-top: 25px;
 }
 
-.c27 {
+.c30 {
   background: var(--lightgrey);
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
@@ -11442,7 +12231,7 @@ Object {
   padding: 20px;
 }
 
-.c28 {
+.c31 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -11457,77 +12246,145 @@ Object {
   padding: 20px 50px;
 }
 
-.c28:hover {
+.c31:hover {
+  color: var(--darkgrey);
   background-color: var(--activegreen);
 }
 
 .c20 {
-  border-style: none;
-  background: url(/static/images/pages/png/simple.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
+  width: 50%;
 }
 
-.c20:hover {
-  background: url(/static/images/pages/png/simple-hover.png) no-repeat center/contain;
+.c20 svg {
+  fill: var(--silver);
 }
 
-.c20:after {
-  content: url(/static/images/pages/png/simple-hover.png);
-  display: none;
+.c18 {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
+  border-radius: 4px;
+  padding: 20px;
+  display: grid;
+  max-width: 600px;
+}
+
+.c19 {
+  text-align: center;
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--grey);
+  font-weight: 300;
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  justify-items: center;
+}
+
+.c21 {
+  padding: 20px;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.c27 {
+  margin-top: 50px;
+  display: grid;
+}
+
+.c28 {
+  text-align: center;
+  display: inline-block;
 }
 
 .c22 {
-  border-style: none;
-  background: url(/static/images/pages/png/code.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
+  margin-top: 50px;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: grid;
 }
 
-.c22:hover {
-  background: url(/static/images/pages/png/code-hover.png) no-repeat center/contain;
-}
-
-.c22:after {
-  content: url(/static/images/pages/png/code-hover.png);
-  display: none;
+.c22 img {
+  max-width: 300px;
 }
 
 .c23 {
-  border-style: none;
-  background: url(/static/images/pages/png/more.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
-}
-
-.c23:hover {
-  background: url(/static/images/pages/png/more-hover.png) no-repeat center/contain;
-}
-
-.c23:after {
-  content: url(/static/images/pages/png/more-hover.png);
-  display: none;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
 }
 
 .c12 {
+  margin-top: 20px;
+}
+
+.c12 img {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+}
+
+.c15 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.c15 > * {
+  margin: 5px;
+}
+
+.c14 {
+  display: grid;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c14 h1 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: var(--white);
+  font-weight: 700;
   font-size: 36px;
-  margin-top: 30px;
+}
+
+.c24 {
+  font-size: 36px;
   margin-bottom: 0px;
   color: var(--darkgrey);
   font-weight: 700;
 }
 
 .c25 {
-  font-size: 36px;
-  margin-bottom: 0px;
-  color: var(--darkgrey);
-  font-weight: 700;
-}
-
-.c21 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
+}
+
+.c17 {
+  font-size: 32px;
+  line-height: 42px;
+  font-family: 'IBM Plex Serif',serif;
+  font-weight: 100;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c13 {
+    display: none;
+  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -11586,14 +12443,89 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
+  .c35 {
     display: none;
   }
 }
 
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c16 {
+    color: var(--white);
+    background-color: var(--brand);
+  }
+
+  .c16 > svg {
+    fill: var(--white);
+  }
+
+  .c16:hover {
+    color: var(--brand);
+    background-color: var(--white);
+  }
+
+  .c16:hover > svg {
+    fill: var(--brand);
+  }
+}
+
 @media only screen and (min-width:736px) {
-  .c26 {
+  .c29 {
     grid-template-columns: minmax(180px,364px) 212px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c18 {
+    grid-template-columns: 200px 1fr;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c27 {
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c27 {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c22 {
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 20px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c22 {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c12 {
+    position: relative;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c14 {
+    position: absolute;
+    width: 60%;
+    height: 75%;
+    left: 5%;
+    top: 12%;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c14 h1 {
+    color: var(--brand);
+    white-space: normal;
   }
 }
 
@@ -11805,107 +12737,381 @@ Object {
               class="c11"
             />
           </header>
-          <h1
+          <div
             class="c12"
           >
-            The Web's new business model
-          </h1>
-          <p
-            class="c13"
-          >
-            Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
-          </p>
-          <div
-            class="c14"
-          >
-            <button
-              class="c15"
+            <div
+              class="c13"
             >
-              Go to Your Dashboard
-            </button>
-            <small
-              class="c16"
+              <img
+                alt="Unlock"
+                src="/static/images/pages/svg/hero.svg"
+              />
+            </div>
+            <div
+              class="c14"
             >
-              Requires a browser with an Ethereum wallet
-            </small>
+              <h1>
+                Monetize the Web with memberships
+              </h1>
+              <div
+                class="c15"
+              >
+                <button
+                  class="c16"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                  >
+                    <title />
+                    <path
+                      d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+                    />
+                  </svg>
+                  <span>
+                    Dashboard
+                  </span>
+                </button>
+                <button
+                  class="c16"
+                >
+                  <svg
+                    viewBox="-3 -3 24 24"
+                  >
+                    <title />
+                    <path
+                      d="M3.392 10.021a3.504 3.504 0 013.99-.676l6.782-6.781 1.658 1.657-.829.829 1.657 1.657-1.657 1.657-1.657-1.657-4.296 4.295a3.504 3.504 0 01-3.162 5.021 3.516 3.516 0 01-2.486-6.002zm3.315 3.315c.456-.457.456-1.2 0-1.657a1.174 1.174 0 00-1.658 0 1.174 1.174 0 000 1.657c.457.457 1.201.457 1.658 0z"
+                      fill="evenodd"
+                    />
+                    <path
+                      d="M12.507 7.535l1.657 1.658-1.657 1.657-1.657-1.657 1.657-1.657z"
+                      fill="evenodd"
+                    />
+                  </svg>
+                  <span>
+                    Keychain
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
-          <div
-            class="3 c17"
+          <p
+            class="c17"
+          >
+            Unlock lets you let’s you easily lock and manage access to your content, apps, community and even real life events and spaces.
+          </p>
+          <section
+            class="c18"
           >
             <div
-              class="4 c18"
+              class="c19"
             >
-              <h2
-                class="c19"
-              >
-                No More Middlemen
-              </h2>
               <div
                 class="c20"
-              />
-              <p
-                class="c21"
               >
-                There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
-              </p>
+                <svg
+                  viewBox="0 0 32 32"
+                >
+                  <title />
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(45 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.125s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(90 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.25s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(135 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.375s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(180 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.5s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(225 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.625s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(270 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.75s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(315 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.875s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                  <circle
+                    cx="16"
+                    cy="3"
+                    r="0"
+                    transform="rotate(180 16 16)"
+                  >
+                    <animate
+                      attributeName="r"
+                      begin="0.5s"
+                      calcMode="spline"
+                      dur="1s"
+                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                      repeatCount="indefinite"
+                      values="0;3;0;0"
+                    />
+                  </circle>
+                </svg>
+              </div>
             </div>
             <div
-              class="4 c18"
+              class="c21"
             >
-              <h2
-                class="c19"
-              >
-                Simple Integration
-              </h2>
-              <div
-                class="c22"
-              />
-              <p
-                class="c21"
-              >
-                Unlock integrates with your website or application using just a few lines of code. It's easy.
-              </p>
+              Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
             </div>
-            <div
-              class="4 c18"
-            >
-              <h2
-                class="c19"
-              >
-                And Much More
-              </h2>
-              <div
-                class="c23"
-              />
-              <p
-                class="c21"
-              >
-                For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
-              </p>
-            </div>
-          </div>
+          </section>
           <section
-            class="c24"
+            class="c22"
+          >
+            <div
+              class="c23"
+            >
+              <h2
+                class="c24"
+              >
+                You are in Control
+              </h2>
+              <p
+                class="c25"
+              >
+                Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
+              </p>
+              <p
+                class="c25"
+              >
+                <a
+                  href="https://github.com/unlock-protocol/unlock/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Checkout our GitHub
+                </a>
+              </p>
+            </div>
+            <img
+              alt="control"
+              src="/static/images/pages/svg/control.svg"
+            />
+            <div
+              class="c23"
+            >
+              <h2
+                class="c24"
+              >
+                A Web3 Future
+              </h2>
+              <p
+                class="c25"
+              >
+                Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
+              </p>
+            </div>
+            <img
+              alt="code"
+              src="/static/images/pages/svg/code.svg"
+            />
+          </section>
+          <section
+            class="c26"
           >
             <h2
+              class="c24"
+            >
+              Use Cases
+            </h2>
+            <p
               class="c25"
+            >
+              We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
+            </p>
+            <section
+              class="c27"
+            >
+              <a
+                class="c28"
+                href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Paywall
+                </h3>
+                <img
+                  alt="Paywall"
+                  src="/static/images/pages/svg/paywall.svg"
+                />
+              </a>
+              <a
+                class="c28"
+                href="https://wordpress.org/plugins/unlock-protocol/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  WordPress
+                </h3>
+                <img
+                  alt="WordPress"
+                  src="/static/images/pages/svg/wordpress.svg"
+                />
+              </a>
+              <a
+                class="c28"
+                href="https://tickets.unlock-protocol.com/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Tickets
+                </h3>
+                <img
+                  alt="Tickets"
+                  src="/static/images/pages/svg/tickets.svg"
+                />
+              </a>
+              <a
+                class="c28"
+                href="https://donate.unlock-protocol.com/about.html"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Donations
+                </h3>
+                <img
+                  alt="Donations"
+                  src="/static/images/pages/svg/donations.svg"
+                />
+              </a>
+            </section>
+          </section>
+          <section
+            class="c26"
+          >
+            <h2
+              class="c24"
             >
               Subscribe to Updates
             </h2>
             <p
-              class="c21"
+              class="c25"
             >
               We will never share your information. Privacy and your trust are our top priorities.
             </p>
             <form
               action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-              class="c26 subscribe"
+              class="c29 subscribe"
               method="post"
               rel="noopener noreferrer"
               target="_blank"
             >
               <input
-                class="c27"
+                class="c30"
                 id="mce-EMAIL"
                 name="EMAIL"
                 placeholder="Your email here"
@@ -11913,17 +13119,17 @@ Object {
                 type="email"
               />
               <button
-                class="c28"
+                class="c31"
               >
                 Subscribe
               </button>
             </form>
           </section>
           <section
-            class="c24"
+            class="c26"
           >
             <div
-              class="c29"
+              class="c32"
             >
               Check out our open source code on
                
@@ -11950,7 +13156,7 @@ Object {
             </div>
           </section>
           <footer
-            class="c30"
+            class="c33"
           >
             <a
               class="c6 c7"
@@ -12085,14 +13291,14 @@ Object {
               </small>
             </a>
             <span
-              class="c31"
+              class="c34"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c32"
+          class="c35"
         />
       </div>
     </div>
@@ -12103,7 +13309,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 hxYMAy"
+      class="hm3mhg-0 yzvAs"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -12305,95 +13511,369 @@ Object {
             class="sc-1glv5oz-4 bTaeiR"
           />
         </header>
-        <h1
-          class="sc-1lwhgj0-1 fNAMFh"
+        <div
+          class="sc-1lwhgj0-4 cHzGOs"
         >
-          The Web's new business model
-        </h1>
+          <div
+            class="sc-1w50r7k-0 fSpCqa"
+          >
+            <img
+              alt="Unlock"
+              src="/static/images/pages/svg/hero.svg"
+            />
+          </div>
+          <div
+            class="sc-1lwhgj0-6 qiUrr"
+          >
+            <h1>
+              Monetize the Web with memberships
+            </h1>
+            <div
+              class="sc-1lwhgj0-5 XRYUp"
+            >
+              <button
+                class="sc-9upljg-0 bHzYxo"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title />
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 0 0 .351.856h1.214V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-2.885h3.428V17.5a.5.5 0 0 0 .5.5h2.572a.5.5 0 0 0 .5-.5v-4.577H18.5a.5.5 0 0 0 .351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <span>
+                  Dashboard
+                </span>
+              </button>
+              <button
+                class="sc-9upljg-0 bHzYxo"
+              >
+                <svg
+                  viewBox="-3 -3 24 24"
+                >
+                  <title />
+                  <path
+                    d="M3.392 10.021a3.504 3.504 0 013.99-.676l6.782-6.781 1.658 1.657-.829.829 1.657 1.657-1.657 1.657-1.657-1.657-4.296 4.295a3.504 3.504 0 01-3.162 5.021 3.516 3.516 0 01-2.486-6.002zm3.315 3.315c.456-.457.456-1.2 0-1.657a1.174 1.174 0 00-1.658 0 1.174 1.174 0 000 1.657c.457.457 1.201.457 1.658 0z"
+                    fill="evenodd"
+                  />
+                  <path
+                    d="M12.507 7.535l1.657 1.658-1.657 1.657-1.657-1.657 1.657-1.657z"
+                    fill="evenodd"
+                  />
+                </svg>
+                <span>
+                  Keychain
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
         <p
-          class="sc-1mz6j63-2 hjoEUf"
+          class="sc-1lwhgj0-9 iYPCes"
         >
-          Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
+          Unlock lets you let’s you easily lock and manage access to your content, apps, community and even real life events and spaces.
         </p>
-        <div
-          class="sc-9upljg-3 kjuFdI"
-        >
-          <button
-            class="q8p5ah-0 sc-9upljg-0 bCIeGK"
-          >
-            Go to Your Dashboard
-          </button>
-          <small
-            class="sc-9upljg-4 jmRvSo"
-          >
-            Requires a browser with an Ethereum wallet
-          </small>
-        </div>
-        <div
-          class="sc-1mz6j63-13 gTdcXj"
+        <section
+          class="hzj1u1-2 ezGDEr"
         >
           <div
-            class="sc-1mz6j63-14 laOiGL"
+            class="hzj1u1-3 duzVPv"
           >
-            <h2
-              class="sc-1mz6j63-4 eeuIDV"
-            >
-              No More Middlemen
-            </h2>
             <div
-              class="sc-1lwhgj0-0 cSSxBG"
-            />
-            <p
-              class="sc-1lwhgj0-3 iFYZTK"
+              class="hzj1u1-0 jLYVat"
             >
-              There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
-            </p>
+              <svg
+                viewBox="0 0 32 32"
+              >
+                <title />
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(45 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.125s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(90 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.25s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(135 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.375s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(180 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.5s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(225 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.625s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(270 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.75s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(315 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.875s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+                <circle
+                  cx="16"
+                  cy="3"
+                  r="0"
+                  transform="rotate(180 16 16)"
+                >
+                  <animate
+                    attributeName="r"
+                    begin="0.5s"
+                    calcMode="spline"
+                    dur="1s"
+                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                    repeatCount="indefinite"
+                    values="0;3;0;0"
+                  />
+                </circle>
+              </svg>
+            </div>
           </div>
           <div
-            class="sc-1mz6j63-14 laOiGL"
+            class="hzj1u1-8 fkfHfo"
           >
-            <h2
-              class="sc-1mz6j63-4 eeuIDV"
-            >
-              Simple Integration
-            </h2>
-            <div
-              class="sc-1lwhgj0-0 cMBTTv"
-            />
-            <p
-              class="sc-1lwhgj0-3 iFYZTK"
-            >
-              Unlock integrates with your website or application using just a few lines of code. It's easy.
-            </p>
+            Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
           </div>
+        </section>
+        <section
+          class="sc-1lwhgj0-2 bAEMSN"
+        >
           <div
-            class="sc-1mz6j63-14 laOiGL"
+            class="sc-1lwhgj0-3 iDZIPj"
           >
             <h2
-              class="sc-1mz6j63-4 eeuIDV"
+              class="sc-1lwhgj0-7 eLuwFu"
             >
-              And Much More
+              You are in Control
             </h2>
-            <div
-              class="sc-1lwhgj0-0 hfIxqd"
-            />
             <p
-              class="sc-1lwhgj0-3 iFYZTK"
+              class="sc-1lwhgj0-8 OBNne"
             >
-              For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
+              Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
+            </p>
+            <p
+              class="sc-1lwhgj0-8 OBNne"
+            >
+              <a
+                href="https://github.com/unlock-protocol/unlock/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Checkout our GitHub
+              </a>
             </p>
           </div>
-        </div>
+          <img
+            alt="control"
+            src="/static/images/pages/svg/control.svg"
+          />
+          <div
+            class="sc-1lwhgj0-3 iDZIPj"
+          >
+            <h2
+              class="sc-1lwhgj0-7 eLuwFu"
+            >
+              A Web3 Future
+            </h2>
+            <p
+              class="sc-1lwhgj0-8 OBNne"
+            >
+              Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
+            </p>
+          </div>
+          <img
+            alt="code"
+            src="/static/images/pages/svg/code.svg"
+          />
+        </section>
         <section
           class="sc-1mz6j63-0 HVtYL"
         >
           <h2
-            class="sc-1lwhgj0-2 Nreub"
+            class="sc-1lwhgj0-7 eLuwFu"
+          >
+            Use Cases
+          </h2>
+          <p
+            class="sc-1lwhgj0-8 OBNne"
+          >
+            We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
+          </p>
+          <section
+            class="sc-1lwhgj0-0 fcWHMw"
+          >
+            <a
+              class="sc-1lwhgj0-1 glEXpl"
+              href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <h3>
+                Paywall
+              </h3>
+              <img
+                alt="Paywall"
+                src="/static/images/pages/svg/paywall.svg"
+              />
+            </a>
+            <a
+              class="sc-1lwhgj0-1 glEXpl"
+              href="https://wordpress.org/plugins/unlock-protocol/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <h3>
+                WordPress
+              </h3>
+              <img
+                alt="WordPress"
+                src="/static/images/pages/svg/wordpress.svg"
+              />
+            </a>
+            <a
+              class="sc-1lwhgj0-1 glEXpl"
+              href="https://tickets.unlock-protocol.com/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <h3>
+                Tickets
+              </h3>
+              <img
+                alt="Tickets"
+                src="/static/images/pages/svg/tickets.svg"
+              />
+            </a>
+            <a
+              class="sc-1lwhgj0-1 glEXpl"
+              href="https://donate.unlock-protocol.com/about.html"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <h3>
+                Donations
+              </h3>
+              <img
+                alt="Donations"
+                src="/static/images/pages/svg/donations.svg"
+              />
+            </a>
+          </section>
+        </section>
+        <section
+          class="sc-1mz6j63-0 HVtYL"
+        >
+          <h2
+            class="sc-1lwhgj0-7 eLuwFu"
           >
             Subscribe to Updates
           </h2>
           <p
-            class="sc-1lwhgj0-3 iFYZTK"
+            class="sc-1lwhgj0-8 OBNne"
           >
             We will never share your information. Privacy and your trust are our top priorities.
           </p>
@@ -12413,7 +13893,7 @@ Object {
               type="email"
             />
             <button
-              class="q8p5ah-0 sc-1jockd9-2 kTBKom"
+              class="q8p5ah-0 sc-1jockd9-2 eTjGeX"
             >
               Subscribe
             </button>
@@ -12585,7 +14065,7 @@ Object {
             </small>
           </a>
           <span
-            class="sc-2ix2yp-1 gloJyL"
+            class="sc-2ix2yp-1 cUlYrj"
           >
             Made with passion in New York
           </span>
@@ -12654,37 +14134,99 @@ exports[`Storyshots HomepageButton Accepted terms 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
-  background-color: var(--green);
+    .c2 {
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  text-align: left;
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
-  cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
-  width: 100%;
-  height: 100%;
+  color: var(--brand);
+  background-color: var(--white);
 }
 
-.c1:hover {
-  background-color: var(--activegreen);
+.c2 span {
+  vertical-align: middle;
+}
+
+.c2 > svg {
+  margin: 5px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+}
+
+.c2 > svg {
+  fill: var(--brand);
+}
+
+.c2:hover {
+  color: var(--white);
+  background-color: var(--brand);
+}
+
+.c2:hover > svg {
+  fill: var(--white);
 }
 
 .c0 {
-  max-width: 540px;
-  min-height: 72px;
   box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 16px;
-  padding: 16px;
+  grid-template-columns: 220px auto;
+  grid-gap: 0px;
+  padding: 0px;
   font-family: IBM Plex Mono;
-  font-size: 14px;
-  margin: auto;
+  font-size: 11px;
+  color: var(--white);
+}
+
+.c0 a {
+  color: var(--white);
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
+  margin: 0px;
+}
+
+.c1 {
+  padding: 5px;
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
+    color: var(--white);
+    background-color: var(--brand);
+  }
+
+  .c2 > svg {
+    fill: var(--white);
+  }
+
+  .c2:hover {
+    color: var(--brand);
+    background-color: var(--white);
+  }
+
+  .c2:hover > svg {
+    fill: var(--brand);
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    color: var(--brand);
+  }
+
+  .c0 a {
+    color: var(--brand);
+  }
 }
 
 <div>
@@ -12695,14 +14237,16 @@ Object {
       <div
         class="c0"
       >
-        <div>
-          To access the dashboard you need to agree to our 
+        <div
+          class="c1"
+        >
+          You need to agree to our 
           <a
             href="/terms"
           >
             Terms of Service
           </a>
-            and 
+           and 
           <a
             href="/privacy"
           >
@@ -12710,12 +14254,24 @@ Object {
           </a>
         </div>
         <a
-          href="http://0.0.0.0:3000/dashboard"
+          href="/"
         >
           <button
-            class="c1"
+            class="c2"
           >
-            I Agree
+            <svg
+              viewBox="0 0 24 24"
+            >
+              <title />
+              <path
+                clip-rule="evenodd"
+                d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+                fill-rule="evenodd"
+              />
+            </svg>
+            <span>
+              I Agree
+            </span>
           </button>
         </a>
       </div>
@@ -12727,16 +14283,18 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-9upljg-2 fOpZrU"
+      class="sc-9upljg-1 cQPOjl"
     >
-      <div>
-        To access the dashboard you need to agree to our 
+      <div
+        class="sc-9upljg-2 cyNgOK"
+      >
+        You need to agree to our 
         <a
           href="/terms"
         >
           Terms of Service
         </a>
-          and 
+         and 
         <a
           href="/privacy"
         >
@@ -12744,12 +14302,24 @@ Object {
         </a>
       </div>
       <a
-        href="http://0.0.0.0:3000/dashboard"
+        href="/"
       >
         <button
-          class="q8p5ah-0 sc-9upljg-1 fUPliI"
+          class="sc-9upljg-0 bHzYxo"
         >
-          I Agree
+          <svg
+            viewBox="0 0 24 24"
+          >
+            <title />
+            <path
+              clip-rule="evenodd"
+              d="M16.857 7.6a.5.5 0 0 1 .099.7l-5.32 7.07a.5.5 0 0 1-.704.096l-3.236-2.482a.5.5 0 1 1 .608-.794l2.836 2.175L16.157 7.7a.5.5 0 0 1 .7-.098z"
+              fill-rule="evenodd"
+            />
+          </svg>
+          <span>
+            I Agree
+          </span>
         </button>
       </a>
     </div>
@@ -12812,45 +14382,66 @@ exports[`Storyshots HomepageButton Default state 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c1 {
-  background-color: var(--green);
+    .c0 {
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  text-align: left;
   border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
   border-radius: 4px;
-  cursor: pointer;
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
-  max-width: 400px;
-  padding: 20px 50px;
+  color: var(--brand);
+  background-color: var(--white);
+}
+
+.c0 span {
+  vertical-align: middle;
+}
+
+.c0 > svg {
+  margin: 5px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+}
+
+.c0 > svg {
+  fill: var(--brand);
+}
+
+.c0:hover {
   color: var(--white);
+  background-color: var(--brand);
 }
 
-.c1:hover {
-  background-color: var(--activegreen);
+.c0:hover > svg {
+  fill: var(--white);
 }
 
-.c0 {
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
-}
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c0 {
+    color: var(--white);
+    background-color: var(--brand);
+  }
 
-.c2 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
+  .c0 > svg {
+    fill: var(--white);
+  }
+
+  .c0:hover {
+    color: var(--brand);
+    background-color: var(--white);
+  }
+
+  .c0:hover > svg {
+    fill: var(--brand);
+  }
 }
 
 <div>
@@ -12858,20 +14449,13 @@ Object {
         href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
         rel="stylesheet"
       />
-      <div
+      <button
         class="c0"
       >
-        <button
-          class="c1"
-        >
-          Go to Your Dashboard
-        </button>
-        <small
-          class="c2"
-        >
-          Requires a browser with an Ethereum wallet
-        </small>
-      </div>
+        <span>
+          Dashboard
+        </span>
+      </button>
     </div>
   </body>,
   "container": <div>
@@ -12879,20 +14463,13 @@ Object {
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
       rel="stylesheet"
     />
-    <div
-      class="sc-9upljg-3 kjuFdI"
+    <button
+      class="sc-9upljg-0 bHzYxo"
     >
-      <button
-        class="q8p5ah-0 sc-9upljg-0 bCIeGK"
-      >
-        Go to Your Dashboard
-      </button>
-      <small
-        class="sc-9upljg-4 jmRvSo"
-      >
-        Requires a browser with an Ethereum wallet
-      </small>
-    </div>
+      <span>
+        Dashboard
+      </span>
+    </button>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -13156,12 +14733,13 @@ Object {
 .c13 {
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono','Courier New',Serif;
 }
 
 .c0 {
+  font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
   grid-template-columns: 1fr minmax(280px,4fr) 1fr;
@@ -13606,7 +15184,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 hxYMAy"
+      class="hm3mhg-0 yzvAs"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -13944,7 +15522,7 @@ Object {
             </small>
           </a>
           <span
-            class="sc-2ix2yp-1 gloJyL"
+            class="sc-2ix2yp-1 cUlYrj"
           >
             Made with passion in New York
           </span>
@@ -14898,7 +16476,7 @@ Object {
 }
 
 .c15:hover:before {
-  content: 'Lemniscate';
+  content: 'Key';
   position: absolute;
 }
 
@@ -14914,7 +16492,7 @@ Object {
 }
 
 .c16:hover:before {
-  content: 'Loading';
+  content: 'Lemniscate';
   position: absolute;
 }
 
@@ -14930,7 +16508,7 @@ Object {
 }
 
 .c17:hover:before {
-  content: 'LockClosed';
+  content: 'Loading';
   position: absolute;
 }
 
@@ -14946,7 +16524,7 @@ Object {
 }
 
 .c18:hover:before {
-  content: 'Log';
+  content: 'LockClosed';
   position: absolute;
 }
 
@@ -14962,7 +16540,7 @@ Object {
 }
 
 .c19:hover:before {
-  content: 'Preview';
+  content: 'Log';
   position: absolute;
 }
 
@@ -14978,7 +16556,7 @@ Object {
 }
 
 .c20:hover:before {
-  content: 'Jobs';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -14994,7 +16572,7 @@ Object {
 }
 
 .c21:hover:before {
-  content: 'Unlock';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -15010,7 +16588,7 @@ Object {
 }
 
 .c22:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -15026,7 +16604,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Upload';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -15042,7 +16620,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Withdraw';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -15058,7 +16636,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Newsletter';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -15074,7 +16652,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Telegram';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -15090,7 +16668,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'Twitter';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -15106,7 +16684,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Bars';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -15122,7 +16700,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'ChevronUp';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -15138,6 +16716,22 @@ Object {
 }
 
 .c30:hover:before {
+  content: 'ChevronUp';
+  position: absolute;
+}
+
+.c31 {
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--lightgrey);
+  border-radius: 5px;
+}
+
+.c31:hover {
+  background-color: var(--offwhite);
+}
+
+.c31:hover:before {
   content: 'Home';
   position: absolute;
 }
@@ -15366,6 +16960,24 @@ Object {
           </div>
           <div
             class="c15"
+            name="Key"
+          >
+            <svg
+              viewBox="-3 -3 24 24"
+            >
+              <title />
+              <path
+                d="M3.392 10.021a3.504 3.504 0 013.99-.676l6.782-6.781 1.658 1.657-.829.829 1.657 1.657-1.657 1.657-1.657-1.657-4.296 4.295a3.504 3.504 0 01-3.162 5.021 3.516 3.516 0 01-2.486-6.002zm3.315 3.315c.456-.457.456-1.2 0-1.657a1.174 1.174 0 00-1.658 0 1.174 1.174 0 000 1.657c.457.457 1.201.457 1.658 0z"
+                fill="evenodd"
+              />
+              <path
+                d="M12.507 7.535l1.657 1.658-1.657 1.657-1.657-1.657 1.657-1.657z"
+                fill="evenodd"
+              />
+            </svg>
+          </div>
+          <div
+            class="c16"
             name="Lemniscate"
           >
             <svg
@@ -15381,7 +16993,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c16"
+            class="c17"
             name="Loading"
           >
             <svg
@@ -15534,7 +17146,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c17"
+            class="c18"
             name="LockClosed"
           >
             <svg
@@ -15549,7 +17161,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c18"
+            class="c19"
             name="Log"
           >
             <svg
@@ -15564,7 +17176,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c19"
+            class="c20"
             name="Preview"
           >
             <svg
@@ -15585,7 +17197,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c20"
+            class="c21"
             name="Jobs"
           >
             <svg
@@ -15600,7 +17212,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c21"
+            class="c22"
             name="Unlock"
           >
             <svg
@@ -15613,7 +17225,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c22"
+            class="c23"
             name="UnlockWordMark"
           >
             <svg
@@ -15626,7 +17238,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c23"
+            class="c24"
             name="Upload"
           >
             <svg
@@ -15641,7 +17253,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c24"
+            class="c25"
             name="Withdraw"
           >
             <svg
@@ -15656,7 +17268,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c26"
             name="Newsletter"
           >
             <svg
@@ -15671,7 +17283,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c27"
             name="Telegram"
           >
             <svg
@@ -15686,7 +17298,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c28"
             name="Twitter"
           >
             <svg
@@ -15701,7 +17313,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c29"
             name="Bars"
           >
             <svg
@@ -15714,7 +17326,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c30"
             name="ChevronUp"
           >
             <svg
@@ -15729,7 +17341,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c31"
             name="Home"
           >
             <svg
@@ -15964,6 +17576,24 @@ Object {
             <title />
             <path
               d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 0 0-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
+            />
+          </svg>
+        </div>
+        <div
+          class="lx77hn-1 lahNHZ"
+          name="Key"
+        >
+          <svg
+            viewBox="-3 -3 24 24"
+          >
+            <title />
+            <path
+              d="M3.392 10.021a3.504 3.504 0 013.99-.676l6.782-6.781 1.658 1.657-.829.829 1.657 1.657-1.657 1.657-1.657-1.657-4.296 4.295a3.504 3.504 0 01-3.162 5.021 3.516 3.516 0 01-2.486-6.002zm3.315 3.315c.456-.457.456-1.2 0-1.657a1.174 1.174 0 00-1.658 0 1.174 1.174 0 000 1.657c.457.457 1.201.457 1.658 0z"
+              fill="evenodd"
+            />
+            <path
+              d="M12.507 7.535l1.657 1.658-1.657 1.657-1.657-1.657 1.657-1.657z"
+              fill="evenodd"
             />
           </svg>
         </div>

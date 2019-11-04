@@ -4,8 +4,8 @@ import { HomepageButton } from '../../components/interface/buttons/homepage/Home
 
 storiesOf('HomepageButton', module)
   .add('Default state', () => {
-    return <HomepageButton />
+    return <HomepageButton destination="/" label="Dashboard" />
   })
   .add('Accepted terms', () => {
-    return <HomepageButton acceptedTerms />
+    return <HomepageButton destination="/" label="Dashboard" acceptedTerms />
   })
