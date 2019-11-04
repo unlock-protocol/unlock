@@ -60,6 +60,9 @@ contract MixinTransfer is
     Key storage toKey = keyByOwner[_recipient];
 
     uint previousExpiration = toKey.expirationTimestamp;
+    // subtract the fee from the senders key before the transfer
+    _timeMachine(_from, fee, false);
+
 
     if (toKey.tokenId == 0) {
       toKey.tokenId = fromKey.tokenId;
@@ -96,7 +99,7 @@ contract MixinTransfer is
       _tokenId
     );
 
-    _chargeAtLeast(fee);
+    // _chargeAtLeast(fee);
   }
 
   /**
@@ -180,10 +183,10 @@ contract MixinTransfer is
     uint fee;
     if(timeRemaining >= expirationDuration) {
       // Max the potential impact of this fee for keys with long durations remaining
-      fee = keyPrice;
+      fee = timeRemaining;
     } else {
       // Math: using safeMul in case keyPrice or timeRemaining is very large
-      fee = keyPrice.mul(timeRemaining) / expirationDuration;
+      fee = timeRemaining.mul(timeRemaining) / expirationDuration;
     }
     return fee.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
   }
