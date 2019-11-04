@@ -36,6 +36,6 @@ COPY --chown=node yarn.lock /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
 COPY --chown=node .prettierrc /home/unlock/.
-RUN SKIP_SERVICES=true yarn install --production
+RUN yarn --production
 
 WORKDIR /home/unlock/
