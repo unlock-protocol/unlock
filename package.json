@@ -29,7 +29,7 @@
     "jest": "24.9.0",
     "link-parent-bin": "1.0.2",
     "lint-staged": "8.2.1",
-    "netlify-cli": "2.20.1",
+    "netlify-cli": "2.20.2",
     "prettier": "1.18.2",
     "ts-jest": "24.1.0",
     "typescript": "3.6.4"
