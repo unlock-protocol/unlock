@@ -81,7 +81,7 @@ module.exports = withTypescript(
       return {
         '/': { page: '/home' },
         '/create': { page: '/create' },
-        '/event': { page: '/event' },
+        '/event': { page: '/newevent' },
         '/checkin': { page: '/checkin' },
         '/newevent': { page: '/newevent' },
       }

@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 
 import useOptimism from '../../hooks/useOptimism'
 import { WindowContext } from '../../hooks/browser/useWindow'
@@ -53,7 +53,6 @@ describe('useOptimism hook', () => {
     let wrapper
     rtl.act(() => {
       wrapper = rtl.render(<MockOptimism />)
-      finishFetch(fakeResponse)
     })
 
     expect(
