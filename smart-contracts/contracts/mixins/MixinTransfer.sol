@@ -44,6 +44,53 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
+  /**
+  * @notice Allows the key owner to share their key (parent key) by
+  * transferring a portion of the remaining time to a new key (child key).
+  * @param _from The owner of the parent key
+  * @param _to The recipient of the shared key
+  * @param _tokenId the key to share
+  * @param _timeShared The amount of time shared
+  */
+  function shareKey(
+    address _from,
+    address _to,
+    uint _tokenId,
+    uint _timeShared
+  ) public
+    onlyIfAlive
+    hasValidKey(_from)
+    onlyKeyOwnerOrApproved(_tokenId)
+  {
+    require(_recipient != address(0), 'INVALID_ADDRESS');
+
+    Key storage fromKey = keyByOwner[_from];
+    Key storage toKey = keyByOwner[_recipient];
+    // deduct time from parent key, including transfer fee
+    _timeMachine(_from, _timeShared, false)
+
+    if (toKey.tokenId == 0) {
+      _assignNewTokenId(toKey);
+      _recordOwner(_recipient, toKey.tokenId);
+      // add time to new key
+      _timeMachine(_to, _timeShared, true)
+    } else {
+      // add time to new key
+      _timeMachine(_to, _timeShared, true)
+    }
+
+    // trigger event
+      emit Transfer(
+        address(0), // This is a creation.
+        recipient,
+        toKey.tokenId
+      );
+  }
+
+  /**
+   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
+   * market transactions...
+   */
   function transferFrom(
     address _from,
     address _recipient,
