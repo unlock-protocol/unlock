@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 import "../PublicLock.sol";
 
-contract TestTimeMachine is
+contract TimeMachineMock is
   PublicLock
 {
   /**

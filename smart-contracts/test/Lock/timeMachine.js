@@ -1,7 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
-// const TestTimeMachine = artifacts.require('TestTimeMachine')
+// const deployMocks = require('../helpers/deployMocks')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
@@ -21,11 +21,8 @@ contract('Lock / timeMachine', accounts => {
 
   before(async () => {
     unlock = await getProxy(unlockContract)
-    // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
     lock = locks['FIRST']
-    // testTimeMachine = await TestTimeMachine.new()
-    // lock = await TestTimeMachine.new()
     // Change the fee to 5%
     await lock.updateTransferFee(500)
     await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
