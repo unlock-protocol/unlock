@@ -2,7 +2,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import BrowserOnly from '../helpers/BrowserOnly'
-import DeveloperOverlay from '../developer/DeveloperOverlay'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
@@ -48,7 +47,6 @@ export const KeyChainContent = ({
             signatures={signatures}
             qrEmail={qrEmail}
           />
-          <DeveloperOverlay />
         </BrowserOnly>
       )}
       {!account && (
