@@ -40,6 +40,7 @@
     "ts-jest": "24.2.0",
     "typescript": "3.7.4",
     "yaml-front-matter": "4.1.0"
+    "ts-dedent": "1.1.0",
   },
   "devDependencies": {
     "@svgr/cli": "5.0.1",
