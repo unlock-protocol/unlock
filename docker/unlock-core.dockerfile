@@ -32,6 +32,7 @@ USER node
 
 COPY --chown=node scripts/postinstall.sh /home/unlock/scripts/postinstall.sh
 COPY --chown=node package-lock.json /home/unlock/.
+COPY --chown=node yarn.lock /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
 COPY --chown=node .prettierrc /home/unlock/.
