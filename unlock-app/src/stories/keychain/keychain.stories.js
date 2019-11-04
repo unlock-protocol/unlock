@@ -2,7 +2,7 @@ import { Provider } from 'react-redux'
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { MockedProvider } from '@apollo/react-testing'
-import KeyChainContent from '../../components/content/KeyChainContent'
+import KeychainContent from '../../components/content/KeychainContent'
 import createUnlockStore from '../../createUnlockStore'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
@@ -155,7 +155,7 @@ const config = configure({
   requiredConfirmations: 12,
 })
 
-storiesOf('KeyChainContent', module)
+storiesOf('KeychainContent', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>
       <MockedProvider mocks={mocks}>{getStory()}</MockedProvider>
@@ -164,35 +164,35 @@ storiesOf('KeyChainContent', module)
   .add('the key chain, with keys', () => {
     return (
       <Provider store={keyHolderStore}>
-        <KeyChainContent />
+        <KeychainContent />
       </Provider>
     )
   })
   .add('the key chain, with keys and signatures', () => {
     return (
       <Provider store={keyHolderStoreSignatures}>
-        <KeyChainContent />
+        <KeychainContent />
       </Provider>
     )
   })
   .add('the key chain, with many keys', () => {
     return (
       <Provider store={manyKeyHolderStore}>
-        <KeyChainContent />
+        <KeychainContent />
       </Provider>
     )
   })
   .add('the key chain, no keys', () => {
     return (
       <Provider store={store}>
-        <KeyChainContent />
+        <KeychainContent />
       </Provider>
     )
   })
   .add('the key chain, no user account', () => {
     return (
       <Provider store={noUserStore}>
-        <KeyChainContent />
+        <KeychainContent />
       </Provider>
     )
   })

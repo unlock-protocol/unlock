@@ -1,8 +1,8 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { MockedProvider, MockedResponse } from '@apollo/react-testing'
-import { KeyDetails } from '../../../../components/interface/keyChain/KeyDetails'
-import { OwnedKey } from '../../../../components/interface/keyChain/KeychainTypes'
+import { KeyDetails } from '../../../../components/interface/keychain/KeyDetails'
+import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import keyHolderQuery from '../../../../queries/keyHolder'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -34,7 +34,7 @@ const render = (...mocks: MockedResponse[]) => {
   )
 }
 
-describe('keyChain -- KeyDetails', () => {
+describe('keychain -- KeyDetails', () => {
   it('should render loading state', () => {
     expect.assertions(0)
 
