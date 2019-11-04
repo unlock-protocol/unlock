@@ -198,7 +198,7 @@ contract MixinTransfer is
   * expirationTimestamp (false == decrease, true == increase)
   * @dev Throws if owner does not have a valid key.
   */
-  function timeMachine(
+  function _timeMachine(
     address _owner,
     uint256 _deltaT,
     bool _addTime
@@ -208,9 +208,17 @@ contract MixinTransfer is
     Key storage key = keyByOwner[_owner];
     uint formerTimestamp = key.expirationTimestamp;
     if(_addTime) {
-      key.expirationTimestamp = formerTimestamp.add(_deltaT);
+      if(formerTimestamp.add(_deltaT) > block.timestamp.add(expirationDuration)) {
+        key.expirationTimestamp = block.timestamp.add(expirationDuration);
+      } else {
+        key.expirationTimestamp = formerTimestamp.add(_deltaT);
+      }
     } else {
-      key.expirationTimestamp = formerTimestamp.sub(_deltaT);
+      if(formerTimestamp.sub(_deltaT) <= block.timestamp) {
+        key.expirationTimestamp = block.timestamp;
+      } else {
+        key.expirationTimestamp = formerTimestamp - _deltaT;
+      }
     }
   }
 
