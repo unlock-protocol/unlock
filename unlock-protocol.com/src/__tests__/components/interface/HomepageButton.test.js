@@ -6,7 +6,7 @@ import { HomepageButton } from '../../../components/interface/buttons/homepage/H
 describe('HomepageButton', () => {
   it('should display the terms once the dashboard button has been pressed', () => {
     expect.assertions(1)
-    let wrapper = rtl.render(<HomepageButton />)
+    let wrapper = rtl.render(<HomepageButton label="Go to Your Dashboard" />)
 
     let button = wrapper.getByText('Go to Your Dashboard')
     rtl.fireEvent.click(button)

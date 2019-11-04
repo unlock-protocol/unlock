@@ -2,18 +2,14 @@ import styled from 'styled-components'
 import React from 'react'
 import PropTypes from 'prop-types'
 import Link from 'next/link'
-import getConfig from 'next/config'
-
-import ActionButton from '../../ActionButton'
-
-const config = getConfig().publicRuntimeConfig
+import Svg from '../../svg'
+import Media from '../../../../theme/media'
 
 export class HomepageButton extends React.Component {
   constructor(props, context) {
     super(props, context)
-    const { acceptedTerms } = this.props
     this.state = {
-      acceptedTerms: acceptedTerms,
+      acceptedTerms: props.acceptedTerms,
     }
     this.acceptTerms = this.acceptTerms.bind(this)
   }
@@ -26,35 +22,44 @@ export class HomepageButton extends React.Component {
 
   render() {
     const { acceptedTerms } = this.state
+    const { label, destination, children } = this.props
+
+    const backgroundColor = 'var(--white)'
+    const textColor = 'var(--brand)'
 
     return (
       <>
         {acceptedTerms !== true && (
-          <Action>
-            <DashboardButton onClick={this.acceptTerms}>
-              Go to Your Dashboard
-            </DashboardButton>
-
-            <ButtonLabel>
-              Requires a browser with an Ethereum wallet
-            </ButtonLabel>
-          </Action>
+          <DashboardButton
+            onClick={this.acceptTerms}
+            backgroundColor={backgroundColor}
+            textColor={textColor}
+          >
+            {children}
+            <span>{label}</span>
+          </DashboardButton>
         )}
         {acceptedTerms === true && (
-          <TermsBox>
-            <div>
-              To access the dashboard you need to agree to our&nbsp;
+          <TermsBox backgroundColor={textColor} textColor={backgroundColor}>
+            <Message>
+              You need to agree to our&nbsp;
               <Link href="/terms">
                 <a>Terms of Service</a>
               </Link>
-              &nbsp; and&nbsp;
+              &nbsp;and&nbsp;
               <Link href="/privacy">
                 <a>Privacy Policy</a>
               </Link>
-            </div>
-            <Link href={config.dashboardUrl || 'http://0.0.0.0:3000/dashboard'}>
+            </Message>
+            <Link href={destination}>
               <a>
-                <TermsButton>I Agree</TermsButton>
+                <DashboardButton
+                  backgroundColor={backgroundColor}
+                  textColor={textColor}
+                >
+                  <Svg.Checkmark />
+                  <span>I Agree</span>
+                </DashboardButton>
               </a>
             </Link>
           </TermsBox>
@@ -64,55 +69,102 @@ export class HomepageButton extends React.Component {
   }
 }
 
-const DashboardButton = styled(ActionButton)`
-  max-width: 400px;
-  padding: 20px 50px;
-  color: var(--white);
-`
+const DashboardButton = styled.button`
+  display: inline-block;
+  width: 120px;
+  height: 40px;
+  font-family: 'IBM Plex Sans', Helvetica, sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  white-space: nowrap;
+  text-align: left;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  transition: background-color 200ms ease;
 
-const TermsButton = styled(ActionButton)`
-  width: 100%;
-  height: 100%;
+  span {
+    vertical-align: middle;
+  }
+
+  > svg {
+    margin: 5px;
+    vertical-align: middle;
+    height: ${props => props.size || ' 24px'};
+    width: ${props => props.size || ' 24px'};
+  }
+
+  color: ${props => props.textColor};
+  background-color: ${props => props.backgroundColor};
+  > svg {
+    fill: ${props => props.textColor};
+  }
+
+  &:hover {
+    color: ${props => props.backgroundColor};
+    background-color: ${props => props.textColor};
+    > svg {
+      fill: ${props => props.backgroundColor};
+    }
+  }
+
+  ${Media.phone`
+    color: ${props => props.backgroundColor};
+    background-color: ${props => props.textColor};
+    > svg {
+      fill: ${props => props.backgroundColor};
+    }
+
+    &:hover {
+      color: ${props => props.textColor};
+      background-color: ${props => props.backgroundColor};
+      > svg {
+        fill: ${props => props.textColor};
+      }
+    }
+  `};
 `
 
 const TermsBox = styled.div`
-  max-width: 540px;
-  min-height: 72px;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 16px;
-  padding: 16px;
+  grid-template-columns: 220px auto;
+  grid-gap: 0px;
+  padding: 0px;
   font-family: IBM Plex Mono;
-  font-size: 14px;
-  margin: auto;
+  font-size: 11px;
+
+  color: ${props => props.textColor};
+  a {
+    color: ${props => props.textColor};
+    text-decoration: underline;
+    margin: 0px;
+  }
+
+  ${Media.phone`
+  color: ${props => props.backgroundColor};
+  a {
+    color: ${props => props.backgroundColor};
+  }
+
+  `}
 `
 
-const Action = styled.div`
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
-`
-
-const ButtonLabel = styled.small`
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono', 'Courier New', Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  justify-content: center;
-  text-align: center;
+const Message = styled.div`
+  padding: 5px;
 `
 
 HomepageButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  destination: PropTypes.string.isRequired,
   acceptedTerms: PropTypes.bool,
+  children: PropTypes.node,
 }
 
 HomepageButton.defaultProps = {
   acceptedTerms: false,
+  children: null,
 }
 
 export default HomepageButton
