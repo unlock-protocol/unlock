@@ -71,7 +71,7 @@
     "npm-check": "5.9.0"
   },
   "engines": {
-    "node": "10.16.3"
+    "node": "^10"
   },
   "engineStrict": true,
   "scripts": {
