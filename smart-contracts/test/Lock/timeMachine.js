@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 
 // const TestTimeMachine = artifacts.require('TestTimeMachine')
 const deployLocks = require('../helpers/deployLocks')
-// const shouldFail = require('../helpers/shouldFail')
+const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -14,6 +14,7 @@ contract('Lock / timeMachine', accounts => {
   let lock
   const keyPrice = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
   const keyOwner = accounts[1]
+  const notKeyOwner = accounts[5]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
   let timestampBefore, timestampAfter
@@ -79,6 +80,15 @@ contract('Lock / timeMachine', accounts => {
       )
       assert(timestampAfter.lte(Date.now()))
       assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    })
+
+    it('should fail without a valid key', async () => {
+      await shouldFail(
+        lock._timeMachine(notKeyOwner, 42, false, {
+          from: accounts[0],
+        }),
+        'KEY_NOT_VALID'
+      )
     })
   })
 })
