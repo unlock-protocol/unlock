@@ -6,11 +6,11 @@ contract TimeMachineMock is
   PublicLock
 {
   function timeMachine(
-    address _owner,
+    uint _tokenId,
     uint256 _deltaT,
     bool _addTime
   ) public
   {
-    _timeMachine(_owner, _deltaT, _addTime);
+    _timeMachine(_tokenId, _deltaT, _addTime);
   }
 }

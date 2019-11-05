@@ -191,7 +191,7 @@ contract MixinTransfer is
   /**
   * @notice Modify the expirationTimestamp of a key
   * by a given amount.
-  * @param _owner The owner of the key to modify
+  * @param _tokenId The ID of the key to modify.
   * @param _deltaT The amount of time in seconds by which
   * to modify the keys expirationTimestamp
   * @param _addTime Choose whether to increase or decrease
@@ -199,14 +199,16 @@ contract MixinTransfer is
   * @dev Throws if owner does not have a valid key.
   */
   function _timeMachine(
-    address _owner,
+    uint _tokenId,
     uint256 _deltaT,
     bool _addTime
   ) internal
   {
-    Key storage key = keyByOwner[_owner];
+    address tokenOwner = ownerOf[_tokenId];
+    require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
+    Key storage key = keyByOwner[tokenOwner];
     uint formerTimestamp = key.expirationTimestamp;
-    bool validKey = getHasValidKey(_owner);
+    bool validKey = getHasValidKey(tokenOwner);
     if(_addTime) {
       if(validKey) {
         key.expirationTimestamp = formerTimestamp.add(_deltaT);

@@ -14,7 +14,7 @@ contract('Lock / timeMachine', accounts => {
   const keyOwner = accounts[2]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
-  let timestampBefore, timestampAfter, lockAddress
+  let timestampBefore, timestampAfter, lockAddress, tokenId
 
   before(async () => {
     let salt = 42
@@ -46,7 +46,8 @@ contract('Lock / timeMachine', accounts => {
       timestampBefore = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      await lock.timeMachine(keyOwner, 1000, false, {
+      tokenId = await lock.getTokenIdFor(keyOwner)
+      await lock.timeMachine(tokenId, 1000, false, {
         from: accounts[0],
       }) // decrease the time with "false"
       timestampAfter = new BigNumber(
@@ -59,7 +60,7 @@ contract('Lock / timeMachine', accounts => {
       timestampBefore = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      await lock.timeMachine(keyOwner, 42, true, {
+      await lock.timeMachine(tokenId, 42, true, {
         from: accounts[0],
       }) // increase the time with "true"
       timestampAfter = new BigNumber(
@@ -68,7 +69,7 @@ contract('Lock / timeMachine', accounts => {
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
     it('should prevent overflow & maximise the time remaining', async () => {
-      await lock.timeMachine(keyOwner, tooMuchTime, true, {
+      await lock.timeMachine(tokenId, tooMuchTime, true, {
         from: accounts[0],
       })
       timestampAfter = new BigNumber(
