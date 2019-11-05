@@ -10,6 +10,8 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    graphQLBaseURL:
+      'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -30,6 +32,8 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    graphQLBaseURL:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -49,6 +53,8 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
+    graphQLBaseURL:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
