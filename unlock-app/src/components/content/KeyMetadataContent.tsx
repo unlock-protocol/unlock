@@ -63,10 +63,13 @@ interface ReduxState {
 }
 
 export const mapStateToProps = ({ account, network, router }: ReduxState) => {
-  const search = queryString.parse(router.location.search)
+  // URL formatted like: ?locks=address1,address2,address3
+  const search = queryString.parse(router.location.search, {
+    arrayFormat: 'comma',
+  })
   let lockAddresses: string[] = []
   if (search.locks) {
-    lockAddresses = search.locks
+    lockAddresses = search.locks as any
   }
   return {
     account,
