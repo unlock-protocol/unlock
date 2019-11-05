@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { Key, Props } from '../../../../components/interface/keyChain/Key'
-import { OwnedKey } from '../../../../components/interface/keyChain/KeychainTypes'
+import { Key, Props } from '../../../../components/interface/keychain/Key'
+import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
@@ -45,7 +45,7 @@ const render = ({ signature, ownedKey }: RenderProps) => {
   )
 }
 
-describe('keyChain -- Key', () => {
+describe('keychain -- Key', () => {
   beforeAll(() => {
     ;(global as any).window = {
       location: {

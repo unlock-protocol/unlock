@@ -22,7 +22,7 @@ function _server(port, dev) {
         if (path === '') {
           app.render(req, res, '/home', {})
         } else if (path === 'keychain') {
-          app.render(req, res, '/keyChain', {})
+          app.render(req, res, '/keychain', {})
         } else {
           handle(req, res)
           return

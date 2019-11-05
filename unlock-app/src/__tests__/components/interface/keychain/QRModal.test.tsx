@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import QRModal from '../../../../components/interface/keyChain/QRModal'
+import QRModal from '../../../../components/interface/keychain/QRModal'
 
 let dismiss: jest.Mock<any, any>
 let sendEmail: jest.Mock<any, any>

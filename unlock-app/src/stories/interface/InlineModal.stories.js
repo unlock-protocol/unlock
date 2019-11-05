@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 import InlineModal from '../../components/interface/InlineModal'
-import QRModal from '../../components/interface/keyChain/QRModal'
+import QRModal from '../../components/interface/keychain/QRModal'
 
 storiesOf('InlineModal', module)
   .add('When active', () => {

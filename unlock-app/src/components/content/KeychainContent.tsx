@@ -9,9 +9,9 @@ import LogInSignUp from '../interface/LogInSignUp'
 import { Account as AccountType, Network } from '../../unlockTypes'
 import { signData } from '../../actions/signature'
 import { qrEmail } from '../../actions/user'
-import KeyDetails from '../interface/keyChain/KeyDetails'
+import KeyDetails from '../interface/keychain/KeyDetails'
 
-interface KeyChainContentProps {
+interface KeychainContentProps {
   account: AccountType
   network: Network
   signData: (data: any, id: any) => void
@@ -26,13 +26,13 @@ interface Signatures {
   }
 }
 
-export const KeyChainContent = ({
+export const KeychainContent = ({
   account,
   network,
   signatures,
   signData,
   qrEmail,
-}: KeyChainContentProps) => {
+}: KeychainContentProps) => {
   return (
     <Layout title="Key Chain">
       <Head>
@@ -78,4 +78,4 @@ export const mapStateToProps = ({
 export default connect(
   mapStateToProps,
   { signData, qrEmail }
-)(KeyChainContent)
+)(KeychainContent)
