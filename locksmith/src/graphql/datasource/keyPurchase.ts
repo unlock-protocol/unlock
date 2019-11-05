@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express'
 import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 
+// eslint-disable-next-line import/prefer-default-export
 export class KeyPurchase extends UnlockGraphQLDataSource {
   PURCHASES = gql`
     {
@@ -20,7 +21,7 @@ export class KeyPurchase extends UnlockGraphQLDataSource {
       const response = await this.query(this.PURCHASES)
       return response.data.keyPurchases
     } catch (error) {
-      console.error(error)
+      return []
     }
   }
 }

@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-express'
 import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 
+// eslint-disable-next-line import/prefer-default-export
 export class Lock extends UnlockGraphQLDataSource {
   LOCKS = gql`
     {
@@ -23,7 +24,7 @@ export class Lock extends UnlockGraphQLDataSource {
 
       return response.data.locks
     } catch (error) {
-      console.error(error)
+      return []
     }
   }
 }
