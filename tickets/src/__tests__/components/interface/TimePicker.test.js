@@ -1,7 +1,7 @@
 /* eslint react/prop-types: 0, react/display-name: 0 */
 import React from 'react'
-import * as rtl from 'react-testing-library'
-import 'jest-dom/extend-expect'
+import * as rtl from '@testing-library/react'
+import '@testing-library/jest-dom/extend-expect'
 
 import TimePicker from '../../../components/interface/TimePicker'
 

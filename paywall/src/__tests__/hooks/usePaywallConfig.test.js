@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import usePaywallConfig, { defaultValue } from '../../hooks/usePaywallConfig'
 import { WindowContext } from '../../hooks/browser/useWindow'
 import { ConfigContext } from '../../utils/withConfig'

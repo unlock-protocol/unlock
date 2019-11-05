@@ -1,6 +1,6 @@
 module.exports = {
   setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testPathIgnorePatterns: [
     '<rootDir>/.next/',
     '<rootDir>/node_modules/',
