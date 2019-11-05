@@ -203,12 +203,16 @@ contract MixinTransfer is
     uint256 _deltaT,
     bool _addTime
   ) internal
-    hasValidKey(_owner)
   {
     Key storage key = keyByOwner[_owner];
     uint formerTimestamp = key.expirationTimestamp;
+    bool validKey = getHasValidKey(_owner);
     if(_addTime) {
-      key.expirationTimestamp = formerTimestamp.add(_deltaT);
+      if(validKey) {
+        key.expirationTimestamp = formerTimestamp.add(_deltaT);
+      } else {
+        key.expirationTimestamp = block.timestamp.add(_deltaT);
+      }
     } else {
       if(formerTimestamp.sub(_deltaT) <= block.timestamp) {
         key.expirationTimestamp = block.timestamp;
