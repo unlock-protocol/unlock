@@ -6,7 +6,6 @@ import UnlockPropTypes from '../../propTypes'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import CreatorLocks from '../creator/CreatorLocks'
-import DeveloperOverlay from '../developer/DeveloperOverlay'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import {
@@ -39,7 +38,6 @@ export const DashboardContent = ({
             </CreateLockButton>
           </AccountWrapper>
           <CreatorLocks />
-          <DeveloperOverlay />
         </BrowserOnly>
       )}
     </Layout>
