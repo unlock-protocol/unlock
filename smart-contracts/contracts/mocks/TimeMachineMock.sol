@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "../PublicLock.sol";
+import '../PublicLock.sol';
 
 contract TimeMachineMock is
   PublicLock
