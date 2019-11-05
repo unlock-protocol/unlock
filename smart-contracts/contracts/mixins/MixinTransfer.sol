@@ -208,11 +208,7 @@ contract MixinTransfer is
     Key storage key = keyByOwner[_owner];
     uint formerTimestamp = key.expirationTimestamp;
     if(_addTime) {
-      if(formerTimestamp.add(_deltaT) > block.timestamp.add(expirationDuration)) {
-        key.expirationTimestamp = block.timestamp.add(expirationDuration);
-      } else {
-        key.expirationTimestamp = formerTimestamp.add(_deltaT);
-      }
+      key.expirationTimestamp = formerTimestamp.add(_deltaT);
     } else {
       if(formerTimestamp.sub(_deltaT) <= block.timestamp) {
         key.expirationTimestamp = block.timestamp;
