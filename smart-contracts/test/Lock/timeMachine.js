@@ -1,9 +1,6 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
-// const deployLocks = require('../helpers/deployLocks')
-const shouldFail = require('../helpers/shouldFail')
-
 const unlockContract = artifacts.require('../Unlock.sol')
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 const getProxy = require('../helpers/proxy')
@@ -15,7 +12,6 @@ contract('Lock / timeMachine', accounts => {
   const lockOwner = accounts[1]
   const keyPrice = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
   const keyOwner = accounts[2]
-  const notKeyOwner = accounts[5]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
   let timestampBefore, timestampAfter, lockAddress
@@ -79,26 +75,6 @@ contract('Lock / timeMachine', accounts => {
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
       assert(timestampAfter.lte(expirationDuration.plus(Date.now())))
-    })
-
-    it('should prevent underflow & expire the key instead', async () => {
-      await lock.timeMachine(keyOwner, tooMuchTime, false, {
-        from: accounts[0],
-      })
-      timestampAfter = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(keyOwner)
-      )
-      assert(timestampAfter.lte(Date.now()))
-      assert.equal(await lock.getHasValidKey.call(keyOwner), false)
-    })
-
-    it('should fail without a valid key', async () => {
-      await shouldFail(
-        lock.timeMachine(notKeyOwner, 42, false, {
-          from: accounts[0],
-        }),
-        'KEY_NOT_VALID'
-      )
     })
   })
 })
