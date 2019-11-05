@@ -11,6 +11,8 @@ COMMAND="npm run ci"
 # UNLOCK_APP_X will be passed to the container for tests in unlock_app as X.
 UPCASE_SERVICE="${SERVICE^^}"
 ENV_VARS_PREFIX="${UPCASE_SERVICE//-/_}_"
-ENV_VARS=`env | grep $ENV_VARS_PREFIX | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
+# Also pass all env variables which begin with "CIRCLE" (which should represent CI config variables)
+# See also https://circleci.com/docs/2.0/env-vars/#built-in-environment-variables
+ENV_VARS=`env | grep -e $ENV_VARS_PREFIX -e "CIRCLE" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g"`
 
 docker-compose -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $SERVICE $COMMAND
