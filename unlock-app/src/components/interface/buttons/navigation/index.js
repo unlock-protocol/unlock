@@ -1,11 +1,11 @@
 import Dashboard from './Dashboard'
 import Log from './Log'
 import Settings from './Settings'
-import KeyChain from './KeyChain'
+import Keychain from './Keychain'
 
 export default {
   Dashboard,
-  KeyChain,
+  Keychain,
   Log,
   Settings,
 }

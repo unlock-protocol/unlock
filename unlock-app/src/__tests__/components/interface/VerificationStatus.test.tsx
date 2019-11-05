@@ -8,7 +8,7 @@ import {
   OwnsKey,
 } from '../../../components/interface/VerificationStatus'
 import * as durations from '../../../utils/durations'
-import { OwnedKey } from '../../../components/interface/keyChain/KeychainTypes'
+import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 
 const ownedKey: OwnedKey = {
   lock: {
