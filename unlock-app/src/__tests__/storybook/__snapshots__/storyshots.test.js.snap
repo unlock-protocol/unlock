@@ -6698,7 +6698,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c10 {
@@ -6992,7 +6991,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c5 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -7464,7 +7463,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -26206,7 +26205,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -26332,7 +26330,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -26655,7 +26653,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -27090,7 +27088,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c15 {
@@ -27505,7 +27502,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -27740,6 +27737,30 @@ Object {
                   class="c11"
                 >
                   Log
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
                 </small>
               </a>
             </div>
@@ -29002,7 +29023,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           >
             <a
               class="sc-850ddk-0 jqOqAf"
@@ -29048,6 +29069,30 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
               </small>
             </a>
           </div>
@@ -30539,7 +30584,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c18 {
@@ -31019,7 +31063,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c11 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -31270,6 +31314,30 @@ Object {
                   class="c14"
                 >
                   Log
+                </small>
+              </a>
+              <a
+                class="c12 c15"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c14"
+                >
+                  Keychain
                 </small>
               </a>
             </div>
@@ -32548,7 +32616,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           >
             <a
               class="sc-850ddk-0 jqOqAf"
@@ -32594,6 +32662,30 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
               </small>
             </a>
           </div>
@@ -37045,7 +37137,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c7 {
@@ -37138,7 +37229,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c2 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -37355,7 +37446,7 @@ Object {
         </svg>
       </a>
       <div
-        class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+        class="sc-1glv5oz-3 jjYsMa"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -37684,7 +37775,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c9 {
@@ -37789,7 +37879,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -38032,7 +38122,7 @@ Object {
         Roses are red
       </h1>
       <div
-        class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+        class="sc-1glv5oz-3 jjYsMa"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -38361,7 +38451,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c9 {
@@ -38466,7 +38555,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c4 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -38709,7 +38798,7 @@ Object {
         Unlock
       </h1>
       <div
-        class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+        class="sc-1glv5oz-3 jjYsMa"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -43286,8 +43375,8 @@ exports[`Storyshots KeychainContent the key chain, no keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
-  background-color: var(--grey);
+    .c10 {
+  background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -43298,21 +43387,21 @@ Object {
   line-height: '15px';
 }
 
-.c11 > svg {
-  fill: white;
+.c10 > svg {
+  fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c11:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:focus {
+.c10:focus {
   outline: none;
 }
 
@@ -43320,8 +43409,8 @@ Object {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
   display: inline-block;
   padding: 0;
   border: 0;
@@ -43330,8 +43419,8 @@ Object {
 
 .c14 > svg {
   fill: white;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
 }
 
 .c14:hover {
@@ -43346,7 +43435,67 @@ Object {
   outline: none;
 }
 
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c16:focus {
+  outline: none;
+}
+
 .c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -43362,7 +43511,7 @@ Object {
   color: var(--link);
 }
 
-.c10:hover .c12 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -43406,7 +43555,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -43428,16 +43577,15 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
-.c13 {
+.c15 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c13 .c10 {
+.c15 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -43448,24 +43596,24 @@ Object {
   align-self: center;
 }
 
-.c13 .c10:nth-child(1) {
+.c15 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c13 .c10:nth-child(2) {
+.c15 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c13 .c10 > svg {
+.c15 .c9 > svg {
   fill: var(--grey);
 }
 
-.c13 .c10:hover > svg {
+.c15 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c15 {
+.c17 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -43492,11 +43640,11 @@ Object {
   top: 50px;
 }
 
-.c15 .c10 {
+.c17 .c9 {
   margin: 24px;
 }
 
-.c15 .c10 small {
+.c17 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -43530,24 +43678,24 @@ Object {
   width: 100%;
 }
 
-.c22 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c22 svg {
+.c24 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
 
-.c20 {
+.c22 {
   border-bottom: none !important;
   cursor: inherit !important;
   -webkit-text-decoration: none !important;
   text-decoration: none !important;
 }
 
-.c19 {
+.c21 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -43556,7 +43704,7 @@ Object {
   text-transform: none;
 }
 
-.c16 {
+.c18 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -43565,7 +43713,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c17 {
+.c19 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -43578,7 +43726,7 @@ Object {
   align-content: start;
 }
 
-.c18 {
+.c20 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -43588,7 +43736,7 @@ Object {
   font-size: 8px;
 }
 
-.c21 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -43614,26 +43762,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
+  .c13 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -43645,6 +43781,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c17 {
     display: none;
   }
 }
@@ -43673,13 +43821,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c25 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c18 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,0px);
@@ -43687,7 +43835,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     height: 0px;
   }
 }
@@ -43753,12 +43901,83 @@ Object {
             </h1>
             <div
               class="c8"
-            />
-            <div
-              class="c9"
             >
               <a
-                class="c10 c11"
+                class="c9 c10"
+                href="/dashboard"
+                target="_self"
+                title="Dashboard"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Dashboard
+                  </title>
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Dashboard
+                </small>
+              </a>
+              <a
+                class="c9 c10"
+                href="/log"
+                target="_self"
+                title="Log"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Log
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Log
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c9 c14"
                 href="http://localhost:3002/about"
                 target="_self"
                 title="About"
@@ -43776,13 +43995,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="http://localhost:3002/jobs"
                 target="_self"
                 title="Join us"
@@ -43799,13 +44018,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
                 target="_self"
                 title="Source Code"
@@ -43820,13 +44039,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://t.me/unlockprotocol"
                 target="_self"
                 title="Telegram"
@@ -43843,17 +44062,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c13"
+              class="c15"
             >
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -43869,7 +44088,7 @@ Object {
                 
               </a>
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -43888,17 +44107,17 @@ Object {
               </a>
             </div>
             <div
-              class="c15"
+              class="c17"
             />
           </header>
           <section
             class=""
           >
             <div
-              class="c16"
+              class="c18"
             >
               <div
-                class="c17"
+                class="c19"
               >
                 <div
                   class="paper"
@@ -43955,36 +44174,36 @@ Object {
                 </div>
               </div>
               <div
-                class="c18"
+                class="c20"
               >
                 Address
                 <span
-                  class="c19"
+                  class="c21"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <abbr
-                class="c20 c21"
+                class="c22 c23"
                 id="UserAddress"
                 title="0x3ca206264762caf81a8f0a843bbb850987b41e16"
               >
@@ -43993,7 +44212,7 @@ Object {
             </div>
           </section>
           <section
-            class="c22"
+            class="c24"
           >
             <svg
               alt="loading"
@@ -44149,7 +44368,7 @@ Object {
           </section>
         </div>
         <div
-          class="c23"
+          class="c25"
         />
       </div>
     </div>
@@ -44214,8 +44433,79 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
-          />
+            class="sc-1glv5oz-3 jjYsMa"
+          >
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/dashboard"
+              target="_self"
+              title="Dashboard"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Dashboard
+                </title>
+                <path
+                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Dashboard
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/log"
+              target="_self"
+              title="Log"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Log
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 jqOqAf"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
+              </small>
+            </a>
+          </div>
           <div
             class="sc-1glv5oz-2 bwZQqD"
           >
@@ -44815,7 +45105,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -44998,7 +45287,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -45380,7 +45669,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -45642,8 +45931,8 @@ exports[`Storyshots KeychainContent the key chain, with keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
-  background-color: var(--grey);
+    .c10 {
+  background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -45654,21 +45943,21 @@ Object {
   line-height: '15px';
 }
 
-.c11 > svg {
-  fill: white;
+.c10 > svg {
+  fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c11:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:focus {
+.c10:focus {
   outline: none;
 }
 
@@ -45676,8 +45965,8 @@ Object {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
   display: inline-block;
   padding: 0;
   border: 0;
@@ -45686,8 +45975,8 @@ Object {
 
 .c14 > svg {
   fill: white;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
 }
 
 .c14:hover {
@@ -45702,7 +45991,67 @@ Object {
   outline: none;
 }
 
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c16:focus {
+  outline: none;
+}
+
 .c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -45718,7 +46067,7 @@ Object {
   color: var(--link);
 }
 
-.c10:hover .c12 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -45762,7 +46111,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -45784,16 +46133,15 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
-.c13 {
+.c15 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c13 .c10 {
+.c15 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -45804,24 +46152,24 @@ Object {
   align-self: center;
 }
 
-.c13 .c10:nth-child(1) {
+.c15 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c13 .c10:nth-child(2) {
+.c15 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c13 .c10 > svg {
+.c15 .c9 > svg {
   fill: var(--grey);
 }
 
-.c13 .c10:hover > svg {
+.c15 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c15 {
+.c17 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -45848,11 +46196,11 @@ Object {
   top: 50px;
 }
 
-.c15 .c10 {
+.c17 .c9 {
   margin: 24px;
 }
 
-.c15 .c10 small {
+.c17 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -45886,24 +46234,24 @@ Object {
   width: 100%;
 }
 
-.c22 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c22 svg {
+.c24 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
 
-.c20 {
+.c22 {
   border-bottom: none !important;
   cursor: inherit !important;
   -webkit-text-decoration: none !important;
   text-decoration: none !important;
 }
 
-.c19 {
+.c21 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -45912,7 +46260,7 @@ Object {
   text-transform: none;
 }
 
-.c16 {
+.c18 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -45921,7 +46269,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c17 {
+.c19 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -45934,7 +46282,7 @@ Object {
   align-content: start;
 }
 
-.c18 {
+.c20 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -45944,7 +46292,7 @@ Object {
   font-size: 8px;
 }
 
-.c21 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -45970,26 +46318,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
+  .c13 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -46001,6 +46337,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c17 {
     display: none;
   }
 }
@@ -46029,13 +46377,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c25 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c18 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,0px);
@@ -46043,7 +46391,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     height: 0px;
   }
 }
@@ -46109,12 +46457,83 @@ Object {
             </h1>
             <div
               class="c8"
-            />
-            <div
-              class="c9"
             >
               <a
-                class="c10 c11"
+                class="c9 c10"
+                href="/dashboard"
+                target="_self"
+                title="Dashboard"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Dashboard
+                  </title>
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Dashboard
+                </small>
+              </a>
+              <a
+                class="c9 c10"
+                href="/log"
+                target="_self"
+                title="Log"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Log
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Log
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c9 c14"
                 href="http://localhost:3002/about"
                 target="_self"
                 title="About"
@@ -46132,13 +46551,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="http://localhost:3002/jobs"
                 target="_self"
                 title="Join us"
@@ -46155,13 +46574,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
                 target="_self"
                 title="Source Code"
@@ -46176,13 +46595,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://t.me/unlockprotocol"
                 target="_self"
                 title="Telegram"
@@ -46199,17 +46618,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c13"
+              class="c15"
             >
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -46225,7 +46644,7 @@ Object {
                 
               </a>
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -46244,17 +46663,17 @@ Object {
               </a>
             </div>
             <div
-              class="c15"
+              class="c17"
             />
           </header>
           <section
             class=""
           >
             <div
-              class="c16"
+              class="c18"
             >
               <div
-                class="c17"
+                class="c19"
               >
                 <div
                   class="paper"
@@ -46311,36 +46730,36 @@ Object {
                 </div>
               </div>
               <div
-                class="c18"
+                class="c20"
               >
                 Address
                 <span
-                  class="c19"
+                  class="c21"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <abbr
-                class="c20 c21"
+                class="c22 c23"
                 id="UserAddress"
                 title="0x3ca206264762caf81a8f0a843bbb850987b41e17"
               >
@@ -46349,7 +46768,7 @@ Object {
             </div>
           </section>
           <section
-            class="c22"
+            class="c24"
           >
             <svg
               alt="loading"
@@ -46505,7 +46924,7 @@ Object {
           </section>
         </div>
         <div
-          class="c23"
+          class="c25"
         />
       </div>
     </div>
@@ -46570,8 +46989,79 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
-          />
+            class="sc-1glv5oz-3 jjYsMa"
+          >
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/dashboard"
+              target="_self"
+              title="Dashboard"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Dashboard
+                </title>
+                <path
+                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Dashboard
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/log"
+              target="_self"
+              title="Log"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Log
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 jqOqAf"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
+              </small>
+            </a>
+          </div>
           <div
             class="sc-1glv5oz-2 bwZQqD"
           >
@@ -47029,8 +47519,8 @@ exports[`Storyshots KeychainContent the key chain, with keys and signatures 1`] 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
-  background-color: var(--grey);
+    .c10 {
+  background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -47041,21 +47531,21 @@ Object {
   line-height: '15px';
 }
 
-.c11 > svg {
-  fill: white;
+.c10 > svg {
+  fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c11:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:focus {
+.c10:focus {
   outline: none;
 }
 
@@ -47063,8 +47553,8 @@ Object {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
   display: inline-block;
   padding: 0;
   border: 0;
@@ -47073,8 +47563,8 @@ Object {
 
 .c14 > svg {
   fill: white;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
 }
 
 .c14:hover {
@@ -47089,7 +47579,67 @@ Object {
   outline: none;
 }
 
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c16:focus {
+  outline: none;
+}
+
 .c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -47105,7 +47655,7 @@ Object {
   color: var(--link);
 }
 
-.c10:hover .c12 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -47149,7 +47699,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -47171,16 +47721,15 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
-.c13 {
+.c15 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c13 .c10 {
+.c15 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -47191,24 +47740,24 @@ Object {
   align-self: center;
 }
 
-.c13 .c10:nth-child(1) {
+.c15 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c13 .c10:nth-child(2) {
+.c15 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c13 .c10 > svg {
+.c15 .c9 > svg {
   fill: var(--grey);
 }
 
-.c13 .c10:hover > svg {
+.c15 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c15 {
+.c17 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -47235,11 +47784,11 @@ Object {
   top: 50px;
 }
 
-.c15 .c10 {
+.c17 .c9 {
   margin: 24px;
 }
 
-.c15 .c10 small {
+.c17 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -47273,24 +47822,24 @@ Object {
   width: 100%;
 }
 
-.c22 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c22 svg {
+.c24 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
 
-.c20 {
+.c22 {
   border-bottom: none !important;
   cursor: inherit !important;
   -webkit-text-decoration: none !important;
   text-decoration: none !important;
 }
 
-.c19 {
+.c21 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -47299,7 +47848,7 @@ Object {
   text-transform: none;
 }
 
-.c16 {
+.c18 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -47308,7 +47857,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c17 {
+.c19 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -47321,7 +47870,7 @@ Object {
   align-content: start;
 }
 
-.c18 {
+.c20 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -47331,7 +47880,7 @@ Object {
   font-size: 8px;
 }
 
-.c21 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -47357,26 +47906,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
+  .c13 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -47388,6 +47925,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c17 {
     display: none;
   }
 }
@@ -47416,13 +47965,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c25 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c18 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,0px);
@@ -47430,7 +47979,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     height: 0px;
   }
 }
@@ -47496,12 +48045,83 @@ Object {
             </h1>
             <div
               class="c8"
-            />
-            <div
-              class="c9"
             >
               <a
-                class="c10 c11"
+                class="c9 c10"
+                href="/dashboard"
+                target="_self"
+                title="Dashboard"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Dashboard
+                  </title>
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Dashboard
+                </small>
+              </a>
+              <a
+                class="c9 c10"
+                href="/log"
+                target="_self"
+                title="Log"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Log
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Log
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c9 c14"
                 href="http://localhost:3002/about"
                 target="_self"
                 title="About"
@@ -47519,13 +48139,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="http://localhost:3002/jobs"
                 target="_self"
                 title="Join us"
@@ -47542,13 +48162,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
                 target="_self"
                 title="Source Code"
@@ -47563,13 +48183,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://t.me/unlockprotocol"
                 target="_self"
                 title="Telegram"
@@ -47586,17 +48206,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c13"
+              class="c15"
             >
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -47612,7 +48232,7 @@ Object {
                 
               </a>
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -47631,17 +48251,17 @@ Object {
               </a>
             </div>
             <div
-              class="c15"
+              class="c17"
             />
           </header>
           <section
             class=""
           >
             <div
-              class="c16"
+              class="c18"
             >
               <div
-                class="c17"
+                class="c19"
               >
                 <div
                   class="paper"
@@ -47698,36 +48318,36 @@ Object {
                 </div>
               </div>
               <div
-                class="c18"
+                class="c20"
               >
                 Address
                 <span
-                  class="c19"
+                  class="c21"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <abbr
-                class="c20 c21"
+                class="c22 c23"
                 id="UserAddress"
                 title="0x3ca206264762caf81a8f0a843bbb850987b41e17"
               >
@@ -47736,7 +48356,7 @@ Object {
             </div>
           </section>
           <section
-            class="c22"
+            class="c24"
           >
             <svg
               alt="loading"
@@ -47892,7 +48512,7 @@ Object {
           </section>
         </div>
         <div
-          class="c23"
+          class="c25"
         />
       </div>
     </div>
@@ -47957,8 +48577,79 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
-          />
+            class="sc-1glv5oz-3 jjYsMa"
+          >
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/dashboard"
+              target="_self"
+              title="Dashboard"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Dashboard
+                </title>
+                <path
+                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Dashboard
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/log"
+              target="_self"
+              title="Log"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Log
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 jqOqAf"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
+              </small>
+            </a>
+          </div>
           <div
             class="sc-1glv5oz-2 bwZQqD"
           >
@@ -48416,8 +49107,8 @@ exports[`Storyshots KeychainContent the key chain, with many keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c11 {
-  background-color: var(--grey);
+    .c10 {
+  background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 50%;
   height: 24px;
@@ -48428,21 +49119,21 @@ Object {
   line-height: '15px';
 }
 
-.c11 > svg {
-  fill: white;
+.c10 > svg {
+  fill: var(--grey);
   height: 24px;
   width: 24px;
 }
 
-.c11:hover {
+.c10:hover {
   background-color: var(--link);
 }
 
-.c11:hover > svg {
+.c10:hover > svg {
   fill: white;
 }
 
-.c11:focus {
+.c10:focus {
   outline: none;
 }
 
@@ -48450,8 +49141,8 @@ Object {
   background-color: var(--grey);
   cursor: pointer;
   border-radius: 50%;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
   display: inline-block;
   padding: 0;
   border: 0;
@@ -48460,8 +49151,8 @@ Object {
 
 .c14 > svg {
   fill: white;
-  height: 48px;
-  width: 48px;
+  height: 24px;
+  width: 24px;
 }
 
 .c14:hover {
@@ -48476,7 +49167,67 @@ Object {
   outline: none;
 }
 
+.c16 {
+  background-color: var(--grey);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 48px;
+  width: 48px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c16 > svg {
+  fill: white;
+  height: 48px;
+  width: 48px;
+}
+
+.c16:hover {
+  background-color: var(--link);
+}
+
+.c16:hover > svg {
+  fill: white;
+}
+
+.c16:focus {
+  outline: none;
+}
+
 .c12 {
+  background-color: var(--link);
+  cursor: pointer;
+  border-radius: 50%;
+  height: 24px;
+  width: 24px;
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  line-height: '15px';
+}
+
+.c12 > svg {
+  fill: var(--white);
+  height: 24px;
+  width: 24px;
+}
+
+.c12:hover {
+  background-color: var(--link);
+}
+
+.c12:hover > svg {
+  fill: white;
+}
+
+.c12:focus {
+  outline: none;
+}
+
+.c11 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -48492,7 +49243,7 @@ Object {
   color: var(--link);
 }
 
-.c10:hover .c12 {
+.c9:hover .c11 {
   display: inline-block;
 }
 
@@ -48536,7 +49287,7 @@ Object {
   color: var(--grey);
 }
 
-.c9 {
+.c13 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(4,24px);
@@ -48558,16 +49309,15 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
-.c13 {
+.c15 {
   display: none;
   height: auto;
   grid-column: second;
 }
 
-.c13 .c10 {
+.c15 .c9 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -48578,24 +49328,24 @@ Object {
   align-self: center;
 }
 
-.c13 .c10:nth-child(1) {
+.c15 .c9:nth-child(1) {
   pointer-events: none;
 }
 
-.c13 .c10:nth-child(2) {
+.c15 .c9:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c13 .c10 > svg {
+.c15 .c9 > svg {
   fill: var(--grey);
 }
 
-.c13 .c10:hover > svg {
+.c15 .c9:hover > svg {
   fill: var(--grey);
 }
 
-.c15 {
+.c17 {
   background-color: var(--white);
   width: 100%;
   height: auto;
@@ -48622,11 +49372,11 @@ Object {
   top: 50px;
 }
 
-.c15 .c10 {
+.c17 .c9 {
   margin: 24px;
 }
 
-.c15 .c10 small {
+.c17 .c9 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -48660,24 +49410,24 @@ Object {
   width: 100%;
 }
 
-.c22 {
+.c24 {
   display: grid;
   justify-items: center;
 }
 
-.c22 svg {
+.c24 svg {
   fill: var(--lightgrey);
   width: 60px;
 }
 
-.c20 {
+.c22 {
   border-bottom: none !important;
   cursor: inherit !important;
   -webkit-text-decoration: none !important;
   text-decoration: none !important;
 }
 
-.c19 {
+.c21 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   font-weight: 500;
@@ -48686,7 +49436,7 @@ Object {
   text-transform: none;
 }
 
-.c16 {
+.c18 {
   font-family: 'IBM Plex Mono',monospace;
   display: grid;
   row-gap: 8px;
@@ -48695,7 +49445,7 @@ Object {
   grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
 }
 
-.c17 {
+.c19 {
   display: grid;
   height: 40px;
   grid-row: span 2;
@@ -48708,7 +49458,7 @@ Object {
   align-content: start;
 }
 
-.c18 {
+.c20 {
   font-weight: 100;
   text-transform: uppercase;
   -webkit-letter-spacing: 1px;
@@ -48718,7 +49468,7 @@ Object {
   font-size: 8px;
 }
 
-.c21 {
+.c23 {
   font-family: 'IBM Plex Mono',monospace;
   font-size: 10px;
   width: 128px;
@@ -48744,26 +49494,14 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c9 {
+  .c13 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c13 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -48775,6 +49513,18 @@ Object {
 
 @media only screen and (min-width:736px) {
   .c15 {
+    display: none;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c17 {
+    display: grid;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c17 {
     display: none;
   }
 }
@@ -48803,13 +49553,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c23 {
+  .c25 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
+  .c18 {
     -webkit-column-gap: 2px;
     column-gap: 2px;
     grid-template-columns: 45px 145px repeat(2,0px);
@@ -48817,7 +49567,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
+  .c19 {
     height: 0px;
   }
 }
@@ -48883,12 +49633,83 @@ Object {
             </h1>
             <div
               class="c8"
-            />
-            <div
-              class="c9"
             >
               <a
-                class="c10 c11"
+                class="c9 c10"
+                href="/dashboard"
+                target="_self"
+                title="Dashboard"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Dashboard
+                  </title>
+                  <path
+                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Dashboard
+                </small>
+              </a>
+              <a
+                class="c9 c10"
+                href="/log"
+                target="_self"
+                title="Log"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Log
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Log
+                </small>
+              </a>
+              <a
+                class="c9 c12"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
+                </small>
+              </a>
+            </div>
+            <div
+              class="c13"
+            >
+              <a
+                class="c9 c14"
                 href="http://localhost:3002/about"
                 target="_self"
                 title="About"
@@ -48906,13 +49727,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   About
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="http://localhost:3002/jobs"
                 target="_self"
                 title="Join us"
@@ -48929,13 +49750,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Join us
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://github.com/unlock-protocol/unlock"
                 target="_self"
                 title="Source Code"
@@ -48950,13 +49771,13 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Source Code
                 </small>
               </a>
               <a
-                class="c10 c11"
+                class="c9 c14"
                 href="https://t.me/unlockprotocol"
                 target="_self"
                 title="Telegram"
@@ -48973,17 +49794,17 @@ Object {
                   />
                 </svg>
                 <small
-                  class="c12"
+                  class="c11"
                 >
                   Telegram
                 </small>
               </a>
             </div>
             <div
-              class="c13"
+              class="c15"
             >
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -48999,7 +49820,7 @@ Object {
                 
               </a>
               <a
-                class="c10 c14"
+                class="c9 c16"
                 target="_self"
               >
                 <svg
@@ -49018,17 +49839,17 @@ Object {
               </a>
             </div>
             <div
-              class="c15"
+              class="c17"
             />
           </header>
           <section
             class=""
           >
             <div
-              class="c16"
+              class="c18"
             >
               <div
-                class="c17"
+                class="c19"
               >
                 <div
                   class="paper"
@@ -49085,36 +49906,36 @@ Object {
                 </div>
               </div>
               <div
-                class="c18"
+                class="c20"
               >
                 Address
                 <span
-                  class="c19"
+                  class="c21"
                   id="NetworkName"
                 >
                   Winston
                 </span>
               </div>
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <div
-                class="c17"
+                class="c19"
               />
               <abbr
-                class="c20 c21"
+                class="c22 c23"
                 id="UserAddress"
                 title="0x3ca206264762caf81a8f0a843bbb850987b31337"
               >
@@ -49123,7 +49944,7 @@ Object {
             </div>
           </section>
           <section
-            class="c22"
+            class="c24"
           >
             <svg
               alt="loading"
@@ -49279,7 +50100,7 @@ Object {
           </section>
         </div>
         <div
-          class="c23"
+          class="c25"
         />
       </div>
     </div>
@@ -49344,8 +50165,79 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
-          />
+            class="sc-1glv5oz-3 jjYsMa"
+          >
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/dashboard"
+              target="_self"
+              title="Dashboard"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Dashboard
+                </title>
+                <path
+                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Dashboard
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/log"
+              target="_self"
+              title="Log"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Log
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 jqOqAf"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
+              </small>
+            </a>
+          </div>
           <div
             class="sc-1glv5oz-2 bwZQqD"
           >
@@ -49923,7 +50815,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c10 {
@@ -50058,7 +50949,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c5 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -50421,7 +51312,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -50866,7 +51757,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -50992,7 +51882,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -51315,7 +52205,7 @@ Object {
             Unlock Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -59606,7 +60496,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -59732,7 +60621,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -60067,7 +60956,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -60448,7 +61337,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -60584,7 +61472,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -61088,7 +61976,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -61638,7 +62526,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -61764,7 +62651,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -62113,7 +63000,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -62553,7 +63440,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c13 {
@@ -62679,7 +63565,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -63065,7 +63951,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -66515,7 +67401,6 @@ Object {
   -ms-flex-align: center;
   align-items: center;
   height: 100%;
-  grid-template-columns: repeat(3,24px);
 }
 
 .c15 {
@@ -66778,7 +67663,7 @@ Object {
 
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
-    display: none;
+    margin-top: 20px;
   }
 }
 
@@ -66961,6 +67846,30 @@ Object {
                   class="c11"
                 >
                   Log
+                </small>
+              </a>
+              <a
+                class="c9 c10"
+                href="/keychain"
+                target="_self"
+                title="Keychain"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                >
+                  <title>
+                    Keychain
+                  </title>
+                  <path
+                    clip-rule="evenodd"
+                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+                <small
+                  class="c11"
+                >
+                  Keychain
                 </small>
               </a>
             </div>
@@ -67352,7 +68261,7 @@ Object {
             Creator Log
           </h1>
           <div
-            class="sc-1glv5oz-2 sc-1glv5oz-3 kcmgLk"
+            class="sc-1glv5oz-3 jjYsMa"
           >
             <a
               class="sc-850ddk-0 bqpIVT"
@@ -67398,6 +68307,30 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Log
+              </small>
+            </a>
+            <a
+              class="sc-850ddk-0 bqpIVT"
+              href="/keychain"
+              target="_self"
+              title="Keychain"
+            >
+              <svg
+                viewBox="0 0 24 24"
+              >
+                <title>
+                  Keychain
+                </title>
+                <path
+                  clip-rule="evenodd"
+                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
+                  fill-rule="evenodd"
+                />
+              </svg>
+              <small
+                class="sc-850ddk-1 jgJDdG"
+              >
+                Keychain
               </small>
             </a>
           </div>

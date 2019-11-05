@@ -61,6 +61,11 @@ const appButtons = [
     page: '/settings',
     allowedUsers: [accountTypes.managed],
   },
+  {
+    Button: PageNavButtons.Keychain,
+    page: '/keychain',
+    allowedUsers: [accountTypes.crypto, accountTypes.managed],
+  },
 ]
 
 export const mapStateToProps = ({
@@ -208,8 +213,17 @@ const DesktopButtons = styled.div`
   `};
 `
 
-const AppButtons = styled(DesktopButtons)`
+const AppButtons = styled.div`
+  display: grid;
+  grid-gap: 16px;
   grid-template-columns: repeat(${() => appButtons.length}, 24px);
+  grid-auto-flow: column;
+  align-items: center;
+  height: 100%;
+
+  ${Media.phone`
+      margin-top: 20px;
+  `};
 `
 
 const MobileToggle = styled.div`
