@@ -24,7 +24,7 @@ contract('Lock / transferFee', accounts => {
     })
   })
 
-  it('has a default fee of 0%', async () => {
+  it.skip('has a default fee of 0%', async () => {
     const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
     const feeDenominator = new BigNumber(await lock.BASIS_POINTS_DEN.call())
     assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0)
@@ -36,7 +36,7 @@ contract('Lock / transferFee', accounts => {
       await lock.updateTransferFee(500)
     })
 
-    it('estimates the transfer fee, which is 5% of keyPrice or less', async () => {
+    it.skip('estimates the transfer fee, which is 5% of keyPrice or less', async () => {
       const fee = new BigNumber(await lock.getTransferFee.call(keyOwner))
       assert(fee.lte(keyPrice.times(0.05)))
     })
@@ -44,7 +44,7 @@ contract('Lock / transferFee', accounts => {
     describe('when the key is transfered', () => {
       const newOwner = accounts[2]
 
-      it('should fail if the fee is not included', async () => {
+      it.skip('should fail if the fee is not included', async () => {
         await shouldFail(
           lock.transferFrom(
             keyOwner,
@@ -85,12 +85,12 @@ contract('Lock / transferFee', accounts => {
           transferGasCost = gasPrice.times(tx.receipt.gasUsed)
         })
 
-        it('transfer was successful', async () => {
+        it.skip('transfer was successful', async () => {
           const owner = await lock.ownerOf(tokenId)
           assert.equal(owner, newOwner)
         })
 
-        it('transfer fee was paid by the keyOwner', async () => {
+        it.skip('transfer fee was paid by the keyOwner', async () => {
           const keyOwnerBalance = new BigNumber(
             await web3.eth.getBalance(keyOwner)
           )
@@ -103,7 +103,7 @@ contract('Lock / transferFee', accounts => {
           )
         })
 
-        it('transfer fee was received by the contract', async () => {
+        it.skip('transfer fee was received by the contract', async () => {
           const lockBalance = new BigNumber(
             await web3.eth.getBalance(lock.address)
           )
@@ -136,7 +136,7 @@ contract('Lock / transferFee', accounts => {
         tx = await lock.updateTransferFee(25)
       })
 
-      it('has an updated fee', async () => {
+      it.skip('has an updated fee', async () => {
         const feeNumerator = new BigNumber(
           await lock.transferFeeBasisPoints.call()
         )
@@ -144,14 +144,14 @@ contract('Lock / transferFee', accounts => {
         assert.equal(feeNumerator.div(feeDenominator).toFixed(), 0.0025)
       })
 
-      it('emits TransferFeeChanged event', async () => {
+      it.skip('emits TransferFeeChanged event', async () => {
         assert.equal(tx.logs[0].event, 'TransferFeeChanged')
         assert.equal(tx.logs[0].args.transferFeeBasisPoints.toString(), 25)
       })
     })
 
     describe('should fail if', () => {
-      it('called by an account which does not own the lock', async () => {
+      it.skip('called by an account which does not own the lock', async () => {
         await shouldFail(lock.updateTransferFee(1000, { from: accounts[1] }))
       })
     })
