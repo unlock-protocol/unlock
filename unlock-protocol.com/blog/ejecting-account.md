@@ -15,7 +15,7 @@ In the Ethereum world, an account is identified by a pair of cryptographic keys.
 
 Unfortunately, this comes with a set of disadvantages. First: these keys are nearly impossible to remember, or even read and type! Their permissionlessness aspect also means that if someone forgets (or loses) them, no-one can help them... and they may be locked out of their account forever. Since the web was not built with such a system at its core, our muscle memory is not built around these concepts, which means that they're intimidating and foreign, but also require the use of tools that we're not familiar with, such as crypto wallets or extensions.
 
-Our user accounts are built as a convenience layer wrapped aroud an Ethereum accounts. Users can create your account with just an email and password, like we're all used to, but they can also take over the internal ethereum account when they're ready to level up. We call that process "ejecting"!
+Our user accounts are built as a convenience layer wrapped around Ethereum accounts. Users can create an account with just an email and password, like we're all used to, but they can also take over the internal Ethereum account when they're ready to level up. We call that process "ejecting"!
 
 ## How to eject your Unlock account
 
