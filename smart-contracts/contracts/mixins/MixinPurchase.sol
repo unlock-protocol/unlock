@@ -38,8 +38,8 @@ contract MixinPurchase is
     uint256 _value,
     address _recipient,
     address _referrer,
-    bytes calldata _data
-  ) external payable
+    bytes memory _data
+  ) public payable
     onlyIfAlive
     notSoldOut
   {
