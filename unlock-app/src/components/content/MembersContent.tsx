@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import 'cross-fetch/polyfill'
 import { connect } from 'react-redux'
@@ -12,6 +12,7 @@ import { Account as AccountType, Network, Router } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import keyHolderQuery from '../../queries/keyholdersByLock'
 import { expirationAsDate } from '../../utils/durations'
+import { signMetadataRequest } from '../../actions/keyMetadata'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -27,9 +28,15 @@ interface Props {
   account: AccountType
   network: Network
   lockAddresses: string[]
+  signMetadataRequest: typeof signMetadataRequest
 }
 
-export const MembersContent = ({ account, network, lockAddresses }: Props) => {
+export const MembersContent = ({
+  account,
+  network,
+  lockAddresses,
+  signMetadataRequest,
+}: Props) => {
   return (
     <Layout title="Members">
       <Head>
@@ -38,17 +45,40 @@ export const MembersContent = ({ account, network, lockAddresses }: Props) => {
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          <GraphWrapper lockAddresses={lockAddresses} />
+          <GraphWrapper
+            lockAddresses={lockAddresses}
+            signMetadataRequest={signMetadataRequest}
+            accountAddress={account.address}
+          />
         </BrowserOnly>
       )}
     </Layout>
   )
 }
 
-const GraphWrapper = ({ lockAddresses }: { lockAddresses: string[] }) => {
+interface GraphWrapperProps {
+  lockAddresses: string[]
+  signMetadataRequest: typeof signMetadataRequest
+  accountAddress: string
+}
+const GraphWrapper = ({
+  lockAddresses,
+  signMetadataRequest,
+  accountAddress,
+}: GraphWrapperProps) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { addresses: lockAddresses },
   })
+
+  useEffect(() => {
+    // Dispatch request for key metadata here, only when data changes
+    if (data) {
+      data.locks.forEach((lock: any) => {
+        const keyIds = lock.keys.map((key: any) => key.keyId)
+        signMetadataRequest(lock.address, accountAddress, keyIds)
+      })
+    }
+  }, [data])
 
   if (loading) {
     return <span>Loading...</span>
@@ -106,4 +136,7 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
   }
 }
 
-export default connect(mapStateToProps)(MembersContent)
+export default connect(
+  mapStateToProps,
+  { signMetadataRequest }
+)(MembersContent)
