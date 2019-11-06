@@ -17,6 +17,7 @@ describe('Wallet.setupProxyWallet()', () => {
       pending: '',
       confirmed: '',
       expired: '',
+      noWallet: '',
     },
   }
   const startup: StartupConstants = {

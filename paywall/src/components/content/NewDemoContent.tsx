@@ -65,6 +65,7 @@ export default function NewDemoContent() {
     callToAction: {
       default:
         'You have reached your limit of free articles. Please purchase access to continue reading',
+      noWallet: 'Please use a web3 enabled browser!',
     },
   }
 

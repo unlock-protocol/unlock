@@ -38,6 +38,7 @@ export function setupTestDefaults() {
       expired: '',
       pending: '',
       confirmed: '',
+      noWallet: '',
     },
   }
   return result as MailboxTestDefaults

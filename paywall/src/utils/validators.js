@@ -50,6 +50,7 @@ export const isAccountOrNull = val => {
  *        'your key has expired, please purchase a new one',
  *      pending: 'Purchase pending...',
  *      confirmed: 'Your content is unlocked!',
+ *      noWallet: 'Please, get a wallet!',
  *   },
  * }
  *
@@ -93,7 +94,13 @@ export const isValidPaywallConfig = config => {
     )
     return false
   }
-  const callsToAction = ['default', 'expired', 'pending', 'confirmed']
+  const callsToAction = [
+    'default',
+    'expired',
+    'pending',
+    'confirmed',
+    'noWallet',
+  ]
   const ctaKeys = Object.keys(config.callToAction)
   if (ctaKeys.length > callsToAction.length) {
     console.error(
