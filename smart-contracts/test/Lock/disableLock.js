@@ -78,7 +78,6 @@ contract('Lock / disableLock', accounts => {
       await shouldFail(
         lock.transferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
-          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -144,7 +143,6 @@ contract('Lock / disableLock', accounts => {
       await shouldFail(
         lock.safeTransferFrom(keyOwner, accounts[3], ID, {
           from: keyOwner,
-          value: Units.convert('0.01', 'eth', 'wei'),
         }),
         'LOCK_DEPRECATED'
       )
@@ -159,7 +157,6 @@ contract('Lock / disableLock', accounts => {
           Web3Utils.toHex('Julien'),
           {
             from: keyOwner,
-            value: Units.convert('0.01', 'eth', 'wei'),
           }
         ),
         'LOCK_DEPRECATED'

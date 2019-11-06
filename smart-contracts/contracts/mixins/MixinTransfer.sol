@@ -38,17 +38,12 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
-  /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
-   * market transactions...
-   */
   function transferFrom(
     address _from,
     address _recipient,
     uint _tokenId
   )
     public
-    payable
     onlyIfAlive
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
@@ -95,8 +90,6 @@ contract MixinTransfer is
       _recipient,
       _tokenId
     );
-
-    _chargeAtLeast(fee);
   }
 
   /**
@@ -113,7 +106,6 @@ contract MixinTransfer is
     uint _tokenId
   )
     external
-    payable
   {
     safeTransferFrom(_from, _to, _tokenId, '');
   }
@@ -136,7 +128,6 @@ contract MixinTransfer is
     bytes memory _data
   )
     public
-    payable
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
     hasValidKey(ownerOf[_tokenId])
