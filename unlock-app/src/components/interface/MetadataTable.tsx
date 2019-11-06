@@ -19,6 +19,7 @@ interface Props {
 
 /**
  * Applied to itself, yields "Camel Case To Title"
+ * TODO: move to utils
  */
 export function camelCaseToTitle(s: string): string {
   return (
