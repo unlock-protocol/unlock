@@ -9,7 +9,7 @@ image: /static/images/blog/ejecting-account/ejecting.jpg
 
 ![Eject Unlock Account](/static/images/blog/ejecting-account/ejecting.jpg)
 
-A couple of weeks ago, we introduced the [Unlock User Accounts](/blog/unlock-user-accounts). These accounts behave exactly like any other web account, with an email and password. Yet, under the hood, they're actually powerful Ethereum wallets with a private key which could be used to send transactions, receive funds, or interract directly with any smart contract.
+A couple of weeks ago, we introduced the [Unlock User Accounts](/blog/unlock-user-accounts). These accounts behave exactly like any other web account, with an email and password. Yet, under the hood, they're actually powerful Ethereum wallets with a private key which can be used to send transactions, receive funds, or interact directly with any smart contract.
 
 In the Ethereum world, an account is identified by a pair of cryptographic keys. The public key, also known as the user's address, is a way to **identify** someone, while the private key is used to **authenticate** that user. The cryptographic keys are "self-sovereign" which means that they do not require any 3rd party to be created, or to be used, unlike a regular account on a web applications, which requires this web application to exist. This is a very powerful mechanism which guarantees a permissionless usage.
 
