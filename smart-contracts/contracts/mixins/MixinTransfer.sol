@@ -216,7 +216,7 @@ contract MixinTransfer is
         key.expirationTimestamp = block.timestamp.add(_deltaT);
       }
     } else {
-      key.expirationTimestamp = formerTimestamp - _deltaT;
+      key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
   }
 
