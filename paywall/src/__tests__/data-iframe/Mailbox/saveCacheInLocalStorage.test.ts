@@ -70,6 +70,7 @@ describe('Mailbox - saveCacheInLocalStorage', () => {
         pending: '',
         expired: '',
         confirmed: '',
+        noWallet: '',
       },
     }
   }

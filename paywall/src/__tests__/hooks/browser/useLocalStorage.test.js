@@ -1,5 +1,5 @@
 import React from 'react'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import useLocalStorage from '../../../hooks/browser/useLocalStorage'
 import { WindowContext } from '../../../hooks/browser/useWindow'
 

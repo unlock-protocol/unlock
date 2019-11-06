@@ -8,7 +8,6 @@ import {
   UPDATE_LOCK,
 } from '../../actions/lock'
 import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
-import { PURCHASE_KEY } from '../../actions/key'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
@@ -24,34 +23,21 @@ import {
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
 import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
 import { SIGN_DATA } from '../../actions/signature'
+import {
+  SIGN_METADATA_REQUEST,
+  SIGN_METADATA_RESPONSE,
+} from '../../actions/keyMetadata'
 
 let mockConfig
 
 /**
  * Fake state
  */
-let account = {
-  address: '0xabc',
-}
-let lock = {
-  address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-  keyPrice: '100',
-  owner: account,
-}
+let account = {}
+let lock = {}
 let state = {}
-
-let key = {
-  id: '123',
-  lock: lock.address,
-  owner: account.address,
-}
-
-const transaction = {
-  hash: '0xf21e9820af34282c8bebb3a191cf615076ca06026a144c9c28e9cb762585472e',
-}
-const network = {
-  name: 'test',
-}
+const transaction = {}
+const network = {}
 
 /**
  * This is a "fake" middleware caller
@@ -110,6 +96,9 @@ beforeEach(() => {
     address: '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
     keyPrice: '100',
     owner: account.address,
+    expirationDuration: 60 * 60 * 24 * 30,
+    maxNumberOfKeys: -1,
+    name: 'My Fancy Lock',
   }
   state = {
     account,
@@ -481,45 +470,6 @@ describe('Wallet middleware', () => {
     expect(next).toHaveBeenCalledWith(action)
   })
 
-  describe('PURCHASE_KEY', () => {
-    it('when the service is not ready it should set an error and not try to purchase the key', () => {
-      expect.assertions(3)
-      const { next, invoke, store } = create()
-      const action = { type: PURCHASE_KEY, key }
-      mockWalletService.purchaseKey = jest.fn()
-      mockWalletService.ready = false
-      invoke(action)
-      expect(store.dispatch).toHaveBeenCalledWith({
-        type: SET_ERROR,
-        error: {
-          level: 'Fatal',
-          kind: 'Application',
-          message: FATAL_NO_USER_ACCOUNT,
-        },
-      })
-
-      expect(mockWalletService.purchaseKey).not.toHaveBeenCalled()
-      expect(next).toHaveBeenCalledWith(action)
-    })
-
-    it("should handle PURCHASE_KEY by calling walletService's purchaseKey when the walletService is ready", () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: PURCHASE_KEY, key }
-      mockWalletService.purchaseKey = jest.fn()
-      mockWalletService.ready = true
-      invoke(action)
-      expect(mockWalletService.purchaseKey).toHaveBeenCalledWith(
-        key.lock,
-        key.owner,
-        lock.keyPrice,
-        account.address,
-        key.data
-      )
-      expect(next).toHaveBeenCalledWith(action)
-    })
-  })
-
   describe('WITHDRAW_FROM_LOCK', () => {
     it('when the service is not ready it should set an error and not try to withdraw from the lock', () => {
       expect.assertions(3)
@@ -548,9 +498,9 @@ describe('Wallet middleware', () => {
       mockWalletService.withdrawFromLock = jest.fn()
       mockWalletService.ready = true
       invoke(action)
-      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith(
-        lock.address
-      )
+      expect(mockWalletService.withdrawFromLock).toHaveBeenCalledWith({
+        lockAddress: lock.address,
+      })
       expect(next).toHaveBeenCalledWith(action)
     })
   })
@@ -579,7 +529,7 @@ describe('Wallet middleware', () => {
 
       it("should handle CREATE_LOCK by calling walletService's createLock", () => {
         expect.assertions(2)
-        const { next, invoke, store } = create()
+        const { next, invoke } = create()
         const action = { type: CREATE_LOCK, lock }
 
         mockWalletService.createLock = jest
@@ -588,10 +538,14 @@ describe('Wallet middleware', () => {
         mockWalletService.ready = true
 
         invoke(action)
-        expect(mockWalletService.createLock).toHaveBeenCalledWith(
-          lock,
-          store.getState().account.address
-        )
+        expect(mockWalletService.createLock).toHaveBeenCalledWith({
+          currencyContractAddress: lock.currencyContractAddress,
+          expirationDuration: lock.expirationDuration,
+          keyPrice: lock.keyPrice,
+          maxNumberOfKeys: lock.maxNumberOfKeys,
+          name: lock.name,
+          owner: lock.owner,
+        })
 
         expect(next).toHaveBeenCalledWith(action)
       })
@@ -639,7 +593,7 @@ describe('Wallet middleware', () => {
 
     it('should invoke updateKeyPrice on receiving an update request', () => {
       expect.assertions(2)
-      const { next, invoke, store } = create()
+      const { next, invoke } = create()
       const action = {
         type: UPDATE_LOCK_KEY_PRICE,
         address: lock.address,
@@ -648,11 +602,10 @@ describe('Wallet middleware', () => {
       mockWalletService.updateKeyPrice = jest.fn()
       mockWalletService.ready = true
       invoke(action)
-      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith(
-        lock.address,
-        store.getState().account.address,
-        '0.03'
-      )
+      expect(mockWalletService.updateKeyPrice).toHaveBeenCalledWith({
+        lockAddress: lock.address,
+        keyPrice: '0.03',
+      })
       expect(next).toHaveBeenCalledWith(action)
     })
   })
@@ -726,6 +679,78 @@ describe('Wallet middleware', () => {
         data: 'neat',
         signature: 'here is your signature',
         id: 'track this signature',
+      })
+    })
+  })
+
+  describe('SIGN_METADATA_REQUEST', () => {
+    const action = {
+      type: SIGN_METADATA_REQUEST,
+      address: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
+      owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+      timestamp: 1234567890,
+    }
+
+    const expectedTypedData = expect.objectContaining({
+      primaryType: 'KeyMetadata',
+    })
+
+    it("should handle SIGN_METADATA_REQUEST by calling walletService's signData", () => {
+      expect.assertions(1)
+      const { invoke } = create()
+
+      mockWalletService.signData = jest.fn()
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(mockWalletService.signData).toHaveBeenCalledWith(
+        action.owner,
+        expectedTypedData,
+        expect.any(Function)
+      )
+    })
+
+    it('should dispatch some typed data on success', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+
+      mockWalletService.signData = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) => {
+          callback(undefined, 'a signature')
+        })
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SIGN_METADATA_RESPONSE,
+        data: expectedTypedData,
+        signature: 'a signature',
+      })
+    })
+
+    it('should dispatch an error on failure', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+
+      mockWalletService.signData = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) => {
+          callback(new Error('it broke'), undefined)
+        })
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Wallet',
+          level: 'Warning',
+          message: 'Could not sign typed data for metadata request.',
+        },
       })
     })
   })

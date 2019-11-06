@@ -43,13 +43,14 @@ const exportPaths = (defaultPathMap, { dev, dir, outDir }) => {
     '/': { page: '/home' },
     '/account': { page: '/account' },
     '/dashboard': { page: '/dashboard' },
-    '/keychain': { page: '/keyChain' },
+    '/keychain': { page: '/keychain' },
     '/login': { page: '/login' },
     '/signup': { page: '/signup' },
     '/log': { page: '/log' },
     '/settings': { page: '/settings' },
     '/recover': { page: '/recover' },
     '/verification': { page: '/verification' },
+    '/members': { page: '/members' },
   }
 }
 

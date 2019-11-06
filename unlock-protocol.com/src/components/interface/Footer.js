@@ -29,7 +29,7 @@ const Container = styled.footer`
 const Colophon = styled.span`
   justify-self: end;
   font-size: 12px;
-  font-weight: 200;
+  font-weight: 300;
   font-style: italic;
   font-family: 'IBM Plex Mono', 'Courier New', Serif;
 `

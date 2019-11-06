@@ -122,7 +122,7 @@ export default class UnlockProvider extends providers.JsonRpcProvider {
   generateSignedEjectionRequest() {
     const ejectionRequest = {
       user: {
-        publicKey: this.wallet.publicKey,
+        publicKey: this.wallet.address,
       },
     }
     const data = EjectionRequest.build(ejectionRequest)

@@ -22,6 +22,7 @@ describe('Wallet.setupUserAccounts()', () => {
       pending: '',
       confirmed: '',
       expired: '',
+      noWallet: '',
     },
     unlockUserAccounts: true,
   }

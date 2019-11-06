@@ -43,6 +43,8 @@ export const defaultValue = {
     expired: 'Your access has expired. Please purchase a new key to continue',
     pending: 'Purchase pending...',
     confirmed: 'Purchase confirmed, content unlocked!',
+    noWallet:
+      'To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.',
   },
 }
 

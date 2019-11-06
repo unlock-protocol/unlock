@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Close from '../interface/buttons/layout/Close'
+import Media from '../../theme/media'
 
 interface WrapperProps {
   children: any
@@ -48,7 +49,6 @@ const CloseButton = styled(Close).attrs(() => ({
 `
 
 const Wrapper = styled.section`
-  max-width: 800px;
   padding: 10px 40px;
   display: flex;
   flex-direction: column;
@@ -56,4 +56,10 @@ const Wrapper = styled.section`
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
+  ${Media.nophone`
+    width: 600px;
+  `}
+  ${Media.phone`
+    width: 100%;
+  `}
 `

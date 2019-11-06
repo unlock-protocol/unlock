@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import BrowserOnly from '../../../components/helpers/BrowserOnly'
 
 describe('BrowserOnly', () => {
