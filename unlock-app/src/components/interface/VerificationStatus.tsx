@@ -84,6 +84,8 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
         <RefundButton
           accountAddress={accountAddress}
           lockAddress={lockAddress}
+          timestamp={timestamp}
+          signature={sig}
         />
       )}
     </div>
