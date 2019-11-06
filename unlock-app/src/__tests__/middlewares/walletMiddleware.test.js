@@ -705,7 +705,7 @@ describe('Wallet middleware', () => {
       invoke(action)
 
       expect(mockWalletService.signData).toHaveBeenCalledWith(
-        action.address,
+        action.owner,
         expectedTypedData,
         expect.any(Function)
       )

@@ -241,7 +241,7 @@ const walletMiddleware = config => {
             },
           })
 
-          walletService.signData(address, typedData, (error, signature) => {
+          walletService.signData(owner, typedData, (error, signature) => {
             if (error) {
               dispatch(
                 setError(
