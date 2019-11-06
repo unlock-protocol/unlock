@@ -1,8 +1,5 @@
 FROM unlock-core
 
-# Create a .git directory for codechecks integration
-RUN mkdir /home/unlock/.git
-
 # Dependencies for smart-contracts
 RUN mkdir /home/unlock/smart-contracts
 COPY --chown=node smart-contracts/package-lock.json /home/unlock/smart-contracts/.
