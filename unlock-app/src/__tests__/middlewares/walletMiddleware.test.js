@@ -23,6 +23,10 @@ import {
 import { HIDE_FORM } from '../../actions/lockFormVisibility'
 import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
 import { SIGN_DATA } from '../../actions/signature'
+import {
+  SIGN_METADATA_REQUEST,
+  SIGN_METADATA_RESPONSE,
+} from '../../actions/keyMetadata'
 
 let mockConfig
 
@@ -675,6 +679,78 @@ describe('Wallet middleware', () => {
         data: 'neat',
         signature: 'here is your signature',
         id: 'track this signature',
+      })
+    })
+  })
+
+  describe('SIGN_METADATA_REQUEST', () => {
+    const action = {
+      type: SIGN_METADATA_REQUEST,
+      address: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
+      owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+      timestamp: 1234567890,
+    }
+
+    const expectedTypedData = expect.objectContaining({
+      primaryType: 'KeyMetadata',
+    })
+
+    it("should handle SIGN_METADATA_REQUEST by calling walletService's signData", () => {
+      expect.assertions(1)
+      const { invoke } = create()
+
+      mockWalletService.signData = jest.fn()
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(mockWalletService.signData).toHaveBeenCalledWith(
+        action.address,
+        expectedTypedData,
+        expect.any(Function)
+      )
+    })
+
+    it('should dispatch some typed data on success', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+
+      mockWalletService.signData = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) => {
+          callback(undefined, 'a signature')
+        })
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SIGN_METADATA_RESPONSE,
+        data: expectedTypedData,
+        signature: 'a signature',
+      })
+    })
+
+    it('should dispatch an error on failure', () => {
+      expect.assertions(1)
+      const { invoke, store } = create()
+
+      mockWalletService.signData = jest
+        .fn()
+        .mockImplementation((_address, _data, callback) => {
+          callback(new Error('it broke'), undefined)
+        })
+      mockWalletService.ready = true
+
+      invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Wallet',
+          level: 'Warning',
+          message: 'Could not sign typed data for metadata request.',
+        },
       })
     })
   })
