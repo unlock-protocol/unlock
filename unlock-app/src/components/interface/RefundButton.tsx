@@ -5,6 +5,8 @@ import withConfig from '../../utils/withConfig'
 interface RefundButtonProps {
   accountAddress: string
   lockAddress: string
+  timestamp: string
+  signature: string
   config: {
     providers: any
     externalRefundContractAddress: string
@@ -46,7 +48,7 @@ export class RefundButton extends React.Component<
   }
 
   initiateRefund = async () => {
-    const { accountAddress } = this.props
+    const { accountAddress, lockAddress, timestamp, signature } = this.props
     this.setState({
       refundInitiated: true,
     })
@@ -55,6 +57,25 @@ export class RefundButton extends React.Component<
     await this.contract.refund(accountAddress, {
       gasLimit: 600000,
     })
+
+    // Let's now ping POAP
+    // Only on the web!
+    if (typeof fetch !== 'undefined') {
+      fetch('https://api.poap.xyz/tasks/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'a75495d2-c9c5-494c-9ba4-80976b371bae',
+        },
+        body: JSON.stringify({
+          accountAddress,
+          lockAddress,
+          timestamp,
+          signature,
+        }),
+      })
+    }
   }
 
   render() {
