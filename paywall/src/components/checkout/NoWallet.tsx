@@ -107,6 +107,7 @@ const WalletOption = styled.div`
   }
 
   > svg {
+    width: 80px;
     margin: 20px;
   }
 `

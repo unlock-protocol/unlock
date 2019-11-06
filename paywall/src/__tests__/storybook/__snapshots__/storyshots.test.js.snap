@@ -9188,6 +9188,7 @@ Object {
 }
 
 .c10 > svg {
+  width: 80px;
   margin: 20px;
 }
 
@@ -10951,7 +10952,7 @@ Object {
               Chrome & Firefox
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -11064,7 +11065,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -11120,7 +11121,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -12604,6 +12605,7 @@ Object {
 }
 
 .c10 > svg {
+  width: 80px;
   margin: 20px;
 }
 
@@ -14367,7 +14369,7 @@ Object {
               Chrome & Firefox
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -14480,7 +14482,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -14536,7 +14538,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -16020,6 +16022,7 @@ Object {
 }
 
 .c10 > svg {
+  width: 80px;
   margin: 20px;
 }
 
@@ -17783,7 +17786,7 @@ Object {
               Chrome & Firefox
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -17896,7 +17899,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
@@ -17952,7 +17955,7 @@ Object {
               iOS & Android
             </span>
             <div
-              class="sc-kpOJdX hglwz"
+              class="sc-kpOJdX enKQLh"
             >
               <svg
                 fill="none"
