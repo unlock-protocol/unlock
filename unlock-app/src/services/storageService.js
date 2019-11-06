@@ -101,7 +101,7 @@ export class StorageService extends EventEmitter {
   }
 
   genAuthorizationHeader = token => {
-    return { Authorization: ` Bearer ${token}` }
+    return { Authorization: `Bearer ${token}` }
   }
 
   /**
@@ -388,7 +388,6 @@ export class StorageService extends EventEmitter {
     try {
       const result = await axios.get(
         `${this.host}/api/key/${lockAddress}/${keyId}`,
-        null,
         opts
       )
       const payload = {
