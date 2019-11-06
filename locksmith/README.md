@@ -3,7 +3,18 @@
 Locksmith provides the ability to store metadata associated with Locks outside
 of the Ethereum blockchain, with reasonable permission around writes.
 
-In the current iteration, reads are public and do not require authorization.
+Locksmith currently handles the following responsibilities:
+
+* Event Data Storage
+* Price Data Storage
+* Lock Data Storage
+* Token Metadata Storage
+* Block Metadata Storage
+* User Accounts
+* Managed Key Purchases
+
+The general idea being that some of the functionality will be moved towards a decentralized
+counterpart when the technology is available and time permits.
 
 ## Getting Started
 
