@@ -17,6 +17,7 @@ describe('Wallet.init()', () => {
       pending: '',
       confirmed: '',
       expired: '',
+      noWallet: '',
     },
   }
 

@@ -69,6 +69,7 @@ describe('Mailbox - getBlockchainDataFromLocalStorageCache', () => {
         pending: '',
         expired: '',
         confirmed: '',
+        noWallet: '',
       },
     }
   }
