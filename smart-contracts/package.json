@@ -11,6 +11,7 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "@codechecks/client": "0.1.10",
     "@openzeppelin/cli": "2.5.3",
     "@openzeppelin/contracts": "2.4.0",
     "@openzeppelin/contracts-ethereum-package": "2.3.0",
@@ -53,13 +54,14 @@
     "test": "cross-env NODE_ENV=test truffle test --network development",
     "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
     "dev": "npm run lint && npm run build && npm run test",
-    "ci": "npm run test && npm run lint",
+    "ci": "npm run test && npm run lint && npm run codechecks",
     "build": "truffle compile --all",
     "ganache": "ganache-cli --mnemonic \"hello unlock save the web\"",
     "zos": "openzeppelin",
     "flatten": "(truffle-flattener contracts/PublicLock.sol > build/PublicLock-Flattened.sol) && (echo Wrote file: build/PublicLock-Flattened.sol)",
     "verify": "truffle run verify",
-    "debug": "truffle debug"
+    "debug": "truffle debug",
+    "codechecks": "codechecks"
   },
   "author": "",
   "license": "ISC"
