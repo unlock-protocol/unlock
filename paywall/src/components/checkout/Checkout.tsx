@@ -155,6 +155,8 @@ const CheckoutLocks = styled.ul`
   list-style: none;
   margin: 0px;
   padding: 0px;
-  justify-content: space-around;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit, minmax(186px, 200px));
+  grid-gap: 20px;
 `

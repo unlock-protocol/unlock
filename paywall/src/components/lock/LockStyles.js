@@ -7,6 +7,7 @@ export const LockWrapper = styled.li.attrs(props => ({
 }))`
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
@@ -14,6 +15,7 @@ export const LockWrapper = styled.li.attrs(props => ({
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 `
 
 export const LockHeader = styled.header`
