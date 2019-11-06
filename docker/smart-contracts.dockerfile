@@ -1,7 +1,7 @@
 FROM unlock-core
 
 # Create a .git directory for codechecks integration
-RUN sh -c 'mkdir -p "/home/unlock/.git/"'
+RUN mkdir /home/unlock/.git
 
 # Dependencies for smart-contracts
 RUN mkdir /home/unlock/smart-contracts
