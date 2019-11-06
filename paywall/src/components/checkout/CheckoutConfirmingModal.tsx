@@ -60,7 +60,7 @@ export const CheckoutConfirmingModal = ({
 export default CheckoutConfirmingModal
 
 const Continue = styled(ActionButton)`
-  width: 280px;
+  width: 100%;
   height: 60px;
   ${Media.phone`
     width: 100%;

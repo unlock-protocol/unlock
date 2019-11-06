@@ -33,6 +33,7 @@ describe('unlock.js startup', () => {
           expired: 'there',
           pending: 'pending',
           confirmed: 'confirmed',
+          noWallet: 'no wallet',
         },
       }
       const normalizedConfig = {
@@ -61,6 +62,7 @@ describe('unlock.js startup', () => {
         expired: 'there',
         pending: 'pending',
         confirmed: 'confirmed',
+        noWallet: 'no wallet',
       },
     }
 

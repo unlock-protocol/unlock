@@ -5,6 +5,8 @@ import withConfig from '../../utils/withConfig'
 interface RefundButtonProps {
   accountAddress: string
   lockAddress: string
+  timestamp: string
+  signature: string
   config: {
     providers: any
     externalRefundContractAddress: string
@@ -46,16 +48,34 @@ export class RefundButton extends React.Component<
   }
 
   initiateRefund = async () => {
-    const { accountAddress } = this.props
+    const { accountAddress, lockAddress, timestamp, signature } = this.props
     this.setState({
       refundInitiated: true,
     })
-    // We override the gas price and gas limit here because web3
-    // wallets would error when they automatically calculated the values.
+    // We override the gas limit here because web3 wallets would error when they
+    //automatically calculated the value.
     await this.contract.refund(accountAddress, {
-      gasPrice: 20000000000,
       gasLimit: 600000,
     })
+
+    // Let's now ping POAP
+    // Only on the web!
+    if (typeof fetch !== 'undefined') {
+      fetch('https://api.poap.xyz/tasks/', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: 'a75495d2-c9c5-494c-9ba4-80976b371bae',
+        },
+        body: JSON.stringify({
+          accountAddress,
+          lockAddress,
+          timestamp,
+          signature,
+        }),
+      })
+    }
   }
 
   render() {

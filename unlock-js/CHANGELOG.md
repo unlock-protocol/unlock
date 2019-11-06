@@ -1,9 +1,16 @@
 # Changes
 
-# Next (patch)
+# 0.4.2
+
+- Fixing issue with generateSignedEjectionRequest which did not yield the actual user address
+
+# 0.4.1
+
 - Adding a "latest" export which returns the latest supported lock version
+- Loosening the required node version to anything compatible with v10
 
 ## 0.4.0
+
 - Only approving if the approved amount is lower than the required price
 - WalletService method which change state take a callback as argument which yields the transaction hash.
 - Not catching errors on transaction emitted. These should be caught by the applications
@@ -16,15 +23,19 @@
 - Refactored signature to accept objects to be more flexible (this is a breaking change)
 
 ## 0.3.20
+
 - unlock-provider can generate a signed ejection request
 
 ## 0.3.19
+
 - unlock-provider has a more consistent personal_sign output
 
 ## 0.3.18
+
 - walletService dispatches personal_sign to unlock-provider
 
 ## 0.3.17
+
 - unlock-provider can personal_sign data
 
 ## 0.3.16

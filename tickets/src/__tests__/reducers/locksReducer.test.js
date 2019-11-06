@@ -1,12 +1,6 @@
 import reducer, { initialState } from '../../reducers/locksReducer'
-import {
-  ADD_LOCK,
-  DELETE_LOCK,
-  UPDATE_LOCK,
-  UPDATE_LOCK_KEY_PRICE,
-} from '../../actions/lock'
+import { ADD_LOCK, UPDATE_LOCK } from '../../actions/lock'
 import { SET_ACCOUNT } from '../../actions/accounts'
-import { DELETE_TRANSACTION } from '../../actions/transaction'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
 
@@ -48,44 +42,6 @@ describe('locks reducer', () => {
     ).toBe(initialState)
   })
 
-  it('should delete a lock when DELETE_TRANSACTION is called for a transaction which created that lock', () => {
-    expect.assertions(1)
-    const transaction = {
-      lock: lock.address,
-    }
-    expect(
-      reducer(
-        {
-          [lock.address]: lock,
-        },
-        {
-          type: DELETE_TRANSACTION,
-          transaction,
-        }
-      )
-    ).toEqual({})
-  })
-
-  it('should not delete a lock when DELETE_TRANSACTION is called for a transaction which created another lock', () => {
-    expect.assertions(1)
-    const transaction = {
-      lock: `${lock.address}x`,
-    }
-    expect(
-      reducer(
-        {
-          [lock.address]: lock,
-        },
-        {
-          type: DELETE_TRANSACTION,
-          transaction,
-        }
-      )
-    ).toEqual({
-      [lock.address]: lock,
-    })
-  })
-
   // Upon changing account, we need to clear the existing locks. The web3 middleware will
   // re-populate them
   it('should not clear the locks when receiving SET_ACCOUNT', () => {
@@ -100,22 +56,6 @@ describe('locks reducer', () => {
         account,
       })
     ).toBe(locks)
-  })
-
-  describe('DELETE_LOCK', () => {
-    it('should delete a lock', () => {
-      expect.assertions(1)
-      const state = {
-        '0x123': {
-          address: '0x123',
-        },
-      }
-      const action = {
-        type: DELETE_LOCK,
-        address: '0x123',
-      }
-      expect(reducer(state, action)).toEqual({})
-    })
   })
 
   describe('ADD_LOCK', () => {
@@ -230,29 +170,6 @@ describe('locks reducer', () => {
           keyPrice: '1.001',
         },
       })
-    })
-  })
-
-  it("should update a lock's key price when UPDATE_LOCK_KEY_PRICE is called", () => {
-    expect.assertions(1)
-    const state = {
-      '0x123': {
-        name: 'hello',
-        address: '0x123',
-        keyPrice: '0.01',
-      },
-    }
-    const action = {
-      type: UPDATE_LOCK_KEY_PRICE,
-      address: '0x123',
-      price: '0.02',
-    }
-    expect(reducer(state, action)).toEqual({
-      '0x123': {
-        name: 'hello',
-        address: '0x123',
-        keyPrice: '0.02',
-      },
     })
   })
 })

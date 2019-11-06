@@ -10,8 +10,5 @@ export const NON_DEPLOYED_CONTRACT = 'NON_DEPLOYED_CONTRACT'
 
 export const NO_USER_ACCOUNT = 'NO_USER_ACCOUNT'
 
-// Transaction failures
-export const FAILED_TO_PURCHASE_KEY = 'FAILED_TO_PURCHASE_KEY'
-
 // Ticket failure
 export const FAILED_TO_SIGN_ADDRESS = 'FAILED_TO_SIGN_ADDRESS'

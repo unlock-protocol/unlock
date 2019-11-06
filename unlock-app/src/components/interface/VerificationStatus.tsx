@@ -7,7 +7,7 @@ import {
   durationsAsTextFromSeconds,
   expirationAsDate,
 } from '../../utils/durations'
-import { OwnedKey } from './keyChain/KeychainTypes'
+import { OwnedKey } from './keychain/KeychainTypes'
 import RefundButton from './RefundButton'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
@@ -84,6 +84,8 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
         <RefundButton
           accountAddress={accountAddress}
           lockAddress={lockAddress}
+          timestamp={timestamp}
+          signature={sig}
         />
       )}
     </div>

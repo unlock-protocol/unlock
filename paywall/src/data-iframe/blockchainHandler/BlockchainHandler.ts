@@ -89,7 +89,13 @@ export default class BlockchainHandler {
     store = {
       config: {
         locks: {},
-        callToAction: { default: '', expired: '', pending: '', confirmed: '' },
+        callToAction: {
+          default: '',
+          expired: '',
+          pending: '',
+          confirmed: '',
+          noWallet: '',
+        },
       },
       account: null,
       balance: {

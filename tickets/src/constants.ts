@@ -24,19 +24,7 @@ export const pageTitle = (title: string) => {
   return (pageTitle += "Unlock: The Web's new business model")
 }
 
-// used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
-const transactionRegex = '0x[a-fA-F0-9]{64}'
-
-/**
- * Matches any valid ethereum account address
- */
-export const ACCOUNT_REGEXP = new RegExp(accountRegex + '$')
-
-/**
- * Matches any valid ethereum transaction hash
- */
-export const TRANSACTION_REGEXP = new RegExp(transactionRegex + '$')
 
 // private helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
@@ -57,24 +45,6 @@ const lockAddress = accountRegex
  */
 export const LOCK_PATH_NAME_REGEXP = new RegExp(
   `(?:/(${prefix}))?/(${lockAddress})(?:/(${urlEncodedUrl})/?)?`
-)
-
-// private helpers for the EVENT_PATH_NAME_REGEXP
-const userAddress = accountRegex
-const signature = '[a-zA-Z0-9]+'
-
-/**
- * This regexp matches several important parameters passed in the url for the demo and paywall pages.
- *
- * You should not use this directly, instead use the utils/routes.js eventRoute function
- */
-export const EVENT_PATH_NAME_REGEXP = new RegExp(
-  `(?:/(${prefix}))?/(${lockAddress})/(${userAddress})/(${signature})`
-)
-
-// This regex matches the URL in early QR codes generated for EthWaterloo.
-export const UNSIGNED_TICKET_PATH_NAME_REGEXP = new RegExp(
-  `(?:/(${prefix}))?/(${lockAddress})`
 )
 
 export const PAGE_DESCRIPTION =
@@ -98,35 +68,8 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
-// constants related to pagination
-export const PGN_ITEMS_PER_PAGE = 5
-export const PGN_MAX_NUMBER_OF_PAGES_TO_SHOW_ALL = 10
-
 export const MAX_DEVICE_WIDTHS = {
   PHONE: 736,
   TABLET: 1000,
   DESKTOP: false,
-}
-
-export const INFINITY = '∞'
-export const UNLIMITED_KEYS_COUNT = -1
-
-export const SHOW_FLAG_FOR = 2000 // milliseconds
-
-export const MAX_UINT =
-  '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-
-// the number of ms between checking for account changes in walletService
-export const POLLING_INTERVAL = 2000
-
-export const CURRENCY_CONVERSION_MIDDLEWARE_RETRY_INTERVAL = 10000
-
-/**
- * Transaction types
- */
-export const TRANSACTION_TYPES = {
-  LOCK_CREATION: 'LOCK_CREATION',
-  KEY_PURCHASE: 'KEY_PURCHASE',
-  WITHDRAWAL: 'WITHDRAWAL',
-  UPDATE_KEY_PRICE: 'UPDATE_KEY_PRICE',
 }

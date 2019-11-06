@@ -91,6 +91,7 @@ describe('BlockchainHandler class setup', () => {
           expired: '',
           pending: '',
           confirmed: '',
+          noWallet: '',
         },
       },
       account: null,

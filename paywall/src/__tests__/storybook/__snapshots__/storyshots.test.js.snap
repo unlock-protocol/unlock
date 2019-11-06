@@ -66,41 +66,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -174,41 +166,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -385,41 +369,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -565,41 +541,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -749,41 +717,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -933,41 +893,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -1117,41 +1069,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -1322,41 +1266,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -1531,41 +1467,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -1740,41 +1668,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -1949,41 +1869,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -2158,41 +2070,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -2260,6 +2164,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -2267,6 +2172,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -2374,11 +2280,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -2388,7 +2296,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2407,6 +2314,18 @@ Object {
   .c15 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -2518,7 +2437,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -2556,10 +2475,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -2635,41 +2554,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -2737,6 +2648,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -2744,6 +2656,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -2851,11 +2764,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -2865,7 +2780,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -2884,6 +2798,18 @@ Object {
   .c15 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -3065,7 +2991,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -3103,10 +3029,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -3141,7 +3067,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x456"
         >
           <header
@@ -3176,7 +3102,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x789"
         >
           <header
@@ -3252,41 +3178,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -3336,6 +3254,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -3343,6 +3262,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -3459,6 +3379,7 @@ Object {
 .c14 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -3466,6 +3387,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -3573,11 +3495,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -3587,7 +3511,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -3606,6 +3529,18 @@ Object {
   .c21 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -3788,7 +3723,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -3823,10 +3758,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -3865,7 +3800,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x456"
         >
           <header
@@ -3900,7 +3835,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x789"
         >
           <header
@@ -3976,41 +3911,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -4060,6 +3987,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -4067,6 +3995,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -4183,6 +4112,7 @@ Object {
 .c14 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -4190,6 +4120,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -4297,11 +4228,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -4311,7 +4244,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -4330,6 +4262,18 @@ Object {
   .c21 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -4508,7 +4452,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -4543,10 +4487,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -4581,7 +4525,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x456"
         >
           <header
@@ -4616,7 +4560,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x789"
         >
           <header
@@ -4692,41 +4636,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -4776,6 +4712,7 @@ Object {
 .c14 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -4783,6 +4720,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -4899,6 +4837,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -4906,6 +4845,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -5013,11 +4953,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -5027,7 +4969,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -5046,6 +4987,18 @@ Object {
   .c21 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -5224,7 +5177,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -5259,10 +5212,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -5297,7 +5250,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -5332,7 +5285,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x789"
         >
           <header
@@ -5408,41 +5361,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -5518,6 +5463,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -5525,6 +5471,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -5706,6 +5653,7 @@ Object {
 .c24 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -5713,6 +5661,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -5816,11 +5765,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -5830,7 +5781,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -5871,6 +5821,18 @@ Object {
 
   .c9 .c17 {
     display: block;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -6120,7 +6082,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -6155,10 +6117,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -6227,7 +6189,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -6296,7 +6258,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x789"
           disabled=""
         >
@@ -6375,41 +6337,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -6485,6 +6439,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -6492,6 +6447,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -6673,6 +6629,7 @@ Object {
 .c24 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -6680,6 +6637,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -6783,11 +6741,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -6797,7 +6757,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -6838,6 +6797,18 @@ Object {
 
   .c9 .c17 {
     display: block;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -7052,7 +7023,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -7087,10 +7058,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -7159,7 +7130,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x456"
           disabled=""
         >
@@ -7195,7 +7166,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x789"
           disabled=""
         >
@@ -7272,41 +7243,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -7382,6 +7345,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -7389,6 +7353,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -7570,6 +7535,7 @@ Object {
 .c24 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -7577,6 +7543,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -7680,11 +7647,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -7694,7 +7663,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -7735,6 +7703,18 @@ Object {
 
   .c9 .c17 {
     display: block;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -7982,7 +7962,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -8017,10 +7997,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -8089,7 +8069,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -8156,7 +8136,7 @@ Object {
           </div>
         </li>
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x789"
           disabled=""
         >
@@ -8235,41 +8215,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -8319,6 +8291,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -8326,6 +8299,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -8434,11 +8408,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -8448,7 +8424,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -8467,6 +8442,18 @@ Object {
   .c12 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -8557,7 +8544,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -8592,10 +8579,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address=""
         >
           <header
@@ -8653,41 +8640,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -8737,6 +8716,7 @@ Object {
 .c7 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -8744,6 +8724,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c8 {
@@ -8852,11 +8833,13 @@ Object {
   list-style: none;
   margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
   grid-template-columns: repeat(auto-fit,minmax(186px,200px));
+  grid-gap: 20px;
 }
 
 .c2 {
@@ -8866,7 +8849,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -8885,6 +8867,18 @@ Object {
   .c12 {
     height: 16px;
     width: 16px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
   }
 }
 
@@ -8978,7 +8972,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -9016,10 +9010,10 @@ Object {
         </p>
       </header>
       <ul
-        class="sc-htoDjs ekOEwM"
+        class="sc-htoDjs eEkLwz"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address=""
         >
           <header
@@ -9077,41 +9071,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -9154,7 +9140,6 @@ Object {
 }
 
 .c1 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -9169,72 +9154,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 210px;
-}
-
-.c8 span {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  text-align: center;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-bottom: 8px;
-  width: 160px;
-}
-
-.c8 div {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  width: 160px;
-  height: 192px;
-  background-color: var(--white);
-  border-radius: 4px;
-  padding-bottom: 13px;
-}
-
-.c8 div svg {
-  padding-top: 20px;
-}
-
-.c8 div:hover {
-  border: 1px solid var(--link);
-}
-
-.c8 div .c10 {
+.c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -9244,19 +9171,41 @@ Object {
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
+  text-align: center;
   color: var(--link);
 }
 
+.c10 {
+  max-width: 130px;
+  padding: 5px;
+  border: 1px solid transparent;
+  background-color: var(--white);
+  border-radius: 4px;
+}
+
+.c10:hover {
+  border: 1px solid var(--link);
+}
+
+.c10 > svg {
+  margin: 20px;
+}
+
 .c9 {
-  width: 120px;
+  font-size: 1em;
+  font-family: IBM Plex Sans;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
 }
 
-.c11 {
-  width: 120px;
-}
-
-.c12 {
-  width: 120px;
+.c8 {
+  display: grid;
+  text-align: center;
+  justify-items: center;
 }
 
 .c4 {
@@ -9277,17 +9226,17 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -9298,14 +9247,16 @@ Object {
 .c7 {
   display: grid;
   list-style: none;
-  margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
-  grid-template-columns: repeat(auto-fit,186px);
-  padding-top: 24px;
+  justify-self: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit,minmax(160px,max-content));
+  grid-gap: 10px;
 }
 
 .c7 a,
@@ -9341,6 +9292,18 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
+}
+
+@media only screen and (min-width:736px) {
+  .c1 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -9393,7 +9356,7 @@ Object {
               />
             </h1>
             <p>
-              To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
             </p>
           </header>
           <ul
@@ -9405,12 +9368,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Desktop Chrome & Firefox
+              <span
+                class="c9"
+              >
+                Desktop
+                <br />
+                Chrome & Firefox
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c9"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -9501,7 +9469,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Metamask
                 </span>
@@ -9513,12 +9481,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -9552,7 +9525,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Coinbase Wallet
                 </span>
@@ -9564,12 +9537,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -10885,7 +10863,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Opera
                 </span>
@@ -10893,14 +10871,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -10919,10 +10897,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hSdWYo rRMtl"
+      class="sc-iAyFgw klCgPS"
     >
       <section
-        class="sc-iwsKbI gtsSOj"
+        class="sc-iwsKbI bXpKnQ"
       >
         <a
           class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -10942,35 +10920,40 @@ Object {
           
         </a>
         <header
-          class="sc-eNQAEJ bBtDfG"
+          class="sc-jKJlTe eMpNOD"
         >
           <h1
-            class="sc-hMqMXs iChWxV"
+            class="sc-eNQAEJ jnRrEy"
           >
             <img
-              class="sc-kEYyzF jNhvDd"
+              class="sc-hMqMXs dqqMEh"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
           <p>
-            To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
           </p>
         </header>
         <ul
-          class="sc-iAyFgw etnhSY"
+          class="sc-kkGfuU dXMQCM"
         >
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Desktop Chrome & Firefox
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Desktop
+              <br />
+              Chrome & Firefox
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-dxgOiQ hZenca"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -11061,24 +11044,29 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-ckVGcZ cokGCr"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -11112,24 +11100,29 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-jKJlTe bBXYau"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -12445,7 +12438,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Opera
               </span>
@@ -12453,7 +12446,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kkGfuU lbOCAu"
+          class="sc-kEYyzF btURsd"
         >
           <span>
             Powered by
@@ -12494,41 +12487,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -12571,7 +12556,6 @@ Object {
 }
 
 .c1 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -12586,72 +12570,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 210px;
-}
-
-.c8 span {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  text-align: center;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-bottom: 8px;
-  width: 160px;
-}
-
-.c8 div {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  width: 160px;
-  height: 192px;
-  background-color: var(--white);
-  border-radius: 4px;
-  padding-bottom: 13px;
-}
-
-.c8 div svg {
-  padding-top: 20px;
-}
-
-.c8 div:hover {
-  border: 1px solid var(--link);
-}
-
-.c8 div .c10 {
+.c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -12661,19 +12587,41 @@ Object {
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
+  text-align: center;
   color: var(--link);
 }
 
+.c10 {
+  max-width: 130px;
+  padding: 5px;
+  border: 1px solid transparent;
+  background-color: var(--white);
+  border-radius: 4px;
+}
+
+.c10:hover {
+  border: 1px solid var(--link);
+}
+
+.c10 > svg {
+  margin: 20px;
+}
+
 .c9 {
-  width: 120px;
+  font-size: 1em;
+  font-family: IBM Plex Sans;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
 }
 
-.c11 {
-  width: 120px;
-}
-
-.c12 {
-  width: 120px;
+.c8 {
+  display: grid;
+  text-align: center;
+  justify-items: center;
 }
 
 .c4 {
@@ -12694,17 +12642,17 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -12715,14 +12663,16 @@ Object {
 .c7 {
   display: grid;
   list-style: none;
-  margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
-  grid-template-columns: repeat(auto-fit,186px);
-  padding-top: 24px;
+  justify-self: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit,minmax(160px,max-content));
+  grid-gap: 10px;
 }
 
 .c7 a,
@@ -12758,6 +12708,18 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
+}
+
+@media only screen and (min-width:736px) {
+  .c1 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -12810,7 +12772,7 @@ Object {
               />
             </h1>
             <p>
-              To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
             </p>
           </header>
           <ul
@@ -12822,12 +12784,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Desktop Chrome & Firefox
+              <span
+                class="c9"
+              >
+                Desktop
+                <br />
+                Chrome & Firefox
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c9"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -12918,7 +12885,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Metamask
                 </span>
@@ -12930,12 +12897,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -12969,7 +12941,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Coinbase Wallet
                 </span>
@@ -12981,12 +12953,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -14302,7 +14279,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Opera
                 </span>
@@ -14310,14 +14287,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -14336,10 +14313,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hSdWYo rRMtl"
+      class="sc-iAyFgw klCgPS"
     >
       <section
-        class="sc-iwsKbI gtsSOj"
+        class="sc-iwsKbI bXpKnQ"
       >
         <a
           class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -14359,35 +14336,40 @@ Object {
           
         </a>
         <header
-          class="sc-eNQAEJ bBtDfG"
+          class="sc-jKJlTe eMpNOD"
         >
           <h1
-            class="sc-hMqMXs iChWxV"
+            class="sc-eNQAEJ jnRrEy"
           >
             <img
-              class="sc-kEYyzF jNhvDd"
+              class="sc-hMqMXs dqqMEh"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
           <p>
-            To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
           </p>
         </header>
         <ul
-          class="sc-iAyFgw etnhSY"
+          class="sc-kkGfuU dXMQCM"
         >
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Desktop Chrome & Firefox
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Desktop
+              <br />
+              Chrome & Firefox
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-dxgOiQ hZenca"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14478,24 +14460,29 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-ckVGcZ cokGCr"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -14529,24 +14516,29 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-jKJlTe bBXYau"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -15862,7 +15854,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Opera
               </span>
@@ -15870,7 +15862,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kkGfuU lbOCAu"
+          class="sc-kEYyzF btURsd"
         >
           <span>
             Powered by
@@ -15911,41 +15903,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -15988,7 +15972,6 @@ Object {
 }
 
 .c1 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -16003,72 +15986,14 @@ Object {
   position: relative;
 }
 
-.c14 {
+.c13 {
   fill: var(--brand);
   width: 42px;
   margin-bottom: -1px;
   margin-left: 1px;
 }
 
-.c8 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  height: 210px;
-}
-
-.c8 span {
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 8px;
-  line-height: 10px;
-  text-align: center;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding-bottom: 8px;
-  width: 160px;
-}
-
-.c8 div {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  width: 160px;
-  height: 192px;
-  background-color: var(--white);
-  border-radius: 4px;
-  padding-bottom: 13px;
-}
-
-.c8 div svg {
-  padding-top: 20px;
-}
-
-.c8 div:hover {
-  border: 1px solid var(--link);
-}
-
-.c8 div .c10 {
+.c11 {
   text-transform: none;
   font-family: IBM Plex Sans,sans serif;
   font-style: normal;
@@ -16078,19 +16003,41 @@ Object {
   -moz-letter-spacing: 0;
   -ms-letter-spacing: 0;
   letter-spacing: 0;
+  text-align: center;
   color: var(--link);
 }
 
+.c10 {
+  max-width: 130px;
+  padding: 5px;
+  border: 1px solid transparent;
+  background-color: var(--white);
+  border-radius: 4px;
+}
+
+.c10:hover {
+  border: 1px solid var(--link);
+}
+
+.c10 > svg {
+  margin: 20px;
+}
+
 .c9 {
-  width: 120px;
+  font-size: 1em;
+  font-family: IBM Plex Sans;
+  -webkit-letter-spacing: 1px;
+  -moz-letter-spacing: 1px;
+  -ms-letter-spacing: 1px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
 }
 
-.c11 {
-  width: 120px;
-}
-
-.c12 {
-  width: 120px;
+.c8 {
+  display: grid;
+  text-align: center;
+  justify-items: center;
 }
 
 .c4 {
@@ -16111,17 +16058,17 @@ Object {
   height: 30px;
 }
 
-.c13 {
+.c12 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c13 span {
+.c12 span {
   padding-right: 1px;
 }
 
-.c13 div {
+.c12 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -16132,14 +16079,16 @@ Object {
 .c7 {
   display: grid;
   list-style: none;
-  margin: 0px;
   padding: 0px;
-  -webkit-box-pack: space-around;
-  -webkit-justify-content: space-around;
-  -ms-flex-pack: space-around;
-  justify-content: space-around;
-  grid-template-columns: repeat(auto-fit,186px);
-  padding-top: 24px;
+  justify-self: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  justify-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit,minmax(160px,max-content));
+  grid-gap: 10px;
 }
 
 .c7 a,
@@ -16175,6 +16124,18 @@ Object {
 .c0 > * {
   max-height: 100%;
   overflow-y: scroll;
+}
+
+@media only screen and (min-width:736px) {
+  .c1 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c1 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -16227,7 +16188,7 @@ Object {
               />
             </h1>
             <p>
-              To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+              To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
             </p>
           </header>
           <ul
@@ -16239,12 +16200,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Desktop Chrome & Firefox
+              <span
+                class="c9"
+              >
+                Desktop
+                <br />
+                Chrome & Firefox
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c9"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -16335,7 +16301,7 @@ Object {
                   />
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Metamask
                 </span>
@@ -16347,12 +16313,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c11"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -16386,7 +16357,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Coinbase Wallet
                 </span>
@@ -16398,12 +16369,17 @@ Object {
               rel="noopener"
               target="_blank"
             >
-              <span>
-                Mobile iOS & Android
+              <span
+                class="c9"
+              >
+                Mobile
+                <br />
+                iOS & Android
               </span>
-              <div>
+              <div
+                class="c10"
+              >
                 <svg
-                  class="c12"
                   fill="none"
                   viewBox="0 0 120 120"
                 >
@@ -17719,7 +17695,7 @@ Object {
                   </defs>
                 </svg>
                 <span
-                  class="c10 "
+                  class="c11"
                 >
                   Opera
                 </span>
@@ -17727,14 +17703,14 @@ Object {
             </a>
           </ul>
           <footer
-            class="c13"
+            class="c12"
           >
             <span>
               Powered by
             </span>
             <svg
               alt="Unlock"
-              class="c14"
+              class="c13"
               viewBox="0 0 1200 256"
             >
               <title />
@@ -17753,10 +17729,10 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="sc-hSdWYo rRMtl"
+      class="sc-iAyFgw klCgPS"
     >
       <section
-        class="sc-iwsKbI gtsSOj"
+        class="sc-iwsKbI bXpKnQ"
       >
         <a
           class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -17776,35 +17752,40 @@ Object {
           
         </a>
         <header
-          class="sc-eNQAEJ bBtDfG"
+          class="sc-jKJlTe eMpNOD"
         >
           <h1
-            class="sc-hMqMXs iChWxV"
+            class="sc-eNQAEJ jnRrEy"
           >
             <img
-              class="sc-kEYyzF jNhvDd"
+              class="sc-hMqMXs dqqMEh"
               src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTQiPg0KICA8cGF0aCBkPSJNMTEzLjMgMTguMmMwLTUuOC4xLTExLjIuNC0xNi4yTDk4LjQgNC45djEuNGwxLjUuMmMxLjEuMSAxLjguNSAyLjIgMS4xLjQuNy43IDEuNy45IDMuMi4yIDIuOS40IDkuNS4zIDE5LjkgMCAxMC4zLS4xIDE2LjgtLjMgMTkuMyA1LjUgMS4yIDkuOCAxLjcgMTMgMS43IDYgMCAxMC43LTEuNyAxNC4xLTUuMiAzLjQtMy40IDUuMi04LjIgNS4yLTE0LjEgMC00LjctMS4zLTguNi0zLjktMTEuNy0yLjYtMy4xLTUuOS00LjYtOS44LTQuNi0yLjYgMC01LjMuNy04LjMgMi4xem0uMyAzMC44Yy0uMi0zLjItLjQtMTIuOC0uNC0yOC41LjktLjMgMi4xLS41IDMuNi0uNSAyLjQgMCA0LjMgMS4yIDUuNyAzLjcgMS40IDIuNSAyLjEgNS41IDIuMSA5LjMgMCA0LjctLjggOC41LTIuNCAxMS43LTEuNiAzLjEtMy42IDQuNy02LjEgNC43LS44LS4yLTEuNi0uMy0yLjUtLjR6TTQxIDNIMXYybDIuMS4yYzEuNi4zIDIuNy45IDMuNCAxLjguNyAxIDEuMSAyLjYgMS4yIDQuOC44IDEwLjguOCAyMC45IDAgMzAuMi0uMiAyLjItLjYgMy44LTEuMiA0LjgtLjcgMS0xLjggMS42LTMuNCAxLjhsLTIuMS4zdjJoMjUuOHYtMmwtMi43LS4yYy0xLjYtLjItMi43LS45LTMuNC0xLjgtLjctMS0xLjEtMi42LTEuMi00LjgtLjMtNC0uNS04LjYtLjUtMTMuN2w1LjQuMWMyLjkuMSA0LjkgMi4zIDUuOSA2LjdoMlYxOC45aC0yYy0xIDQuMy0yLjkgNi41LTUuOSA2LjZsLTUuNC4xYzAtOSAuMi0xNS40LjUtMTkuM2g3LjljNS42IDAgOS40IDMuNiAxMS42IDEwLjhsMi40LS43TDQxIDN6bS00LjcgMzAuOGMwIDUuMiAxLjUgOS41IDQuNCAxMi45IDIuOSAzLjQgNy4yIDUgMTIuNiA1czkuOC0xLjcgMTMtNS4yYzMuMi0zLjQgNC43LTcuNyA0LjctMTIuOXMtMS41LTkuNS00LjQtMTIuOWMtMi45LTMuNC03LjItNS0xMi42LTVzLTkuOCAxLjctMTMgNS4yYy0zLjIgMy40LTQuNyA3LjctNC43IDEyLjl6bTIyLjMtMTEuNGMxLjIgMi45IDEuNyA2LjcgMS43IDExLjMgMCAxMC42LTIuMiAxNS44LTYuNSAxNS44LTIuMiAwLTMuOS0xLjUtNS4xLTQuNS0xLjItMy0xLjctNi44LTEuNy0xMS4zQzQ3IDIzLjIgNDkuMiAxOCA1My41IDE4YzIuMi0uMSAzLjkgMS40IDUuMSA0LjR6bTg0LjUgMjQuM2MzLjMgMy4zIDcuNSA1IDEyLjUgNSAzLjEgMCA1LjgtLjYgOC4yLTEuOSAyLjQtMS4yIDQuMy0yLjcgNS42LTQuNWwtMS0xLjJjLTIuMiAxLjctNC43IDIuNS03LjYgMi41LTQgMC03LjEtMS4zLTkuMi00LTIuMi0yLjctMy4yLTYuMS0zLTEwLjVIMTcwYzAtNC44LTEuMi04LjctMy43LTExLjgtMi41LTMtNi00LjUtMTAuNS00LjUtNS42IDAtOS45IDEuOC0xMyA1LjMtMy4xIDMuNS00LjYgNy44LTQuNiAxMi45IDAgNS4yIDEuNiA5LjQgNC45IDEyLjd6bTcuNC0yNS4xYzEuMS0yLjQgMi41LTMuNiA0LjQtMy42IDMgMCA0LjUgMy44IDQuNSAxMS41bC0xMC42LjJjLjEtMyAuNi01LjcgMS43LTguMXptNDYuNC00Yy0yLjctMS4yLTYuMS0xLjktMTAuMi0xLjktNC4yIDAtNy41IDEuMS0xMCAzLjJzLTMuOCA0LjctMy44IDcuOGMwIDIuNy44IDQuOCAyLjMgNi4zIDEuNSAxLjUgMy45IDIuOCA3IDMuOSAyLjggMSA0LjggMiA1LjggMi45IDEgMSAxLjYgMi4xIDEuNiAzLjYgMCAxLjQtLjUgMi43LTEuNiAzLjctMSAxLjEtMi40IDEuNi00LjIgMS42LTQuNCAwLTcuNy0zLjItMTAtOS42bC0xLjcuNS40IDEwYzMuNiAxLjQgNy42IDIuMSAxMiAyLjEgNC42IDAgOC4xLTEgMTAuNy0zLjEgMi42LTIgMy45LTQuOSAzLjktOC41IDAtMi40LS42LTQuNC0xLjktNS45LTEuMy0xLjUtMy40LTIuOC02LjQtNC0zLjMtMS4yLTUuNi0yLjMtNi44LTMuMy0xLjItMS0xLjgtMi4yLTEuOC0zLjdzLjQtMi43IDEuMy0zLjcgMi0xLjQgMy40LTEuNGM0IDAgNi45IDIuOSA4LjcgOC42bDEuNy0uNS0uNC04LjZ6bS05Ni4yLS45Yy0xLjQtLjctMi45LTEtNC42LTEtMS43IDAtMy40LjctNS4zIDIuMS0xLjkgMS40LTMuMyAzLjMtNC40IDUuOWwuMS04LTE1LjIgM3YxLjRsMS41LjFjMS45LjIgMyAxLjcgMy4yIDQuNC42IDYuMi42IDEyLjggMCAxOS44LS4yIDIuNy0xLjMgNC4xLTMuMiA0LjRsLTEuNS4ydjEuOWgyMS4yVjQ5bC0yLjctLjJjLTEuOS0uMi0zLTEuNy0zLjItNC40LS42LTUuOC0uNy0xMi0uMi0xOC40LjYtMSAxLjktMS42IDMuOS0xLjggMi0uMiA0LjMuNCA2LjcgMS44bDMuNy05LjN6Ij48L3BhdGg+DQo8L3N2Zz4="
             />
           </h1>
           <p>
-            To buy a key you'll need to use a crypto-enabled browser that has a wallet. Here are a few options:
+            To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.
           </p>
         </header>
         <ul
-          class="sc-iAyFgw etnhSY"
+          class="sc-kkGfuU dXMQCM"
         >
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://metamask.io/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Desktop Chrome & Firefox
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Desktop
+              <br />
+              Chrome & Firefox
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-dxgOiQ hZenca"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -17895,24 +17876,29 @@ Object {
                 />
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Metamask
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://wallet.coinbase.com/"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-ckVGcZ cokGCr"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -17946,24 +17932,29 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Coinbase Wallet
               </span>
             </div>
           </a>
           <a
-            class="sc-kpOJdX gNsbNX"
+            class="sc-ckVGcZ kdtbVN"
             href="https://www.opera.com/crypto"
             rel="noopener"
             target="_blank"
           >
-            <span>
-              Mobile iOS & Android
+            <span
+              class="sc-dxgOiQ hcJqDa"
+            >
+              Mobile
+              <br />
+              iOS & Android
             </span>
-            <div>
+            <div
+              class="sc-kpOJdX hglwz"
+            >
               <svg
-                class="sc-jKJlTe bBXYau"
                 fill="none"
                 viewBox="0 0 120 120"
               >
@@ -19279,7 +19270,7 @@ Object {
                 </defs>
               </svg>
               <span
-                class="sc-kGXeez eIIwaK"
+                class="sc-kGXeez fxtgeu"
               >
                 Opera
               </span>
@@ -19287,7 +19278,7 @@ Object {
           </a>
         </ul>
         <footer
-          class="sc-kkGfuU lbOCAu"
+          class="sc-kEYyzF btURsd"
         >
           <span>
             Powered by
@@ -19328,41 +19319,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -19401,6 +19384,7 @@ Object {
 .c8 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -19408,6 +19392,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c10 {
@@ -19528,7 +19513,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -19554,7 +19538,7 @@ Object {
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
-  width: 280px;
+  width: 100%;
   height: 60px;
 }
 
@@ -19653,6 +19637,18 @@ Object {
 .c6 > div > p {
   margin-top: 0;
   font-size: 20px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -19813,7 +19809,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -19851,7 +19847,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -19897,7 +19893,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-gZMcBi sc-gqjmRU jJKIqv"
+            class="sc-gZMcBi sc-gqjmRU fRdfpf"
           >
             Continue
           </button>
@@ -19944,41 +19940,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -20017,6 +20005,7 @@ Object {
 .c8 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -20024,6 +20013,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c10 {
@@ -20144,7 +20134,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -20170,7 +20159,7 @@ Object {
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
-  width: 280px;
+  width: 100%;
   height: 60px;
 }
 
@@ -20269,6 +20258,18 @@ Object {
 .c6 > div > p {
   margin-top: 0;
   font-size: 20px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -20425,7 +20426,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -20463,7 +20464,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -20505,7 +20506,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-gZMcBi sc-gqjmRU jJKIqv"
+            class="sc-gZMcBi sc-gqjmRU fRdfpf"
           >
             Continue
           </button>
@@ -20552,41 +20553,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -20625,6 +20618,7 @@ Object {
 .c8 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -20632,6 +20626,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c10 {
@@ -20752,7 +20747,6 @@ Object {
 }
 
 .c0 {
-  max-width: 800px;
   padding: 10px 40px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -20778,7 +20772,7 @@ Object {
   outline: none;
   -webkit-transition: background-color 200ms ease;
   transition: background-color 200ms ease;
-  width: 280px;
+  width: 100%;
   height: 60px;
 }
 
@@ -20877,6 +20871,18 @@ Object {
 .c6 > div > p {
   margin-top: 0;
   font-size: 20px;
+}
+
+@media only screen and (min-width:736px) {
+  .c0 {
+    width: 600px;
+  }
+}
+
+@media only screen and (min-width:257px) and (max-width:736px) {
+  .c0 {
+    width: 100%;
+  }
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
@@ -21033,7 +21039,7 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iwsKbI gtsSOj"
+      class="sc-iwsKbI bXpKnQ"
     >
       <a
         class="is925m-0 bYsUmJ sc-dnqmqq hlAVVM closeButton"
@@ -21071,7 +21077,7 @@ Object {
         class="sc-chPdSV cmNFso"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x456"
         >
           <header
@@ -21113,7 +21119,7 @@ Object {
             You'll see the status of your order on the left.
           </p>
           <button
-            class="sc-gZMcBi sc-gqjmRU jJKIqv"
+            class="sc-gZMcBi sc-gqjmRU fRdfpf"
           >
             Continue
           </button>
@@ -21160,41 +21166,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -21278,41 +21276,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -21915,41 +21905,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -22105,41 +22087,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -22267,41 +22241,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -22899,41 +22865,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -23647,41 +23605,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -23948,41 +23898,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -24138,41 +24080,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -24203,6 +24137,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -24210,6 +24145,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -24346,7 +24282,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x123"
           disabled=""
         >
@@ -24408,41 +24344,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -24473,6 +24401,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -24480,6 +24409,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -24616,7 +24546,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x123"
           disabled=""
         >
@@ -24678,41 +24608,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -24743,6 +24665,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -24750,6 +24673,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -24886,7 +24810,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x123"
           disabled=""
         >
@@ -24948,41 +24872,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -25013,6 +24929,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -25020,6 +24937,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: not-allowed;
 }
 
@@ -25156,7 +25074,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 ccttpN lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 gwwDnY lock"
           data-address="0x123"
           disabled=""
         >
@@ -25218,41 +25136,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -25283,6 +25193,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -25290,6 +25201,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -25427,7 +25339,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -25486,41 +25398,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -25551,6 +25455,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -25558,6 +25463,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -25695,7 +25601,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -25754,41 +25660,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -25801,6 +25699,7 @@ Object {
     .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -25808,6 +25707,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -25995,7 +25895,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -26058,41 +25958,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -26176,6 +26068,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -26183,6 +26076,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -26487,7 +26381,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -26580,41 +26474,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -26627,6 +26513,7 @@ Object {
     .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -26634,6 +26521,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -26821,7 +26709,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -26884,41 +26772,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -27002,6 +26882,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -27009,6 +26890,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -27313,7 +27195,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -27406,41 +27288,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -27453,6 +27327,7 @@ Object {
     .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -27460,6 +27335,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -27643,7 +27519,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -27702,41 +27578,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -27749,6 +27617,7 @@ Object {
     .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -27756,6 +27625,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
 }
 
 .c3 {
@@ -27939,7 +27809,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 uyDPU lock"
+          class="sc-1549ebs-0 dNfSih lock"
           data-address="0x123"
         >
           <header
@@ -27998,41 +27868,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -28063,6 +27925,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -28070,6 +27933,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -28207,7 +28071,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -28266,41 +28130,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -28331,6 +28187,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -28338,6 +28195,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -28475,7 +28333,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -28534,41 +28392,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -28599,6 +28449,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -28606,6 +28457,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -28743,7 +28595,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -28802,41 +28654,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -28867,6 +28711,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -28874,6 +28719,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -29011,7 +28857,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -29070,41 +28916,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -29135,6 +28973,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -29142,6 +28981,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -29279,7 +29119,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -29338,41 +29178,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -29403,6 +29235,7 @@ Object {
 .c1 {
   display: grid;
   justify-items: stretch;
+  justify-self: center;
   margin: 0px;
   padding: 0px;
   font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
@@ -29410,6 +29243,7 @@ Object {
   grid-gap: 8px;
   background-clip: padding-box;
   grid-template-rows: 1fr 140px;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -29547,7 +29381,7 @@ Object {
         style="height: 200px; display: grid;"
       >
         <li
-          class="sc-1549ebs-0 sc-5sgq84-0 gdICwj lock"
+          class="sc-1549ebs-0 sc-5sgq84-0 dicuUm lock"
           data-address="0x123"
         >
           <header
@@ -29606,41 +29440,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -30238,41 +30064,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -34746,41 +34564,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }
@@ -35089,41 +34899,33 @@ Object {
   "getAllByLabelText": [Function],
   "getAllByPlaceholderText": [Function],
   "getAllByRole": [Function],
-  "getAllBySelectText": [Function],
   "getAllByTestId": [Function],
   "getAllByText": [Function],
   "getAllByTitle": [Function],
-  "getAllByValue": [Function],
   "getByAltText": [Function],
   "getByDisplayValue": [Function],
   "getByLabelText": [Function],
   "getByPlaceholderText": [Function],
   "getByRole": [Function],
-  "getBySelectText": [Function],
   "getByTestId": [Function],
   "getByText": [Function],
   "getByTitle": [Function],
-  "getByValue": [Function],
   "queryAllByAltText": [Function],
   "queryAllByDisplayValue": [Function],
   "queryAllByLabelText": [Function],
   "queryAllByPlaceholderText": [Function],
   "queryAllByRole": [Function],
-  "queryAllBySelectText": [Function],
   "queryAllByTestId": [Function],
   "queryAllByText": [Function],
   "queryAllByTitle": [Function],
-  "queryAllByValue": [Function],
   "queryByAltText": [Function],
   "queryByDisplayValue": [Function],
   "queryByLabelText": [Function],
   "queryByPlaceholderText": [Function],
   "queryByRole": [Function],
-  "queryBySelectText": [Function],
   "queryByTestId": [Function],
   "queryByText": [Function],
   "queryByTitle": [Function],
-  "queryByValue": [Function],
   "rerender": [Function],
   "unmount": [Function],
 }

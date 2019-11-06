@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { act } from 'react-dom/test-utils'
-import * as rtl from 'react-testing-library'
+import * as rtl from '@testing-library/react'
 import { EventEmitter } from 'events'
 import CheckoutContent from '../../../components/content/CheckoutContent'
 import { ConfigContext } from '../../../utils/withConfig'

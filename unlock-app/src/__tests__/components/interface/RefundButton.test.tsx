@@ -32,6 +32,8 @@ describe('RefundButton', () => {
 
     const { getByText, findByText } = rtl.render(
       <RefundButton
+        timestamp="0"
+        signature="sig"
         accountAddress="0xdeadbeef"
         lockAddress="0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5"
         config={config}
@@ -44,7 +46,6 @@ describe('RefundButton', () => {
 
     expect(refundFunction).toHaveBeenCalledWith('0xdeadbeef', {
       gasLimit: 600000,
-      gasPrice: 20000000000,
     })
 
     // Button text changes after click
@@ -56,6 +57,8 @@ describe('RefundButton', () => {
 
     const { container } = rtl.render(
       <RefundButton
+        timestamp="0"
+        signature="sig"
         accountAddress="0xdeadbeef"
         lockAddress="0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2"
         config={config}
