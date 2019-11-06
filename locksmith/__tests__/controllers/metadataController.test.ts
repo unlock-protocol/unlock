@@ -95,11 +95,89 @@ jest.mock('../../src/utils/lockData', () => {
   }
 })
 
+const mockKeyHoldersByLock = {
+  getKeyHoldingAddresses: jest.fn(() => {
+    return Promise.resolve(['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'])
+  }),
+}
+
+jest.mock('../../src/graphql/datasource/keyholdersByLock', () => ({
+  __esModule: true,
+  KeyHoldersByLock: jest.fn(() => {
+    return mockKeyHoldersByLock
+  }),
+}))
+
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
     mockOnChainLockOwnership.owner = jest.fn(() => {
       return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
+    })
+  })
+
+  describe('requesting key holder metadata', () => {
+    beforeAll(async () => {
+      await addMetadata({
+        tokenAddress: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+        userAddress: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+        data: {
+          protected: {
+            hidden: 'metadata',
+          },
+          public: {
+            mock: 'values',
+          },
+        },
+      })
+    })
+
+    describe('when the lock owner makes a signed request', () => {
+      it('returns the metadata', async () => {
+        expect.assertions(2)
+
+        const typedData = generateTypedData({
+          LockMetaData: {
+            address: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
+            owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+            timestamp: Date.now(),
+          },
+        })
+
+        const sig = sigUtil.signTypedData(privateKey, {
+          data: typedData,
+          from: '',
+        })
+
+        const response = await request(app)
+          .get(
+            '/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/keyHolderMetadata'
+          )
+          .set('Authorization', `Bearer ${Base64.encode(sig)}`)
+          .set('Accept', 'json')
+          .send(typedData)
+
+        const { userMetadata } = response.body[0].data
+
+        expect(response.status).toBe(200)
+        expect(userMetadata).toEqual({
+          protected: { hidden: 'metadata' },
+          public: { mock: 'values' },
+        })
+      })
+    })
+
+    describe('when an unsigned request is received', () => {
+      it('returns unauthorized', async () => {
+        expect.assertions(1)
+        const response = await request(app)
+          .get(
+            '/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/keyHolderMetadata'
+          )
+          .set('Accept', 'json')
+
+        expect(response.status).toBe(401)
+      })
     })
   })
 
@@ -240,7 +318,7 @@ describe('Metadata Controller', () => {
               .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
               .set('Authorization', `Bearer ${Base64.encode(sig)}`)
               .set('Accept', 'json')
-              .query({ data: JSON.stringify(typedData) })
+              .query({ data: encodeURIComponent(JSON.stringify(typedData)) })
 
             expect(response.status).toBe(200)
             expect(response.body).toEqual(
