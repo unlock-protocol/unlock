@@ -29,11 +29,7 @@ interface Props {
   lockAddresses: string[]
 }
 
-export const KeyMetadataContent = ({
-  account,
-  network,
-  lockAddresses,
-}: Props) => {
+export const MembersContent = ({ account, network, lockAddresses }: Props) => {
   return (
     <Layout title="Members">
       <Head>
@@ -110,4 +106,4 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
   }
 }
 
-export default connect(mapStateToProps)(KeyMetadataContent)
+export default connect(mapStateToProps)(MembersContent)

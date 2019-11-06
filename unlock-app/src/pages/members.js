@@ -1,6 +1,6 @@
 import React from 'react'
-import KeyMetadataContent from '../components/content/KeyMetadataContent'
+import MembersContent from '../components/content/MembersContent'
 
-const KeyMetadata = () => <KeyMetadataContent />
+const Members = () => <MembersContent />
 
-export default KeyMetadata
+export default Members
