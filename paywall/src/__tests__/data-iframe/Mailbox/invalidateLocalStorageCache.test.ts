@@ -70,6 +70,7 @@ describe('Mailbox - invalidateLocalStorageCache', () => {
         pending: '',
         expired: '',
         confirmed: '',
+        noWallet: '',
       },
     }
   }

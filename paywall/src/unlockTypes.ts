@@ -63,6 +63,7 @@ export interface PaywallCallToAction {
   expired: string
   pending: string
   confirmed: string
+  noWallet: string
 }
 
 export interface PaywallConfigLocks {

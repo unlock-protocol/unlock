@@ -21,6 +21,7 @@ describe('MainWindowHandler - init', () => {
       pending: '',
       expired: '',
       confirmed: '',
+      noWallet: '',
     },
   }
 

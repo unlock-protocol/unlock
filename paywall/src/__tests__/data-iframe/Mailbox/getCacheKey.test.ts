@@ -87,6 +87,7 @@ describe('Mailbox - getCacheKey', () => {
           pending: '',
           expired: '',
           confirmed: '',
+          noWallet: '',
         },
       }
     })
@@ -117,6 +118,7 @@ describe('Mailbox - getCacheKey', () => {
           pending: '',
           expired: '',
           confirmed: '',
+          noWallet: '',
         },
       }
 

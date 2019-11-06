@@ -11,14 +11,14 @@ interface Props {
 }
 
 export const NoWallet = ({ config }: Props) => {
+  const callToAction =
+    config.callToAction.noWallet ||
+    'To buy a key you&apos;ll need to use a crypto-enabled browser that has a wallet. Here are a few options.'
   return (
     <>
       <Header>
         <Title>{config.icon && <Logo src={config.icon} />}</Title>
-        <p>
-          To buy a key you&apos;ll need to use a crypto-enabled browser that has
-          a wallet. Here are a few options:
-        </p>
+        <p>{callToAction}</p>
       </Header>
       <WalletOptions>
         <WalletDescription
@@ -26,33 +26,47 @@ export const NoWallet = ({ config }: Props) => {
           target="_blank"
           rel="noopener"
         >
-          <span>Desktop Chrome &amp; Firefox</span>
-          <div>
-            <Metamask />
+          <Platform>
+            Desktop
+            <br />
+            Chrome &amp; Firefox
+          </Platform>
+          <WalletOption>
+            <Svg.Metamask />
             <Caption>Metamask</Caption>
-          </div>
+          </WalletOption>
         </WalletDescription>
+
         <WalletDescription
           href="https://wallet.coinbase.com/"
           target="_blank"
           rel="noopener"
         >
-          <span>Mobile iOS &amp; Android</span>
-          <div>
-            <CoinbaseWallet />
+          <Platform>
+            Mobile
+            <br />
+            iOS &amp; Android
+          </Platform>
+          <WalletOption>
+            <Svg.CoinbaseWallet />
             <Caption>Coinbase Wallet</Caption>
-          </div>
+          </WalletOption>
         </WalletDescription>
+
         <WalletDescription
           href="https://www.opera.com/crypto"
           target="_blank"
           rel="noopener"
         >
-          <span>Mobile iOS &amp; Android</span>
-          <div>
-            <Opera />
+          <Platform>
+            Mobile
+            <br />
+            iOS &amp; Android
+          </Platform>
+          <WalletOption>
+            <Svg.Opera />
             <Caption>Opera</Caption>
-          </div>
+          </WalletOption>
         </WalletDescription>
       </WalletOptions>
       <Footer>
@@ -71,69 +85,51 @@ const NoWalletWordMark = styled(WordMarkLogo)`
   margin-left: 1px;
 `
 
-const Caption = styled.span``
+const Caption = styled.span`
+  text-transform: none;
+  font-family: IBM Plex Sans, sans serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0;
+  text-align: center;
+  color: var(--link);
+`
 
-const WalletDescription = styled.a`
-  display: flex;
-  flex-direction: column;
-  height: 210px;
-
-  & span {
-    font-family: IBM Plex Sans;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 8px;
-    line-height: 10px;
-    text-align: center;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding-bottom: 8px;
-    width: 160px;
-  }
-  & div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 160px;
-    height: 192px;
-    background-color: var(--white);
-    border-radius: 4px;
-    padding-bottom: 13px;
-    & svg {
-      padding-top: 20px;
-    }
-  }
-  & div:hover {
+const WalletOption = styled.div`
+  max-width: 130px;
+  padding: 5px;
+  border: 1px solid transparent;
+  background-color: var(--white);
+  border-radius: 4px;
+  :hover {
     border: 1px solid var(--link);
   }
-  & div ${Caption} {
-    text-transform: none;
-    font-family: IBM Plex Sans, sans serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 15px;
-    letter-spacing: 0;
-    color: var(--link);
+
+  > svg {
+    margin: 20px;
   }
+`
+
+const Platform = styled.span`
+  font-size: 1em;
+  font-family: IBM Plex Sans;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+`
+
+const WalletDescription = styled.a`
+  display: grid;
+  text-align: center;
+  justify-items: center;
+
   ${Media.phone`
     padding-top: 24px;
     & div {
       padding-bottom: 0;
     }
   `}
-`
-
-const Metamask = styled(Svg.Metamask)`
-  width: 120px;
-`
-
-const CoinbaseWallet = styled(Svg.CoinbaseWallet)`
-  width: 120px;
-`
-
-const Opera = styled(Svg.Opera)`
-  width: 120px;
 `
 
 const Header = styled.header`
@@ -174,11 +170,14 @@ const Footer = styled.footer`
 const WalletOptions = styled.ul`
   display: grid;
   list-style: none;
-  margin: 0px;
   padding: 0px;
-  justify-content: space-around;
-  grid-template-columns: repeat(auto-fit, 186px);
-  padding-top: 24px;
+  justify-self: center;
+  justify-content: center;
+  justify-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(160px, max-content));
+  grid-gap: 10px;
+
   & a,
   & a:visited {
     color: var(--mediumgrey);

@@ -56,6 +56,7 @@ describe('CheckoutUIHandler', () => {
       expired: 'hi',
       pending: 'hi',
       confirmed: 'hi',
+      noWallet: 'hi',
     },
   }
 
