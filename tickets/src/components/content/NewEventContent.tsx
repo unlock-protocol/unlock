@@ -27,6 +27,49 @@ enum PaywallStatus {
   Unknown = 'unknown',
 }
 
+interface EventContentBodyProps {
+  config: {
+    unlockAppUrl: string
+  }
+  event: any
+  paywallStatus: PaywallStatus
+}
+
+export const EventContentBody = ({
+  paywallStatus,
+  event,
+  config,
+}: EventContentBodyProps) => {
+  return (
+    <>
+      <EventInfo event={event} />
+      <Columns>
+        <Column>
+          <EventDescription body={event.description || ''} />
+          <EventLinks event={event} />
+        </Column>
+        <Column>
+          {paywallStatus === PaywallStatus.Locked && (
+            <PurchaseTicket
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  window.unlockProtocol &&
+                    window.unlockProtocol.loadCheckoutModal()
+                }
+              }}
+            />
+          )}
+          {paywallStatus === PaywallStatus.Unlocked && (
+            <PurchaseSuccess unlockAppUrl={config.unlockAppUrl} />
+          )}
+          {paywallStatus !== PaywallStatus.Unlocked &&
+            paywallStatus !== PaywallStatus.Locked && <p>Loading...</p>}
+        </Column>
+      </Columns>
+    </>
+  )
+}
+
 interface EventContentProps {
   lockAddress: string
   config: {
@@ -123,28 +166,11 @@ export class EventContent extends Component<
           <title>{pageTitle(event.name)}</title>
           <script src={this.paywallScriptUrl()} />
         </Head>
-        <EventInfo event={event} />
-        <Columns>
-          <Column>
-            <EventDescription body={event.description || ''} />
-            <EventLinks event={event} />
-          </Column>
-          <Column>
-            {paywallStatus === PaywallStatus.Locked && (
-              <PurchaseTicket
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.unlockProtocol &&
-                      window.unlockProtocol.loadCheckoutModal()
-                  }
-                }}
-              />
-            )}
-            {paywallStatus === PaywallStatus.Unlocked && (
-              <PurchaseSuccess unlockAppUrl={config.unlockAppUrl} />
-            )}
-          </Column>
-        </Columns>
+        <EventContentBody
+          paywallStatus={paywallStatus}
+          event={event}
+          config={config}
+        />
       </Layout>
     )
   }

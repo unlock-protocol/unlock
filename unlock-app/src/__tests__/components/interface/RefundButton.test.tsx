@@ -44,7 +44,6 @@ describe('RefundButton', () => {
 
     expect(refundFunction).toHaveBeenCalledWith('0xdeadbeef', {
       gasLimit: 600000,
-      gasPrice: 20000000000,
     })
 
     // Button text changes after click
