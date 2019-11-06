@@ -316,9 +316,9 @@ const storageMiddleware = config => {
         }
 
         if (action.type === SIGN_METADATA_RESPONSE) {
-          const { signature, keyIds, lockAddress } = action
+          const { signature, keyIds, lockAddress, data } = action
           keyIds.forEach(id => {
-            storageService.getMetadataFor(lockAddress, id, signature)
+            storageService.getMetadataFor(lockAddress, id, signature, data)
           })
         }
 

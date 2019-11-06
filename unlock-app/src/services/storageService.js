@@ -380,15 +380,13 @@ export class StorageService extends EventEmitter {
    * @param {string} lockAddress
    * @param {string} keyId
    * @param {*} signature
+   * @param {*} data
    */
-  async getMetadataFor(lockAddress, keyId, signature) {
-    const opts = {
-      headers: this.genAuthorizationHeader(signature),
-    }
+  async getMetadataFor(lockAddress, keyId, signature, data) {
+    const stringData = encodeURIComponent(JSON.stringify(data))
     try {
       const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/${keyId}`,
-        opts
+        `${this.host}/api/key/${lockAddress}/${keyId}?data=${stringData}&signature=${signature}`
       )
       const payload = {
         lockAddress,
