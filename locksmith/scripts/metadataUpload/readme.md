@@ -21,3 +21,6 @@ The format of the input file should match the examples in `sample_data/defaultKe
 
 **Update Token Specific Metadata**
 `ts-node ./scripts/metadataUpload/metadata_upload.ts --privateKey <private key> --lockAddress <lock address> --host https://locksmith.unlock-protocol.com --inputFile <location of metadata json> --scope token`
+
+**Update User Specific Metadata**
+`ts-node ./scripts/metadataUpload/user_metadata_upload.ts --privateKey <private key> --lockAddress <lock address> --host http://localhost:8080 --inputFile <location of metadata json>`
