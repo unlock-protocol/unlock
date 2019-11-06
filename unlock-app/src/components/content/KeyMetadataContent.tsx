@@ -11,6 +11,17 @@ import { pageTitle } from '../../constants'
 import { Account as AccountType, Network, Router } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import keyHolderQuery from '../../queries/keyholdersByLock'
+import { expirationAsDate } from '../../utils/durations'
+
+interface KeyMetadata {
+  // These 3 properties are always present -- they come down from the graph as
+  // strings
+  lockName: string
+  expiration: string
+  keyholderAddress: string
+  // Can have any other arbitrary properies, as long as the values are strings.
+  [key: string]: string
+}
 
 interface Props {
   account: AccountType
@@ -24,9 +35,9 @@ export const KeyMetadataContent = ({
   lockAddresses,
 }: Props) => {
   return (
-    <Layout title="Key Chain">
+    <Layout title="Members">
       <Head>
-        <title>{pageTitle('Key Chain')}</title>
+        <title>{pageTitle('Members')}</title>
       </Head>
       {account && (
         <BrowserOnly>
@@ -52,8 +63,23 @@ const GraphWrapper = ({ lockAddresses }: { lockAddresses: string[] }) => {
   }
 
   const columns = ['lockName', 'keyholderAddress', 'expiration']
+  let metadata: KeyMetadata[] = []
+  // TODO: types for all graph data -- grouped by query?
+  data.locks.forEach((lock: any) => {
+    lock.keys.forEach((key: any) => {
+      metadata.push({
+        lockName: lock.name,
+        expiration: expirationAsDate(parseInt(key.expiration)),
+        keyholderAddress: key.owner.address,
+      })
+    })
+  })
 
-  return <MetadataTable columns={columns} metadata={data} />
+  // TODO: get additional metadata from locksmith if it exists, for each key.
+  // We'll have to delay rendering until we retrieve all of it so the table
+  // doesn't jump.
+
+  return <MetadataTable columns={columns} metadata={metadata} />
 }
 
 interface ReduxState {
@@ -69,7 +95,13 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
   })
   let lockAddresses: string[] = []
   if (search.locks) {
-    lockAddresses = search.locks as any
+    // search.locks will be either a string or an array.
+    // when there is only one value, it's a string. For any more, it's an array.
+    if (typeof search.locks === 'string') {
+      lockAddresses.push(search.locks)
+    } else {
+      lockAddresses = search.locks as any
+    }
   }
   return {
     account,
