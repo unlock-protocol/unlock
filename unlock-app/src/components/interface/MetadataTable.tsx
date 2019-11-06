@@ -36,13 +36,13 @@ export function camelCaseToTitle(s: string): string {
 export const MetadataTable = ({ columns, metadata }: Props) => {
   return (
     <Table>
-      <Thead>
+      <thead>
         <tr>
           {columns.map(col => {
             return <Th key={col}>{camelCaseToTitle(col)}</Th>
           })}
         </tr>
-      </Thead>
+      </thead>
       <Tbody>
         {metadata.map(datum => {
           return (
@@ -65,16 +65,8 @@ const Table = styled.table`
   border-collapse: collapse;
 `
 
-const Thead = styled.thead`
-  background-color: var(--brand);
-  color: var(--white);
-`
-
 const Tbody = styled.tbody`
   color: var(--slate);
-  & > tr:nth-child(even) {
-    background-color: var(--lightgrey);
-  }
 `
 
 const Td = styled.td`
@@ -83,6 +75,15 @@ const Td = styled.td`
 `
 
 const Th = styled.th`
+  font-family: 'IBM Plex Mono';
+  font-size: 8px;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--darkgrey);
+  font-weight: 200;
   padding: 0.5rem;
   text-align: left;
 `
