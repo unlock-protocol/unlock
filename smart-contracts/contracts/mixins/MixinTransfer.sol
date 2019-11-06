@@ -157,6 +157,8 @@ contract MixinTransfer is
    * transfer the key to another account.  This is pro-rated so the fee goes down
    * overtime.
    * @param _owner The owner of the key check the transfer fee for.
+   * @param _time The amount of time to calculate the fee for.
+   * "0" means use all the time remaining on the key for the calculation.
    */
   function getTransferFee(
     address _owner,
@@ -169,7 +171,7 @@ contract MixinTransfer is
     Key storage key = keyByOwner[_owner];
     uint timeToTransfer;
     uint fee;
-    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
+    // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
     // this is for standard key transfers
     if(_time == 0) {
       timeToTransfer = key.expirationTimestamp - block.timestamp;
