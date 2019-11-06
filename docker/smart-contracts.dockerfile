@@ -1,9 +1,10 @@
 FROM unlock-core
 
+# Create a .git directory for codechecks integration
+RUN sh -c 'touch /home/unlock/.git/.keep'
+
 # Dependencies for smart-contracts
 RUN mkdir /home/unlock/smart-contracts
-# Copy the .git directory for codechecks integration
-COPY --chown=node .git/* /home/unlock/.git/
 COPY --chown=node smart-contracts/package-lock.json /home/unlock/smart-contracts/.
 COPY --chown=node smart-contracts/package.json /home/unlock/smart-contracts/.
 WORKDIR /home/unlock/smart-contracts
