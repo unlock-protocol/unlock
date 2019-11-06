@@ -30,6 +30,7 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
+import { SIGN_METADATA_RESPONSE, gotMetadata } from '../actions/keyMetadata'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -181,6 +182,17 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
 
+    // Key metadata
+    storageService.on(success.getMetadataFor, result => {
+      const { lockAddress, data, keyId } = result
+      dispatch(gotMetadata(lockAddress, keyId, data))
+    })
+    storageService.on(failure.getMetadataFor, () => {
+      dispatch(
+        setError(Storage.Diagnostic('Could not retrieve some key metadata.'))
+      )
+    })
+
     const { router } = getState()
     if (router && router.location && router.location.pathname === '/recover/') {
       // Let's get the user's recovery key from locksmith
@@ -301,6 +313,13 @@ const storageMiddleware = config => {
         if (action.type === ADD_TO_CART) {
           const { lock } = action
           storageService.getKeyPrice(lock.address)
+        }
+
+        if (action.type === SIGN_METADATA_RESPONSE) {
+          const { signature, keyIds, lockAddress } = action
+          keyIds.forEach(id => {
+            storageService.getMetadataFor(lockAddress, id, signature)
+          })
         }
 
         next(action)
