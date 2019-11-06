@@ -684,16 +684,14 @@ describe('Wallet middleware', () => {
   })
 
   describe('SIGN_METADATA_REQUEST', () => {
-    const lockToKeyMap = {
-      '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267': ['1', '13'],
-    }
+    const keyIds = ['1', '13']
 
     const action = {
       type: SIGN_METADATA_REQUEST,
       address: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
       owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       timestamp: 1234567890,
-      keyIds: ['1', '13'],
+      keyIds,
     }
 
     const expectedTypedData = expect.objectContaining({
@@ -733,8 +731,8 @@ describe('Wallet middleware', () => {
         type: SIGN_METADATA_RESPONSE,
         data: expectedTypedData,
         signature: 'a signature',
+        keyIds,
         lockAddress: action.address,
-        keyIds: action.keyIds,
       })
     })
 
