@@ -8,27 +8,27 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import { Account as AccountType, Network, Router } from '../../unlockTypes'
+import {
+  Account as AccountType,
+  Network,
+  Router,
+  ReduxMetadata,
+  KeyholdersByLock,
+} from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import keyHolderQuery from '../../queries/keyholdersByLock'
-import { expirationAsDate } from '../../utils/durations'
 import { signMetadataRequest } from '../../actions/keyMetadata'
-
-interface KeyMetadata {
-  // These 3 properties are always present -- they come down from the graph as
-  // strings
-  lockName: string
-  expiration: string
-  keyholderAddress: string
-  // Can have any other arbitrary properies, as long as the values are strings.
-  [key: string]: string
-}
+import {
+  mergeKeyholderMetadata,
+  generateColumns,
+} from '../../utils/metadataMunging'
 
 interface Props {
   account: AccountType
   network: Network
   lockAddresses: string[]
   signMetadataRequest: typeof signMetadataRequest
+  metadata: ReduxMetadata
 }
 
 export const MembersContent = ({
@@ -36,6 +36,7 @@ export const MembersContent = ({
   network,
   lockAddresses,
   signMetadataRequest,
+  metadata,
 }: Props) => {
   return (
     <Layout title="Members">
@@ -49,6 +50,7 @@ export const MembersContent = ({
             lockAddresses={lockAddresses}
             signMetadataRequest={signMetadataRequest}
             accountAddress={account.address}
+            storedMetadata={metadata}
           />
         </BrowserOnly>
       )}
@@ -60,6 +62,7 @@ interface MetadataTableWrapperProps {
   lockAddresses: string[]
   signMetadataRequest: typeof signMetadataRequest
   accountAddress: string
+  storedMetadata: ReduxMetadata
 }
 /**
  * This just wraps the metadataTable component, providing the data
@@ -70,6 +73,7 @@ const MetadataTableWrapper = ({
   lockAddresses,
   signMetadataRequest,
   accountAddress,
+  storedMetadata,
 }: MetadataTableWrapperProps) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { addresses: lockAddresses },
@@ -78,8 +82,8 @@ const MetadataTableWrapper = ({
   useEffect(() => {
     // Dispatch request for key metadata here, only when data changes
     if (data) {
-      data.locks.forEach((lock: any) => {
-        const keyIds = lock.keys.map((key: any) => key.keyId)
+      ;(data as KeyholdersByLock).locks.forEach(lock => {
+        const keyIds = lock.keys.map(key => key.keyId)
         signMetadataRequest(lock.address, accountAddress, keyIds)
       })
     }
@@ -93,22 +97,8 @@ const MetadataTableWrapper = ({
     return <span>An error occurred.</span>
   }
 
-  const columns = ['lockName', 'keyholderAddress', 'expiration']
-  let metadata: KeyMetadata[] = []
-  // TODO: types for all graph data -- grouped by query?
-  data.locks.forEach((lock: any) => {
-    lock.keys.forEach((key: any) => {
-      metadata.push({
-        lockName: lock.name,
-        expiration: expirationAsDate(parseInt(key.expiration)),
-        keyholderAddress: key.owner.address,
-      })
-    })
-  })
-
-  // TODO: get additional metadata from locksmith if it exists, for each key.
-  // We'll have to delay rendering until we retrieve all of it so the table
-  // doesn't jump.
+  const metadata = mergeKeyholderMetadata(data, storedMetadata)
+  const columns = generateColumns(metadata)
 
   return <MetadataTable columns={columns} metadata={metadata} />
 }
@@ -117,9 +107,15 @@ interface ReduxState {
   account: AccountType
   network: Network
   router: Router
+  metadata: ReduxMetadata
 }
 
-export const mapStateToProps = ({ account, network, router }: ReduxState) => {
+export const mapStateToProps = ({
+  account,
+  network,
+  router,
+  metadata,
+}: ReduxState) => {
   // URL formatted like: ?locks=address1,address2,address3
   const search = queryString.parse(router.location.search, {
     arrayFormat: 'comma',
@@ -138,6 +134,7 @@ export const mapStateToProps = ({ account, network, router }: ReduxState) => {
     account,
     network,
     lockAddresses,
+    metadata,
   }
 }
 
