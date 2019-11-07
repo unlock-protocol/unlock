@@ -53,7 +53,7 @@ contract MixinTransfer is
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_recipient];
-    uint id = fromkey.tokenId;
+    uint id = fromKey.tokenId;
 
     uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
