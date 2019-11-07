@@ -129,7 +129,20 @@ describe('metadata munging functions', () => {
                 keyId: '1',
                 expiration: '123456',
                 owner: {
-                  address: '0x123',
+                  address: '0x126',
+                },
+              },
+            ],
+          },
+          {
+            address: '0x124',
+            name: 'Dock',
+            keys: [
+              {
+                keyId: '1',
+                expiration: '123556',
+                owner: {
+                  address: '0x127',
                 },
               },
             ],
@@ -140,8 +153,13 @@ describe('metadata munging functions', () => {
       expect(mergeKeyholderMetadata(data, {})).toEqual([
         {
           expiration: 'Expired',
-          keyholderAddress: '0x123',
+          keyholderAddress: '0x126',
           lockName: 'Lock',
+        },
+        {
+          expiration: 'Expired',
+          keyholderAddress: '0x127',
+          lockName: 'Dock',
         },
       ])
     })
