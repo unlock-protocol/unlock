@@ -373,7 +373,7 @@ export class StorageService extends EventEmitter {
       this.emit(failure.ejectUser, { publicKey })
     }
   }
-  
+
   /*
    * Given a lock address, a key ID, and a typed data signature, get
    * the metadata (public and protected) associated with that key.
