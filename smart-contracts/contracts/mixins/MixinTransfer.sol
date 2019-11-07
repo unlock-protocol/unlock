@@ -62,28 +62,30 @@ contract MixinTransfer is
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
-    require(_recipient != address(0), 'INVALID_ADDRESS');
+    require(_to != address(0), 'INVALID_ADDRESS');
 
     Key storage fromKey = keyByOwner[_from];
-    Key storage toKey = keyByOwner[_recipient];
+    Key storage toKey = keyByOwner[_to];
+    uint IdFrom = fromKey.tokenId;
+    uint IdTo = toKey.tokenId;
     // deduct time from parent key, including transfer fee
-    _timeMachine(_from, _timeShared, false)
+    _timeMachine(IdFrom, _timeShared, false);
 
     if (toKey.tokenId == 0) {
       _assignNewTokenId(toKey);
-      _recordOwner(_recipient, toKey.tokenId);
+      _recordOwner(_to, toKey.tokenId);
       // add time to new key
-      _timeMachine(_to, _timeShared, true)
+      _timeMachine(IdTo, _timeShared, true);
     } else {
       // add time to new key
-      _timeMachine(_to, _timeShared, true)
+      _timeMachine(IdTo, _timeShared, true);
     }
 
     // trigger event
       emit Transfer(
         address(0), // This is a creation.
-        recipient,
-        toKey.tokenId
+        _to,
+        IdTo
       );
   }
 
