@@ -20,6 +20,7 @@ import {
   WELCOME_EMAIL,
   gotEncryptedPrivateKeyPayload,
   SET_ENCRYPTED_PRIVATE_KEY,
+  SIGNED_ACCOUNT_EJECTION,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
 import Error from '../../utils/Error'
@@ -334,6 +335,32 @@ describe('Storage middleware', () => {
           message: 'Could not add payment method.',
         },
       })
+    })
+  })
+
+  describe('handling SIGNED_ACCOUNT_EJECTION', () => {
+    it('should call storageService to eject the user', () => {
+      expect.assertions(2)
+      const publicKey = '0x123'
+      const data = {
+        message: {
+          user: {
+            publicKey,
+          },
+        },
+      }
+      const sig = ''
+      const { next, invoke } = create()
+      const action = { type: SIGNED_ACCOUNT_EJECTION, data, sig }
+      mockStorageService.ejectUser = jest.fn()
+
+      invoke(action)
+      expect(mockStorageService.ejectUser).toHaveBeenCalledWith(
+        publicKey,
+        data,
+        sig
+      )
+      expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
