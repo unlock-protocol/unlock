@@ -27,6 +27,7 @@ import Error from '../../utils/Error'
 import { setError, SET_ERROR } from '../../actions/error'
 import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 import UnlockUser from '../../structured_data/unlockUser'
+import { GOT_METADATA } from '../../actions/keyMetadata'
 
 jest.mock('@unlock-protocol/unlock-js')
 
@@ -769,6 +770,47 @@ describe('Storage middleware', () => {
           1,
           setError(Storage.Warning('Could not initiate account recovery.'))
         )
+      })
+    })
+  })
+
+  describe('Key metadata', () => {
+    const lockAddress = 'an address'
+    const data = 'some data'
+    const keyId = '1'
+    it('should dispatch a message when a request succeeds', () => {
+      expect.assertions(1)
+
+      const { store } = create()
+
+      mockStorageService.emit(success.getMetadataFor, {
+        lockAddress,
+        data,
+        keyId,
+      })
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: GOT_METADATA,
+        lockAddress,
+        data,
+        keyId,
+      })
+    })
+
+    it('should dispatch an error when a request fails', () => {
+      expect.assertions(1)
+
+      const { store } = create()
+
+      mockStorageService.emit(failure.getMetadataFor, 'something broke')
+
+      expect(store.dispatch).toHaveBeenCalledWith({
+        type: SET_ERROR,
+        error: {
+          kind: 'Storage',
+          level: 'Diagnostic',
+          message: 'Could not retrieve some key metadata.',
+        },
       })
     })
   })
