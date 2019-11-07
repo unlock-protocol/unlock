@@ -45,7 +45,7 @@ export const MembersContent = ({
       {account && (
         <BrowserOnly>
           <Account network={network} account={account} />
-          <GraphWrapper
+          <MetadataTableWrapper
             lockAddresses={lockAddresses}
             signMetadataRequest={signMetadataRequest}
             accountAddress={account.address}
@@ -56,16 +56,21 @@ export const MembersContent = ({
   )
 }
 
-interface GraphWrapperProps {
+interface MetadataTableWrapperProps {
   lockAddresses: string[]
   signMetadataRequest: typeof signMetadataRequest
   accountAddress: string
 }
-const GraphWrapper = ({
+/**
+ * This just wraps the metadataTable component, providing the data
+ * from the graph so we can separate the data layer from the
+ * presentation layer.
+ */
+const MetadataTableWrapper = ({
   lockAddresses,
   signMetadataRequest,
   accountAddress,
-}: GraphWrapperProps) => {
+}: MetadataTableWrapperProps) => {
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { addresses: lockAddresses },
   })
