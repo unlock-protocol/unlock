@@ -23,6 +23,8 @@ export const SIGNED_PURCHASE_DATA = 'userCredentials/SIGNED_PURCHASE_DATA'
 export const GET_STORED_PAYMENT_DETAILS = 'userAccount/GET_PAYMENT_DETAILS'
 export const KEY_PURCHASE_INITIATED = 'userAccount/KEY_PURCHASE_INITIATED'
 export const QR_EMAIL = 'keychain/QR_EMAIL'
+export const SIGN_ACCOUNT_EJECTION = 'userAccount/SIGN_ACCOUNT_EJECTION'
+export const SIGNED_ACCOUNT_EJECTION = 'userAccount/SIGNED_ACCOUNT_EJECTION'
 
 export interface Credentials {
   emailAddress: string
@@ -139,6 +141,29 @@ export const signedUserData = ({ data, sig }: SignedUserData) => ({
 export const signPaymentData = (stripeTokenId: string) => ({
   type: SIGN_PAYMENT_DATA,
   stripeTokenId,
+})
+
+export const signAccountEjection = (userAddress: string) => ({
+  type: SIGN_ACCOUNT_EJECTION,
+  userAddress,
+})
+
+interface SignedAccountEjection {
+  data: {
+    message: {
+      publicKey: string
+    }
+  }
+  sig: any
+}
+
+export const signedAccountEjection = ({
+  data,
+  sig,
+}: SignedAccountEjection) => ({
+  type: SIGNED_ACCOUNT_EJECTION,
+  data,
+  sig,
 })
 
 interface SignedPaymentData {

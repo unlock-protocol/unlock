@@ -41,6 +41,10 @@ import {
   welcomeEmail,
   QR_EMAIL,
   qrEmail,
+  signAccountEjection,
+  SIGN_ACCOUNT_EJECTION,
+  signedAccountEjection,
+  SIGNED_ACCOUNT_EJECTION,
 } from '../../actions/user'
 
 const key = {
@@ -278,6 +282,41 @@ describe('user account actions', () => {
       }
 
       expect(signedPaymentData({ data, sig })).toEqual(expectedAction)
+    })
+
+    it('should create an action requesting a user ejection signing', () => {
+      expect.assertions(1)
+      const userAddress = '0x123'
+
+      const expectedAction = {
+        type: SIGN_ACCOUNT_EJECTION,
+        userAddress,
+      }
+
+      expect(signAccountEjection(userAddress)).toEqual(expectedAction)
+    })
+
+    it('should create an action indicating that a user ejection has been signed', () => {
+      expect.assertions(1)
+      const data = {
+        message: {
+          publicKey: '0x123',
+        },
+      }
+      const sig = 'signature'
+
+      const expectedAction = {
+        type: SIGNED_ACCOUNT_EJECTION,
+        data,
+        sig,
+      }
+
+      expect(
+        signedAccountEjection({
+          data,
+          sig,
+        })
+      ).toEqual(expectedAction)
     })
   })
 
