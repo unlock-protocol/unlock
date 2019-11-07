@@ -13,6 +13,7 @@ import {
   SIGN_USER_DATA,
   SIGN_PAYMENT_DATA,
   SIGN_PURCHASE_DATA,
+  SIGN_ACCOUNT_EJECTION,
   signUserData,
 } from '../../actions/user'
 import { resetRecoveryPhrase } from '../../actions/recovery'
@@ -27,6 +28,7 @@ const config = {
       signUserData: jest.fn(() => ({ data: {}, sig: {} })),
       signPaymentData: jest.fn(() => ({ data: {}, sig: {} })),
       signKeyPurchaseRequestData: jest.fn(() => ({ data: {}, sig: {} })),
+      generateSignedEjectionRequest: jest.fn(() => ({ data: {}, sig: {} })),
     },
     NUNLOCK: {
       enable: jest.fn(() => new Promise(resolve => resolve(true))),
@@ -245,6 +247,25 @@ describe('provider middleware', () => {
       })(next)({
         type: SIGN_PURCHASE_DATA,
         data,
+      })
+    })
+  })
+
+  describe('SIGN_ACCOUNT_EJECTION', () => {
+    it('should call UnlockProvider', () => {
+      expect.assertions(1)
+
+      const next = () => {
+        expect(
+          config.providers['UNLOCK'].generateSignedEjectionRequest
+        ).toHaveBeenCalledWith()
+      }
+
+      providerMiddleware(config)({
+        getState: () => ({ provider: 'UNLOCK' }),
+        dispatch,
+      })(next)({
+        type: SIGN_ACCOUNT_EJECTION,
       })
     })
   })
