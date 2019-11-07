@@ -8,11 +8,11 @@ import { addMetadata } from '../../src/operations/userMetadataOperations'
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
 
-let privateKey = ethJsUtil.toBuffer(
+const privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-let privateKey2 = ethJsUtil.toBuffer(
+const privateKey2 = ethJsUtil.toBuffer(
   '0xbbabdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
@@ -38,7 +38,7 @@ function generateTypedData(message: any) {
       version: '1',
     },
     primaryType: 'LockMetadata',
-    message: message,
+    message,
   }
 }
 
@@ -59,7 +59,7 @@ function generateKeyTypedData(message: any) {
       version: '1',
     },
     primaryType: 'KeyMetadata',
-    message: message,
+    message,
   }
 }
 
@@ -83,7 +83,7 @@ jest.mock('../../src/utils/keyData', () => {
   })
 })
 
-let mockOnChainLockOwnership = {
+const mockOnChainLockOwnership = {
   owner: jest.fn(() => {
     return Promise.resolve('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
   }),
@@ -108,7 +108,7 @@ describe('Metadata Controller', () => {
       it('returns wellformed data for Week in Ethereum News', async () => {
         expect.assertions(2)
 
-        let response = await request(app)
+        const response = await request(app)
           .get('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/1')
           .set('Accept', 'json')
 
@@ -152,7 +152,7 @@ describe('Metadata Controller', () => {
 
       it('returns data from the data store', async () => {
         expect.assertions(2)
-        let response = await request(app)
+        const response = await request(app)
           .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
           .set('Accept', 'json')
 
@@ -168,7 +168,7 @@ describe('Metadata Controller', () => {
 
       it('returns key specific information when available', async () => {
         expect.assertions(2)
-        let response = await request(app)
+        const response = await request(app)
           .get('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/6')
           .set('Accept', 'json')
 
@@ -205,7 +205,7 @@ describe('Metadata Controller', () => {
 
         it('returns their payload in the response excluding the protected fields', async () => {
           expect.assertions(2)
-          let response = await request(app)
+          const response = await request(app)
             .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
             .set('Accept', 'json')
 
@@ -223,7 +223,7 @@ describe('Metadata Controller', () => {
           it('returns the protected metadata', async () => {
             expect.assertions(2)
 
-            let typedData = generateKeyTypedData({
+            const typedData = generateKeyTypedData({
               LockMetaData: {
                 address: '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691',
                 owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -236,11 +236,11 @@ describe('Metadata Controller', () => {
               from: '',
             })
 
-            let response = await request(app)
+            const response = await request(app)
               .get('/api/key/0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691/1')
               .set('Authorization', `Bearer ${Base64.encode(sig)}`)
               .set('Accept', 'json')
-              .send(typedData)
+              .query({ data: JSON.stringify(typedData) })
 
             expect(response.status).toBe(200)
             expect(response.body).toEqual(
@@ -292,7 +292,7 @@ describe('Metadata Controller', () => {
           from: '',
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
           .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -316,7 +316,7 @@ describe('Metadata Controller', () => {
           from: '',
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
           .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -333,7 +333,7 @@ describe('Metadata Controller', () => {
             from: '',
           })
 
-          let response = await request(app)
+          const response = await request(app)
             .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
             .set('Accept', 'json')
             .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -371,7 +371,7 @@ describe('Metadata Controller', () => {
           from: '',
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
           .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -386,7 +386,7 @@ describe('Metadata Controller', () => {
     it('stores the passed data', async () => {
       expect.assertions(1)
 
-      let typedData = generateKeyTypedData({
+      const typedData = generateKeyTypedData({
         UserMetaData: {
           owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
           data: {
@@ -402,7 +402,7 @@ describe('Metadata Controller', () => {
         from: '',
       })
 
-      let response = await request(app)
+      const response = await request(app)
         .put(
           '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
         )
@@ -416,7 +416,7 @@ describe('Metadata Controller', () => {
     it('should update existing data if it already exists', async () => {
       expect.assertions(1)
 
-      let typedData = generateKeyTypedData({
+      const typedData = generateKeyTypedData({
         UserMetaData: {
           owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
           data: {
@@ -432,7 +432,7 @@ describe('Metadata Controller', () => {
         from: '',
       })
 
-      let response = await request(app)
+      const response = await request(app)
         .put(
           '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
         )
@@ -447,7 +447,7 @@ describe('Metadata Controller', () => {
       it('', async () => {
         expect.assertions(1)
 
-        let typedData = generateKeyTypedData({
+        const typedData = generateKeyTypedData({
           UserMetaData: {
             owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             protected: {
@@ -463,7 +463,7 @@ describe('Metadata Controller', () => {
           from: '',
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put(
             '/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/user/0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c'
           )
@@ -495,7 +495,7 @@ describe('Metadata Controller', () => {
       it('returns as unauthorized', async () => {
         expect.assertions(1)
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
           .set('Accept', 'json')
           .send(typedData)
@@ -513,7 +513,7 @@ describe('Metadata Controller', () => {
           from: '',
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')
           .set('Accept', 'json')
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)

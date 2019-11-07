@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow  */
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
 const ethJsUtil = require('ethereumjs-util')
@@ -5,11 +6,12 @@ const sigUtil = require('eth-sig-util')
 const httpMocks = require('node-mocks-http')
 const Base64 = require('../../src/utils/base64')
 
-let request: any, response: any
+let request: any
+let response: any
 
-let validSignature =
+const validSignature =
   'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
-let validSig2 =
+const validSig2 =
   'MHg3ZTVmMzM3NzViOWQ3MGYwZWQ2NjZiMGE3MTMwMDgyZWY2NTEzMWZjYWRkODFmM2IzM2U4N2NlY2ZmYjUxYTZkNGE2YmUwM2FhZDUwZjM0MzNiMjQ1Y2NiNTliYmMxYmFmYWU0MDhlZmRkOTY3YjQ2M2UxYmMyZWE0YTA1ZjE0YjFi'
 
 let processor = signatureValidationMiddleware.generateProcessor({
@@ -18,7 +20,7 @@ let processor = signatureValidationMiddleware.generateProcessor({
   signee: 'owner',
 })
 
-let evaluator = signatureValidationMiddleware.generateSignatureEvaluator({
+const evaluator = signatureValidationMiddleware.generateSignatureEvaluator({
   name: 'user',
   required: ['publicKey'],
   signee: 'publicKey',
@@ -35,7 +37,7 @@ describe('Signature Validation Middleware', () => {
       it('returns the signee', done => {
         expect.assertions(1)
 
-        let body = {
+        const body = {
           types: {
             EIP712Domain: [
               { name: 'name', type: 'string' },
@@ -55,17 +57,19 @@ describe('Signature Validation Middleware', () => {
           },
         }
 
-        let privateKey = ethJsUtil.toBuffer(
+        const privateKey = ethJsUtil.toBuffer(
           '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
         )
 
-        let sig = sigUtil.signTypedData(privateKey, {
+        const sig = sigUtil.signTypedData(privateKey, {
           data: body,
         })
 
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${Base64.encode(sig)}` },
-          body,
+          query: {
+            data: encodeURIComponent(JSON.stringify(body)),
+          },
         })
 
         evaluator(request, response, function next() {
@@ -81,7 +85,7 @@ describe('Signature Validation Middleware', () => {
       it('does not return a signee', done => {
         expect.assertions(1)
 
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           body: 'a sample body',
         })
 
@@ -97,7 +101,7 @@ describe('Signature Validation Middleware', () => {
     describe('a signature for User creation', () => {
       it('moves the request to the application', done => {
         expect.assertions(1)
-        var request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSig2}` },
           body: {
             types: {
@@ -148,7 +152,7 @@ describe('Signature Validation Middleware', () => {
       it('moves the request to the application', done => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130835000)
-        var request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSignature}` },
 
           body: {
@@ -206,7 +210,7 @@ describe('Signature Validation Middleware', () => {
     describe('when the body provided is not well formed Typed Data ', () => {
       test('returns a status 401 to the caller', () => {
         expect.assertions(1)
-        var request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSignature}` },
         })
 
@@ -219,7 +223,7 @@ describe('Signature Validation Middleware', () => {
     describe('when the signature is malformed', () => {
       test('returns a  status 401 to the caller', () => {
         expect.assertions(1)
-        var request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSignature}xyz` },
 
           body: {
@@ -258,7 +262,7 @@ describe('Signature Validation Middleware', () => {
     describe('when the signee does not match the item owner', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        var request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${validSignature}` },
 
           body: {

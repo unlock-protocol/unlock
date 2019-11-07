@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow  */
 import sigUtil from 'eth-sig-util'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
@@ -5,9 +6,10 @@ import ethJsUtil = require('ethereumjs-util')
 import Base64 = require('../../src/utils/base64')
 const httpMocks = require('node-mocks-http')
 
-let request: any, response: any
+let request: any
+let response: any
 
-let privateKey: Buffer[] = [
+const privateKey: Buffer[] = [
   ethJsUtil.toBuffer(
     '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
   ),
@@ -16,7 +18,7 @@ let privateKey: Buffer[] = [
   ),
 ]
 
-let body = {
+const body = {
   types: {
     EIP712Domain: [
       { name: 'name', type: 'string' },
@@ -42,7 +44,7 @@ let body = {
   },
 }
 
-let validSignature = sigUtil.personalSign(privateKey[0], {
+const validSignature = sigUtil.personalSign(privateKey[0], {
   data: JSON.stringify(body),
 })
 
@@ -52,7 +54,7 @@ let processor = signatureValidationMiddleware.generateProcessor({
   signee: 'owner',
 })
 
-let evaluator = signatureValidationMiddleware.generateSignatureEvaluator({
+const evaluator = signatureValidationMiddleware.generateSignatureEvaluator({
   name: 'user',
   required: ['publicKey'],
   signee: 'publicKey',
@@ -75,7 +77,7 @@ describe('Signature Validation Middleware', () => {
       it('returns the signee', done => {
         expect.assertions(1)
 
-        let body = {
+        const body = {
           types: {
             EIP712Domain: [
               { name: 'name', type: 'string' },
@@ -95,10 +97,10 @@ describe('Signature Validation Middleware', () => {
           },
         }
 
-        let sig = generateSignature(privateKey[1], body)
-        let request = httpMocks.createRequest({
+        const sig = generateSignature(privateKey[1], body)
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer-Simple ${Base64.encode(sig)}` },
-          body,
+          query: { data: encodeURIComponent(JSON.stringify(body)) },
         })
 
         evaluator(request, response, function next() {
@@ -114,7 +116,7 @@ describe('Signature Validation Middleware', () => {
       it('does not return a signee', done => {
         expect.assertions(1)
 
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           body: 'a sample body',
         })
 
@@ -131,7 +133,7 @@ describe('Signature Validation Middleware', () => {
       it('moves the request to the application', done => {
         expect.assertions(1)
 
-        let body = {
+        const body = {
           types: {
             EIP712Domain: [
               { name: 'name', type: 'string' },
@@ -157,8 +159,8 @@ describe('Signature Validation Middleware', () => {
           },
         }
 
-        let sig = generateSignature(privateKey[1], body)
-        let request = httpMocks.createRequest({
+        const sig = generateSignature(privateKey[1], body)
+        const request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer-Simple ${Base64.encode(sig)}`,
           },
@@ -188,7 +190,7 @@ describe('Signature Validation Middleware', () => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130835000)
 
-        let body = {
+        const body = {
           types: {
             EIP712Domain: [
               { name: 'name', type: 'string' },
@@ -214,8 +216,8 @@ describe('Signature Validation Middleware', () => {
           },
         }
 
-        let sig = generateSignature(privateKey[1], body)
-        let request = httpMocks.createRequest({
+        const sig = generateSignature(privateKey[1], body)
+        const request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer-Simple ${Base64.encode(sig)}`,
           },
@@ -241,7 +243,7 @@ describe('Signature Validation Middleware', () => {
     describe('when a signature is not provided', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
-        let spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'sendStatus')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -250,13 +252,13 @@ describe('Signature Validation Middleware', () => {
     describe('when the body provided is not well formed Typed Data ', () => {
       test('returns a status 401 to the caller', () => {
         expect.assertions(1)
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: {
             Authorization: `Bearer-Simple ${Base64.encode(validSignature)}`,
           },
         })
 
-        let spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'sendStatus')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -266,12 +268,12 @@ describe('Signature Validation Middleware', () => {
       test('returns a  status 401 to the caller', () => {
         expect.assertions(1)
 
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer-Simple ${validSignature}xyz` },
           body,
         })
 
-        let spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'sendStatus')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
@@ -281,12 +283,12 @@ describe('Signature Validation Middleware', () => {
       test('returns a status 401 to the caller ', () => {
         expect.assertions(1)
 
-        let request = httpMocks.createRequest({
+        const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer-Simple ${validSignature}` },
           body,
         })
 
-        let spy = jest.spyOn(response, 'sendStatus')
+        const spy = jest.spyOn(response, 'sendStatus')
         processor(request, response)
         expect(spy).toHaveBeenCalledWith(401)
       })
