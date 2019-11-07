@@ -22,6 +22,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  SIGNED_ACCOUNT_EJECTION,
   keyPurchaseInitiated,
   welcomeEmail,
 } from '../actions/user'
@@ -256,6 +257,11 @@ const storageMiddleware = config => {
             data,
             sig
           )
+        }
+
+        if (action.type === SIGNED_ACCOUNT_EJECTION) {
+          const { data, sig } = action
+          storageService.ejectUser(data.message.user.publicKey, data, sig)
         }
 
         if (action.type === SIGNED_PURCHASE_DATA) {
