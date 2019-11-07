@@ -39,12 +39,3 @@ export function gotMetadata(lockAddress: string, keyId: string, data: any) {
     data,
   }
 }
-
-export function gotMetadata(lockAddress: string, keyId: string, data: any) {
-  return {
-    type: GOT_METADATA,
-    lockAddress,
-    keyId,
-    data,
-  }
-}
