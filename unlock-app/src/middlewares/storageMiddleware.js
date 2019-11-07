@@ -317,6 +317,8 @@ const storageMiddleware = config => {
 
         if (action.type === SIGN_METADATA_RESPONSE) {
           const { signature, keyIds, lockAddress, data } = action
+          // TODO: in the future we will have an endpoint to get bulk
+          // metadata for all keys on a lock. Use it here.
           keyIds.forEach(id => {
             storageService.getMetadataFor(lockAddress, id, signature, data)
           })
