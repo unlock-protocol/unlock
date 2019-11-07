@@ -765,10 +765,13 @@ describe('StorageService', () => {
 
   describe('getMetadataFor', () => {
     it('should emit success on success', done => {
-      expect.assertions(1)
+      expect.assertions(2)
 
       const lockAddress = 'address'
       const keyId = '1'
+      const typedData = {
+        data: 'typed',
+      }
       const userMetadata = {
         public: {
           seven: '7',
@@ -789,10 +792,26 @@ describe('StorageService', () => {
           keyId,
           data: userMetadata,
         })
+
         done()
       })
 
-      storageService.getMetadataFor(lockAddress, keyId, 'a signature')
+      storageService.getMetadataFor(
+        lockAddress,
+        keyId,
+        'a signature',
+        typedData
+      )
+      expect(axios.get).toHaveBeenCalledWith(
+        `${serviceHost}/api/key/${lockAddress}/${keyId}?data=${encodeURIComponent(
+          JSON.stringify(typedData)
+        )}&signature=a signature`,
+        {
+          headers: {
+            Authorization: ' Bearer a signature',
+          },
+        }
+      )
     })
 
     it('should emit failure on failure', done => {
@@ -800,6 +819,7 @@ describe('StorageService', () => {
 
       const lockAddress = 'address'
       const keyId = '1'
+      const typedData = 'stringified-typed-data'
 
       axios.get.mockRejectedValue('welp')
 
@@ -808,7 +828,12 @@ describe('StorageService', () => {
         done()
       })
 
-      storageService.getMetadataFor(lockAddress, keyId, 'a signature')
+      storageService.getMetadataFor(
+        lockAddress,
+        keyId,
+        'a signature',
+        typedData
+      )
     })
   })
 })
