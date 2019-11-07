@@ -566,6 +566,31 @@ describe('StorageService', () => {
     })
   })
 
+  describe('ejecting user', () => {
+    it('should send a request to eject a user', done => {
+      expect.assertions(1)
+      axios.post.mockReturnValue({})
+      const data = {}
+      const signature = 'signature'
+
+      storageService.ejectUser(publicKey, data, signature)
+
+      storageService.on(success.ejectUser, () => {
+        done()
+      })
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `${serviceHost}/users/${publicKey}/eject`,
+        data,
+        {
+          headers: {
+            Authorization: ' Bearer c2lnbmF0dXJl', // base64 encode signature
+          },
+        }
+      )
+    })
+  })
+
   describe('Retrieve a user recovery phrase', () => {
     describe('When a recovery phrase can be retrieved', () => {
       it('emits a success', done => {
