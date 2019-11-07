@@ -231,7 +231,7 @@ const walletMiddleware = config => {
             }
           )
         } else if (action.type === SIGN_METADATA_REQUEST) {
-          const { address: lockAddress, owner, timestamp } = action
+          const { address: lockAddress, owner, timestamp, keyIds } = action
           // Usage from locksmith tests for metadataController
           const typedData = generateKeyTypedData({
             LockMetaData: {
@@ -252,7 +252,9 @@ const walletMiddleware = config => {
                 )
               )
             } else {
-              dispatch(signMetadataResponse(typedData, signature))
+              dispatch(
+                signMetadataResponse(typedData, signature, keyIds, lockAddress)
+              )
             }
           })
         }
