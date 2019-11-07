@@ -292,13 +292,10 @@ interface IPublicLock {
    * overtime.
    * @dev Throws if _owner does not have a valid key
    * @param _owner The owner of the key check the transfer fee for.
-   * @param _time The amount of time to calculate the fee for.
-   * "0" means use all the time remaining on the key for the calculation.
-   * @return The transfer fee in seconds.
+   * @return The transfer fee in basis-points(bps).
    */
   function getTransferFee(
-    address _owner,
-    uint _time
+    address _owner
   ) external view returns (uint);
 
   /**
