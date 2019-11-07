@@ -63,3 +63,4 @@ describe('Key metadata signature actions', () => {
       })
     })
   })
+})
