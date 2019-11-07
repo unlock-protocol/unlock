@@ -101,7 +101,7 @@ export class StorageService extends EventEmitter {
   }
 
   genAuthorizationHeader = token => {
-    return { Authorization: `Bearer ${token}` }
+    return { Authorization: ` Bearer ${token}` }
   }
 
   /**
