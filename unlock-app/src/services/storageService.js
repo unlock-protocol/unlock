@@ -20,6 +20,7 @@ export const success = {
   keyPurchase: 'keyPurchase.success',
   getKeyPrice: 'getKeyPrice.success',
   ejectUser: 'ejectUser.success',
+  getMetadataFor: 'getMetadataFor.success',
 }
 
 export const failure = {
@@ -37,6 +38,7 @@ export const failure = {
   keyPurchase: 'keyPurchase.failure',
   getKeyPrice: 'getKeyPrice.failure',
   ejectUser: 'ejectUser.failure',
+  getMetadataFor: 'getMetadataFor.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -369,6 +371,45 @@ export class StorageService extends EventEmitter {
       this.emit(success.ejectUser, { publicKey })
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
+    }
+  }
+
+  /*
+   * Given a lock address, a key ID, and a typed data signature, get
+   * the metadata (public and protected) associated with that key.
+   * @param {string} lockAddress
+   * @param {string} keyId
+   * @param {*} signature
+   * @param {*} data
+   */
+  async getMetadataFor(lockAddress, keyId, signature, data) {
+    const stringData = JSON.stringify(data)
+    const opts = {
+      headers: this.genAuthorizationHeader(signature),
+      // No body allowed in GET, so these are passed as query params for this
+      // call.
+      params: {
+        data: stringData,
+        signature: signature,
+      },
+    }
+    try {
+      const result = await axios.get(
+        `${this.host}/api/key/${lockAddress}/${keyId}`,
+        opts
+      )
+      const payload = {
+        lockAddress,
+        keyId,
+        data: {},
+      }
+
+      if (result.data && result.data.userMetadata) {
+        payload.data = result.data.userMetadata
+      }
+      this.emit(success.getMetadataFor, payload)
+    } catch (error) {
+      this.emit(failure.getMetadataFor, error)
     }
   }
 }
