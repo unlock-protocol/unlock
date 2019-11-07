@@ -1,8 +1,10 @@
 import {
   SIGN_METADATA_REQUEST,
   SIGN_METADATA_RESPONSE,
+  GOT_METADATA,
   signMetadataRequest,
   signMetadataResponse,
+  gotMetadata,
 } from '../../actions/keyMetadata'
 
 describe('Key metadata signature actions', () => {
@@ -33,6 +35,21 @@ describe('Key metadata signature actions', () => {
         type: SIGN_METADATA_RESPONSE,
         data: 'some data',
         signature: 'a signature',
+      })
+    })
+  })
+
+  describe('gotMetadata', () => {
+    it('should create an action to put the metadata in redux', () => {
+      expect.assertions(1)
+
+      const result = gotMetadata('a lock address', '1', 'some data')
+
+      expect(result).toEqual({
+        type: GOT_METADATA,
+        lockAddress: 'a lock address',
+        keyId: '1',
+        data: 'some data',
       })
     })
   })
