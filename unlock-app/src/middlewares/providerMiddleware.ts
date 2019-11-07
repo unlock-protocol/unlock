@@ -19,6 +19,8 @@ import {
   SIGN_PURCHASE_DATA,
   signedPurchaseData,
   CHANGE_PASSWORD,
+  SIGN_ACCOUNT_EJECTION,
+  signedAccountEjection,
 } from '../actions/user'
 
 interface Provider {
@@ -139,6 +141,9 @@ export const providerMiddleware = (config: any) => {
         } else if (action.type === SIGN_PURCHASE_DATA) {
           const payload = provider.signKeyPurchaseRequestData(action.data)
           dispatch(signedPurchaseData(payload))
+        } else if (action.type === SIGN_ACCOUNT_EJECTION) {
+          const payload = provider.generateSignedEjectionRequest()
+          dispatch(signedAccountEjection(payload))
         }
 
         if (action.type === CHANGE_PASSWORD) {
