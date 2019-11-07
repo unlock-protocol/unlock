@@ -19,6 +19,7 @@ export const success = {
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
   getKeyPrice: 'getKeyPrice.success',
+  ejectUser: 'ejectUser.success',
 }
 
 export const failure = {
@@ -35,6 +36,7 @@ export const failure = {
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
   getKeyPrice: 'getKeyPrice.failure',
+  ejectUser: 'ejectUser.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -349,6 +351,24 @@ export class StorageService extends EventEmitter {
       this.emit(success.getKeyPrice, result.data)
     } catch (error) {
       this.emit(failure.getKeyPrice, error)
+    }
+  }
+
+  /**
+   * Ejects a user
+   *
+   * @param {*} publicKey
+   * @param {*} data structured_data used to generate signature
+   * @param {*} token
+   */
+  async ejectUser(publicKey, data, token) {
+    const opts = {}
+    opts.headers = this.genAuthorizationHeader(btoa(token))
+    try {
+      await axios.post(`${this.host}/users/${publicKey}/eject`, data, opts)
+      this.emit(success.ejectUser, { publicKey })
+    } catch (error) {
+      this.emit(failure.ejectUser, { publicKey })
     }
   }
 }
