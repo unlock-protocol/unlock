@@ -49,7 +49,7 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
-    uint fee = getTransferFee(_from, 0);
+    uint fee = getTransferFee(_from);
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_recipient];
@@ -157,29 +157,26 @@ contract MixinTransfer is
    * transfer the key to another account.  This is pro-rated so the fee goes down
    * overtime.
    * @param _owner The owner of the key check the transfer fee for.
-   * @param _time The amount of time to calculate the fee for.
-   * "0" means use all the time remaining on the key for the calculation.
    */
   function getTransferFee(
-    address _owner,
-    uint _time
+    address _owner
   )
     public view
     hasValidKey(_owner)
     returns (uint)
   {
     Key storage key = keyByOwner[_owner];
-    uint timeToTransfer;
+    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
+    uint timeRemaining = key.expirationTimestamp - block.timestamp;
     uint fee;
-    // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
-    // this is for standard key transfers
-    if(_time == 0) {
-      timeToTransfer = key.expirationTimestamp - block.timestamp;
+    if(timeRemaining >= expirationDuration) {
+      // Max the potential impact of this fee for keys with long durations remaining
+      fee = keyPrice;
     } else {
-      timeToTransfer = _time;
+      // Math: using safeMul in case keyPrice or timeRemaining is very large
+      fee = keyPrice.mul(timeRemaining) / expirationDuration;
     }
-    fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
-    return fee;
+    return fee.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
   }
 
   /**
