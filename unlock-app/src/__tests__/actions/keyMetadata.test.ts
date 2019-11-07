@@ -17,6 +17,7 @@ describe('Key metadata signature actions', () => {
 
       const owner = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
       const result = signMetadataRequest(lockAddress, owner, keyIds)
+
       expect(result).toEqual({
         type: SIGN_METADATA_REQUEST,
         lockAddress,
