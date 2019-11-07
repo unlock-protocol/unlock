@@ -2,20 +2,32 @@ export const SIGN_METADATA_REQUEST = 'keyMetadata/SIGN_METADATA_REQUEST'
 export const SIGN_METADATA_RESPONSE = 'keyMetadata/SIGN_METADATA_RESPONSE'
 export const GOT_METADATA = 'keyMetadata/GOT_METADATA'
 
-export function signMetadataRequest(address: string, owner: string) {
+export function signMetadataRequest(
+  lockAddress: string,
+  owner: string,
+  keyIds: string[]
+) {
   return {
     type: SIGN_METADATA_REQUEST,
-    address,
+    lockAddress,
     owner,
+    keyIds,
     timestamp: Date.now(),
   }
 }
 
-export function signMetadataResponse(data: any, signature: any) {
+export function signMetadataResponse(
+  data: any,
+  signature: any,
+  keyIds: string[],
+  lockAddress: string
+) {
   return {
     type: SIGN_METADATA_RESPONSE,
     data,
     signature,
+    keyIds,
+    lockAddress,
   }
 }
 
