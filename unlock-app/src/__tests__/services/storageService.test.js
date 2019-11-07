@@ -803,12 +803,14 @@ describe('StorageService', () => {
         typedData
       )
       expect(axios.get).toHaveBeenCalledWith(
-        `${serviceHost}/api/key/${lockAddress}/${keyId}?data=${encodeURIComponent(
-          JSON.stringify(typedData)
-        )}&signature=a signature`,
+        `${serviceHost}/api/key/${lockAddress}/${keyId}`,
         {
           headers: {
             Authorization: ' Bearer a signature',
+          },
+          params: {
+            data: JSON.stringify(typedData),
+            signature: 'a signature',
           },
         }
       )
