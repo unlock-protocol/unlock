@@ -31,7 +31,7 @@ contract('Lock / transferFee', accounts => {
   })
 
   describe('once a fee of 5% is set', () => {
-    let fee
+    let fee, fee1, fee2, fee3, now
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
@@ -39,38 +39,43 @@ contract('Lock / transferFee', accounts => {
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
-      let timestamp = new BigNumber(
+      now = Math.floor(Date.now() / 1000)
+      let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      let remainingTime = timestamp.minus(Math.floor(Date.now() / 1000))
-      assert(fee.lte(remainingTime.times(0.05)))
+      assert(fee.lte(expiration.minus(now).times(0.05)))
     })
 
     it('calculates the fee based on the time value passed in', async () => {
-      fee = await lock.getTransferFee.call(keyOwner, 100) // here we want to "share" 100 seconds
-      assert.equal(fee, 5)
+      fee1 = await lock.getTransferFee.call(keyOwner, 100)
+      fee2 = await lock.getTransferFee.call(keyOwner, 60 * 60 * 24 * 365)
+      fee3 = await lock.getTransferFee.call(keyOwner, 60 * 60 * 24 * 30)
+      assert.equal(fee1, 5)
+      assert.equal(fee2, 1576800)
+      assert.equal(fee3, 129600)
     })
 
     describe('when the key is transfered', () => {
       const newOwner = accounts[2]
-      let tokenId, timeRemainingBefore, timeRemainingAfter, fee
+      let tokenId, expirationBefore, expirationAfter, fee
 
       before(async () => {
         tokenId = await lock.getTokenIdFor.call(keyOwner)
-        timeRemainingBefore = new BigNumber(
+        expirationBefore = new BigNumber(
           await lock.keyExpirationTimestampFor(keyOwner)
-        ).minus(Math.floor(Date.now() / 1000))
+        )
         fee = await lock.getTransferFee(keyOwner, 0)
         await lock.transferFrom(keyOwner, newOwner, tokenId, {
           from: keyOwner,
         })
-        timeRemainingAfter = new BigNumber(
+        expirationAfter = new BigNumber(
           await lock.keyExpirationTimestampFor(newOwner)
-        ).minus(Math.floor(Date.now() / 1000))
+        )
       })
 
       it('the fee is deducted from the time transferred', async () => {
-        assert(timeRemainingAfter.lte(timeRemainingBefore.minus(fee)))
+        now = Math.floor(Date.now() / 1000)
+        assert(expirationAfter.gte(expirationBefore.minus(fee)))
       })
 
       after(async () => {
