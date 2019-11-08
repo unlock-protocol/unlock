@@ -153,3 +153,39 @@ export interface PurchaseKeyRequest {
   lock: string // lock address
   extraTip: string // extra value to add in addition to key price
 }
+
+export interface KeyMetadata {
+  // These 3 properties are always present -- they come down from the graph as
+  // strings
+  lockName: string
+  expiration: string
+  keyholderAddress: string
+  // Can have any other arbitrary properies, as long as the values are strings.
+  [key: string]: string
+}
+
+// TODO: come up with one master type for the Redux store that we can
+// import from every connected component
+export interface ReduxMetadata {
+  [lockAddress: string]: {
+    [keyId: string]: {
+      protected?: { [key: string]: string }
+      public?: { [key: string]: string }
+    }
+  }
+}
+
+// Represents the keyholdersByLock GraphQL query result
+export interface KeyholdersByLock {
+  locks: {
+    address: string
+    name: string
+    keys: {
+      expiration: string
+      keyId: string
+      owner: {
+        address: string
+      }
+    }[]
+  }[]
+}

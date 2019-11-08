@@ -22,6 +22,7 @@ import {
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
   SIGNED_PURCHASE_DATA,
+  SIGNED_ACCOUNT_EJECTION,
   keyPurchaseInitiated,
   welcomeEmail,
 } from '../actions/user'
@@ -29,6 +30,7 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
+import { SIGN_METADATA_RESPONSE, gotMetadata } from '../actions/keyMetadata'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -180,6 +182,17 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Warning('Could not initiate key purchase.')))
     })
 
+    // Key metadata
+    storageService.on(success.getMetadataFor, result => {
+      const { lockAddress, data, keyId } = result
+      dispatch(gotMetadata(lockAddress, keyId, data))
+    })
+    storageService.on(failure.getMetadataFor, () => {
+      dispatch(
+        setError(Storage.Diagnostic('Could not retrieve some key metadata.'))
+      )
+    })
+
     const { router } = getState()
     if (router && router.location && router.location.pathname === '/recover/') {
       // Let's get the user's recovery key from locksmith
@@ -258,6 +271,11 @@ const storageMiddleware = config => {
           )
         }
 
+        if (action.type === SIGNED_ACCOUNT_EJECTION) {
+          const { data, sig } = action
+          storageService.ejectUser(data.message.user.publicKey, data, sig)
+        }
+
         if (action.type === SIGNED_PURCHASE_DATA) {
           const { data, sig } = action
           storageService.purchaseKey(data, btoa(sig))
@@ -295,6 +313,15 @@ const storageMiddleware = config => {
         if (action.type === ADD_TO_CART) {
           const { lock } = action
           storageService.getKeyPrice(lock.address)
+        }
+
+        if (action.type === SIGN_METADATA_RESPONSE) {
+          const { signature, keyIds, lockAddress, data } = action
+          // TODO: in the future we will have an endpoint to get bulk
+          // metadata for all keys on a lock. Use it here.
+          keyIds.forEach(id => {
+            storageService.getMetadataFor(lockAddress, id, signature, data)
+          })
         }
 
         next(action)

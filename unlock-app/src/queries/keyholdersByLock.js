@@ -12,6 +12,7 @@ export default function keyholdersByLockQuery() {
           expiration
         }
         name
+        address
       }
     }
   `
