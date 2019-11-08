@@ -5,8 +5,12 @@ import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types' // eslint-disable-line no-unused-vars
 
 namespace SignatureValidationMiddleware {
+  const extractQueryParameterPayload = (payload: string) => {
+    return JSON.parse(decodeURIComponent(payload))
+  }
+
   const extractTypeDataSignee = (header: string, body: string) => {
-    let decodedSignature = Base64.decode(header)
+    const decodedSignature = Base64.decode(header)
 
     try {
       return sigUtil.recoverTypedSignature({
@@ -19,7 +23,7 @@ namespace SignatureValidationMiddleware {
   }
 
   const extractPersonalSignSignee = (header: string, body: string) => {
-    let decodedSignature = Base64.decode(header)
+    const decodedSignature = Base64.decode(header)
 
     try {
       return sigUtil.recoverPersonalSignature({
@@ -31,21 +35,43 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  const extractSignee = (req: Request): string | null => {
+  const extractSigneeFromSource = (
+    req: Request,
+    source: string
+  ): string | null => {
+    if (!source) {
+      return null
+    }
+
     if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer'
     ) {
-      let header = req.headers.authorization.split(' ')[1]
-
-      return extractTypeDataSignee(header, req.body)
-    } else if (
+      const header = req.headers.authorization.split(' ')[1]
+      return extractTypeDataSignee(header, source)
+    }
+    if (
       req.headers.authorization &&
       req.headers.authorization.split(' ')[0] === 'Bearer-Simple'
     ) {
-      let header = req.headers.authorization.split(' ')[1]
-      return extractPersonalSignSignee(header, req.body)
-    } else {
+      const header = req.headers.authorization.split(' ')[1]
+      return extractPersonalSignSignee(header, source)
+    }
+    return null
+  }
+
+  const extractSignee = (req: Request): string | null => {
+    return extractSigneeFromSource(req, req.body)
+  }
+
+  const extractSigneeFromQueryParameter = (
+    req: Request,
+    source: string
+  ): string | null => {
+    try {
+      const data = extractQueryParameterPayload(source)
+      return extractSigneeFromSource(req, data)
+    } catch {
       return null
     }
   }
@@ -60,7 +86,7 @@ namespace SignatureValidationMiddleware {
     payload: any,
     configuration: SignatureValidationConfiguration
   ): Boolean => {
-    let result = configuration.required.every(element => {
+    const result = configuration.required.every(element => {
       return !(payload[element] == null)
     })
 
@@ -73,7 +99,7 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ) => {
     try {
-      let potentialSignee: string =
+      const potentialSignee: string =
         body.message[configuration.name][configuration.signee]
 
       if (
@@ -82,9 +108,8 @@ namespace SignatureValidationMiddleware {
         validatePayloadContent(body.message[configuration.name], configuration)
       ) {
         return Normalizer.ethereumAddress(signee)
-      } else {
-        return null
       }
+      return null
     } catch (e) {
       return null
     }
@@ -102,20 +127,18 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, res: Response, next: any) => {
-      var signature = extractSignee(req)
+      const signature = extractSignee(req)
 
       if (signature === null) {
         res.sendStatus(401)
-        return
       } else {
-        let owner = handleSignaturePresent(req.body, signature, configuration)
+        const owner = handleSignaturePresent(req.body, signature, configuration)
 
         if (owner) {
           req.owner = owner
           next()
         } else {
           res.sendStatus(401)
-          return
         }
       }
     }
@@ -125,13 +148,13 @@ namespace SignatureValidationMiddleware {
     configuration: SignatureValidationConfiguration
   ): any => {
     return (req: any, _res: Response, next: any) => {
-      var signature = extractSignee(req)
+      const signature = extractSigneeFromQueryParameter(req, req.query.data)
 
       if (signature === null) {
         next()
       } else {
-        let signee = handleSignaturePresent(req.body, signature, configuration)
-
+        const payload = extractQueryParameterPayload(req.query.data)
+        const signee = handleSignaturePresent(payload, signature, configuration)
         if (signee) {
           req.signee = signee
         }

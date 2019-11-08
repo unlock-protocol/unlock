@@ -566,6 +566,31 @@ describe('StorageService', () => {
     })
   })
 
+  describe('ejecting user', () => {
+    it('should send a request to eject a user', done => {
+      expect.assertions(1)
+      axios.post.mockReturnValue({})
+      const data = {}
+      const signature = 'signature'
+
+      storageService.ejectUser(publicKey, data, signature)
+
+      storageService.on(success.ejectUser, () => {
+        done()
+      })
+
+      expect(axios.post).toHaveBeenCalledWith(
+        `${serviceHost}/users/${publicKey}/eject`,
+        data,
+        {
+          headers: {
+            Authorization: ' Bearer c2lnbmF0dXJl', // base64 encode signature
+          },
+        }
+      )
+    })
+  })
+
   describe('Retrieve a user recovery phrase', () => {
     describe('When a recovery phrase can be retrieved', () => {
       it('emits a success', done => {
@@ -735,6 +760,82 @@ describe('StorageService', () => {
       })
 
       expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/${user}/locks`)
+    })
+  })
+
+  describe('getMetadataFor', () => {
+    it('should emit success on success', done => {
+      expect.assertions(2)
+
+      const lockAddress = 'address'
+      const keyId = '1'
+      const typedData = {
+        data: 'typed',
+      }
+      const userMetadata = {
+        public: {
+          seven: '7',
+        },
+        protected: {
+          'capital seven': '七',
+        },
+      }
+      axios.get.mockReturnValue({
+        data: {
+          userMetadata,
+        },
+      })
+
+      storageService.on(success.getMetadataFor, result => {
+        expect(result).toEqual({
+          lockAddress,
+          keyId,
+          data: userMetadata,
+        })
+
+        done()
+      })
+
+      storageService.getMetadataFor(
+        lockAddress,
+        keyId,
+        'a signature',
+        typedData
+      )
+      expect(axios.get).toHaveBeenCalledWith(
+        `${serviceHost}/api/key/${lockAddress}/${keyId}`,
+        {
+          headers: {
+            Authorization: ' Bearer a signature',
+          },
+          params: {
+            data: JSON.stringify(typedData),
+            signature: 'a signature',
+          },
+        }
+      )
+    })
+
+    it('should emit failure on failure', done => {
+      expect.assertions(1)
+
+      const lockAddress = 'address'
+      const keyId = '1'
+      const typedData = 'stringified-typed-data'
+
+      axios.get.mockRejectedValue('welp')
+
+      storageService.on(failure.getMetadataFor, error => {
+        expect(error).toBe('welp')
+        done()
+      })
+
+      storageService.getMetadataFor(
+        lockAddress,
+        keyId,
+        'a signature',
+        typedData
+      )
     })
   })
 })
