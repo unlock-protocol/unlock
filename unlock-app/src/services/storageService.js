@@ -10,7 +10,6 @@ export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   getLockAddressesForUser: 'getLockAddressesForUser.success',
-  lockLookUp: 'lockLookUp.success',
   storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
@@ -27,7 +26,6 @@ export const failure = {
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   getLockAddressesForUser: 'getLockAddressesForUser.failure',
-  lockLookUp: 'lockLookUp.failure',
   storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
@@ -100,27 +98,6 @@ export class StorageService extends EventEmitter {
 
   genAuthorizationHeader = token => {
     return { Authorization: ` Bearer ${token}` }
-  }
-
-  /**
-   * Returns the name of the request Lock,
-   * in a failure scenario a rejected promise is returned
-   * to the caller.
-   *
-   * @param {*} address
-   */
-  async lockLookUp(address) {
-    try {
-      const result = await axios.get(`${this.host}/lock/${address}`)
-      if (result.data && result.data.name) {
-        const name = result.data.name
-        this.emit(success.lockLookUp, { address, name })
-      } else {
-        this.emit(failure.lockLookUp, 'No name for this lock.')
-      }
-    } catch (error) {
-      this.emit(failure.lockLookUp, error)
-    }
   }
 
   /**

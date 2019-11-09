@@ -55,62 +55,6 @@ describe('StorageService', () => {
     storageService = new StorageService(serviceHost)
   })
 
-  describe('lockLookUp', () => {
-    describe('when the requested lock exists', () => {
-      it('returns the details', done => {
-        expect.assertions(3)
-        axios.get.mockReturnValue({
-          data: {
-            name: 'hello',
-          },
-        })
-
-        storageService.lockLookUp('0x42')
-
-        storageService.on(success.lockLookUp, ({ address, name }) => {
-          expect(address).toBe('0x42')
-          expect(name).toBe('hello')
-          done()
-        })
-
-        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
-      })
-    })
-
-    describe('when the requested lock exists but does not have a name', () => {
-      it('emits a failure', done => {
-        expect.assertions(2)
-        axios.get.mockReturnValue({
-          data: {},
-        })
-
-        storageService.lockLookUp('0x42')
-
-        storageService.on(failure.lockLookUp, error => {
-          expect(error).toBe('No name for this lock.')
-          done()
-        })
-
-        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x42`)
-      })
-    })
-
-    describe('when the requested lock doesnt exist', () => {
-      it('raises an appropriate error', done => {
-        expect.assertions(2)
-        axios.get.mockRejectedValue('An Error')
-        storageService.lockLookUp('0x1234243')
-
-        storageService.on(failure.lockLookUp, error => {
-          expect(error).toEqual('An Error')
-          done()
-        })
-
-        expect(axios.get).toHaveBeenCalledWith(`${serviceHost}/lock/0x1234243`)
-      })
-    })
-  })
-
   describe('storeLockDetails', () => {
     describe('when storing a new lock', () => {
       it('emits a success', done => {

@@ -4,7 +4,7 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { UPDATE_LOCK, updateLock, getLock } from '../actions/lock'
+import { getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -58,14 +58,6 @@ const storageMiddleware = config => {
         setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
       )
       dispatch(doneLoading())
-    })
-
-    // UPDATE_LOCK
-    storageService.on(success.lockLookUp, ({ address, name }) => {
-      dispatch(updateLock(address, { name }))
-    })
-    storageService.on(failure.lockLookUp, () => {
-      dispatch(setError(Storage.Diagnostic('Could not look up lock details.')))
     })
 
     // SIGNUP_CREDENTIALS
@@ -231,14 +223,6 @@ const storageMiddleware = config => {
           storageService.getTransactionsHashesSentBy(action.account.address)
           // When we set the account, we want to retrive the list of locks
           storageService.getLockAddressesForUser(action.account.address)
-        }
-
-        if (action.type === UPDATE_LOCK) {
-          // Only look up the name for a lock for which the name is empty/not-set
-          const lock = getState().locks[action.address]
-          if (lock && !lock.name) {
-            storageService.lockLookUp(action.address)
-          }
         }
 
         if (action.type === SIGNED_USER_DATA) {
