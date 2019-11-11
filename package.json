@@ -35,7 +35,7 @@
     "typescript": "3.6.4"
   },
   "engines": {
-    "node": "^10"
+    "node": "10.17.0"
   },
   "devDependencies": {
     "husky": "3.0.9"
