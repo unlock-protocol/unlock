@@ -50,6 +50,14 @@
       "groupName": "wedlocks"
     },
     {
+      "packagePatterns": [
+        "*"
+      ],
+      "major": {
+        "groupName": null
+      }
+    },
+    {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
       "groupName": "unlock-js"
