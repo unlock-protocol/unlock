@@ -243,6 +243,8 @@ const walletMiddleware = config => {
             },
           })
 
+          dispatch(waitForWallet())
+
           walletService.signData(owner, typedData, (error, signature) => {
             if (error) {
               dispatch(
@@ -253,6 +255,7 @@ const walletMiddleware = config => {
                 )
               )
             } else {
+              dispatch(dismissWalletCheck())
               dispatch(
                 signMetadataResponse(typedData, signature, keyIds, lockAddress)
               )

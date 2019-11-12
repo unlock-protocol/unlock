@@ -7,7 +7,12 @@ import {
   UPDATE_LOCK_KEY_PRICE,
   UPDATE_LOCK,
 } from '../../actions/lock'
-import { LAUNCH_MODAL, DISMISS_MODAL } from '../../actions/fullScreenModals'
+import {
+  LAUNCH_MODAL,
+  DISMISS_MODAL,
+  waitForWallet,
+  dismissWalletCheck,
+} from '../../actions/fullScreenModals'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
@@ -697,13 +702,15 @@ describe('Wallet middleware', () => {
     })
 
     it("should handle SIGN_METADATA_REQUEST by calling walletService's signData", () => {
-      expect.assertions(1)
-      const { invoke } = create()
+      expect.assertions(2)
+      const { invoke, store } = create()
 
       mockWalletService.signData = jest.fn()
       mockWalletService.ready = true
 
       invoke(action)
+
+      expect(store.dispatch).toHaveBeenCalledWith(waitForWallet())
 
       expect(mockWalletService.signData).toHaveBeenCalledWith(
         action.owner,
@@ -713,7 +720,7 @@ describe('Wallet middleware', () => {
     })
 
     it('should dispatch some typed data on success', () => {
-      expect.assertions(1)
+      expect.assertions(3)
       const { invoke, store } = create()
 
       mockWalletService.signData = jest
@@ -725,7 +732,10 @@ describe('Wallet middleware', () => {
 
       invoke(action)
 
-      expect(store.dispatch).toHaveBeenCalledWith({
+      expect(store.dispatch).toHaveBeenNthCalledWith(1, waitForWallet())
+      expect(store.dispatch).toHaveBeenNthCalledWith(2, dismissWalletCheck())
+
+      expect(store.dispatch).toHaveBeenNthCalledWith(3, {
         type: SIGN_METADATA_RESPONSE,
         data: expectedTypedData,
         signature: 'a signature',
