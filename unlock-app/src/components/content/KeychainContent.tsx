@@ -75,7 +75,4 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { signData, qrEmail }
-)(KeychainContent)
+export default connect(mapStateToProps, { signData, qrEmail })(KeychainContent)

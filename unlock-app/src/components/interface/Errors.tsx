@@ -47,10 +47,7 @@ const mapDispatchToProps = (dispatch: (action: any) => any) => ({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Errors)
+export default connect(mapStateToProps, mapDispatchToProps)(Errors)
 
 const ErrorWrapper = styled.section`
   grid-template-columns: 1fr 20px;

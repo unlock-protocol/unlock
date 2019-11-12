@@ -84,11 +84,7 @@ export const WrongNetwork = ({ currentNetwork, requiredNetworkId }) => (
     illustration="/static/images/illustrations/network.svg"
   >
     <p>
-      {`You’re currently on the ${currentNetwork} network but you need to be on the ${
-        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-      } network. Please switch to ${
-        ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
-      }.`}
+      {`You’re currently on the ${currentNetwork} network but you need to be on the ${ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]} network. Please switch to ${ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]}.`}
     </p>
   </DefaultError>
 )

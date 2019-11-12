@@ -150,10 +150,7 @@ const mapStateToProps = ({ account, errors }: ReduxState) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LogIn)
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;

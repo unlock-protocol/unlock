@@ -126,12 +126,14 @@ describe('Mailbox - getPaywallState', () => {
   })
 
   describe('isUnexpired', () => {
-    it.each([[-1, false], [0, false], [thePast, false], [theFuture, true]])(
-      'isUnexpired(%s) should be %s',
-      (expiration, result) => {
-        expect.assertions(1)
-        expect(isUnexpired(makeKeyResult(expiration as number))).toBe(result)
-      }
-    )
+    it.each([
+      [-1, false],
+      [0, false],
+      [thePast, false],
+      [theFuture, true],
+    ])('isUnexpired(%s) should be %s', (expiration, result) => {
+      expect.assertions(1)
+      expect(isUnexpired(makeKeyResult(expiration as number))).toBe(result)
+    })
   })
 })

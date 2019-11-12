@@ -64,7 +64,8 @@ export default function useBlockchainData(
       return Object.keys(val).reduce((accumulator, currency) => {
         return (
           accumulator &&
-          (isPositiveNumber(val[currency]) && typeof val[currency] === 'string')
+          isPositiveNumber(val[currency]) &&
+          typeof val[currency] === 'string'
         )
       }, true)
     },

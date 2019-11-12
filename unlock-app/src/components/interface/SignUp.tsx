@@ -165,10 +165,7 @@ export const mapDispatchToProps = (dispatch: any) => ({
   signupEmail: (email: string) => dispatch(signupEmail(email)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignUp)
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp)
 
 const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;

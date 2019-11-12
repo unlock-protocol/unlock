@@ -594,7 +594,12 @@ export default class Web3Service extends UnlockService {
 
   _emitKeyOwners(lock, page, keyPromises) {
     return Promise.all(keyPromises).then(keys => {
-      this.emit('keys.page', lock, page, keys.filter(key => !!key))
+      this.emit(
+        'keys.page',
+        lock,
+        page,
+        keys.filter(key => !!key)
+      )
     })
   }
 
