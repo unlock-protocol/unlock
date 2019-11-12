@@ -11,6 +11,9 @@
   "node": {
     "enabled": false
   },
+  "minor": {
+    "groupName": "minor and patch updates"
+  },
   "packageRules": [
     {
       "paths": ["locksmith/**"],
@@ -60,7 +63,7 @@
     {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
-      "groupName": "unlock-js"
+      "groupName": "unlock-js npm package"
     }
   ]
 }
