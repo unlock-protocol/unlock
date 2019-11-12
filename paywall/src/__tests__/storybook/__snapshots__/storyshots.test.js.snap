@@ -2158,7 +2158,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c11 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c7 {
@@ -2232,12 +2238,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c3 {
@@ -2482,7 +2482,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
@@ -2498,7 +2498,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -2642,7 +2642,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c11 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c7 {
@@ -2716,12 +2722,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c3 {
@@ -3036,7 +3036,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
@@ -3052,7 +3052,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -3071,7 +3071,7 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Month
           </header>
@@ -3087,7 +3087,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -3106,7 +3106,7 @@ Object {
           data-address="0x789"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Year at a discount of 20%
           </header>
@@ -3122,7 +3122,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -3280,7 +3280,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c11 {
@@ -3319,7 +3319,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -3329,6 +3329,12 @@ Object {
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
   align-content: center;
+}
+
+.c17 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c9 {
@@ -3447,12 +3453,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c17 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c3 {
@@ -3765,7 +3765,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
@@ -3773,7 +3773,7 @@ Object {
             class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -3804,7 +3804,7 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Month
           </header>
@@ -3820,7 +3820,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -3839,7 +3839,7 @@ Object {
           data-address="0x789"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Year at a discount of 20%
           </header>
@@ -3855,7 +3855,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -4013,7 +4013,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c11 {
@@ -4052,7 +4052,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -4062,6 +4062,12 @@ Object {
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
   align-content: center;
+}
+
+.c17 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c13 {
@@ -4180,12 +4186,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c17 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c3 {
@@ -4494,7 +4494,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
@@ -4502,7 +4502,7 @@ Object {
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -4529,7 +4529,7 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Month
           </header>
@@ -4545,7 +4545,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -4564,7 +4564,7 @@ Object {
           data-address="0x789"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Year at a discount of 20%
           </header>
@@ -4580,7 +4580,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -4738,7 +4738,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c17 {
@@ -4777,7 +4777,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -4787,6 +4787,12 @@ Object {
   -webkit-align-content: center;
   -ms-flex-line-pack: center;
   align-content: center;
+}
+
+.c11 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c19 {
@@ -4905,12 +4911,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c11 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c3 {
@@ -5219,7 +5219,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
@@ -5235,7 +5235,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -5254,7 +5254,7 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Month
           </header>
@@ -5262,7 +5262,7 @@ Object {
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -5289,7 +5289,7 @@ Object {
           data-address="0x789"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Year at a discount of 20%
           </header>
@@ -5305,7 +5305,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -5397,14 +5397,14 @@ exports[`Storyshots Checkout Checkout with 3 locks and two valid key purchases 1
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c31 {
+    .c30 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c31 > svg {
+.c30 > svg {
   fill: white;
 }
 
@@ -5489,7 +5489,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c19 {
@@ -5561,12 +5567,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c13 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 {
@@ -5665,7 +5665,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c29 {
+.c28 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -5685,7 +5685,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c32:hover .c28 {
+.c31:hover .c27 {
   background-color: var(--activegreen);
 }
 
@@ -5719,12 +5719,6 @@ Object {
   font-weight: bold;
 }
 
-.c27 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
 .c3 {
   display: grid;
   margin-bottom: 20px;
@@ -5746,13 +5740,13 @@ Object {
   max-width: 200px;
 }
 
-.c30 {
+.c29 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c30 div {
+.c29 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -5796,7 +5790,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c31 {
+  .c30 {
     height: 16px;
     width: 16px;
   }
@@ -6040,7 +6034,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c27"
+                  class="c13"
                 >
                   <span>
                     365 days
@@ -6048,7 +6042,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c28 c29"
+                class="c27 c28"
                 disabled=""
               >
                 Purchase
@@ -6057,10 +6051,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c30"
+          class="c29"
         >
           <div
-            class="c31"
+            class="c30"
           >
             <svg
               viewBox="0 0 56 56"
@@ -6124,12 +6118,12 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Week
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -6142,7 +6136,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -6193,12 +6187,12 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Month
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -6211,7 +6205,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -6263,7 +6257,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             One Year at a discount of 20%
           </header>
@@ -6280,7 +6274,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -6373,14 +6367,14 @@ exports[`Storyshots Checkout Checkout with lock with config name override 1`] = 
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c31 {
+    .c30 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c31 > svg {
+.c30 > svg {
   fill: white;
 }
 
@@ -6465,7 +6459,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c19 {
@@ -6537,12 +6537,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c13 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 {
@@ -6641,7 +6635,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c29 {
+.c28 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -6661,7 +6655,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c32:hover .c28 {
+.c31:hover .c27 {
   background-color: var(--activegreen);
 }
 
@@ -6695,12 +6689,6 @@ Object {
   font-weight: bold;
 }
 
-.c27 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
 .c3 {
   display: grid;
   margin-bottom: 20px;
@@ -6722,13 +6710,13 @@ Object {
   max-width: 200px;
 }
 
-.c30 {
+.c29 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c30 div {
+.c29 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -6772,7 +6760,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c31 {
+  .c30 {
     height: 16px;
     width: 16px;
   }
@@ -6945,7 +6933,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c27"
+                  class="c13"
                 >
                   <span>
                     30 days
@@ -6953,7 +6941,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c28 c29"
+                class="c27 c28"
                 disabled=""
               >
                 Purchase
@@ -6981,7 +6969,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c27"
+                  class="c13"
                 >
                   <span>
                     365 days
@@ -6989,7 +6977,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c28 c29"
+                class="c27 c28"
                 disabled=""
               >
                 Purchase
@@ -6998,10 +6986,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c30"
+          class="c29"
         >
           <div
-            class="c31"
+            class="c30"
           >
             <svg
               viewBox="0 0 56 56"
@@ -7065,12 +7053,12 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -7083,7 +7071,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -7135,7 +7123,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
             class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
@@ -7150,7 +7138,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -7171,7 +7159,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
             class="sc-1549ebs-3 sc-5sgq84-2 ddHjJt"
@@ -7186,7 +7174,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -7279,14 +7267,14 @@ exports[`Storyshots Checkout Checkout with lock with no name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c31 {
+    .c30 {
   background-color: var(--brand);
   height: 28px;
   width: 28px;
   border-radius: 50%;
 }
 
-.c31 > svg {
+.c30 > svg {
   fill: white;
 }
 
@@ -7371,7 +7359,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c13 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c19 {
@@ -7443,12 +7437,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c13 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 {
@@ -7547,7 +7535,7 @@ Object {
   cursor: not-allowed;
 }
 
-.c29 {
+.c28 {
   display: grid;
   font-weight: 300;
   -webkit-box-pack: center;
@@ -7567,7 +7555,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c32:hover .c28 {
+.c31:hover .c27 {
   background-color: var(--activegreen);
 }
 
@@ -7601,12 +7589,6 @@ Object {
   font-weight: bold;
 }
 
-.c27 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-}
-
 .c3 {
   display: grid;
   margin-bottom: 20px;
@@ -7628,13 +7610,13 @@ Object {
   max-width: 200px;
 }
 
-.c30 {
+.c29 {
   margin-top: 50px;
   font-size: 12px;
   text-align: center;
 }
 
-.c30 div {
+.c29 div {
   margin: 8px;
   vertical-align: middle;
   display: inline-block;
@@ -7678,7 +7660,7 @@ Object {
 }
 
 @media only screen and (min-width:257px) and (max-width:736px) {
-  .c31 {
+  .c30 {
     height: 16px;
     width: 16px;
   }
@@ -7920,7 +7902,7 @@ Object {
               </div>
               <div>
                 <span
-                  class="c27"
+                  class="c13"
                 >
                   <span>
                     365 days
@@ -7928,7 +7910,7 @@ Object {
                 </span>
               </div>
               <footer
-                class="c28 c29"
+                class="c27 c28"
                 disabled=""
               >
                 Purchase
@@ -7937,10 +7919,10 @@ Object {
           </li>
         </ul>
         <footer
-          class="c30"
+          class="c29"
         >
           <div
-            class="c31"
+            class="c30"
           >
             <svg
               viewBox="0 0 56 56"
@@ -8004,12 +7986,12 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Config Name
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -8022,7 +8004,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   7 days
@@ -8073,10 +8055,10 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -8089,7 +8071,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -8141,7 +8123,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Has Name
           </header>
@@ -8158,7 +8140,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   365 days
@@ -8317,7 +8299,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c10 {
@@ -8586,7 +8568,7 @@ Object {
           data-address=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Loading Locks...
           </header>
@@ -8742,7 +8724,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c10 {
@@ -9017,7 +8999,7 @@ Object {
           data-address=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Loading Locks...
           </header>
@@ -19413,7 +19395,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c13 {
@@ -19452,7 +19434,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -19854,13 +19836,13 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
             class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -20034,7 +20016,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c13 {
@@ -20073,7 +20055,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -20471,13 +20453,13 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -20647,7 +20629,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c13 {
@@ -20686,7 +20668,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -21084,13 +21066,13 @@ Object {
           data-address="0x456"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           />
           <div
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -24134,7 +24116,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -24204,12 +24192,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c10 .c0 {
@@ -24290,7 +24272,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -24307,7 +24289,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -24398,7 +24380,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -24468,12 +24456,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c10 .c0 {
@@ -24554,7 +24536,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -24571,7 +24553,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -24662,7 +24644,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -24732,12 +24720,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c10 .c0 {
@@ -24818,7 +24800,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -24835,7 +24817,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -24926,7 +24908,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -24996,12 +24984,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c10 .c0 {
@@ -25082,7 +25064,7 @@ Object {
           disabled=""
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -25099,7 +25081,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -25190,7 +25172,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -25264,12 +25252,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -25346,7 +25328,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -25362,7 +25344,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -25452,7 +25434,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -25526,12 +25514,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -25608,7 +25590,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -25624,7 +25606,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -25728,7 +25710,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c6 {
@@ -25767,7 +25749,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -25902,7 +25884,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -25910,7 +25892,7 @@ Object {
             class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -26097,7 +26079,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c15 {
@@ -26169,12 +26157,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c8 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c4 {
@@ -26388,12 +26370,12 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -26406,7 +26388,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -26542,7 +26524,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c6 {
@@ -26581,7 +26563,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -26716,7 +26698,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -26724,7 +26706,7 @@ Object {
             class="sc-1549ebs-3 bn9s5o-0 kTTKZX"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -26911,7 +26893,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c8 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c15 {
@@ -26983,12 +26971,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c8 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c4 {
@@ -27202,12 +27184,12 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
           <div
-            class="sc-1549ebs-3 ynhyps-4 fvyKXf"
+            class="sc-1549ebs-3 ynhyps-2 ffwjDE"
           >
             <div
               class="ynhyps-1 foCVaf price"
@@ -27220,7 +27202,7 @@ Object {
               class="ynhyps-0 dBjFND"
             >
               <span
-                class="ynhyps-2 ynhyps-3 AwgYZ"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -27356,7 +27338,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c6 {
@@ -27395,7 +27377,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -27526,7 +27508,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -27534,7 +27516,7 @@ Object {
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -27646,7 +27628,7 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
 }
 
 .c6 {
@@ -27685,7 +27667,7 @@ Object {
   font-size: 15px;
   grid-auto-columns: min-content;
   grid-auto-flow: column;
-  color: var(--grey);
+  color: var(--mediumgrey);
   font-weight: 300;
   grid-gap: 4px;
   -webkit-align-self: center;
@@ -27816,7 +27798,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -27824,7 +27806,7 @@ Object {
             class="sc-1549ebs-3 mmuk7x-1 fuDijf"
           >
             <div
-              class="sc-1549ebs-6 hGyOOg"
+              class="sc-1549ebs-6 cRXRR"
             >
               <div
                 class="sc-1549ebs-4 cXGnbO"
@@ -27922,7 +27904,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -27996,12 +27984,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -28078,7 +28060,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -28094,7 +28076,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -28184,7 +28166,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -28258,12 +28246,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -28340,7 +28322,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -28356,7 +28338,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days
@@ -28446,7 +28428,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -28520,12 +28508,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -28602,7 +28584,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -28618,7 +28600,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -28708,7 +28690,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -28782,12 +28770,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -28864,7 +28846,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -28880,7 +28862,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -28970,7 +28952,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -29044,12 +29032,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -29126,7 +29108,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Monthly
           </header>
@@ -29142,7 +29124,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   5 minutes
@@ -29232,7 +29214,13 @@ Object {
   min-height: 40px;
   border-radius: 4px 4px 0px 0px;
   padding: 0px;
-  color: var(--grey);
+  color: var(--mediumgrey);
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--mediumgrey);
 }
 
 .c1 {
@@ -29306,12 +29294,6 @@ Object {
   font-size: 30px;
   color: var(--slate);
   font-weight: bold;
-}
-
-.c6 {
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
 }
 
 .c9 .c0 {
@@ -29388,7 +29370,7 @@ Object {
           data-address="0x123"
         >
           <header
-            class="sc-1549ebs-1 kSQjXI"
+            class="sc-1549ebs-1 iDbbbv"
           >
             Hitting406 Crypto Category
           </header>
@@ -29404,7 +29386,7 @@ Object {
             </div>
             <div>
               <span
-                class="sc-5sgq84-4 sc-5sgq84-5 BEVkH"
+                class="sc-1549ebs-7 gUTcfB"
               >
                 <span>
                   30 days

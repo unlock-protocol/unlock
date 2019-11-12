@@ -2,7 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import UnlockPropTypes from '../../propTypes'
-import { LockWrapper, LockHeader, LockBody, LockFooter } from './LockStyles'
+import {
+  LockWrapper,
+  LockHeader,
+  LockBody,
+  LockFooter,
+  ExpirationDuration,
+} from './LockStyles'
 import Duration from '../helpers/Duration'
 import { UNLIMITED_KEYS_COUNT } from '../../constants'
 import withConfig from '../../utils/withConfig'
@@ -111,11 +117,3 @@ const EthPrice = styled.div.attrs({
   color: var(--slate);
   font-weight: bold;
 `
-
-const LockDetails = styled.span`
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-`
-
-const ExpirationDuration = styled(LockDetails)``
