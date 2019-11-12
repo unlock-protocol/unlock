@@ -31,19 +31,21 @@ contract('Lock / transferFee', accounts => {
   })
 
   describe('once a fee of 5% is set', () => {
-    let fee, fee1, fee2, fee3, now
+    let fee, fee1, fee2, fee3, nowBefore
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
+      nowBefore = Math.floor(Date.now() / 1000)
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
-      now = Math.floor(Date.now() / 1000)
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      assert(fee.lte(expiration.minus(now).times(0.05)))
+      let nowAfter = Math.floor(Date.now() / 1000)
+      assert(fee.lte(expiration.minus(nowBefore).times(0.05)))
+      assert(fee.lte(expiration.minus(nowAfter).times(0.05)))
     })
 
     it('calculates the fee based on the time value passed in', async () => {
@@ -74,7 +76,6 @@ contract('Lock / transferFee', accounts => {
       })
 
       it('the fee is deducted from the time transferred', async () => {
-        now = Math.floor(Date.now() / 1000)
         assert(expirationAfter.gte(expirationBefore.minus(fee)))
       })
 
