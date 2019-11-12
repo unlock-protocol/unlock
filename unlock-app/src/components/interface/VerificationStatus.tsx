@@ -8,7 +8,6 @@ import {
   expirationAsDate,
 } from '../../utils/durations'
 import { OwnedKey } from './keychain/KeychainTypes'
-import RefundButton from './RefundButton'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 
@@ -69,6 +68,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   return (
     <div>
+      {matchingKey && <h1>{matchingKey.lock.name}</h1>}
       <Identity valid={identityIsValid} />
 
       <OwnsKey
@@ -80,14 +80,6 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
       <p>
         Signed {durationsAsTextFromSeconds(secondsElapsedFromSignature)} ago.
       </p>
-      {matchingKey && identityIsValid && (
-        <RefundButton
-          accountAddress={accountAddress}
-          lockAddress={lockAddress}
-          timestamp={timestamp}
-          signature={sig}
-        />
-      )}
     </div>
   )
 }

@@ -38,9 +38,15 @@ describe('VerificationStatus', () => {
 
       const apolloSpy = jest.spyOn(apolloHooks, 'useQuery')
       apolloSpy.mockReturnValue({
-        loading: true,
+        loading: undefined,
         error: undefined,
-        data: undefined,
+        data: {
+          keyHolders: [
+            {
+              keys: [ownedKey],
+            },
+          ],
+        },
       } as any)
 
       const sigUtilSpy = jest.spyOn(sigUtil, 'recoverPersonalSignature')
@@ -59,6 +65,7 @@ describe('VerificationStatus', () => {
       )
 
       getByText('Identity is valid.')
+      getByText('Lock Around the Clock')
     })
   })
 
