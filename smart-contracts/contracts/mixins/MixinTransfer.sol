@@ -74,13 +74,9 @@ contract MixinTransfer is
     if (toKey.tokenId == 0) {
       _assignNewTokenId(toKey);
       _recordOwner(_to, toKey.tokenId);
-      // add time to new key
-      _timeMachine(IdTo, _timeShared, true);
-    } else {
-      // add time to new key
-      _timeMachine(IdTo, _timeShared, true);
     }
-
+    // add time to new key
+    _timeMachine(IdTo, _timeShared, true);
     // trigger event
       emit Transfer(
         address(0), // This is a creation.
