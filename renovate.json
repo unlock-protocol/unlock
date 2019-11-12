@@ -11,8 +11,8 @@
   "node": {
     "enabled": false
   },
-  "patch": {
-    "groupName": "all dependencies patch updates",
+  "minor": {
+    "groupName": "all minor and patch updates",
   },
   "packageRules": [
     {
