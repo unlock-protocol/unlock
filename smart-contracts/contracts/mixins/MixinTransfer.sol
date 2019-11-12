@@ -162,24 +162,25 @@ contract MixinTransfer is
    * @param _owner The owner of the key check the transfer fee for.
    */
   function getTransferFee(
-    address _owner
+    address _owner,
+    uint _time
   )
     public view
     hasValidKey(_owner)
     returns (uint)
   {
     Key storage key = keyByOwner[_owner];
-    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
-    uint timeRemaining = key.expirationTimestamp - block.timestamp;
+    uint timeToTransfer;
     uint fee;
-    if(timeRemaining >= expirationDuration) {
-      // Max the potential impact of this fee for keys with long durations remaining
-      fee = keyPrice;
+    // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
+    // this is for standard key transfers
+    if(_time == 0) {
+      timeToTransfer = key.expirationTimestamp - block.timestamp;
     } else {
-      // Math: using safeMul in case keyPrice or timeRemaining is very large
-      fee = keyPrice.mul(timeRemaining) / expirationDuration;
+      timeToTransfer = _time;
     }
-    return fee.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+    fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+    return fee;
   }
 
   /**
