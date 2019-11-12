@@ -15,7 +15,8 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).
-You can try out the staging version - which runs the latest, in-progress code - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
+You can try out the staging version - which runs the latest, in-progress code, but against the Rinkeby test network - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
+
 Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
 
 ## Contributing
@@ -93,3 +94,8 @@ cd unlock-app && npm run dev
 [<img src="https://user-images.githubusercontent.com/624104/52508260-d0daa180-2ba8-11e9-970c-3ef9596f6b4e.png" alt="BrowserStack Logo" width="120">](https://www.browserstack.com/)
 
 Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to test in real browsers.
+
+Thank you to all the Members of our lock as well!
+You can easily join this list by clicking on the ❤️ Sponsor button (it's free!) at the top of this page too.
+
+![Members](https://member-wall.julien51.now.sh/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxWidth=1000)
