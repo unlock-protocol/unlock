@@ -12,7 +12,7 @@
     "enabled": false
   },
   "minor": {
-    "groupName": "minor and patch updates",
+    "groupName": "minor and patch updates"
   },
   "packageRules": [
     {
