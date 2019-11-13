@@ -46,7 +46,7 @@ npm ci
 
 3. Set up your environment variables
 
-At the root of the repo, add a file names `.env.dev.local` which includes the following variables:
+At the root of the repo, add a file called `.env.dev.local` which includes the following variables and add your wallet address to the first line:
 
 ```
 ETHEREUM_ADDRESS=<your ethereum address>
