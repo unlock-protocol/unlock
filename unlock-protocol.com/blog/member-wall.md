@@ -15,7 +15,7 @@ I worked on building a "member wall", which is just a way to show the list of me
 
 It's a very simple application which generates a large SVG image which lists all members of a key. For example, here is the list of [participants to the EthWaterloo hackathon](https://member-wall.unlock-protocol.com/api/members?locks=0xb0ad425ca5792dd4c4af9177c636e5b0e6c317bf&maxHeight=300), or the list of people who supported Evan Van Ness' [Week In Ethereum anniversary edition](https://member-wall.unlock-protocol.com/api/members?locks=0x79C91241eFf1F119CDf743730f6e6fB2aF7Fb279&maxHeight=300)!
 
-The great thing about using images, is that they can be embeded on almost any webpage. For example, below is the list of all members to our lock and that image is dynamically refreshed when new members are added!
+The great thing about using images is that they can be embedded on almost any webpage. For example, below is the list of all members to our lock and that image is dynamically refreshed when new members are added!
 
 <object data="https://member-wall.unlock-protocol.com/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxHeight=300" type="image/svg+xml"/>
 
