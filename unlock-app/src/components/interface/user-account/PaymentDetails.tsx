@@ -235,7 +235,4 @@ const mapStateToProps = ({ account, errors }: ReduxState) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PaymentDetails)
+export default connect(mapStateToProps, mapDispatchToProps)(PaymentDetails)

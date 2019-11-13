@@ -322,10 +322,9 @@ describe('Lock middleware', () => {
       // We need to await this for the next assertion to work
       await lockCreationTransaction
 
-      expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
-        mockTx.transactionHash,
-        { network: 'test' }
-      )
+      expect(
+        mockWeb3Service.getTransaction
+      ).toHaveBeenCalledWith(mockTx.transactionHash, { network: 'test' })
       expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
     })
   })

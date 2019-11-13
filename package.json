@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@typescript-eslint/eslint-plugin": "2.6.0",
-    "@typescript-eslint/parser": "2.6.0",
+    "@typescript-eslint/eslint-plugin": "2.7.0",
+    "@typescript-eslint/parser": "2.7.0",
     "babel-eslint": "10.0.3",
     "babel-jest": "24.9.0",
     "eslint": "5.16.0",
@@ -17,7 +17,7 @@
     "eslint-config-standard": "14.1.0",
     "eslint-import-resolver-typescript": "2.0.0",
     "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-jest": "23.0.2",
+    "eslint-plugin-jest": "23.0.3",
     "eslint-plugin-jsx-a11y": "6.2.3",
     "eslint-plugin-mocha": "6.2.1",
     "eslint-plugin-node": "10.0.0",
@@ -30,9 +30,9 @@
     "link-parent-bin": "1.0.2",
     "lint-staged": "8.2.1",
     "netlify-cli": "2.20.2",
-    "prettier": "1.18.2",
+    "prettier": "1.19.1",
     "ts-jest": "24.1.0",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   },
   "engines": {
     "node": "^10"

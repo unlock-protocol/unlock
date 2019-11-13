@@ -36,10 +36,7 @@ export const mapDispatchToProps = (dispatch: any) => ({
     dispatch(signupCredentials(credentials)),
 })
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(FinishSignup)
+export default connect(null, mapDispatchToProps)(FinishSignup)
 
 export const Heading = styled.h1`
   font-family: 'IBM Plex Sans', sans-serif;

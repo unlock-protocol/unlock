@@ -35,9 +35,9 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.6.4",
-    "@babel/core": "7.6.4",
-    "@babel/preset-env": "7.6.3",
+    "@babel/cli": "7.7.0",
+    "@babel/core": "7.7.2",
+    "@babel/preset-env": "7.7.1",
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
     "nock": "11.7.0",

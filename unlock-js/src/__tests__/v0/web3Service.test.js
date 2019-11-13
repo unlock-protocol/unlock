@@ -60,11 +60,10 @@ describe('Web3Service', () => {
     it('should return the right transaction type on lock creation', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const data = getEncoder(UnlockVersion.Unlock.abi, 'createLock')([
-        '1000',
-        '1000000000',
-        '1',
-      ])
+      const data = getEncoder(
+        UnlockVersion.Unlock.abi,
+        'createLock'
+      )(['1000', '1000000000', '1'])
 
       const type = web3Service._getTransactionType(UnlockVersion.Unlock, data)
       expect(type).toBe(TransactionTypes.LOCK_CREATION)
@@ -75,14 +74,15 @@ describe('Web3Service', () => {
       await nockBeforeEach()
       let data
       if (version !== 'v0') {
-        data = getEncoder(UnlockVersion.PublicLock.abi, 'purchaseFor')([
-          account,
-        ])
+        data = getEncoder(
+          UnlockVersion.PublicLock.abi,
+          'purchaseFor'
+        )([account])
       } else {
-        data = getEncoder(UnlockVersion.PublicLock.abi, 'purchaseFor')([
-          account,
-          utils.utf8ToHex(''),
-        ])
+        data = getEncoder(
+          UnlockVersion.PublicLock.abi,
+          'purchaseFor'
+        )([account, utils.utf8ToHex('')])
       }
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
@@ -101,9 +101,10 @@ describe('Web3Service', () => {
     it('should return the right transaction type on key price updates', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const data = getEncoder(UnlockVersion.PublicLock.abi, 'updateKeyPrice')([
-        123,
-      ])
+      const data = getEncoder(
+        UnlockVersion.PublicLock.abi,
+        'updateKeyPrice'
+      )([123])
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
       ).toBe(TransactionTypes.UPDATE_KEY_PRICE)

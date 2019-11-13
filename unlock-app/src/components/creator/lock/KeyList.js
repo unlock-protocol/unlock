@@ -95,10 +95,7 @@ export const mapDispatchToProps = (dispatch, { lock }) => ({
   },
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(KeyList)
+export default connect(mapStateToProps, mapDispatchToProps)(KeyList)
 
 const KeyListWrapper = styled.div`
   cursor: default;

@@ -59,10 +59,7 @@ export const mapStateToProps = ({ loading }: State) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  null
-)(CreatorLog)
+export default connect(mapStateToProps, null)(CreatorLog)
 
 const Grid = styled.div`
   display: grid;

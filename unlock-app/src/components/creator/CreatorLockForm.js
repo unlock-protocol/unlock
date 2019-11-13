@@ -385,10 +385,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = { setError, resetError }
 
 export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CreatorLockForm)
+  connect(mapStateToProps, mapDispatchToProps)(CreatorLockForm)
 )
 
 const LockLabelUnlimited = styled(LockLabel)`

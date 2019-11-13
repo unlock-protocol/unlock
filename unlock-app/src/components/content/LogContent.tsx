@@ -95,8 +95,5 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(LogContent)
+  connect(mapStateToProps, mapDispatchToProps)(LogContent)
 )

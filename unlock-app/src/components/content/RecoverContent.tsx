@@ -123,7 +123,4 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(RecoverContent)
+export default connect(mapStateToProps, mapDispatchToProps)(RecoverContent)

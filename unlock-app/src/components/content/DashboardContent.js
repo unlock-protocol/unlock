@@ -73,7 +73,4 @@ const mapDispatchToProps = dispatch => ({
   hideForm: () => dispatch(hideForm()),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DashboardContent)
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)

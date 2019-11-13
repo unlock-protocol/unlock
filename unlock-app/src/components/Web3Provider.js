@@ -67,8 +67,5 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Web3Provider)
+  connect(mapStateToProps, mapDispatchToProps)(Web3Provider)
 )
