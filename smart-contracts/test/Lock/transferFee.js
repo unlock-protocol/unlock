@@ -43,25 +43,9 @@ contract('Lock / transferFee', accounts => {
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      console.log(fee.toFixed())
-      console.log(
-        expiration
-          .minus(nowBefore)
-          .times(0.05)
-          .toFixed()
-      )
-
       let nowAfter = Math.ceil(Date.now() / 1000)
-      console.log(
-        expiration
-          .minus(nowAfter)
-          .times(0.05)
-          .toFixed()
-      )
-      assert(fee.lte(expiration.minus(nowBefore).times(0.05)))
-      //fee should be less or equal to 5% of remaining time(expirationTimestamp - block.timestamp)
-      // remaining time before should be greater, so 5% should be greater before
-      assert(fee.gte(expiration.minus(nowAfter).times(0.05)))
+      assert(fee.lte(Math.trunc(expiration.minus(nowBefore).times(0.05))))
+      assert(fee.gte(Math.trunc(expiration.minus(nowAfter).times(0.05))))
     })
 
     it('calculates the fee based on the time value passed in', async () => {
@@ -92,11 +76,10 @@ contract('Lock / transferFee', accounts => {
       })
 
       it('the fee is deducted from the time transferred', async () => {
-        console.log(expirationBefore.toFixed())
-        console.log(expirationAfter.toFixed())
-        console.log(expirationBefore.minus(fee).toFixed())
+        // make sure that a fee was taken
         assert(expirationAfter.lt(expirationBefore))
-        assert(expirationAfter.lte(expirationBefore.minus(fee)))
+        // check that fee was not more than 5%
+        assert(expirationAfter.gte(expirationBefore.minus(fee)))
       })
 
       after(async () => {
