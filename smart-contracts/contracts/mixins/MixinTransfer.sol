@@ -213,6 +213,7 @@ contract MixinTransfer is
     } else {
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
+    emit TimestampChanged(_tokenId, _deltaT, _addTime);
   }
 
   /**

@@ -67,6 +67,9 @@ interface IPublicLock {
   /// @dev This emits when an operator is enabled or disabled for an owner.
   ///  The operator can manage all NFTs of the owner.
   event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+
+  /// @dev This emit when a key has its expirationTimestamp changed
+  event TimestampChanged(uint indexed _tokenId, uint _amount, bool _timeAdded);
   ///===================================================================
 
   /// Functions
