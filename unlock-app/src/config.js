@@ -54,10 +54,6 @@ export default function configure(
     'http://localhost:3001/static/paywall.min.js'
   let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
   let httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
-  // TODO: remove after EthWaterloo, this is temporary
-  let externalRefundContractAddress =
-    runtimeConfig.externalRefundContractAddress ||
-    '0xb75f06e743f9CfFf2efa711427098304f5ccfFa4'
   let blockTime = 8000 // in mseconds.
   let chainExplorerUrlBuilders = {
     etherScan: () => '',
@@ -204,6 +200,5 @@ export default function configure(
     chainExplorerUrlBuilders,
     stripeApiKey,
     subgraphURI,
-    externalRefundContractAddress,
   }
 }
