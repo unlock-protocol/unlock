@@ -39,4 +39,4 @@ Of couse, this is all [completely open source](https://github.com/unlock-protoco
 
 One of the benfits of decoupling the membership from the platform itself means that this can actually be embedded on any website. For example, we added this list of members to [our Github page](https://github.com/unlock-protocol/unlock/), so that everyone who makes a donation is instantly shown on the README, as soon as the transaction gets mined!
 
-Where would you embed your member's wall?
+Where would you embed your members wall?
