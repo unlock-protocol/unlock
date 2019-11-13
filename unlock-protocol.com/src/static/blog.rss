@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Tue, 05 Nov 2019 22:46:53 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 12 Nov 2019 23:19:03 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Member Wall]]></title>
+            <description><![CDATA[Showing a list of members has never been easier!]]></description>
+            <link>https://unlock-protocol.com/blog/member-wall</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/member-wall</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Tue, 12 Nov 2019 05:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Ejecting an Unlock Account]]></title>
             <description><![CDATA[Unlock accounts are regular Ethereum accounts. You can easily take it over and use it with your own web3 wallet!]]></description>
