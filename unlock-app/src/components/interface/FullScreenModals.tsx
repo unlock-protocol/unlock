@@ -1,33 +1,26 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { KindOfModal, Dispatch } from '../../unlockTypes' // eslint-disable-line
-import { QRDisplay, WalletCheck, styles } from './modal-templates'
+import { WalletCheck, styles } from './modal-templates'
 
 interface Props {
   active: boolean
   kindOfModal: KindOfModal
   dispatch: Dispatch
-  data?: any
 }
 
 const templates = {
   [KindOfModal.WalletCheckOverlay]: WalletCheck,
-  [KindOfModal.QRDisplay]: QRDisplay,
 }
 
-export const FullScreenModal = ({
-  active,
-  kindOfModal,
-  dispatch,
-  data,
-}: Props) => {
+export const FullScreenModal = ({ active, kindOfModal, dispatch }: Props) => {
   let Template = templates[kindOfModal]
 
   if (active) {
     // render a modal
     return (
       <styles.Greyout>
-        <Template dispatch={dispatch} data={data} />
+        <Template dispatch={dispatch} />
       </styles.Greyout>
     )
   }
@@ -39,18 +32,16 @@ interface State {
   fullScreenModalStatus: {
     active: boolean
     kindOfModal: KindOfModal
-    data?: any
   }
 }
 
 const mapStateToProps = (state: State) => {
   const {
-    fullScreenModalStatus: { active, kindOfModal, data },
+    fullScreenModalStatus: { active, kindOfModal },
   } = state
   return {
     active,
     kindOfModal,
-    data,
   }
 }
 
