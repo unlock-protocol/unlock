@@ -109,10 +109,7 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CreatorLocks)
+export default connect(mapStateToProps, mapDispatchToProps)(CreatorLocks)
 
 const Locks = styled.section`
   display: grid;

@@ -185,7 +185,4 @@ export const mapDispatchToProps = (dispatch, { lock }) => {
   }
 }
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(CreatorLock)
+export default connect(undefined, mapDispatchToProps)(CreatorLock)

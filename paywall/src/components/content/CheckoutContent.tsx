@@ -110,11 +110,12 @@ export default function CheckoutContent() {
   }, [postMessage])
 
   // get a list of locks with key purchases in progress
-  const purchasingLocks = Object.keys(locks as Locks).filter(
-    (lockAddress: string) =>
-      ['submitted', 'pending', 'confirming'].includes(
-        locks[lockAddress].key.status
-      )
+  const purchasingLocks = Object.keys(
+    locks as Locks
+  ).filter((lockAddress: string) =>
+    ['submitted', 'pending', 'confirming'].includes(
+      locks[lockAddress].key.status
+    )
   )
 
   // One we have something in purchasingLocks, we can assume that the

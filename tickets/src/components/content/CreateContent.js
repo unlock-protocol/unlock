@@ -138,8 +138,5 @@ export const mapDispatchToProps = dispatch => ({
 })
 
 export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(CreateContent)
+  connect(mapStateToProps, mapDispatchToProps)(CreateContent)
 )

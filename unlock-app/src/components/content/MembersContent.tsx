@@ -138,7 +138,4 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { signMetadataRequest }
-)(MembersContent)
+export default connect(mapStateToProps, { signMetadataRequest })(MembersContent)

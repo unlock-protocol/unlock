@@ -99,7 +99,10 @@ describe('errors reducer', () => {
 
   it('should reset a specific error if RESET_ERROR is called with a specific error', () => {
     expect.assertions(4)
-    const state = [{ name: 1, data: {} }, { name: 2, data: {} }]
+    const state = [
+      { name: 1, data: {} },
+      { name: 2, data: {} },
+    ]
     expect(reducer(state, resetError(1))).toEqual([{ name: 2, data: {} }])
     expect(reducer(state, resetError(2))).toEqual([{ name: 1, data: {} }])
     expect(reducer(state, resetError(2))).toEqual([{ name: 1, data: {} }])
