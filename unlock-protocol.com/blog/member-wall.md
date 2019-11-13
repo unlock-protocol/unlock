@@ -19,7 +19,7 @@ The great thing about using images is that they can be embedded on almost any we
 
 <object data="https://member-wall.unlock-protocol.com/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxHeight=300" type="image/svg+xml"/>
 
-Each of the member is clickable and will link to the corresponding page on [Etherscan](https://etherscan.io/)!
+Each of the members is clickable and will link to the corresponding page on [Etherscan](https://etherscan.io/)!
 
 # How does it work?
 
