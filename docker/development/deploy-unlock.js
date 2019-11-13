@@ -48,17 +48,16 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v11', newContractInstance => {
-      console.log(`UNLOCK DEPLOYED AT ${newContractInstance.address}`)
+    return deploy(host, port, 'v11', unlockContract => {
+      console.log(`UNLOCK DEPLOYED AT ${unlockContract.address}`)
 
-      // Once unlock has been deployed, we need to deploy a lock too!
       const wallet = new WalletService({
-        unlockAddress: newContractInstance.options.address,
+        unlockAddress: unlockContract.address,
       })
 
       const web3Service = new Web3Service({
         readOnlyProvider: providerURL,
-        unlockAddress: newContractInstance.options.address,
+        unlockAddress: unlockContract.address,
         requiredConfirmations: 1,
         blockTime: 3000, // this is in milliseconds
       })
@@ -74,9 +73,13 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
           userAddress
         )
 
+        // Change the base URL for token metadata
+        const baseUri = 'http://0.0.0.0:8080/api/key/'
+        unlockContract.setGlobalBaseTokenURI(baseUri)
+
+        // TODO REMOVE AS THIS IS NOT USED ANYMORE
         let lockAddress = '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5'
         let tokenAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
-
         await ExternalRefundDeployer.deployExternalRefund(
           lockAddress,
           '21500000000000000000',
