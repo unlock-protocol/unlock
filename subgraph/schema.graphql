@@ -11,6 +11,7 @@ type Key @entity {
   keyId: BigInt!
   owner: KeyHolder!
   expiration: BigInt!
+  tokenURI: String!
 }
 
 type KeyHolder @entity {
