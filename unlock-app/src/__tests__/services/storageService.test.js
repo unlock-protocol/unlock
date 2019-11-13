@@ -791,20 +791,9 @@ describe('StorageService', () => {
       const typedData = {
         data: 'typed',
       }
-      const userMetadata = {
-        '1': {
-          public: {
-            seven: '7',
-          },
-          protected: {
-            'capital seven': '七',
-          },
-        },
-      }
+      const userMetadata = []
       axios.get.mockReturnValue({
-        data: {
-          userMetadata,
-        },
+        data: userMetadata,
       })
 
       storageService.on(success.getBulkMetadataFor, result => {

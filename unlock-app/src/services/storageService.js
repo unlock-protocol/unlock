@@ -416,9 +416,7 @@ export class StorageService extends EventEmitter {
         opts
       )
 
-      if (result.data && result.data.userMetadata) {
-        this.emit(success.getBulkMetadataFor, result.data.userMetadata)
-      }
+      this.emit(success.getBulkMetadataFor, result.data)
     } catch (error) {
       this.emit(failure.getBulkMetadataFor, error)
     }
