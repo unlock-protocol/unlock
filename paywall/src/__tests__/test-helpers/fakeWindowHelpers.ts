@@ -230,10 +230,7 @@ export default class FakeWindow
     ;(this.parent as any).postMessage.mockClear()
   }
 
-  public expectPostMessageSent<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>
-  ) {
+  public expectPostMessageSent(type: any, payload: any) {
     expect(this.parent.postMessage).toHaveBeenCalledWith(
       {
         type,
@@ -243,10 +240,7 @@ export default class FakeWindow
     )
   }
 
-  public expectPostMessageNotSent<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>
-  ) {
+  public expectPostMessageNotSent(type: any, payload: any) {
     expect(this.parent.postMessage).not.toHaveBeenCalledWith(
       {
         type,
@@ -256,9 +250,9 @@ export default class FakeWindow
     )
   }
 
-  public expectPostMessageSentToIframe<T extends PostMessages = PostMessages>(
-    type: T,
-    payload: ExtractPayload<T>,
+  public expectPostMessageSentToIframe(
+    type: any,
+    payload: any,
     iframe: IframeType,
     iframeOrigin: string
   ) {
