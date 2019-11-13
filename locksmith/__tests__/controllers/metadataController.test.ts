@@ -155,7 +155,7 @@ describe('Metadata Controller', () => {
           )
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .set('Accept', 'json')
-          .send(typedData)
+          .query({ data: encodeURIComponent(JSON.stringify(typedData)) })
 
         const { userMetadata } = response.body[0].data
 

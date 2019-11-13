@@ -52,7 +52,7 @@ router.get(
 
 router.get(
   '/:address/keyHolderMetadata',
-  signatureValidationMiddleware.generateProcessor(
+  signatureValidationMiddleware.generateSignatureEvaluator(
     lockOwnerMetaDataConfiguration
   )
 )

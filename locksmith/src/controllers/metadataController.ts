@@ -141,25 +141,32 @@ namespace MetadataController {
   }
 
   export const keyHolderMetadata = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
-    const lockAddress = Normalizer.ethereumAddress(req.params.address)
-    const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
-      lockAddress
-    )
-
-    if ((await evaluateLockOwnership(lockAddress, req.owner)) === false) {
+    if (!req.query.data) {
       res.sendStatus(401)
     } else {
-      res.json(
-        await lockOperations.getKeyHolderMetadata(
-          lockAddress,
-          keyHolderAddresses
-        )
+      const payload = JSON.parse(decodeURIComponent(req.query.data))
+      const lockAddress = Normalizer.ethereumAddress(
+        payload.message.LockMetaData.address
       )
+      const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
+        lockAddress
+      )
+
+      if ((await evaluateLockOwnership(lockAddress, req.signee)) === false) {
+        res.sendStatus(401)
+      } else {
+        res.json(
+          await lockOperations.getKeyHolderMetadata(
+            lockAddress,
+            keyHolderAddresses
+          )
+        )
+      }
+      return false
     }
-    return false
   }
 }
 
