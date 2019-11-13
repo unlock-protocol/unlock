@@ -782,4 +782,66 @@ describe('StorageService', () => {
       )
     })
   })
+
+  describe('getBulkMetadataFor', () => {
+    it('should emit success on success', done => {
+      expect.assertions(2)
+
+      const lockAddress = 'address'
+      const typedData = {
+        data: 'typed',
+      }
+      const userMetadata = {
+        '1': {
+          public: {
+            seven: '7',
+          },
+          protected: {
+            'capital seven': '七',
+          },
+        },
+      }
+      axios.get.mockReturnValue({
+        data: {
+          userMetadata,
+        },
+      })
+
+      storageService.on(success.getBulkMetadataFor, result => {
+        expect(result).toEqual(userMetadata)
+
+        done()
+      })
+
+      storageService.getBulkMetadataFor(lockAddress, 'a signature', typedData)
+      expect(axios.get).toHaveBeenCalledWith(
+        `${serviceHost}/api/key/${lockAddress}/keyHolderMetadata`,
+        {
+          headers: {
+            Authorization: ' Bearer a signature',
+          },
+          params: {
+            data: JSON.stringify(typedData),
+            signature: 'a signature',
+          },
+        }
+      )
+    })
+
+    it('should emit failure on failure', done => {
+      expect.assertions(1)
+
+      const lockAddress = 'address'
+      const typedData = 'stringified-typed-data'
+
+      axios.get.mockRejectedValue('welp')
+
+      storageService.on(failure.getBulkMetadataFor, error => {
+        expect(error).toBe('welp')
+        done()
+      })
+
+      storageService.getBulkMetadataFor(lockAddress, 'a signature', typedData)
+    })
+  })
 })
