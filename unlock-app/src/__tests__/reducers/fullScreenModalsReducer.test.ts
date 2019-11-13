@@ -12,44 +12,32 @@ describe('fullScreenModalsReducer', () => {
     active: true,
     kindOfModal: KindOfModal.WalletCheckOverlay,
   }
+  const passwordModal = {
+    active: true,
+    kindOfModal: KindOfModal.PasswordPrompt,
+  }
   const walletAction = {
     type: LAUNCH_MODAL,
     kindOfModal: KindOfModal.WalletCheckOverlay,
   }
-
-  const qrModal = {
-    active: true,
-    kindOfModal: KindOfModal.QRDisplay,
-    data: 'some data',
-  }
-
-  const qrAction = {
+  const passwordAction = {
     type: LAUNCH_MODAL,
-    kindOfModal: KindOfModal.QRDisplay,
-    data: 'some data',
+    kindOfModal: KindOfModal.PasswordPrompt,
   }
 
   it.each([SET_ACCOUNT, SET_PROVIDER, SET_NETWORK, DISMISS_MODAL])(
     'should return initialState when receiving %s',
     actionType => {
-      expect.assertions(1)
+      expect.assertions(2)
       const action = { type: actionType }
       expect(reducer(walletModal, action)).toEqual(initialState)
+      expect(reducer(passwordModal, action)).toEqual(initialState)
     }
   )
 
   it('should launch the modal when given LAUNCH_MODAL', () => {
-    expect.assertions(1)
+    expect.assertions(2)
     expect(reducer(initialState, walletAction)).toEqual(walletModal)
-  })
-
-  it('should launch the modal when given LAUNCH_MODAL (with data)', () => {
-    expect.assertions(1)
-    expect(reducer(initialState, qrAction)).toEqual(qrModal)
-  })
-
-  it('should return the existing state when receiving some other action', () => {
-    expect.assertions(1)
-    expect(reducer(qrModal, { type: 'RELEASE_BEES' })).toEqual(qrModal)
+    expect(reducer(initialState, passwordAction)).toEqual(passwordModal)
   })
 })

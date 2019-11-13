@@ -23,7 +23,8 @@ export enum TransactionStatus {
 /* eslint-disable no-unused-vars */
 export enum KindOfModal {
   WalletCheckOverlay,
-  QRDisplay,
+  PasswordPrompt,
+  ResetPasswordPrompt,
 }
 /* eslint-enable no-unused-vars */
 
