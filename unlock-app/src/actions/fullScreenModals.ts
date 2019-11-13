@@ -22,15 +22,3 @@ export const dismissModal = (kindOfModal: KindOfModal) => ({
 export const waitForWallet = () => launchModal(KindOfModal.WalletCheckOverlay)
 export const dismissWalletCheck = () =>
   dismissModal(KindOfModal.WalletCheckOverlay)
-
-// Password prompts -- only responsible for launching and closing the
-// modal. Actually passing credentials around is the responsibility of the user
-// actions.
-export const promptForPassword = () => launchModal(KindOfModal.PasswordPrompt)
-export const dismissPasswordPrompt = () =>
-  dismissModal(KindOfModal.PasswordPrompt)
-
-export const promptForResetPassword = () =>
-  launchModal(KindOfModal.ResetPasswordPrompt)
-export const dismissResetPasswordPrompt = () =>
-  dismissModal(KindOfModal.ResetPasswordPrompt)
