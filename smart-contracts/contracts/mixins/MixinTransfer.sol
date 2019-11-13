@@ -30,6 +30,12 @@ contract MixinTransfer is
     uint transferFeeBasisPoints
   );
 
+  event TimestampChanged(
+    uint indexed _tokenId,
+    uint _amount,
+    bool _timeAdded
+  );
+
   // 0x150b7a02 == bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'))
   bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
