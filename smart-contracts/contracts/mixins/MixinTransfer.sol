@@ -66,20 +66,34 @@ contract MixinTransfer is
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_to];
-    uint IdFrom = fromKey.tokenId;
     uint IdTo = toKey.tokenId;
-    // deduct time from parent key, including transfer fee
-    _timeMachine(IdFrom, _timeShared, false);
+    uint time;
+    // get the remaining time for the origin key
+    uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
+    // get the transfer fee
+    uint fee = getTransferFee(_from, _timeShared);
+    uint totalTime = _timeShared + fee;
+
+    // ensure that we don't try to share too much
+    if(totalTime < timeRemaining) {
+      time = totalTime;
+      // deduct time from parent key, including transfer fee
+      _timeMachine(_tokenId, time, false);
+    } else {
+      time = timeRemaining - fee;
+      fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
+      emit ExpireKey(_tokenId);
+    }
 
     if (toKey.tokenId == 0) {
       _assignNewTokenId(toKey);
-      _recordOwner(_to, toKey.tokenId);
+      _recordOwner(_to, IdTo);
     }
     // add time to new key
-    _timeMachine(IdTo, _timeShared, true);
+    _timeMachine(IdTo, time, true);
     // trigger event
       emit Transfer(
-        address(0), // This is a creation.
+        address(0), // This is a creation or time-sharing
         _to,
         IdTo
       );
