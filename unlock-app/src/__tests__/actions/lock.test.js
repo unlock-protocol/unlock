@@ -1,5 +1,4 @@
 import {
-  addLock,
   createLock,
   deleteLock,
   getLock,
@@ -7,7 +6,6 @@ import {
   withdrawFromLock,
   updateKeyPrice,
   CREATE_LOCK,
-  ADD_LOCK,
   DELETE_LOCK,
   GET_LOCK,
   UPDATE_LOCK,
@@ -36,18 +34,6 @@ describe('lock actions', () => {
       update,
     }
     expect(updateLock(address, update)).toEqual(expectedAction)
-  })
-
-  it('should create an action to add the lock', () => {
-    expect.assertions(1)
-    const lock = {}
-    const address = '0x123'
-    const expectedAction = {
-      type: ADD_LOCK,
-      address,
-      lock,
-    }
-    expect(addLock(address, lock)).toEqual(expectedAction)
   })
 
   it('should create an action to get the lock', () => {
