@@ -72,15 +72,16 @@ contract MixinTransfer is
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee
     uint fee = getTransferFee(_from, _timeShared);
-    uint totalTime = _timeShared + fee;
 
     // ensure that we don't try to share too much
-    if(totalTime < timeRemaining) {
-      time = totalTime;
+    if(_timeShared.add(fee) < timeRemaining) {
+      time = _timeShared;
+      uint timePlusFee = _timeShared.add(fee);
       // deduct time from parent key, including transfer fee
-      _timeMachine(_tokenId, time, false);
+      _timeMachine(_tokenId, timePlusFee, false);
     } else {
-      time = timeRemaining - fee;
+      fee = getTransferFee(_from, timeRemaining);
+      time = timeRemaining.sub(fee);
       fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenId);
     }
@@ -99,10 +100,6 @@ contract MixinTransfer is
     );
   }
 
-  /**
-   * This is payable because at some point we want to allow the LOCK to capture a fee on 2ndary
-   * market transactions...
-   */
   function transferFrom(
     address _from,
     address _recipient,
