@@ -97,7 +97,10 @@ contract('Lock / transferFee', accounts => {
 
       it('the fee is deducted from the time transferred', async () => {
         // make sure that a fee was taken
-        assert(expirationAfter.lte(expirationBefore.minus(fee)))
+        // fee may be over-estimated (but not under-estimated)
+        assert(expirationAfter.gte(expirationBefore.minus(fee)))
+        // if less than 5 seconds have passed than the delta should be <= 1
+        assert(expirationAfter.lte(expirationBefore.minus(fee).plus(1)))
       })
 
       after(async () => {
