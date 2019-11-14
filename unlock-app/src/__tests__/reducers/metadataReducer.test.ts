@@ -72,7 +72,7 @@ describe('metadataReducer', () => {
     const result = reducer(undefined, gotBulkMetadata(lockAddress, metadata))
 
     expect(result).toEqual({
-      [lockAddress]: {
+      [lockAddress.toLowerCase()]: {
         [userAddress]: {
           public: {
             color: 'blue',
@@ -85,7 +85,7 @@ describe('metadataReducer', () => {
   it('should append data when a lock address is already present', () => {
     expect.assertions(1)
     const initialState = {
-      [lockAddress]: {
+      [lockAddress.toLowerCase()]: {
         '0x123': {
           protected: {
             color: 'red',
@@ -97,13 +97,13 @@ describe('metadataReducer', () => {
     const result = reducer(initialState, gotBulkMetadata(lockAddress, metadata))
 
     expect(result).toEqual({
-      [lockAddress]: {
+      [lockAddress.toLowerCase()]: {
         '0x123': {
           protected: {
             color: 'red',
           },
         },
-        [userAddress]: {
+        [userAddress.toLowerCase()]: {
           public: {
             color: 'blue',
           },

@@ -36,15 +36,17 @@ const metadataReducer = (state = initialState, action: Action) => {
 
   if (action.type === GOT_BULK_METADATA) {
     const { lockAddress, data } = action
+    const normalizedLockAddress = lockAddress.toLowerCase()
     const bulkData: Datum[] = data
 
     // make sure we always have a bucket to put our metadata into
-    if (!state[lockAddress]) {
-      state[lockAddress] = {}
+    if (!state[normalizedLockAddress]) {
+      state[normalizedLockAddress] = {}
     }
 
     bulkData.forEach(datum => {
-      state[lockAddress][datum.userAddress] = {
+      const userAddress = datum.userAddress.toLowerCase()
+      state[normalizedLockAddress][userAddress] = {
         public: datum.data.userMetadata.public,
         protected: datum.data.userMetadata.protected,
       }
