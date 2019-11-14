@@ -23,15 +23,13 @@ import {
   SIGNED_ACCOUNT_EJECTION,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
-import Error from '../../utils/Error'
+import { Storage } from '../../utils/Error'
 import { setError, SET_ERROR } from '../../actions/error'
 import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 import UnlockUser from '../../structured_data/unlockUser'
-import { GOT_METADATA } from '../../actions/keyMetadata'
+import { GOT_BULK_METADATA } from '../../actions/keyMetadata'
 
 jest.mock('@unlock-protocol/unlock-js')
-
-const { Storage } = Error
 
 /**
  * This is a "fake" middleware caller
@@ -740,23 +738,17 @@ describe('Storage middleware', () => {
   describe('Key metadata', () => {
     const lockAddress = 'an address'
     const data = 'some data'
-    const keyId = '1'
     it('should dispatch a message when a request succeeds', () => {
       expect.assertions(1)
 
       const { store } = create()
 
-      mockStorageService.emit(success.getMetadataFor, {
-        lockAddress,
-        data,
-        keyId,
-      })
+      mockStorageService.emit(success.getBulkMetadataFor, lockAddress, data)
 
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: GOT_METADATA,
+        type: GOT_BULK_METADATA,
         lockAddress,
         data,
-        keyId,
       })
     })
 
@@ -765,14 +757,17 @@ describe('Storage middleware', () => {
 
       const { store } = create()
 
-      mockStorageService.emit(failure.getMetadataFor, 'something broke')
+      mockStorageService.emit(
+        failure.getBulkMetadataFor,
+        new Error('something broke')
+      )
 
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
         error: {
           kind: 'Storage',
           level: 'Diagnostic',
-          message: 'Could not retrieve some key metadata.',
+          message: 'Could not get bulk metadata: something broke',
         },
       })
     })
