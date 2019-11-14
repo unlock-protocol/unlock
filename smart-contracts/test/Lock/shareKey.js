@@ -15,7 +15,7 @@ contract('Lock / shareKey', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  let lock, tokenId1, tokenId2, event1, event2, tx1, tx2
+  let lock, tokenId1, tokenId2, event, event1, event2, tx1, tx2
 
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const keyOwner1 = accounts[1]
@@ -92,7 +92,6 @@ contract('Lock / shareKey', accounts => {
             from: keyOwner1,
           }
         )
-        event1 = tx1.logs[1].event
         let actualTimeShared = tx1.logs[1].args._amount.toNumber(10)
         assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
         let newExpirationTimestamp = new BigNumber(
@@ -106,6 +105,10 @@ contract('Lock / shareKey', accounts => {
         )
       })
 
+      it('should emit the expireKey Event', async () => {
+        assert.equal(tx1.logs[0].event, 'ExpireKey')
+      })
+
       it('The origin key is expired', async () => {
         assert.equal(await lock.getHasValidKey.call(keyOwner1), false)
       })
@@ -117,13 +120,25 @@ contract('Lock / shareKey', accounts => {
   })
   describe('successful key sharing', () => {
     let oneDay = new BigNumber(60 * 60 * 24)
-    let hadKeyBefore, expirationBeforeSharing
+    let hadKeyBefore,
+      expirationBeforeSharing,
+      expirationAfterSharing,
+      sharedKeyExpiration,
+      fee,
+      timestampBeforeSharing,
+      timestampAfterSharing
 
     before(async () => {
+      // Change the fee to 5%
+      await lock.updateTransferFee(500)
       hadKeyBefore = await lock.getHasValidKey.call(accountWithNoKey2)
       expirationBeforeSharing = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner2)
       )
+      timestampBeforeSharing = new BigNumber(
+        (await web3.eth.getBlock('latest')).timestamp
+      )
+      fee = new BigNumber(await lock.getTransferFee.call(keyOwner2, oneDay))
       tokenId2 = await lock.getTokenIdFor.call(keyOwner2)
       tx2 = await lock.shareKey(
         keyOwner2,
@@ -134,11 +149,16 @@ contract('Lock / shareKey', accounts => {
           from: keyOwner2,
         }
       )
+      event = tx2.logs[0].event
+      event1 = tx2.logs[1].event
       event2 = tx2.logs[2].event
     })
 
-    it('should emit the TimestampChanged event', async () => {
+    it('should emit the TimestampChanged event twice', async () => {
+      assert.equal(event, 'TimestampChanged')
+      assert.equal(tx2.logs[0].args._timeAdded, false)
       assert.equal(event1, 'TimestampChanged')
+      assert.equal(tx2.logs[1].args._timeAdded, true)
     })
 
     it('should emit the Transfer event', async () => {
@@ -146,10 +166,9 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should subtract the time shared + fee from keyOwner', async () => {
-      let expirationAfterSharing = new BigNumber(
+      expirationAfterSharing = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner2)
       )
-      let fee = new BigNumber(await lock.getTransferFee.call(keyOwner2, oneDay))
       assert(
         expirationAfterSharing.eq(
           expirationBeforeSharing.minus(fee).minus(oneDay)
@@ -158,7 +177,7 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should create a new key and add the time shared to it', async () => {
-      let sharedKeyExpiration = new BigNumber(
+      sharedKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(accountWithNoKey2)
       )
       let currentTimestamp = new BigNumber(
@@ -167,6 +186,20 @@ contract('Lock / shareKey', accounts => {
       assert.equal(hadKeyBefore, false)
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey2), true)
       assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
+    })
+
+    it('total time remaining is <= original time + fee', async () => {
+      timestampAfterSharing = new BigNumber(
+        (await web3.eth.getBlock('latest')).timestamp
+      )
+      let timeRemainingBefore = expirationBeforeSharing.minus(
+        timestampBeforeSharing
+      )
+      let totalTimeRemainingAfter = expirationAfterSharing
+        .minus(timestampAfterSharing)
+        .plus(sharedKeyExpiration.minus(timestampAfterSharing))
+
+      assert(timeRemainingBefore.minus(fee).gte(totalTimeRemainingAfter))
     })
 
     it('should extend the key of an existing owner', async () => {
