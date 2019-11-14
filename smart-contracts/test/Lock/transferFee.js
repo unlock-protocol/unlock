@@ -41,7 +41,7 @@ contract('Lock / transferFee', accounts => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
+      await lock.purchase(0, accounts[8], web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
       })
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
@@ -54,7 +54,7 @@ contract('Lock / transferFee', accounts => {
           expiration
             .minus(nowBefore)
             .times(0.05)
-            .dp(0)
+            .dp(0, BigNumber.ROUND_DOWN)
         )
       )
       // and >= the expected fee after the call
@@ -63,7 +63,7 @@ contract('Lock / transferFee', accounts => {
           expiration
             .minus(nowAfter)
             .times(0.05)
-            .dp(0)
+            .dp(0, BigNumber.ROUND_DOWN)
         )
       )
     })
@@ -97,9 +97,7 @@ contract('Lock / transferFee', accounts => {
 
       it('the fee is deducted from the time transferred', async () => {
         // make sure that a fee was taken
-        assert(expirationAfter.lt(expirationBefore))
-        // check that fee was not more than 5%
-        assert(expirationAfter.gte(expirationBefore.minus(fee)))
+        assert(expirationAfter.lte(expirationBefore.minus(fee)))
       })
 
       after(async () => {
