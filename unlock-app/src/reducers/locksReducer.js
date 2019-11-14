@@ -18,38 +18,59 @@ const locksReducer = (state = initialState, action) => {
 
   if (action.type === CREATE_LOCK) {
     if (action.lock.address) {
+      // Normalize to lower case to avoid dupes
+      const normalizedLockAddress = action.lock.address.toLowerCase()
       return {
         ...state,
-        [action.lock.address]: action.lock,
+        [normalizedLockAddress]: {
+          ...action.lock,
+          address: normalizedLockAddress,
+        },
       }
     }
   }
 
   // Upsets a lock (adds it if missing or update it if it exists)
   if (action.type === UPDATE_LOCK) {
-    if (action.update.address && action.update.address !== action.address) {
+    if (!action.address) {
+      return state
+    }
+
+    const normalizedLockAddress = action.address.toLowerCase()
+    if (
+      action.update.address &&
+      action.update.address.toLowerCase() !== normalizedLockAddress
+    ) {
       // 'Could not change the lock address' => Let's not change state
       return state
     }
 
+    // Making sure we set the address to be the same
+    action.update.address = normalizedLockAddress
+
     return {
       ...state,
-      [action.address]: { ...state[action.address], ...action.update },
+      [normalizedLockAddress]: {
+        ...state[normalizedLockAddress],
+        ...action.update,
+      },
     }
   }
 
   if (action.type === UPDATE_LOCK_KEY_PRICE) {
+    const normalizedLockAddress = action.address.toLowerCase()
     return {
       ...state,
-      [action.address]: {
-        ...state[action.address],
+      [normalizedLockAddress]: {
+        ...state[normalizedLockAddress],
         keyPrice: action.price,
       },
     }
   }
 
   if (action.type === DELETE_LOCK) {
-    delete state[action.address]
+    const normalizedLockAddress = action.address.toLowerCase()
+    delete state[normalizedLockAddress]
     return {
       ...state,
     }

@@ -48,12 +48,15 @@ describe('locks reducer', () => {
     ).toBe(initialState)
   })
 
-  it('should add the lock when receiving CREATE_LOCK and if it was not there yet', () => {
+  it('should add the lock with a nornalized address when receiving CREATE_LOCK and if it was not there yet', () => {
     expect.assertions(1)
     expect(
       reducer(undefined, {
         type: CREATE_LOCK,
-        lock,
+        lock: {
+          ...lock,
+          address: lock.address.toUpperCase(),
+        },
       })
     ).toEqual({
       [lock.address]: lock,
@@ -161,6 +164,28 @@ describe('locks reducer', () => {
         },
       }
       expect(reducer(state, action)).toEqual(state)
+    })
+
+    it('should set the lock address if it is missing from the update', () => {
+      expect.assertions(1)
+      const state = {
+        '0x123': {
+          name: 'hello',
+          address: '0x123',
+        },
+      }
+      const newLock = {
+        name: 'Lock',
+      }
+      const action = {
+        type: UPDATE_LOCK,
+        address: '0x567',
+        update: newLock,
+      }
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        [newLock.address]: newLock,
+      })
     })
 
     it('should insert the new lock when the lock being updated does not exist', () => {
