@@ -31,21 +31,38 @@ contract('Lock / transferFee', accounts => {
   })
 
   describe('once a fee of 5% is set', () => {
-    let fee, fee1, fee2, fee3, nowBefore
+    let fee, fee1, fee2, fee3
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
-      nowBefore = Math.floor(Date.now() / 1000)
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
+      const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
+      // Note that this will not change when Ganache insta-mine is enabled
+      const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
-      let nowAfter = Math.ceil(Date.now() / 1000)
-      assert(fee.lte(Math.trunc(expiration.minus(nowBefore).times(0.05))))
-      assert(fee.gte(Math.trunc(expiration.minus(nowAfter).times(0.05))))
+      // Fee is <= the expected fee before the call
+      assert(
+        fee.lte(
+          expiration
+            .minus(nowBefore)
+            .times(0.05)
+            .dp(0)
+        )
+      )
+      // and >= the expected fee after the call
+      assert(
+        fee.gte(
+          expiration
+            .minus(nowAfter)
+            .times(0.05)
+            .dp(0)
+        )
+      )
     })
 
     it('calculates the fee based on the time value passed in', async () => {
