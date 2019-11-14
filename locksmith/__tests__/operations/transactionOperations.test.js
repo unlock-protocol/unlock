@@ -83,5 +83,30 @@ describe('lockOperations', () => {
         })
       })
     })
+
+    describe('when passed a createdAfter value', () => {
+      it('should only return transactions created after that date', async () => {
+        expect.assertions(1)
+        const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+        const timestamp = 1573742842379
+        Transaction.findAll = jest.fn(() => {})
+        await getTransactionsByFilter({
+          sender: sender,
+          recipient: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
+          createdAfter: timestamp,
+        })
+        expect(Transaction.findAll).toHaveBeenCalledWith({
+          where: {
+            recipient: {
+              [Op.in]: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
+            },
+            sender: { [Op.eq]: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5' },
+            createdAt: {
+              [Op.gte]: new Date(timestamp),
+            },
+          },
+        })
+      })
+    })
   })
 })
