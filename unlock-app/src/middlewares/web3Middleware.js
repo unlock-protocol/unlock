@@ -20,6 +20,7 @@ import {
 } from '../actions/keysPages'
 import { transactionTypeMapping } from '../utils/types'
 import { Web3 } from '../utils/Error'
+import GraphService from '../services/graphService'
 
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
@@ -29,6 +30,7 @@ const web3Middleware = config => {
     unlockAddress,
     blockTime,
     requiredConfirmations,
+    subgraphURI,
   } = config
   return ({ getState, dispatch }) => {
     const web3Service = new Web3Service({
@@ -37,6 +39,8 @@ const web3Middleware = config => {
       blockTime,
       requiredConfirmations,
     })
+
+    const graphService = new GraphService(subgraphURI)
 
     web3Service.on('account.updated', (account, update) => {
       dispatch(updateAccount(update))
@@ -130,28 +134,24 @@ const web3Middleware = config => {
           web3Service.getLock(action.address)
         }
 
-        next(action)
-
-        // note: this needs to be after the reducer has seen it, because refreshAccountBalance
-        // triggers 'account.update' which dispatches UPDATE_ACCOUNT. The reducer assumes that
-        // ADD_ACCOUNT has reached it first, and throws an exception. Putting it after the
-        // reducer has a chance to populate state removes this race condition.
         if (action.type === SET_ACCOUNT) {
-          // TODO: when the account has been updated we should reset web3Service and remove all listeners
-          // So that pending API calls do not interract with our "new" state.
-          web3Service.refreshAccountBalance(action.account)
           dispatch(startLoading())
-          web3Service
-            .getPastLockCreationsTransactionsForUser(action.account.address)
-            .then(lockCreations => {
-              dispatch(doneLoading())
-              lockCreations.forEach(lockCreation => {
-                web3Service.getTransaction(lockCreation.transactionHash, {
-                  network: getState().network.name,
-                })
-              })
+          graphService.locksByOwner(action.account.address).then(locks => {
+            // The locks from the subgraph miss some important things, such as balance,
+            // ERC20 info.. etc so we need to retrieve them from unlock-js too.
+            // TODO: add these missing fields to the graph!
+            locks.forEach((lock, index) => {
+              dispatch(updateLock(lock.address, lock))
+              // HACK: We delay each lock by 200ms to avoid rate limits...
+              setTimeout(() => {
+                web3Service.getLock(lock.address)
+              }, 200 * index)
             })
+            dispatch(doneLoading())
+          })
         }
+
+        next(action)
       }
     }
   }
