@@ -92,11 +92,11 @@ contract MixinTransfer is
     // add time to new key
     _timeMachine(IdTo, time, true);
     // trigger event
-      emit Transfer(
-        address(0), // This is a creation or time-sharing
-        _to,
-        IdTo
-      );
+    emit Transfer(
+      address(0), // This is a creation or time-sharing
+      _to,
+      IdTo
+    );
   }
 
   /**
