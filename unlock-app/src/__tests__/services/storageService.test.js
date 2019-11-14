@@ -796,11 +796,14 @@ describe('StorageService', () => {
         data: userMetadata,
       })
 
-      storageService.on(success.getBulkMetadataFor, result => {
-        expect(result).toEqual(userMetadata)
+      storageService.on(
+        success.getBulkMetadataFor,
+        (returnedLockAddress, result) => {
+          expect(result).toEqual(userMetadata)
 
-        done()
-      })
+          done()
+        }
+      )
 
       storageService.getBulkMetadataFor(lockAddress, 'a signature', typedData)
       expect(axios.get).toHaveBeenCalledWith(

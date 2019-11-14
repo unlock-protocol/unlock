@@ -416,7 +416,7 @@ export class StorageService extends EventEmitter {
         opts
       )
 
-      this.emit(success.getBulkMetadataFor, result.data)
+      this.emit(success.getBulkMetadataFor, lockAddress, result.data)
     } catch (error) {
       this.emit(failure.getBulkMetadataFor, error)
     }

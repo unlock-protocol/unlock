@@ -159,7 +159,7 @@ export interface KeyMetadata {
 // import from every connected component
 export interface ReduxMetadata {
   [lockAddress: string]: {
-    [keyId: string]: {
+    [userAddress: string]: {
       protected?: { [key: string]: string }
       public?: { [key: string]: string }
     }

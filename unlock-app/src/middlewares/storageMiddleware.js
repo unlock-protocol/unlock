@@ -30,7 +30,10 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
-import { SIGN_METADATA_RESPONSE, gotMetadata } from '../actions/keyMetadata'
+import {
+  SIGN_BULK_METADATA_RESPONSE,
+  gotBulkMetadata,
+} from '../actions/keyMetadata'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -175,13 +178,14 @@ const storageMiddleware = config => {
     })
 
     // Key metadata
-    storageService.on(success.getMetadataFor, result => {
-      const { lockAddress, data, keyId } = result
-      dispatch(gotMetadata(lockAddress, keyId, data))
+    storageService.on(success.getBulkMetadataFor, (lockAddress, dataArray) => {
+      dispatch(gotBulkMetadata(lockAddress, dataArray))
     })
-    storageService.on(failure.getMetadataFor, () => {
+    storageService.on(failure.getBulkMetadataFor, error => {
       dispatch(
-        setError(Storage.Diagnostic('Could not retrieve some key metadata.'))
+        setError(
+          Storage.Diagnostic(`Could not get bulk metadata: ${error.message}`)
+        )
       )
     })
 
@@ -299,13 +303,9 @@ const storageMiddleware = config => {
           storageService.getKeyPrice(lock.address)
         }
 
-        if (action.type === SIGN_METADATA_RESPONSE) {
-          const { signature, keyIds, lockAddress, data } = action
-          // TODO: in the future we will have an endpoint to get bulk
-          // metadata for all keys on a lock. Use it here.
-          keyIds.forEach(id => {
-            storageService.getMetadataFor(lockAddress, id, signature, data)
-          })
+        if (action.type === SIGN_BULK_METADATA_RESPONSE) {
+          const { signature, lockAddress, data } = action
+          storageService.getBulkMetadataFor(lockAddress, signature, data)
         }
 
         next(action)

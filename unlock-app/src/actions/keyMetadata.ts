@@ -1,41 +1,35 @@
-export const SIGN_METADATA_REQUEST = 'keyMetadata/SIGN_METADATA_REQUEST'
-export const SIGN_METADATA_RESPONSE = 'keyMetadata/SIGN_METADATA_RESPONSE'
-export const GOT_METADATA = 'keyMetadata/GOT_METADATA'
+export const SIGN_BULK_METADATA_REQUEST =
+  'keyMetadata/SIGN_BULK_METADATA_REQUEST'
+export const SIGN_BULK_METADATA_RESPONSE =
+  'keyMetadata/SIGN_BULK_METADATA_RESPONSE'
+export const GOT_BULK_METADATA = 'keyMetadata/GOT_BULK_METADATA'
 
-export function signMetadataRequest(
-  lockAddress: string,
-  owner: string,
-  keyIds: string[]
-) {
+export function signBulkMetadataRequest(lockAddress: string, owner: string) {
   return {
-    type: SIGN_METADATA_REQUEST,
+    type: SIGN_BULK_METADATA_REQUEST,
     lockAddress,
     owner,
-    keyIds,
     timestamp: Date.now(),
   }
 }
 
-export function signMetadataResponse(
+export function signBulkMetadataResponse(
   data: any,
   signature: any,
-  keyIds: string[],
   lockAddress: string
 ) {
   return {
-    type: SIGN_METADATA_RESPONSE,
+    type: SIGN_BULK_METADATA_RESPONSE,
     data,
     signature,
-    keyIds,
     lockAddress,
   }
 }
 
-export function gotMetadata(lockAddress: string, keyId: string, data: any) {
+export function gotBulkMetadata(lockAddress: string, data: any) {
   return {
-    type: GOT_METADATA,
+    type: GOT_BULK_METADATA,
     lockAddress,
-    keyId,
     data,
   }
 }

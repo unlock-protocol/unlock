@@ -29,8 +29,8 @@ import { HIDE_FORM } from '../../actions/lockFormVisibility'
 import { GET_STORED_PAYMENT_DETAILS } from '../../actions/user'
 import { SIGN_DATA } from '../../actions/signature'
 import {
-  SIGN_METADATA_REQUEST,
-  SIGN_METADATA_RESPONSE,
+  SIGN_BULK_METADATA_REQUEST,
+  SIGN_BULK_METADATA_RESPONSE,
 } from '../../actions/keyMetadata'
 
 let mockConfig
@@ -688,20 +688,19 @@ describe('Wallet middleware', () => {
     })
   })
 
-  describe('SIGN_METADATA_REQUEST', () => {
+  describe('SIGN_BULK_METADATA_REQUEST', () => {
     const action = {
-      type: SIGN_METADATA_REQUEST,
+      type: SIGN_BULK_METADATA_REQUEST,
       lockAddress: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
       owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       timestamp: 1234567890,
-      keyIds: ['1', '13'],
     }
 
     const expectedTypedData = expect.objectContaining({
       primaryType: 'KeyMetadata',
     })
 
-    it("should handle SIGN_METADATA_REQUEST by calling walletService's signData", () => {
+    it("should handle SIGN_BULK_METADATA_REQUEST by calling walletService's signData", () => {
       expect.assertions(2)
       const { invoke, store } = create()
 
@@ -736,7 +735,7 @@ describe('Wallet middleware', () => {
       expect(store.dispatch).toHaveBeenNthCalledWith(2, dismissWalletCheck())
 
       expect(store.dispatch).toHaveBeenNthCalledWith(3, {
-        type: SIGN_METADATA_RESPONSE,
+        type: SIGN_BULK_METADATA_RESPONSE,
         data: expectedTypedData,
         signature: 'a signature',
         lockAddress: action.lockAddress,

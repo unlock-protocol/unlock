@@ -1,13 +1,12 @@
 import {
-  SIGN_METADATA_REQUEST,
-  SIGN_METADATA_RESPONSE,
-  GOT_METADATA,
-  signMetadataRequest,
-  signMetadataResponse,
-  gotMetadata,
+  SIGN_BULK_METADATA_REQUEST,
+  SIGN_BULK_METADATA_RESPONSE,
+  GOT_BULK_METADATA,
+  signBulkMetadataRequest,
+  signBulkMetadataResponse,
+  gotBulkMetadata,
 } from '../../actions/keyMetadata'
 
-const keyIds = ['1', '13']
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 
 describe('Key metadata signature actions', () => {
@@ -16,13 +15,12 @@ describe('Key metadata signature actions', () => {
       expect.assertions(1)
 
       const owner = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
-      const result = signMetadataRequest(lockAddress, owner, keyIds)
+      const result = signBulkMetadataRequest(lockAddress, owner)
 
       expect(result).toEqual({
-        type: SIGN_METADATA_REQUEST,
+        type: SIGN_BULK_METADATA_REQUEST,
         lockAddress,
         owner,
-        keyIds,
         timestamp: expect.any(Number),
       })
     })
@@ -32,18 +30,16 @@ describe('Key metadata signature actions', () => {
     it('should create an action to return a signature', () => {
       expect.assertions(1)
 
-      const result = signMetadataResponse(
+      const result = signBulkMetadataResponse(
         'some data',
         'a signature',
-        keyIds,
         lockAddress
       )
 
       expect(result).toEqual({
-        type: SIGN_METADATA_RESPONSE,
+        type: SIGN_BULK_METADATA_RESPONSE,
         data: 'some data',
         signature: 'a signature',
-        keyIds,
         lockAddress,
       })
     })
@@ -53,12 +49,11 @@ describe('Key metadata signature actions', () => {
     it('should create an action to put the metadata in redux', () => {
       expect.assertions(1)
 
-      const result = gotMetadata('a lock address', '1', 'some data')
+      const result = gotBulkMetadata('a lock address', 'some data')
 
       expect(result).toEqual({
-        type: GOT_METADATA,
+        type: GOT_BULK_METADATA,
         lockAddress: 'a lock address',
-        keyId: '1',
         data: 'some data',
       })
     })
