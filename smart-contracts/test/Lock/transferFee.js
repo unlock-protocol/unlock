@@ -40,7 +40,10 @@ contract('Lock / transferFee', accounts => {
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
-      // Note that this will not change when Ganache insta-mine is enabled
+      // Mine a transaction in order to ensure the block.timestamp has updated
+      await lock.purchase(0, accounts[8], web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+      })
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
@@ -51,7 +54,7 @@ contract('Lock / transferFee', accounts => {
           expiration
             .minus(nowBefore)
             .times(0.05)
-            .dp(0)
+            .dp(0, BigNumber.ROUND_DOWN)
         )
       )
       // and >= the expected fee after the call
@@ -60,7 +63,7 @@ contract('Lock / transferFee', accounts => {
           expiration
             .minus(nowAfter)
             .times(0.05)
-            .dp(0)
+            .dp(0, BigNumber.ROUND_DOWN)
         )
       )
     })
@@ -94,9 +97,7 @@ contract('Lock / transferFee', accounts => {
 
       it('the fee is deducted from the time transferred', async () => {
         // make sure that a fee was taken
-        assert(expirationAfter.lt(expirationBefore))
-        // check that fee was not more than 5%
-        assert(expirationAfter.gte(expirationBefore.minus(fee)))
+        assert(expirationAfter.lte(expirationBefore.minus(fee)))
       })
 
       after(async () => {
