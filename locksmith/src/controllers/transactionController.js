@@ -66,6 +66,10 @@ const buildFilter = req => {
     filter.for = req.query.for
   }
 
+  if (req.query.createdAfter) {
+    filter.createdAfter = req.query.createdAfter
+  }
+
   return filter
 }
 
