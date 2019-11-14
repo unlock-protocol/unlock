@@ -1,14 +1,28 @@
 import { SET_ACCOUNT } from '../actions/accounts'
 import { SET_PROVIDER } from '../actions/provider'
 import { SET_NETWORK } from '../actions/network'
-import { GOT_METADATA } from '../actions/keyMetadata'
+import { GOT_BULK_METADATA } from '../actions/keyMetadata'
 import { Action } from '../unlockTypes'
 
 interface State {
   [lockAddress: string]: {
-    [keyId: string]: {
+    [userAddress: string]: {
       public?: { [key: string]: string }
       protected?: { [key: string]: string }
+    }
+  }
+}
+
+export interface Datum {
+  userAddress: string
+  data: {
+    userMetadata: {
+      protected?: {
+        [key: string]: string
+      }
+      public?: {
+        [key: string]: string
+      }
     }
   }
 }
@@ -20,15 +34,21 @@ const metadataReducer = (state = initialState, action: Action) => {
     state = initialState
   }
 
-  if (action.type === GOT_METADATA) {
-    const { lockAddress, keyId, data } = action
-    if (state[lockAddress]) {
-      state[lockAddress][keyId] = data
-    } else {
-      state[lockAddress] = {
-        [keyId]: data,
-      }
+  if (action.type === GOT_BULK_METADATA) {
+    const { lockAddress, data } = action
+    const bulkData: Datum[] = data
+
+    // make sure we always have a bucket to put our metadata into
+    if (!state[lockAddress]) {
+      state[lockAddress] = {}
     }
+
+    bulkData.forEach(datum => {
+      state[lockAddress][datum.userAddress] = {
+        public: datum.data.userMetadata.public,
+        protected: datum.data.userMetadata.protected,
+      }
+    })
   }
 
   return state
