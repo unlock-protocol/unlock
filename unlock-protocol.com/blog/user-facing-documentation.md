@@ -12,7 +12,7 @@ As a starting point, we have begun by outlining the quickest way to get started 
 
 We have also made a commitment to the following documentation strategy:
 
-1. Enduser facing feature require documentation to be considered shippable. 
+1. End-user facing features require documentation to be considered shippable. 
 2. Components intended to be used or extended by developers require documentation to be considered shippable.
 
 While it is a work in progress, you can find our current documentation [here](https://docs.unlock-protocol.com).
