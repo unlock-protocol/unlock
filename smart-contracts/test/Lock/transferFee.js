@@ -40,7 +40,10 @@ contract('Lock / transferFee', accounts => {
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner, 0))
-      // Note that this will not change when Ganache insta-mine is enabled
+      // Mine a transaction in order to ensure the block.timestamp has updated
+      await lock.purchase(0, accounts[2], web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+      })
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
