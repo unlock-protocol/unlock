@@ -57,7 +57,6 @@ contract MixinTransfer is
     uint _timeShared
   ) public
     onlyIfAlive
-    // hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_to != address(0), 'INVALID_ADDRESS');
