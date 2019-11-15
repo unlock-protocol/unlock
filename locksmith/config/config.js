@@ -10,8 +10,7 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
-    graphQLBaseURL:
-      'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
+    graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -31,9 +30,8 @@ module.exports = {
     web3ProviderHost: process.env.WEB3_PROVIDER_HOST,
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
-    purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
-    graphQLBaseURL:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+    purchaserCredentails: process.env.GRAPHQL_BASE_URL,
+    graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -53,8 +51,7 @@ module.exports = {
     unlockContractAddress: process.env.UNLOCK_CONTRACT_ADDRESS,
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
-    graphQLBaseURL:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+    graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
