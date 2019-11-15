@@ -29,7 +29,7 @@ describe('GraphService', () => {
         })
       })
 
-      const onwerLocks = await graphService.locksByOwner(owner)
+      const ownerLocks = await graphService.locksByOwner(owner)
 
       expect(apolloClientMock.query).toHaveBeenCalledWith({
         query: locksByOwner(),
