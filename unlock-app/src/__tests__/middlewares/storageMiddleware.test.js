@@ -145,13 +145,13 @@ describe('Storage middleware', () => {
       }
       const action = { type: SET_ACCOUNT, account }
 
-      mockStorageService.getTransactionsHashesSentBy = jest.fn()
+      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn()
       mockStorageService.getLockAddressesForUser = jest.fn()
 
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith(startLoading())
       expect(
-        mockStorageService.getTransactionsHashesSentBy
+        mockStorageService.getRecentTransactionsHashesSentBy
       ).toHaveBeenCalledWith(account.address)
       expect(next).toHaveBeenCalledTimes(1)
     })
@@ -208,7 +208,7 @@ describe('Storage middleware', () => {
       const action = { type: SET_ACCOUNT, account }
 
       mockStorageService.getLockAddressesForUser = jest.fn()
-      mockStorageService.getTransactionsHashesSentBy = jest.fn()
+      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn()
 
       invoke(action)
       expect(mockStorageService.getLockAddressesForUser).toHaveBeenCalledWith(
