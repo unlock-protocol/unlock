@@ -46,12 +46,11 @@ contract('Lock / disableTransfers', accounts => {
         // check owner still has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // check recipient never received a key
-        assert.equal(await lock.getHasValidKey.call(accountWithNoKey), false)
-        assert.equal(
-          new BigNumber(
-            await lock.keyExpirationTimestampFor.call(accountWithNoKey)
-          ),
-          0
+        await shouldFail(
+          lock.keyExpirationTimestampFor.call(accountWithNoKey, {
+            from: accountWithNoKey,
+          }),
+          'HAS_NEVER_OWNED_KEY'
         )
       })
     })
@@ -70,12 +69,11 @@ contract('Lock / disableTransfers', accounts => {
         // check owner still has a key
         assert.equal(await lock.getHasValidKey.call(keyOwner), true)
         // check recipient never received a key
-        assert.equal(await lock.getHasValidKey.call(accountWithNoKey), false)
-        assert.equal(
-          new BigNumber(
-            await lock.keyExpirationTimestampFor.call(accountWithNoKey)
-          ),
-          0
+        await shouldFail(
+          lock.keyExpirationTimestampFor.call(accountWithNoKey, {
+            from: accountWithNoKey,
+          }),
+          'HAS_NEVER_OWNED_KEY'
         )
       })
     })
