@@ -47,31 +47,31 @@ contract MixinTransfer is
   /**
   * @notice Allows the key owner to share their key (parent key) by
   * transferring a portion of the remaining time to a new key (child key).
-  * @param _from The owner of the parent key
   * @param _to The recipient of the shared key
   * @param _tokenId the key to share
   * @param _timeShared The amount of time shared
   */
   function shareKey(
-    address _from,
     address _to,
     uint _tokenId,
     uint _timeShared
   ) public
     onlyIfAlive
-    hasValidKey(_from)
+    // hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_to != address(0), 'INVALID_ADDRESS');
 
-    Key storage fromKey = keyByOwner[_from];
+    address keyOwner = ownerOf[_tokenId];
+    require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
     uint iDTo = toKey.tokenId;
     uint time;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
     // get the transfer fee
-    uint fee = getTransferFee(_from, _timeShared);
+    uint fee = getTransferFee(keyOwner, _timeShared);
 
     // ensure that we don't try to share too much
     if(_timeShared.add(fee) < timeRemaining) {
@@ -80,7 +80,7 @@ contract MixinTransfer is
       // deduct time from parent key, including transfer fee
       _timeMachine(_tokenId, timePlusFee, false);
     } else {
-      fee = getTransferFee(_from, timeRemaining);
+      fee = getTransferFee(keyOwner, timeRemaining);
       time = timeRemaining.sub(fee);
       fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenId);
@@ -99,7 +99,7 @@ contract MixinTransfer is
     _timeMachine(iDTo, time, true);
     // trigger event
     emit Transfer(
-      _from,
+      keyOwner,
       _to,
       iDTo
     );
