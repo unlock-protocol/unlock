@@ -184,7 +184,7 @@ contract('Lock / shareKey', accounts => {
       assert(
         new BigNumber(await lock.getTokenIdFor.call(keyOwner2)).lt(
           new BigNumber(await lock.getTokenIdFor.call(accountWithNoKey2))
-        )
+        ) // the tokenId's are not equal
       )
     })
 
