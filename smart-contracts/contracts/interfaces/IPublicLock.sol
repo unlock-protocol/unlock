@@ -457,14 +457,12 @@ interface IPublicLock {
   * @dev Throws if _from does not have enough remaining time on
   * parent key to both pay transfer fee and share time with a child key.
   * @dev Throws if `_to` is the zero address
-  * @param _from The owner of the parent key
   * @param _to The recipient of the shared key
   * @param _tokenId the key to share
   * @param _timeShared The amount of time shared
   * @dev Emit Transfer event
   */
   function shareKey(
-    address _from,
     address _to,
     uint _tokenId,
     uint _timeShared
