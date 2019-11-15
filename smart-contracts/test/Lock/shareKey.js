@@ -160,7 +160,7 @@ contract('Lock / shareKey', accounts => {
       assert.equal(event3, 'Transfer')
     })
 
-    it('should subtract the time shared + fee from keyOwner', async () => {
+    it('should subtract the time shared + fee from the key owner', async () => {
       expirationAfterSharing = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner2)
       )
@@ -181,6 +181,11 @@ contract('Lock / shareKey', accounts => {
       assert.equal(hadKeyBefore, false)
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey2), true)
       assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
+      assert(
+        new BigNumber(await lock.getTokenIdFor.call(keyOwner2)).lt(
+          new BigNumber(await lock.getTokenIdFor.call(accountWithNoKey2))
+        )
+      )
     })
 
     it('total time remaining is <= original time + fee', async () => {
@@ -211,16 +216,15 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should allow an approved address to share a key', async () => {
+      let token = new BigNumber(await lock.getTokenIdFor(keyOwner2))
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
-      await lock.shareKey(
-        accountWithNoKey3,
-        await lock.getTokenIdFor(keyOwner2),
-        oneDay,
-        { from: approvedAddress }
-      )
+      await lock.shareKey(accountWithNoKey3, token, oneDay, {
+        from: approvedAddress,
+      })
       // make sure recipient has a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), true)
+      assert(new BigNumber(await lock.getTokenIdFor.call(keyOwner2)).eq(token)) // id has not changed
     })
   })
 })
