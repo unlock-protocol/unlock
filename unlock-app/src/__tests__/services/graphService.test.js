@@ -38,7 +38,7 @@ describe('GraphService', () => {
         },
       })
       expect(graphService.client.query).toHaveBeenCalledTimes(1)
-      expect(onwerLocks).toEqual(locks)
+      expect(ownerLocks).toEqual(locks)
     })
   })
 })
