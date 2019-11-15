@@ -115,6 +115,7 @@ contract MixinTransfer is
     hasValidKey(_from)
     onlyKeyOwnerOrApproved(_tokenId)
   {
+    require(transferFeeBasisPoints < 10000, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
     uint fee = getTransferFee(_from, 0);
 
