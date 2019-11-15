@@ -23,6 +23,8 @@ contract('Lock / shareKey', accounts => {
   const keyOwner3 = accounts[3]
   const accountWithNoKey1 = accounts[4]
   const accountWithNoKey2 = accounts[5]
+  const accountWithNoKey3 = accounts[6]
+  const approvedAddress = accounts[7]
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
 
   before(async () => {
@@ -123,6 +125,11 @@ contract('Lock / shareKey', accounts => {
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
+      // approve an address
+      await lock.approve(approvedAddress, await lock.getTokenIdFor(keyOwner2), {
+        from: keyOwner2,
+      })
+
       hadKeyBefore = await lock.getHasValidKey.call(accountWithNoKey2)
       expirationBeforeSharing = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner2)
@@ -201,6 +208,19 @@ contract('Lock / shareKey', accounts => {
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
       assert(newExistingKeyExpiration.eq(oldExistingKeyExpiration.plus(oneDay)))
+    })
+
+    it('should allow an approved address to share a key', async () => {
+      // make sure recipient does not have a key
+      assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
+      await lock.shareKey(
+        accountWithNoKey3,
+        await lock.getTokenIdFor(keyOwner2),
+        oneDay,
+        { from: approvedAddress }
+      )
+      // make sure recipient has a key
+      assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), true)
     })
   })
 })
