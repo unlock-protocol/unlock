@@ -236,7 +236,9 @@ const storageMiddleware = config => {
         if (action.type === SET_ACCOUNT) {
           dispatch(startLoading())
           // When we set the account, we want to retrieve the list of transactions
-          storageService.getTransactionsHashesSentBy(action.account.address)
+          storageService.getRecentTransactionsHashesSentBy(
+            action.account.address
+          )
           // When we set the account, we want to retrive the list of locks
           storageService.getLockAddressesForUser(action.account.address)
         }
