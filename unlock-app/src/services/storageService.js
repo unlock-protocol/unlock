@@ -75,15 +75,16 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Gets all the transactions sent by a given address.
+   * Gets all the transactions sent by a given address, in the last 24 hours
    * Returns an empty array by default
    * TODO: consider a more robust url building
    * @param {*} senderAddress
    */
-  async getTransactionsHashesSentBy(senderAddress) {
+  async getRecentTransactionsHashesSentBy(senderAddress) {
     try {
+      const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
       const response = await axios.get(
-        `${this.host}/transactions?sender=${senderAddress}`
+        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
       )
       let hashes = []
       if (response.data && response.data.transactions) {
