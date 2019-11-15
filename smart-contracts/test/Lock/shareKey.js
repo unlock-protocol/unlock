@@ -15,7 +15,7 @@ contract('Lock / shareKey', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  let lock, tokenId1, tokenId2, event, event1, event2, tx1, tx2
+  let lock, tokenId1, tokenId2, event, event1, event2, event3, tx1, tx2
 
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const keyOwner1 = accounts[1]
@@ -92,7 +92,7 @@ contract('Lock / shareKey', accounts => {
             from: keyOwner1,
           }
         )
-        let actualTimeShared = tx1.logs[1].args._amount.toNumber(10)
+        let actualTimeShared = tx1.logs[2].args._amount.toNumber(10)
         assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
         let newExpirationTimestamp = new BigNumber(
           await lock.keyExpirationTimestampFor.call(accountWithNoKey1)
@@ -152,17 +152,19 @@ contract('Lock / shareKey', accounts => {
       event = tx2.logs[0].event
       event1 = tx2.logs[1].event
       event2 = tx2.logs[2].event
+      event3 = tx2.logs[3].event
     })
 
     it('should emit the TimestampChanged event twice', async () => {
       assert.equal(event, 'TimestampChanged')
       assert.equal(tx2.logs[0].args._timeAdded, false)
-      assert.equal(event1, 'TimestampChanged')
-      assert.equal(tx2.logs[1].args._timeAdded, true)
+      assert.equal(event2, 'TimestampChanged')
+      assert.equal(tx2.logs[2].args._timeAdded, true)
     })
 
     it('should emit the Transfer event', async () => {
-      assert.equal(event2, 'Transfer')
+      assert.equal(event1, 'Transfer')
+      assert.equal(event3, 'Transfer')
     })
 
     it('should subtract the time shared + fee from keyOwner', async () => {
