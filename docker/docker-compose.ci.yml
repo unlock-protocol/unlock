@@ -156,6 +156,7 @@ services:
       - paywall
       - locksmith
       - unlock-protocol-com
+      - graph-node
   locksmith:
     image: locksmith
     environment:
@@ -171,3 +172,37 @@ services:
     depends_on:
       - db
       - ganache
+  graph-node:
+    image: graphprotocol/graph-node
+    ports:
+      - '8000:8000'
+      - '8001:8001'
+      - '8020:8020'
+    depends_on:
+      - ipfs
+      - db
+    environment:
+      postgres_host: db:5432
+      postgres_user: '${DB_USERNAME}'
+      postgres_pass: '${DB_PASSWORD}'
+      postgres_db: '${DB_NAME}'
+      ipfs: 'ipfs:5001'
+      ethereum: 'mainnet:http://host.docker.internal:8545'
+      RUST_LOG: info
+    depends_on:
+      - ganache-integration
+  ipfs:
+    image: ipfs/go-ipfs
+    ports:
+      - '5001:5001'
+    # volumes:
+    #   - ./data/ipfs:/data/ipfs
+  subgraph_deployment:
+    build:
+      context: ./development
+      dockerfile: subgraph.dockerfile
+    command: ['node', './deploy-subgraph.js']
+    depends_on:
+      - ipfs
+      - db
+      - graph-node

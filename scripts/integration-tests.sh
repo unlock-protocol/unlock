@@ -11,6 +11,9 @@ eval "$($REPO_ROOT/scripts/set-integration-tests-env-variables.sh)"
 mkdir -p /tmp/screenshots
 chmod 0777 /tmp/screenshots
 
+# Deploy the subgraph
+docker-compose -f $DOCKER_COMPOSE_FILE up subgraph_deployment
+
 # Deploy the smart contract
 docker-compose -f $DOCKER_COMPOSE_FILE build ganache-integration
 
