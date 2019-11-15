@@ -27,6 +27,8 @@ export const DashboardContent = ({
   return (
     <Layout title="Creator Dashboard">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>{' '}
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Dashboard')}</title>
       </Head>
       {account && (
@@ -73,4 +75,7 @@ const mapDispatchToProps = dispatch => ({
   hideForm: () => dispatch(hideForm()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardContent)

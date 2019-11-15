@@ -79,6 +79,7 @@ export const RecoverContent = ({
   return (
     <Layout title="Recover">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Recover')}</title>
       </Head>
       {instructions}
@@ -123,4 +124,7 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecoverContent)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RecoverContent)

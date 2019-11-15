@@ -1,5 +1,5 @@
 import { getCurrentProvider, UnlockProvider } from '@unlock-protocol/unlock-js'
-
+import Web3 from 'web3'
 import getConfig from 'next/config'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
@@ -72,8 +72,14 @@ export default function configure(
 
   // If there is an existing web3 injected provider, we also add this one to the list of possible providers
   if (typeof environment.web3 !== 'undefined') {
-    providers[getCurrentProvider(environment)] =
-      environment.web3.currentProvider
+    environment.terminal.sdk.metamask.startLogging({
+      apiKey: 'DUMMY_API_KEY',
+      projectId: 'ZPmAaylNwnbekOEr',
+      environmentType: 'dev',
+    })
+
+    const web3 = new Web3(environment.terminal.ethereum)
+    providers[getCurrentProvider(environment)] = web3.currentProvider
   }
 
   if (env === 'test') {

@@ -114,6 +114,7 @@ export class AccountContent extends React.Component<
     return (
       <StyledIframeWrapper>
         <Head>
+          <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
           <title>{pageTitle('Account')}</title>
           <script src="https://js.stripe.com/v3/" async />
         </Head>
@@ -175,7 +176,10 @@ export const getStripeHelper = (
 }
 
 export default withConfig(
-  connect(mapStateToProps, mapDispatchToProps)(AccountContent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccountContent)
 )
 
 const Quit = styled(Close)`

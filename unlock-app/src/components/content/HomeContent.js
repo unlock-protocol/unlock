@@ -13,6 +13,7 @@ import withConfig from '../../utils/withConfig'
 export const HomeContent = () => (
   <Layout forContent>
     <Head>
+      <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
       <title>{pageTitle()}</title>
       <TwitterTags />
       <OpenGraphTags />

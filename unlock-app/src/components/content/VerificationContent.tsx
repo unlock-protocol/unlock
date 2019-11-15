@@ -32,6 +32,7 @@ export const VerificationContent = ({
   return (
     <Layout title="Verification">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Verification')}</title>
       </Head>
       {account && <Account network={network} account={account} />}

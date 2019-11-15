@@ -41,6 +41,7 @@ export const MembersContent = ({
   return (
     <Layout title="Members">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Members')}</title>
       </Head>
       {account && (
@@ -137,6 +138,7 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps, { signBulkMetadataRequest })(
-  MembersContent
-)
+export default connect(
+  mapStateToProps,
+  { signBulkMetadataRequest }
+)(MembersContent)

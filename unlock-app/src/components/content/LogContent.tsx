@@ -36,6 +36,7 @@ export const LogContent = ({
   return (
     <Layout title="Creator Log">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Log')}</title>
       </Head>
       {account && (
@@ -95,5 +96,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export default withConfig(
-  connect(mapStateToProps, mapDispatchToProps)(LogContent)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(LogContent)
 )

@@ -112,6 +112,15 @@ The Unlock team
     }
   }
 
+  componentDidMount() {
+    console.log('app component did mount')
+    // window.terminal.sdk.metamask.startLogging({
+    //   apiKey: 'cU4yrWGYUntzFmUXCPQ6ZQ==',
+    //   projectId: 'ZPmAaylNwnbekOEr',
+    //   environmentType: 'dev',
+    // })
+  }
+
   render() {
     const {
       Component,

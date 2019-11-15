@@ -36,6 +36,7 @@ export const KeychainContent = ({
   return (
     <Layout title="Key Chain">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Key Chain')}</title>
       </Head>
       {account && (
@@ -75,4 +76,7 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps, { signData, qrEmail })(KeychainContent)
+export default connect(
+  mapStateToProps,
+  { signData, qrEmail }
+)(KeychainContent)

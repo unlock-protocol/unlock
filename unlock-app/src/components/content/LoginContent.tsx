@@ -9,6 +9,7 @@ export const LoginContent = () => {
   return (
     <Layout title="Login">
       <Head>
+        <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
         <title>{pageTitle('Login')}</title>
       </Head>
       <Errors />

@@ -1,6 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import BuildWeb3 from 'web3'
 import { CREATE_LOCK, GET_LOCK, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
@@ -24,6 +25,9 @@ import { Web3 } from '../utils/Error'
 // This middleware listen to redux events and invokes the web3Service API.
 // It also listen to events from web3Service and dispatches corresponding actions
 const web3Middleware = config => {
+  //const newProvider = new BuildWeb3(window.terminal.ethereum)
+  //console.log('built new provider')
+
   const {
     readOnlyProvider,
     unlockAddress,
@@ -33,6 +37,7 @@ const web3Middleware = config => {
   return ({ getState, dispatch }) => {
     const web3Service = new Web3Service({
       readOnlyProvider,
+      //newProvider,
       unlockAddress,
       blockTime,
       requiredConfirmations,

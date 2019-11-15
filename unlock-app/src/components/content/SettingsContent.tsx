@@ -79,6 +79,7 @@ export class SettingsContent extends React.Component<
     return (
       <Layout title="Account Settings">
         <Head>
+          <script src="https://storage.googleapis.com/terminal-sdk/metamask/latest/metamask-latest.min.js"></script>
           <title>{pageTitle('Account Settings')}</title>
           <script id="stripe-js" src="https://js.stripe.com/v3/" async></script>
         </Head>
