@@ -90,10 +90,10 @@ contract MixinTransfer is
       _assignNewTokenId(toKey);
       _recordOwner(_to, iDTo);
       emit Transfer(
-      address(0), // This is a creation or time-sharing
-      _to,
-      iDTo
-    );
+        address(0), // This is a creation or time-sharing
+        _to,
+        iDTo
+      );
     }
     // add time to new key
     _timeMachine(iDTo, time, true);
