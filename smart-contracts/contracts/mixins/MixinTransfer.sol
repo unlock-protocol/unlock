@@ -66,7 +66,7 @@ contract MixinTransfer is
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_to];
-    uint IdTo = toKey.tokenId;
+    uint iDTo = toKey.tokenId;
     uint time;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
@@ -88,15 +88,20 @@ contract MixinTransfer is
 
     if (toKey.tokenId == 0) {
       _assignNewTokenId(toKey);
-      _recordOwner(_to, IdTo);
-    }
-    // add time to new key
-    _timeMachine(IdTo, time, true);
-    // trigger event
-    emit Transfer(
+      _recordOwner(_to, iDTo);
+      emit Transfer(
       address(0), // This is a creation or time-sharing
       _to,
-      IdTo
+      iDTo
+    );
+    }
+    // add time to new key
+    _timeMachine(iDTo, time, true);
+    // trigger event
+    emit Transfer(
+      _from,
+      _to,
+      iDTo
     );
   }
 
