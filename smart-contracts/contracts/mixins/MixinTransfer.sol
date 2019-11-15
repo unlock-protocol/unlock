@@ -60,7 +60,6 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_to != address(0), 'INVALID_ADDRESS');
-
     address keyOwner = ownerOf[_tokenId];
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     Key storage fromKey = keyByOwner[keyOwner];
