@@ -44,6 +44,67 @@ contract MixinTransfer is
   // This is calculated as `keyPrice * transferFeeBasisPoints / BASIS_POINTS_DEN`.
   uint public transferFeeBasisPoints;
 
+  /**
+  * @notice Allows the key owner to share their key (parent key) by
+  * transferring a portion of the remaining time to a new key (child key).
+  * @param _to The recipient of the shared key
+  * @param _tokenId the key to share
+  * @param _timeShared The amount of time shared
+  */
+  function shareKey(
+    address _to,
+    uint _tokenId,
+    uint _timeShared
+  ) public
+    onlyIfAlive
+    onlyKeyOwnerOrApproved(_tokenId)
+  {
+    require(_to != address(0), 'INVALID_ADDRESS');
+    address keyOwner = ownerOf[_tokenId];
+    require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    Key storage fromKey = keyByOwner[keyOwner];
+    Key storage toKey = keyByOwner[_to];
+    uint iDTo = toKey.tokenId;
+    uint time;
+    // get the remaining time for the origin key
+    uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
+    // get the transfer fee based on amount of time wanted share
+    uint fee = getTransferFee(keyOwner, _timeShared);
+    uint timePlusFee = _timeShared.add(fee);
+
+    // ensure that we don't try to share too much
+    if(timePlusFee < timeRemaining) {
+      // now we can safely set the time
+      time = _timeShared;
+      // deduct time from parent key, including transfer fee
+      _timeMachine(_tokenId, timePlusFee, false);
+    } else {
+      // we have to recalculate the fee here
+      fee = getTransferFee(keyOwner, timeRemaining);
+      time = timeRemaining - fee;
+      fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
+      emit ExpireKey(_tokenId);
+    }
+
+    if (toKey.tokenId == 0) {
+      _assignNewTokenId(toKey);
+      _recordOwner(_to, iDTo);
+      emit Transfer(
+        address(0), // This is a creation or time-sharing
+        _to,
+        iDTo
+      );
+    }
+    // add time to new key
+    _timeMachine(iDTo, time, true);
+    // trigger event
+    emit Transfer(
+      keyOwner,
+      _to,
+      iDTo
+    );
+  }
+
   function transferFrom(
     address _from,
     address _recipient,
