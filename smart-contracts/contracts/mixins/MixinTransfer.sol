@@ -68,18 +68,19 @@ contract MixinTransfer is
     uint time;
     // get the remaining time for the origin key
     uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
-    // get the transfer fee
+    // get the transfer fee based on amount of time wanted share
     uint fee = getTransferFee(keyOwner, _timeShared);
 
     // ensure that we don't try to share too much
     if(_timeShared.add(fee) < timeRemaining) {
+      // now we can safely set the time
       time = _timeShared;
-      uint timePlusFee = _timeShared.add(fee);
+      uint timePlusFee = _timeShared + fee;
       // deduct time from parent key, including transfer fee
       _timeMachine(_tokenId, timePlusFee, false);
     } else {
       fee = getTransferFee(keyOwner, timeRemaining);
-      time = timeRemaining.sub(fee);
+      time = timeRemaining - fee;
       fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenId);
     }
