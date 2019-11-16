@@ -453,9 +453,7 @@ interface IPublicLock {
   /**
   * @notice Allows the key owner to share their key (parent key) by
   * transferring a portion of the remaining time to a new key (child key).
-  * @dev Throws if _from does not have a valid key.
-  * @dev Throws if _from does not have enough remaining time on
-  * parent key to both pay transfer fee and share time with a child key.
+  * @dev Throws if key is not valid.
   * @dev Throws if `_to` is the zero address
   * @param _to The recipient of the shared key
   * @param _tokenId the key to share
