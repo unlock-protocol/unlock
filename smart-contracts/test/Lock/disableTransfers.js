@@ -78,4 +78,19 @@ contract('Lock / disableTransfers', accounts => {
       })
     })
   })
+
+  describe('Re-enabling transfers', () => {
+    it('lock owner should be able to allow transfers by lowering fee', async () => {
+      // Change the fee to 99%
+      await lock.updateTransferFee(1000)
+      // check owner has a key
+      assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+      // attempt a transfer
+      lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
+        from: keyOwner,
+      })
+      // check that recipient received a key
+      assert.equal(await lock.getHasValidKey.call(accountWithNoKey), true)
+    })
+  })
 })
