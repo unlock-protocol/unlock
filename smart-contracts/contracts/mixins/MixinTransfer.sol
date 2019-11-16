@@ -59,6 +59,7 @@ contract MixinTransfer is
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
   {
+    require(transferFeeBasisPoints < 10000, 'KEY_TRANSFERS_DISABLED');
     require(_to != address(0), 'INVALID_ADDRESS');
     address keyOwner = ownerOf[_tokenId];
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
