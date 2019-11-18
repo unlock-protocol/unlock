@@ -30,4 +30,14 @@ export default class LockData {
       return false
     }
   }
+
+  async getKeyOwner(lockAddress: string, tokenId: number): Promise<string> {
+    let lock = new ethers.Contract(
+      lockAddress,
+      ['function ownerOf(uint256 _tokenId) constant view returns (address)'],
+      this.provider
+    )
+
+    return await lock.ownerOf(tokenId)
+  }
 }
