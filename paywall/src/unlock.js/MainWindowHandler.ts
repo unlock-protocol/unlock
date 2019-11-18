@@ -42,26 +42,15 @@ export default class MainWindowHandler {
   constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
+
+    // create window.unlockProtocol
+    this.setupUnlockProtocolVariable()
+    // If we previously cached the lock state on this page, we'll dispatch it
+    // here for a smoother experience.
+    this.dispatchCachedLockState()
   }
 
   init() {
-    // create window.unlockProtocol
-    this.setupUnlockProtocolVariable()
-
-    // this is a cache for the time between script startup and the full load
-    // of the data iframe. The data iframe will then send down the current
-    // value, overriding this. A bit later, the blockchain handler will update
-    // with the actual value, so this is only used for a few milliseconds
-    const locked = this.getCachedLockState()
-    // note: locked can also be value IGNORE_CACHE in addition to true/false
-    // IGNORE_CACHE is used to ignore the cache and not respond to it
-    if (locked === true) {
-      this.dispatchEvent('locked')
-    }
-    if (locked === false) {
-      this.dispatchEvent('unlocked')
-    }
-
     // respond to "unlocked" and "locked" events by
     // dispatching "unlockProtocol" on the main window
     // and
@@ -137,6 +126,22 @@ export default class MainWindowHandler {
       return JSON.parse(cache)
     } catch (_) {
       return IGNORE_CACHE
+    }
+  }
+
+  dispatchCachedLockState() {
+    // this is a cache for the time between script startup and the full load
+    // of the data iframe. The data iframe will then send down the current
+    // value, overriding this. A bit later, the blockchain handler will update
+    // with the actual value, so this is only used for a few milliseconds
+    const locked = this.getCachedLockState()
+    // note: locked can also be value IGNORE_CACHE in addition to true/false
+    // IGNORE_CACHE is used to ignore the cache and not respond to it
+    if (locked === true) {
+      this.dispatchEvent('locked')
+    }
+    if (locked === false) {
+      this.dispatchEvent('unlocked')
     }
   }
 
