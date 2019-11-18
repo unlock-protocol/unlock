@@ -1,6 +1,7 @@
 import request from 'supertest'
 import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
+import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
@@ -39,31 +40,10 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
   }),
 }))
 
-function generateKeyTypedData(message: any) {
-  return {
-    types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
-      KeyMetadata: [],
-    },
-    domain: {
-      name: 'Unlock',
-      version: '1',
-    },
-    primaryType: 'KeyMetadata',
-    message,
-  }
-}
-
 describe('updating address holder metadata', () => {
   it('stores the passed data', async () => {
     expect.assertions(1)
-    const typedData = generateKeyTypedData({
+    const typedData = keyTypedData({
       UserMetaData: {
         owner: keyHolder[0],
         data: {
@@ -91,7 +71,7 @@ describe('updating address holder metadata', () => {
   it('should update existing data if it already exists', async () => {
     expect.assertions(1)
 
-    const typedData = generateKeyTypedData({
+    const typedData = keyTypedData({
       UserMetaData: {
         owner: keyHolder[0],
         data: {
@@ -120,7 +100,7 @@ describe('updating address holder metadata', () => {
     it('returns unauthorized', async () => {
       expect.assertions(1)
 
-      const typedData = generateKeyTypedData({
+      const typedData = keyTypedData({
         UserMetaData: {
           owner: keyHolder[0],
           protected: {
