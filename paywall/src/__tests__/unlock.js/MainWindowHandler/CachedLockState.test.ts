@@ -91,4 +91,39 @@ describe('MainWindowHandler - locked/unlocked cache', () => {
       expect(fakeWindow.storage).toEqual({})
     })
   })
+
+  describe('dispatchCachedLockState', () => {
+    it('should dispatch "locked" when the cached lock state is locked', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => true)
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('locked')
+    })
+
+    it('should dispatch "unlocked" when the cached lock state is unlocked', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => false)
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('unlocked')
+    })
+
+    it('should not dispatch at all for any other value', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => 'ignore')
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).not.toHaveBeenCalled()
+    })
+  })
 })
