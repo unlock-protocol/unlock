@@ -175,8 +175,8 @@ export const isValidPaywallConfig = config => {
   // persistentCheckout can be undefined (not set), a boolean, or "true" or "false".
   if (
     typeof config.persistentCheckout !== 'undefined' &&
-    (typeof config.persistentCheckout !== 'boolean' &&
-      ['true', 'false'].indexOf(config.persistentCheckout) === -1)
+    typeof config.persistentCheckout !== 'boolean' &&
+    ['true', 'false'].indexOf(config.persistentCheckout) === -1
   ) {
     console.error(
       `The paywall config's "persistentCheckout" field has an invalid value.`
@@ -339,8 +339,8 @@ export const isValidBalance = balance => {
   return Object.keys(balance).reduce((accumulator, currency) => {
     return (
       accumulator &&
-      (isPositiveNumber(balance[currency]) &&
-        typeof balance[currency] === 'string')
+      isPositiveNumber(balance[currency]) &&
+      typeof balance[currency] === 'string'
     )
   }, true)
 }

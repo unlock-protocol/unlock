@@ -30,6 +30,12 @@ contract MixinTransfer is
     uint transferFeeBasisPoints
   );
 
+  event TimestampChanged(
+    uint indexed _tokenId,
+    uint _amount,
+    bool _timeAdded
+  );
+
   // 0x150b7a02 == bytes4(keccak256('onERC721Received(address,address,uint256,bytes)'))
   bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
@@ -49,12 +55,15 @@ contract MixinTransfer is
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(_recipient != address(0), 'INVALID_ADDRESS');
-    uint fee = getTransferFee(_from);
+    uint fee = getTransferFee(_from, 0);
 
     Key storage fromKey = keyByOwner[_from];
     Key storage toKey = keyByOwner[_recipient];
+    uint id = fromKey.tokenId;
 
     uint previousExpiration = toKey.expirationTimestamp;
+    // subtract the fee from the senders key before the transfer
+    _timeMachine(id, fee, false);
 
     if (toKey.tokenId == 0) {
       toKey.tokenId = fromKey.tokenId;
@@ -159,24 +168,25 @@ contract MixinTransfer is
    * @param _owner The owner of the key check the transfer fee for.
    */
   function getTransferFee(
-    address _owner
+    address _owner,
+    uint _time
   )
     public view
     hasValidKey(_owner)
     returns (uint)
   {
     Key storage key = keyByOwner[_owner];
-    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
-    uint timeRemaining = key.expirationTimestamp - block.timestamp;
+    uint timeToTransfer;
     uint fee;
-    if(timeRemaining >= expirationDuration) {
-      // Max the potential impact of this fee for keys with long durations remaining
-      fee = keyPrice;
+    // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
+    // this is for standard key transfers
+    if(_time == 0) {
+      timeToTransfer = key.expirationTimestamp - block.timestamp;
     } else {
-      // Math: using safeMul in case keyPrice or timeRemaining is very large
-      fee = keyPrice.mul(timeRemaining) / expirationDuration;
+      timeToTransfer = _time;
     }
-    return fee.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+    fee = timeToTransfer.mul(transferFeeBasisPoints) / BASIS_POINTS_DEN;
+    return fee;
   }
 
   /**
@@ -209,6 +219,7 @@ contract MixinTransfer is
     } else {
       key.expirationTimestamp = formerTimestamp.sub(_deltaT);
     }
+    emit TimestampChanged(_tokenId, _deltaT, _addTime);
   }
 
   /**

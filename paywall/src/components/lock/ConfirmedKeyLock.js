@@ -2,7 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
-import { LockWrapper, LockHeader, LockBody } from './LockStyles'
+import {
+  LockWrapper,
+  LockHeader,
+  LockBody,
+  ExpirationDuration,
+} from './LockStyles'
 import ConfirmedKey, {
   Checkmark,
   Arrow,
@@ -57,14 +62,6 @@ const EthPrice = styled.div.attrs({
   color: var(--slate);
   font-weight: bold;
 `
-
-const LockPriceDetails = styled.span`
-  font-size: 20px;
-  font-weight: 300;
-  color: var(--grey);
-`
-
-const ExpirationDuration = styled(LockPriceDetails)``
 
 const Body = styled(LockBody)`
   cursor: pointer;

@@ -4,14 +4,47 @@ import { Response } from 'express-serve-static-core' // eslint-disable-line no-u
 import Normalizer from '../utils/normalizer'
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
-
+import { expiredSignature } from '../utils/signature'
 import { addMetadata } from '../operations/userMetadataOperations'
+import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
 const metadataOperations = require('../operations/metadataOperations')
+const lockOperations = require('../operations/lockOperations')
 
 namespace MetadataController {
+  const evaluateLockOwnership = async (
+    lockAddress: string,
+    signeeAddress: string
+  ) => {
+    const lockData = new LockData(config.web3ProviderHost)
+
+    return (
+      Normalizer.ethereumAddress(signeeAddress) ===
+      Normalizer.ethereumAddress(await lockData.owner(lockAddress))
+    )
+  }
+
+  const presentProtectedData = async (
+    req: any,
+    address: string
+  ): Promise<boolean> => {
+    try {
+      if (req.signee && req.query.data) {
+        const payload = JSON.parse(decodeURIComponent(req.query.data))
+        const signatureTime = payload.message.LockMetaData.timestamp
+        return (
+          !expiredSignature(signatureTime) &&
+          evaluateLockOwnership(address, req.signee)
+        )
+      }
+      return false
+    } catch {
+      return false
+    }
+  }
+
   export const data = async (req: any, res: Response): Promise<any> => {
     const address = Normalizer.ethereumAddress(req.params.address)
     const keyId = req.params.keyId.toLowerCase()
@@ -107,42 +140,33 @@ namespace MetadataController {
     }
   }
 
-  const evaluateLockOwnership = async (
-    lockAddress: string,
-    signeeAddress: string
-  ) => {
-    const lockData = new LockData(config.web3ProviderHost)
-
-    return (
-      Normalizer.ethereumAddress(signeeAddress) ===
-      Normalizer.ethereumAddress(await lockData.owner(lockAddress))
-    )
-  }
-
-  const expiredSignature = (
-    signatureTimestamp: number,
-    gracePeriod = 10000
-  ): boolean => {
-    const serverTime = Date.now() / 1000
-    const signatureTime = signatureTimestamp / 1000
-
-    return signatureTime + gracePeriod < serverTime
-  }
-
-  const presentProtectedData = async (
+  export const keyHolderMetadata = async (
     req: any,
-    address: string
-  ): Promise<boolean> => {
-    if (req.signee && req.query.data) {
-      const payload = JSON.parse(req.query.data)
-      const signatureTime = payload.message.LockMetaData.timestamp
-
-      return (
-        !expiredSignature(signatureTime) &&
-        evaluateLockOwnership(address, req.signee)
+    res: Response
+  ): Promise<any> => {
+    if (!req.query.data) {
+      res.sendStatus(401)
+    } else {
+      const payload = JSON.parse(decodeURIComponent(req.query.data))
+      const lockAddress = Normalizer.ethereumAddress(
+        payload.message.LockMetaData.address
       )
+      const keyHolderAddresses = await new KeyHoldersByLock().getKeyHoldingAddresses(
+        lockAddress
+      )
+
+      if ((await evaluateLockOwnership(lockAddress, req.signee)) === false) {
+        res.sendStatus(401)
+      } else {
+        res.json(
+          await lockOperations.getKeyHolderMetadata(
+            lockAddress,
+            keyHolderAddresses
+          )
+        )
+      }
+      return false
     }
-    return false
   }
 }
 

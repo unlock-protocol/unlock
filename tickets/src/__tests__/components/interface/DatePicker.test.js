@@ -9,7 +9,11 @@ import DatePicker, {
 
 jest.mock('../../../utils/dates', () => ({
   getDaysMonthsAndYears: () => {
-    return [[1, 2, 3], [1, 2, 3], [2019, 2020, 2021]]
+    return [
+      [1, 2, 3],
+      [1, 2, 3],
+      [2019, 2020, 2021],
+    ]
   },
 }))
 

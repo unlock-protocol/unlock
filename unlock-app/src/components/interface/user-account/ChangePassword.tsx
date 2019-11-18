@@ -158,10 +158,7 @@ export const mapDispatchToProps = (dispatch: any) => ({
 })
 
 // TODO: connect to state and dispatch
-export default connect(
-  null,
-  mapDispatchToProps
-)(ChangePassword)
+export default connect(null, mapDispatchToProps)(ChangePassword)
 
 const Submit = styled(SubmitButton)`
   margin-bottom: 1rem;

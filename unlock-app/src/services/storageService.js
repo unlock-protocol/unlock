@@ -10,7 +10,6 @@ export const success = {
   storeTransaction: 'storeTransaction.success',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
   getLockAddressesForUser: 'getLockAddressesForUser.success',
-  lockLookUp: 'lockLookUp.success',
   storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
@@ -21,6 +20,7 @@ export const success = {
   getKeyPrice: 'getKeyPrice.success',
   ejectUser: 'ejectUser.success',
   getMetadataFor: 'getMetadataFor.success',
+  getBulkMetadataFor: 'getBulkMetadataFor.success',
 }
 
 export const failure = {
@@ -28,7 +28,6 @@ export const failure = {
   storeTransaction: 'storeTransaction.failure',
   getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
   getLockAddressesForUser: 'getLockAddressesForUser.failure',
-  lockLookUp: 'lockLookUp.failure',
   storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
@@ -39,6 +38,7 @@ export const failure = {
   getKeyPrice: 'getKeyPrice.failure',
   ejectUser: 'ejectUser.failure',
   getMetadataFor: 'getMetadataFor.failure',
+  getBulkMetadataFor: 'getBulkMetadataFor.failure',
 }
 
 export class StorageService extends EventEmitter {
@@ -102,27 +102,6 @@ export class StorageService extends EventEmitter {
 
   genAuthorizationHeader = token => {
     return { Authorization: ` Bearer ${token}` }
-  }
-
-  /**
-   * Returns the name of the request Lock,
-   * in a failure scenario a rejected promise is returned
-   * to the caller.
-   *
-   * @param {*} address
-   */
-  async lockLookUp(address) {
-    try {
-      const result = await axios.get(`${this.host}/lock/${address}`)
-      if (result.data && result.data.name) {
-        const name = result.data.name
-        this.emit(success.lockLookUp, { address, name })
-      } else {
-        this.emit(failure.lockLookUp, 'No name for this lock.')
-      }
-    } catch (error) {
-      this.emit(failure.lockLookUp, error)
-    }
   }
 
   /**
@@ -410,6 +389,36 @@ export class StorageService extends EventEmitter {
       this.emit(success.getMetadataFor, payload)
     } catch (error) {
       this.emit(failure.getMetadataFor, error)
+    }
+  }
+
+  /**
+   * Given a lock address and a typed data signature, get the metadata
+   * (public and protected) associated with each key on that lock.
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async getBulkMetadataFor(lockAddress, signature, data) {
+    const stringData = JSON.stringify(data)
+    const opts = {
+      headers: this.genAuthorizationHeader(signature),
+      // No body allowed in GET, so these are passed as query params for this
+      // call.
+      params: {
+        data: stringData,
+        signature: signature,
+      },
+    }
+    try {
+      const result = await axios.get(
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata`,
+        opts
+      )
+
+      this.emit(success.getBulkMetadataFor, result.data)
+    } catch (error) {
+      this.emit(failure.getBulkMetadataFor, error)
     }
   }
 }

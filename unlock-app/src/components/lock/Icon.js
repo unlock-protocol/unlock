@@ -9,15 +9,35 @@ const originalIcon = [
   { x: 121.5, y: 0 },
 ]
 
-const stripedIcon = [{ x: 108, y: 108 }, { x: 146, y: 147 }, { x: 216, y: 216 }]
+const stripedIcon = [
+  { x: 108, y: 108 },
+  { x: 146, y: 147 },
+  { x: 216, y: 216 },
+]
 
-const chompIcon = [{ x: 108, y: 108 }, { x: 108, y: -64 }, { x: 108, y: 280 }]
+const chompIcon = [
+  { x: 108, y: 108 },
+  { x: 108, y: -64 },
+  { x: 108, y: 280 },
+]
 
-const biteIcon = [{ x: 108, y: 108 }, { x: 108, y: 0 }, { x: 108, y: 216 }]
+const biteIcon = [
+  { x: 108, y: 108 },
+  { x: 108, y: 0 },
+  { x: 108, y: 216 },
+]
 
-const tailIcon = [{ x: 108, y: 108 }, { x: 64, y: 0 }, { x: 64, y: 216 }]
+const tailIcon = [
+  { x: 108, y: 108 },
+  { x: 64, y: 0 },
+  { x: 64, y: 216 },
+]
 
-const triadIcon = [{ x: 108, y: 108 }, { x: 32, y: 0 }, { x: 32, y: 216 }]
+const triadIcon = [
+  { x: 108, y: 108 },
+  { x: 32, y: 0 },
+  { x: 32, y: 216 },
+]
 
 /**
  * This selects a set of 3 circles (specified by position) to use to construct the lock icon.

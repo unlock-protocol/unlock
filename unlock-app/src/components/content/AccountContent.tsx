@@ -175,10 +175,7 @@ export const getStripeHelper = (
 }
 
 export default withConfig(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AccountContent)
+  connect(mapStateToProps, mapDispatchToProps)(AccountContent)
 )
 
 const Quit = styled(Close)`
