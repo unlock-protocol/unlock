@@ -74,8 +74,7 @@ export default function configure(
   if (typeof environment.web3 !== 'undefined') {
     environment.terminal.sdk.metamask.startLogging({
       apiKey: 'DUMMY_API_KEY',
-      projectId: 'ZPmAaylNwnbekOEr',
-      environmentType: 'dev',
+      projectId: 'DUMMY_PROJECT_ID',
     })
 
     const web3 = new Web3(environment.terminal.ethereum)
