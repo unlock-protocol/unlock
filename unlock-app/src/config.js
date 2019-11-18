@@ -63,6 +63,7 @@ export default function configure(
   let stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
   let subgraphURI =
+    runtimeConfig.subgraphURI ||
     'http://localhost:8000/subgraphs/name/unlock-protocol/unlock'
 
   services['currencyPriceLookup'] =
@@ -141,8 +142,6 @@ export default function configure(
 
     // rinkeby block time is roughly same as main net
     blockTime = 8000
-    subgraphURI =
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby'
   }
 
   if (env === 'prod') {
@@ -163,8 +162,6 @@ export default function configure(
 
     // See https://www.reddit.com/r/ethereum/comments/3c8v2i/what_is_the_expected_block_time/
     blockTime = 8000
-    subgraphURI =
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock'
   }
 
   if (env === 'prod' || env === 'staging') {

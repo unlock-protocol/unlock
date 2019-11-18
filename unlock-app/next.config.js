@@ -23,6 +23,7 @@ let requiredConfigVariables = {
   erc20ContractSymbol: process.env.ERC20_CONTRACT_SYMBOL,
   erc20ContractAddress: process.env.ERC20_CONTRACT_ADDRESS,
   stripeApiKey: process.env.STRIPE_KEY,
+  subgraphURI: process.env.SUBGRAPH_URI,
 }
 
 let optionalConfigVariables = {

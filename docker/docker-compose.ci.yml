@@ -50,6 +50,7 @@ services:
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'
+      SUBGRAPH_URI: '${SUBGRAPH_URI}'
     command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
     image: unlock-app
