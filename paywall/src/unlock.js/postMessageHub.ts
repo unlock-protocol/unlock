@@ -1,19 +1,22 @@
-/* eslint-disable import/prefer-default-export */
 import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
-import { Balance } from '../unlockTypes'
+import { Balance, PaywallConfig } from '../unlockTypes'
+
+// This file consolidates all the event handlers for post messages within the
+// `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
+// start to peel back the layers. Once we have a complete accounting of post
+// messaging we can replace the custom infrastructure with a library.
 
 export interface checkoutHandlerInitArgs {
   usingManagedAccount: boolean
-  // TODO: types?
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
   injectDefaultBalance: (
     oldBalance: Balance,
     erc20ContractAddress: string
   ) => Balance
-  config: any
+  config: PaywallConfig
   constants: any
 }
 
@@ -86,4 +89,27 @@ export function checkoutHandlerInit({
   dataIframe.on(PostMessages.UNLOCKED, lockAddresses =>
     checkoutIframe.postMessage(PostMessages.UNLOCKED, lockAddresses)
   )
+}
+
+interface iframeHandlerInitProps {
+  config: PaywallConfig
+  dataIframe: DataIframeMessageEmitter
+  checkoutIframe: CheckoutIframeMessageEmitter
+}
+
+export function iframeHandlerInit({
+  config,
+  dataIframe,
+  checkoutIframe,
+}: iframeHandlerInitProps) {
+  // TODO: consider removing the layer of event listeners and work with
+  // postmessages directly
+  dataIframe.setupListeners()
+  checkoutIframe.setupListeners()
+  // account listener setup will be on-demand, done by the Wallet in setupWallet()
+  // Comment above verbatim from original site. Will likely be changed.
+
+  dataIframe.on(PostMessages.READY, () => {
+    dataIframe.postMessage(PostMessages.CONFIG, config)
+  })
 }
