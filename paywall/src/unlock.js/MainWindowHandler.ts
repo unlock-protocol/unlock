@@ -72,6 +72,7 @@ export default class MainWindowHandler {
       // Update the user-facing status with locked/unlocked updates
       this.lockStatus = message
       // Let the user account iframe know the status by propagating the message
+      // TODO: separate this postmessage out somehow
       this.iframes.accounts.postMessage(message, undefined)
     }
   }
