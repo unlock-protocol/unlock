@@ -311,6 +311,11 @@ export function setupUserAccountsProxyWallet({
         })
     }
   })
+
+  // We should also tell the checkout iframe that we are in a user account context
+  iframes.checkout.once(PostMessages.READY, () => {
+    iframes.checkout.postMessage(PostMessages.USING_MANAGED_ACCOUNT, undefined)
+  })
 }
 
 export function postResult(
