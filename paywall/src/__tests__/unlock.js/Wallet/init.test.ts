@@ -3,6 +3,9 @@ import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
+import * as postMessageHub from '../../../unlock.js/postMessageHub'
+
+let spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
 
 describe('Wallet.init()', () => {
   let fakeWindow: FakeWindow
@@ -47,17 +50,17 @@ describe('Wallet.init()', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()
       fakeWindow.makeWeb3()
+      spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
     })
 
     it('should use crypto wallet if one exists on window', () => {
       expect.assertions(1)
 
       const handler = makeWallet()
-      handler.setupUserAccounts = jest.fn()
 
       handler.init()
 
-      expect(handler.setupUserAccounts).not.toHaveBeenCalled()
+      expect(spy).not.toHaveBeenCalled()
     })
 
     it('should not setup user accounts if there is a crypto wallet', () => {
@@ -87,30 +90,29 @@ describe('Wallet.init()', () => {
   describe('has no crypto wallet', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()
+      spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
     })
 
     it('should use crypto wallet if config does not ask for user accounts', () => {
       expect.assertions(1)
 
       const handler = makeWallet()
-      handler.setupUserAccounts = jest.fn()
 
       handler.init()
 
-      expect(handler.setupUserAccounts).not.toHaveBeenCalled()
+      expect(spy).not.toHaveBeenCalled()
     })
 
     it('should use user accounts proxy wallet if user accounts specified', () => {
       expect.assertions(2)
 
       const handler = makeWallet(userAccountsConfig)
-      handler.setupUserAccounts = jest.fn()
       handler.setupWeb3ProxyWallet = jest.fn()
       handler.setupUserAccountsProxyWallet = jest.fn()
 
       handler.init()
 
-      expect(handler.setupUserAccounts).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalled()
       expect(handler.setupUserAccountsProxyWallet).toHaveBeenCalled()
     })
 
@@ -121,12 +123,11 @@ describe('Wallet.init()', () => {
         ...userAccountsConfig,
         unlockUserAccounts: 'true',
       })
-      handler.setupUserAccounts = jest.fn()
       handler.setupUserAccountsProxyWallet = jest.fn()
 
       handler.init()
 
-      expect(handler.setupUserAccounts).toHaveBeenCalled()
+      expect(spy).toHaveBeenCalled()
       expect(handler.setupUserAccountsProxyWallet).toHaveBeenCalled()
     })
 

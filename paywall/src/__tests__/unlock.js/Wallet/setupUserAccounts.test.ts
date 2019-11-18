@@ -43,7 +43,7 @@ describe('Wallet.setupUserAccounts()', () => {
     )
     iframes.init(config)
     wallet = new Wallet(fakeWindow, iframes, config, startup)
-    wallet.setupUserAccounts()
+    wallet.init()
   }
 
   function testingWallet() {
@@ -189,9 +189,9 @@ describe('Wallet.setupUserAccounts()', () => {
       userIframeUrl
     )
     iframes.init(config)
-    wallet = new Wallet(fakeWindow, iframes, config, startup)
     iframes.accounts.createIframe = jest.fn()
-    wallet.setupUserAccounts()
+    wallet = new Wallet(fakeWindow, iframes, config, startup)
+    wallet.init()
 
     expect(iframes.accounts.createIframe).toHaveBeenCalled()
   })

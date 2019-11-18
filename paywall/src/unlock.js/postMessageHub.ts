@@ -1,4 +1,7 @@
-import { BlockchainData } from 'src/data-iframe/blockchainHandler/blockChainTypes'
+import {
+  BlockchainData,
+  unlockNetworks,
+} from 'src/data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
@@ -193,19 +196,49 @@ export function mainWindowHandlerInit({
   })
 }
 
-export async function enableCryptoWallet(
-  window: Web3Window,
+interface setupUserAccountsProps {
   iframes: TemporaryIframeHandler
-) {
-  if (!window.web3 || !window.web3.currentProvider) {
-    return
-  }
-  const wallet = window.web3.currentProvider
-  if (!wallet.enable) {
-    return
-  }
-  // TODO: what actually is this?
-  iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
-  await wallet.enable()
-  iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
+  config: PaywallConfig
+  setUserAccountAddress: (address: string | null) => void
+  setUserAccountNetwork: (network: unlockNetworks) => void
+}
+
+export function setupUserAccounts({
+  iframes,
+  config,
+  setUserAccountAddress,
+  setUserAccountNetwork,
+}: setupUserAccountsProps) {
+  // listen for updates to state from the data iframe, and forward them to the checkout UI
+  iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
+    iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
+  })
+
+  // pass on the configuration and request the latest data
+  iframes.accounts.on(PostMessages.READY, () => {
+    iframes.accounts.postMessage(PostMessages.CONFIG, config)
+
+    iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+  })
+
+  // listen for account and network from the user accounts iframe
+  iframes.accounts.on(PostMessages.UPDATE_ACCOUNT, address => {
+    setUserAccountAddress(address)
+  })
+  iframes.accounts.on(PostMessages.UPDATE_NETWORK, network => {
+    setUserAccountNetwork(network)
+  })
+
+  // when a purchase is in progress, tell the data iframe to retrieve the transaction
+  iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
+    iframes.data.postMessage(
+      PostMessages.INITIATED_TRANSACTION,
+      // TODO: passing undefined is limitation of the way messages are typed, eventually it should be fixed
+      // the natural behavior would be passing nothing as the 2nd argument
+      undefined
+    )
+  })
+
+  // then create the iframe and ready its post office
+  iframes.accounts.createIframe()
 }
