@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/prefer-default-export
 export function lockTypedData(message: any) {
   return {
     types: {
@@ -21,6 +20,27 @@ export function lockTypedData(message: any) {
       version: '1',
     },
     primaryType: 'LockMetadata',
+    message,
+  }
+}
+
+export function keyTypedData(message: any) {
+  return {
+    types: {
+      EIP712Domain: [
+        { name: 'name', type: 'string' },
+        { name: 'version', type: 'string' },
+        { name: 'chainId', type: 'uint256' },
+        { name: 'verifyingContract', type: 'address' },
+        { name: 'salt', type: 'bytes32' },
+      ],
+      KeyMetadata: [],
+    },
+    domain: {
+      name: 'Unlock',
+      version: '1',
+    },
+    primaryType: 'KeyMetadata',
     message,
   }
 }
