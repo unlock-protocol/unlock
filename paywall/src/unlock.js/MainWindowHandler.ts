@@ -5,10 +5,8 @@ import {
 } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
-import {
-  BlockchainData,
-  unlockNetworks,
-} from '../data-iframe/blockchainHandler/blockChainTypes'
+import { BlockchainData } from '../data-iframe/blockchainHandler/blockChainTypes'
+import { mainWindowHandlerInit } from './postMessageHub'
 
 interface hasPrototype {
   prototype?: any
@@ -42,76 +40,26 @@ export default class MainWindowHandler {
   constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
     this.window = window
     this.iframes = iframes
+
+    // create window.unlockProtocol
+    this.setupUnlockProtocolVariable()
+    // If we previously cached the lock state on this page, we'll dispatch it
+    // here for a smoother experience.
+    this.dispatchCachedLockState()
   }
 
   init() {
-    // create window.unlockProtocol
-    this.setupUnlockProtocolVariable()
-
-    // this is a cache for the time between script startup and the full load
-    // of the data iframe. The data iframe will then send down the current
-    // value, overriding this. A bit later, the blockchain handler will update
-    // with the actual value, so this is only used for a few milliseconds
-    const locked = this.getCachedLockState()
-    // note: locked can also be value IGNORE_CACHE in addition to true/false
-    // IGNORE_CACHE is used to ignore the cache and not respond to it
-    if (locked === true) {
-      this.dispatchEvent('locked')
-    }
-    if (locked === false) {
-      this.dispatchEvent('unlocked')
-    }
-
-    // respond to "unlocked" and "locked" events by
-    // dispatching "unlockProtocol" on the main window
-    // and
-    this.iframes.data.on(PostMessages.LOCKED, () => {
-      this.toggleLockState(PostMessages.LOCKED)
-    })
-    this.iframes.data.on(PostMessages.UNLOCKED, () => {
-      this.toggleLockState(PostMessages.UNLOCKED)
-    })
-    this.iframes.data.on(PostMessages.ERROR, e => {
-      if (e === 'no ethereum wallet is available') {
-        this.toggleLockState(PostMessages.LOCKED)
-      }
-    })
-
-    // When the data iframe sends updates, store them in the mirror
-    this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
-      this.blockchainData.locks = locks
-    })
-    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, address => {
-      this.blockchainData.account = address
-    })
-    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
-      this.blockchainData.balance = balance
-    })
-    this.iframes.data.on(PostMessages.UPDATE_NETWORK, network => {
-      this.blockchainData.network = network as unlockNetworks
-    })
-    this.iframes.data.on(PostMessages.UPDATE_KEYS, keys => {
-      this.blockchainData.keys = keys
-    })
-    this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
-      this.blockchainData.transactions = transactions
-    })
-
-    // handle display of checkout and account UI
-    this.iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
-      this.hideCheckoutIframe()
-    })
-
-    this.iframes.accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
-      this.showAccountIframe()
-    })
-
-    this.iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
-      this.hideAccountIframe()
+    mainWindowHandlerInit({
+      iframes: this.iframes,
+      toggleLockState: this.toggleLockState,
+      hideAccountIframe: this.hideAccountIframe,
+      showAccountIframe: this.showAccountIframe,
+      hideCheckoutIframe: this.hideCheckoutIframe,
+      blockchainData: this.blockchainData,
     })
   }
 
-  toggleLockState(message: PostMessages.LOCKED | PostMessages.UNLOCKED) {
+  toggleLockState = (message: PostMessages.LOCKED | PostMessages.UNLOCKED) => {
     const isLocked = {
       [PostMessages.LOCKED]: true,
       [PostMessages.UNLOCKED]: false,
@@ -128,7 +76,7 @@ export default class MainWindowHandler {
     }
   }
 
-  getCachedLockState() {
+  getCachedLockState = () => {
     try {
       const cache = this.window.localStorage.getItem('__unlockProtocol.locked')
       if (!cache) return IGNORE_CACHE
@@ -140,7 +88,23 @@ export default class MainWindowHandler {
     }
   }
 
-  setCachedLockedState(newState: boolean) {
+  dispatchCachedLockState = () => {
+    // this is a cache for the time between script startup and the full load
+    // of the data iframe. The data iframe will then send down the current
+    // value, overriding this. A bit later, the blockchain handler will update
+    // with the actual value, so this is only used for a few milliseconds
+    const locked = this.getCachedLockState()
+    // note: locked can also be value IGNORE_CACHE in addition to true/false
+    // IGNORE_CACHE is used to ignore the cache and not respond to it
+    if (locked === true) {
+      this.dispatchEvent('locked')
+    }
+    if (locked === false) {
+      this.dispatchEvent('unlocked')
+    }
+  }
+
+  setCachedLockedState = (newState: boolean) => {
     try {
       // this is a fast cache. The value will only be used
       // to prevent a flash of ads on startup. If a cheeky
@@ -159,7 +123,7 @@ export default class MainWindowHandler {
   /**
    * Create window.unlockProtocol
    */
-  setupUnlockProtocolVariable() {
+  setupUnlockProtocolVariable = () => {
     const loadCheckoutModal = () => {
       this.showCheckoutIframe()
     }
@@ -224,7 +188,7 @@ export default class MainWindowHandler {
   /**
    * Dispatch the unlockProtocol event
    */
-  dispatchEvent(detail: any) {
+  dispatchEvent = (detail: any) => {
     let event
     try {
       event = new this.window.CustomEvent('unlockProtocol', { detail })
@@ -246,7 +210,7 @@ export default class MainWindowHandler {
   /**
    * hide the checkout iframe
    */
-  hideCheckoutIframe() {
+  hideCheckoutIframe = () => {
     this.showCheckoutWhenAccountsHides = false
     this.showingCheckout = false
     this.iframes.checkout.hideIframe()
@@ -256,7 +220,7 @@ export default class MainWindowHandler {
    * show the checkout iframe, unless the account iframe is visible,
    * then mark it for showing when the account iframe is hidden
    */
-  showCheckoutIframe() {
+  showCheckoutIframe = () => {
     if (this.showingAccountsIframe) {
       // if the accounts iframe is active, we will
       // wait to show the checkout iframe
@@ -277,7 +241,7 @@ export default class MainWindowHandler {
    * If the checkout iframe is visible, hide it and mark it for
    * showing after the account iframe hides
    */
-  showAccountIframe() {
+  showAccountIframe = () => {
     if (this.showingCheckout) {
       // hide the checkout iframe, but mark it as needing
       // to be shown when the accounts iframe hides
@@ -295,7 +259,7 @@ export default class MainWindowHandler {
    *
    * If the checkout iframe was visible, show it again
    */
-  hideAccountIframe() {
+  hideAccountIframe = () => {
     this.showingAccountsIframe = false
     // note: if user accounts are disabled, this is a no-op
     this.iframes.accounts.hideIframe()
