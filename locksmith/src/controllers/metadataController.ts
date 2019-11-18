@@ -26,17 +26,33 @@ namespace MetadataController {
     )
   }
 
+  const evaluateKeyOwnership = async (
+    lockAddress: string,
+    tokenId: number,
+    signeeAddress: string
+  ) => {
+    const lock = new LockData(config.web3ProviderHost)
+
+    return (
+      signeeAddress.toLowerCase() ===
+      (await lock.getKeyOwner(lockAddress, tokenId)).toLowerCase()
+    )
+  }
+
   const presentProtectedData = async (
     req: any,
+    tokenId: number,
     address: string
   ): Promise<boolean> => {
     try {
       if (req.signee && req.query.data) {
         const payload = JSON.parse(decodeURIComponent(req.query.data))
         const signatureTime = payload.message.LockMetaData.timestamp
+
         return (
           !expiredSignature(signatureTime) &&
-          evaluateLockOwnership(address, req.signee)
+          ((await evaluateLockOwnership(address, req.signee)) ||
+            (await evaluateKeyOwnership(address, tokenId, req.signee)))
         )
       }
       return false
@@ -49,7 +65,7 @@ namespace MetadataController {
     const address = Normalizer.ethereumAddress(req.params.address)
     const keyId = req.params.keyId.toLowerCase()
 
-    const lockOwner = await presentProtectedData(req, address)
+    const lockOwner = await presentProtectedData(req, keyId, address)
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,

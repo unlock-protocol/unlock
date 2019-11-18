@@ -58,34 +58,34 @@ function generateKeyTypedData(message: any) {
   }
 }
 
-describe('when the signee owns the lock', () => {
-  let typedData: any
-  beforeAll(() => {
-    typedData = generateKeyTypedData({
-      KeyMetaData: {
-        custom_field: 'custom value',
-        owner: owningAddress,
-      },
-    })
-
-    mockOnChainLockOwnership.owner = jest.fn(() => {
-      return Promise.resolve(owningAddress)
-    })
+let typedData: any
+beforeAll(() => {
+  typedData = generateKeyTypedData({
+    KeyMetaData: {
+      custom_field: 'custom value',
+      owner: owningAddress,
+    },
   })
 
-  describe('when missing relevant signature details', () => {
-    it('returns as unauthorized', async () => {
-      expect.assertions(1)
-
-      const response = await request(app)
-        .put(`/api/key/${lockAddress}/5`)
-        .set('Accept', 'json')
-        .send(typedData)
-
-      expect(response.status).toEqual(401)
-    })
+  mockOnChainLockOwnership.owner = jest.fn(() => {
+    return Promise.resolve(owningAddress)
   })
+})
 
+describe('when missing relevant signature details', () => {
+  it('returns as unauthorized', async () => {
+    expect.assertions(1)
+
+    const response = await request(app)
+      .put(`/api/key/${lockAddress}/5`)
+      .set('Accept', 'json')
+      .send(typedData)
+
+    expect(response.status).toEqual(401)
+  })
+})
+
+describe('When the signee is the Lock owner', () => {
   describe('when including signature details', () => {
     it('stores the provided key metadata', async () => {
       expect.assertions(1)
