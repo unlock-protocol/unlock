@@ -44,8 +44,8 @@ describe('MainWindowHandler - init', () => {
       expect.assertions(1)
 
       const handler = getMainWindowHandler()
-      handler.init()
       handler.toggleLockState = jest.fn()
+      handler.init()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.LOCKED,
@@ -61,8 +61,8 @@ describe('MainWindowHandler - init', () => {
       expect.assertions(1)
 
       const handler = getMainWindowHandler()
-      handler.init()
       handler.toggleLockState = jest.fn()
+      handler.init()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.UNLOCKED,
@@ -80,8 +80,8 @@ describe('MainWindowHandler - init', () => {
       expect.assertions(2)
 
       const handler = getMainWindowHandler()
-      handler.init()
       handler.toggleLockState = jest.fn()
+      handler.init()
 
       // This is the only error message we lock the page for
       fakeWindow.receivePostMessageFromIframe(
@@ -118,8 +118,8 @@ describe('MainWindowHandler - init', () => {
       }
 
       const handler = getMainWindowHandler(paywallConfig)
-      handler.init()
       handler.hideCheckoutIframe = jest.fn()
+      handler.init()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.DISMISS_CHECKOUT,
@@ -139,9 +139,9 @@ describe('MainWindowHandler - init', () => {
       }
 
       const handler = getMainWindowHandler(paywallConfig)
+      handler.showAccountIframe = jest.fn()
       iframes.accounts.createIframe()
       handler.init()
-      handler.showAccountIframe = jest.fn()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.SHOW_ACCOUNTS_MODAL,
@@ -161,9 +161,9 @@ describe('MainWindowHandler - init', () => {
       }
 
       const handler = getMainWindowHandler(paywallConfig)
+      handler.hideAccountIframe = jest.fn()
       iframes.accounts.createIframe()
       handler.init()
-      handler.hideAccountIframe = jest.fn()
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.HIDE_ACCOUNTS_MODAL,

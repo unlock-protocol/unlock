@@ -1,6 +1,8 @@
+import { BlockchainData } from 'src/data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
+import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import { Balance, PaywallConfig } from '../unlockTypes'
 
 // This file consolidates all the event handlers for post messages within the
@@ -111,5 +113,81 @@ export function iframeHandlerInit({
 
   dataIframe.on(PostMessages.READY, () => {
     dataIframe.postMessage(PostMessages.CONFIG, config)
+  })
+}
+
+// can't import IframeHandler here because it would create a dependency cycle;
+// this will be fixed as we consolidate this postmessage code
+interface TemporaryIframeHandler {
+  data: DataIframeMessageEmitter
+  checkout: CheckoutIframeMessageEmitter
+  accounts: AccountsIframeMessageEmitter
+}
+
+interface mainWindowHandlerInitProps {
+  iframes: TemporaryIframeHandler
+  toggleLockState: (
+    message: PostMessages.LOCKED | PostMessages.UNLOCKED
+  ) => void
+  hideCheckoutIframe: () => void
+  showAccountIframe: () => void
+  hideAccountIframe: () => void
+  blockchainData: BlockchainData
+}
+
+export function mainWindowHandlerInit({
+  iframes,
+  toggleLockState,
+  hideAccountIframe,
+  showAccountIframe,
+  hideCheckoutIframe,
+  blockchainData,
+}: mainWindowHandlerInitProps) {
+  // respond to "unlocked" and "locked" events by
+  // dispatching "unlockProtocol" on the main window
+  // and
+  iframes.data.on(PostMessages.LOCKED, () => {
+    toggleLockState(PostMessages.LOCKED)
+  })
+  iframes.data.on(PostMessages.UNLOCKED, () => {
+    toggleLockState(PostMessages.UNLOCKED)
+  })
+  iframes.data.on(PostMessages.ERROR, e => {
+    if (e === 'no ethereum wallet is available') {
+      toggleLockState(PostMessages.LOCKED)
+    }
+  })
+
+  // When the data iframe sends updates, store them in the mirror
+  iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
+    blockchainData.locks = locks
+  })
+  iframes.data.on(PostMessages.UPDATE_ACCOUNT, address => {
+    blockchainData.account = address
+  })
+  iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
+    blockchainData.balance = balance
+  })
+  iframes.data.on(PostMessages.UPDATE_NETWORK, network => {
+    blockchainData.network = network
+  })
+  iframes.data.on(PostMessages.UPDATE_KEYS, keys => {
+    blockchainData.keys = keys
+  })
+  iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
+    blockchainData.transactions = transactions
+  })
+
+  // handle display of checkout and account UI
+  iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
+    hideCheckoutIframe()
+  })
+
+  iframes.accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
+    showAccountIframe()
+  })
+
+  iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
+    hideAccountIframe()
   })
 }
