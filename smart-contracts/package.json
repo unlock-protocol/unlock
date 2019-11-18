@@ -13,7 +13,7 @@
   "dependencies": {
     "@openzeppelin/cli": "2.6.0",
     "@openzeppelin/contracts": "2.4.0",
-    "@openzeppelin/contracts-ethereum-package": "2.3.0",
+    "@openzeppelin/contracts-ethereum-package": "2.4.0",
     "@openzeppelin/upgrades": "2.6.0",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
@@ -23,9 +23,9 @@
     "eth-gas-reporter": "0.2.12",
     "ethereumjs-units": "0.2.0",
     "ganache-cli": "6.7.0",
-    "hardlydifficult-ethereum-contracts": "0.6.8",
+    "hardlydifficult-ethereum-contracts": "0.7.0",
     "solium": "1.2.5",
-    "truffle": "5.0.44",
+    "truffle": "5.1.0",
     "truffle-assertions": "0.9.2",
     "truffle-hdwallet-provider": "1.0.17",
     "unlock-abi-0": "1.0.4",
@@ -34,8 +34,8 @@
     "unlock-abi-1-0": "1.0.0",
     "unlock-abi-1-1": "1.1.0",
     "unlock-abi-1-2": "1.0.0",
-    "web3-eth-abi": "1.2.2",
-    "web3-utils": "1.2.2"
+    "web3-eth-abi": "1.2.4",
+    "web3-utils": "1.2.4"
   },
   "devDependencies": {
     "truffle-flattener": "1.4.2",

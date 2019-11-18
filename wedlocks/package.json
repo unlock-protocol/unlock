@@ -8,7 +8,7 @@
     "@babel/core": "7.7.2",
     "@babel/node": "7.7.0",
     "@babel/preset-env": "7.7.1",
-    "aws-sdk": "2.569.0",
+    "aws-sdk": "2.573.0",
     "babel-loader": "8.0.6",
     "dotenv": "8.2.0",
     "node-forge": "0.9.1",
