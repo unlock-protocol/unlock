@@ -1,11 +1,5 @@
 import styled from 'styled-components'
-import BasicQRCode from 'qrcode.react'
 import Close from '../buttons/layout/Close'
-
-export const QRCode = styled(BasicQRCode)`
-  padding: 8px;
-  border: thin black solid;
-`
 
 export const Quit = styled(Close)`
   position: absolute;
@@ -45,7 +39,6 @@ export const Submit = styled(Dismiss)`
 
 export const MessageBox = styled.div`
   background: var(--white);
-  position: relative;
   min-width: 50%;
   max-width: 98%;
   border-radius: 4px;

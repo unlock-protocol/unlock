@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events'
 import * as unlockJs from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { UPDATE_LOCK, updateLock, getLock } from '../../actions/lock'
+import { getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
@@ -217,43 +217,6 @@ describe('Storage middleware', () => {
         account.address
       )
       expect(next).toHaveBeenCalledTimes(1)
-    })
-  })
-
-  describe('handling UPDATE_LOCK', () => {
-    it('should call storageService', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const action = { type: UPDATE_LOCK, address: lock.address, update: {} }
-      delete state.locks[lock.address].name
-
-      mockStorageService.lockLookUp = jest.fn()
-      invoke(action)
-      expect(mockStorageService.lockLookUp).toHaveBeenCalledWith(lock.address)
-      expect(next).toHaveBeenCalledTimes(1)
-    })
-
-    it('should get the name and pass it on', () => {
-      expect.assertions(1)
-      const { store } = create()
-      const address = '0x123'
-      const name =
-        'Shirley, Shirley Bo-ber-ley, bo-na-na fanna Fo-fer-ley. fee fi mo-mer-ley, Shirley!'
-
-      mockStorageService.emit(success.lockLookUp, { address, name })
-
-      expect(store.dispatch).toHaveBeenCalledWith(updateLock(address, { name }))
-    })
-
-    it('should handle failure events', () => {
-      expect.assertions(1)
-      const { store } = create()
-
-      mockStorageService.emit(failure.lockLookUp, 'Not enough vespene gas.')
-
-      expect(store.dispatch).toHaveBeenCalledWith(
-        setError(Storage.Diagnostic('Could not look up lock details.'))
-      )
     })
   })
 

@@ -58,5 +58,10 @@ const queryFilter = (filter: any) => {
     target.sender = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.sender) }
   }
 
+  // createdAfter is a timestamp in microseconds Time. (new Date().getTime())
+  if (filter.createdAfter) {
+    target.createdAt = { [Op.gte]: new Date(parseInt(filter.createdAfter)) }
+  }
+
   return target
 }

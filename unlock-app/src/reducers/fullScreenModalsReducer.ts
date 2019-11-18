@@ -26,11 +26,10 @@ const fullScreenModalsReducer = (
   }
 
   if (action.type === LAUNCH_MODAL) {
-    const { kindOfModal, data } = action
+    const { kindOfModal } = action
     return {
       active: true,
       kindOfModal,
-      data,
     }
   }
 

@@ -163,10 +163,7 @@ export const mapStateToProps = ({ account, errors }: ReduxState) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LogIn)
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
 
 const LogInWrapper = styled.div`
   width: 100%;

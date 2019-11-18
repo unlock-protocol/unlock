@@ -8,24 +8,62 @@
   "timezone": "America/Los_Angeles",
   "schedule": ["before 3am on monday"],
   "rebaseStalePrs": false,
+  "node": {
+    "enabled": false
+  },
+  "minor": {
+    "groupName": "minor and patch updates"
+  },
   "packageRules": [
+    {
+      "paths": ["locksmith/**"],
+      "groupName": "locksmith"
+    },
+    {
+      "paths": ["paywall/**"],
+      "groupName": "paywall"
+    },
+    {
+      "paths": ["rover/**"],
+      "groupName": "rover"
+    },
+    {
+      "paths": ["smart-contracts/**"],
+      "groupName": "smart-contracts",
+      "reviewers": ["NickCuso"]
+    },
+    {
+      "paths": ["tickets/**"],
+      "groupName": "tickets"
+    },
+    {
+      "paths": ["unlock-app/**"],
+      "groupName": "unlock-app"
+    },
+    {
+      "paths": ["unlock-js/**"],
+      "groupName": "unlock-js"
+    },
+    {
+      "paths": ["unlock-protocol.com/**"],
+      "groupName": "unlock-protocol.com"
+    },
+    {
+      "paths": ["wedlocks/**"],
+      "groupName": "wedlocks"
+    },
     {
       "packagePatterns": [
         "*"
       ],
-      "minor": {
-        "groupName": "all dependencies minor updates",
-        "groupSlug": "all-minor"
-      },
-      "patch": {
-        "groupName": "all dependencies patch updates",
-        "groupSlug": "all-patch"
+      "major": {
+        "groupName": null
       }
     },
     {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
-      "groupSlug": "unlock-js"
+      "groupName": "unlock-js npm package"
     }
   ]
 }
