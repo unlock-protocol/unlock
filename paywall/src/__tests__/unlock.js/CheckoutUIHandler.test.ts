@@ -188,7 +188,7 @@ describe('CheckoutUIHandler', () => {
         PostMessages.UPDATE_TRANSACTIONS,
         fakeTransactions,
       ],
-      ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 3],
+      ['UPDATE_NETWORK', PostMessages.UPDATE_NETWORK, 1],
       ['ERROR', PostMessages.ERROR, 'error message'],
       ['LOCKED', PostMessages.LOCKED, undefined],
       ['UNLOCKED', PostMessages.UNLOCKED, [fakeAccount]],

@@ -3,8 +3,9 @@ import MainWindowHandler, {
   IGNORE_CACHE,
 } from '../../../unlock.js/MainWindowHandler'
 import IframeHandler from '../../../unlock.js/IframeHandler'
+import { PostMessages } from '../../../messageTypes'
 
-describe('MainWindowHandler - locked/unlocked cache', () => {
+describe('MainWindowHandler - dispatching lock states', () => {
   let fakeWindow: FakeWindow
 
   function getMainWindowHandler() {
@@ -89,6 +90,77 @@ describe('MainWindowHandler - locked/unlocked cache', () => {
       handler.setCachedLockedState(true)
 
       expect(fakeWindow.storage).toEqual({})
+    })
+  })
+
+  describe('dispatchCachedLockState', () => {
+    it('should dispatch "locked" when the cached lock state is locked', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => true)
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('locked')
+    })
+
+    it('should dispatch "unlocked" when the cached lock state is unlocked', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => false)
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('unlocked')
+    })
+
+    it('should not dispatch at all for any other value', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.getCachedLockState = jest.fn(() => 'ignore')
+      handler.dispatchEvent = jest.fn()
+      handler.dispatchCachedLockState()
+
+      expect(handler.dispatchEvent).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('toggleLockState', () => {
+    it('should dispatch "locked" on receiving PostMessages.LOCKED', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.dispatchEvent = jest.fn()
+
+      handler.toggleLockState(PostMessages.LOCKED)
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('locked')
+    })
+
+    it('should dispatch "unlocked" on receiving PostMessages.UNLOCKED', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.dispatchEvent = jest.fn()
+
+      handler.toggleLockState(PostMessages.UNLOCKED)
+
+      expect(handler.dispatchEvent).toHaveBeenCalledWith('unlocked')
+    })
+
+    it('should not dispatch anything if the new state is the same as the old state', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      ;(handler as any).lockStatus = PostMessages.LOCKED
+      handler.dispatchEvent = jest.fn()
+
+      handler.toggleLockState(PostMessages.LOCKED)
+
+      expect(handler.dispatchEvent).not.toHaveBeenCalled()
     })
   })
 })
