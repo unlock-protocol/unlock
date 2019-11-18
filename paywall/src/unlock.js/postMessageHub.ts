@@ -7,14 +7,14 @@ import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmi
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import { Balance, PaywallConfig } from '../unlockTypes'
-import { Web3Window } from '../windowTypes'
+import { web3MethodCall } from '../windowTypes'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
 // start to peel back the layers. Once we have a complete accounting of post
 // messaging we can replace the custom infrastructure with a library.
 
-export interface checkoutHandlerInitArgs {
+export interface checkoutHandlerInitParams {
   usingManagedAccount: boolean
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
@@ -33,7 +33,7 @@ export function checkoutHandlerInit({
   config,
   constants,
   injectDefaultBalance,
-}: checkoutHandlerInitArgs) {
+}: checkoutHandlerInitParams) {
   // listen for updates to state from the data iframe, and forward them to the checkout UI
   dataIframe.on(PostMessages.UPDATE_ACCOUNT, account =>
     checkoutIframe.postMessage(PostMessages.UPDATE_ACCOUNT, account)
@@ -97,7 +97,7 @@ export function checkoutHandlerInit({
   )
 }
 
-interface iframeHandlerInitProps {
+interface iframeHandlerInitParams {
   config: PaywallConfig
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
@@ -107,7 +107,7 @@ export function iframeHandlerInit({
   config,
   dataIframe,
   checkoutIframe,
-}: iframeHandlerInitProps) {
+}: iframeHandlerInitParams) {
   // TODO: consider removing the layer of event listeners and work with
   // postmessages directly
   dataIframe.setupListeners()
@@ -128,7 +128,7 @@ interface TemporaryIframeHandler {
   accounts: AccountsIframeMessageEmitter
 }
 
-interface mainWindowHandlerInitProps {
+interface mainWindowHandlerInitParams {
   iframes: TemporaryIframeHandler
   toggleLockState: (
     message: PostMessages.LOCKED | PostMessages.UNLOCKED
@@ -146,7 +146,7 @@ export function mainWindowHandlerInit({
   showAccountIframe,
   hideCheckoutIframe,
   blockchainData,
-}: mainWindowHandlerInitProps) {
+}: mainWindowHandlerInitParams) {
   // respond to "unlocked" and "locked" events by
   // dispatching "unlockProtocol" on the main window
   // and
@@ -196,7 +196,7 @@ export function mainWindowHandlerInit({
   })
 }
 
-interface setupUserAccountsProps {
+interface setupUserAccountsParams {
   iframes: TemporaryIframeHandler
   config: PaywallConfig
   setUserAccountAddress: (address: string | null) => void
@@ -208,7 +208,7 @@ export function setupUserAccounts({
   config,
   setUserAccountAddress,
   setUserAccountNetwork,
-}: setupUserAccountsProps) {
+}: setupUserAccountsParams) {
   // listen for updates to state from the data iframe, and forward them to the checkout UI
   iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
     iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
@@ -241,4 +241,90 @@ export function setupUserAccounts({
 
   // then create the iframe and ready its post office
   iframes.accounts.createIframe()
+}
+
+interface setupUserAccountsProxyWalletParams {
+  iframes: TemporaryIframeHandler
+  setHasWeb3: (value: boolean) => void
+  getUserAccountAddress: () => string | null
+  getUserAccountNetwork: () => unlockNetworks
+}
+
+/**
+ * This is the proxy wallet for user accounts
+ *
+ * When the account iframe is ready, we request the account and network
+ * When the data iframe Web3ProxyProvider is ready, we tell it that we
+ * have a fully enabled wallet.
+ * Then, we respond to "eth_accounts" and "net_version" only, passing
+ * in the current values
+ */
+export function setupUserAccountsProxyWallet({
+  iframes,
+  setHasWeb3,
+  getUserAccountAddress,
+  getUserAccountNetwork,
+}: setupUserAccountsProxyWalletParams) {
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
+    iframes.accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+  })
+  iframes.accounts.on(PostMessages.READY, () => {
+    // once the accounts iframe is ready, request the current account and
+    // default network
+    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
+    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
+  })
+
+  // enable the user account wallet
+  setHasWeb3(true)
+  iframes.data.on(PostMessages.READY_WEB3, async () => {
+    iframes.data.postMessage(PostMessages.WALLET_INFO, {
+      noWallet: false,
+      notEnabled: false,
+      isMetamask: false,
+    })
+  })
+
+  iframes.data.on(PostMessages.WEB3, payload => {
+    const { method, id }: web3MethodCall = payload
+    const userAccountAddress = getUserAccountAddress()
+    const userAccountNetwork = getUserAccountNetwork()
+    switch (method) {
+      case 'eth_accounts':
+        // if account is null, we have no account, so return []
+        // userAccountAddress listening is in setupUserAccounts()
+        postResult(id, userAccountAddress ? [userAccountAddress] : [], iframes)
+        break
+      case 'net_version':
+        // userAccountNetwork listening is in setupUserAccounts()
+        postResult(id, userAccountNetwork, iframes)
+        break
+      default:
+        // this is a fail-safe, and will not happen unless there is a bug
+        iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+          id,
+          jsonrpc: '2.0',
+          error: `"${method}" is not supported`,
+        })
+    }
+  })
+}
+
+export function postResult(
+  id: number,
+  result: any,
+  iframes: TemporaryIframeHandler
+) {
+  iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+    id,
+    jsonrpc: '2.0',
+    result: {
+      id,
+      jsonrpc: '2.0',
+      result,
+    },
+  })
 }

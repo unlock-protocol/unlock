@@ -45,7 +45,6 @@ describe('Wallet.setupUserAccountsProxyWallet()', () => {
     iframes.init(config)
     wallet = new Wallet(fakeWindow, iframes, config, startup)
     wallet.init()
-    wallet.setupUserAccountsProxyWallet()
   }
 
   beforeEach(() => {

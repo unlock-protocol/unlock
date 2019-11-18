@@ -10,7 +10,10 @@ import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
-import { setupUserAccounts } from './postMessageHub'
+import {
+  setupUserAccounts,
+  setupUserAccountsProxyWallet,
+} from './postMessageHub'
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -32,8 +35,8 @@ export default class Wallet {
   private hasWeb3: boolean = false
   useUserAccounts: boolean = false
 
-  private userAccountAddress: string | null = null
-  private userAccountNetwork: number
+  userAccountAddress: string | null = null
+  private userAccountNetwork: unlockNetworks
   private debug: boolean
 
   constructor(
@@ -76,8 +79,20 @@ export default class Wallet {
     this.userAccountAddress = address
   }
 
+  getUserAccountAddress = () => {
+    return this.userAccountAddress
+  }
+
   setUserAccountNetwork = (network: unlockNetworks) => {
     this.userAccountNetwork = network
+  }
+
+  getUserAccountNetwork = () => {
+    return this.userAccountNetwork
+  }
+
+  setHasWeb3 = (value: boolean) => {
+    this.hasWeb3 = value
   }
 
   init() {
@@ -94,7 +109,12 @@ export default class Wallet {
     if (this.useUserAccounts && !this.hasWallet) {
       // if user accounts are explicitly enabled, we use them
       // but only if there is no crypto wallet
-      this.setupUserAccountsProxyWallet()
+      setupUserAccountsProxyWallet({
+        iframes: this.iframes,
+        setHasWeb3: this.setHasWeb3,
+        getUserAccountAddress: this.getUserAccountAddress,
+        getUserAccountNetwork: this.getUserAccountNetwork,
+      })
 
       // We should also tell the checkout iframe that we are in a user account context
       const { checkout } = this.iframes
@@ -225,77 +245,6 @@ export default class Wallet {
           )
         }
       )
-    })
-  }
-
-  /**
-   * This is the proxy wallet for user accounts
-   *
-   * When the account iframe is ready, we request the account and network
-   * When the data iframe Web3ProxyProvider is ready, we tell it that we
-   * have a fully enabled wallet.
-   * Then, we respond to "eth_accounts" and "net_version" only, passing
-   * in the current values
-   */
-  setupUserAccountsProxyWallet() {
-    // when receiving a key purchase request, we either pass it to the
-    // account iframe for credit card purchase if user accounts are
-    // explicitly enabled, or to the crypto wallet
-    this.iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
-      this.iframes.accounts.postMessage(PostMessages.PURCHASE_KEY, request)
-    })
-    this.iframes.accounts.on(PostMessages.READY, () => {
-      // once the accounts iframe is ready, request the current account and
-      // default network
-      this.iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
-      this.iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
-    })
-
-    // enable the user account wallet
-    this.hasWeb3 = true
-    this.iframes.data.on(PostMessages.READY_WEB3, async () => {
-      this.iframes.data.postMessage(PostMessages.WALLET_INFO, {
-        noWallet: false,
-        notEnabled: false,
-        isMetamask: false,
-      })
-    })
-
-    this.iframes.data.on(PostMessages.WEB3, payload => {
-      const { method, id }: web3MethodCall = payload
-      switch (method) {
-        case 'eth_accounts':
-          // if account is null, we have no account, so return []
-          // userAccountAddress listening is in this.setupUserAccounts()
-          this.postResult(
-            id,
-            this.userAccountAddress ? [this.userAccountAddress] : []
-          )
-          break
-        case 'net_version':
-          // userAccountNetwork listening is in this.setupUserAccounts()
-          this.postResult(id, this.userAccountNetwork)
-          break
-        default:
-          // this is a fail-safe, and will not happen unless there is a bug
-          this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
-            id,
-            jsonrpc: '2.0',
-            error: `"${method}" is not supported`,
-          })
-      }
-    })
-  }
-
-  postResult(id: number, result: any) {
-    this.iframes.data.postMessage(PostMessages.WEB3_RESULT, {
-      id,
-      jsonrpc: '2.0',
-      result: {
-        id,
-        jsonrpc: '2.0',
-        result,
-      },
     })
   }
 }

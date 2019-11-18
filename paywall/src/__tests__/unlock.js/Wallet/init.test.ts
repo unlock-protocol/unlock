@@ -5,7 +5,11 @@ import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
 import * as postMessageHub from '../../../unlock.js/postMessageHub'
 
-let spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
+let spySetupUserAccounts = jest.spyOn(postMessageHub, 'setupUserAccounts')
+let spySetupUserAccountsProxyWallet = jest.spyOn(
+  postMessageHub,
+  'setupUserAccountsProxyWallet'
+)
 
 describe('Wallet.init()', () => {
   let fakeWindow: FakeWindow
@@ -50,7 +54,11 @@ describe('Wallet.init()', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()
       fakeWindow.makeWeb3()
-      spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
+      spySetupUserAccounts = jest.spyOn(postMessageHub, 'setupUserAccounts')
+      spySetupUserAccountsProxyWallet = jest.spyOn(
+        postMessageHub,
+        'setupUserAccountsProxyWallet'
+      )
     })
 
     it('should use crypto wallet if one exists on window', () => {
@@ -60,7 +68,7 @@ describe('Wallet.init()', () => {
 
       handler.init()
 
-      expect(spy).not.toHaveBeenCalled()
+      expect(spySetupUserAccounts).not.toHaveBeenCalled()
     })
 
     it('should not setup user accounts if there is a crypto wallet', () => {
@@ -69,7 +77,6 @@ describe('Wallet.init()', () => {
       fakeWindow.makeWeb3()
       const handler = makeWallet(userAccountsConfig)
       handler.setupWeb3ProxyWallet = jest.fn()
-      handler.setupUserAccountsProxyWallet = jest.fn()
       handler.init()
 
       expect(handler.setupWeb3ProxyWallet).toHaveBeenCalled()
@@ -80,7 +87,6 @@ describe('Wallet.init()', () => {
 
       const handler = makeWallet()
       handler.setupWeb3ProxyWallet = jest.fn()
-      handler.setupUserAccountsProxyWallet = jest.fn()
       handler.init()
 
       expect(handler.setupWeb3ProxyWallet).toHaveBeenCalled()
@@ -90,7 +96,11 @@ describe('Wallet.init()', () => {
   describe('has no crypto wallet', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()
-      spy = jest.spyOn(postMessageHub, 'setupUserAccounts')
+      spySetupUserAccounts = jest.spyOn(postMessageHub, 'setupUserAccounts')
+      spySetupUserAccountsProxyWallet = jest.spyOn(
+        postMessageHub,
+        'setupUserAccountsProxyWallet'
+      )
     })
 
     it('should use crypto wallet if config does not ask for user accounts', () => {
@@ -100,7 +110,7 @@ describe('Wallet.init()', () => {
 
       handler.init()
 
-      expect(spy).not.toHaveBeenCalled()
+      expect(spySetupUserAccounts).not.toHaveBeenCalled()
     })
 
     it('should use user accounts proxy wallet if user accounts specified', () => {
@@ -108,12 +118,11 @@ describe('Wallet.init()', () => {
 
       const handler = makeWallet(userAccountsConfig)
       handler.setupWeb3ProxyWallet = jest.fn()
-      handler.setupUserAccountsProxyWallet = jest.fn()
 
       handler.init()
 
-      expect(spy).toHaveBeenCalled()
-      expect(handler.setupUserAccountsProxyWallet).toHaveBeenCalled()
+      expect(spySetupUserAccounts).toHaveBeenCalled()
+      expect(spySetupUserAccountsProxyWallet).toHaveBeenCalled()
     })
 
     it('should use user accounts proxy wallet if user accounts specified as "true"', () => {
@@ -123,22 +132,20 @@ describe('Wallet.init()', () => {
         ...userAccountsConfig,
         unlockUserAccounts: 'true',
       })
-      handler.setupUserAccountsProxyWallet = jest.fn()
 
       handler.init()
 
-      expect(spy).toHaveBeenCalled()
-      expect(handler.setupUserAccountsProxyWallet).toHaveBeenCalled()
+      expect(spySetupUserAccounts).toHaveBeenCalled()
+      expect(spySetupUserAccountsProxyWallet).toHaveBeenCalled()
     })
 
     it('should setup user accounts for no wallet, user accounts in config', () => {
       expect.assertions(1)
 
       const handler = makeWallet(userAccountsConfig)
-      handler.setupUserAccountsProxyWallet = jest.fn()
       handler.init()
 
-      expect(handler.setupUserAccountsProxyWallet).toHaveBeenCalled()
+      expect(spySetupUserAccountsProxyWallet).toHaveBeenCalled()
     })
   })
 })
