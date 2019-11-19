@@ -1,4 +1,7 @@
-import { BlockchainData } from 'src/data-iframe/blockchainHandler/blockChainTypes'
+import {
+  BlockchainData,
+  unlockNetworks,
+} from 'src/data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
@@ -94,7 +97,7 @@ export function checkoutHandlerInit({
   )
 }
 
-interface iframeHandlerInitProps {
+interface iframeHandlerInitArgs {
   config: PaywallConfig
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
@@ -104,7 +107,7 @@ export function iframeHandlerInit({
   config,
   dataIframe,
   checkoutIframe,
-}: iframeHandlerInitProps) {
+}: iframeHandlerInitArgs) {
   // TODO: consider removing the layer of event listeners and work with
   // postmessages directly
   dataIframe.setupListeners()
@@ -125,7 +128,7 @@ interface TemporaryIframeHandler {
   accounts: AccountsIframeMessageEmitter
 }
 
-interface mainWindowHandlerInitProps {
+interface mainWindowHandlerInitArgs {
   iframes: TemporaryIframeHandler
   toggleLockState: (
     message: PostMessages.LOCKED | PostMessages.UNLOCKED
@@ -143,7 +146,7 @@ export function mainWindowHandlerInit({
   showAccountIframe,
   hideCheckoutIframe,
   blockchainData,
-}: mainWindowHandlerInitProps) {
+}: mainWindowHandlerInitArgs) {
   // respond to "unlocked" and "locked" events by
   // dispatching "unlockProtocol" on the main window
   // and
@@ -208,4 +211,56 @@ export async function enableCryptoWallet(
   iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
   await wallet.enable()
   iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
+}
+
+interface setupUserAccountsArgs {
+  iframes: TemporaryIframeHandler
+  config: PaywallConfig
+  setUserAccountAddress: (address: string | null) => void
+  setUserAccountNetwork: (network: unlockNetworks) => void
+}
+
+export function setupUserAccounts({
+  iframes,
+  config,
+  setUserAccountAddress,
+  setUserAccountNetwork,
+}: setupUserAccountsArgs) {
+  // pass on the configuration and request the latest data. NOTE: accounts
+  // iframe will not receive any messages until it has sent the READY message,
+  // at which point buffered messages will flow into it
+  iframes.accounts.on(PostMessages.READY, () => {
+    iframes.accounts.postMessage(PostMessages.CONFIG, config)
+
+    iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+  })
+
+  // listen for updates to state from the data iframe, and forward them to the
+  // checkout UI
+  iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
+    iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
+  })
+
+  // listen for account and network from the user accounts iframe
+  iframes.accounts.on(PostMessages.UPDATE_ACCOUNT, address => {
+    setUserAccountAddress(address)
+  })
+  iframes.accounts.on(PostMessages.UPDATE_NETWORK, network => {
+    setUserAccountNetwork(network)
+  })
+
+  // when a purchase is in progress, tell the data iframe to retrieve the
+  // transaction
+  iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
+    iframes.data.postMessage(
+      PostMessages.INITIATED_TRANSACTION,
+      // TODO: passing undefined is limitation of the way messages are typed,
+      // eventually it should be fixed the natural behavior would be passing
+      // nothing as the 2nd argument
+      undefined
+    )
+  })
+
+  // then create the iframe and ready its post office
+  iframes.accounts.createIframe()
 }

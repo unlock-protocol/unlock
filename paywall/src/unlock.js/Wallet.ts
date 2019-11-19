@@ -5,11 +5,12 @@ import {
   SendAsyncProvider,
   SendProvider,
 } from '../windowTypes'
+import { unlockNetworks } from '../data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
-import { enableCryptoWallet } from './postMessageHub'
+import { enableCryptoWallet, setupUserAccounts } from './postMessageHub'
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -32,7 +33,7 @@ export default class Wallet {
   useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
-  private userAccountNetwork: number
+  private userAccountNetwork: unlockNetworks
   private debug: boolean
 
   constructor(
@@ -71,10 +72,23 @@ export default class Wallet {
     }
   }
 
+  setUserAccountAddress = (address: string | null) => {
+    this.userAccountAddress = address
+  }
+
+  setUserAccountNetwork = (network: unlockNetworks) => {
+    this.userAccountNetwork = network
+  }
+
   init() {
     if (this.useUserAccounts) {
       // create the preconditions for using user accounts
-      this.setupUserAccounts()
+      setupUserAccounts({
+        iframes: this.iframes,
+        config: this.config,
+        setUserAccountAddress: this.setUserAccountAddress,
+        setUserAccountNetwork: this.setUserAccountNetwork,
+      })
     }
     // set up the proxy wallet
     if (this.useUserAccounts && !this.hasWallet) {
@@ -92,44 +106,6 @@ export default class Wallet {
       // if we have no wallet, and no use accounts, we use the web3 proxy wallet
       this.setupWeb3ProxyWallet()
     }
-  }
-
-  /**
-   * This is called only if we can use user accounts
-   */
-  setupUserAccounts() {
-    // listen for updates to state from the data iframe, and forward them to the checkout UI
-    this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks =>
-      this.iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
-    )
-
-    // pass on the configuration and request the latest data
-    this.iframes.accounts.on(PostMessages.READY, () => {
-      this.iframes.accounts.postMessage(PostMessages.CONFIG, this.config)
-
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
-    })
-
-    // listen for account and network from the user accounts iframe
-    this.iframes.accounts.on(PostMessages.UPDATE_ACCOUNT, account => {
-      this.userAccountAddress = account
-    })
-    this.iframes.accounts.on(PostMessages.UPDATE_NETWORK, network => {
-      this.userAccountNetwork = network
-    })
-
-    // when a purchase is in progress, tell the data iframe to retrieve the transaction
-    this.iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
-      this.iframes.data.postMessage(
-        PostMessages.INITIATED_TRANSACTION,
-        // TODO: passing undefined is limitation of the way messages are typed, eventually it should be fixed
-        // the natural behavior would be passing nothing as the 2nd argument
-        undefined
-      )
-    })
-
-    // then create the iframe and ready its post office
-    this.iframes.accounts.createIframe()
   }
 
   /**

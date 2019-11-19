@@ -5,7 +5,7 @@ import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
 import { PostMessages } from '../../../messageTypes'
 
-describe('Wallet.setupUserAccounts()', () => {
+describe('Wallet.setupUserAccountsProxyWallet()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
   let wallet: Wallet
@@ -44,7 +44,7 @@ describe('Wallet.setupUserAccounts()', () => {
     )
     iframes.init(config)
     wallet = new Wallet(fakeWindow, iframes, config, startup)
-    wallet.setupUserAccounts()
+    wallet.init()
     wallet.setupUserAccountsProxyWallet()
   }
 
