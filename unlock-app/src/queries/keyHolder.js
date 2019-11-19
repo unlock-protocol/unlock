@@ -10,6 +10,7 @@ export default function keyHolderQuery() {
           id
           expiration
           keyId
+          tokenURI
           lock {
             name
             address
