@@ -1,7 +1,6 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { LOCATION_CHANGE } from 'connected-react-router'
 
 import { startLoading, doneLoading } from '../actions/loading'
 import { SET_ACCOUNT, updateAccount } from '../actions/accounts'
@@ -54,12 +53,13 @@ const web3Middleware = config => {
       }
     })
 
-    const {
-      router: {
-        location: { pathname },
-      },
-    } = getState()
-    const { lockAddress } = lockRoute(pathname)
+    let lockAddress
+    if (typeof window !== 'undefined' && window.location) {
+      const route = lockRoute(window.location.pathname)
+      if (route.lockAddress) {
+        lockAddress = route.lockAddress
+      }
+    }
 
     return function(next) {
       setTimeout(() => {
@@ -91,13 +91,6 @@ const web3Middleware = config => {
                   web3Service.getTransaction(lockCreation.transactionHash)
                 })
               })
-          }
-        }
-
-        if (action.type === LOCATION_CHANGE) {
-          // Location was changed, get the matching lock
-          if (lockAddress) {
-            web3Service.getLock(lockAddress)
           }
         }
       }
