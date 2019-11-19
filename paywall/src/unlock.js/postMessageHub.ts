@@ -7,7 +7,7 @@ import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmi
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import { Balance, PaywallConfig } from '../unlockTypes'
-import { Web3Window } from '../windowTypes'
+import { Web3Window, web3MethodCall } from '../windowTypes'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
@@ -263,4 +263,87 @@ export function setupUserAccounts({
 
   // then create the iframe and ready its post office
   iframes.accounts.createIframe()
+}
+
+export function postResult(
+  id: number,
+  result: any,
+  dataIframe: DataIframeMessageEmitter
+) {
+  dataIframe.postMessage(PostMessages.WEB3_RESULT, {
+    id,
+    jsonrpc: '2.0',
+    result: {
+      id,
+      jsonrpc: '2.0',
+      result,
+    },
+  })
+}
+
+interface setupUserAccountsProxyWalletArgs {
+  iframes: TemporaryIframeHandler
+  setHasWeb3: (value: boolean) => void
+  getUserAccountAddress: () => string | null
+  getUserAccountNetwork: () => unlockNetworks
+}
+
+export function setupUserAccountsProxyWallet({
+  iframes,
+  setHasWeb3,
+  getUserAccountAddress,
+  getUserAccountNetwork,
+}: setupUserAccountsProxyWalletArgs) {
+  iframes.accounts.on(PostMessages.READY, () => {
+    // once the accounts iframe is ready, request the current account and
+    // default network
+    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
+    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
+  })
+
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
+    iframes.accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+  })
+
+  // enable the user account wallet
+  setHasWeb3(true)
+
+  iframes.data.on(PostMessages.READY_WEB3, async () => {
+    iframes.data.postMessage(PostMessages.WALLET_INFO, {
+      noWallet: false,
+      notEnabled: false,
+      isMetamask: false,
+    })
+  })
+
+  iframes.data.on(PostMessages.WEB3, payload => {
+    const { method, id }: web3MethodCall = payload
+    const userAccountAddress = getUserAccountAddress()
+    const userAccountNetwork = getUserAccountNetwork()
+    switch (method) {
+      case 'eth_accounts':
+        // if account is null, we have no account, so return []
+        // userAccountAddress listening is in setupUserAccounts()
+        postResult(
+          id,
+          userAccountAddress ? [userAccountAddress] : [],
+          iframes.data
+        )
+        break
+      case 'net_version':
+        // userAccountNetwork listening is in setupUserAccounts()
+        postResult(id, userAccountNetwork, iframes.data)
+        break
+      default:
+        // this is a fail-safe, and will not happen unless there is a bug
+        iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+          id,
+          jsonrpc: '2.0',
+          error: `"${method}" is not supported`,
+        })
+    }
+  })
 }
