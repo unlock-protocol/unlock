@@ -1,6 +1,6 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
-import MetaDataController from '../controllers/metadataController'
+import MetadataController from '../controllers/metadataController'
 
 const router = express.Router()
 
@@ -57,10 +57,10 @@ router.get(
   )
 )
 
-router.get('/:address/keyHolderMetadata', MetaDataController.keyHolderMetadata)
-router.get('/:address/:keyId', MetaDataController.data)
-router.put('/:address/:keyId', MetaDataController.updateKeyMetadata)
-router.put('/:address', MetaDataController.updateDefaults)
-router.put('/:address/user/:userAddress', MetaDataController.updateUserMetadata)
+router.get('/:address/keyHolderMetadata', MetadataController.keyHolderMetadata)
+router.get('/:address/:keyId', MetadataController.data)
+router.put('/:address/:keyId', MetadataController.updateKeyMetadata)
+router.put('/:address', MetadataController.updateDefaults)
+router.put('/:address/user/:userAddress', MetadataController.updateUserMetadata)
 
 module.exports = router
