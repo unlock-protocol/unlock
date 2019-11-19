@@ -1,61 +1,35 @@
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
-import Wallet from '../../../unlock.js/Wallet'
-import StartupConstants from '../../../unlock.js/startupTypes'
+import { enableCryptoWallet } from '../../../unlock.js/postMessageHub'
 
-describe('Wallet.setupProxyWallet()', () => {
+describe('enableCryptoWallet()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
   const dataIframeUrl = 'http://paywall/data'
   const checkoutIframeUrl = 'http://paywall/checkout'
   const userIframeUrl = 'http://app/accounts'
-  const configuration: PaywallConfig = {
-    locks: {},
-    callToAction: {
-      default: '',
-      pending: '',
-      confirmed: '',
-      expired: '',
-      noWallet: '',
-    },
-  }
-  const startup: StartupConstants = {
-    network: 1984,
-    debug: 0,
-    paywallUrl: 'http://paywall',
-    accountsUrl: 'http://app/accounts',
-    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
-  }
 
-  function makeWallet() {
+  beforeEach(() => {
+    fakeWindow = new FakeWindow()
     iframes = new IframeHandler(
       fakeWindow,
       dataIframeUrl,
       checkoutIframeUrl,
       userIframeUrl
     )
-    const wallet = new Wallet(fakeWindow, iframes, configuration, startup)
-    return wallet
-  }
-
-  beforeEach(() => {
-    fakeWindow = new FakeWindow()
   })
 
   it('should return without error if there is no web3', async () => {
     expect.assertions(0)
 
-    const wallet = makeWallet()
-    await wallet.enableCryptoWallet()
+    await enableCryptoWallet(fakeWindow, iframes)
   })
 
   it('should return without error if there is web3, but no enable', async () => {
     expect.assertions(0)
 
     fakeWindow.makeWeb3()
-    const wallet = makeWallet()
-    await wallet.enableCryptoWallet()
+    await enableCryptoWallet(fakeWindow, iframes)
   })
 
   it('should call enable if present', async () => {
@@ -63,8 +37,7 @@ describe('Wallet.setupProxyWallet()', () => {
 
     fakeWindow.makeWeb3()
     fakeWindow.web3 && (fakeWindow.web3.currentProvider.enable = jest.fn())
-    const wallet = makeWallet()
-    await wallet.enableCryptoWallet()
+    await enableCryptoWallet(fakeWindow, iframes)
 
     expect(
       fakeWindow.web3 && fakeWindow.web3.currentProvider.enable
