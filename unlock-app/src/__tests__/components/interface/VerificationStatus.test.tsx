@@ -18,6 +18,7 @@ const ownedKey: OwnedKey = {
     tokenAddress: 'a token address',
     price: '5',
   },
+  tokenURI: '',
   expiration: '12345678',
   id: 'an id',
   keyId: 'a key id',
