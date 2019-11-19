@@ -1,13 +1,7 @@
 /* eslint promise/prefer-await-to-then: 0 */
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import {
-  CREATE_LOCK,
-  GET_LOCK,
-  addLock,
-  updateLock,
-  createLock,
-} from '../actions/lock'
+import { CREATE_LOCK, GET_LOCK, updateLock, createLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 import { updateAccount, SET_ACCOUNT } from '../actions/accounts'
@@ -60,13 +54,9 @@ const web3Middleware = config => {
         update.unlimitedKeys = update.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
       }
 
-      if (lock) {
-        // Only dispatch the updates which are more recent than the current value
-        if (!lock.asOf || lock.asOf < update.asOf) {
-          dispatch(updateLock(lock.address, update))
-        }
-      } else {
-        dispatch(addLock(address, update))
+      // Only dispatch the updates which are more recent than the current value
+      if (!lock || !lock.asOf || lock.asOf < update.asOf) {
+        dispatch(updateLock(address, update))
       }
     })
 

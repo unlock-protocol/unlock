@@ -89,7 +89,7 @@ describe('StorageService', () => {
     })
   })
 
-  describe('getTransactionsHashesSentBy', () => {
+  describe('getRecentTransactionsHashesSentBy', () => {
     it('should succeed with a list of hashes', done => {
       expect.assertions(3)
       const sender = '0xabc'
@@ -112,7 +112,7 @@ describe('StorageService', () => {
         },
       })
 
-      storageService.getTransactionsHashesSentBy(sender)
+      storageService.getRecentTransactionsHashesSentBy(sender)
 
       storageService.on(
         success.getTransactionHashesSentBy,
@@ -137,7 +137,9 @@ describe('StorageService', () => {
       )
 
       expect(axios.get).toHaveBeenCalledWith(
-        `${serviceHost}/transactions?sender=${sender}`
+        expect.stringMatching(
+          `${serviceHost}/transactions\\?sender=${sender}&createdAfter=[0-9]*`
+        )
       )
     })
 
@@ -146,7 +148,7 @@ describe('StorageService', () => {
 
       axios.get.mockRejectedValue('I am error.')
 
-      storageService.getTransactionsHashesSentBy('0xabc')
+      storageService.getRecentTransactionsHashesSentBy('0xabc')
 
       storageService.on(failure.getTransactionHashesSentBy, err => {
         expect(err).toBe('I am error.')
@@ -796,11 +798,14 @@ describe('StorageService', () => {
         data: userMetadata,
       })
 
-      storageService.on(success.getBulkMetadataFor, result => {
-        expect(result).toEqual(userMetadata)
+      storageService.on(
+        success.getBulkMetadataFor,
+        (returnedLockAddress, result) => {
+          expect(result).toEqual(userMetadata)
 
-        done()
-      })
+          done()
+        }
+      )
 
       storageService.getBulkMetadataFor(lockAddress, 'a signature', typedData)
       expect(axios.get).toHaveBeenCalledWith(

@@ -83,7 +83,7 @@ describe('metadata munging functions', () => {
       }
       const storedMetadata = {
         [lock.address]: {
-          [key.keyId]: {
+          [key.owner.address]: {
             protected: {
               zebra: 'true',
             },
