@@ -2,6 +2,7 @@ import LockOwnership from '../data/lockOwnership'
 
 const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
+const lockIconUtils = require('../../src/utils/lockIcon').default
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
@@ -43,4 +44,22 @@ const lockOwnershipCheck = async (req, res) => {
   return res.sendStatus(200)
 }
 
-module.exports = { lockGet, lockOwnerGet, lockSave, lockOwnershipCheck }
+/**
+ * Yiels the SVG icon for the lock
+ * @param {*} req
+ * @param {*} res
+ */
+const lockIcon = async (req, res) => {
+  let lockAddress = req.params.lockAddress
+  let svg = lockIconUtils.lockIcon(lockAddress)
+  res.setHeader('Content-Type', 'image/svg+xml')
+  return res.send(svg)
+}
+
+module.exports = {
+  lockGet,
+  lockOwnerGet,
+  lockSave,
+  lockOwnershipCheck,
+  lockIcon,
+}
