@@ -1,12 +1,30 @@
 import React from 'react'
 import styled from 'styled-components'
 import Media from '../../../theme/media'
-import {
-  expirationAsDate,
-  durationsAsTextFromSeconds,
-} from '../../../utils/durations'
+import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
+import useMetadata from '../../../hooks/useMetadata'
+
+interface KeyBoxProps {
+  tokenURI: string
+  lock: any
+  expiration: string
+}
+
+const KeyBox = ({ tokenURI, lock, expiration }: KeyBoxProps) => {
+  const metadata = useMetadata(tokenURI)
+  return (
+    <KeyContent>
+      <LockIcon src={metadata.image} width="40" />
+      <KeyInfo>
+        <LockName>{lock.name}</LockName>
+        <ValidUntil>Valid Until</ValidUntil>
+        <KeyExpiration>{expirationAsDate(expiration)}</KeyExpiration>
+      </KeyInfo>
+    </KeyContent>
+  )
+}
 
 export interface Props {
   ownedKey: OwnedKey
@@ -63,15 +81,15 @@ export class Key extends React.Component<Props, State> {
     const { signature } = this.props
     if (signature) {
       return (
-        <button type="button" onClick={this.toggleShowingQR}>
+        <ButtonAction type="button" onClick={this.toggleShowingQR}>
           Display QR Code
-        </button>
+        </ButtonAction>
       )
     }
     return (
-      <button type="button" onClick={this.handleSignature}>
+      <ButtonAction type="button" onClick={this.handleSignature}>
         Assert Ownership
-      </button>
+      </ButtonAction>
     )
   }
 
@@ -101,7 +119,7 @@ export class Key extends React.Component<Props, State> {
 
   render = () => {
     const {
-      ownedKey: { lock, expiration },
+      ownedKey: { lock, expiration, tokenURI },
       signature,
     } = this.props
     const { showingQR } = this.state
@@ -115,12 +133,7 @@ export class Key extends React.Component<Props, State> {
             value={this.QRUrl()}
           />
         )}
-        <LockName>{lock.name}</LockName>
-        <LockExpirationDuration>
-          {durationsAsTextFromSeconds(parseInt(lock.expirationDuration))}
-        </LockExpirationDuration>
-        <ValidUntil>Valid Until</ValidUntil>
-        <KeyExpiration>{expirationAsDate(expiration)}</KeyExpiration>
+        <KeyBox lock={lock} expiration={expiration} tokenURI={tokenURI} />
         {this.qrButton()}
       </Box>
     )
@@ -130,18 +143,19 @@ export class Key extends React.Component<Props, State> {
 export default Key
 
 const Box = styled.div`
+  display: grid;
   border: thin #dddddd solid;
   width: 212px;
   padding: 16px;
   border-radius: 4px;
   ${Media.phone`
-width: 100%;
-margin: 0 0 16px 0;
-`}
+    width: 100%;
+    margin: 0 0 16px 0;
+  `}
   ${Media.nophone`
-width: 30%;
-margin: 0 16px 16px 0;
-`}
+    width: 30%;
+    margin: 0 16px 16px 0;
+  `}
   &:hover {
     border: thin #aaaaaa solid;
     box-shadow: 0px 0px 10px 3px rgba(221, 221, 221, 1);
@@ -161,22 +175,18 @@ const LockName = styled.div`
   color: #4d8be8;
 `
 
-const LockExpirationDuration = styled.div`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 15px;
-  line-height: 19px;
-  /* identical to box height, or 127% */
-
-  display: flex;
-  align-items: center;
-
-  /* Grey 4 */
-
-  color: #333333;
-  margin-top: 8px;
+const LockIcon = styled.img`
+  width: 40px;
 `
+
+const KeyContent = styled.div`
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  grid-gap: 15px;
+  margin-bottom: 20px;
+`
+
+const KeyInfo = styled.div``
 
 const ValidUntil = styled.div`
   font-family: IBM Plex Sans;
@@ -199,4 +209,17 @@ const KeyExpiration = styled.div`
   font-size: 16px;
   line-height: 20px;
   color: #333333;
+`
+
+const ButtonAction = styled.button`
+  cursor: pointer;
+  font: inherit;
+  align-self: end;
+  /* background: none; */
+  border: none;
+  padding: 5px;
+  & :hover {
+    color: #333;
+    transition: color 100ms ease;
+  }
 `
