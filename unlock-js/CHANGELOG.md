@@ -1,5 +1,9 @@
 # Changes
 
+# Next Minor
+
+- Adding support for deployTemplate to support version 12 which reduces gas costs when deploying new locks
+
 # 0.4.2
 
 - Fixing issue with generateSignedEjectionRequest which did not yield the actual user address
