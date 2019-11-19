@@ -4,6 +4,7 @@ import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmi
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import { Balance, PaywallConfig } from '../unlockTypes'
+import { Web3Window } from '../windowTypes'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
@@ -190,4 +191,21 @@ export function mainWindowHandlerInit({
   iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
     hideAccountIframe()
   })
+}
+
+export async function enableCryptoWallet(
+  window: Web3Window,
+  iframes: TemporaryIframeHandler
+) {
+  if (!window.web3 || !window.web3.currentProvider) {
+    return
+  }
+  const wallet = window.web3.currentProvider
+  if (!wallet.enable) {
+    return
+  }
+  // TODO: what actually is this?
+  iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
+  await wallet.enable()
+  iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
 }

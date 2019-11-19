@@ -9,6 +9,7 @@ import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
+import { enableCryptoWallet } from './postMessageHub'
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -131,17 +132,6 @@ export default class Wallet {
     this.iframes.accounts.createIframe()
   }
 
-  async enableCryptoWallet() {
-    if (!this.window.web3 || !this.window.web3.currentProvider) return
-    const wallet = this.window.web3.currentProvider
-    if (!wallet.enable) {
-      return
-    }
-    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
-    await wallet.enable()
-    this.iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
-  }
-
   /**
    * This is the proxy wallet for a crypto wallet
    *
@@ -177,7 +167,7 @@ export default class Wallet {
       this.hasWeb3 = true
       try {
         // first, enable the wallet if necessary
-        await this.enableCryptoWallet()
+        await enableCryptoWallet(this.window, this.iframes)
       } catch (e) {
         // user declined to enable the crypto wallet
         // they still have a wallet, but we need to re-enable it to use it

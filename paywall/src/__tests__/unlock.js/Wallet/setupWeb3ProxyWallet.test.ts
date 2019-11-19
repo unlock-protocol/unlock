@@ -4,8 +4,9 @@ import IframeHandler from '../../../unlock.js/IframeHandler'
 import Wallet from '../../../unlock.js/Wallet'
 import StartupConstants from '../../../unlock.js/startupTypes'
 import { PostMessages } from '../../../messageTypes'
+import * as postMessageHub from '../../../unlock.js/postMessageHub'
 
-describe('Wallet.setupUserAccounts()', () => {
+describe('Wallet.setupWeb3ProxyWallet()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
   let wallet: Wallet
@@ -94,7 +95,6 @@ describe('Wallet.setupUserAccounts()', () => {
     function makeWalletWithMockEnable() {
       fakeWindow.makeWeb3()
       const wallet = makeWallet()
-      wallet.enableCryptoWallet = jest.fn()
       receiveReadyWeb3()
       return wallet
     }
@@ -132,10 +132,10 @@ describe('Wallet.setupUserAccounts()', () => {
 
     it('should call enable', () => {
       expect.assertions(1)
+      const enableWalletSpy = jest.spyOn(postMessageHub, 'enableCryptoWallet')
+      makeWalletWithMockEnable()
 
-      const wallet = makeWalletWithMockEnable()
-
-      expect(wallet.enableCryptoWallet).toHaveBeenCalled()
+      expect(enableWalletSpy).toHaveBeenCalled()
     })
 
     it('should report that the wallet exists and is not enabled if enable fails', async () => {
