@@ -94,7 +94,7 @@ export function checkoutHandlerInit({
   )
 }
 
-interface iframeHandlerInitProps {
+interface iframeHandlerInitArgs {
   config: PaywallConfig
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
@@ -104,7 +104,7 @@ export function iframeHandlerInit({
   config,
   dataIframe,
   checkoutIframe,
-}: iframeHandlerInitProps) {
+}: iframeHandlerInitArgs) {
   // TODO: consider removing the layer of event listeners and work with
   // postmessages directly
   dataIframe.setupListeners()
@@ -125,7 +125,7 @@ interface TemporaryIframeHandler {
   accounts: AccountsIframeMessageEmitter
 }
 
-interface mainWindowHandlerInitProps {
+interface mainWindowHandlerInitArgs {
   iframes: TemporaryIframeHandler
   toggleLockState: (
     message: PostMessages.LOCKED | PostMessages.UNLOCKED
@@ -143,7 +143,7 @@ export function mainWindowHandlerInit({
   showAccountIframe,
   hideCheckoutIframe,
   blockchainData,
-}: mainWindowHandlerInitProps) {
+}: mainWindowHandlerInitArgs) {
   // respond to "unlocked" and "locked" events by
   // dispatching "unlockProtocol" on the main window
   // and
