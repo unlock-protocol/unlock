@@ -43,7 +43,7 @@ describe('Wallet.setupWeb3ProxyWallet()', () => {
     )
     iframes.init(config)
     wallet = new Wallet(fakeWindow, iframes, config, startup)
-    wallet.setupWeb3ProxyWallet()
+    wallet.init()
     return wallet
   }
 
@@ -113,10 +113,11 @@ describe('Wallet.setupWeb3ProxyWallet()', () => {
       fakeWindow = new FakeWindow()
     })
 
-    it('should reply with noWallet = true if there is no wallet', () => {
+    fit('should reply with noWallet = true if there is no wallet', () => {
       expect.assertions(1)
 
-      makeWalletReadyForWeb3()
+      const wallet = new Wallet(fakeWindow, iframes, config, startup)
+      wallet.init()
 
       fakeWindow.expectPostMessageSentToIframe(
         PostMessages.WALLET_INFO,
