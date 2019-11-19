@@ -2,16 +2,15 @@
 /* eslint-disable no-use-before-define */
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'
 import { addMetadata } from '../operations/userMetadataOperations'
 import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
+import * as lockOperations from '../operations/lockOperations'
+import * as metadataOperations from '../operations/metadataOperations'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
-const metadataOperations = require('../operations/metadataOperations')
-const lockOperations = require('../operations/lockOperations')
 
 namespace MetadataController {
   const evaluateLockOwnership = async (
@@ -65,7 +64,7 @@ namespace MetadataController {
     const address = Normalizer.ethereumAddress(req.params.address)
     const keyId = req.params.keyId.toLowerCase()
 
-    const lockOwner = await presentProtectedData(req, keyId, address)
+    const lockOwner = await presentProtectedData(req, Number(keyId), address)
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
@@ -80,7 +79,7 @@ namespace MetadataController {
   }
 
   export const updateDefaults = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const owner = Normalizer.ethereumAddress(req.owner)
@@ -108,7 +107,7 @@ namespace MetadataController {
   }
 
   export const updateKeyMetadata = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const owner = Normalizer.ethereumAddress(req.owner)
@@ -134,7 +133,7 @@ namespace MetadataController {
   }
 
   export const updateUserMetadata = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const userAddress = Normalizer.ethereumAddress(req.params.userAddress)
