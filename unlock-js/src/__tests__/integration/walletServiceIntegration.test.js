@@ -8,8 +8,6 @@ import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 
-const abis = require('../../abis').default
-
 let host,
   port = 8545
 if (process.env.CI) {
@@ -39,7 +37,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = Object.keys(abis)
+  const versions = ['v0', 'v01', 'v02', 'v10', 'v11']
   describe.each(versions)('%s', versionName => {
     let walletService, web3Service
 
