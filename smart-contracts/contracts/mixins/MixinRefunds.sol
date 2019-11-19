@@ -2,7 +2,7 @@ pragma solidity 0.5.12;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/cryptography/ECDSA.sol';
+import './MixinSignatures.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
@@ -11,6 +11,7 @@ import './MixinEventHooks.sol';
 
 contract MixinRefunds is
   Ownable,
+  MixinSignatures,
   MixinFunds,
   MixinLockCore,
   MixinKeys,
@@ -23,9 +24,6 @@ contract MixinRefunds is
   uint public refundPenaltyBasisPoints;
 
   uint public freeTrialLength;
-
-  // Stores a nonce per user to use for signed messages
-  mapping(address => uint) public keyOwnerToNonce;
 
   event CancelKey(
     uint indexed tokenId,
@@ -77,30 +75,11 @@ contract MixinRefunds is
     address _keyOwner,
     bytes calldata _signature
   ) external
+    consumeOffchainApproval(getCancelAndRefundApprovalHash(_keyOwner, msg.sender), _signature, _keyOwner)
   {
-    require(
-      ECDSA.recover(
-        ECDSA.toEthSignedMessageHash(
-          getCancelAndRefundApprovalHash(_keyOwner, msg.sender)
-        ),
-        _signature
-      ) == _keyOwner, 'INVALID_SIGNATURE'
-    );
-
-    keyOwnerToNonce[_keyOwner]++;
     uint refund = _getCancelAndRefundValue(_keyOwner);
 
     _cancelAndRefund(_keyOwner, refund);
-  }
-
-  /**
-   * @dev Increments the current nonce for the msg.sender.
-   * This can be used to invalidate a previously signed message.
-   */
-  function invalidateApprovalToCancelKey(
-  ) external
-  {
-    keyOwnerToNonce[msg.sender]++;
   }
 
   /**

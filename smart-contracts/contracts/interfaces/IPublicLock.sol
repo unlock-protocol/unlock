@@ -67,6 +67,12 @@ interface IPublicLock {
   /// @dev This emits when an operator is enabled or disabled for an owner.
   ///  The operator can manage all NFTs of the owner.
   event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+
+  /// @notice emits anytime the nonce used for off-chain approvals changes.
+  event NonceChanged(
+    address indexed keyOwner,
+    uint nextAvailableNonce
+  );
   ///===================================================================
 
   /// Functions
@@ -328,10 +334,12 @@ interface IPublicLock {
   ) external;
 
   /**
-   * @dev Increments the current nonce for the msg.sender.
-   * This can be used to invalidate a previously signed message.
+   * @notice Sets the minimum nonce for a valid off-chain approval message from the
+   * senders account.
+   * @dev This can be used to invalidate a previously signed message.
    */
-  function invalidateApprovalToCancelKey(
+  function invalidateOffchainApproval(
+    uint _nextAvailableNonce
   ) external;
 
   /**

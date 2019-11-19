@@ -18,6 +18,7 @@ import './mixins/MixinLockMetadata.sol';
 import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
+import './mixins/MixinSignatures.sol';
 
 /**
  * @title The Lock contract
@@ -33,6 +34,7 @@ contract PublicLock is
   Initializable,
   ERC165,
   Ownable,
+  MixinSignatures,
   MixinFunds,
   MixinDisableAndDestroy,
   MixinLockCore,
