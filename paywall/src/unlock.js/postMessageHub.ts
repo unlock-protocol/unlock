@@ -7,7 +7,13 @@ import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmi
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
 import { Balance, PaywallConfig } from '../unlockTypes'
-import { Web3Window, web3MethodCall } from '../windowTypes'
+import {
+  Web3Window,
+  web3MethodCall,
+  CryptoWalletWindow,
+  SendAsyncProvider,
+  SendProvider,
+} from '../windowTypes'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
@@ -345,5 +351,123 @@ export function setupUserAccountsProxyWallet({
           error: `"${method}" is not supported`,
         })
     }
+  })
+}
+
+interface setupWeb3ProxyWalletArgs {
+  iframes: TemporaryIframeHandler
+  getHasWallet: () => boolean
+  setHasWeb3: (value: boolean) => void
+  getHasWeb3: () => boolean
+  isMetamask: boolean
+  window: Web3Window
+}
+
+export function setupWeb3ProxyWallet({
+  iframes,
+  getHasWallet,
+  setHasWeb3,
+  getHasWeb3,
+  isMetamask,
+  window,
+}: setupWeb3ProxyWalletArgs) {
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  iframes.checkout.on(PostMessages.PURCHASE_KEY, async request => {
+    iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
+  })
+
+  // The next code is the main window side of Web3ProxyProvider, which is used in the data iframe
+  // READY_WEB3 is sent when the Web3ProxyProvider is ready to go, and is used to determine the wallet type
+  iframes.data.on(PostMessages.READY_WEB3, async () => {
+    // initialize, we do this once the iframe is ready to receive information on the wallet
+    // we need to tell the iframe if the wallet is metamask
+    // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
+    if (!getHasWallet()) {
+      // the user has no crypto wallet
+      setHasWeb3(false)
+      iframes.data.postMessage(PostMessages.WALLET_INFO, {
+        noWallet: true,
+        notEnabled: false,
+        isMetamask: false,
+      })
+      return
+    }
+    // at this point, we have a wallet, the only question is whether it is enabled
+    setHasWeb3(true)
+    try {
+      // first, enable the wallet if necessary
+      await enableCryptoWallet(window, iframes)
+    } catch (e) {
+      // user declined to enable the crypto wallet
+      // they still have a wallet, but we need to re-enable it to use it
+      iframes.data.postMessage(PostMessages.WALLET_INFO, {
+        noWallet: false,
+        notEnabled: true, // user declined to enable the wallet
+        isMetamask: isMetamask, // this is used for some decisions in signing
+      })
+      return
+    }
+    iframes.data.postMessage(PostMessages.WALLET_INFO, {
+      noWallet: false,
+      notEnabled: false,
+      isMetamask: isMetamask, // this is used for some decisions in signing
+    })
+  })
+
+  // WEB3 is used to send requests from the Web3ProxyProvider to the crypto wallet,
+  // and to return the values. The crypto wallet uses the web3 interface, so
+  // we will call its RPC handler and pass in a callback to send the result back
+  // to the Web3ProxyProvider
+  iframes.data.on(PostMessages.WEB3, payload => {
+    // handler for the actual web3 calls
+    if (!getHasWeb3()) {
+      // error - no crypto wallet
+      iframes.data.postMessage(PostMessages.WEB3_RESULT, {
+        id: payload.id,
+        jsonrpc: '2.0',
+        error: 'No web3 wallet is available',
+      })
+      return
+    }
+
+    // the payload is validated inside DataIframeMessageEmitter
+    const { method, params, id }: web3MethodCall = payload
+    // to communicate with the crypto wallet,
+    // use sendAsync if available, otherwise we will use send
+    const web3 = (window as CryptoWalletWindow).web3.currentProvider
+    const send =
+      (web3 as SendAsyncProvider).sendAsync || (web3 as SendProvider).send
+
+    // we use call to bind the web3 call to the crypto wallet's web3 provider
+    send.call(
+      web3,
+      {
+        method,
+        params,
+        jsonrpc: '2.0',
+        id,
+      },
+      (error: string | null, result?: any) => {
+        // this callback is called by the crypto wallet
+        // with the result of the web3 call, we pass
+        // it back to the Web3ProxyProvider
+        iframes.data.postMessage(
+          PostMessages.WEB3_RESULT,
+          error
+            ? {
+                id,
+                error,
+                jsonrpc: '2.0',
+              }
+            : {
+                id,
+                result,
+                jsonrpc: '2.0',
+              }
+        )
+      }
+    )
   })
 }
