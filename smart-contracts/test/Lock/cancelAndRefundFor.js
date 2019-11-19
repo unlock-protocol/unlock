@@ -1,5 +1,6 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
+const truffleAssert = require('truffle-assertions')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
@@ -27,18 +28,16 @@ async function signMessage(messageHex, signer) {
 }
 
 contract('Lock / cancelAndRefundFor', accounts => {
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const txSender = accounts[9]
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
   let lockOwner
 
-  before(async () => {
+  beforeEach(async () => {
+    unlock = await getProxy(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+
     lock = locks['SECOND']
     const purchases = keyOwners.map(account => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
@@ -56,18 +55,13 @@ contract('Lock / cancelAndRefundFor', accounts => {
   })
 
   it('can increment nonce', async () => {
-    await lock.invalidateApprovalToCancelKey({ from: keyOwners[0] })
-  })
-
-  it('can read the non-zero nonce', async () => {
-    const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwners[0]))
-    assert.equal(nonce.toFixed(), 1)
+    await lock.invalidateOffchainApproval('1', { from: keyOwners[0] })
   })
 
   describe('should cancel and refund when enough time remains', () => {
     let initialLockBalance, initialTxSenderBalance, txObj, withdrawAmount
 
-    before(async () => {
+    beforeEach(async () => {
       initialLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       )
@@ -89,14 +83,20 @@ contract('Lock / cancelAndRefundFor', accounts => {
     })
 
     it('the amount of refund should be greater than 0', async () => {
-      const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert(refund.gt(0))
-      assert.equal(refund.toFixed(), withdrawAmount.toFixed())
+      truffleAssert.eventEmitted(txObj, 'CancelKey', e => {
+        const refund = new BigNumber(e.refund)
+        return refund.gt(0) && refund.toFixed() === withdrawAmount.toFixed()
+      })
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
       const isValid = await lock.getHasValidKey.call(keyOwners[0])
       assert.equal(isValid, false)
+    })
+
+    it('can read the non-zero nonce', async () => {
+      const nonce = new BigNumber(await lock.keyOwnerToNonce.call(keyOwners[0]))
+      assert.equal(nonce.toFixed(), 1)
     })
 
     it("should increase the sender's balance with the amount of funds withdrawn from the lock", async () => {
@@ -115,6 +115,12 @@ contract('Lock / cancelAndRefundFor', accounts => {
           .toFixed()
       )
     })
+
+    it('emits NonceChanged', async () => {
+      const e = txObj.receipt.logs.find(e => e.event === 'NonceChanged')
+      assert.equal(e.args.keyOwner, keyOwners[0])
+      assert.equal(e.args.nextAvailableNonce, '1')
+    })
   })
 
   describe('should fail when', () => {
@@ -127,7 +133,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[1], txSender),
         keyOwners[1]
       )
-      await lock.invalidateApprovalToCancelKey({ from: keyOwners[1] })
+      await lock.invalidateOffchainApproval('1', { from: keyOwners[1] })
       await shouldFail(
         lock.cancelAndRefundFor(keyOwners[1], signature, {
           from: txSender,
