@@ -4,6 +4,9 @@ import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
 
+const bytecode = require('./bytecode').default
+const abis = require('./abis').default
+
 /**
  * This service interacts with the user's wallet.
  * The functionality is on purpose only about sending transaction and returning the corresponding
@@ -147,6 +150,32 @@ export default class WalletService extends UnlockService {
   async createLock(lock, callback) {
     const version = await this.unlockContractAbiVersion()
     return version.createLock.bind(this)(lock, callback)
+  }
+
+  /**
+   * Deploys a new template for locks
+   * It's a regular lock, but it will never work (purchase function fails)
+   * It just used as template whose address is fed into configUnlock to deploy
+   * locks through a proxy (keeping gas prices much lower)
+   * @param {*} version
+   * @param {*} callback
+   */
+  async deployTemplate(version, callback) {
+    const factory = new ethers.ContractFactory(
+      abis[version].PublicLock.abi,
+      bytecode[version].PublicLock,
+      this.provider.getSigner()
+    )
+
+    const contract = await factory.deploy({
+      gasLimit: 6500000, // TODO use better value (per version?)
+    })
+
+    if (callback) {
+      callback(null, contract.deployTransaction.hash)
+    }
+    await contract.deployed()
+    return contract.address
   }
 
   /**
