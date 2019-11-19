@@ -76,7 +76,10 @@ const getBaseTokenData = async (address: string) => {
   return result
 }
 
-const getKeyCentricData = async (address: string, tokenId: string) => {
+const getKeyCentricData = async (
+  address: string,
+  tokenId: string
+): Promise<any> => {
   let keyCentricData: any = await KeyMetadata.findOne({
     where: {
       address: address,
@@ -99,7 +102,7 @@ const getKeyCentricData = async (address: string, tokenId: string) => {
   return result
 }
 
-const fetchChainData = async (address: string, keyId: string) => {
+const fetchChainData = async (address: string, keyId: string): Promise<any> => {
   let kd = new KeyData(config.web3ProviderHost)
   let data = await kd.get(address, keyId)
   return kd.openSeaPresentation(data)

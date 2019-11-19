@@ -39,6 +39,13 @@ export interface ItemizedKeyPrice {
 
 export interface SignedRequest extends Request {
   owner: string
+  signee: string
+}
+
+export interface UserTokenMetadataInput {
+  tokenAddress: string
+  userAddress: string
+  data: any
 }
 
 export type ethereumAddress = string
