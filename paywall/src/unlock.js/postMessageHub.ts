@@ -116,7 +116,6 @@ export function iframeHandlerInit({
 }: iframeHandlerInitArgs) {
   // TODO: consider removing the layer of event listeners and work with
   // postmessages directly
-  dataIframe.setupListeners()
   checkoutIframe.setupListeners()
   // account listener setup will be on-demand, done by the Wallet in setupWallet()
   // Comment above verbatim from original site. Will likely be changed.

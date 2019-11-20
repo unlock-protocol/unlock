@@ -85,17 +85,15 @@ describe('IframeHandler', () => {
     expect(ready).not.toHaveBeenCalled()
   })
 
-  it('should set up postmessage listeners for the data and checkout iframes', () => {
-    expect.assertions(2)
+  it('should set up postmessage listeners for the checkout iframe', () => {
+    expect.assertions(1)
 
     const iframeHandler = makeIframeHandler()
     iframeHandler.checkout.setupListeners = jest.fn()
-    iframeHandler.data.setupListeners = jest.fn()
 
     iframeHandler.init(config)
 
     expect(iframeHandler.checkout.setupListeners).toHaveBeenCalled()
-    expect(iframeHandler.data.setupListeners).toHaveBeenCalled()
   })
 
   it('should listen for PostMessages.READY emit, and send the config to the data iframe on receipt', () => {

@@ -12,7 +12,6 @@ describe('DataIframeMessageEmitter', () => {
       fakeWindow,
       'http://fun.times/fakey'
     )
-    emitter.setupListeners()
     return emitter
   }
 
@@ -54,27 +53,9 @@ describe('DataIframeMessageEmitter', () => {
         dataOrigin // iframe origin
       )
     })
-
-    it('should set up addHandler', () => {
-      expect.assertions(1)
-
-      const fakeReady = jest.fn()
-      const emitter = makeEmitter(fakeWindow)
-
-      emitter.addHandler(PostMessages.READY, fakeReady)
-
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY,
-        undefined,
-        emitter.iframe,
-        dataOrigin
-      )
-
-      expect(fakeReady).toHaveBeenCalled()
-    })
   })
 
-  describe('setupListeners', () => {
+  describe('emitting received postMessages', () => {
     let ready: () => void
 
     beforeEach(() => {

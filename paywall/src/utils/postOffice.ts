@@ -1,4 +1,4 @@
-import { MessageTypes, ExtractPayload } from '../messageTypes'
+import { MessageTypes, ExtractPayload, PostMessages } from '../messageTypes'
 import { PostOfficeWindow, EventTypes } from '../windowTypes'
 
 export interface MessageEvent {
@@ -38,6 +38,15 @@ export type PostMessageListener = (
 
 export interface PostMessageHandlers {
   [key: string]: Map<PostMessageListener, PostMessageListener>
+}
+
+// Just a wrapper for the "check if we should print and disable eslint" pattern
+export function debugLogger(method: 'log' | 'error', ...args: any[]) {
+  const debug = process.env.DEBUG
+  if (debug) {
+    // eslint-disable-next-line no-console
+    console[method](...args)
+  }
 }
 
 /**
@@ -125,6 +134,82 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
         console.log(`[pO] ${local} --> ${remote}`, type, payload, targetOrigin)
       }
       target.postMessage({ type, payload }, targetOrigin)
+    },
+  }
+}
+
+export function postMessageIsSafe(
+  message: MessageEvent,
+  sourceWindow: PostMessageTarget,
+  sourceOrigin: string
+) {
+  const errors: string[] = []
+
+  if (message.source !== sourceWindow) {
+    errors.push('PostMessage source does not match expected source')
+  }
+
+  if (message.origin !== sourceOrigin) {
+    errors.push('PostMessage origin does not match expected origin')
+  }
+
+  // PostMessage must carry data, which must be of shape
+  // { type: 'type', payload: <value> }
+  if (!message.data) {
+    errors.push('PostMessage does not contain a data property')
+  }
+
+  if (!message.data.type) {
+    errors.push("PostMessage's data property does not have a type property")
+  }
+
+  if (!message.data.hasOwnProperty('payload')) {
+    errors.push("PostMessage's data property does not have a payload property")
+  }
+
+  if (typeof message.data.type !== 'string') {
+    errors.push("PostMessage's data.type property is not a string")
+  }
+
+  if (errors.length) {
+    debugLogger('error', errors, message)
+    // Any number of errors other than 0 causes us to distrust the postMessage
+    return false
+  }
+
+  // Nothing went wrong, so we can act on this postMessage
+  return true
+}
+
+export function emitPostMessagesFrom(
+  // The iframe from which we will receive messages
+  sourceWindow: PostMessageTarget,
+  // The URI of `sourceWindow`
+  sourceOrigin: string,
+  // The window from which this function is called
+  window: PostOfficeWindow,
+  // Called every time the listener gets a message that passes
+  emit: (type: PostMessages, payload: any) => void
+) {
+  window.addEventListener(EventTypes.MESSAGE, message => {
+    // We won't operate on any message that doesn't pass the checks
+    if (postMessageIsSafe(message, sourceWindow, sourceOrigin)) {
+      // postMessageIsSafe asserted that the message has `type` and `payload`
+      // fields inside `data`
+      emit(message.data.type, message.data.payload)
+    }
+  })
+
+  return {
+    postMessage: <T extends MessageTypes>(
+      type: T,
+      payload: ExtractPayload<T>
+    ) => {
+      // Alias these for clear semantics -- the source that we listen to is also
+      // the target we post to
+      const targetWindow = sourceWindow
+      const targetOrigin = sourceOrigin
+      targetWindow.postMessage({ type, payload }, targetOrigin)
     },
   }
 }
