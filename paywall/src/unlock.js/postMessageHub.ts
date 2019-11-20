@@ -374,7 +374,7 @@ export function setupWeb3ProxyWallet({
   // when receiving a key purchase request, we either pass it to the
   // account iframe for credit card purchase if user accounts are
   // explicitly enabled, or to the crypto wallet
-  iframes.checkout.on(PostMessages.PURCHASE_KEY, async request => {
+  iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
     iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
   })
 
@@ -409,6 +409,7 @@ export function setupWeb3ProxyWallet({
       })
       return
     }
+
     iframes.data.postMessage(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
