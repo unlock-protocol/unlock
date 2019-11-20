@@ -30,8 +30,8 @@ import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_I
 import { getStoredPaymentDetails } from '../actions/user'
 import { SIGN_DATA, signedData } from '../actions/signature'
 import {
-  SIGN_METADATA_REQUEST,
-  signMetadataResponse,
+  SIGN_BULK_METADATA_REQUEST,
+  signBulkMetadataResponse,
 } from '../actions/keyMetadata'
 import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 
@@ -230,8 +230,8 @@ const walletMiddleware = config => {
               }
             }
           )
-        } else if (action.type === SIGN_METADATA_REQUEST) {
-          const { lockAddress, owner, timestamp, keyIds } = action
+        } else if (action.type === SIGN_BULK_METADATA_REQUEST) {
+          const { lockAddress, owner, timestamp } = action
 
           // Usage from locksmith tests for metadataController
           const typedData = generateKeyTypedData({
@@ -257,7 +257,7 @@ const walletMiddleware = config => {
             } else {
               dispatch(dismissWalletCheck())
               dispatch(
-                signMetadataResponse(typedData, signature, keyIds, lockAddress)
+                signBulkMetadataResponse(typedData, signature, lockAddress)
               )
             }
           })

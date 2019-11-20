@@ -1,8 +1,9 @@
 import IframeHandler from './IframeHandler'
-import { PostMessages } from '../messageTypes'
 import { PaywallConfig, Balance } from '../unlockTypes'
-import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
+import { checkoutHandlerInit } from './postMessageHub'
 import StartupConstants from './startupTypes'
+
+import { DEFAULT_STABLECOIN_BALANCE } from '../constants'
 
 export const injectDefaultBalance = (
   oldBalance: Balance,
@@ -49,60 +50,13 @@ export default class CheckoutUIHandler {
   }
 
   init({ usingManagedAccount }: { usingManagedAccount: boolean }) {
-    // listen for updates to state from the data iframe, and forward them to the checkout UI
-    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT, account =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_ACCOUNT, account)
-    )
-    this.iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
-      let balanceUpdate = balance
-      if (usingManagedAccount) {
-        const { erc20ContractAddress } = this.constants
-        balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
-      }
-      this.iframes.checkout.postMessage(
-        PostMessages.UPDATE_ACCOUNT_BALANCE,
-        balanceUpdate
-      )
+    checkoutHandlerInit({
+      usingManagedAccount,
+      constants: this.constants,
+      config: this.config,
+      dataIframe: this.iframes.data,
+      checkoutIframe: this.iframes.checkout,
+      injectDefaultBalance,
     })
-    this.iframes.data.on(PostMessages.UPDATE_LOCKS, locks =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_LOCKS, locks)
-    )
-    this.iframes.data.on(PostMessages.UPDATE_KEYS, keys =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_KEYS, keys)
-    )
-    this.iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
-      return this.iframes.checkout.postMessage(
-        PostMessages.UPDATE_TRANSACTIONS,
-        transactions
-      )
-    })
-    this.iframes.data.on(PostMessages.UPDATE_NETWORK, network =>
-      this.iframes.checkout.postMessage(PostMessages.UPDATE_NETWORK, network)
-    )
-
-    // pass on the configuration and request the latest data
-    this.iframes.checkout.on(PostMessages.READY, () => {
-      this.iframes.checkout.postMessage(PostMessages.CONFIG, this.config)
-
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'account')
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'balance')
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'network')
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'keys')
-      this.iframes.data.postMessage(PostMessages.SEND_UPDATES, 'transactions')
-    })
-
-    // pass on any errors
-    this.iframes.data.on(PostMessages.ERROR, error =>
-      this.iframes.checkout.postMessage(PostMessages.ERROR, error)
-    )
-
-    // pass on locked status
-    this.iframes.data.on(PostMessages.LOCKED, () =>
-      this.iframes.checkout.postMessage(PostMessages.LOCKED, undefined)
-    )
-    this.iframes.data.on(PostMessages.UNLOCKED, lockAddresses =>
-      this.iframes.checkout.postMessage(PostMessages.UNLOCKED, lockAddresses)
-    )
   }
 }

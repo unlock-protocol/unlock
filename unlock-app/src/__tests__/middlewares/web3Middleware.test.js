@@ -1,12 +1,7 @@
 import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
-import {
-  ADD_LOCK,
-  GET_LOCK,
-  UPDATE_LOCK,
-  CREATE_LOCK,
-} from '../../actions/lock'
+import { GET_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
@@ -177,7 +172,7 @@ describe('Lock middleware', () => {
       })
     })
 
-    it('it should dispatch ADD_LOCK if the lock does not already exist', () => {
+    it('it should dispatch UPDATE_LOCK if the lock does not already exist', () => {
       expect.assertions(1)
       const { store } = create()
       const lock = {
@@ -190,14 +185,14 @@ describe('Lock middleware', () => {
       mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: ADD_LOCK,
+          type: UPDATE_LOCK,
           address: lock.address,
-          lock: update,
+          update,
         })
       )
     })
 
-    it('it should ADD_LOCK with the right unlimitedKey field', () => {
+    it('it should UPDATE_LOCK with the right unlimitedKey field', () => {
       expect.assertions(1)
       const { store } = create()
       const lock = {
@@ -212,9 +207,9 @@ describe('Lock middleware', () => {
       mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: ADD_LOCK,
+          type: UPDATE_LOCK,
           address: lock.address,
-          lock: expect.objectContaining({
+          update: expect.objectContaining({
             maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
             unlimitedKeys: true,
           }),
