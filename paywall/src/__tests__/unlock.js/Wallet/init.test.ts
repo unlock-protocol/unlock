@@ -52,6 +52,10 @@ describe('Wallet.init()', () => {
     return jest.spyOn(postMessageHub, 'setupUserAccountsProxyWallet')
   }
 
+  function setupWeb3ProxyWalletSpy() {
+    return jest.spyOn(postMessageHub, 'setupWeb3ProxyWallet')
+  }
+
   describe('has crypto wallet', () => {
     beforeEach(() => {
       fakeWindow = new FakeWindow()
@@ -74,20 +78,20 @@ describe('Wallet.init()', () => {
 
       fakeWindow.makeWeb3()
       const handler = makeWallet(userAccountsConfig)
-      handler.setupWeb3ProxyWallet = jest.fn()
+      const setupWeb3ProxyWallet = setupWeb3ProxyWalletSpy()
       handler.init()
 
-      expect(handler.setupWeb3ProxyWallet).toHaveBeenCalled()
+      expect(setupWeb3ProxyWallet).toHaveBeenCalled()
     })
 
     it('should not setup user accounts if there is no crypto wallet, and no user accounts in config', () => {
       expect.assertions(1)
 
       const handler = makeWallet()
-      handler.setupWeb3ProxyWallet = jest.fn()
+      const setupWeb3ProxyWallet = setupWeb3ProxyWalletSpy()
       handler.init()
 
-      expect(handler.setupWeb3ProxyWallet).toHaveBeenCalled()
+      expect(setupWeb3ProxyWallet).toHaveBeenCalled()
     })
   })
 
@@ -113,7 +117,6 @@ describe('Wallet.init()', () => {
       const handler = makeWallet(userAccountsConfig)
       const setupUserAccounts = setupUserAccountsSpy()
       const setupUserAccountsProxyWallet = setupUserAccountsProxyWalletSpy()
-      handler.setupWeb3ProxyWallet = jest.fn()
 
       handler.init()
 
