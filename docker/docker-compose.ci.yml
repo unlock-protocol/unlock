@@ -174,7 +174,7 @@ services:
       - db
       - ganache
   graph-node:
-    image: graphprotocol/graph-node
+    image: graphprotocol/graph-node:v0.15.1
     ports:
       - '8000:8000'
       - '8001:8001'
