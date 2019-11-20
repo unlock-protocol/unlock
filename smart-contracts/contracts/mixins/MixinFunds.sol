@@ -63,7 +63,7 @@ contract MixinFunds is
       } else {
         IERC20 token = IERC20(tokenAddress);
         uint balanceBefore = token.balanceOf(address(this));
-        token.transferFrom(_msgSender, address(this), _price);
+        token.transferFrom(_msgSender(), address(this), _price);
 
         // There are known bugs in popular ERC20 implements which means we cannot
         // trust the return value of `transferFrom`.  This require statement ensures

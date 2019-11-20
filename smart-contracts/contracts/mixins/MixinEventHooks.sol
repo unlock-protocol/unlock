@@ -35,7 +35,7 @@ contract MixinEventHooks is
     address implementer = erc1820.getInterfaceImplementer(beneficiary, keySoldInterfaceId);
     if(implementer != address(0))
     {
-      IUnlockEventHooks(implementer).keySold(_msgSender, _to, _referrer, _pricePaid, _data);
+      IUnlockEventHooks(implementer).keySold(_msgSender(), _to, _referrer, _pricePaid, _data);
     }
   }
 
@@ -50,7 +50,7 @@ contract MixinEventHooks is
     address implementer = erc1820.getInterfaceImplementer(beneficiary, keyCancelInterfaceId);
     if(implementer != address(0))
     {
-      IUnlockEventHooks(implementer).keyCancel(_msgSender, _to, _refund);
+      IUnlockEventHooks(implementer).keyCancel(_msgSender(), _to, _refund);
     }
   }
 }

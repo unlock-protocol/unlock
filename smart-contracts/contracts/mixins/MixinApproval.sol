@@ -40,9 +40,9 @@ contract MixinApproval is
     uint _tokenId
   ) {
     require(
-      isKeyOwner(_tokenId, _msgSender) ||
-        _isApproved(_tokenId, _msgSender) ||
-        isApprovedForAll(ownerOf[_tokenId], _msgSender),
+      isKeyOwner(_tokenId, _msgSender()) ||
+        _isApproved(_tokenId, _msgSender()) ||
+        isApprovedForAll(ownerOf[_tokenId], _msgSender()),
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
@@ -61,7 +61,7 @@ contract MixinApproval is
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
   {
-    require(_msgSender != _approved, 'APPROVE_SELF');
+    require(_msgSender() != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
     emit Approval(ownerOf[_tokenId], _approved, _tokenId);
@@ -79,9 +79,9 @@ contract MixinApproval is
   ) external
     onlyIfAlive
   {
-    require(_to != _msgSender, 'APPROVE_SELF');
-    ownerToOperatorApproved[_msgSender][_to] = _approved;
-    emit ApprovalForAll(_msgSender, _to, _approved);
+    require(_to != _msgSender(), 'APPROVE_SELF');
+    ownerToOperatorApproved[_msgSender()][_to] = _approved;
+    emit ApprovalForAll(_msgSender(), _to, _approved);
   }
 
   /**

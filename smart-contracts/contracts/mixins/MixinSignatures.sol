@@ -44,8 +44,8 @@ contract MixinSignatures is
     uint _nextAvailableNonce
   ) external
   {
-    require(_nextAvailableNonce > keyOwnerToNonce[_msgSender], 'NONCE_ALREADY_USED');
-    keyOwnerToNonce[_msgSender] = _nextAvailableNonce;
-    emit NonceChanged(_msgSender, _nextAvailableNonce);
+    require(_nextAvailableNonce > keyOwnerToNonce[_msgSender()], 'NONCE_ALREADY_USED');
+    keyOwnerToNonce[_msgSender()] = _nextAvailableNonce;
+    emit NonceChanged(_msgSender(), _nextAvailableNonce);
   }
 }

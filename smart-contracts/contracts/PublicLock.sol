@@ -3,7 +3,6 @@ pragma solidity 0.5.12;
 import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
 import './interfaces/IPublicLock.sol';
-import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
@@ -33,7 +32,6 @@ contract PublicLock is
   IERC721,
   IPublicLock,
   Initializable,
-  Context,
   ERC165,
   Ownable,
   MixinSignatures,

@@ -64,7 +64,7 @@ contract MixinLockCore is
   modifier onlyOwnerOrBeneficiary()
   {
     require(
-      _msgSender == owner() || _msgSender == beneficiary,
+      _msgSender() == owner() || _msgSender() == beneficiary,
       'ONLY_LOCK_OWNER_OR_BENEFICIARY'
     );
     _;
@@ -78,7 +78,7 @@ contract MixinLockCore is
   ) internal
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
-    unlockProtocol = IUnlock(_msgSender); // Make sure we link back to Unlock's smart contract.
+    unlockProtocol = IUnlock(_msgSender()); // Make sure we link back to Unlock's smart contract.
     beneficiary = _beneficiary;
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
@@ -114,7 +114,7 @@ contract MixinLockCore is
       amount = _amount;
     }
 
-    emit Withdrawal(_msgSender, _tokenAddress, beneficiary, amount);
+    emit Withdrawal(_msgSender(), _tokenAddress, beneficiary, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
     _transfer(_tokenAddress, beneficiary, amount);
   }

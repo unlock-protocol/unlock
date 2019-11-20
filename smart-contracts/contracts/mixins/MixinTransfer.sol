@@ -309,7 +309,7 @@ contract MixinTransfer is
       return true;
     }
     bytes4 retval = IERC721Receiver(to).onERC721Received(
-      _msgSender, from, tokenId, _data);
+      _msgSender(), from, tokenId, _data);
     return (retval == _ERC721_RECEIVED);
   }
 

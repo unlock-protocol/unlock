@@ -76,7 +76,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      isKeyOwner(_tokenId, _msgSender), 'ONLY_KEY_OWNER'
+      isKeyOwner(_tokenId, _msgSender()), 'ONLY_KEY_OWNER'
     );
     _;
   }
