@@ -10,6 +10,7 @@ import './MixinEventHooks.sol';
 
 
 contract MixinRefunds is
+  Context,
   Ownable,
   MixinSignatures,
   MixinFunds,
@@ -61,9 +62,9 @@ contract MixinRefunds is
   function cancelAndRefund()
     external
   {
-    uint refund = _getCancelAndRefundValue(msg.sender);
+    uint refund = _getCancelAndRefundValue(_msgSender);
 
-    _cancelAndRefund(msg.sender, refund);
+    _cancelAndRefund(_msgSender, refund);
   }
 
   /**
@@ -75,7 +76,7 @@ contract MixinRefunds is
     address _keyOwner,
     bytes calldata _signature
   ) external
-    consumeOffchainApproval(getCancelAndRefundApprovalHash(_keyOwner, msg.sender), _signature, _keyOwner)
+    consumeOffchainApproval(getCancelAndRefundApprovalHash(_keyOwner, _msgSender), _signature, _keyOwner)
   {
     uint refund = _getCancelAndRefundValue(_keyOwner);
 
@@ -147,7 +148,7 @@ contract MixinRefunds is
   {
     Key storage key = keyByOwner[_keyOwner];
 
-    emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
+    emit CancelKey(key.tokenId, _keyOwner, _msgSender, refund);
     // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
     // of 0 so that we can still differentiate hasKey from hasValidKey.
     key.expirationTimestamp = block.timestamp;

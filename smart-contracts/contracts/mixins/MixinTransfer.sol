@@ -5,6 +5,7 @@ import './MixinApproval.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Receiver.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
@@ -18,6 +19,7 @@ import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
  */
 
 contract MixinTransfer is
+  Context,
   MixinFunds,
   MixinLockCore,
   MixinKeys,
@@ -307,7 +309,7 @@ contract MixinTransfer is
       return true;
     }
     bytes4 retval = IERC721Receiver(to).onERC721Received(
-      msg.sender, from, tokenId, _data);
+      _msgSender, from, tokenId, _data);
     return (retval == _ERC721_RECEIVED);
   }
 

@@ -1,9 +1,11 @@
 pragma solidity 0.5.12;
 
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/cryptography/ECDSA.sol';
 
 
-contract MixinSignatures
+contract MixinSignatures is
+  Context
 {
   /// @notice emits anytime the nonce used for off-chain approvals changes.
   event NonceChanged(
@@ -42,8 +44,8 @@ contract MixinSignatures
     uint _nextAvailableNonce
   ) external
   {
-    require(_nextAvailableNonce > keyOwnerToNonce[msg.sender], 'NONCE_ALREADY_USED');
-    keyOwnerToNonce[msg.sender] = _nextAvailableNonce;
-    emit NonceChanged(msg.sender, _nextAvailableNonce);
+    require(_nextAvailableNonce > keyOwnerToNonce[_msgSender], 'NONCE_ALREADY_USED');
+    keyOwnerToNonce[_msgSender] = _nextAvailableNonce;
+    emit NonceChanged(_msgSender, _nextAvailableNonce);
   }
 }

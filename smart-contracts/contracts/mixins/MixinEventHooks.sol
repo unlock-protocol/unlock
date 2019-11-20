@@ -2,6 +2,7 @@ pragma solidity 0.5.12;
 
 import '../interfaces/IUnlockEventHooks.sol';
 import './MixinLockCore.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts/introspection/IERC1820Registry.sol';
 
 
@@ -10,6 +11,7 @@ import '@openzeppelin/contracts/introspection/IERC1820Registry.sol';
  * @author Nick Mancuso (unlock-protocol.com)
  */
 contract MixinEventHooks is
+  Context,
   MixinLockCore
 {
   IERC1820Registry public constant erc1820 = IERC1820Registry(0x1820a4B7618BdE71Dce8cdc73aAB6C95905faD24);
@@ -33,7 +35,7 @@ contract MixinEventHooks is
     address implementer = erc1820.getInterfaceImplementer(beneficiary, keySoldInterfaceId);
     if(implementer != address(0))
     {
-      IUnlockEventHooks(implementer).keySold(msg.sender, _to, _referrer, _pricePaid, _data);
+      IUnlockEventHooks(implementer).keySold(_msgSender, _to, _referrer, _pricePaid, _data);
     }
   }
 
@@ -48,7 +50,7 @@ contract MixinEventHooks is
     address implementer = erc1820.getInterfaceImplementer(beneficiary, keyCancelInterfaceId);
     if(implementer != address(0))
     {
-      IUnlockEventHooks(implementer).keyCancel(msg.sender, _to, _refund);
+      IUnlockEventHooks(implementer).keyCancel(_msgSender, _to, _refund);
     }
   }
 }

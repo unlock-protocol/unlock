@@ -1,13 +1,15 @@
 pragma solidity 0.5.12;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 
 
 /**
  * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
  */
-contract MixinFunds
+contract MixinFunds is
+  Context
 {
   /**
    * The token-type that this Lock is priced in.  If 0, then use ETH, else this is
@@ -61,7 +63,7 @@ contract MixinFunds
       } else {
         IERC20 token = IERC20(tokenAddress);
         uint balanceBefore = token.balanceOf(address(this));
-        token.transferFrom(msg.sender, address(this), _price);
+        token.transferFrom(_msgSender, address(this), _price);
 
         // There are known bugs in popular ERC20 implements which means we cannot
         // trust the return value of `transferFrom`.  This require statement ensures

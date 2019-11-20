@@ -1,6 +1,7 @@
 pragma solidity 0.5.12;
 
 import '../interfaces/IERC721.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinFunds.sol';
 
@@ -13,6 +14,7 @@ import './MixinFunds.sol';
  */
 contract MixinDisableAndDestroy is
   IERC721,
+  Context,
   Ownable,
   MixinFunds
 {
@@ -60,11 +62,11 @@ contract MixinDisableAndDestroy is
   {
     require(isAlive == false, 'DISABLE_FIRST');
 
-    emit Destroy(address(this).balance, msg.sender);
+    emit Destroy(address(this).balance, _msgSender);
 
     // this will send any ETH or ERC20 held by the lock to the owner
-    _transfer(tokenAddress, msg.sender, getBalance(tokenAddress, address(this)));
-    selfdestruct(msg.sender);
+    _transfer(tokenAddress, _msgSender, getBalance(tokenAddress, address(this)));
+    selfdestruct(_msgSender);
 
     // Note we don't clean up the `locks` data in Unlock.sol as it should not be necessary
     // and leaves some data behind ('Unlock.LockBalances') which may be helpful.

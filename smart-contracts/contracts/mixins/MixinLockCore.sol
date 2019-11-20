@@ -13,6 +13,7 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is
+  Context,
   Ownable,
   MixinFunds,
   MixinDisableAndDestroy
@@ -63,7 +64,7 @@ contract MixinLockCore is
   modifier onlyOwnerOrBeneficiary()
   {
     require(
-      msg.sender == owner() || msg.sender == beneficiary,
+      _msgSender == owner() || _msgSender == beneficiary,
       'ONLY_LOCK_OWNER_OR_BENEFICIARY'
     );
     _;
@@ -77,7 +78,7 @@ contract MixinLockCore is
   ) internal
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
-    unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
+    unlockProtocol = IUnlock(_msgSender); // Make sure we link back to Unlock's smart contract.
     beneficiary = _beneficiary;
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
@@ -113,7 +114,7 @@ contract MixinLockCore is
       amount = _amount;
     }
 
-    emit Withdrawal(msg.sender, _tokenAddress, beneficiary, amount);
+    emit Withdrawal(_msgSender, _tokenAddress, beneficiary, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
     _transfer(_tokenAddress, beneficiary, amount);
   }

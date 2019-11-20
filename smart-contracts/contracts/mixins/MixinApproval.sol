@@ -3,6 +3,7 @@ pragma solidity 0.5.12;
 import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 
 
 /**
@@ -14,6 +15,7 @@ import './MixinKeys.sol';
  */
 contract MixinApproval is
   IERC721,
+  Context,
   MixinDisableAndDestroy,
   MixinKeys
 {
@@ -38,9 +40,9 @@ contract MixinApproval is
     uint _tokenId
   ) {
     require(
-      isKeyOwner(_tokenId, msg.sender) ||
-        _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(ownerOf[_tokenId], msg.sender),
+      isKeyOwner(_tokenId, _msgSender) ||
+        _isApproved(_tokenId, _msgSender) ||
+        isApprovedForAll(ownerOf[_tokenId], _msgSender),
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
@@ -59,7 +61,7 @@ contract MixinApproval is
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
   {
-    require(msg.sender != _approved, 'APPROVE_SELF');
+    require(_msgSender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
     emit Approval(ownerOf[_tokenId], _approved, _tokenId);
@@ -77,9 +79,9 @@ contract MixinApproval is
   ) external
     onlyIfAlive
   {
-    require(_to != msg.sender, 'APPROVE_SELF');
-    ownerToOperatorApproved[msg.sender][_to] = _approved;
-    emit ApprovalForAll(msg.sender, _to, _approved);
+    require(_to != _msgSender, 'APPROVE_SELF');
+    ownerToOperatorApproved[_msgSender][_to] = _approved;
+    emit ApprovalForAll(_msgSender, _to, _approved);
   }
 
   /**

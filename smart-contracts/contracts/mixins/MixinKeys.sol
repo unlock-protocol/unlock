@@ -1,5 +1,6 @@
 pragma solidity 0.5.12;
 
+import '@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinLockCore.sol';
 
@@ -11,6 +12,7 @@ import './MixinLockCore.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
+  Context,
   Ownable,
   MixinLockCore
 {
@@ -74,7 +76,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      isKeyOwner(_tokenId, msg.sender), 'ONLY_KEY_OWNER'
+      isKeyOwner(_tokenId, _msgSender), 'ONLY_KEY_OWNER'
     );
     _;
   }
