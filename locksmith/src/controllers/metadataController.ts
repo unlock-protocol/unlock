@@ -63,12 +63,13 @@ namespace MetadataController {
   export const data = async (req: any, res: Response): Promise<any> => {
     const address = Normalizer.ethereumAddress(req.params.address)
     const keyId = req.params.keyId.toLowerCase()
-
+    const base = `${req.protocol}://${req.headers.host}`
     const lockOwner = await presentProtectedData(req, Number(keyId), address)
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
-      lockOwner
+      lockOwner,
+      base
     )
 
     if (Object.keys(keyMetadata).length === 0) {
