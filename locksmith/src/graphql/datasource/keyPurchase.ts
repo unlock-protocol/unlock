@@ -19,6 +19,7 @@ export class KeyPurchase extends UnlockGraphQLDataSource {
   async getKeyPurchases() {
     try {
       const response = await this.query(this.PURCHASES)
+
       return response.data.keyPurchases
     } catch (error) {
       return []
