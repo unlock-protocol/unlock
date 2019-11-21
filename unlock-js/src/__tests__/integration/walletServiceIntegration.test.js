@@ -1,10 +1,3 @@
-import v0 from 'unlock-abi-0'
-import v01 from 'unlock-abi-0-1'
-import v02 from 'unlock-abi-0-2'
-import v10 from 'unlock-abi-1-0'
-import v11 from 'unlock-abi-1-1'
-import v12 from 'unlock-abi-1-2'
-import deploy from '../../deploy'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
@@ -31,16 +24,6 @@ let provider = `http://${host}:${port}`
 // Increasing timeouts
 jest.setTimeout(15000)
 
-// I wish we did not have to do this manually!
-const versionMappings = {
-  v0: v0,
-  v01: v01,
-  v02: v02,
-  v10: v10,
-  v11: v11,
-  v12: v12,
-}
-
 let accounts
 
 // Tests
@@ -50,22 +33,18 @@ describe('Wallet Service Integration', () => {
     let walletService, web3Service
 
     beforeAll(async () => {
-      const initialization = await deploy(
-        host,
-        port,
-        versionMappings[versionName].Unlock
-      )
-      walletService = new WalletService({
-        unlockAddress: initialization.to,
-      })
+      walletService = new WalletService({})
+
+      await walletService.connect(provider)
+
+      await walletService.deployUnlock(versionName)
 
       web3Service = new Web3Service({
         readOnlyProvider: provider,
-        unlockAddress: initialization.to,
+        unlockAddress: walletService.unlockContractAddress,
         requiredConfirmations: 2,
       })
 
-      await walletService.connect(provider)
       accounts = await walletService.provider.listAccounts()
     })
 
@@ -85,15 +64,32 @@ describe('Wallet Service Integration', () => {
     })
 
     if (['v0', 'v01', 'v02', 'v10', 'v11'].indexOf(versionName) === -1) {
+      let publicLockTemplateAddress
+
       it('should be able to deploy the lock contract template', async () => {
         expect.assertions(2)
-        const publicLockTemplateAddress = await walletService.deployTemplate(
+        publicLockTemplateAddress = await walletService.deployTemplate(
           versionName,
           (error, hash) => {
             expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
           }
         )
         expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
+      })
+
+      it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
+        expect.assertions(2)
+        let transactionHash
+        const receipt = await walletService.configureUnlock(
+          publicLockTemplateAddress,
+          'TESTK',
+          'https://locksmith.unlock-protocol.com/api/key/',
+          (error, hash) => {
+            transactionHash = hash
+            expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          }
+        )
+        expect(receipt.transactionHash).toEqual(transactionHash)
       })
     }
 

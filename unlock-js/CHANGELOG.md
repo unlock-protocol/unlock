@@ -2,6 +2,8 @@
 
 # Next Minor
 
+- Deprecated the deploy script in favor of using walletService
+- Adding support for configureUnlock to support version 12
 - Adding support for deployTemplate to support version 12 which reduces gas costs when deploying new locks
 
 # 0.4.2

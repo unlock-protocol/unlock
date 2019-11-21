@@ -4,6 +4,10 @@ const abis = require('./abis').default
 
 const gas = require('./constants').GAS_AMOUNTS
 
+/*
+ * WARNING: THIS IS DEPRECATED.
+ * Use WalletService.deployUnlock
+ */
 export default async function deploy(
   host,
   port,
@@ -35,6 +39,7 @@ export default async function deploy(
     wallet
   )
   const accounts = await provider.listAccounts()
+
   const unlockContract = await factory.deploy({ gasLimit: gas.deployContract })
 
   await unlockContract.deployed()

@@ -179,6 +179,73 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Deploys the unlock contract and initializes it.
+   * This will call the callback twice, once for each transaction
+   */
+  async deployUnlock(version, callback) {
+    // First, deploy the contract
+    const factory = new ethers.ContractFactory(
+      abis[version].Unlock.abi,
+      bytecode[version].Unlock,
+      this.provider.getSigner()
+    )
+    const unlockContract = await factory.deploy({
+      gasLimit: GAS_AMOUNTS.deployContract,
+    })
+
+    if (callback) {
+      callback(null, unlockContract.deployTransaction.hash)
+    }
+
+    await unlockContract.deployed()
+
+    // sets unlockContractAddress
+    this.unlockContractAddress = unlockContract.address
+
+    // Let's now run the initialization
+    const address = await this.provider.getSigner().getAddress()
+    const writableUnlockContract = unlockContract.connect(
+      this.provider.getSigner()
+    )
+    const transaction = await writableUnlockContract.initialize(address, {
+      gasLimit: 1000000,
+    })
+
+    if (callback) {
+      callback(null, transaction.hash)
+    }
+    await this.provider.waitForTransaction(transaction.hash)
+  }
+
+  /**
+   * Configures the Unlock contract by setting the following values:
+   * @param {*} publicLockTemplateAddress
+   * @param {*} globalTokenSymbol
+   * @param {*} globalBaseTokenURI
+   * @param {*} callback
+   */
+  async configureUnlock(
+    publicLockTemplateAddress,
+    globalTokenSymbol,
+    globalBaseTokenURI,
+    callback
+  ) {
+    const unlockContract = await this.getUnlockContract()
+
+    const transaction = await unlockContract.functions[
+      'configUnlock(address,string,string)'
+    ](publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI, {
+      gasLimit: 200000, // TODO use better value (per version?)
+    })
+
+    if (callback) {
+      callback(null, transaction.hash)
+    }
+
+    return await this.provider.waitForTransaction(transaction.hash)
+  }
+
+  /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can keep track of it from the application
    * TODO: retrieve the keyPrice, erc20Address from chain when applicable
