@@ -1,11 +1,27 @@
 import { SET_ACCOUNT } from '../../actions/accounts'
 import { SET_PROVIDER } from '../../actions/provider'
 import { SET_NETWORK } from '../../actions/network'
-import reducer, { initialState } from '../../reducers/metadataReducer'
-import { GOT_METADATA } from '../../actions/keyMetadata'
+import reducer, { initialState, Datum } from '../../reducers/metadataReducer'
+import { gotBulkMetadata } from '../../actions/keyMetadata'
+
+const lockAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+const userAddress = '0xd4bb4b501ac12f35db35d60c845c8625b5f28fd1'
+
+const metadata: Datum[] = [
+  {
+    userAddress,
+    data: {
+      userMetadata: {
+        public: {
+          color: 'blue',
+        },
+      },
+    },
+  },
+]
 
 describe('metadataReducer', () => {
-  it('should return the initial state when receiveing SET_PROVIDER', () => {
+  it('should return the initial state when receiving SET_PROVIDER', () => {
     expect.assertions(1)
     const result = reducer(
       {
@@ -18,7 +34,7 @@ describe('metadataReducer', () => {
     expect(result).toBe(initialState)
   })
 
-  it('should return the initial state when receiveing SET_ACCOUNT', () => {
+  it('should return the initial state when receiving SET_ACCOUNT', () => {
     expect.assertions(1)
     const result = reducer(
       {
@@ -31,7 +47,7 @@ describe('metadataReducer', () => {
     expect(result).toBe(initialState)
   })
 
-  it('should return the initial state when receiveing SET_NETWORK', () => {
+  it('should return the initial state when receiving SET_NETWORK', () => {
     expect.assertions(1)
     const result = reducer(
       {
@@ -53,20 +69,11 @@ describe('metadataReducer', () => {
 
   it('adds a lock to the state with metadata', () => {
     expect.assertions(1)
-    const result = reducer(undefined, {
-      type: GOT_METADATA,
-      lockAddress: 'my address',
-      keyId: '7',
-      data: {
-        public: {
-          color: 'blue',
-        },
-      },
-    })
+    const result = reducer(undefined, gotBulkMetadata(lockAddress, metadata))
 
     expect(result).toEqual({
-      'my address': {
-        '7': {
+      [lockAddress.toLowerCase()]: {
+        [userAddress]: {
           public: {
             color: 'blue',
           },
@@ -78,36 +85,27 @@ describe('metadataReducer', () => {
   it('should append data when a lock address is already present', () => {
     expect.assertions(1)
     const initialState = {
-      'my address': {
-        '7': {
-          public: {
-            color: 'blue',
+      [lockAddress.toLowerCase()]: {
+        '0x123': {
+          protected: {
+            color: 'red',
           },
         },
       },
     }
 
-    const result = reducer(initialState, {
-      type: GOT_METADATA,
-      lockAddress: 'my address',
-      keyId: '8',
-      data: {
-        public: {
-          emailAddress: 'in@ter.net',
-        },
-      },
-    })
+    const result = reducer(initialState, gotBulkMetadata(lockAddress, metadata))
 
     expect(result).toEqual({
-      'my address': {
-        '7': {
-          public: {
-            color: 'blue',
+      [lockAddress.toLowerCase()]: {
+        '0x123': {
+          protected: {
+            color: 'red',
           },
         },
-        '8': {
+        [userAddress.toLowerCase()]: {
           public: {
-            emailAddress: 'in@ter.net',
+            color: 'blue',
           },
         },
       },
