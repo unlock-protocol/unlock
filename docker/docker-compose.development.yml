@@ -20,7 +20,7 @@ services:
       - '14268:14268'
       - '9411:9411'
   graph-node:
-    image: graphprotocol/graph-node:v0.15.1
+    image: graphprotocol/graph-node:v0.16.1
     ports:
       - '8000:8000'
       - '8001:8001'
@@ -36,6 +36,7 @@ services:
       ipfs: 'ipfs:5001'
       ethereum: 'mainnet:http://host.docker.internal:8545'
       RUST_LOG: info
+      ETHEREUM_REORG_THRESHOLD: 0
   ipfs:
     image: ipfs/go-ipfs
     ports:
