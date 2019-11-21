@@ -82,7 +82,6 @@ describe('unlock.js startup', () => {
       erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
     }
     const dataOrigin = 'http://paywall'
-    const checkoutOrigin = 'http://paywall'
     const accountsOrigin = 'http://app'
 
     beforeEach(() => {
@@ -155,27 +154,18 @@ describe('unlock.js startup', () => {
     })
 
     // verify we created CheckoutUIHandler and called init()
-    it('should set up the checkout iframe', async () => {
+    it('should set up the checkout iframe', () => {
       expect.assertions(1)
 
       fakeWindow.unlockProtocolConfig = config
       const iframes = startup(fakeWindow, constants)
+      ;(iframes.checkout as any).postMessage = jest.fn()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY,
-        undefined,
-        iframes.checkout.iframe,
-        checkoutOrigin
-      )
+      iframes.checkout.emit(PostMessages.READY)
 
-      await fakeWindow.waitForPostMessageToIframe(iframes.checkout.iframe)
-
-      // note: this also tests that the configuration is normalized
-      fakeWindow.expectPostMessageSentToIframe(
+      expect(iframes.checkout.postMessage).toHaveBeenCalledWith(
         PostMessages.CONFIG,
-        normalizedConfig,
-        iframes.checkout.iframe,
-        checkoutOrigin
+        normalizedConfig
       )
     })
 

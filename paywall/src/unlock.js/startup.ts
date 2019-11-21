@@ -2,7 +2,6 @@ import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
 import MainWindowHandler from './MainWindowHandler'
-import CheckoutUIHandler from './CheckoutUIHandler'
 import StartupConstants from './startupTypes'
 
 /**
@@ -62,27 +61,16 @@ export function startup(
     checkoutIframeUrl,
     userIframeUrl
   )
-  iframes.init(config)
 
-  // set up the communication with the checkout iframe
-  const checkoutIframeHandler = new CheckoutUIHandler(
-    iframes,
-    config,
-    constants
-  )
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
   // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
   const wallet = new Wallet(window, iframes, config, constants)
   // set up the main window handler, for both events and hiding/showing iframes
-  const mainWindow = new MainWindowHandler(window, iframes)
+  new MainWindowHandler(window, iframes, config)
 
   // go!
-  mainWindow.init()
   wallet.init()
-  checkoutIframeHandler.init({
-    usingManagedAccount: wallet.useUserAccounts,
-  })
   return iframes // this is only useful in testing, it is ignored in the app
 }
 
