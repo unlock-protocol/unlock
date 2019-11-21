@@ -150,6 +150,8 @@ services:
       HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
       HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
       BLOCKTIME: '${BLOCKTIME}'
+      SUBGRAPH_HOST: '${SUBGRAPH_HOST}'
+      SUBGRAPH_PORT: '${SUBGRAPH_PORT}'
     depends_on:
       - ganache-integration
       - unlock-provider-unlock-app
@@ -170,6 +172,8 @@ services:
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080
+    ports:
+      - 8080:8080
     depends_on:
       - db
       - ganache
@@ -188,7 +192,7 @@ services:
       postgres_pass: '${DB_PASSWORD}'
       postgres_db: '${DB_NAME}'
       ipfs: 'ipfs:5001'
-      ethereum: 'mainnet:http://host.docker.internal:8545'
+      ethereum: 'mainnet:http://ganache-integration:8545'
       RUST_LOG: info
     depends_on:
       - ganache-integration
