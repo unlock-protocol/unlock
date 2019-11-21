@@ -32,4 +32,17 @@ describe('useMetadata', () => {
     await waitForNextUpdate()
     expect(result.current).toStrictEqual(metadata)
   })
+
+  it('should yield the default metadata for the token if metadata is not found', async () => {
+    expect.assertions(1)
+    axios.get = jest.fn(() => {
+      return Promise.reject()
+    })
+    const tokenUri = 'https://metadata'
+    const { result } = renderHook(() => useMetadata(tokenUri))
+
+    expect(result.current).toStrictEqual({
+      image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
+    })
+  })
 })

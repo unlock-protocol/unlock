@@ -13,7 +13,12 @@ export const useMetadata = url => {
   const [metadata, setMetadata] = useState(defaultMetadata)
 
   const getMetadata = async () => {
-    let tokenMetadata = await axios.get(url).then(response => response.data)
+    let tokenMetadata = defaultMetadata
+    try {
+      tokenMetadata = await axios.get(url).then(response => response.data)
+    } catch (error) {
+      // Do not fail on error, we'll keep defaulting to the default values
+    }
     setMetadata(tokenMetadata)
   }
 
