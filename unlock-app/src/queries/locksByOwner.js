@@ -7,18 +7,9 @@ export default function locksByOwnerQuery() {
         id
         address
         name
-        tokenAddress
-        price
         expirationDuration
         totalSupply
         maxNumberOfKeys
-        keys {
-          id
-          lock
-          keyId
-          owner
-          expiration
-        }
         owner
       }
     }
