@@ -85,6 +85,13 @@ describe('The Unlock Dashboard', () => {
           .innerText.match(/Confirming/)
       }, newLock)
 
+      // We should wait for all the lock info to be loaded here (no more -)
+      await wait.untilIsTrue(address => {
+        return !document
+          .querySelector(`[data-address="${address}"]`)
+          .innerText.match('-')
+      }, newLock)
+
       // Get the locks' innerText
       const lockText = await page.evaluate(address => {
         return document.querySelector(`[data-address="${address}"]`).innerText
