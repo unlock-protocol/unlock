@@ -96,4 +96,5 @@ export default {
       currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
     },
   ],
+  v12: [],
 }

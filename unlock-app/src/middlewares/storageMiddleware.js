@@ -4,7 +4,6 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -30,7 +29,10 @@ import UnlockUser from '../structured_data/unlockUser'
 import { Storage } from '../utils/Error'
 import { setError } from '../actions/error'
 import { ADD_TO_CART, updatePrice } from '../actions/keyPurchase'
-import { SIGN_METADATA_RESPONSE, gotMetadata } from '../actions/keyMetadata'
+import {
+  SIGN_BULK_METADATA_RESPONSE,
+  gotBulkMetadata,
+} from '../actions/keyMetadata'
 
 const storageMiddleware = config => {
   const { services } = config
@@ -144,14 +146,6 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
     })
 
-    // Note: we do not handle failures for now as most locks (except the pending or transfered ones...) should be eventually retrieved thru the transactions anyway
-    storageService.on(success.getLockAddressesForUser, addresses => {
-      // Once we have the locks, we should emit them so they can be retrieved from chain
-      addresses.forEach(address => {
-        dispatch(getLock(address))
-      })
-    })
-
     storageService.on(success.getKeyPrice, fees => {
       dispatch(updatePrice(fees))
     })
@@ -175,13 +169,14 @@ const storageMiddleware = config => {
     })
 
     // Key metadata
-    storageService.on(success.getMetadataFor, result => {
-      const { lockAddress, data, keyId } = result
-      dispatch(gotMetadata(lockAddress, keyId, data))
+    storageService.on(success.getBulkMetadataFor, (lockAddress, dataArray) => {
+      dispatch(gotBulkMetadata(lockAddress, dataArray))
     })
-    storageService.on(failure.getMetadataFor, () => {
+    storageService.on(failure.getBulkMetadataFor, error => {
       dispatch(
-        setError(Storage.Diagnostic('Could not retrieve some key metadata.'))
+        setError(
+          Storage.Diagnostic(`Could not get bulk metadata: ${error.message}`)
+        )
       )
     })
 
@@ -232,9 +227,9 @@ const storageMiddleware = config => {
         if (action.type === SET_ACCOUNT) {
           dispatch(startLoading())
           // When we set the account, we want to retrieve the list of transactions
-          storageService.getTransactionsHashesSentBy(action.account.address)
-          // When we set the account, we want to retrive the list of locks
-          storageService.getLockAddressesForUser(action.account.address)
+          storageService.getRecentTransactionsHashesSentBy(
+            action.account.address
+          )
         }
 
         if (action.type === SIGNED_USER_DATA) {
@@ -299,13 +294,9 @@ const storageMiddleware = config => {
           storageService.getKeyPrice(lock.address)
         }
 
-        if (action.type === SIGN_METADATA_RESPONSE) {
-          const { signature, keyIds, lockAddress, data } = action
-          // TODO: in the future we will have an endpoint to get bulk
-          // metadata for all keys on a lock. Use it here.
-          keyIds.forEach(id => {
-            storageService.getMetadataFor(lockAddress, id, signature, data)
-          })
+        if (action.type === SIGN_BULK_METADATA_RESPONSE) {
+          const { signature, lockAddress, data } = action
+          storageService.getBulkMetadataFor(lockAddress, signature, data)
         }
 
         next(action)

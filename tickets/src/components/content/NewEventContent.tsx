@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
-import { RouterState } from 'connected-react-router'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { lockRoute } from '../../utils/routes'
@@ -177,17 +176,22 @@ export class EventContent extends Component<
 }
 
 interface ReduxState {
-  router: RouterState
   event: any
 }
 export const mapStateToProps = (
-  { router, event }: ReduxState,
+  { event }: ReduxState,
   { config }: any
 ): EventContentProps => {
-  const { lockAddress } = lockRoute(router.location.pathname)
+  let lockAddress: string | null = ''
+  if (typeof window !== 'undefined' && window.location) {
+    const route = lockRoute(window.location.pathname)
+    if (route.lockAddress) {
+      lockAddress = route.lockAddress
+    }
+  }
 
   return {
-    lockAddress: lockAddress || '',
+    lockAddress,
     config,
     event,
   }

@@ -78,6 +78,8 @@ const generateKeys = n => {
     keys.push({
       __typename: 'Key',
       id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
+      tokenURI:
+        'https://locksmith.unlock-protocol.com/api/key/0x80bc6d2870bb72cb3e37b648c160da20733386f7/1',
       keyId: '1',
       expiration: '132546546',
       lock: {

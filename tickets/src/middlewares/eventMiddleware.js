@@ -14,15 +14,16 @@ import { lockRoute } from '../utils/routes'
 
 const eventMiddleware = config => {
   const { services } = config
-  return ({ dispatch, getState }) => {
+  return ({ dispatch }) => {
     const eventService = new EventService(services.storage.host)
 
-    const {
-      router: {
-        location: { pathname },
-      },
-    } = getState()
-    const { lockAddress } = lockRoute(pathname)
+    let lockAddress
+    if (typeof window !== 'undefined' && window.location) {
+      const route = lockRoute(window.location.pathname)
+      if (route.lockAddress) {
+        lockAddress = route.lockAddress
+      }
+    }
 
     return next => {
       setTimeout(() => {

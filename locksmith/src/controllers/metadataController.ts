@@ -2,16 +2,15 @@
 /* eslint-disable no-use-before-define */
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import Normalizer from '../utils/normalizer'
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'
 import { addMetadata } from '../operations/userMetadataOperations'
 import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
+import * as lockOperations from '../operations/lockOperations'
+import * as metadataOperations from '../operations/metadataOperations'
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../../config/config')[env]
-const metadataOperations = require('../operations/metadataOperations')
-const lockOperations = require('../operations/lockOperations')
 
 namespace MetadataController {
   const evaluateLockOwnership = async (
@@ -26,17 +25,33 @@ namespace MetadataController {
     )
   }
 
+  const evaluateKeyOwnership = async (
+    lockAddress: string,
+    tokenId: number,
+    signeeAddress: string
+  ) => {
+    const lock = new LockData(config.web3ProviderHost)
+
+    return (
+      signeeAddress.toLowerCase() ===
+      (await lock.getKeyOwner(lockAddress, tokenId)).toLowerCase()
+    )
+  }
+
   const presentProtectedData = async (
     req: any,
+    tokenId: number,
     address: string
   ): Promise<boolean> => {
     try {
       if (req.signee && req.query.data) {
         const payload = JSON.parse(decodeURIComponent(req.query.data))
         const signatureTime = payload.message.LockMetaData.timestamp
+
         return (
           !expiredSignature(signatureTime) &&
-          evaluateLockOwnership(address, req.signee)
+          ((await evaluateLockOwnership(address, req.signee)) ||
+            (await evaluateKeyOwnership(address, tokenId, req.signee)))
         )
       }
       return false
@@ -48,12 +63,13 @@ namespace MetadataController {
   export const data = async (req: any, res: Response): Promise<any> => {
     const address = Normalizer.ethereumAddress(req.params.address)
     const keyId = req.params.keyId.toLowerCase()
-
-    const lockOwner = await presentProtectedData(req, address)
+    const base = `${req.protocol}://${req.headers.host}`
+    const lockOwner = await presentProtectedData(req, Number(keyId), address)
     const keyMetadata = await metadataOperations.generateKeyMetadata(
       address,
       keyId,
-      lockOwner
+      lockOwner,
+      base
     )
 
     if (Object.keys(keyMetadata).length === 0) {
@@ -64,7 +80,7 @@ namespace MetadataController {
   }
 
   export const updateDefaults = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const owner = Normalizer.ethereumAddress(req.owner)
@@ -92,7 +108,7 @@ namespace MetadataController {
   }
 
   export const updateKeyMetadata = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const owner = Normalizer.ethereumAddress(req.owner)
@@ -118,7 +134,7 @@ namespace MetadataController {
   }
 
   export const updateUserMetadata = async (
-    req: SignedRequest,
+    req: any,
     res: Response
   ): Promise<any> => {
     const userAddress = Normalizer.ethereumAddress(req.params.userAddress)

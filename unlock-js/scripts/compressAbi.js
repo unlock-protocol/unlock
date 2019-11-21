@@ -6,16 +6,17 @@
  * On contract release, require the contract and update "toCompress" below
  */
 
-var ethers = require('ethers')
-var fs = require('fs')
-var path = require('path')
+const ethers = require('ethers')
+const fs = require('fs')
+const path = require('path')
 
 /* eslint-disable import/no-extraneous-dependencies */
-var v0 = require('unlock-abi-0')
-var v01 = require('unlock-abi-0-1')
-var v02 = require('unlock-abi-0-2')
-var v10 = require('unlock-abi-1-0')
-var v11 = require('unlock-abi-1-1')
+const v0 = require('unlock-abi-0')
+const v01 = require('unlock-abi-0-1')
+const v02 = require('unlock-abi-0-2')
+const v10 = require('unlock-abi-1-0')
+const v11 = require('unlock-abi-1-1')
+const v12 = require('unlock-abi-1-2')
 /* eslint-enable import/no-extraneous-dependencies */
 
 const toCompress = {
@@ -24,6 +25,7 @@ const toCompress = {
   v02,
   v10,
   v11,
+  v12,
 }
 const output = {}
 
@@ -46,7 +48,7 @@ function formatSignature(sig) {
   }
   let ret = `function ${sig.name}(${formatTypes(sig.inputs)})`
   if (sig.constant) ret += ' constant'
-  if (sig.stateMutability !== 'nonpayable') ret += ' ' + sig.stateMutability
+  if (sig.stateMutability !== 'nonpayable') ret += ` ${sig.stateMutability}`
   if (sig.outputs.length) {
     ret += ` returns (${formatTypes(sig.outputs)})`
   }
@@ -94,6 +96,8 @@ function formatDeployableBytecode() {
 const bytecode = {
 ${Object.keys(output).map(version => {
   return `  ${version}: {
+    PublicLock:
+      '${toCompress[version].PublicLock.bytecode}',
     Unlock:
       '${toCompress[version].Unlock.bytecode}',
   }`
@@ -143,14 +147,14 @@ export default abis
 
 console.log('writing bytecode...')
 fs.writeFileSync(
-  path.dirname(__dirname) + '/src/__tests__/helpers/bytecode.js',
+  `${path.dirname(__dirname)}/src/__tests__/helpers/bytecode.js`,
   formatBytecode()
 )
 console.log('writing deployable bytecode...')
 fs.writeFileSync(
-  path.dirname(__dirname) + '/src/bytecode.js',
+  `${path.dirname(__dirname)}/src/bytecode.js`,
   formatDeployableBytecode()
 )
 console.log('writing abis...')
-fs.writeFileSync(path.dirname(__dirname) + '/src/abis.js', formatSource())
+fs.writeFileSync(`${path.dirname(__dirname)}/src/abis.js`, formatSource())
 console.log('done')

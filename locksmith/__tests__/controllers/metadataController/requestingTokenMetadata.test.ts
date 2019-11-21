@@ -1,6 +1,7 @@
 import request from 'supertest'
 import * as sigUtil from 'eth-sig-util'
 import * as ethJsUtil from 'ethereumjs-util'
+import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
@@ -37,55 +38,34 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
   }),
 }))
 
-function generateKeyTypedData(message: any) {
-  return {
-    types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
-      KeyMetadata: [],
+let typedData: any
+beforeAll(() => {
+  typedData = keyTypedData({
+    KeyMetaData: {
+      custom_field: 'custom value',
+      owner: owningAddress,
     },
-    domain: {
-      name: 'Unlock',
-      version: '1',
-    },
-    primaryType: 'KeyMetadata',
-    message,
-  }
-}
-
-describe('when the signee owns the lock', () => {
-  let typedData: any
-  beforeAll(() => {
-    typedData = generateKeyTypedData({
-      KeyMetaData: {
-        custom_field: 'custom value',
-        owner: owningAddress,
-      },
-    })
-
-    mockOnChainLockOwnership.owner = jest.fn(() => {
-      return Promise.resolve(owningAddress)
-    })
   })
 
-  describe('when missing relevant signature details', () => {
-    it('returns as unauthorized', async () => {
-      expect.assertions(1)
-
-      const response = await request(app)
-        .put(`/api/key/${lockAddress}/5`)
-        .set('Accept', 'json')
-        .send(typedData)
-
-      expect(response.status).toEqual(401)
-    })
+  mockOnChainLockOwnership.owner = jest.fn(() => {
+    return Promise.resolve(owningAddress)
   })
+})
 
+describe('when missing relevant signature details', () => {
+  it('returns as unauthorized', async () => {
+    expect.assertions(1)
+
+    const response = await request(app)
+      .put(`/api/key/${lockAddress}/5`)
+      .set('Accept', 'json')
+      .send(typedData)
+
+    expect(response.status).toEqual(401)
+  })
+})
+
+describe('When the signee is the Lock owner', () => {
   describe('when including signature details', () => {
     it('stores the provided key metadata', async () => {
       expect.assertions(1)
