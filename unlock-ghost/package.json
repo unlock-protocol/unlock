@@ -1,0 +1,15 @@
+{
+  "name": "unlock-ghost",
+  "version": "1.0.0",
+  "description": "Unlock content for yout audience",
+  "main": "index.js",
+  "scripts": {
+      "build": "tsc --lib es6,dom unlock-ghost.ts --target es2015"
+  },
+  "author": "Miguel Angel G.",
+  "license": "MIT",
+  "dependencies": {
+    "@types/es6-promise": "^3.3.0",
+    "typescript": "^3.7.2"
+  }
+}
