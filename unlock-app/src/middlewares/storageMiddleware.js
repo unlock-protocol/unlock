@@ -4,7 +4,6 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '@unlock-protocol/unlock-js'
-import { getLock } from '../actions/lock'
 
 import { startLoading, doneLoading } from '../actions/loading'
 
@@ -147,14 +146,6 @@ const storageMiddleware = config => {
       dispatch(setError(Storage.Warning('Unable to retrieve payment methods.')))
     })
 
-    // Note: we do not handle failures for now as most locks (except the pending or transfered ones...) should be eventually retrieved thru the transactions anyway
-    storageService.on(success.getLockAddressesForUser, addresses => {
-      // Once we have the locks, we should emit them so they can be retrieved from chain
-      addresses.forEach(address => {
-        dispatch(getLock(address))
-      })
-    })
-
     storageService.on(success.getKeyPrice, fees => {
       dispatch(updatePrice(fees))
     })
@@ -239,8 +230,6 @@ const storageMiddleware = config => {
           storageService.getRecentTransactionsHashesSentBy(
             action.account.address
           )
-          // When we set the account, we want to retrive the list of locks
-          storageService.getLockAddressesForUser(action.account.address)
         }
 
         if (action.type === SIGNED_USER_DATA) {
