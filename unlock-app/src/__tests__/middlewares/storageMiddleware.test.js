@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events'
 import * as unlockJs from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
@@ -146,7 +145,6 @@ describe('Storage middleware', () => {
       const action = { type: SET_ACCOUNT, account }
 
       mockStorageService.getRecentTransactionsHashesSentBy = jest.fn()
-      mockStorageService.getLockAddressesForUser = jest.fn()
 
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith(startLoading())
@@ -197,24 +195,6 @@ describe('Storage middleware', () => {
         setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
-    })
-
-    it('should get the locks for that user from the storageService', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const account = {
-        address: '0x123',
-      }
-      const action = { type: SET_ACCOUNT, account }
-
-      mockStorageService.getLockAddressesForUser = jest.fn()
-      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn()
-
-      invoke(action)
-      expect(mockStorageService.getLockAddressesForUser).toHaveBeenCalledWith(
-        account.address
-      )
-      expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -600,20 +580,6 @@ describe('Storage middleware', () => {
       mockStorageService.emit(success.getCards, cards)
 
       expect(store.dispatch).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('getLockAddressesForUser', () => {
-    it('should handle success', () => {
-      expect.assertions(2)
-      const { store } = create()
-      const addresses = ['0x123', '0x456']
-
-      mockStorageService.emit(success.getLockAddressesForUser, addresses)
-
-      addresses.forEach(address => {
-        expect(store.dispatch).toHaveBeenCalledWith(getLock(address))
-      })
     })
   })
 
