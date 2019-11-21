@@ -50,6 +50,7 @@ services:
       PAYWALL_URL: '${PAYWALL_URL}'
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'
+      SUBGRAPH_URI: '${SUBGRAPH_URI}'
     command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
     image: unlock-app
@@ -149,6 +150,8 @@ services:
       HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
       HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
       BLOCKTIME: '${BLOCKTIME}'
+      SUBGRAPH_HOST: '${SUBGRAPH_HOST}'
+      SUBGRAPH_PORT: '${SUBGRAPH_PORT}'
     depends_on:
       - ganache-integration
       - unlock-provider-unlock-app
@@ -156,6 +159,7 @@ services:
       - paywall
       - locksmith
       - unlock-protocol-com
+      - graph-node
   locksmith:
     image: locksmith
     environment:
@@ -168,6 +172,42 @@ services:
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     expose:
       - 8080
+    ports:
+      - 8080:8080
     depends_on:
       - db
       - ganache
+  graph-node:
+    image: graphprotocol/graph-node:v0.15.1
+    ports:
+      - '8000:8000'
+      - '8001:8001'
+      - '8020:8020'
+    depends_on:
+      - ipfs
+      - db
+    environment:
+      postgres_host: db:5432
+      postgres_user: '${DB_USERNAME}'
+      postgres_pass: '${DB_PASSWORD}'
+      postgres_db: '${DB_NAME}'
+      ipfs: 'ipfs:5001'
+      ethereum: 'mainnet:http://ganache-integration:8545'
+      RUST_LOG: info
+    depends_on:
+      - ganache-integration
+  ipfs:
+    image: ipfs/go-ipfs
+    ports:
+      - '5001:5001'
+    # volumes:
+    #   - ./data/ipfs:/data/ipfs
+  subgraph_deployment:
+    build:
+      context: ./development
+      dockerfile: subgraph.dockerfile
+    command: ['node', './deploy-subgraph.js']
+    depends_on:
+      - ipfs
+      - db
+      - graph-node

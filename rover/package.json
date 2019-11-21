@@ -19,7 +19,7 @@
    "author": "",
    "license": "ISC",
    "dependencies": {
-      "@types/jest": "24.0.22",
+      "@types/jest": "24.0.23",
       "@types/node": "8.10.59",
       "dotenv": "8.2.0",
       "ethers": "4.0.39",
@@ -40,7 +40,7 @@
    "devDependencies": {
       "jest": "24.9.0",
       "ts-jest": "24.1.0",
-      "ts-node": "8.5.0",
+      "ts-node": "8.5.2",
       "typescript": "3.7.2"
    }
 }

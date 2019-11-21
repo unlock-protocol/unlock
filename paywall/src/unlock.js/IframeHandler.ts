@@ -7,7 +7,7 @@ import {
   OriginWindow,
 } from '../windowTypes'
 import { PaywallConfig } from '../unlockTypes'
-import { PostMessages } from '../messageTypes'
+import { iframeHandlerInit } from './postMessageHub'
 
 /**
  * This class creates the 3 iframes and provides a simple way to access all 3
@@ -30,11 +30,10 @@ export default class IframeHandler {
   }
 
   init(config: PaywallConfig) {
-    this.data.setupListeners()
-    this.checkout.setupListeners()
-    // account listener setup will be on-demand, done by the Wallet in setupWallet()
-    this.data.on(PostMessages.READY, () => {
-      this.data.postMessage(PostMessages.CONFIG, config)
+    iframeHandlerInit({
+      config,
+      dataIframe: this.data,
+      checkoutIframe: this.checkout,
     })
   }
 }

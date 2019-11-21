@@ -2,8 +2,7 @@ import { EventEmitter } from 'events'
 import { PostMessages } from '../../messageTypes'
 import {
   PostMessageResponder,
-  mainWindowPostOffice,
-  PostMessageListener,
+  emitPostMessagesFrom,
 } from '../../utils/postOffice'
 import {
   IframeType,
@@ -11,10 +10,7 @@ import {
   PostOfficeWindow,
 } from '../../windowTypes'
 import { makeIframe, addIframeToDocument } from '../iframeManager'
-import {
-  DataIframeEventEmitter,
-  DataIframeEvents,
-} from '../../EventEmitterTypes'
+import { DataIframeEventEmitter } from '../../EventEmitterTypes'
 
 interface UnvalidatedPayload {
   method?: any
@@ -30,16 +26,9 @@ class FancyEmitter extends (EventEmitter as {
  * This is an abstraction layer around the post office for the data iframe
  *
  * It is used both to listen for incoming messages, and to send outgoing messages.
- * For most, it simply emits what it receives, but in some cases it performs
- * additional logic, such as validating web3 method calls, or not forwarding
- * empty locks
+ * It simply emits all postMessages it receives as events.
  */
 export default class DataIframeMessageEmitter extends FancyEmitter {
-  public readonly addHandler: (
-    type: keyof DataIframeEvents,
-    listener: PostMessageListener
-  ) => void
-
   public readonly postMessage: PostMessageResponder<PostMessages>
   public readonly iframe: IframeType
 
@@ -53,15 +42,33 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
     const url = new URL(this.iframe.src)
     addIframeToDocument(window, this.iframe)
 
-    const { postMessage, addHandler } = mainWindowPostOffice(
-      window,
-      this.iframe,
+    const { postMessage } = emitPostMessagesFrom(
+      this.iframe.contentWindow,
       url.origin,
-      'main window',
-      'Data iframe'
+      window,
+      this.emitWrapper
     )
     this.postMessage = postMessage
-    this.addHandler = addHandler
+  }
+
+  emitWrapper = (type: PostMessages, payload?: any) => {
+    // Don't emit a locks update if the update is empty
+    // TODO: move this logic elsewhere -- consumer should be able to
+    // handle an empty array
+    if (
+      type === PostMessages.UPDATE_LOCKS &&
+      payload &&
+      !Object.keys(payload).length
+    ) {
+      return
+    }
+
+    // Don't emit requests for WEB3 method calls that are poorly formed
+    if (type === PostMessages.WEB3 && !this.validateWeb3MethodCall(payload)) {
+      return
+    }
+
+    this.emit(type as any, payload)
   }
 
   /**
@@ -82,50 +89,5 @@ export default class DataIframeMessageEmitter extends FancyEmitter {
       return false
     }
     return true
-  }
-
-  public setupListeners() {
-    this.addHandler(PostMessages.READY, () => this.emit(PostMessages.READY))
-    this.addHandler(PostMessages.READY_WEB3, () =>
-      this.emit(PostMessages.READY_WEB3)
-    )
-    this.addHandler(PostMessages.LOCKED, () => this.emit(PostMessages.LOCKED))
-    this.addHandler(PostMessages.UNLOCKED, locks =>
-      this.emit(PostMessages.UNLOCKED, locks)
-    )
-    this.addHandler(PostMessages.ERROR, error =>
-      this.emit(PostMessages.ERROR, error)
-    )
-    this.addHandler(PostMessages.UPDATE_WALLET, update =>
-      this.emit(PostMessages.UPDATE_WALLET, update)
-    )
-    this.addHandler(PostMessages.WEB3, payload => {
-      // don't pass on anything that is not a valid web3 request
-      if (!this.validateWeb3MethodCall(payload)) return
-      this.emit(PostMessages.WEB3, payload)
-    })
-    this.addHandler(PostMessages.UPDATE_ACCOUNT, account =>
-      this.emit(PostMessages.UPDATE_ACCOUNT, account)
-    )
-    this.addHandler(PostMessages.UPDATE_ACCOUNT_BALANCE, balance =>
-      this.emit(PostMessages.UPDATE_ACCOUNT_BALANCE, balance)
-    )
-    this.addHandler(PostMessages.UPDATE_NETWORK, network =>
-      this.emit(PostMessages.UPDATE_NETWORK, network)
-    )
-    this.addHandler(PostMessages.UPDATE_LOCKS, locks => {
-      if (!Object.keys(locks).length) {
-        // this happens on a fresh start before the blockchain handler retrieves locks
-        // in this case, we ignore the update to simplify downstream
-        return
-      }
-      this.emit(PostMessages.UPDATE_LOCKS, locks)
-    })
-    this.addHandler(PostMessages.UPDATE_TRANSACTIONS, transactions => {
-      this.emit(PostMessages.UPDATE_TRANSACTIONS, transactions)
-    })
-    this.addHandler(PostMessages.UPDATE_KEYS, keys => {
-      this.emit(PostMessages.UPDATE_KEYS, keys)
-    })
   }
 }

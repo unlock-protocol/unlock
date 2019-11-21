@@ -1,6 +1,5 @@
 import reducer, { initialState } from '../../reducers/locksReducer'
 import {
-  ADD_LOCK,
   CREATE_LOCK,
   DELETE_LOCK,
   UPDATE_LOCK,
@@ -145,58 +144,6 @@ describe('locks reducer', () => {
     })
   })
 
-  describe('ADD_LOCK', () => {
-    it('should keep state unchanged if the address is a mismatch', () => {
-      expect.assertions(1)
-      const state = {}
-      const action = {
-        type: ADD_LOCK,
-        address: '0x123',
-        lock: {
-          address: '0x456',
-        },
-      }
-      expect(reducer(state, action)).toEqual(state)
-    })
-
-    it('should keep state unchanged if the lock was previously added', () => {
-      expect.assertions(1)
-      const state = {
-        '0x123': {},
-      }
-      const action = {
-        type: ADD_LOCK,
-        address: '0x123',
-        lock: {
-          address: '0x123',
-        },
-      }
-      expect(reducer(state, action)).toEqual(state)
-    })
-
-    it('should add the lock and add its address', () => {
-      expect.assertions(1)
-      const state = {
-        '0x456': {},
-      }
-      const action = {
-        type: ADD_LOCK,
-        address: '0x123',
-        lock: {
-          name: 'hello',
-        },
-      }
-
-      expect(reducer(state, action)).toEqual({
-        '0x456': {},
-        '0x123': {
-          address: '0x123',
-          name: 'hello',
-        },
-      })
-    })
-  })
-
   describe('UPDATE_LOCK', () => {
     it('should keep state unchanged if trying to update the lock address', () => {
       expect.assertions(1)
@@ -216,7 +163,7 @@ describe('locks reducer', () => {
       expect(reducer(state, action)).toEqual(state)
     })
 
-    it('should keep state unchanged when the lock being updated does not exist', () => {
+    it('should insert the new lock when the lock being updated does not exist', () => {
       expect.assertions(1)
       const state = {
         '0x123': {
@@ -224,14 +171,18 @@ describe('locks reducer', () => {
           address: '0x123',
         },
       }
+      const newLock = {
+        address: '0x456',
+      }
       const action = {
         type: UPDATE_LOCK,
-        address: '0x456',
-        update: {
-          address: '0x456',
-        },
+        address: newLock.address,
+        update: newLock,
       }
-      expect(reducer(state, action)).toEqual(state)
+      expect(reducer(state, action)).toEqual({
+        ...state,
+        [newLock.address]: newLock,
+      })
     })
 
     it('should update the locks values', () => {
