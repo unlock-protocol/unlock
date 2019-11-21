@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events'
 import * as unlockJs from '@unlock-protocol/unlock-js'
 import storageMiddleware from '../../middlewares/storageMiddleware'
-import { getLock } from '../../actions/lock'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
 import { startLoading, doneLoading } from '../../actions/loading'
@@ -23,15 +22,13 @@ import {
   SIGNED_ACCOUNT_EJECTION,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
-import Error from '../../utils/Error'
+import { Storage } from '../../utils/Error'
 import { setError, SET_ERROR } from '../../actions/error'
 import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 import UnlockUser from '../../structured_data/unlockUser'
-import { GOT_METADATA } from '../../actions/keyMetadata'
+import { GOT_BULK_METADATA } from '../../actions/keyMetadata'
 
 jest.mock('@unlock-protocol/unlock-js')
-
-const { Storage } = Error
 
 /**
  * This is a "fake" middleware caller
@@ -147,13 +144,12 @@ describe('Storage middleware', () => {
       }
       const action = { type: SET_ACCOUNT, account }
 
-      mockStorageService.getTransactionsHashesSentBy = jest.fn()
-      mockStorageService.getLockAddressesForUser = jest.fn()
+      mockStorageService.getRecentTransactionsHashesSentBy = jest.fn()
 
       invoke(action)
       expect(store.dispatch).toHaveBeenCalledWith(startLoading())
       expect(
-        mockStorageService.getTransactionsHashesSentBy
+        mockStorageService.getRecentTransactionsHashesSentBy
       ).toHaveBeenCalledWith(account.address)
       expect(next).toHaveBeenCalledTimes(1)
     })
@@ -199,24 +195,6 @@ describe('Storage middleware', () => {
         setError(Storage.Diagnostic('getTransactionHashesSentBy failed.'))
       )
       expect(store.dispatch).toHaveBeenNthCalledWith(2, doneLoading())
-    })
-
-    it('should get the locks for that user from the storageService', () => {
-      expect.assertions(2)
-      const { next, invoke } = create()
-      const account = {
-        address: '0x123',
-      }
-      const action = { type: SET_ACCOUNT, account }
-
-      mockStorageService.getLockAddressesForUser = jest.fn()
-      mockStorageService.getTransactionsHashesSentBy = jest.fn()
-
-      invoke(action)
-      expect(mockStorageService.getLockAddressesForUser).toHaveBeenCalledWith(
-        account.address
-      )
-      expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -605,20 +583,6 @@ describe('Storage middleware', () => {
     })
   })
 
-  describe('getLockAddressesForUser', () => {
-    it('should handle success', () => {
-      expect.assertions(2)
-      const { store } = create()
-      const addresses = ['0x123', '0x456']
-
-      mockStorageService.emit(success.getLockAddressesForUser, addresses)
-
-      addresses.forEach(address => {
-        expect(store.dispatch).toHaveBeenCalledWith(getLock(address))
-      })
-    })
-  })
-
   describe('ADD_TO_CART', () => {
     it('should get the key price', () => {
       expect.assertions(1)
@@ -740,23 +704,17 @@ describe('Storage middleware', () => {
   describe('Key metadata', () => {
     const lockAddress = 'an address'
     const data = 'some data'
-    const keyId = '1'
     it('should dispatch a message when a request succeeds', () => {
       expect.assertions(1)
 
       const { store } = create()
 
-      mockStorageService.emit(success.getMetadataFor, {
-        lockAddress,
-        data,
-        keyId,
-      })
+      mockStorageService.emit(success.getBulkMetadataFor, lockAddress, data)
 
       expect(store.dispatch).toHaveBeenCalledWith({
-        type: GOT_METADATA,
+        type: GOT_BULK_METADATA,
         lockAddress,
         data,
-        keyId,
       })
     })
 
@@ -765,14 +723,17 @@ describe('Storage middleware', () => {
 
       const { store } = create()
 
-      mockStorageService.emit(failure.getMetadataFor, 'something broke')
+      mockStorageService.emit(
+        failure.getBulkMetadataFor,
+        new Error('something broke')
+      )
 
       expect(store.dispatch).toHaveBeenCalledWith({
         type: SET_ERROR,
         error: {
           kind: 'Storage',
           level: 'Diagnostic',
-          message: 'Could not retrieve some key metadata.',
+          message: 'Could not get bulk metadata: something broke',
         },
       })
     })

@@ -1,14 +1,12 @@
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PaywallConfig, Locks } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
-import Wallet from '../../../unlock.js/Wallet'
-import StartupConstants from '../../../unlock.js/startupTypes'
 import { PostMessages } from '../../../messageTypes'
+import { setupUserAccounts } from '../../../unlock.js/postMessageHub'
 
-describe('Wallet.setupUserAccounts()', () => {
+describe('setupUserAccounts()', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
-  let wallet: Wallet
   const dataIframeUrl = 'http://paywall/data'
   const checkoutIframeUrl = 'http://paywall/checkout'
   const userIframeUrl = 'http://app/accounts'
@@ -26,36 +24,62 @@ describe('Wallet.setupUserAccounts()', () => {
     },
     unlockUserAccounts: true,
   }
-  const startup: StartupConstants = {
-    network: 1984,
-    debug: 0,
-    paywallUrl: 'http://paywall',
-    accountsUrl: 'http://app/accounts',
-    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
-  }
 
-  function makeWallet() {
+  let setUserAccountAddress = jest.fn()
+  let setUserAccountNetwork = jest.fn()
+  let createIframeSpy: any
+
+  beforeAll(() => {
+    fakeWindow = new FakeWindow()
     iframes = new IframeHandler(
       fakeWindow,
       dataIframeUrl,
       checkoutIframeUrl,
       userIframeUrl
     )
-    iframes.init(config)
-    wallet = new Wallet(fakeWindow, iframes, config, startup)
-    wallet.setupUserAccounts()
-  }
-
-  function testingWallet() {
-    return wallet as any
-  }
-
-  beforeEach(() => {
-    fakeWindow = new FakeWindow()
-    makeWallet()
+    createIframeSpy = jest.spyOn(iframes.accounts, 'createIframe')
+    setupUserAccounts({
+      iframes,
+      config,
+      setUserAccountAddress,
+      setUserAccountNetwork,
+    })
   })
 
-  it('should forward locks to the accounts iframe', () => {
+  it('should create the accounts iframe', () => {
+    expect.assertions(1)
+
+    expect(createIframeSpy).toHaveBeenCalled()
+  })
+
+  it('should handle READY from the accounts iframe', () => {
+    expect.assertions(2)
+
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.READY,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+
+    // First main window should send config to accounts iframe
+    fakeWindow.expectPostMessageSentToIframe(
+      PostMessages.CONFIG,
+      config,
+      iframes.accounts.iframe,
+      accountsOrigin
+    )
+
+    // Then it should ask the data iframe to send lock updates
+    fakeWindow.expectPostMessageSentToIframe(
+      PostMessages.SEND_UPDATES,
+      'locks',
+      iframes.data.iframe,
+      dataOrigin
+    )
+  })
+
+  it('should handle UPDATE_LOCKS from the data iframe', () => {
     expect.assertions(1)
 
     const locks: Locks = {
@@ -76,21 +100,9 @@ describe('Wallet.setupUserAccounts()', () => {
       },
     }
 
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.UPDATE_LOCKS,
-      locks,
-      iframes.data.iframe,
-      dataOrigin
-    )
+    iframes.data.emit(PostMessages.UPDATE_LOCKS, locks)
 
-    // messages to the accounts iframe are buffered until it is ready
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.READY,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-
+    // We handle this data by passing it through to the account iframe
     fakeWindow.expectPostMessageSentToIframe(
       PostMessages.UPDATE_LOCKS,
       locks,
@@ -99,61 +111,7 @@ describe('Wallet.setupUserAccounts()', () => {
     )
   })
 
-  it('should forward configuration to accounts when ready', () => {
-    expect.assertions(1)
-
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.READY,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-
-    fakeWindow.expectPostMessageSentToIframe(
-      PostMessages.CONFIG,
-      config,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-  })
-
-  it('should request the latest locks from the data iframe when ready', () => {
-    expect.assertions(1)
-
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.READY,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-
-    fakeWindow.expectPostMessageSentToIframe(
-      PostMessages.SEND_UPDATES,
-      'locks',
-      iframes.data.iframe,
-      dataOrigin
-    )
-  })
-
-  it('should forward transaction initiated notice to the data iframe', () => {
-    expect.assertions(1)
-
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.INITIATED_TRANSACTION,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
-
-    fakeWindow.expectPostMessageSentToIframe(
-      PostMessages.INITIATED_TRANSACTION,
-      undefined,
-      iframes.data.iframe,
-      dataOrigin
-    )
-  })
-
-  it('should store user accounts address', () => {
+  it('should handle UPDATE_ACCOUNT from the accounts iframe', () => {
     expect.assertions(1)
 
     fakeWindow.receivePostMessageFromIframe(
@@ -163,10 +121,11 @@ describe('Wallet.setupUserAccounts()', () => {
       accountsOrigin
     )
 
-    expect(testingWallet().userAccountAddress).toBe(fakeAddress)
+    // setUserAccountAddress updates the internal state of the wallet
+    expect(setUserAccountAddress).toHaveBeenCalledWith(fakeAddress)
   })
 
-  it('should store user accounts network', () => {
+  it('should handle UPDATE_NETWORK from the accounts iframe', () => {
     expect.assertions(1)
 
     fakeWindow.receivePostMessageFromIframe(
@@ -176,23 +135,26 @@ describe('Wallet.setupUserAccounts()', () => {
       accountsOrigin
     )
 
-    expect(testingWallet().userAccountNetwork).toBe(1)
+    // setUserAccountNetwork updates the internal state of the wallet
+    expect(setUserAccountNetwork).toHaveBeenCalledWith(1)
   })
 
-  it('should create the accounts iframe', () => {
+  it('should handle INITIATED_TRANSACTION from accounts iframe', () => {
     expect.assertions(1)
 
-    iframes = new IframeHandler(
-      fakeWindow,
-      dataIframeUrl,
-      checkoutIframeUrl,
-      userIframeUrl
+    fakeWindow.receivePostMessageFromIframe(
+      PostMessages.INITIATED_TRANSACTION,
+      undefined,
+      iframes.accounts.iframe,
+      accountsOrigin
     )
-    iframes.init(config)
-    wallet = new Wallet(fakeWindow, iframes, config, startup)
-    iframes.accounts.createIframe = jest.fn()
-    wallet.setupUserAccounts()
 
-    expect(iframes.accounts.createIframe).toHaveBeenCalled()
+    // Let the data iframe know that a managed purchase has begun
+    fakeWindow.expectPostMessageSentToIframe(
+      PostMessages.INITIATED_TRANSACTION,
+      undefined,
+      iframes.data.iframe,
+      dataOrigin
+    )
   })
 })

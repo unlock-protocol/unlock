@@ -104,12 +104,7 @@ describe('unlock.js startup', () => {
       fakeWindow.unlockProtocolConfig = config
       const iframes = startup(fakeWindow, constants)
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
-      )
+      iframes.data.emit(PostMessages.READY)
 
       await fakeWindow.waitForPostMessageToIframe(iframes.data.iframe)
 
@@ -192,12 +187,7 @@ describe('unlock.js startup', () => {
       fakeWindow.makeWeb3()
       const iframes = startup(fakeWindow, constants)
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY_WEB3,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
-      )
+      iframes.data.emit(PostMessages.READY_WEB3)
 
       await fakeWindow.waitForPostMessageToIframe(iframes.data.iframe)
 
@@ -223,12 +213,7 @@ describe('unlock.js startup', () => {
       }
       const iframes = startup(fakeWindow, constants)
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY_WEB3,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
-      )
+      iframes.data.emit(PostMessages.READY_WEB3)
 
       expect(
         ((fakeWindow as unknown) as UnlockWindow).unlockProtocol

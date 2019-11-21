@@ -14,6 +14,8 @@ const {
   locksmithHost,
   paywallHost,
   unlockProviderUnlockHost,
+  theGraphHost,
+  theGraphPort,
 } = require('./vars.js')
 
 class UnlockEnvironment extends PuppeteerEnvironment {
@@ -30,6 +32,13 @@ class UnlockEnvironment extends PuppeteerEnvironment {
     await serverIsUp(
       locksmithHost,
       locksmithPort,
+      1000 /* every s */,
+      120 /* up to 2m */
+    )
+    console.log(`Waiting for Subgraph at ${theGraphHost}:${theGraphPort}`)
+    await serverIsUp(
+      theGraphHost,
+      theGraphPort,
       1000 /* every s */,
       120 /* up to 2m */
     )

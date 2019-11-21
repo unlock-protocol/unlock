@@ -1,12 +1,7 @@
 import UnlockJs from '@unlock-protocol/unlock-js'
 import EventEmitter from 'events'
 import web3Middleware from '../../middlewares/web3Middleware'
-import {
-  ADD_LOCK,
-  GET_LOCK,
-  UPDATE_LOCK,
-  CREATE_LOCK,
-} from '../../actions/lock'
+import { GET_LOCK, UPDATE_LOCK, CREATE_LOCK } from '../../actions/lock'
 import { UPDATE_ACCOUNT, setAccount } from '../../actions/accounts'
 import {
   ADD_TRANSACTION,
@@ -18,6 +13,7 @@ import { SET_KEYS_ON_PAGE_FOR_LOCK } from '../../actions/keysPages'
 import { PGN_ITEMS_PER_PAGE, UNLIMITED_KEYS_COUNT } from '../../constants'
 import { START_LOADING, DONE_LOADING } from '../../actions/loading'
 import configure from '../../config'
+import GraphService from '../../services/graphService'
 
 /**
  * Fake state
@@ -81,11 +77,15 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
+jest.mock('../../services/graphService')
+let mockGraphService
+
 UnlockJs.mockImplementation = MockWebService
 
 beforeEach(() => {
   // Reset the mock
   mockWeb3Service = new MockWebService()
+  jest.clearAllMocks()
 
   // Reset state!
   account = {
@@ -177,7 +177,7 @@ describe('Lock middleware', () => {
       })
     })
 
-    it('it should dispatch ADD_LOCK if the lock does not already exist', () => {
+    it('it should dispatch UPDATE_LOCK if the lock does not already exist', () => {
       expect.assertions(1)
       const { store } = create()
       const lock = {
@@ -190,14 +190,14 @@ describe('Lock middleware', () => {
       mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: ADD_LOCK,
+          type: UPDATE_LOCK,
           address: lock.address,
-          lock: update,
+          update,
         })
       )
     })
 
-    it('it should ADD_LOCK with the right unlimitedKey field', () => {
+    it('it should UPDATE_LOCK with the right unlimitedKey field', () => {
       expect.assertions(1)
       const { store } = create()
       const lock = {
@@ -212,9 +212,9 @@ describe('Lock middleware', () => {
       mockWeb3Service.emit('lock.updated', lock.address, update)
       expect(store.dispatch).toHaveBeenCalledWith(
         expect.objectContaining({
-          type: ADD_LOCK,
+          type: UPDATE_LOCK,
           address: lock.address,
-          lock: expect.objectContaining({
+          update: expect.objectContaining({
             maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
             unlimitedKeys: true,
           }),
@@ -292,41 +292,26 @@ describe('Lock middleware', () => {
     })
   })
 
-  describe('not on the paywall', () => {
-    it('should handle SET_ACCOUNT by refreshing balance and retrieving historical unlock transactions', async () => {
-      expect.assertions(4)
-      const mockTx = {
-        transactionHash: '0x123',
-      }
-      mockWeb3Service.refreshAccountBalance = jest.fn()
-      const lockCreationTransaction = Promise.resolve([mockTx])
-      mockWeb3Service.getPastLockCreationsTransactionsForUser = jest.fn(
-        () => lockCreationTransaction
-      )
-      mockWeb3Service.getKeyByLockForOwner = jest.fn()
-      mockWeb3Service.getTransaction = jest.fn()
+  it('should handle SET_ACCOUNT by getting all locks for that user using the graphService', async () => {
+    expect.assertions(1)
 
-      const { invoke } = create()
+    const { invoke } = create()
+    mockGraphService = GraphService.mock.instances[0]
+    mockGraphService.locksByOwner = jest.fn(() =>
+      Promise.resolve([
+        { name: 'first lock', address: '0x123' },
+        { name: 'second lock', address: '0x456' },
+      ])
+    )
 
-      const newAccount = {
-        address: '0x345',
-      }
-      invoke(setAccount(newAccount))
+    const newAccount = {
+      address: '0x345',
+    }
+    invoke(setAccount(newAccount))
 
-      expect(mockWeb3Service.refreshAccountBalance).toHaveBeenCalledWith(
-        newAccount
-      )
-      expect(
-        mockWeb3Service.getPastLockCreationsTransactionsForUser
-      ).toHaveBeenCalledWith(newAccount.address)
-      // We need to await this for the next assertion to work
-      await lockCreationTransaction
-
-      expect(
-        mockWeb3Service.getTransaction
-      ).toHaveBeenCalledWith(mockTx.transactionHash, { network: 'test' })
-      expect(mockWeb3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
-    })
+    expect(mockGraphService.locksByOwner).toHaveBeenCalledWith(
+      newAccount.address
+    )
   })
 
   describe('SET_KEYS_ON_PAGE_FOR_LOCK', () => {

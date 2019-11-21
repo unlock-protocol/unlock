@@ -1,0 +1,31 @@
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+const defaultMetadata = {
+  image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
+}
+
+/**
+ * This hook retrieves metadata for a token
+ * @param {*} address
+ */
+export const useMetadata = url => {
+  const [metadata, setMetadata] = useState(defaultMetadata)
+
+  const getMetadata = async () => {
+    let tokenMetadata = defaultMetadata
+    try {
+      tokenMetadata = await axios.get(url).then(response => response.data)
+    } catch (error) {
+      // Do not fail on error, we'll keep defaulting to the default values
+    }
+    setMetadata(tokenMetadata)
+  }
+
+  useEffect(() => {
+    getMetadata()
+  })
+  return metadata
+}
+
+export default useMetadata

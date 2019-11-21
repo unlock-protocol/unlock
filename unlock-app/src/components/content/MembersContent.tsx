@@ -17,7 +17,7 @@ import {
 } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import keyHolderQuery from '../../queries/keyholdersByLock'
-import { signMetadataRequest } from '../../actions/keyMetadata'
+import { signBulkMetadataRequest } from '../../actions/keyMetadata'
 import {
   mergeKeyholderMetadata,
   generateColumns,
@@ -27,7 +27,7 @@ interface Props {
   account: AccountType
   network: Network
   lockAddresses: string[]
-  signMetadataRequest: typeof signMetadataRequest
+  signBulkMetadataRequest: typeof signBulkMetadataRequest
   metadata: ReduxMetadata
 }
 
@@ -35,7 +35,7 @@ export const MembersContent = ({
   account,
   network,
   lockAddresses,
-  signMetadataRequest,
+  signBulkMetadataRequest,
   metadata,
 }: Props) => {
   return (
@@ -48,7 +48,7 @@ export const MembersContent = ({
           <Account network={network} account={account} />
           <MetadataTableWrapper
             lockAddresses={lockAddresses}
-            signMetadataRequest={signMetadataRequest}
+            signBulkMetadataRequest={signBulkMetadataRequest}
             accountAddress={account.address}
             storedMetadata={metadata}
           />
@@ -60,7 +60,7 @@ export const MembersContent = ({
 
 interface MetadataTableWrapperProps {
   lockAddresses: string[]
-  signMetadataRequest: typeof signMetadataRequest
+  signBulkMetadataRequest: typeof signBulkMetadataRequest
   accountAddress: string
   storedMetadata: ReduxMetadata
 }
@@ -71,7 +71,7 @@ interface MetadataTableWrapperProps {
  */
 const MetadataTableWrapper = ({
   lockAddresses,
-  signMetadataRequest,
+  signBulkMetadataRequest,
   accountAddress,
   storedMetadata,
 }: MetadataTableWrapperProps) => {
@@ -80,11 +80,10 @@ const MetadataTableWrapper = ({
   })
 
   useEffect(() => {
-    // Dispatch request for key metadata here, only when data changes
+    // Dispatch requests for key metadata here, only when data changes
     if (data) {
       ;(data as KeyholdersByLock).locks.forEach(lock => {
-        const keyIds = lock.keys.map(key => key.keyId)
-        signMetadataRequest(lock.address, accountAddress, keyIds)
+        signBulkMetadataRequest(lock.address, accountAddress)
       })
     }
   }, [data])
@@ -138,4 +137,6 @@ export const mapStateToProps = ({
   }
 }
 
-export default connect(mapStateToProps, { signMetadataRequest })(MembersContent)
+export default connect(mapStateToProps, { signBulkMetadataRequest })(
+  MembersContent
+)

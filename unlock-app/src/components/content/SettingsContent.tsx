@@ -80,7 +80,7 @@ export class SettingsContent extends React.Component<
       <Layout title="Account Settings">
         <Head>
           <title>{pageTitle('Account Settings')}</title>
-          <script id="stripe-js" src="https://js.stripe.com/v3/" async></script>
+          <script id="stripe-js" src="https://js.stripe.com/v3/" async />
         </Head>
         <Errors />
         {account && account.emailAddress && (

@@ -17,7 +17,7 @@ I’m even the creator of a few communities too. Admittedly they are small, but 
 
 At Unlock, we want to help your participation in those communities — your memberships — mean something. We want to give you more control over them.
 
-> At Unlock, want to help memberships materialize.
+> At Unlock, we want to help memberships materialize.
 
 ![locks](/static/images/blog/tokenized-memberships.jpg)
 

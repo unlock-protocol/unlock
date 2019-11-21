@@ -31,7 +31,8 @@ export const updateDefaultLockMetadata = async (data: any) => {
 export const generateKeyMetadata = async (
   address: string,
   keyId: string,
-  isLockOwner: boolean
+  isLockOwner: boolean,
+  host: string
 ) => {
   let onChainKeyMetadata = await fetchChainData(address, keyId)
   if (Object.keys(onChainKeyMetadata).length == 0) {
@@ -45,7 +46,7 @@ export const generateKeyMetadata = async (
     : {}
 
   let keyCentricData = await getKeyCentricData(address, keyId)
-  let baseTokenData = await getBaseTokenData(address)
+  let baseTokenData = await getBaseTokenData(address, host)
   return Object.assign(
     baseTokenData,
     keyCentricData,
@@ -54,8 +55,8 @@ export const generateKeyMetadata = async (
   )
 }
 
-const getBaseTokenData = async (address: string) => {
-  let defaultResponse = defaultMappings(address)
+const getBaseTokenData = async (address: string, host: string) => {
+  let defaultResponse = defaultMappings(address, host)
   let persistedBasedMetadata = await LockMetadata.findOne({
     where: { address: address },
   })
@@ -76,7 +77,10 @@ const getBaseTokenData = async (address: string) => {
   return result
 }
 
-const getKeyCentricData = async (address: string, tokenId: string) => {
+const getKeyCentricData = async (
+  address: string,
+  tokenId: string
+): Promise<any> => {
   let keyCentricData: any = await KeyMetadata.findOne({
     where: {
       address: address,
@@ -99,17 +103,17 @@ const getKeyCentricData = async (address: string, tokenId: string) => {
   return result
 }
 
-const fetchChainData = async (address: string, keyId: string) => {
+const fetchChainData = async (address: string, keyId: string): Promise<any> => {
   let kd = new KeyData(config.web3ProviderHost)
   let data = await kd.get(address, keyId)
   return kd.openSeaPresentation(data)
 }
 
-const defaultMappings = (address: string) => {
+const defaultMappings = (address: string, host: string) => {
   let defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
-    image: `${baseURIFragement}/unlock-default-key-image.png`,
+    image: `${host}/lock/${address}/icon`,
   }
 
   // Custom mappings

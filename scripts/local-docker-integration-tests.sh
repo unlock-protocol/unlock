@@ -38,4 +38,4 @@ wait
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
 
 # shut down the docker file in case we want to do any local dev
-docker-compose -f $DOCKER_COMPOSE_FILE down
+# docker-compose -f $DOCKER_COMPOSE_FILE down

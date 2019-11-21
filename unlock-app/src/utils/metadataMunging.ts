@@ -12,8 +12,12 @@ export const mergeSingleDatum = (
     keyholderAddress: key.owner.address,
   }
 
-  if (dataFromRedux[lock.address] && dataFromRedux[lock.address][key.keyId]) {
-    const storedKeyMetadata = dataFromRedux[lock.address][key.keyId]
+  if (
+    dataFromRedux[lock.address] &&
+    dataFromRedux[lock.address][metadatum.keyholderAddress]
+  ) {
+    const storedKeyMetadata =
+      dataFromRedux[lock.address][metadatum.keyholderAddress]
     // If there are collisions between the various metadata fields (from the
     // graph, and from the 2 possible fields from locksmith), they will be
     // overwritten by whichever value comes last

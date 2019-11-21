@@ -67,6 +67,12 @@ interface IPublicLock {
   /// @dev This emits when an operator is enabled or disabled for an owner.
   ///  The operator can manage all NFTs of the owner.
   event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
+
+  /// @notice emits anytime the nonce used for off-chain approvals changes.
+  event NonceChanged(
+    address indexed keyOwner,
+    uint nextAvailableNonce
+  );
   ///===================================================================
 
   /// Functions
@@ -328,10 +334,12 @@ interface IPublicLock {
   ) external;
 
   /**
-   * @dev Increments the current nonce for the msg.sender.
-   * This can be used to invalidate a previously signed message.
+   * @notice Sets the minimum nonce for a valid off-chain approval message from the
+   * senders account.
+   * @dev This can be used to invalidate a previously signed message.
    */
-  function invalidateApprovalToCancelKey(
+  function invalidateOffchainApproval(
+    uint _nextAvailableNonce
   ) external;
 
   /**
@@ -449,6 +457,44 @@ interface IPublicLock {
   /// @param _to The new owner
   /// @param _tokenId The NFT to transfer
   function transferFrom(address _from, address _to, uint _tokenId) external;
+
+  /**
+  * @notice Allows the key owner to share their key (parent key) by
+  * transferring a portion of the remaining time to a new key (child key).
+  * @dev Throws if key is not valid.
+  * @dev Throws if `_to` is the zero address
+  * @param _to The recipient of the shared key
+  * @param _tokenId the key to share
+  * @param _timeShared The amount of time shared
+  * @dev Emit Transfer event
+  */
+  function shareKey(
+    address _to,
+    uint _tokenId,
+    uint _timeShared
+  ) external;
+
+  /**
+  * @notice Allows the key owner to share their key (parent key) by
+  * transferring a portion of the remaining time to a new key (child key).
+  * @dev Throws if _from does not have a valid key.
+  * @dev Throws if _from does not have enough remaining time
+  * on parent key to both pay transfer fee and share time with a child key.
+  * @dev Throws if _timeShared > maxSharableTime.
+  * @dev Throws if `_to` is the zero address. When transfer is complete, this function
+  * checks if `_to` is a smart contract (code size > 0). If so, it calls
+  * `onERC721Received` on `_to` and throws if the return value is not
+  * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
+  * @param _from The owner of the parent key
+  * @param _to The recipient of the shared key
+  * @param _timeShared The amount of time shared
+  * @dev Emit Transfer event
+  */
+  // function safeShareKey(
+  //   address _from,
+  //   address _to,
+  //   uint _timeShared
+  // ) external;
 
   /// @notice Set or reaffirm the approved address for an NFT
   /// @dev The zero address indicates there is no approved address.

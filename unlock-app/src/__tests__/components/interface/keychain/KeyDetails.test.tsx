@@ -10,6 +10,9 @@ const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
   expiration: '132546546',
   keyId: '1',
+  tokenURI:
+    'https://locksmith.unlock-protocol.com/api/key/0x80bc6d2870bb72cb3e37b648c160da20733386f7/1',
+
   lock: {
     address: '0x80bc6d2870bb72cb3e37b648c160da20733386f7',
     expirationDuration: '300',

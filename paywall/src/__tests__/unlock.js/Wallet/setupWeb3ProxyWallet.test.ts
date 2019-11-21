@@ -1,313 +1,251 @@
+import { EventEmitter } from 'events'
 import FakeWindow from '../../test-helpers/fakeWindowHelpers'
-import { PaywallConfig, PurchaseKeyRequest } from '../../../unlockTypes'
-import IframeHandler from '../../../unlock.js/IframeHandler'
-import Wallet from '../../../unlock.js/Wallet'
-import StartupConstants from '../../../unlock.js/startupTypes'
+import { PurchaseKeyRequest } from '../../../unlockTypes'
 import { PostMessages } from '../../../messageTypes'
+import { setupWeb3ProxyWallet } from '../../../unlock.js/postMessageHub'
 
-describe('Wallet.setupUserAccounts()', () => {
-  let fakeWindow: FakeWindow
-  let iframes: IframeHandler
-  let wallet: Wallet
-  const dataIframeUrl = 'http://paywall/data'
-  const checkoutIframeUrl = 'http://paywall/checkout'
-  const userIframeUrl = 'http://app/accounts'
-  const dataOrigin = 'http://paywall'
-  const checkoutOrigin = 'http://paywall'
+// This is a very bare mock class that implements the most basic
+// functionality of the iframe handler wrappers: emitting events and
+// "sending postMessages"
+class EmitterWithPostMessage extends EventEmitter {
+  postMessage = jest.fn()
+}
+
+describe('setupWeb3ProxyWallet()', () => {
   const fakeAddress = '0x1234567890123456789012345678901234567890'
-  const config: PaywallConfig = {
-    locks: {},
-    callToAction: {
-      default: '',
-      pending: '',
-      confirmed: '',
-      expired: '',
-      noWallet: '',
-    },
-    unlockUserAccounts: true,
-  }
-  const startup: StartupConstants = {
-    network: 1984,
-    debug: 0,
-    paywallUrl: 'http://paywall',
-    accountsUrl: 'http://app/accounts',
-    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
-  }
-  function makeWallet() {
-    iframes = new IframeHandler(
-      fakeWindow,
-      dataIframeUrl,
-      checkoutIframeUrl,
-      userIframeUrl
-    )
-    iframes.init(config)
-    wallet = new Wallet(fakeWindow, iframes, config, startup)
-    wallet.setupWeb3ProxyWallet()
-    return wallet
-  }
 
-  beforeEach(() => {
-    fakeWindow = new FakeWindow()
+  function init({
+    getHasWallet,
+    setHasWeb3,
+    getHasWeb3,
+    isMetamask,
+    window,
+  }: any) {
+    let fakeWindow = new FakeWindow()
     fakeWindow.makeWeb3()
-    makeWallet()
-  })
+    let iframes = {
+      checkout: new EmitterWithPostMessage(),
+      data: new EmitterWithPostMessage(),
+    }
+    setupWeb3ProxyWallet({
+      iframes: iframes as any,
+      getHasWallet: getHasWallet || jest.fn(() => true),
+      setHasWeb3: setHasWeb3 || jest.fn(),
+      getHasWeb3: getHasWeb3 || jest.fn(() => true),
+      isMetamask: isMetamask || true,
+      window: window || fakeWindow,
+    })
+
+    return {
+      iframes,
+      window: fakeWindow,
+    }
+  }
 
   it('should forward purchase requests to the data iframe', () => {
     expect.assertions(1)
+
+    const { iframes } = init({})
 
     const request: PurchaseKeyRequest = {
       lock: fakeAddress,
       extraTip: '0',
     }
 
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.PURCHASE_KEY,
-      request,
-      iframes.checkout.iframe,
-      checkoutOrigin
-    )
+    iframes.checkout.emit(PostMessages.PURCHASE_KEY, request)
 
-    fakeWindow.expectPostMessageSentToIframe(
+    expect(iframes.data.postMessage).toHaveBeenCalledWith(
       PostMessages.PURCHASE_KEY,
-      request,
-      iframes.data.iframe,
-      dataOrigin
+      request
     )
   })
 
-  describe('when the Web3ProxyProvider is ready', () => {
-    function receiveReadyWeb3() {
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY_WEB3,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
-      )
-    }
+  describe('READY_WEB3', () => {
+    it('should send WALLET_INFO indicating no crypto wallet is present', () => {
+      expect.assertions(2)
 
-    function makeWalletReadyForWeb3() {
-      const wallet = makeWallet()
-      receiveReadyWeb3()
-      return wallet
-    }
+      const getHasWallet = jest.fn(() => false)
+      const setHasWeb3 = jest.fn()
 
-    function makeWalletWithMockEnable() {
-      fakeWindow.makeWeb3()
-      const wallet = makeWallet()
-      wallet.enableCryptoWallet = jest.fn()
-      receiveReadyWeb3()
-      return wallet
-    }
+      const { iframes } = init({
+        getHasWallet,
+        setHasWeb3,
+      })
 
-    function makeWalletWithFailingEnable() {
-      fakeWindow.makeWeb3()
-      fakeWindow.web3 &&
-        (fakeWindow.web3.currentProvider.enable = async () => {
-          throw new Error('fail')
-        })
-      makeWallet()
-      receiveReadyWeb3()
-    }
+      iframes.data.emit(PostMessages.READY_WEB3)
 
-    beforeEach(() => {
-      fakeWindow = new FakeWindow()
-    })
-
-    it('should reply with noWallet = true if there is no wallet', () => {
-      expect.assertions(1)
-
-      makeWalletReadyForWeb3()
-
-      fakeWindow.expectPostMessageSentToIframe(
+      expect(setHasWeb3).toHaveBeenCalledWith(false)
+      expect(iframes.data.postMessage).toHaveBeenCalledWith(
         PostMessages.WALLET_INFO,
         {
           noWallet: true,
           notEnabled: false,
           isMetamask: false,
-        },
-        iframes.data.iframe,
-        dataOrigin
+        }
       )
     })
 
-    it('should call enable', () => {
-      expect.assertions(1)
+    it('should send WALLET_INFO indicating there is a crypto wallet and has been enabled', done => {
+      expect.assertions(2)
 
-      const wallet = makeWalletWithMockEnable()
+      const setHasWeb3 = jest.fn()
 
-      expect(wallet.enableCryptoWallet).toHaveBeenCalled()
+      const { iframes } = init({
+        setHasWeb3,
+      })
+
+      iframes.data.postMessage = jest.fn(() => {
+        expect(iframes.data.postMessage).toHaveBeenCalledWith(
+          PostMessages.WALLET_INFO,
+          {
+            noWallet: false,
+            notEnabled: false,
+            isMetamask: true,
+          }
+        )
+        done()
+      })
+      iframes.data.emit(PostMessages.READY_WEB3)
+
+      expect(setHasWeb3).toHaveBeenCalledWith(true)
     })
 
-    it('should report that the wallet exists and is not enabled if enable fails', async () => {
-      expect.assertions(1)
+    it('should send WALLET_INFO indicating the user declined to enable their wallet', done => {
+      expect.assertions(2)
 
-      makeWalletWithFailingEnable()
-      await fakeWindow.waitForPostMessageToIframe(iframes.data.iframe)
-
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.WALLET_INFO,
-        {
-          noWallet: false,
-          notEnabled: true,
-          isMetamask: false,
+      const setHasWeb3 = jest.fn()
+      const window = {
+        web3: {
+          currentProvider: {
+            enable: async () => {
+              /* eslint-disable-next-line promise/param-names */
+              return new Promise((_, reject) => {
+                return reject('user did not enable')
+              })
+            },
+          },
         },
-        iframes.data.iframe,
-        dataOrigin
-      )
-    })
+      }
 
-    it('should report that the wallet exists and is enabled if enable succeeds', async () => {
-      expect.assertions(1)
+      const { iframes } = init({
+        setHasWeb3,
+        window: window as any,
+      })
 
-      fakeWindow.makeWeb3()
-      makeWalletReadyForWeb3()
-      await fakeWindow.waitForPostMessageToIframe(iframes.data.iframe)
+      iframes.data.postMessage = jest.fn(() => {
+        expect(iframes.data.postMessage).toHaveBeenCalledWith(
+          PostMessages.WALLET_INFO,
+          {
+            noWallet: false,
+            notEnabled: true,
+            isMetamask: true,
+          }
+        )
+        done()
+      })
+      iframes.data.emit(PostMessages.READY_WEB3)
 
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.WALLET_INFO,
-        {
-          noWallet: false,
-          notEnabled: false,
-          isMetamask: false,
-        },
-        iframes.data.iframe,
-        dataOrigin
-      )
+      expect(setHasWeb3).toHaveBeenCalledWith(true)
     })
   })
 
-  describe('handling calls to the crypto wallet', () => {
-    let web3Callback: (error: string | null, result?: any) => void
-    function receiveReadyWeb3() {
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY_WEB3,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
-      )
+  describe('WEB3', () => {
+    const payload = {
+      method: 'eth_accounts',
+      params: [],
+      id: 7,
     }
 
-    function makeWeb3Wallet() {
-      makeWallet()
-      receiveReadyWeb3()
-    }
-
-    async function makeEnabledWeb3Wallet() {
-      fakeWindow.makeWeb3()
-      fakeWindow.web3 &&
-        (fakeWindow.web3.currentProvider.sendAsync = jest.fn(
-          (_, cb: (error: string | null, result?: any) => void) => {
-            web3Callback = cb
-          }
-        ))
-
-      makeWeb3Wallet()
-      await fakeWindow.waitForPostMessageToIframe(iframes.data.iframe)
-    }
-
-    beforeEach(() => {
-      fakeWindow = new FakeWindow()
-      ;(web3Callback as any) = undefined
-    })
-
-    it('should return an error if there is no wallet', () => {
+    it('should send WEB3_RESULT indicating there is no web3 wallet available', () => {
       expect.assertions(1)
 
-      makeWeb3Wallet()
+      const getHasWeb3 = jest.fn(() => false)
+      const { iframes } = init({ getHasWeb3 })
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.WEB3,
-        {
-          jsonrpc: '2.0',
-          id: 142,
-          method: 'eth_accounts',
-          params: [],
-        },
-        iframes.data.iframe,
-        dataOrigin
-      )
+      iframes.data.emit(PostMessages.WEB3, payload)
 
-      fakeWindow.expectPostMessageSentToIframe(
+      expect(iframes.data.postMessage).toHaveBeenCalledWith(
         PostMessages.WEB3_RESULT,
-        {
-          jsonrpc: '2.0',
-          id: 142,
+        expect.objectContaining({
           error: 'No web3 wallet is available',
-        },
-        iframes.data.iframe,
-        dataOrigin
+        })
       )
     })
 
-    it('should return an error if the wallet returns an error', async () => {
+    it('should send a successful WEB3_RESULT using sendAsync', () => {
       expect.assertions(1)
 
-      await makeEnabledWeb3Wallet()
-
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.WEB3,
-        {
-          jsonrpc: '2.0',
-          id: 142,
-          method: 'eth_accounts',
-          params: [],
-        },
-        iframes.data.iframe,
-        dataOrigin
-      )
-
-      web3Callback('error')
-
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.WEB3_RESULT,
-        {
-          jsonrpc: '2.0',
-          id: 142,
-          error: 'error',
-        },
-        iframes.data.iframe,
-        dataOrigin
-      )
-    })
-
-    it('should return a result if the wallet returns a result', async () => {
-      expect.assertions(1)
-
-      await makeEnabledWeb3Wallet()
-
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.WEB3,
-        {
-          jsonrpc: '2.0',
-          id: 142,
-          method: 'eth_accounts',
-          params: [],
-        },
-        iframes.data.iframe,
-        dataOrigin
-      )
-
-      const result = {
-        jsonrpc: '2.0',
-        id: 142,
-        result: 'hi',
-      }
-
-      web3Callback(null, result)
-
-      fakeWindow.expectPostMessageSentToIframe(
-        PostMessages.WEB3_RESULT,
-        {
-          jsonrpc: '2.0',
-          id: 142,
-          result: {
-            jsonrpc: '2.0',
-            id: 142,
-            result: 'hi',
+      const window = {
+        web3: {
+          currentProvider: {
+            sendAsync: {
+              call: (_web3: any, _method: any, callback: any) => {
+                callback(null, 'this is the result of the call')
+              },
+            },
           },
         },
-        iframes.data.iframe,
-        dataOrigin
+      }
+      const { iframes } = init({ window: window as any })
+
+      iframes.data.emit(PostMessages.WEB3, payload)
+      expect(iframes.data.postMessage).toHaveBeenCalledWith(
+        PostMessages.WEB3_RESULT,
+        expect.objectContaining({
+          result: 'this is the result of the call',
+        })
+      )
+    })
+
+    it('should send a successful WEB3_RESULT using send', () => {
+      expect.assertions(1)
+
+      const window = {
+        web3: {
+          currentProvider: {
+            send: {
+              call: (_web3: any, _method: any, callback: any) => {
+                callback(null, 'this is the result of the call')
+              },
+            },
+          },
+        },
+      }
+      const { iframes } = init({ window: window as any })
+
+      iframes.data.emit(PostMessages.WEB3, payload)
+      expect(iframes.data.postMessage).toHaveBeenCalledWith(
+        PostMessages.WEB3_RESULT,
+        expect.objectContaining({
+          result: 'this is the result of the call',
+        })
+      )
+    })
+
+    it('should send an error WEB3_RESULT using send', () => {
+      expect.assertions(1)
+
+      const error = new Error('it failed')
+
+      const window = {
+        web3: {
+          currentProvider: {
+            send: {
+              call: (_web3: any, _method: any, callback: any) => {
+                callback(error)
+              },
+            },
+          },
+        },
+      }
+      const { iframes } = init({ window: window as any })
+
+      iframes.data.emit(PostMessages.WEB3, payload)
+      expect(iframes.data.postMessage).toHaveBeenCalledWith(
+        PostMessages.WEB3_RESULT,
+        expect.objectContaining({
+          error,
+        })
       )
     })
   })
