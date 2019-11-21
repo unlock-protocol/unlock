@@ -67,7 +67,7 @@ export function startup(
   // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
   const wallet = new Wallet(window, iframes, config, constants)
   // set up the main window handler, for both events and hiding/showing iframes
-  new MainWindowHandler(window, iframes, config)
+  new MainWindowHandler(window, iframes, config, constants)
 
   // go!
   wallet.init()

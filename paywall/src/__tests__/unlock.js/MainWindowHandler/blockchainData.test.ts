@@ -10,7 +10,9 @@ import {
   Transactions,
   TransactionStatus,
   TransactionType,
+  PaywallConfig,
 } from '../../../unlockTypes'
+import StartupConstants from '../../../unlock.js/startupTypes'
 import { PostMessages } from '../../../messageTypes'
 
 const defaultState: BlockchainData = {
@@ -22,10 +24,28 @@ const defaultState: BlockchainData = {
   transactions: {},
 }
 
+const config: PaywallConfig = {
+  locks: {},
+  callToAction: {
+    default: '',
+    pending: '',
+    expired: '',
+    confirmed: '',
+    noWallet: '',
+  },
+}
+
+const constants: StartupConstants = {
+  network: 4,
+  debug: 0,
+  paywallUrl: 'http://paywall',
+  accountsUrl: 'http://app/account',
+  erc20ContractAddress: 'WEENUS',
+}
+
 describe('MainWindowHandler - blockchainData', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
-  let handler: MainWindowHandler
 
   function getBlockchainData() {
     return (fakeWindow as any).unlockProtocol.blockchainData()
@@ -34,8 +54,8 @@ describe('MainWindowHandler - blockchainData', () => {
   beforeAll(() => {
     fakeWindow = new FakeWindow()
     iframes = new IframeHandler(fakeWindow, 'http://t', 'http://u', 'http://v')
-    handler = new MainWindowHandler(fakeWindow, iframes)
-    handler.init()
+    // We don't need this object, we just need the side-effect of building it
+    new MainWindowHandler(fakeWindow, iframes, config, constants)
   })
 
   it('should have empty state before any messages are received', () => {
@@ -72,6 +92,9 @@ describe('MainWindowHandler - blockchainData', () => {
     }
     const balance = {
       WEENUS: '1550',
+    }
+    const expectedBalance = {
+      WEENUS: '35',
     }
     const network = 1984
     const transactions: Transactions = {
@@ -116,7 +139,7 @@ describe('MainWindowHandler - blockchainData', () => {
         ...defaultState,
         locks,
         account: accountAddress,
-        balance,
+        balance: expectedBalance,
       })
     })
 
@@ -129,7 +152,7 @@ describe('MainWindowHandler - blockchainData', () => {
         ...defaultState,
         locks,
         account: accountAddress,
-        balance,
+        balance: expectedBalance,
         network,
       })
     })
@@ -143,7 +166,7 @@ describe('MainWindowHandler - blockchainData', () => {
         ...defaultState,
         locks,
         account: accountAddress,
-        balance,
+        balance: expectedBalance,
         network,
         keys,
       })
@@ -158,7 +181,7 @@ describe('MainWindowHandler - blockchainData', () => {
         ...defaultState,
         locks,
         account: accountAddress,
-        balance,
+        balance: expectedBalance,
         network,
         keys,
         transactions,

@@ -17,7 +17,8 @@ describe('MainWindowHandler - setupUnlockProtocolVariable', () => {
       'http://u',
       'http://v'
     )
-    return new MainWindowHandler(fakeWindow, iframes)
+    // config and constants params not important for these tests
+    return new MainWindowHandler(fakeWindow, iframes, {} as any, {} as any)
   }
 
   function fullWindow() {

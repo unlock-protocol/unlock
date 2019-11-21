@@ -6,8 +6,6 @@ import {
   PostOfficeWindow,
   OriginWindow,
 } from '../windowTypes'
-import { PaywallConfig } from '../unlockTypes'
-import { iframeHandlerInit } from './postMessageHub'
 
 /**
  * This class creates the 3 iframes and provides a simple way to access all 3
@@ -27,13 +25,5 @@ export default class IframeHandler {
     this.checkout = new CheckoutIframeMessageEmitter(window, checkoutIframeUrl)
     // note that until "iframes.accounts.createIframe()" is called in Wallet.setupWallet(), this is a fake iframe
     this.accounts = new AccountsIframeMessageEmitter(window, userIframeUrl)
-  }
-
-  init(config: PaywallConfig) {
-    iframeHandlerInit({
-      config,
-      dataIframe: this.data,
-      checkoutIframe: this.checkout,
-    })
   }
 }

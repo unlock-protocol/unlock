@@ -9,7 +9,8 @@ describe('MainWindowHandler - showCheckoutIframe', () => {
   function getMainWindowHandler() {
     // iframe URLs are unused in this test
     iframes = new IframeHandler(fakeWindow, 'http://t', 'http://u', 'http://v')
-    return new MainWindowHandler(fakeWindow, iframes)
+    // config and constants params not important for these tests
+    return new MainWindowHandler(fakeWindow, iframes, {} as any, {} as any)
   }
 
   beforeEach(() => {

@@ -7,12 +7,9 @@ import { PostMessages } from '../../../messageTypes'
 describe('MainWindowHandler - init', () => {
   let fakeWindow: FakeWindow
   let iframes: IframeHandler
-  const dataOrigin = 'http://paywall'
-  const checkoutOrigin = 'http://paywall'
-  const accountOrigin = 'http://app'
   const dataIframeUrl = 'http://paywall/data'
   const checkoutIframeUrl = 'http://paywall/checkout'
-  const accountIframeUrl = 'http://app/account'
+  const accountIframeUrl = 'http://app/accounts'
   const config: PaywallConfig = {
     locks: {},
     callToAction: {
@@ -31,8 +28,8 @@ describe('MainWindowHandler - init', () => {
       checkoutIframeUrl,
       accountIframeUrl
     )
-    iframes.init(configuration)
-    return new MainWindowHandler(fakeWindow, iframes)
+    // constants parameter not important for these tests
+    return new MainWindowHandler(fakeWindow, iframes, configuration, {} as any)
   }
 
   beforeEach(() => {
@@ -43,65 +40,51 @@ describe('MainWindowHandler - init', () => {
     it('should handle PostMessages.LOCKED by emitting a locked event', () => {
       expect.assertions(1)
 
-      const handler = getMainWindowHandler()
-      handler.toggleLockState = jest.fn()
-      handler.init()
+      getMainWindowHandler()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.LOCKED,
-        undefined,
-        iframes.data.iframe,
-        dataOrigin
+      iframes.data.emit(PostMessages.LOCKED)
+
+      expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: 'locked',
+        })
       )
-
-      expect(handler.toggleLockState).toHaveBeenCalledWith(PostMessages.LOCKED)
     })
 
     it('should handle PostMessages.UNLOCKED by emitting an unlocked event', () => {
       expect.assertions(1)
 
-      const handler = getMainWindowHandler()
-      handler.toggleLockState = jest.fn()
-      handler.init()
+      getMainWindowHandler()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.UNLOCKED,
-        [],
-        iframes.data.iframe,
-        dataOrigin
-      )
-
-      expect(handler.toggleLockState).toHaveBeenCalledWith(
-        PostMessages.UNLOCKED
+      iframes.data.emit(PostMessages.UNLOCKED, [])
+      expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: 'unlocked',
+        })
       )
     })
 
     it('should handle PostMessages.ERROR for no crypto wallet by emitting a locked event', () => {
       expect.assertions(2)
 
-      const handler = getMainWindowHandler()
-      handler.toggleLockState = jest.fn()
-      handler.init()
+      getMainWindowHandler()
 
       // This is the only error message we lock the page for
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.ERROR,
-        'no ethereum wallet is available',
-        iframes.data.iframe,
-        dataOrigin
+      iframes.data.emit(PostMessages.ERROR, 'no ethereum wallet is available')
+
+      expect(fakeWindow.dispatchEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: 'locked',
+        })
       )
 
-      expect(handler.toggleLockState).toHaveBeenCalledWith(PostMessages.LOCKED)
-
-      fakeWindow.receivePostMessageFromIframe(
+      iframes.data.emit(
         PostMessages.ERROR,
-        'angry bees have invaded the datacenter',
-        iframes.data.iframe,
-        dataOrigin
+        'angry bees have invaded the datacenter'
       )
 
       // We did not call it in response to the second error
-      expect(handler.toggleLockState).toHaveBeenCalledTimes(1)
+      expect(fakeWindow.dispatchEvent).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -117,18 +100,12 @@ describe('MainWindowHandler - init', () => {
         ...config,
       }
 
-      const handler = getMainWindowHandler(paywallConfig)
-      handler.hideCheckoutIframe = jest.fn()
-      handler.init()
+      getMainWindowHandler(paywallConfig)
+      iframes.checkout.hideIframe = jest.fn()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.DISMISS_CHECKOUT,
-        undefined,
-        iframes.checkout.iframe,
-        checkoutOrigin
-      )
+      iframes.checkout.emit(PostMessages.DISMISS_CHECKOUT)
 
-      expect(handler.hideCheckoutIframe).toHaveBeenCalled()
+      expect(iframes.checkout.hideIframe).toHaveBeenCalled()
     })
 
     it('should show the accounts iframe on SHOW_ACCOUNTS_MODAL message', () => {
@@ -141,16 +118,11 @@ describe('MainWindowHandler - init', () => {
       const handler = getMainWindowHandler(paywallConfig)
       handler.showAccountIframe = jest.fn()
       iframes.accounts.createIframe()
-      handler.init()
+      iframes.accounts.showIframe = jest.fn()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.SHOW_ACCOUNTS_MODAL,
-        undefined,
-        iframes.accounts.iframe,
-        accountOrigin
-      )
+      iframes.accounts.emit(PostMessages.SHOW_ACCOUNTS_MODAL)
 
-      expect(handler.showAccountIframe).toHaveBeenCalled()
+      expect(iframes.accounts.showIframe).toHaveBeenCalled()
     })
 
     it('should hide the accounts iframe on HIDE_ACCOUNTS_MODAL message', () => {
@@ -161,18 +133,13 @@ describe('MainWindowHandler - init', () => {
       }
 
       const handler = getMainWindowHandler(paywallConfig)
-      handler.hideAccountIframe = jest.fn()
+      handler.showAccountIframe = jest.fn()
       iframes.accounts.createIframe()
-      handler.init()
+      iframes.accounts.hideIframe = jest.fn()
 
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.HIDE_ACCOUNTS_MODAL,
-        undefined,
-        iframes.accounts.iframe,
-        accountOrigin
-      )
+      iframes.accounts.emit(PostMessages.HIDE_ACCOUNTS_MODAL)
 
-      expect(handler.hideAccountIframe).toHaveBeenCalled()
+      expect(iframes.accounts.hideIframe).toHaveBeenCalled()
     })
   })
 })

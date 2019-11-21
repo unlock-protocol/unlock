@@ -1,3 +1,4 @@
+import { PaywallConfig } from 'src/unlockTypes'
 import {
   LockStatus,
   UnlockWindowNoProtocolYet,
@@ -6,7 +7,8 @@ import {
 import IframeHandler from './IframeHandler'
 import { PostMessages } from '../messageTypes'
 import { BlockchainData } from '../data-iframe/blockchainHandler/blockChainTypes'
-import { mainWindowHandlerInit } from './postMessageHub'
+import { unconditionalStartup } from './postMessageHub'
+import StartupConstants from './startupTypes'
 
 interface hasPrototype {
   prototype?: any
@@ -37,26 +39,38 @@ export default class MainWindowHandler {
     transactions: {},
   }
 
-  constructor(window: UnlockWindowNoProtocolYet, iframes: IframeHandler) {
+  constructor(
+    window: UnlockWindowNoProtocolYet,
+    iframes: IframeHandler,
+    paywallConfig: PaywallConfig,
+    constants: StartupConstants
+  ) {
     this.window = window
     this.iframes = iframes
+
+    unconditionalStartup({
+      iframes,
+      blockchainData: this.blockchainData,
+      // TODO: NON-CONSTANT VALUE
+      usingManagedAccount: true,
+      // TODO: NON-CONSTANT VALUE
+      erc20ContractAddress: constants.erc20ContractAddress,
+      toggleLockState: this.toggleLockState,
+      paywallConfig,
+      hideCheckoutIframe: this.hideCheckoutIframe,
+      showAccountIframe: this.showAccountIframe,
+      hideAccountIframe: this.hideAccountIframe,
+      // TODO: REAL FUNCTION
+      setUserAccountAddress: () => {},
+      // TODO: REAL FUNCTION
+      setUserAccountNetwork: () => {},
+    })
 
     // create window.unlockProtocol
     this.setupUnlockProtocolVariable()
     // If we previously cached the lock state on this page, we'll dispatch it
     // here for a smoother experience.
     this.dispatchCachedLockState()
-  }
-
-  init() {
-    mainWindowHandlerInit({
-      iframes: this.iframes,
-      toggleLockState: this.toggleLockState,
-      hideAccountIframe: this.hideAccountIframe,
-      showAccountIframe: this.showAccountIframe,
-      hideCheckoutIframe: this.hideCheckoutIframe,
-      blockchainData: this.blockchainData,
-    })
   }
 
   toggleLockState = (message: PostMessages.LOCKED | PostMessages.UNLOCKED) => {

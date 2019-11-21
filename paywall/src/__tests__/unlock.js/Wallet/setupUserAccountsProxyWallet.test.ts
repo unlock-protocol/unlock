@@ -3,11 +3,9 @@ import FakeWindow from '../../test-helpers/fakeWindowHelpers'
 import { PaywallConfig } from '../../../unlockTypes'
 import IframeHandler from '../../../unlock.js/IframeHandler'
 import { PostMessages } from '../../../messageTypes'
-import {
-  setupUserAccountsProxyWallet,
-  setupUserAccounts,
-} from '../../../unlock.js/postMessageHub'
+import { setupUserAccountsProxyWallet } from '../../../unlock.js/postMessageHub'
 import { unlockNetworks } from '../../../data-iframe/blockchainHandler/blockChainTypes'
+import MainWindowHandler from '../../../unlock.js/MainWindowHandler'
 
 describe('setupUserAccountsProxyWallet()', () => {
   let fakeWindow: FakeWindow
@@ -16,7 +14,6 @@ describe('setupUserAccountsProxyWallet()', () => {
   const checkoutIframeUrl = 'http://paywall/checkout'
   const userIframeUrl = 'http://app/accounts'
   const dataOrigin = 'http://paywall'
-  const accountsOrigin = 'http://app'
   const fakeAddress = '0x1234567890123456789012345678901234567890'
   const config: PaywallConfig = {
     locks: {},
@@ -31,8 +28,6 @@ describe('setupUserAccountsProxyWallet()', () => {
   }
 
   let setHasWeb3 = jest.fn()
-  let setUserAccountAddress = jest.fn()
-  let setUserAccountNetwork = jest.fn()
   let getUserAccountAddress: jest.Mock<string | null, []> = jest.fn(
     () => fakeAddress
   )
@@ -47,14 +42,9 @@ describe('setupUserAccountsProxyWallet()', () => {
       userIframeUrl
     )
 
-    // setupUserAccountsProxyWallet is dependent on other setups having been
-    // completed
-    setupUserAccounts({
-      iframes,
-      config,
-      setUserAccountAddress,
-      setUserAccountNetwork,
-    })
+    // setupUserAccountsProxyWallet depends on the initial setup having already been done
+    // these tests don't rely on the constants param
+    new MainWindowHandler(fakeWindow, iframes, config, {} as any)
 
     setupUserAccountsProxyWallet({
       iframes,
@@ -73,27 +63,19 @@ describe('setupUserAccountsProxyWallet()', () => {
   it('should handle READY from accounts iframe', () => {
     expect.assertions(2)
 
-    fakeWindow.receivePostMessageFromIframe(
-      PostMessages.READY,
-      undefined,
-      iframes.accounts.iframe,
-      accountsOrigin
-    )
+    iframes.accounts.postMessage = jest.fn()
+    iframes.accounts.emit(PostMessages.READY)
 
     // We should ask what the account address is
-    fakeWindow.expectPostMessageSentToIframe(
+    expect(iframes.accounts.postMessage).toHaveBeenCalledWith(
       PostMessages.SEND_UPDATES,
-      'account',
-      iframes.accounts.iframe,
-      accountsOrigin
+      'account'
     )
 
     // We should ask which network we're on
-    fakeWindow.expectPostMessageSentToIframe(
+    expect(iframes.accounts.postMessage).toHaveBeenCalledWith(
       PostMessages.SEND_UPDATES,
-      'network',
-      iframes.accounts.iframe,
-      accountsOrigin
+      'network'
     )
   })
 
@@ -107,11 +89,9 @@ describe('setupUserAccountsProxyWallet()', () => {
 
     iframes.checkout.emit(PostMessages.PURCHASE_KEY, request)
 
-    fakeWindow.expectPostMessageSentToIframe(
+    expect(iframes.accounts.postMessage).toHaveBeenCalledWith(
       PostMessages.PURCHASE_KEY,
-      request,
-      iframes.accounts.iframe,
-      accountsOrigin
+      request
     )
   })
 

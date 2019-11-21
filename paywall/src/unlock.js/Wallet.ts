@@ -5,7 +5,6 @@ import IframeHandler from './IframeHandler'
 import { PaywallConfig } from '../unlockTypes'
 import StartupConstants from './startupTypes'
 import {
-  setupUserAccounts,
   setupUserAccountsProxyWallet,
   setupWeb3ProxyWallet,
 } from './postMessageHub'
@@ -26,7 +25,6 @@ export default class Wallet {
   private readonly window: Web3Window
   private readonly hasWallet: boolean = true
   private readonly isMetamask: boolean
-  private readonly config: PaywallConfig
   private hasWeb3: boolean = false
   useUserAccounts: boolean = false
 
@@ -42,7 +40,6 @@ export default class Wallet {
   ) {
     this.window = window
     this.iframes = iframes
-    this.config = config
     this.userAccountNetwork = constants.network
     this.debug = !!constants.debug
 
@@ -100,13 +97,7 @@ export default class Wallet {
 
   init() {
     if (this.useUserAccounts) {
-      // create the preconditions for using user accounts
-      setupUserAccounts({
-        iframes: this.iframes,
-        config: this.config,
-        setUserAccountAddress: this.setUserAccountAddress,
-        setUserAccountNetwork: this.setUserAccountNetwork,
-      })
+      this.iframes.accounts.createIframe()
     }
     // set up the proxy wallet
     if (this.useUserAccounts && !this.hasWallet) {
