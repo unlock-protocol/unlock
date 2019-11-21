@@ -6,7 +6,7 @@ import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
-import { Balance, PaywallConfig } from '../unlockTypes'
+import { PaywallConfig } from '../unlockTypes'
 import {
   Web3Window,
   web3MethodCall,
@@ -14,66 +14,131 @@ import {
   SendAsyncProvider,
   SendProvider,
 } from '../windowTypes'
+import { injectDefaultBalance } from '../utils/balance'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
 // start to peel back the layers. Once we have a complete accounting of post
 // messaging we can replace the custom infrastructure with a library.
 
-export interface checkoutHandlerInitArgs {
+interface unconditionalStartupArgs {
+  iframes: TemporaryIframeHandler
+  blockchainData: BlockchainData
   usingManagedAccount: boolean
-  dataIframe: DataIframeMessageEmitter
-  checkoutIframe: CheckoutIframeMessageEmitter
-  injectDefaultBalance: (
-    oldBalance: Balance,
-    erc20ContractAddress: string
-  ) => Balance
-  config: PaywallConfig
-  constants: any
+  erc20ContractAddress: string
+  toggleLockState: (
+    message: PostMessages.LOCKED | PostMessages.UNLOCKED
+  ) => void
+  paywallConfig: PaywallConfig
+  hideCheckoutIframe: () => void
+  showAccountIframe: () => void
+  hideAccountIframe: () => void
+  setUserAccountAddress: (address: string | null) => void
+  setUserAccountNetwork: (network: unlockNetworks) => void
 }
-
-export function checkoutHandlerInit({
+// This function registers the postmessage listeners that are always active, no
+// matter what state the app is in. The proxy wallet setups will have to be different.
+export function unconditionalStartup({
+  iframes,
+  blockchainData,
   usingManagedAccount,
-  dataIframe,
-  checkoutIframe,
-  config,
-  constants,
-  injectDefaultBalance,
-}: checkoutHandlerInitArgs) {
-  // listen for updates to state from the data iframe, and forward them to the checkout UI
-  dataIframe.on(PostMessages.UPDATE_ACCOUNT, account =>
-    checkoutIframe.postMessage(PostMessages.UPDATE_ACCOUNT, account)
-  )
-  dataIframe.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
+  erc20ContractAddress,
+  toggleLockState,
+  paywallConfig,
+  hideCheckoutIframe,
+  showAccountIframe,
+  hideAccountIframe,
+  setUserAccountAddress,
+  setUserAccountNetwork,
+}: unconditionalStartupArgs) {
+  const { data, checkout, accounts } = iframes
+
+  // These are the keys to the PostMessages enum that represent data transfer
+  // from data iframe to consumers. In all cases for these, we simply update the
+  // mirror in the main window and pass them on to the checkout and accounts iframes.
+  // In a future iteration, we won't have distinct messages for each of these.
+  const passThroughUpdates = [
+    'LOCKS',
+    'ACCOUNT',
+    'NETWORK',
+    'KEYS',
+    'TRANSACTIONS',
+  ]
+  passThroughUpdates.forEach(name => {
+    const enumKey = `UPDATE_${name}`
+    const message = (PostMessages as any)[enumKey]
+    data.on(message, payload => {
+      checkout.postMessage(message, payload as any)
+      accounts.postMessage(message, payload as any)
+      ;(blockchainData as any)[name.toLowerCase()] = payload
+    })
+  })
+
+  // This one update is different than the ones in the loop, due to the injection logic
+  data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
     let balanceUpdate = balance
     if (usingManagedAccount) {
-      const { erc20ContractAddress } = constants
       balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
     }
-    checkoutIframe.postMessage(
-      PostMessages.UPDATE_ACCOUNT_BALANCE,
-      balanceUpdate
-    )
+    checkout.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, balanceUpdate)
+    blockchainData.balance = balanceUpdate
   })
-  dataIframe.on(PostMessages.UPDATE_LOCKS, locks =>
-    checkoutIframe.postMessage(PostMessages.UPDATE_LOCKS, locks)
-  )
-  dataIframe.on(PostMessages.UPDATE_KEYS, keys =>
-    checkoutIframe.postMessage(PostMessages.UPDATE_KEYS, keys)
-  )
-  dataIframe.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
-    return checkoutIframe.postMessage(
-      PostMessages.UPDATE_TRANSACTIONS,
-      transactions
-    )
-  })
-  dataIframe.on(PostMessages.UPDATE_NETWORK, network =>
-    checkoutIframe.postMessage(PostMessages.UPDATE_NETWORK, network)
-  )
 
-  // pass on the configuration and request the latest data
-  checkoutIframe.on(PostMessages.READY, () => {
-    checkoutIframe.postMessage(PostMessages.CONFIG, config)
+  data.on(PostMessages.ERROR, error => {
+    checkout.postMessage(PostMessages.ERROR, error)
+    if (error === 'no ethereum wallet is available') {
+      toggleLockState(PostMessages.LOCKED)
+    }
+  })
+
+  data.on(PostMessages.LOCKED, () => {
+    checkout.postMessage(PostMessages.LOCKED, undefined)
+    toggleLockState(PostMessages.LOCKED)
+  })
+
+  data.on(PostMessages.UNLOCKED, lockAddresses => {
+    checkout.postMessage(PostMessages.UNLOCKED, lockAddresses)
+    toggleLockState(PostMessages.UNLOCKED)
+  })
+
+  data.on(PostMessages.READY, () => {
+    data.postMessage(PostMessages.CONFIG, paywallConfig)
+  })
+
+  accounts.on(PostMessages.READY, () => {
+    // once the accounts iframe is ready, request the current account and
+    // default network
+    accounts.postMessage(PostMessages.CONFIG, paywallConfig)
+    accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
+    accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
+
+    // There may be a better way to organize sending the locks update to the
+    // accounts iframe
+    data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+  })
+
+  accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
+    showAccountIframe()
+  })
+
+  accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
+    hideAccountIframe()
+  })
+
+  accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
+    data.postMessage(PostMessages.INITIATED_TRANSACTION, undefined)
+  })
+
+  accounts.on(PostMessages.UPDATE_ACCOUNT, address => {
+    setUserAccountAddress(address)
+  })
+
+  accounts.on(PostMessages.UPDATE_NETWORK, network => {
+    setUserAccountNetwork(network)
+  })
+
+  checkout.on(PostMessages.READY, () => {
+    checkout.postMessage(PostMessages.CONFIG, paywallConfig)
 
     const updateKinds = [
       'locks',
@@ -85,43 +150,23 @@ export function checkoutHandlerInit({
     ]
 
     updateKinds.forEach(kind =>
-      dataIframe.postMessage(PostMessages.SEND_UPDATES, kind)
+      data.postMessage(PostMessages.SEND_UPDATES, kind)
     )
   })
 
-  // pass on any errors
-  dataIframe.on(PostMessages.ERROR, error =>
-    checkoutIframe.postMessage(PostMessages.ERROR, error)
-  )
+  checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
+    hideCheckoutIframe()
+  })
 
-  // pass on locked status
-  dataIframe.on(PostMessages.LOCKED, () =>
-    checkoutIframe.postMessage(PostMessages.LOCKED, undefined)
-  )
-  dataIframe.on(PostMessages.UNLOCKED, lockAddresses =>
-    checkoutIframe.postMessage(PostMessages.UNLOCKED, lockAddresses)
-  )
-}
-
-interface iframeHandlerInitArgs {
-  config: PaywallConfig
-  dataIframe: DataIframeMessageEmitter
-  checkoutIframe: CheckoutIframeMessageEmitter
-}
-
-export function iframeHandlerInit({
-  config,
-  dataIframe,
-  checkoutIframe,
-}: iframeHandlerInitArgs) {
-  // TODO: consider removing the layer of event listeners and work with
-  // postmessages directly
-  checkoutIframe.setupListeners()
-  // account listener setup will be on-demand, done by the Wallet in setupWallet()
-  // Comment above verbatim from original site. Will likely be changed.
-
-  dataIframe.on(PostMessages.READY, () => {
-    dataIframe.postMessage(PostMessages.CONFIG, config)
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  checkout.on(PostMessages.PURCHASE_KEY, request => {
+    if (usingManagedAccount) {
+      accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+    } else {
+      data.postMessage(PostMessages.PURCHASE_KEY, request)
+    }
   })
 }
 
@@ -131,74 +176,6 @@ interface TemporaryIframeHandler {
   data: DataIframeMessageEmitter
   checkout: CheckoutIframeMessageEmitter
   accounts: AccountsIframeMessageEmitter
-}
-
-interface mainWindowHandlerInitArgs {
-  iframes: TemporaryIframeHandler
-  toggleLockState: (
-    message: PostMessages.LOCKED | PostMessages.UNLOCKED
-  ) => void
-  hideCheckoutIframe: () => void
-  showAccountIframe: () => void
-  hideAccountIframe: () => void
-  blockchainData: BlockchainData
-}
-
-export function mainWindowHandlerInit({
-  iframes,
-  toggleLockState,
-  hideAccountIframe,
-  showAccountIframe,
-  hideCheckoutIframe,
-  blockchainData,
-}: mainWindowHandlerInitArgs) {
-  // respond to "unlocked" and "locked" events by
-  // dispatching "unlockProtocol" on the main window
-  // and
-  iframes.data.on(PostMessages.LOCKED, () => {
-    toggleLockState(PostMessages.LOCKED)
-  })
-  iframes.data.on(PostMessages.UNLOCKED, () => {
-    toggleLockState(PostMessages.UNLOCKED)
-  })
-  iframes.data.on(PostMessages.ERROR, e => {
-    if (e === 'no ethereum wallet is available') {
-      toggleLockState(PostMessages.LOCKED)
-    }
-  })
-
-  // When the data iframe sends updates, store them in the mirror
-  iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
-    blockchainData.locks = locks
-  })
-  iframes.data.on(PostMessages.UPDATE_ACCOUNT, address => {
-    blockchainData.account = address
-  })
-  iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
-    blockchainData.balance = balance
-  })
-  iframes.data.on(PostMessages.UPDATE_NETWORK, network => {
-    blockchainData.network = network
-  })
-  iframes.data.on(PostMessages.UPDATE_KEYS, keys => {
-    blockchainData.keys = keys
-  })
-  iframes.data.on(PostMessages.UPDATE_TRANSACTIONS, transactions => {
-    blockchainData.transactions = transactions
-  })
-
-  // handle display of checkout and account UI
-  iframes.checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
-    hideCheckoutIframe()
-  })
-
-  iframes.accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
-    showAccountIframe()
-  })
-
-  iframes.accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
-    hideAccountIframe()
-  })
 }
 
 export async function enableCryptoWallet(
@@ -216,58 +193,6 @@ export async function enableCryptoWallet(
   iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, true)
   await wallet.enable()
   iframes.checkout.postMessage(PostMessages.UPDATE_WALLET, false)
-}
-
-interface setupUserAccountsArgs {
-  iframes: TemporaryIframeHandler
-  config: PaywallConfig
-  setUserAccountAddress: (address: string | null) => void
-  setUserAccountNetwork: (network: unlockNetworks) => void
-}
-
-export function setupUserAccounts({
-  iframes,
-  config,
-  setUserAccountAddress,
-  setUserAccountNetwork,
-}: setupUserAccountsArgs) {
-  // pass on the configuration and request the latest data. NOTE: accounts
-  // iframe will not receive any messages until it has sent the READY message,
-  // at which point buffered messages will flow into it
-  iframes.accounts.on(PostMessages.READY, () => {
-    iframes.accounts.postMessage(PostMessages.CONFIG, config)
-
-    iframes.data.postMessage(PostMessages.SEND_UPDATES, 'locks')
-  })
-
-  // listen for updates to state from the data iframe, and forward them to the
-  // checkout UI
-  iframes.data.on(PostMessages.UPDATE_LOCKS, locks => {
-    iframes.accounts.postMessage(PostMessages.UPDATE_LOCKS, locks)
-  })
-
-  // listen for account and network from the user accounts iframe
-  iframes.accounts.on(PostMessages.UPDATE_ACCOUNT, address => {
-    setUserAccountAddress(address)
-  })
-  iframes.accounts.on(PostMessages.UPDATE_NETWORK, network => {
-    setUserAccountNetwork(network)
-  })
-
-  // when a purchase is in progress, tell the data iframe to retrieve the
-  // transaction
-  iframes.accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
-    iframes.data.postMessage(
-      PostMessages.INITIATED_TRANSACTION,
-      // TODO: passing undefined is limitation of the way messages are typed,
-      // eventually it should be fixed the natural behavior would be passing
-      // nothing as the 2nd argument
-      undefined
-    )
-  })
-
-  // then create the iframe and ready its post office
-  iframes.accounts.createIframe()
 }
 
 export function postResult(
@@ -299,20 +224,6 @@ export function setupUserAccountsProxyWallet({
   getUserAccountAddress,
   getUserAccountNetwork,
 }: setupUserAccountsProxyWalletArgs) {
-  iframes.accounts.on(PostMessages.READY, () => {
-    // once the accounts iframe is ready, request the current account and
-    // default network
-    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
-    iframes.accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
-  })
-
-  // when receiving a key purchase request, we either pass it to the
-  // account iframe for credit card purchase if user accounts are
-  // explicitly enabled, or to the crypto wallet
-  iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
-    iframes.accounts.postMessage(PostMessages.PURCHASE_KEY, request)
-  })
-
   // enable the user account wallet
   setHasWeb3(true)
 
@@ -370,13 +281,6 @@ export function setupWeb3ProxyWallet({
   isMetamask,
   window,
 }: setupWeb3ProxyWalletArgs) {
-  // when receiving a key purchase request, we either pass it to the
-  // account iframe for credit card purchase if user accounts are
-  // explicitly enabled, or to the crypto wallet
-  iframes.checkout.on(PostMessages.PURCHASE_KEY, request => {
-    iframes.data.postMessage(PostMessages.PURCHASE_KEY, request)
-  })
-
   // The next code is the main window side of Web3ProxyProvider, which is used in the data iframe
   // READY_WEB3 is sent when the Web3ProxyProvider is ready to go, and is used to determine the wallet type
   iframes.data.on(PostMessages.READY_WEB3, async () => {
