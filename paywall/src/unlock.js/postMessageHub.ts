@@ -14,6 +14,7 @@ import {
   SendAsyncProvider,
   SendProvider,
 } from '../windowTypes'
+import injectDefaultBalance from '../utils/injectDefaultBalance'
 
 // This file consolidates all the event handlers for post messages within the
 // `unlock.js` sub-sub-repo. The goal here is to bring them all in one area and
@@ -469,5 +470,155 @@ export function setupWeb3ProxyWallet({
         )
       }
     )
+  })
+}
+
+interface unconditionalStartupArgs {
+  iframes: TemporaryIframeHandler
+  blockchainData: BlockchainData
+  usingManagedAccount: boolean
+  erc20ContractAddress: string
+  toggleLockState: (
+    message: PostMessages.LOCKED | PostMessages.UNLOCKED
+  ) => void
+  paywallConfig: PaywallConfig
+  hideCheckoutIframe: () => void
+  showAccountIframe: () => void
+  hideAccountIframe: () => void
+  setUserAccountAddress: (address: string | null) => void
+  setUserAccountNetwork: (network: unlockNetworks) => void
+}
+
+// This function registers the postmessage listeners that are always active, no
+// matter what state the app is in. The proxy wallet setups will have to be different.
+export function unconditionalStartup({
+  iframes,
+  blockchainData,
+  usingManagedAccount,
+  erc20ContractAddress,
+  toggleLockState,
+  paywallConfig,
+  hideCheckoutIframe,
+  showAccountIframe,
+  hideAccountIframe,
+  setUserAccountAddress,
+  setUserAccountNetwork,
+}: unconditionalStartupArgs) {
+  const { data, checkout, accounts } = iframes
+
+  // These are the keys to the PostMessages enum that represent data transfer
+  // from data iframe to consumers. In all cases for these, we simply update the
+  // mirror in the main window and pass them on to the checkout and accounts iframes.
+  // In a future iteration, we won't have distinct messages for each of these.
+  const passThroughUpdates = [
+    'LOCKS',
+    'ACCOUNT',
+    'NETWORK',
+    'KEYS',
+    'TRANSACTIONS',
+  ]
+  passThroughUpdates.forEach(name => {
+    const enumKey = `UPDATE_${name}`
+    const message = (PostMessages as any)[enumKey]
+    data.on(message, payload => {
+      checkout.postMessage(message, payload as any)
+      accounts.postMessage(message, payload as any)
+      ;(blockchainData as any)[name.toLowerCase()] = payload
+    })
+  })
+
+  // This one update is different than the ones in the loop, due to the injection logic
+  data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
+    let balanceUpdate = balance
+    if (usingManagedAccount) {
+      balanceUpdate = injectDefaultBalance(balance, erc20ContractAddress)
+    }
+    checkout.postMessage(PostMessages.UPDATE_ACCOUNT_BALANCE, balanceUpdate)
+    blockchainData.balance = balanceUpdate
+  })
+
+  data.on(PostMessages.ERROR, error => {
+    checkout.postMessage(PostMessages.ERROR, error)
+    if (error === 'no ethereum wallet is available') {
+      toggleLockState(PostMessages.LOCKED)
+    }
+  })
+
+  data.on(PostMessages.LOCKED, () => {
+    checkout.postMessage(PostMessages.LOCKED, undefined)
+    toggleLockState(PostMessages.LOCKED)
+  })
+
+  data.on(PostMessages.UNLOCKED, lockAddresses => {
+    checkout.postMessage(PostMessages.UNLOCKED, lockAddresses)
+    toggleLockState(PostMessages.UNLOCKED)
+  })
+
+  data.on(PostMessages.READY, () => {
+    data.postMessage(PostMessages.CONFIG, paywallConfig)
+  })
+
+  accounts.on(PostMessages.READY, () => {
+    // once the accounts iframe is ready, request the current account and
+    // default network
+    accounts.postMessage(PostMessages.CONFIG, paywallConfig)
+    accounts.postMessage(PostMessages.SEND_UPDATES, 'account')
+    accounts.postMessage(PostMessages.SEND_UPDATES, 'network')
+
+    // There may be a better way to organize sending the locks update to the
+    // accounts iframe
+    data.postMessage(PostMessages.SEND_UPDATES, 'locks')
+  })
+
+  accounts.on(PostMessages.SHOW_ACCOUNTS_MODAL, () => {
+    showAccountIframe()
+  })
+
+  accounts.on(PostMessages.HIDE_ACCOUNTS_MODAL, () => {
+    hideAccountIframe()
+  })
+
+  accounts.on(PostMessages.INITIATED_TRANSACTION, () => {
+    data.postMessage(PostMessages.INITIATED_TRANSACTION, undefined)
+  })
+
+  accounts.on(PostMessages.UPDATE_ACCOUNT, address => {
+    setUserAccountAddress(address)
+  })
+
+  accounts.on(PostMessages.UPDATE_NETWORK, network => {
+    setUserAccountNetwork(network)
+  })
+
+  checkout.on(PostMessages.READY, () => {
+    checkout.postMessage(PostMessages.CONFIG, paywallConfig)
+
+    const updateKinds = [
+      'locks',
+      'account',
+      'balance',
+      'network',
+      'keys',
+      'transactions',
+    ]
+
+    updateKinds.forEach(kind =>
+      data.postMessage(PostMessages.SEND_UPDATES, kind)
+    )
+  })
+
+  checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
+    hideCheckoutIframe()
+  })
+
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  checkout.on(PostMessages.PURCHASE_KEY, request => {
+    if (usingManagedAccount) {
+      accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+    } else {
+      data.postMessage(PostMessages.PURCHASE_KEY, request)
+    }
   })
 }
