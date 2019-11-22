@@ -1,4 +1,4 @@
-import { Web3Window, CryptoWalletWindow } from '../windowTypes'
+import { Web3Window } from '../windowTypes'
 import { unlockNetworks } from '../data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
@@ -9,6 +9,11 @@ import {
   setupUserAccountsProxyWallet,
   setupWeb3ProxyWallet,
 } from './postMessageHub'
+import {
+  hasWallet,
+  walletIsMetamask,
+  shouldUseUserAccounts,
+} from '../utils/wallet'
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -47,18 +52,14 @@ export default class Wallet {
     this.debug = !!constants.debug
 
     // do we have a web3 wallet?
-    this.hasWallet = !!(this.window.web3 && this.window.web3.currentProvider)
-    this.isMetamask = !!(
-      this.hasWallet &&
-      (window as CryptoWalletWindow).web3.currentProvider.isMetamask
-    )
+    this.hasWallet = hasWallet(this.window)
+    this.isMetamask = walletIsMetamask(this.window)
+
     // user accounts are used in 2 conditions:
     // 1. there is no crypto wallet present
     // 2. the paywall configuration explicitly asks for them
-    this.useUserAccounts =
-      !this.hasWallet &&
-      (config.unlockUserAccounts === true ||
-        config.unlockUserAccounts === 'true')
+    this.useUserAccounts = shouldUseUserAccounts(this.window, this.config)
+
     if (this.debug) {
       if (this.useUserAccounts) {
         // eslint-disable-next-line
