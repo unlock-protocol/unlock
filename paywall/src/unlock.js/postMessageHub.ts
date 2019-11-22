@@ -603,8 +603,6 @@ interface setupAccountsListenersArgs {
   setUserAccountNetwork: (network: unlockNetworks) => void
 }
 
-// This function registers the postmessage listeners that are always active, no
-// matter what state the app is in. The proxy wallet setups will have to be different.
 export function setupAccountsListeners({
   iframes,
   paywallConfig,
