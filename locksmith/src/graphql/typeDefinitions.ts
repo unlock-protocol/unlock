@@ -23,7 +23,36 @@ export const typeDefs = gql`
   }
 
   type Query {
+    key(id: ID!): Key
+    keys: [Key]
     locks: [Lock]
     keyPurchases: [KeyPurchase!]
+  }
+
+  type Attribute {
+    trait_type: String!
+    value: Int!
+    display_type: String!
+  }
+
+  type Metadata {
+    name: String!
+    description: String!
+    image: String!
+    attributes: [Attribute]
+  }
+
+  type KeyHolder {
+    id: ID!
+    address: String!
+  }
+
+  type Key {
+    id: ID!
+    lock: Lock!
+    keyId: String!
+    owner: KeyHolder!
+    expiration: Int!
+    metadata: Metadata
   }
 `
