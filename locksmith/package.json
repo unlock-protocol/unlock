@@ -90,7 +90,7 @@
     "typescript": "3.7.2",
     "unlock-abi-1-1": "1.1.0",
     "winston": "3.2.1",
-    "yargs": "14.2.1"
+    "yargs": "15.0.2"
   },
   "devDependencies": {
     "nodemon": "1.19.4",
