@@ -473,37 +473,25 @@ export function setupWeb3ProxyWallet({
   })
 }
 
-interface unconditionalStartupArgs {
+interface setupDataListenersArgs {
   iframes: TemporaryIframeHandler
   blockchainData: BlockchainData
-  usingManagedAccount: boolean
+  paywallConfig: PaywallConfig
   erc20ContractAddress: string
+  usingManagedAccount: boolean
   toggleLockState: (
     message: PostMessages.LOCKED | PostMessages.UNLOCKED
   ) => void
-  paywallConfig: PaywallConfig
-  hideCheckoutIframe: () => void
-  showAccountIframe: () => void
-  hideAccountIframe: () => void
-  setUserAccountAddress: (address: string | null) => void
-  setUserAccountNetwork: (network: unlockNetworks) => void
 }
 
-// This function registers the postmessage listeners that are always active, no
-// matter what state the app is in. The proxy wallet setups will have to be different.
-export function unconditionalStartup({
+export function setupDataListeners({
   iframes,
   blockchainData,
-  usingManagedAccount,
   erc20ContractAddress,
+  usingManagedAccount,
   toggleLockState,
   paywallConfig,
-  hideCheckoutIframe,
-  showAccountIframe,
-  hideAccountIframe,
-  setUserAccountAddress,
-  setUserAccountNetwork,
-}: unconditionalStartupArgs) {
+}: setupDataListenersArgs) {
   const { data, checkout, accounts } = iframes
 
   // These are the keys to the PostMessages enum that represent data transfer
@@ -557,6 +545,73 @@ export function unconditionalStartup({
   data.on(PostMessages.READY, () => {
     data.postMessage(PostMessages.CONFIG, paywallConfig)
   })
+}
+
+interface setupCheckoutListenersArgs {
+  iframes: TemporaryIframeHandler
+  paywallConfig: PaywallConfig
+  hideCheckoutIframe: () => void
+  usingManagedAccount: boolean
+}
+
+export function setupCheckoutListeners({
+  iframes,
+  paywallConfig,
+  hideCheckoutIframe,
+  usingManagedAccount,
+}: setupCheckoutListenersArgs) {
+  const { checkout, data, accounts } = iframes
+  checkout.on(PostMessages.READY, () => {
+    checkout.postMessage(PostMessages.CONFIG, paywallConfig)
+
+    const updateKinds = [
+      'locks',
+      'account',
+      'balance',
+      'network',
+      'keys',
+      'transactions',
+    ]
+
+    updateKinds.forEach(kind =>
+      data.postMessage(PostMessages.SEND_UPDATES, kind)
+    )
+  })
+
+  checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
+    hideCheckoutIframe()
+  })
+
+  // when receiving a key purchase request, we either pass it to the
+  // account iframe for credit card purchase if user accounts are
+  // explicitly enabled, or to the crypto wallet
+  checkout.on(PostMessages.PURCHASE_KEY, request => {
+    if (usingManagedAccount) {
+      accounts.postMessage(PostMessages.PURCHASE_KEY, request)
+    } else {
+      data.postMessage(PostMessages.PURCHASE_KEY, request)
+    }
+  })
+}
+
+interface setupAccountsListenersArgs {
+  iframes: TemporaryIframeHandler
+  paywallConfig: PaywallConfig
+  showAccountIframe: () => void
+  hideAccountIframe: () => void
+  setUserAccountAddress: (address: string | null) => void
+  setUserAccountNetwork: (network: unlockNetworks) => void
+}
+
+export function setupAccountsListeners({
+  iframes,
+  paywallConfig,
+  showAccountIframe,
+  hideAccountIframe,
+  setUserAccountAddress,
+  setUserAccountNetwork,
+}: setupAccountsListenersArgs) {
+  const { data, accounts } = iframes
 
   accounts.on(PostMessages.READY, () => {
     // once the accounts iframe is ready, request the current account and
@@ -588,37 +643,5 @@ export function unconditionalStartup({
 
   accounts.on(PostMessages.UPDATE_NETWORK, network => {
     setUserAccountNetwork(network)
-  })
-
-  checkout.on(PostMessages.READY, () => {
-    checkout.postMessage(PostMessages.CONFIG, paywallConfig)
-
-    const updateKinds = [
-      'locks',
-      'account',
-      'balance',
-      'network',
-      'keys',
-      'transactions',
-    ]
-
-    updateKinds.forEach(kind =>
-      data.postMessage(PostMessages.SEND_UPDATES, kind)
-    )
-  })
-
-  checkout.on(PostMessages.DISMISS_CHECKOUT, () => {
-    hideCheckoutIframe()
-  })
-
-  // when receiving a key purchase request, we either pass it to the
-  // account iframe for credit card purchase if user accounts are
-  // explicitly enabled, or to the crypto wallet
-  checkout.on(PostMessages.PURCHASE_KEY, request => {
-    if (usingManagedAccount) {
-      accounts.postMessage(PostMessages.PURCHASE_KEY, request)
-    } else {
-      data.postMessage(PostMessages.PURCHASE_KEY, request)
-    }
   })
 }

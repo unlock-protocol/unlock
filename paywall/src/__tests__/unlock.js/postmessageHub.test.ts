@@ -1,52 +1,40 @@
-import { unconditionalStartup } from '../../unlock.js/postMessageHub'
+import {
+  setupDataListeners,
+  setupCheckoutListeners,
+  setupAccountsListeners,
+} from '../../unlock.js/postMessageHub'
 import { PostMessages } from '../../messageTypes'
 import FakeWindow from '../test-helpers/fakeWindowHelpers'
 import IframeHandler from '../../unlock.js/IframeHandler'
 
-interface initOptions {
-  usingManagedAccount?: boolean
-  blockchainData?: any
-  erc20ContractAddress?: string
-  toggleLockState?: () => void
-  hideCheckoutIframe?: () => void
-  showAccountIframe?: () => void
-  hideAccountIframe?: () => void
-  setUserAccountAddress?: (address: string | null) => void
-  setUserAccountNetwork?: (network: number) => void
-  paywallConfig?: any
-}
-
-const init = (overrides?: initOptions) => {
-  const window = new FakeWindow()
-  const iframes = new IframeHandler(window, 'http://d', 'http://c', 'http://a')
-  ;(iframes.checkout as any).postMessage = jest.fn()
-  ;(iframes.accounts as any).postMessage = jest.fn()
-  ;(iframes.data as any).postMessage = jest.fn()
-
-  let options = overrides || {}
-
-  unconditionalStartup({
-    iframes,
-    blockchainData: options.blockchainData || {},
-    usingManagedAccount: options.usingManagedAccount || false,
-    erc20ContractAddress: options.erc20ContractAddress || '0xneato',
-    toggleLockState: options.toggleLockState || jest.fn(),
-    paywallConfig: options.paywallConfig || {},
-    hideCheckoutIframe: options.hideCheckoutIframe || jest.fn(),
-    showAccountIframe: options.showAccountIframe || jest.fn(),
-    hideAccountIframe: options.hideAccountIframe || jest.fn(),
-    setUserAccountAddress: options.setUserAccountAddress || jest.fn(),
-    setUserAccountNetwork: options.setUserAccountNetwork || jest.fn(),
-  })
-
-  return {
-    window,
-    iframes,
-  }
-}
-
-describe('unconditionalStartup', () => {
+describe('postMessageHub', () => {
   describe('data iframe', () => {
+    const init = (overrides: any = {}) => {
+      const window = new FakeWindow()
+      const iframes = new IframeHandler(
+        window,
+        'http://d',
+        'http://c',
+        'http://a'
+      )
+      ;(iframes.checkout as any).postMessage = jest.fn()
+      ;(iframes.data as any).postMessage = jest.fn()
+      iframes.accounts.postMessage = jest.fn()
+
+      setupDataListeners({
+        iframes,
+        blockchainData: overrides.blockchainData || {},
+        erc20ContractAddress: overrides.erc20ContractAddress || '',
+        usingManagedAccount: overrides.usingManagedAccount || false,
+        toggleLockState: overrides.toggleLockState || jest.fn(),
+        paywallConfig: overrides.paywallConfig || {},
+      })
+
+      return {
+        window,
+        iframes,
+      }
+    }
     describe('UPDATE_*', () => {
       it.each([
         [PostMessages.UPDATE_LOCKS, 'locks'],
@@ -103,7 +91,12 @@ describe('unconditionalStartup', () => {
 
         const blockchainData: any = {}
         const usingManagedAccount = true
-        const { iframes } = init({ blockchainData, usingManagedAccount })
+        const erc20ContractAddress = '0xneato'
+        const { iframes } = init({
+          blockchainData,
+          usingManagedAccount,
+          erc20ContractAddress,
+        })
 
         const payload = {
           eth: '7',
@@ -212,6 +205,32 @@ describe('unconditionalStartup', () => {
   })
 
   describe('accounts iframe', () => {
+    const init = (overrides: any = {}) => {
+      const window = new FakeWindow()
+      const iframes = new IframeHandler(
+        window,
+        'http://d',
+        'http://c',
+        'http://a'
+      )
+      ;(iframes.checkout as any).postMessage = jest.fn()
+      ;(iframes.data as any).postMessage = jest.fn()
+      iframes.accounts.postMessage = jest.fn()
+
+      setupAccountsListeners({
+        iframes,
+        paywallConfig: overrides.paywallConfig || {},
+        showAccountIframe: overrides.showAccountIframe || jest.fn(),
+        hideAccountIframe: overrides.hideAccountIframe || jest.fn(),
+        setUserAccountAddress: overrides.setUserAccountAddress || jest.fn(),
+        setUserAccountNetwork: overrides.setUserAccountNetwork || jest.fn(),
+      })
+
+      return {
+        window,
+        iframes,
+      }
+    }
     describe('READY', () => {
       it('should send the config and requests for network and account down to account iframe', () => {
         expect.assertions(4)
@@ -314,6 +333,31 @@ describe('unconditionalStartup', () => {
   })
 
   describe('checkout iframe', () => {
+    const init = (overrides: any = {}) => {
+      const window = new FakeWindow()
+      const iframes = new IframeHandler(
+        window,
+        'http://d',
+        'http://c',
+        'http://a'
+      )
+      ;(iframes.checkout as any).postMessage = jest.fn()
+      ;(iframes.data as any).postMessage = jest.fn()
+      iframes.accounts.postMessage = jest.fn()
+
+      setupCheckoutListeners({
+        iframes,
+        paywallConfig: overrides.paywallConfig || {},
+        hideCheckoutIframe: overrides.hideCheckoutIframe || jest.fn(),
+        usingManagedAccount: overrides.usingManagedAccount || false,
+      })
+
+      return {
+        window,
+        iframes,
+      }
+    }
+
     it('should get all the data from data iframe on READY', () => {
       expect.assertions(1)
 
