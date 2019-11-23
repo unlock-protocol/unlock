@@ -9,13 +9,13 @@ export const resolvers = {
     keys: () => new Key().getKeys(),
     // eslint-disable-next-line no-unused-vars
     key: async (_root: any, args: any, _context: any, _info: any) => {
-      let baseKeyData = await new Key().getKey(args.id)
-      let metadata = await generateMetadata(
-        baseKeyData.lock.address,
-        baseKeyData.keyId
-      )
-
-      return { ...baseKeyData, metadata }
+      return await new Key().getKey(args.id)
+    },
+  },
+  Key: {
+    // eslint-disable-next-line no-unused-vars
+    metadata: async (root: any, _args: any, _context: any, _info: any) => {
+      return await generateMetadata(root.lock.address, root.keyId)
     },
   },
 }
