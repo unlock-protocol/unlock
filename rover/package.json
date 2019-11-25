@@ -22,9 +22,9 @@
       "@types/jest": "24.0.23",
       "@types/node": "8.10.59",
       "dotenv": "8.2.0",
-      "ethers": "4.0.39",
+      "ethers": "4.0.40",
       "express": "4.17.1",
-      "pg": "7.12.1",
+      "pg": "7.14.0",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
       "typeorm": "0.2.20"
@@ -39,7 +39,7 @@
    },
    "devDependencies": {
       "jest": "24.9.0",
-      "ts-jest": "24.1.0",
+      "ts-jest": "24.2.0",
       "ts-node": "8.5.2",
       "typescript": "3.7.2"
    }
