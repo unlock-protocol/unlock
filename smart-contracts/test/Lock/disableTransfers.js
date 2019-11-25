@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
+const { sleep, sleepTime } = require('../helpers/sleep')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -83,6 +84,8 @@ contract('Lock / disableTransfers', accounts => {
     it('lock owner should be able to allow transfers by lowering fee', async () => {
       // Change the fee to 99%
       await lock.updateTransferFee(1000)
+      // wait for block to be mined
+      await sleep(sleepTime)
       // check owner has a key
       assert.equal(await lock.getHasValidKey.call(keyOwner), true)
       // attempt a transfer

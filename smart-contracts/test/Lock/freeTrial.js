@@ -2,6 +2,7 @@ const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
+const { sleep, sleepTime } = require('../helpers/sleep')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -35,7 +36,7 @@ contract('Lock / freeTrial', accounts => {
     let initialLockBalance
 
     beforeEach(async () => {
-      await lock.updateRefundPenalty(5, 2000)
+      await lock.updateRefundPenalty(19, 2000)
       initialLockBalance = new BigNumber(
         await web3.eth.getBalance(lock.address)
       )
@@ -58,7 +59,7 @@ contract('Lock / freeTrial', accounts => {
 
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
-        await sleep(6000)
+        await sleep(sleepTime)
         await lock.cancelAndRefund({
           from: keyOwners[0],
         })
@@ -74,7 +75,3 @@ contract('Lock / freeTrial', accounts => {
     })
   })
 })
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
