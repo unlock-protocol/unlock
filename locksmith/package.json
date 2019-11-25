@@ -93,7 +93,7 @@
     "yargs": "15.0.2"
   },
   "devDependencies": {
-    "nodemon": "1.19.4",
+    "nodemon": "2.0.1",
     "sqlite3": "4.1.0",
     "supertest": "4.0.2",
     "tsc-watch": "4.0.0"
