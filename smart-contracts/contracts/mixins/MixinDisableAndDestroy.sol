@@ -1,6 +1,5 @@
-pragma solidity 0.5.13;
-
-import '../interfaces/IERC721.sol';
+pragma solidity 0.5.12;
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinFunds.sol';
 
@@ -12,7 +11,7 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinDisableAndDestroy is
-  IERC721,
+  IERC721Enumerable,
   Ownable,
   MixinFunds
 {

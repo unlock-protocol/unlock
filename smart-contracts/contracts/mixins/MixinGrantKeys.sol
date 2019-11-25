@@ -1,6 +1,6 @@
 pragma solidity 0.5.13;
 
-import '../interfaces/IERC721.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinKeys.sol';
 
@@ -12,7 +12,7 @@ import './MixinKeys.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinGrantKeys is
-  IERC721,
+  IERC721Enumerable,
   Ownable,
   MixinKeys
 {

@@ -46,7 +46,7 @@ contract MixinLockCore is
   uint public maxNumberOfKeys;
 
   // A count of how many new key purchases there have been
-  uint public totalSupply;
+  uint internal _totalSupply;
 
   // The account which will receive funds on withdrawal
   address public beneficiary;
@@ -56,7 +56,7 @@ contract MixinLockCore is
 
   // Ensure that the Lock has not sold all of its keys.
   modifier notSoldOut() {
-    require(maxNumberOfKeys > totalSupply, 'LOCK_SOLD_OUT');
+    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     _;
   }
 
@@ -152,5 +152,12 @@ contract MixinLockCore is
   {
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
+  }
+
+  function totalSupply()
+    public
+    view returns(uint256)
+  {
+    return _totalSupply;
   }
 }
