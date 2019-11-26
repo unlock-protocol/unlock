@@ -29,7 +29,7 @@ describe('setupWeb3ProxyWallet()', () => {
     }
     setupWeb3ProxyWallet({
       iframes: iframes as any,
-      hasWallet: hasWallet || true,
+      hasWallet: typeof hasWallet === 'undefined' ? true : hasWallet,
       setHasWeb3: setHasWeb3 || jest.fn(),
       getHasWeb3: getHasWeb3 || jest.fn(() => true),
       isMetamask: isMetamask || true,
