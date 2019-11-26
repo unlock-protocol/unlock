@@ -28,3 +28,20 @@ export function shouldUseUserAccounts(
     config.unlockUserAccounts === 'true' || config.unlockUserAccounts === true
   )
 }
+
+export interface WalletStatus {
+  hasWallet: boolean
+  isMetamask: boolean
+  shouldUseUserAccounts: boolean
+}
+
+export function walletStatus(
+  window: Web3Window,
+  config: PaywallConfig
+): WalletStatus {
+  return {
+    hasWallet: hasWallet(window),
+    isMetamask: walletIsMetamask(window),
+    shouldUseUserAccounts: shouldUseUserAccounts(window, config),
+  }
+}

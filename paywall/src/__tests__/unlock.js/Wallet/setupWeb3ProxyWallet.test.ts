@@ -15,7 +15,7 @@ describe('setupWeb3ProxyWallet()', () => {
   const fakeAddress = '0x1234567890123456789012345678901234567890'
 
   function init({
-    getHasWallet,
+    hasWallet,
     setHasWeb3,
     getHasWeb3,
     isMetamask,
@@ -29,7 +29,7 @@ describe('setupWeb3ProxyWallet()', () => {
     }
     setupWeb3ProxyWallet({
       iframes: iframes as any,
-      getHasWallet: getHasWallet || jest.fn(() => true),
+      hasWallet: typeof hasWallet === 'undefined' ? true : hasWallet,
       setHasWeb3: setHasWeb3 || jest.fn(),
       getHasWeb3: getHasWeb3 || jest.fn(() => true),
       isMetamask: isMetamask || true,
@@ -64,11 +64,11 @@ describe('setupWeb3ProxyWallet()', () => {
     it('should send WALLET_INFO indicating no crypto wallet is present', () => {
       expect.assertions(2)
 
-      const getHasWallet = jest.fn(() => false)
+      const hasWallet = false
       const setHasWeb3 = jest.fn()
 
       const { iframes } = init({
-        getHasWallet,
+        hasWallet,
         setHasWeb3,
       })
 
