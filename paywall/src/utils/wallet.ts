@@ -2,11 +2,6 @@ import { Web3Window, CryptoWalletWindow } from '../windowTypes'
 import { PaywallConfig } from '../unlockTypes'
 
 export function hasWallet(window: Web3Window): boolean {
-  // eslint-disable-next-line no-console
-  console.log({
-    location: 'hasWallet',
-    web3: window.web3,
-  })
   return !!(window.web3 && window.web3.currentProvider)
 }
 
