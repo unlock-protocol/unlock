@@ -25,7 +25,6 @@ import { WalletStatus } from '../utils/wallet'
 export default class Wallet {
   private readonly iframes: IframeHandler
   private readonly window: Web3Window
-  private readonly hasWallet: boolean = true
   private readonly config: PaywallConfig
   private hasWeb3: boolean = false
   useUserAccounts: boolean = false
@@ -59,10 +58,6 @@ export default class Wallet {
 
   getUserAccountNetwork = () => {
     return this.userAccountNetwork
-  }
-
-  getHasWallet = () => {
-    return this.hasWallet
   }
 
   setHasWeb3 = (value: boolean) => {
@@ -104,7 +99,7 @@ export default class Wallet {
       // if we have no wallet, and no use accounts, we use the web3 proxy wallet
       setupWeb3ProxyWallet({
         iframes: this.iframes,
-        getHasWallet: this.getHasWallet,
+        hasWallet,
         setHasWeb3: this.setHasWeb3,
         getHasWeb3: this.getHasWeb3,
         isMetamask: isMetamask,

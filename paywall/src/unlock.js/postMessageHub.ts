@@ -356,7 +356,7 @@ export function setupUserAccountsProxyWallet({
 
 interface setupWeb3ProxyWalletArgs {
   iframes: TemporaryIframeHandler
-  getHasWallet: () => boolean
+  hasWallet: boolean
   setHasWeb3: (value: boolean) => void
   getHasWeb3: () => boolean
   isMetamask: boolean
@@ -365,7 +365,7 @@ interface setupWeb3ProxyWalletArgs {
 
 export function setupWeb3ProxyWallet({
   iframes,
-  getHasWallet,
+  hasWallet,
   setHasWeb3,
   getHasWeb3,
   isMetamask,
@@ -384,7 +384,7 @@ export function setupWeb3ProxyWallet({
     // initialize, we do this once the iframe is ready to receive information on the wallet
     // we need to tell the iframe if the wallet is metamask
     // TODO: pass the name of the wallet if we know it? (secondary importance right now, so omitting)
-    if (!getHasWallet()) {
+    if (hasWallet) {
       // the user has no crypto wallet
       setHasWeb3(false)
       iframes.data.postMessage(PostMessages.WALLET_INFO, {
