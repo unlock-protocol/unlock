@@ -84,16 +84,11 @@ contract MixinFunds
   {
     if(_amount > 0) {
       if(_tokenAddress == address(0)) {
+        // https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/
         address(uint160(_to)).sendValue(_amount);
       } else {
         IERC20 token = IERC20(_tokenAddress);
-        uint balanceBefore = token.balanceOf(_to);
         token.safeTransfer(_to, _amount);
-
-        // There are known bugs in popular ERC20 implements which means we cannot
-        // trust the return value of `transferFrom`.  This require statement ensures
-        // that a transfer occurred.
-        require(token.balanceOf(_to) > balanceBefore, 'TRANSFER_FAILED');
       }
     }
   }
