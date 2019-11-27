@@ -1,6 +1,8 @@
 pragma solidity 0.5.12;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol';
 
 
 /**
@@ -9,6 +11,9 @@ import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.so
  */
 contract MixinFunds
 {
+  using Address for address payable;
+  using SafeERC20 for IERC20;
+
   /**
    * The token-type that this Lock is priced in.  If 0, then use ETH, else this is
    * a ERC20 token address.
@@ -60,14 +65,7 @@ contract MixinFunds
         return msg.value;
       } else {
         IERC20 token = IERC20(tokenAddress);
-        uint balanceBefore = token.balanceOf(address(this));
-        token.transferFrom(msg.sender, address(this), _price);
-
-        // There are known bugs in popular ERC20 implements which means we cannot
-        // trust the return value of `transferFrom`.  This require statement ensures
-        // that a transfer occurred.
-        require(token.balanceOf(address(this)) > balanceBefore, 'TRANSFER_FAILED');
-
+        token.safeTransferFrom(msg.sender, address(this), _price);
         return _price;
       }
     }
@@ -86,11 +84,11 @@ contract MixinFunds
   {
     if(_amount > 0) {
       if(_tokenAddress == address(0)) {
-        address(uint160(_to)).transfer(_amount);
+        address(uint160(_to)).sendValue(_amount);
       } else {
         IERC20 token = IERC20(_tokenAddress);
         uint balanceBefore = token.balanceOf(_to);
-        token.transfer(_to, _amount);
+        token.safeTransfer(_to, _amount);
 
         // There are known bugs in popular ERC20 implements which means we cannot
         // trust the return value of `transferFrom`.  This require statement ensures
