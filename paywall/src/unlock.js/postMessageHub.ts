@@ -6,7 +6,7 @@ import { PostMessages } from '../messageTypes'
 import DataIframeMessageEmitter from './PostMessageEmitters/DataIframeMessageEmitter'
 import CheckoutIframeMessageEmitter from './PostMessageEmitters/CheckoutIframeMessageEmitter'
 import AccountsIframeMessageEmitter from './PostMessageEmitters/AccountsIframeMessageEmitter'
-import { Balance, PaywallConfig } from '../unlockTypes'
+import { PaywallConfig } from '../unlockTypes'
 import {
   Web3Window,
   web3MethodCall,
@@ -25,10 +25,6 @@ export interface checkoutHandlerInitArgs {
   usingManagedAccount: boolean
   dataIframe: DataIframeMessageEmitter
   checkoutIframe: CheckoutIframeMessageEmitter
-  injectDefaultBalance: (
-    oldBalance: Balance,
-    erc20ContractAddress: string
-  ) => Balance
   config: PaywallConfig
   constants: any
 }
@@ -39,7 +35,6 @@ export function checkoutHandlerInit({
   checkoutIframe,
   config,
   constants,
-  injectDefaultBalance,
 }: checkoutHandlerInitArgs) {
   // listen for updates to state from the data iframe, and forward them to the checkout UI
   dataIframe.on(PostMessages.UPDATE_ACCOUNT, account =>

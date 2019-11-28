@@ -80,9 +80,11 @@ export function startup(
 
   // go!
   mainWindow.init()
-  wallet.init(walletStatus(window, config))
+
+  const walletInitParams = walletStatus(window, config)
+  wallet.init(walletInitParams)
   checkoutIframeHandler.init({
-    usingManagedAccount: wallet.useUserAccounts,
+    usingManagedAccount: walletInitParams.shouldUseUserAccounts,
   })
 
   return iframes // this is only useful in testing, it is ignored in the app
