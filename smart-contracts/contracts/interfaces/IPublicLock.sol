@@ -435,16 +435,19 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   ///===================================================================
 
   /**
-  * @notice Allows the key owner to share their key (parent key) by
+  * @notice Allows the key owner to safely share their key (parent key) by
   * transferring a portion of the remaining time to a new key (child key).
   * @dev Throws if key is not valid.
   * @dev Throws if `_to` is the zero address
   * @param _to The recipient of the shared key
   * @param _tokenId the key to share
   * @param _timeShared The amount of time shared
+  * checks if `_to` is a smart contract (code size > 0). If so, it calls
+  * `onERC721Received` on `_to` and throws if the return value is not
+  * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
   * @dev Emit Transfer event
   */
-  function shareKey(
+  function safeShareKey(
     address _to,
     uint _tokenId,
     uint _timeShared
