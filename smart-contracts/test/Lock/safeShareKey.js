@@ -80,13 +80,14 @@ contract('Lock / safeShareKey', accounts => {
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
       let nonCompliantContract = unlock.address
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
       await shouldFail(
         lock.safeShareKey(
           nonCompliantContract,
-          await lock.getTokenIdFor.call(keyOwner1),
+          await lock.getTokenIdFor.call(keyOwner2),
           1000,
           {
-            from: keyOwners[0],
+            from: keyOwner2,
           }
         ),
         'NON_COMPLIANT_ERC721_RECEIVER'
