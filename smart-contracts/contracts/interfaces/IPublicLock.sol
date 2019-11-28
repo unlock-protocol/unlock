@@ -1,14 +1,14 @@
 pragma solidity ^0.5.0;
 
-// import "./IERC721.sol";
-// import "./IERC721Enumerable.sol";
+import "./IERC721.sol";
+import "./IERC721Enumerable.sol";
 
 /**
 * @title The PublicLock Interface
 * @author Nick Furfaro (unlock-protocol.com)
  */
 
-contract IPublicLock {
+contract IPublicLock is IERC721Enumerable, IERC721 {
 
   ///===================================================================
   /// Events
@@ -52,23 +52,6 @@ contract IPublicLock {
   event TransferFeeChanged(
     uint transferFeeBasisPoints
   );
-
-  /// @dev This emits when ownership of any NFT changes by any mechanism.
-  ///  This event emits when NFTs are created (`from` == 0) and destroyed
-  ///  (`to` == 0). Exception: during contract creation, any number of NFTs
-  ///  may be created and assigned without emitting Transfer. At the time of
-  ///  any transfer, the approved address for that NFT (if any) is reset to none.
-  event Transfer(address indexed _from, address indexed _to, uint indexed _tokenId);
-
-  /// @dev This emits when the approved address for an NFT is changed or
-  ///  reaffirmed. The zero address indicates there is no approved address.
-  ///  When a Transfer event emits, this also indicates that the approved
-  ///  address for that NFT (if any) is reset to none.
-  event Approval(address indexed _owner, address indexed _approved, uint indexed _tokenId);
-
-  /// @dev This emits when an operator is enabled or disabled for an owner.
-  ///  The operator can manage all NFTs of the owner.
-  event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
 
   /// @notice emits anytime the nonce used for off-chain approvals changes.
   event NonceChanged(
@@ -446,20 +429,6 @@ contract IPublicLock {
   function BASIS_POINTS_DEN() external view returns (uint256 );
   ///===================================================================
 
-  /// From Openzeppelin's IERC721.sol
-
-  /// @notice Transfer ownership of an NFT -- THE CALLER IS RESPONSIBLE
-  ///  TO CONFIRM THAT `_to` IS CAPABLE OF RECEIVING NFTS OR ELSE
-  ///  THEY MAY BE PERMANENTLY LOST
-  /// @dev Throws unless `msg.sender` is the current owner, an authorized
-  ///  operator, or the approved address for this NFT. Throws if `_from` is
-  ///  not the current owner. Throws if `_to` is the zero address. Throws if
-  ///  `_tokenId` is not a valid NFT.
-  /// @param _from The current owner of the NFT
-  /// @param _to The new owner
-  /// @param _tokenId The NFT to transfer
-  function transferFrom(address _from, address _to, uint _tokenId) external;
-
   /**
   * @notice Allows the key owner to share their key (parent key) by
   * transferring a portion of the remaining time to a new key (child key).
@@ -498,114 +467,9 @@ contract IPublicLock {
   //   uint _timeShared
   // ) external;
 
-  /// @notice Set or reaffirm the approved address for an NFT
-  /// @dev The zero address indicates there is no approved address.
-  /// @dev Throws unless `msg.sender` is the current NFT owner, or an authorized
-  ///  operator of the current owner.
-  /// @param _approved The new approved NFT controller
-  /// @param _tokenId The NFT to approve
-  function approve(address _approved, uint _tokenId) external payable;
-
-  /// @notice Transfers the ownership of an NFT from one address to another address
-  /// @dev Throws unless `msg.sender` is the current owner, an authorized
-  ///  operator, or the approved address for this NFT. Throws if `_from` is
-  ///  not the current owner. Throws if `_to` is the zero address. Throws if
-  ///  `_tokenId` is not a valid NFT. When transfer is complete, this function
-  ///  checks if `_to` is a smart contract (code size > 0). If so, it calls
-  ///  `onERC721Received` on `_to` and throws if the return value is not
-  ///  `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
-  /// @param _from The current owner of the NFT
-  /// @param _to The new owner
-  /// @param _tokenId The NFT to transfer
-  /// @param data Additional data with no specified format, sent in call to `_to`
-  function safeTransferFrom(address _from, address _to, uint _tokenId, bytes calldata data) external;
-
-  /// @notice Transfers the ownership of an NFT from one address to another address
-  /// @dev This works identically to the other function with an extra data parameter,
-  ///  except this function just sets data to ''
-  /// @param _from The current owner of the NFT
-  /// @param _to The new owner
-  /// @param _tokenId The NFT to transfer
-  function safeTransferFrom(address _from, address _to, uint _tokenId) external;
-
-  /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @dev Throws if lock is disabled, or if _to == msg.sender.
-   * @param _to operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   */
-  function setApprovalForAll(
-    address _to,
-    bool _approved
-    ) external;
-
-  /**
-   * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_owner`, either 0 or 1.
-   * @dev Throws if _owner = address(0)
-   * @param _owner The address of the key owner
-  */
-  function balanceOf(
-    address _owner
-    ) external view returns (uint);
-
-  /// @notice Find the owner of an NFT
-  /// @dev NFTs assigned to zero address are considered invalid, and queries
-  ///  about them do throw.
-  /// @param _tokenId The identifier for an NFT
-  /// @return The address of the owner of the NFT
-  function ownerOf(uint _tokenId) external view returns (address);
-
-  /**
-   * Will return the approved recipient for a key, if any.
-   * @param _tokenId The ID of the token we're inquiring about.
-   * @return address The approved address (if any)
-   */
-  function getApproved(
-    uint _tokenId
-    ) external view returns (address);
-
-  /**
-   * @dev Tells whether an operator is approved by a given owner
-   * @param _owner owner address which you want to query the approval of
-   * @param _operator operator address which you want to query the approval of
-   * @return bool whether the given operator is approved by the given owner
-   */
-  function isApprovedForAll(
-    address _owner,
-    address _operator
-    ) external view returns (bool);
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
-  ///===================================================================
-
-  /// From IERC721Enumerable
-  function totalSupply(
-  ) external view
-    returns (uint256);
-
-    /// @notice Enumerate valid NFTs
-  /// @dev Throws if `_index` >= `totalSupply()`.
-  /// @param _index A counter less than `totalSupply()`
-  /// @return The token identifier for the `_index`th NFT,
-  ///  (sort order not specified)
-  function tokenByIndex(
-    uint256 _index
-    ) external view returns (uint256);
-
-  /// @notice Enumerate NFTs assigned to an owner
-  /// @dev Throws if `_index` >= `balanceOf(_owner)` or if
-  ///  `_owner` is the zero address, representing invalid NFTs.
-  /// @param _owner An address where we are interested in NFTs owned by them
-  /// @param _index A counter less than `balanceOf(_owner)`
-  /// @return The token identifier for the `_index`th NFT assigned to `_owner`,
-  ///   (sort order not specified)
-  function tokenOfOwnerByIndex(
-    address _owner,
-    uint256 _index
-    ) external view returns (uint256);
   ///===================================================================
 
   /// From Openzeppelin's Ownable.sol
