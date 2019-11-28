@@ -1,12 +1,14 @@
 pragma solidity ^0.5.0;
 
+// import "./IERC721.sol";
+// import "./IERC721Enumerable.sol";
 
 /**
 * @title The PublicLock Interface
 * @author Nick Furfaro (unlock-protocol.com)
  */
 
-interface IPublicLock {
+contract IPublicLock {
 
   ///===================================================================
   /// Events
@@ -123,7 +125,7 @@ interface IPublicLock {
   function withdraw(
     address _tokenAddress,
     uint _amount
-  ) external;
+    ) external;
 
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
@@ -156,7 +158,7 @@ interface IPublicLock {
    */
   function getHasValidKey(
     address _owner
-  ) external view returns (bool);
+    ) external view returns (bool);
 
   /**
    * @notice Find the tokenId for a given user
@@ -166,7 +168,7 @@ interface IPublicLock {
   */
   function getTokenIdFor(
     address _account
-  ) external view returns (uint);
+    ) external view returns (uint);
 
   /**
   * A function which returns a subset of the keys for this Lock as an array
@@ -177,7 +179,7 @@ interface IPublicLock {
   function getOwnersByPage(
     uint _page,
     uint _pageSize
-  ) external view returns (address[] memory);
+    ) external view returns (address[] memory);
 
   /**
    * Checks if the given address owns the given tokenId.
@@ -187,7 +189,7 @@ interface IPublicLock {
   function isKeyOwner(
     uint _tokenId,
     address _owner
-  ) external view returns (bool);
+    ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -196,7 +198,7 @@ interface IPublicLock {
   */
   function keyExpirationTimestampFor(
     address _owner
-  ) external view returns (uint timestamp);
+    ) external view returns (uint timestamp);
 
   /**
    * Public function which returns the total number of unique owners (both expired
@@ -211,7 +213,7 @@ interface IPublicLock {
    */
   function updateLockName(
     string calldata _lockName
-  ) external;
+    ) external;
 
   /**
    * Allows the Lock owner to assign a Symbol for this Lock.
@@ -220,7 +222,7 @@ interface IPublicLock {
    */
   function updateLockSymbol(
     string calldata _lockSymbol
-  ) external;
+    ) external;
 
   /**
     * @dev Gets the token symbol
@@ -237,7 +239,7 @@ interface IPublicLock {
    */
   function setBaseTokenURI(
     string calldata _baseTokenURI
-  ) external;
+    ) external;
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
@@ -249,7 +251,7 @@ interface IPublicLock {
    */
   function tokenURI(
     uint256 _tokenId
-  ) external view returns(string memory);
+    ) external view returns(string memory);
 
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -261,7 +263,7 @@ interface IPublicLock {
   function grantKeys(
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps
-  ) external;
+    ) external;
 
   /**
   * @dev Purchase function
@@ -280,7 +282,7 @@ interface IPublicLock {
     address _recipient,
     address _referrer,
     bytes calldata _data
-  ) external payable;
+    ) external payable;
 
   /**
    * Allow the Lock owner to change the transfer fee.
@@ -290,7 +292,7 @@ interface IPublicLock {
    */
   function updateTransferFee(
     uint _transferFeeBasisPoints
-  ) external;
+    ) external;
 
   /**
    * Determines how much of a fee a key owner would need to pay in order to
@@ -304,7 +306,7 @@ interface IPublicLock {
   function getTransferFee(
     address _owner,
     uint _time
-  ) external view returns (uint);
+    ) external view returns (uint);
 
   /**
    * @dev Invoked by the lock owner to destroy the user's key and perform a refund and cancellation of the key
@@ -316,7 +318,7 @@ interface IPublicLock {
   function fullRefund(
     address _keyOwner,
     uint amount
-  ) external;
+    ) external;
 
   /**
    * @notice Destroys the msg.sender's key and sends a refund based on the amount of time remaining.
@@ -331,7 +333,7 @@ interface IPublicLock {
   function cancelAndRefundFor(
     address _keyOwner,
     bytes calldata _signature
-  ) external;
+    ) external;
 
   /**
    * @notice Sets the minimum nonce for a valid off-chain approval message from the
@@ -340,7 +342,7 @@ interface IPublicLock {
    */
   function invalidateOffchainApproval(
     uint _nextAvailableNonce
-  ) external;
+    ) external;
 
   /**
    * Allow the owner to change the refund penalty.
@@ -351,7 +353,7 @@ interface IPublicLock {
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
-  ) external;
+    ) external;
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
@@ -362,7 +364,7 @@ interface IPublicLock {
    */
   function getCancelAndRefundValueFor(
     address _owner
-  ) external view returns (uint refund);
+    ) external view returns (uint refund);
 
   function keyOwnerToNonce(address ) external view returns (uint256 );
 
@@ -375,7 +377,7 @@ interface IPublicLock {
   function getCancelAndRefundApprovalHash(
     address _keyOwner,
     address _txSender
-  ) external view returns (bytes32 approvalHash);
+    ) external view returns (bytes32 approvalHash);
 
   /**
   *@notice A utility function for erc721 metadata
@@ -390,7 +392,7 @@ interface IPublicLock {
     string calldata _b,
     string calldata _c,
     string calldata _d
-  ) external pure returns (string memory _concatenatedString);
+    ) external pure returns (string memory _concatenatedString);
 
   /**
   * @notice A utility function for erc721 metadata
@@ -399,7 +401,7 @@ interface IPublicLock {
   */
   function uint2Str(
     uint256 _i
-  ) external pure returns (string memory _uintAsString);
+    ) external pure returns (string memory _uintAsString);
 
   /**
   * @notice A utility function for erc721 metadata
@@ -408,7 +410,7 @@ interface IPublicLock {
   */
   function address2Str(
     address _addr
-  ) external pure returns (string memory);
+    ) external pure returns (string memory);
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
@@ -472,7 +474,7 @@ interface IPublicLock {
     address _to,
     uint _tokenId,
     uint _timeShared
-  ) external;
+    ) external;
 
   /**
   * @notice Allows the key owner to share their key (parent key) by
@@ -536,7 +538,7 @@ interface IPublicLock {
   function setApprovalForAll(
     address _to,
     bool _approved
-  ) external;
+    ) external;
 
   /**
    * In the specific case of a Lock, each owner can own only at most 1 key.
@@ -546,7 +548,7 @@ interface IPublicLock {
   */
   function balanceOf(
     address _owner
-  ) external view returns (uint);
+    ) external view returns (uint);
 
   /// @notice Find the owner of an NFT
   /// @dev NFTs assigned to zero address are considered invalid, and queries
@@ -562,7 +564,7 @@ interface IPublicLock {
    */
   function getApproved(
     uint _tokenId
-  ) external view returns (address);
+    ) external view returns (address);
 
   /**
    * @dev Tells whether an operator is approved by a given owner
@@ -573,7 +575,7 @@ interface IPublicLock {
   function isApprovedForAll(
     address _owner,
     address _operator
-  ) external view returns (bool);
+    ) external view returns (bool);
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
@@ -591,7 +593,7 @@ interface IPublicLock {
   ///  (sort order not specified)
   function tokenByIndex(
     uint256 _index
-  ) external view returns (uint256);
+    ) external view returns (uint256);
 
   /// @notice Enumerate NFTs assigned to an owner
   /// @dev Throws if `_index` >= `balanceOf(_owner)` or if
@@ -603,7 +605,7 @@ interface IPublicLock {
   function tokenOfOwnerByIndex(
     address _owner,
     uint256 _index
-  ) external view returns (uint256);
+    ) external view returns (uint256);
   ///===================================================================
 
   /// From Openzeppelin's Ownable.sol
