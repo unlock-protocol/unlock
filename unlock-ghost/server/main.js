@@ -1,0 +1,104 @@
+'use strict';
+
+const Path = require('path');
+const Hapi = require('@hapi/hapi');
+const Hoek = require('@hapi/hoek');
+const Inert = require('@hapi/inert');
+
+const buildLocks = (rawLocks) => {
+    console.log(rawLocks);
+    const locks = rawLocks.map((raw)=>{
+        let split = raw.split(',');
+        return {
+            address: split[0],
+            name: split[1],
+        };
+    });
+    console.log(locks)
+    return locks;
+};
+
+const init = async () => {
+    const server = Hapi.server({ port: 8080, routes: {
+        files: {
+            relativeTo: Path.join(__dirname, 'public')
+        }
+    }});
+
+    await server.register(require('@hapi/vision'));
+    await server.register(Inert);
+
+
+    server.route({
+        method: 'GET',
+        path: '/static/{param*}',
+        handler: {
+            directory: {
+                path: '.',
+                redirectToSlash: true,
+                index: true,
+            }
+        }
+    });
+
+    server.views({
+        engines: {
+            html: require('ejs')
+        },
+        relativeTo: __dirname,
+        path: 'templates'
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/locks',
+        handler: async (request, h) => {
+            const query = request.query;
+            try {
+                const locks = buildLocks( typeof query.locks === 'string' ? [query.locks] : (query.locks || []));
+                return await request.render('locks.html', {query: query.locks, locks});
+            } catch(e) {
+                console.log(e);
+            }
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/services/oembed',
+        handler: async (request, reply) => {
+            const query = request.query;
+
+            const locks = buildLocks( typeof query.locks === 'string' ? [query.locks] : (query.locks || []));
+            try {
+            const oembed_res = {
+                type: "rich",
+                provider_name: "Unlock",
+	              provider_url: "http://3974908b.ngrok.io",
+                version: "1.0",
+                cache_age: "10000",
+                width: 500,
+                height: 70,
+                html: await request.render('oembed', {locks})
+            };
+                return oembed_res;
+            } catch(e) {
+                console.log(e);
+            }
+
+        }
+    });
+
+    await server.start();
+    console.log('Server running on %s', server.info.uri);
+
+};
+
+
+process.on('unhandledRejection', (err) => {
+
+    console.log(err);
+    process.exit(1);
+});
+
+init();
