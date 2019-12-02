@@ -1,4 +1,4 @@
-import { Web3Window, CryptoWalletWindow } from '../windowTypes'
+import { Web3Window } from '../windowTypes'
 import { unlockNetworks } from '../data-iframe/blockchainHandler/blockChainTypes'
 import { PostMessages } from '../messageTypes'
 import IframeHandler from './IframeHandler'
@@ -9,6 +9,7 @@ import {
   setupUserAccountsProxyWallet,
   setupWeb3ProxyWallet,
 } from './postMessageHub'
+import { WalletStatus } from '../utils/wallet'
 
 /**
  * This class handles everything relating to the web3 wallet, including key purchases
@@ -24,15 +25,11 @@ import {
 export default class Wallet {
   private readonly iframes: IframeHandler
   private readonly window: Web3Window
-  private readonly hasWallet: boolean = true
-  private readonly isMetamask: boolean
   private readonly config: PaywallConfig
   private hasWeb3: boolean = false
-  useUserAccounts: boolean = false
 
   private userAccountAddress: string | null = null
   private userAccountNetwork: unlockNetworks
-  private debug: boolean
 
   constructor(
     window: Web3Window,
@@ -44,30 +41,6 @@ export default class Wallet {
     this.iframes = iframes
     this.config = config
     this.userAccountNetwork = constants.network
-    this.debug = !!constants.debug
-
-    // do we have a web3 wallet?
-    this.hasWallet = !!(this.window.web3 && this.window.web3.currentProvider)
-    this.isMetamask = !!(
-      this.hasWallet &&
-      (window as CryptoWalletWindow).web3.currentProvider.isMetamask
-    )
-    // user accounts are used in 2 conditions:
-    // 1. there is no crypto wallet present
-    // 2. the paywall configuration explicitly asks for them
-    this.useUserAccounts =
-      !this.hasWallet &&
-      (config.unlockUserAccounts === true ||
-        config.unlockUserAccounts === 'true')
-    if (this.debug) {
-      if (this.useUserAccounts) {
-        // eslint-disable-next-line
-        console.log('[USER ACCOUNTS] using user accounts')
-      } else {
-        // eslint-disable-next-line
-        console.log('[USER ACCOUNTS] using native crypto wallet')
-      }
-    }
   }
 
   setUserAccountAddress = (address: string | null) => {
@@ -86,10 +59,6 @@ export default class Wallet {
     return this.userAccountNetwork
   }
 
-  getHasWallet = () => {
-    return this.hasWallet
-  }
-
   setHasWeb3 = (value: boolean) => {
     this.hasWeb3 = value
   }
@@ -98,8 +67,8 @@ export default class Wallet {
     return this.hasWeb3
   }
 
-  init() {
-    if (this.useUserAccounts) {
+  init({ shouldUseUserAccounts, hasWallet, isMetamask }: WalletStatus) {
+    if (shouldUseUserAccounts) {
       // create the preconditions for using user accounts
       setupUserAccounts({
         iframes: this.iframes,
@@ -109,7 +78,7 @@ export default class Wallet {
       })
     }
     // set up the proxy wallet
-    if (this.useUserAccounts && !this.hasWallet) {
+    if (shouldUseUserAccounts && !hasWallet) {
       // if user accounts are explicitly enabled, we use them
       // but only if there is no crypto wallet
       setupUserAccountsProxyWallet({
@@ -129,10 +98,10 @@ export default class Wallet {
       // if we have no wallet, and no use accounts, we use the web3 proxy wallet
       setupWeb3ProxyWallet({
         iframes: this.iframes,
-        getHasWallet: this.getHasWallet,
+        hasWallet,
         setHasWeb3: this.setHasWeb3,
         getHasWeb3: this.getHasWeb3,
-        isMetamask: this.isMetamask,
+        isMetamask: isMetamask,
         window: this.window,
       })
     }

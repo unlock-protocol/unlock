@@ -56,7 +56,6 @@ export default class CheckoutUIHandler {
       config: this.config,
       dataIframe: this.iframes.data,
       checkoutIframe: this.iframes.checkout,
-      injectDefaultBalance,
     })
   }
 }
