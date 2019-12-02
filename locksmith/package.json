@@ -31,7 +31,7 @@
     }
   },
   "engines": {
-    "node": "^10"
+    "node": "10.17.0"
   },
   "author": "Unlock Inc",
   "license": "ISC",
