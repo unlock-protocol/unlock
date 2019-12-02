@@ -24,7 +24,7 @@ export const typeDefs = gql`
 
   type Query {
     key(id: ID!): Key
-    keys: [Key]
+    keys(first: Int): [Key]
     locks: [Lock]
     keyPurchases: [KeyPurchase!]
   }
