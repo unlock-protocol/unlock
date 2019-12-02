@@ -3,10 +3,12 @@ import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 
 // eslint-disable-next-line import/prefer-default-export
 export class Key extends UnlockGraphQLDataSource {
-  async getKeys() {
+  async getKeys(args: any) {
+    let queryPredicate = args.first ? `(first: ${args.first})` : ''
+
     let keysQuery = gql`
-      query Keys {
-        keys {
+      query Keys($first: Int) {
+        keys${queryPredicate}{
           id
           lock {
             id
@@ -28,7 +30,9 @@ export class Key extends UnlockGraphQLDataSource {
     `
 
     try {
-      let response = await this.query(keysQuery)
+      let response = await this.query(keysQuery, {
+        variables: { first: args.first },
+      })
       return response.data.keys
     } catch (error) {
       return []
