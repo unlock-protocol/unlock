@@ -8,7 +8,7 @@ git config --replace-all remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
 git fetch >> /dev/null
 
 # get the timestamp of the latests commit to be deployed
-COMMIT_TO_DEPLOY=`git rev-list -1 --before={4.days.ago} master`
+COMMIT_TO_DEPLOY=`git rev-list -1 --before={2.days.ago} master`
 COMMIT_TO_DEPLOY_TIMESTAMP=`git show -s --format=%ct $COMMIT_TO_DEPLOY`
 
 # Get the timestamp of the latest commit deployed
@@ -50,7 +50,7 @@ echo "Setting up git"
 git config --global user.email "ops@unlock-protocol.com"
 git config --global user.name "Unlock Deployer"
 
-echo "Checking master out 4 days ago into new branch"
+echo "Checking master out 2 days ago into new branch"
 BRANCH="production-$(date +%Y%m%d-%H%M%S)"
 git checkout -b $BRANCH $COMMIT_TO_DEPLOY
 
