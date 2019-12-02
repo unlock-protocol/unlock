@@ -57,8 +57,14 @@ export default async function(
     purchaseForOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract['purchaseFor(address)'](
+  // TODO: add support for _referrer and _data
+  const transactionPromise = lockContract[
+    'purchase(uint256,address,address,bytes)'
+  ](
+    actualAmount,
     owner,
+    ZERO /* _referrer */,
+    [] /* array of bytes for _data */,
     purchaseForOptions
   )
 

@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-import * as UnlockV11 from 'unlock-abi-1-1'
+import * as UnlockV12 from 'unlock-abi-1-2'
 import abis from '../../abis'
 
 import TransactionTypes from '../../transactionTypes'
@@ -27,7 +27,7 @@ jest.mock('../../erc20.js', () => {
   }
 })
 
-describe('v11', () => {
+describe('v12', () => {
   describe('purchaseKey', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -73,12 +73,12 @@ describe('v11', () => {
     ) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV11.PublicLock,
+        UnlockV12.PublicLock,
         endpoint,
         nock
       )
 
-      const metadata = new ethers.utils.Interface(UnlockV11.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
@@ -103,7 +103,7 @@ describe('v11', () => {
       })
 
       const callMethodData = prepContract({
-        contract: UnlockV11.PublicLock,
+        contract: UnlockV12.PublicLock,
         functionName: 'purchaseFor',
         signature: 'address',
         nock,

@@ -8,7 +8,7 @@ import Web3Service from '../../web3Service'
 import TransactionTypes from '../../transactionTypes'
 import utils from '../../utils'
 
-import v11 from '../../v11'
+import v12 from '../../v12'
 
 import { KEY_ID } from '../../constants'
 import erc20abi from '../../erc20abi'
@@ -31,9 +31,9 @@ const transaction = {
 const nock = new NockHelper(readOnlyProvider, false /** debug */)
 let web3Service
 
-const version = 'v11'
-const UnlockVersion = abis.v11
-const LockVersion = v11
+const version = 'v12'
+const UnlockVersion = abis.v12
+const LockVersion = v12
 const actualVersion = 4
 
 describe('Web3Service', () => {
