@@ -51,7 +51,7 @@ contract MixinTransfer is
   * @param _tokenId the key to share
   * @param _timeShared The amount of time shared
   */
-  function safeShareKey(
+  function shareKey(
     address _to,
     uint _tokenId,
     uint _timeShared

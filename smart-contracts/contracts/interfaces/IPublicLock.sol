@@ -447,7 +447,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
   * @dev Emit Transfer event
   */
-  function safeShareKey(
+  function shareKey(
     address _to,
     uint _tokenId,
     uint _timeShared
