@@ -4,6 +4,7 @@ import StartupConstants from '../../unlock.js/startupTypes'
 import { PaywallConfig } from '../../unlockTypes'
 import { PostMessages } from '../../messageTypes'
 import { UnlockWindow } from '../../windowTypes'
+import { checkoutHandlerInit } from '../../unlock.js/postMessageHub'
 
 describe('unlock.js startup', () => {
   describe('normalizeConfig', () => {
@@ -160,6 +161,14 @@ describe('unlock.js startup', () => {
 
       fakeWindow.unlockProtocolConfig = config
       const iframes = startup(fakeWindow, constants)
+
+      checkoutHandlerInit({
+        usingManagedAccount: false,
+        dataIframe: iframes.data,
+        checkoutIframe: iframes.checkout,
+        config,
+        constants,
+      })
 
       fakeWindow.receivePostMessageFromIframe(
         PostMessages.READY,

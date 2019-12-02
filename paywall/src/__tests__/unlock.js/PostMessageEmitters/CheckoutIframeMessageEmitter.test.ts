@@ -12,7 +12,6 @@ describe('CheckoutIframeMessageEmitter', () => {
       fakeWindow,
       'http://fun.times/fakey'
     )
-    emitter.setupListeners()
     return emitter
   }
 
@@ -46,13 +45,7 @@ describe('CheckoutIframeMessageEmitter', () => {
 
         const emitter = makeEmitter(fakeWindow)
 
-        // Indicate that the iframe is ready
-        fakeWindow.receivePostMessageFromIframe(
-          PostMessages.READY,
-          undefined,
-          emitter.iframe,
-          checkoutOrigin
-        )
+        emitter.setReady()
 
         emitter.postMessage(PostMessages.READY, undefined)
 
@@ -84,12 +77,7 @@ describe('CheckoutIframeMessageEmitter', () => {
         fakeWindow.expectPostMessageNotSent(PostMessages.LOCKED, undefined)
 
         // Indicate that the iframe is now ready
-        fakeWindow.receivePostMessageFromIframe(
-          PostMessages.READY,
-          undefined,
-          emitter.iframe,
-          checkoutOrigin
-        )
+        emitter.setReady()
 
         fakeWindow.expectPostMessageSentToIframe(
           PostMessages.LOCKED,
@@ -116,24 +104,6 @@ describe('CheckoutIframeMessageEmitter', () => {
 
         fakeWindow.expectPostMessageNotSent(PostMessages.READY, undefined)
       })
-    })
-
-    it('should set up addHandler', () => {
-      expect.assertions(1)
-
-      const fakeReady = jest.fn()
-      const emitter = makeEmitter(fakeWindow)
-
-      emitter.addHandler(PostMessages.READY, fakeReady)
-
-      fakeWindow.receivePostMessageFromIframe(
-        PostMessages.READY,
-        undefined,
-        emitter.iframe,
-        checkoutOrigin
-      )
-
-      expect(fakeReady).toHaveBeenCalled()
     })
   })
 
@@ -185,7 +155,7 @@ describe('CheckoutIframeMessageEmitter', () => {
     })
   })
 
-  describe('setupListeners', () => {
+  describe('emitting postmessages', () => {
     let ready: () => void
     let dismiss: () => void
     let purchase: (request: PurchaseKeyRequest) => void

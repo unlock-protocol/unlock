@@ -3,8 +3,7 @@ import { PostMessages } from '../../messageTypes'
 
 import {
   PostMessageResponder,
-  mainWindowPostOffice,
-  PostMessageListener,
+  emitPostMessagesFrom,
 } from '../../utils/postOffice'
 import {
   IframeType,
@@ -18,10 +17,7 @@ import {
   showIframe,
   hideIframe,
 } from '../iframeManager'
-import {
-  CheckoutIframeEventEmitter,
-  CheckoutIframeEvents,
-} from '../../EventEmitterTypes'
+import { CheckoutIframeEventEmitter } from '../../EventEmitterTypes'
 
 class FancyEmitter extends (EventEmitter as {
   new (): CheckoutIframeEventEmitter
@@ -36,10 +32,6 @@ class FancyEmitter extends (EventEmitter as {
  */
 export default class CheckoutIframeMessageEmitter extends FancyEmitter {
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
-  public readonly addHandler: (
-    type: keyof CheckoutIframeEvents,
-    listener: PostMessageListener
-  ) => void
 
   public readonly postMessage: PostMessageResponder<PostMessages>
   public readonly iframe: IframeType
@@ -59,13 +51,13 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
 
     this.buffer = []
 
-    const { postMessage, addHandler } = mainWindowPostOffice(
-      window,
-      this.iframe,
+    const { postMessage } = emitPostMessagesFrom(
+      this.iframe.contentWindow,
       url.origin,
-      'main window',
-      'Checkout UI iframe'
+      window,
+      this.emit.bind(this)
     )
+
     // We want to only post message when we're ready!
     this.postMessage = (type, payload) => {
       if (!this.isReady) {
@@ -74,7 +66,6 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
         postMessage(type, payload)
       }
     }
-    this.addHandler = addHandler
   }
 
   flushBuffer() {
@@ -94,17 +85,8 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
     hideIframe(this.window, this.iframe)
   }
 
-  setupListeners() {
-    this.addHandler(PostMessages.READY, () => {
-      this.isReady = true
-      this.flushBuffer()
-      this.emit(PostMessages.READY)
-    })
-    this.addHandler(PostMessages.DISMISS_CHECKOUT, () =>
-      this.emit(PostMessages.DISMISS_CHECKOUT)
-    )
-    this.addHandler(PostMessages.PURCHASE_KEY, request =>
-      this.emit(PostMessages.PURCHASE_KEY, request)
-    )
+  setReady = () => {
+    this.isReady = true
+    this.flushBuffer()
   }
 }
