@@ -92,7 +92,6 @@ describe('updateDefaults', () => {
       expect.assertions(1)
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       const response = await request(app)
@@ -116,7 +115,6 @@ describe('updateDefaults', () => {
       expect.assertions(1)
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       const response = await request(app)
@@ -133,7 +131,6 @@ describe('updateDefaults', () => {
         expect.assertions(1)
         const sig = sigUtil.signTypedData(privateKey2, {
           data: typedData,
-          from: '',
         })
 
         const response = await request(app)
