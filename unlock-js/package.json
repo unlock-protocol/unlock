@@ -39,6 +39,7 @@
     "@babel/core": "7.7.4",
     "@babel/preset-env": "7.7.4",
     "babel-jest": "24.9.0",
+    "erc1820": "0.0.2",
     "jest": "24.9.0",
     "nock": "11.7.0",
     "unlock-abi-0": "1.0.4",
