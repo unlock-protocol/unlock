@@ -9,7 +9,7 @@ namespace SignatureValidationMiddleware {
     return JSON.parse(decodeURIComponent(payload))
   }
 
-  const extractTypeDataSignee = (header: string, body: string) => {
+  const extractTypeDataSignee = (header: string, body: any) => {
     const decodedSignature = Base64.decode(header)
 
     try {

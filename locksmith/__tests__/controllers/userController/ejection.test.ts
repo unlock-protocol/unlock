@@ -68,7 +68,6 @@ describe('when ejecting an address', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       let emailAddress = 'existing@example.com'
@@ -108,7 +107,6 @@ describe('when ejecting an address', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       let response = await request(app)
@@ -138,7 +136,6 @@ describe('when ejecting an address', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       let emailAddress = 'ejected_user@example.com'
