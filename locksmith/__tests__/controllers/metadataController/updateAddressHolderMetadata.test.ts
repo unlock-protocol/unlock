@@ -56,7 +56,6 @@ describe('updating address holder metadata', () => {
 
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
-      from: '',
     })
 
     const response = await request(app)
@@ -84,7 +83,6 @@ describe('updating address holder metadata', () => {
 
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
-      from: '',
     })
 
     const response = await request(app)
@@ -113,7 +111,6 @@ describe('updating address holder metadata', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       const response = await request(app)

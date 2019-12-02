@@ -82,7 +82,6 @@ describe('Purchase Controller', () => {
       let typedData = generateTypedData(message)
 
       const sig = sigUtil.signTypedData(privateKey, {
-        from: '',
         data: typedData,
       })
 
@@ -115,7 +114,6 @@ describe('Purchase Controller', () => {
       let typedData = generateTypedData(message)
 
       const sig = sigUtil.signTypedData(privateKey, {
-        from: '',
         data: typedData,
       })
       it('responds with a 412', async () => {
@@ -140,7 +138,6 @@ describe('Purchase Controller', () => {
 
       let typedData = generateTypedData(message)
       const sig = sigUtil.signTypedData(privateKey, {
-        from: '',
         data: typedData,
       })
       it('rejects the purchase', async () => {

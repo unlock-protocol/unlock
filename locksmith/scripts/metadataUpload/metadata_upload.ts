@@ -11,7 +11,6 @@ function generateSignature(privateKey: string, data: any) {
   let pk = ethJsUtil.toBuffer(privateKey)
 
   return sigUtil.signTypedData(pk, {
-    from: '',
     data,
   })
 }

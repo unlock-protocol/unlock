@@ -72,7 +72,6 @@ describe('When the signee is the Lock owner', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       const response = await request(app)
