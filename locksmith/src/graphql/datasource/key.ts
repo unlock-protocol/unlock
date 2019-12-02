@@ -1,6 +1,5 @@
 import { gql } from 'apollo-server-express'
 import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
-import { generateMetadata } from './metaData'
 
 // eslint-disable-next-line import/prefer-default-export
 export class Key extends UnlockGraphQLDataSource {
@@ -30,14 +29,7 @@ export class Key extends UnlockGraphQLDataSource {
 
     try {
       let response = await this.query(keysQuery)
-      let enriched = response.data.keys.map(async (key: any) => {
-        return {
-          ...key,
-          metadata: await generateMetadata(key.lock.id, key.keyId),
-        }
-      })
-
-      return enriched
+      return response.data.keys
     } catch (error) {
       return []
     }
