@@ -9,7 +9,7 @@ const getProxy = require('../helpers/proxy')
 
 let unlock, locks
 
-contract('Lock / safeShareKey', accounts => {
+contract('Lock / shareKey', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
@@ -42,7 +42,7 @@ contract('Lock / safeShareKey', accounts => {
     describe('not meeting pre-requisites', () => {
       it('sender is not approved', async () => {
         await shouldFail(
-          lock.safeShareKey(accounts[7], 11, 1000, {
+          lock.shareKey(accounts[7], 11, 1000, {
             from: accountWithNoKey1,
           }),
           'ONLY_KEY_OWNER_OR_APPROVED'
@@ -51,7 +51,7 @@ contract('Lock / safeShareKey', accounts => {
 
       it('called by other than keyOwner or approved ', async () => {
         await shouldFail(
-          lock.safeShareKey(
+          lock.shareKey(
             accounts[3],
             await lock.getTokenIdFor.call(keyOwners[0]),
             1000,
@@ -65,7 +65,7 @@ contract('Lock / safeShareKey', accounts => {
 
       it('should abort if the recipient is 0x', async () => {
         await shouldFail(
-          lock.safeShareKey(
+          lock.shareKey(
             Web3Utils.padLeft(0, 40),
             await lock.getTokenIdFor.call(keyOwners[0]),
             1000,
@@ -83,7 +83,7 @@ contract('Lock / safeShareKey', accounts => {
       let ID = await lock.getTokenIdFor.call(keyOwner2)
       assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
       await shouldFail(
-        lock.safeShareKey(nonCompliantContract, ID, 1000, {
+        lock.shareKey(nonCompliantContract, ID, 1000, {
           from: keyOwner2,
         })
       )
@@ -96,14 +96,9 @@ contract('Lock / safeShareKey', accounts => {
         let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         tokenId1 = await lock.getTokenIdFor.call(keyOwner1)
         assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
-        tx1 = await lock.safeShareKey(
-          accountWithNoKey1,
-          tokenId1,
-          tooMuchTime,
-          {
-            from: keyOwner1,
-          }
-        )
+        tx1 = await lock.shareKey(accountWithNoKey1, tokenId1, tooMuchTime, {
+          from: keyOwner1,
+        })
         let actualTimeShared = tx1.logs[2].args._amount.toNumber(10)
         assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
         let newExpirationTimestamp = new BigNumber(
@@ -157,7 +152,7 @@ contract('Lock / safeShareKey', accounts => {
       )
       fee = new BigNumber(await lock.getTransferFee.call(keyOwner2, oneDay))
       tokenId2 = await lock.getTokenIdFor.call(keyOwner2)
-      tx2 = await lock.safeShareKey(accountWithNoKey2, tokenId2, oneDay, {
+      tx2 = await lock.shareKey(accountWithNoKey2, tokenId2, oneDay, {
         from: keyOwner2,
       })
       event = tx2.logs[0].event
@@ -224,7 +219,7 @@ contract('Lock / safeShareKey', accounts => {
       let oldExistingKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
-      await lock.safeShareKey(keyOwner3, tokenId2, oneDay, {
+      await lock.shareKey(keyOwner3, tokenId2, oneDay, {
         from: keyOwner2,
       })
       let newExistingKeyExpiration = new BigNumber(
@@ -237,7 +232,7 @@ contract('Lock / safeShareKey', accounts => {
       let token = new BigNumber(await lock.getTokenIdFor(keyOwner2))
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
-      await lock.safeShareKey(accountWithNoKey3, token, oneDay, {
+      await lock.shareKey(accountWithNoKey3, token, oneDay, {
         from: approvedAddress,
       })
       // make sure recipient has a key
