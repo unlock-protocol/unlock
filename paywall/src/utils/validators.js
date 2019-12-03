@@ -212,6 +212,12 @@ export const isValidPaywallConfig = config => {
     return false
   }
 
+  if (config.metadataInputs) {
+    if (!isValidMetadataArray(config.metadataInputs)) {
+      return false
+    }
+  }
+
   return true
 }
 
