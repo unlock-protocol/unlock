@@ -157,6 +157,17 @@ describe('Form field validators', () => {
         ).toBe(false)
       })
 
+      it('should fail when metadataInputs is present but invalid', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidPaywallConfig({
+            ...validConfig,
+            metadataInputs: {},
+          })
+        ).toBeFalsy()
+      })
+
       it('icon', () => {
         expect.assertions(3)
 
@@ -799,6 +810,30 @@ describe('Form field validators', () => {
           },
         })
       ).toBe(true)
+    })
+
+    it('is valid when metadataInputs is present and valid', () => {
+      expect.assertions(1)
+
+      const metadataInputs = [
+        {
+          name: 'Name',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'Birthday',
+          type: 'date',
+          required: false,
+        },
+      ]
+
+      expect(
+        validators.isValidPaywallConfig({
+          ...validConfig,
+          metadataInputs,
+        })
+      ).toBeTruthy()
     })
   })
 
