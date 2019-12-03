@@ -1366,4 +1366,95 @@ describe('Form field validators', () => {
       ).toBe(true)
     })
   })
+
+  describe('isValidMetadataField', () => {
+    const name = 'field name'
+    const validType = 'date'
+    const invalidType = 'genome-sequence'
+
+    describe('failures', () => {
+      it('should be false if the name is missing', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            type: validType,
+            required: false,
+          })
+        ).toBeFalsy()
+      })
+
+      it('should be false if the name is not a string', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name: 7,
+            type: validType,
+            required: true,
+          })
+        ).toBeFalsy()
+      })
+
+      it('should be false if the type is missing', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name,
+            required: true,
+          })
+        ).toBeFalsy()
+      })
+
+      it('should be false if the type is incorrect', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name,
+            type: invalidType,
+            required: true,
+          })
+        ).toBeFalsy()
+      })
+
+      it('should be false if the required property is missing', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name,
+            type: validType,
+          })
+        ).toBeFalsy()
+      })
+
+      it('should be false if the required property is not a boolean', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name,
+            type: validType,
+            required: 7,
+          })
+        ).toBeFalsy()
+      })
+    })
+
+    describe('successes', () => {
+      it('should be true for a valid field input', () => {
+        expect.assertions(1)
+
+        expect(
+          validators.isValidMetadataField({
+            name,
+            type: validType,
+            required: true,
+          })
+        ).toBeTruthy()
+      })
+    })
+  })
 })

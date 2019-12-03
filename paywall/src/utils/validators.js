@@ -186,7 +186,6 @@ export const isValidPaywallConfig = config => {
 
   return true
 }
-/* eslint-enable no-console */
 
 /**
  * helper function to assert on a thing being an
@@ -344,3 +343,48 @@ export const isValidBalance = balance => {
     )
   }, true)
 }
+
+const allowedInputTypes = ['text', 'date', 'color', 'email', 'url']
+
+/**
+ * A valid metadata field looks like:
+ * {
+ *   name: 'field name', // any string
+ *   type: 'date', // any valid html input type
+ *   required: false, // a boolean
+ * }
+ */
+export const isValidMetadataField = field => {
+  const requiredKeys = ['name', 'type', 'required']
+  const hasRequiredProperties = isValidObject(field, requiredKeys)
+
+  if (!hasRequiredProperties) {
+    // TODO: more specificity in error messages
+    console.error(
+      'A field in the metadata fields in the paywall config is missing a required property.'
+    )
+    return false
+  }
+
+  const { name, type, required } = field
+
+  if (typeof name !== 'string') {
+    console.error(`Paywall metadata field error: ${name} is not a string.`)
+    return false
+  }
+
+  if (!allowedInputTypes.includes(type)) {
+    console.error(
+      `Paywall metadata field error: ${type} is not an allowed input type.`
+    )
+    return false
+  }
+
+  if (typeof required !== 'boolean') {
+    console.error(`Paywall metadata field error: ${required} is not a boolean.`)
+    return false
+  }
+
+  return true
+}
+/* eslint-enable no-console */
