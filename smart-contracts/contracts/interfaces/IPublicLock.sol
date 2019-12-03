@@ -11,6 +11,10 @@ import './IERC721Enumerable.sol';
 
 contract IPublicLock is IERC721Enumerable, IERC721 {
 
+/// See indentationissue description here:
+/// https://github.com/duaraghav8/Ethlint/issues/268
+/// solium-disable indentation
+
   ///===================================================================
   /// Events
   event Destroy(
@@ -109,7 +113,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function withdraw(
     address _tokenAddress,
     uint _amount
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
@@ -142,7 +146,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function getHasValidKey(
     address _owner
-  ) external view returns (bool); // solium-disable-line indentation
+  ) external view returns (bool);
 
   /**
    * @notice Find the tokenId for a given user
@@ -152,7 +156,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   */
   function getTokenIdFor(
     address _account
-  ) external view returns (uint); // solium-disable-line indentation
+  ) external view returns (uint);
 
   /**
   * A function which returns a subset of the keys for this Lock as an array
@@ -163,7 +167,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function getOwnersByPage(
     uint _page,
     uint _pageSize
-  ) external view returns (address[] memory); // solium-disable-line indentation
+  ) external view returns (address[] memory);
 
   /**
    * Checks if the given address owns the given tokenId.
@@ -173,7 +177,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function isKeyOwner(
     uint _tokenId,
     address _owner
-  ) external view returns (bool); // solium-disable-line indentation
+  ) external view returns (bool);
 
   /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
@@ -182,7 +186,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   */
   function keyExpirationTimestampFor(
     address _owner
-  ) external view returns (uint timestamp); // solium-disable-line indentation
+  ) external view returns (uint timestamp);
 
   /**
    * Public function which returns the total number of unique owners (both expired
@@ -197,7 +201,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function updateLockName(
     string calldata _lockName
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * Allows the Lock owner to assign a Symbol for this Lock.
@@ -206,7 +210,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function updateLockSymbol(
     string calldata _lockSymbol
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
     * @dev Gets the token symbol
@@ -223,7 +227,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function setBaseTokenURI(
     string calldata _baseTokenURI
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
@@ -235,7 +239,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function tokenURI(
     uint256 _tokenId
-  ) external view returns(string memory); // solium-disable-line indentation
+  ) external view returns(string memory);
 
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -247,7 +251,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function grantKeys(
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
   * @dev Purchase function
@@ -266,7 +270,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
     address _recipient,
     address _referrer,
     bytes calldata _data
-  ) external payable; // solium-disable-line indentation
+  ) external payable;
 
   /**
    * Allow the Lock owner to change the transfer fee.
@@ -276,7 +280,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function updateTransferFee(
     uint _transferFeeBasisPoints
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * Determines how much of a fee a key owner would need to pay in order to
@@ -290,7 +294,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function getTransferFee(
     address _owner,
     uint _time
-  ) external view returns (uint); // solium-disable-line indentation
+  ) external view returns (uint);
 
   /**
    * @dev Invoked by the lock owner to destroy the user's key and perform a refund and cancellation of the key
@@ -302,7 +306,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function fullRefund(
     address _keyOwner,
     uint amount
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * @notice Destroys the msg.sender's key and sends a refund based on the amount of time remaining.
@@ -317,7 +321,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function cancelAndRefundFor(
     address _keyOwner,
     bytes calldata _signature
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * @notice Sets the minimum nonce for a valid off-chain approval message from the
@@ -326,7 +330,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function invalidateOffchainApproval(
     uint _nextAvailableNonce
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * Allow the owner to change the refund penalty.
@@ -337,7 +341,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
@@ -348,7 +352,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
    */
   function getCancelAndRefundValueFor(
     address _owner
-  ) external view returns (uint refund); // solium-disable-line indentation
+  ) external view returns (uint refund);
 
   function keyOwnerToNonce(address ) external view returns (uint256 );
 
@@ -361,7 +365,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   function getCancelAndRefundApprovalHash(
     address _keyOwner,
     address _txSender
-  ) external view returns (bytes32 approvalHash); // solium-disable-line indentation
+  ) external view returns (bytes32 approvalHash);
 
   /**
   *@notice A utility function for erc721 metadata
@@ -376,7 +380,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
     string calldata _b,
     string calldata _c,
     string calldata _d
-  ) external pure returns (string memory _concatenatedString); // solium-disable-line indentation
+  ) external pure returns (string memory _concatenatedString);
 
   /**
   * @notice A utility function for erc721 metadata
@@ -385,7 +389,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   */
   function uint2Str(
     uint256 _i
-  ) external pure returns (string memory _uintAsString); // solium-disable-line indentation
+  ) external pure returns (string memory _uintAsString);
 
   /**
   * @notice A utility function for erc721 metadata
@@ -394,7 +398,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   */
   function address2Str(
     address _addr
-  ) external pure returns (string memory); // solium-disable-line indentation
+  ) external pure returns (string memory);
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
@@ -444,7 +448,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
     address _to,
     uint _tokenId,
     uint _timeShared
-  ) external; // solium-disable-line indentation
+  ) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
