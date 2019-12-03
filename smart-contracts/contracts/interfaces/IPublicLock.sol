@@ -11,9 +11,9 @@ import './IERC721Enumerable.sol';
 
 contract IPublicLock is IERC721Enumerable, IERC721 {
 
-/// See indentationissue description here:
-/// https://github.com/duaraghav8/Ethlint/issues/268
-/// solium-disable indentation
+// See indentationissue description here:
+// https://github.com/duaraghav8/Ethlint/issues/268
+// solium-disable indentation
 
   ///===================================================================
   /// Events
