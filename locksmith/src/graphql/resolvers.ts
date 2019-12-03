@@ -1,5 +1,6 @@
 import { KeyPurchase, Lock, Key } from './datasource'
 import { generateMetadata } from './datasource/metaData'
+import { KeyHolder } from './datasource/keyHolder'
 
 // eslint-disable-next-line import/prefer-default-export
 export const resolvers = {
@@ -11,6 +12,9 @@ export const resolvers = {
     // eslint-disable-next-line no-unused-vars
     key: async (_root: any, args: any, _context: any, _info: any) => {
       return await new Key().getKey(args.id)
+    },
+    keyHolders: async (_root: any, args: any) => {
+      return await new KeyHolder().get(args.where.address)
     },
   },
   Key: {
