@@ -78,6 +78,19 @@ contract('Lock / shareKey', accounts => {
       })
     })
 
+    it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
+      let nonCompliantContract = unlock.address
+      let ID = await lock.getTokenIdFor.call(keyOwner2)
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
+      await shouldFail(
+        lock.shareKey(nonCompliantContract, ID, 1000, {
+          from: keyOwner2,
+        })
+      )
+      // make sure the key was not shared
+      assert.equal(await lock.getHasValidKey.call(nonCompliantContract), false)
+    })
+
     describe('fallback behaviors', () => {
       it('transfers all remaining time if amount to share >= remaining time', async () => {
         let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
