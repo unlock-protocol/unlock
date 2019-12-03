@@ -1,6 +1,7 @@
 import About from './About'
 import Blog from './Blog'
 import Close from './Close'
+import Docs from './Docs'
 import Github from './Github'
 import Jobs from './Jobs'
 import Twitter from './Twitter'
@@ -13,6 +14,7 @@ export default {
   About,
   Blog,
   Close,
+  Docs,
   Github,
   Jobs,
   Twitter,
