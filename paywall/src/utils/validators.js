@@ -387,4 +387,22 @@ export const isValidMetadataField = field => {
 
   return true
 }
+
+export const isValidMetadataArray = fields => {
+  if (!Array.isArray(fields)) {
+    console.error('Paywall config metadata property is not an array.')
+    return false
+  }
+
+  // TODO: disallow multiple fields with the same name?
+  const validFields = fields.filter(isValidMetadataField)
+  if (validFields.length !== fields.length) {
+    console.error(
+      'Paywall config metadata contains an invalid field description.'
+    )
+    return false
+  }
+
+  return true
+}
 /* eslint-enable no-console */

@@ -1457,4 +1457,54 @@ describe('Form field validators', () => {
       })
     })
   })
+
+  describe('isValidMetadataArray', () => {
+    describe('failures', () => {
+      it('should be false if input is not an array', () => {
+        expect.assertions(1)
+
+        expect(validators.isValidMetadataArray(7)).toBeFalsy()
+      })
+
+      it('should be false if input contains invalid metadata fields', () => {
+        expect.assertions(1)
+
+        const fields = [
+          {
+            name: 'Jeff',
+            type: 'person',
+            required: 7,
+          },
+        ]
+
+        expect(validators.isValidMetadataArray(fields)).toBeFalsy()
+      })
+    })
+
+    describe('successes', () => {
+      it('should be true if all fields are valid', () => {
+        expect.assertions(1)
+
+        const fields = [
+          {
+            name: 'Name',
+            type: 'text',
+            required: true,
+          },
+          {
+            name: 'Email',
+            type: 'email',
+            required: true,
+          },
+          {
+            name: 'Birthday',
+            type: 'date',
+            required: false,
+          },
+        ]
+
+        expect(validators.isValidMetadataArray(fields)).toBeTruthy()
+      })
+    })
+  })
 })
