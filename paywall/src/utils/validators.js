@@ -83,6 +83,25 @@ export const isValidCTA = callToAction => {
   return true
 }
 
+export const isValidConfigLock = (lock, configLocks) => {
+  if (!isAccount(lock)) return false
+  const thisLock = configLocks[lock]
+  if (!thisLock || typeof thisLock !== 'object') return false
+  if (!Object.keys(thisLock).length) return true
+  if (Object.keys(thisLock).length !== 1) return false
+  if (
+    typeof thisLock.name !== 'undefined' &&
+    typeof thisLock.name !== 'string'
+  ) {
+    // TODO: which of the above conditions did it fail on?
+    console.error(
+      `The paywall config's "locks" field contains a key "${lock}" which has an invalid value.`
+    )
+    return false
+  }
+  return true
+}
+
 export const isValidConfigLocks = configLocks => {
   if (typeof configLocks !== 'object') {
     console.error(`The paywall configs's "locks" field is not an object.`)
@@ -91,26 +110,11 @@ export const isValidConfigLocks = configLocks => {
   const locks = Object.keys(configLocks)
   if (!locks.length) return false
   if (
-    locks.filter(lock => {
-      if (!isAccount(lock)) return false
-      const thisLock = configLocks[lock]
-      if (!thisLock || typeof thisLock !== 'object') return false
-      if (!Object.keys(thisLock).length) return true
-      if (Object.keys(thisLock).length !== 1) return false
-      if (
-        typeof thisLock.name !== 'undefined' &&
-        typeof thisLock.name !== 'string'
-      ) {
-        // TODO: which of the above conditions did it fail on?
-        console.error(
-          `The paywall config's "locks" field contains a key "${lock}" which has an invalid value.`
-        )
-        return false
-      }
-      return true
-    }).length !== locks.length
+    locks.filter(lock => isValidConfigLock(lock, configLocks)).length !==
+    locks.length
   ) {
-    // The internal logging of lock failures above should make it clear which lock caused this to fail.
+    // The logging of lock failures in `isValidConfigLock` should make
+    // it clear which lock caused this to fail.
     return false
   }
 
