@@ -69,6 +69,7 @@ export function checkoutHandlerInit({
 
   // pass on the configuration and request the latest data
   checkoutIframe.on(PostMessages.READY, () => {
+    checkoutIframe.setReady()
     checkoutIframe.postMessage(PostMessages.CONFIG, config)
 
     const updateKinds = [
@@ -108,11 +109,7 @@ interface iframeHandlerInitArgs {
 export function iframeHandlerInit({
   config,
   dataIframe,
-  checkoutIframe,
 }: iframeHandlerInitArgs) {
-  // TODO: consider removing the layer of event listeners and work with
-  // postmessages directly
-  checkoutIframe.setupListeners()
   // account listener setup will be on-demand, done by the Wallet in setupWallet()
   // Comment above verbatim from original site. Will likely be changed.
 

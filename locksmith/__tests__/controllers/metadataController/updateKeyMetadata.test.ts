@@ -58,7 +58,6 @@ describe('updateKeyMetadata', () => {
 
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
-        from: '',
       })
 
       const response = await request(app)
