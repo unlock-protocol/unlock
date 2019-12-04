@@ -1,10 +1,16 @@
 import { KeyPurchase, Key, LocksByOwner } from './datasource'
 import { generateMetadata } from './datasource/metaData'
 import { KeyHolder } from './datasource/keyHolder'
+import { KeyHoldersByLock } from './datasource/keyholdersByLock'
 
 export const resolvers = {
   Query: {
-    locks: (_root: any, args: any) => new LocksByOwner().get(args.where.owner),
+    locks: (_root: any, args: any) => {
+      if (args.where.owner) {
+        return new LocksByOwner().get(args.where.owner)
+      }
+      return new KeyHoldersByLock().getKeyHolders(args.where.address_in)
+    },
     keyPurchases: () => new KeyPurchase().getKeyPurchases(),
     // eslint-disable-next-line no-unused-vars
     keys: (_root: any, args: any) => new Key().getKeys(args),

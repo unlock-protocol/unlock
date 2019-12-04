@@ -2,26 +2,28 @@ import { gql } from 'apollo-server-express'
 import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 import Normalizer from '../../utils/normalizer'
 
-// eslint-disable-next-line import/prefer-default-export
 export class KeyHoldersByLock extends UnlockGraphQLDataSource {
-  // eslint-disable-next-line class-methods-use-this
-  genKeyHolderQuery(address: string) {
-    return gql`
-    {
-      locks(where: {address: "${address}" }) {
-      keys {
-        owner {
+  async getKeyHolders(addresses: [string]): Promise<any[]> {
+    const genKeyHolderQuery = gql`
+      query Lock($addresses: [String!]) {
+        locks(where: { address_in: $addresses }) {
+          keys {
+            owner {
+              address
+            }
+            keyId
+            expiration
+          }
+          name
           address
         }
       }
-    }
-  }
-  `
-  }
+    `
 
-  async getKeyHolders(address: string): Promise<any[]> {
     try {
-      const response = await this.query(this.genKeyHolderQuery(address))
+      const response = await this.query(genKeyHolderQuery, {
+        variables: { addresses },
+      })
 
       return response.data.locks
     } catch (error) {
@@ -29,8 +31,9 @@ export class KeyHoldersByLock extends UnlockGraphQLDataSource {
     }
   }
 
+  /* Utilized in the members page */
   async getKeyHoldingAddresses(lockAddress: string) {
-    const queryResults = await this.getKeyHolders(lockAddress)
+    const queryResults = await this.getKeyHolders([lockAddress])
 
     try {
       if (queryResults.length === 0) {
