@@ -10,7 +10,8 @@ export const typeDefs = gql`
     price: String
     expirationDuration: Int
     totalSupply: Int
-    maxNumberOfKey: Int
+    maxNumberOfKeys: String
+    owner: String
   }
 
   type KeyPurchase {
@@ -25,13 +26,17 @@ export const typeDefs = gql`
   type Query {
     key(id: ID!): Key
     keys(first: Int): [Key]
-    locks: [Lock]
+    locks(where: LockByOwnerQuery!): [Lock]
     keyPurchases: [KeyPurchase!]
     keyHolders(where: KeyHolderQuery!): [KeyHolder]
   }
 
   input KeyHolderQuery {
     address: String!
+  }
+
+  input LockByOwnerQuery {
+    owner: String!
   }
 
   type Attribute {
