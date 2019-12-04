@@ -29576,14 +29576,14 @@ Object {
     />
     <div>
       <label
-        class="sc-jWBwVP deLszz"
+        class="sc-jWBwVP eburEg"
         required=""
       >
         <span>
           General Text
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="General Text"
           placeholder="General Text"
           required=""
@@ -29591,14 +29591,14 @@ Object {
         />
       </label>
       <label
-        class="sc-jWBwVP deLszz"
+        class="sc-jWBwVP eburEg"
         required=""
       >
         <span>
           Date
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Date"
           placeholder="Date"
           required=""
@@ -29606,14 +29606,14 @@ Object {
         />
       </label>
       <label
-        class="sc-jWBwVP deLszz"
+        class="sc-jWBwVP eburEg"
         required=""
       >
         <span>
           Color
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Color"
           placeholder="Color"
           required=""
@@ -29621,14 +29621,14 @@ Object {
         />
       </label>
       <label
-        class="sc-jWBwVP deLszz"
+        class="sc-jWBwVP eburEg"
         required=""
       >
         <span>
           Email Address
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Email Address"
           placeholder="Email Address"
           required=""
@@ -29636,14 +29636,14 @@ Object {
         />
       </label>
       <label
-        class="sc-jWBwVP deLszz"
+        class="sc-jWBwVP eburEg"
         required=""
       >
         <span>
           URL
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="URL"
           placeholder="URL"
           required=""
@@ -29814,65 +29814,65 @@ Object {
     />
     <div>
       <label
-        class="sc-jWBwVP fMWDML"
+        class="sc-jWBwVP fOeUSV"
       >
         <span>
           General Text
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="General Text"
           placeholder="General Text"
           type="text"
         />
       </label>
       <label
-        class="sc-jWBwVP fMWDML"
+        class="sc-jWBwVP fOeUSV"
       >
         <span>
           Date
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Date"
           placeholder="Date"
           type="date"
         />
       </label>
       <label
-        class="sc-jWBwVP fMWDML"
+        class="sc-jWBwVP fOeUSV"
       >
         <span>
           Color
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Color"
           placeholder="Color"
           type="color"
         />
       </label>
       <label
-        class="sc-jWBwVP fMWDML"
+        class="sc-jWBwVP fOeUSV"
       >
         <span>
           Email Address
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="Email Address"
           placeholder="Email Address"
           type="email"
         />
       </label>
       <label
-        class="sc-jWBwVP fMWDML"
+        class="sc-jWBwVP fOeUSV"
       >
         <span>
           URL
         </span>
         <input
-          class="sc-cvbbAY gktCWM"
+          class="sc-cvbbAY hbLzvx"
           name="URL"
           placeholder="URL"
           type="url"
