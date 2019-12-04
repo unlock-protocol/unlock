@@ -30,7 +30,6 @@ const typedData = lockTypedData({
 
 const sig = sigUtil.signTypedData(privateKey, {
   data: typedData,
-  from: '',
 })
 
 let keyHolderStructuredData = lockTypedData({
@@ -43,7 +42,6 @@ let keyHolderStructuredData = lockTypedData({
 
 let keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
   data: keyHolderStructuredData,
-  from: '',
 })
 
 const mockOnChainLockOwnership = {

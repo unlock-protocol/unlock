@@ -2,9 +2,9 @@ import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
 import MainWindowHandler from './MainWindowHandler'
-import CheckoutUIHandler from './CheckoutUIHandler'
 import StartupConstants from './startupTypes'
 import { walletStatus } from '../utils/wallet'
+import { checkoutHandlerInit } from './postMessageHub'
 
 /**
  * convert all of the lock addresses to lower-case so they are normalized across the app
@@ -65,12 +65,6 @@ export function startup(
   )
   iframes.init(config)
 
-  // set up the communication with the checkout iframe
-  const checkoutIframeHandler = new CheckoutUIHandler(
-    iframes,
-    config,
-    constants
-  )
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
   // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
@@ -83,8 +77,13 @@ export function startup(
 
   const walletInitParams = walletStatus(window, config)
   wallet.init(walletInitParams)
-  checkoutIframeHandler.init({
+
+  checkoutHandlerInit({
     usingManagedAccount: walletInitParams.shouldUseUserAccounts,
+    constants,
+    config,
+    dataIframe: iframes.data,
+    checkoutIframe: iframes.checkout,
   })
 
   return iframes // this is only useful in testing, it is ignored in the app
