@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events'
 import { ChainData } from '../../UIOS/chainData'
+import { KeyResult } from '../../unlockTypes'
 
 const mock = () => {
   const web3Service = new EventEmitter()
@@ -12,22 +13,6 @@ const mock = () => {
 }
 
 describe('UIOS ChainData', () => {
-  describe('event listeners', () => {
-    it('calls updateLock for lock.updated event', () => {
-      expect.assertions(2)
-      const { web3Service, chainData } = mock()
-
-      const lockAddress = '0xlockaddress'
-      const update = { color: 'blue' }
-
-      expect(chainData.locks[lockAddress]).toBeUndefined()
-
-      web3Service.emit('lock.updated', lockAddress, update)
-
-      expect(chainData.locks[lockAddress]).toBeDefined()
-    })
-  })
-
   describe('updateLock', () => {
     let web3Service: EventEmitter
     let chainData: ChainData
@@ -82,6 +67,67 @@ describe('UIOS ChainData', () => {
         '0xanotherlock': {
           animal: 'kitten',
           address: '0xanotherlock',
+        },
+      })
+    })
+  })
+
+  describe('updateKey', () => {
+    let web3Service: EventEmitter
+    let chainData: ChainData
+    beforeAll(() => {
+      const mocks = mock()
+      web3Service = mocks.web3Service
+      chainData = mocks.chainData
+    })
+
+    it('starts with an empty keys object', () => {
+      expect.assertions(1)
+
+      expect(Object.keys(chainData.keys)).toHaveLength(0)
+    })
+
+    it('updates the key state with a new key', () => {
+      expect.assertions(1)
+
+      const update: KeyResult = {
+        lock: '0xLOCKADDRESS',
+        owner: '0xOWNERADDRESS',
+        expiration: 1234567890,
+      }
+
+      web3Service.emit('key.updated', undefined, update)
+
+      expect(chainData.keys).toEqual({
+        '0xlockaddress': {
+          expiration: 1234567890,
+          lock: '0xlockaddress',
+          owner: '0xowneraddress',
+        },
+      })
+    })
+
+    it('can track multiple keys', () => {
+      expect.assertions(1)
+
+      const update: KeyResult = {
+        lock: '0xAnOtHeRLOCK',
+        owner: '0xOWNERADDRESS',
+        expiration: 1234567890,
+      }
+
+      web3Service.emit('key.updated', undefined, update)
+
+      expect(chainData.keys).toEqual({
+        '0xlockaddress': {
+          expiration: 1234567890,
+          lock: '0xlockaddress',
+          owner: '0xowneraddress',
+        },
+        '0xanotherlock': {
+          expiration: 1234567890,
+          lock: '0xanotherlock',
+          owner: '0xowneraddress',
         },
       })
     })

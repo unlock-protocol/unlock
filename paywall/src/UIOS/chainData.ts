@@ -1,9 +1,9 @@
-import { RawLocks, Keys } from '../unlockTypes'
+import { RawLocks, KeyResults, KeyResult } from '../unlockTypes'
 import { normalizeLockAddress } from '../utils/normalizeAddresses'
 
 export class ChainData {
   locks: RawLocks = {}
-  keys: Keys = {}
+  keys: KeyResults = {}
 
   // The list of lock addresses from the paywall configuration
   lockAddresses: string[] = []
@@ -16,6 +16,7 @@ export class ChainData {
 
     // Add web3service event listeners
     this.web3Service.on('lock.updated', this.updateLock)
+    this.web3Service.on('key.updated', this.updateKey)
 
     // Start the process
     // TODO: error handling?
@@ -34,6 +35,19 @@ export class ChainData {
       // use the normalized address instead of accidentally
       // overwriting.
       address: normalizedAddress,
+    }
+  }
+
+  updateKey = (_: any, key: KeyResult) => {
+    const normalizedAddress = normalizeLockAddress(key.lock)
+    // note the `!`; that's an artifact of the old blockchain handler.
+    // TODO: remove the possibility of a null key owner
+    const normalizedOwnerAddress = normalizeLockAddress(key.owner!)
+
+    this.keys[normalizedAddress] = {
+      expiration: key.expiration,
+      owner: normalizedOwnerAddress,
+      lock: normalizedAddress,
     }
   }
 }
