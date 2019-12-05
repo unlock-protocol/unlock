@@ -62,9 +62,7 @@ export class BlockchainHandler {
 
   updateKey = (_: any, key: KeyResult) => {
     const normalizedAddress = normalizeLockAddress(key.lock)
-    // note the `!`; that's an artifact of the old blockchain handler.
-    // TODO: remove the possibility of a null key owner
-    const normalizedOwnerAddress = normalizeLockAddress(key.owner!)
+    const normalizedOwnerAddress = normalizeLockAddress(key.owner)
 
     this.keys[normalizedAddress] = {
       expiration: key.expiration,

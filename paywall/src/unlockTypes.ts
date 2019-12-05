@@ -160,7 +160,7 @@ export interface NetworkNames {
 // Keys exactly as they come out of Web3Service
 export interface KeyResult {
   lock: string
-  owner: string | null
+  owner: string
   expiration: number
 }
 
