@@ -64,5 +64,8 @@
     "node_modules",
     "build",
     "__tests__"
-  ]
+  ],
+  "rules" :{
+    "import/prefer-default-export": "off",
+  }
 }

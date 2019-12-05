@@ -24,9 +24,14 @@ export const typeDefs = gql`
 
   type Query {
     key(id: ID!): Key
-    keys: [Key]
+    keys(first: Int): [Key]
     locks: [Lock]
     keyPurchases: [KeyPurchase!]
+    keyHolders(where: KeyHolderQuery!): [KeyHolder]
+  }
+
+  input KeyHolderQuery {
+    address: String!
   }
 
   type Attribute {
@@ -45,6 +50,7 @@ export const typeDefs = gql`
   type KeyHolder {
     id: ID!
     address: String!
+    keys: [Key]
   }
 
   type Key {
@@ -54,5 +60,6 @@ export const typeDefs = gql`
     owner: KeyHolder!
     expiration: Int!
     metadata: Metadata
+    tokenURI: String
   }
 `
