@@ -29,6 +29,7 @@ import UnlockWordMark from './UnlockWordMark'
 import Upload from './Upload'
 import Withdraw from './Withdraw'
 import Newsletter from './Email'
+import Members from './Members'
 import Telegram from './Telegram'
 import Ticket from './Ticket'
 import Twitter from './Twitter'
@@ -74,6 +75,7 @@ export default {
   Upload: wrapViewBox(Upload, '0 0 24 24'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
   Newsletter: wrapViewBox(Newsletter, '0 0 24 24'),
+  Members: wrapViewBox(Members, '-4 -4 24 24'),
   Telegram: wrapViewBox(Telegram, '0 0 24 24'),
   Ticket: wrapViewBox(Ticket, '-8 -6 40 40'),
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
