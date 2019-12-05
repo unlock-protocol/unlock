@@ -1,6 +1,8 @@
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 
-// eslint-disable-next-line import/prefer-default-export
+const env = process.env.NODE_ENV || 'development'
+const config = require('../../../config/config')[env]
+
 export const generateMetadata = async (address: string, id: string) => {
-  return await generateKeyMetadata(address, id, false, 'http://example.com')
+  return generateKeyMetadata(address, id, false, config.metadataHost)
 }
