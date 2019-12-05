@@ -1,32 +1,79 @@
-import { EventEmitter } from 'events'
 import { BlockchainHandler } from '../../data-iframe/BlockchainHandler'
 import { KeyResult } from '../../unlockTypes'
+import { Web3ServiceType } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { getWeb3Service } from '../test-helpers/setupBlockchainHelpers'
 
 const mock = () => {
   const web3Service = getWeb3Service({})
-  const chainData = new BlockchainHandler(web3Service)
+  const blockchainHandler = new BlockchainHandler(web3Service)
 
   return {
-    chainData,
+    blockchainHandler,
     web3Service,
   }
 }
 
 describe('Improved blockchain handler', () => {
+  describe('init', () => {
+    const lockAddresses = ['0xALOCK', '0xANOTHERLOCK']
+    const accountAddress = '0xACCOUNTADDRESS'
+    let web3Service: Web3ServiceType
+    let blockchainHandler: BlockchainHandler
+    beforeEach(() => {
+      const mocks = mock()
+      web3Service = mocks.web3Service
+      blockchainHandler = mocks.blockchainHandler
+    })
+
+    it('should set lockAddresses and accountAddress', () => {
+      expect.assertions(2)
+
+      blockchainHandler.init(lockAddresses, accountAddress)
+
+      expect(blockchainHandler.lockAddresses).toEqual(lockAddresses)
+      expect(blockchainHandler.accountAddress).toEqual(accountAddress)
+    })
+
+    it('should get locks from web3Service', () => {
+      expect.assertions(2)
+
+      blockchainHandler.init(lockAddresses, accountAddress)
+
+      expect(web3Service.getLock).toHaveBeenNthCalledWith(1, lockAddresses[0])
+      expect(web3Service.getLock).toHaveBeenNthCalledWith(2, lockAddresses[1])
+    })
+
+    it('should get keys from web3Service', () => {
+      expect.assertions(2)
+
+      blockchainHandler.init(lockAddresses, accountAddress)
+
+      expect(web3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
+        1,
+        lockAddresses[0],
+        accountAddress
+      )
+      expect(web3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
+        2,
+        lockAddresses[1],
+        accountAddress
+      )
+    })
+  })
+
   describe('updateLock', () => {
-    let web3Service: EventEmitter
-    let chainData: BlockchainHandler
+    let web3Service: Web3ServiceType
+    let blockchainHandler: BlockchainHandler
     beforeAll(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
-      chainData = mocks.chainData
+      blockchainHandler = mocks.blockchainHandler
     })
 
     it('starts with an empty locks object', () => {
       expect.assertions(1)
 
-      expect(Object.keys(chainData.locks)).toHaveLength(0)
+      expect(Object.keys(blockchainHandler.locks)).toHaveLength(0)
     })
 
     it('updates the lock state with a new lock', () => {
@@ -35,7 +82,7 @@ describe('Improved blockchain handler', () => {
       web3Service.emit('lock.updated', '0xLOCKADDRESS', { color: 'blue' })
 
       // note that the lock address has been normalized here
-      expect(chainData.locks['0xlockaddress']).toEqual({
+      expect(blockchainHandler.locks['0xlockaddress']).toEqual({
         color: 'blue',
         address: '0xlockaddress',
       })
@@ -47,7 +94,7 @@ describe('Improved blockchain handler', () => {
       web3Service.emit('lock.updated', '0xLOCKADDRESS', { animal: 'camel' })
 
       // note that the lock address has been normalized here
-      expect(chainData.locks['0xlockaddress']).toEqual({
+      expect(blockchainHandler.locks['0xlockaddress']).toEqual({
         color: 'blue',
         animal: 'camel',
         address: '0xlockaddress',
@@ -59,7 +106,7 @@ describe('Improved blockchain handler', () => {
 
       web3Service.emit('lock.updated', '0xAnOtHeRLOCK', { animal: 'kitten' })
 
-      expect(chainData.locks).toEqual({
+      expect(blockchainHandler.locks).toEqual({
         '0xlockaddress': {
           color: 'blue',
           animal: 'camel',
@@ -74,18 +121,18 @@ describe('Improved blockchain handler', () => {
   })
 
   describe('updateKey', () => {
-    let web3Service: EventEmitter
-    let chainData: BlockchainHandler
+    let web3Service: Web3ServiceType
+    let blockchainHandler: BlockchainHandler
     beforeAll(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
-      chainData = mocks.chainData
+      blockchainHandler = mocks.blockchainHandler
     })
 
     it('starts with an empty keys object', () => {
       expect.assertions(1)
 
-      expect(Object.keys(chainData.keys)).toHaveLength(0)
+      expect(Object.keys(blockchainHandler.keys)).toHaveLength(0)
     })
 
     it('updates the key state with a new key', () => {
@@ -99,7 +146,7 @@ describe('Improved blockchain handler', () => {
 
       web3Service.emit('key.updated', undefined, update)
 
-      expect(chainData.keys).toEqual({
+      expect(blockchainHandler.keys).toEqual({
         '0xlockaddress': {
           expiration: 1234567890,
           lock: '0xlockaddress',
@@ -119,7 +166,7 @@ describe('Improved blockchain handler', () => {
 
       web3Service.emit('key.updated', undefined, update)
 
-      expect(chainData.keys).toEqual({
+      expect(blockchainHandler.keys).toEqual({
         '0xlockaddress': {
           expiration: 1234567890,
           lock: '0xlockaddress',

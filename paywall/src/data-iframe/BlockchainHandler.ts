@@ -17,6 +17,16 @@ export class BlockchainHandler {
   // TODO: provide types from unlock-js
   web3Service: any
 
+  /**
+   * BlockchainHandler can be constructed immediately when there is an
+   * available web3Service, but it doesn't do anything until
+   * initialized with lock addresses from the configuration and the
+   * user's account address.
+   *
+   * The state cannot be reset. If any condition occurs (e.g. account
+   * address changed) which invalidates data, this object should be
+   * destroyed and replaced with a new one.
+   */
   constructor(web3Service: any) {
     this.web3Service = web3Service
 
