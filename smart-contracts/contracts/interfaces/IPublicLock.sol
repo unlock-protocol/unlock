@@ -71,7 +71,7 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
   */
-  function publicLockVersion() external pure returns (uint16);
+  function publicLockVersion() public pure returns (uint);
 
   /**
   * @notice Gets the current balance of the account provided.

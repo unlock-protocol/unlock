@@ -69,12 +69,4 @@ contract PublicLock is
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
   }
-
-  // The version number of the current implementation on this network
-  function publicLockVersion(
-  ) external pure
-    returns (uint16)
-  {
-    return 5;
-  }
 }

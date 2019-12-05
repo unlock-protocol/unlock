@@ -84,6 +84,14 @@ contract MixinLockCore is
     maxNumberOfKeys = _maxNumberOfKeys;
   }
 
+  // The version number of the current implementation on this network
+  function publicLockVersion(
+  ) public pure
+    returns (uint)
+  {
+    return 5;
+  }
+
   /**
    * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
