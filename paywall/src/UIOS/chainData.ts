@@ -14,7 +14,12 @@ export class ChainData {
     this.lockAddresses = lockAddresses
     this.web3Service = web3Service
 
+    // Add web3service event listeners
     this.web3Service.on('lock.updated', this.updateLock)
+
+    // Start the process
+    // TODO: error handling?
+    this.lockAddresses.forEach(address => this.web3Service.getLock(address))
   }
 
   updateLock = (lockAddress: string, update: any) => {
