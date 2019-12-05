@@ -148,6 +148,10 @@ export interface Key {
   lock: string
 }
 
+export interface Keys {
+  [lockAddress: string]: Keys
+}
+
 export interface PurchaseKeyRequest {
   lock: string // lock address
   extraTip: string // extra value to add in addition to key price
