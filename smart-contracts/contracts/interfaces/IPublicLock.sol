@@ -367,39 +367,6 @@ contract IPublicLock is IERC721Enumerable, IERC721 {
     address _txSender
   ) external view returns (bytes32 approvalHash);
 
-  /**
-  *@notice A utility function for erc721 metadata
-  * @param _a String 1
-  * @param _b String 2
-  * @param _c String 3
-  * @param _d String 4
-  * @return _concatenatedString The returned string
-  */
-  function strConcat(
-    string calldata _a,
-    string calldata _b,
-    string calldata _c,
-    string calldata _d
-  ) external pure returns (string memory _concatenatedString);
-
-  /**
-  * @notice A utility function for erc721 metadata
-  * @param _i A uint to convert
-  * @return _uintAsString the returned string
-  */
-  function uint2Str(
-    uint256 _i
-  ) external pure returns (string memory _uintAsString);
-
-  /**
-  * @notice A utility function for erc721 metadata
-  * @param _addr An address to convert
-  * @return A string
-  */
-  function address2Str(
-    address _addr
-  ) external pure returns (string memory);
-
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
