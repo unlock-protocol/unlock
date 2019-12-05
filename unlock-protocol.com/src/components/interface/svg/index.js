@@ -7,6 +7,7 @@ import Close from './Close'
 import Code from './Code'
 import Copy from './Copy'
 import Download from './Download'
+import Docs from './Docs'
 import Edit from './Edit'
 import Eth from './Eth'
 import Etherscan from './Etherscan'
@@ -45,6 +46,7 @@ export default {
   Code: wrapViewBox(Code, '0 0 24 24'),
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),
+  Docs: wrapViewBox(Docs, '-6 -5 24 24'),
   Edit: wrapViewBox(Edit, '0 0 24 24'),
   Eth: wrapViewBox(Eth, '0 0 24 24'),
   Etherscan: wrapViewBox(Etherscan, '0 0 24 24'),

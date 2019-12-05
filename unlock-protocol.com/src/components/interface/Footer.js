@@ -6,7 +6,7 @@ const Footer = () => (
   <Container>
     <Buttons.About />
     <Buttons.Blog />
-    <Buttons.Jobs />
+    <Buttons.Docs />
     <Buttons.Github />
     <Buttons.Telegram />
     <Buttons.Twitter />
