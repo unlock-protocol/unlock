@@ -1,10 +1,11 @@
 import { EventEmitter } from 'events'
 import { ChainData } from '../../UIOS/chainData'
 import { KeyResult } from '../../unlockTypes'
+import { getWeb3Service } from '../test-helpers/setupBlockchainHelpers'
 
-const mock = () => {
-  const web3Service = new EventEmitter()
-  const chainData = new ChainData([], web3Service)
+const mock = (lockAddresses: string[] = []) => {
+  const web3Service = getWeb3Service({})
+  const chainData = new ChainData(lockAddresses, web3Service)
 
   return {
     chainData,
@@ -129,6 +130,49 @@ describe('UIOS ChainData', () => {
           lock: '0xanotherlock',
           owner: '0xowneraddress',
         },
+      })
+    })
+  })
+
+  describe('fetchKeys', () => {
+    it('does nothing if account has not been set', () => {
+      expect.assertions(1)
+
+      const mocks = mock(['0xlockaddress'])
+
+      mocks.chainData.fetchKeys()
+
+      expect(mocks.web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+    })
+
+    it('does nothing if account is set but there are no lock addresses', () => {
+      expect.assertions(1)
+
+      const mocks = mock()
+
+      // not using setAccountAddress so we can call fetchKeys separately
+      mocks.chainData.accountAddress = '0xaccountaddress'
+      mocks.chainData.fetchKeys()
+
+      expect(mocks.web3Service.getKeyByLockForOwner).not.toHaveBeenCalled()
+    })
+
+    it('should call getKeyByLockForOwner for each lock address', () => {
+      expect.assertions(3)
+
+      const lockAddresses = ['0xlock1', '0xlock2', '0xlock3']
+      const mocks = mock(lockAddresses)
+
+      // not using setAccountAddress so we can call fetchKeys separately
+      mocks.chainData.accountAddress = '0xaccountaddress'
+      mocks.chainData.fetchKeys()
+
+      lockAddresses.forEach((lockAddress, index) => {
+        expect(mocks.web3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
+          index + 1,
+          lockAddress,
+          '0xaccountaddress'
+        )
       })
     })
   })

@@ -4,6 +4,7 @@ import { normalizeLockAddress } from '../utils/normalizeAddresses'
 export class ChainData {
   locks: RawLocks = {}
   keys: KeyResults = {}
+  accountAddress: string | null = null
 
   // The list of lock addresses from the paywall configuration
   lockAddresses: string[] = []
@@ -20,7 +21,28 @@ export class ChainData {
 
     // Start the process
     // TODO: error handling?
-    this.lockAddresses.forEach(address => this.web3Service.getLock(address))
+    this.lockAddresses.forEach(lockAddress =>
+      this.web3Service.getLock(lockAddress)
+    )
+  }
+
+  fetchKeys = () => {
+    if (this.accountAddress) {
+      this.lockAddresses.forEach(lockAddress => {
+        this.web3Service.getKeyByLockForOwner(lockAddress, this.accountAddress)
+      })
+    }
+  }
+
+  setAccountAddress = (accountAddress: string) => {
+    const normalizedAddress = accountAddress
+    if (normalizedAddress !== this.accountAddress) {
+      this.accountAddress = normalizedAddress
+      // account changed, any keys currently in state belong to
+      // someone else
+      this.keys = {}
+      this.fetchKeys()
+    }
   }
 
   updateLock = (lockAddress: string, update: any) => {
