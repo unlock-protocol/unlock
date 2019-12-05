@@ -17,38 +17,22 @@ export class BlockchainHandler {
   // TODO: provide types from unlock-js
   web3Service: any
 
-  constructor(lockAddresses: string[], web3Service: any) {
-    this.lockAddresses = lockAddresses
+  constructor(web3Service: any) {
     this.web3Service = web3Service
 
     // Add web3service event listeners
     this.web3Service.on('lock.updated', this.updateLock)
     this.web3Service.on('key.updated', this.updateKey)
+  }
 
-    // Start the process
-    // TODO: error handling?
-    this.lockAddresses.forEach(lockAddress =>
+  init = (lockAddresses: string[], accountAddress: string) => {
+    this.lockAddresses = lockAddresses
+    this.accountAddress = accountAddress
+
+    this.lockAddresses.forEach(lockAddress => {
       this.web3Service.getLock(lockAddress)
-    )
-  }
-
-  fetchKeys = () => {
-    if (this.accountAddress) {
-      this.lockAddresses.forEach(lockAddress => {
-        this.web3Service.getKeyByLockForOwner(lockAddress, this.accountAddress)
-      })
-    }
-  }
-
-  setAccountAddress = (accountAddress: string) => {
-    const normalizedAddress = accountAddress
-    if (normalizedAddress !== this.accountAddress) {
-      this.accountAddress = normalizedAddress
-      // account changed, any keys currently in state belong to
-      // someone else
-      this.keys = {}
-      this.fetchKeys()
-    }
+      this.web3Service.getKeyByLockForOwner(lockAddress, this.accountAddress)
+    })
   }
 
   updateLock = (lockAddress: string, update: any) => {
