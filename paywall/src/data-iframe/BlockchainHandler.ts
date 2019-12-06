@@ -4,16 +4,25 @@
  * Mailbox.ts file and the blockchainHandler/ directory
  */
 
-import { RawLocks, KeyResults, KeyResult } from '../unlockTypes'
+import { getTransactionsFor } from './locksmith-helpers/getTransactionsFor'
+import {
+  RawLocks,
+  KeyResults,
+  KeyResult,
+  Transactions,
+  TransactionStatus,
+  TransactionType,
+} from '../unlockTypes'
 import { normalizeLockAddress } from '../utils/normalizeAddresses'
 
 export class BlockchainHandler {
   locks: RawLocks = {}
   keys: KeyResults = {}
-  accountAddress: string | null = null
+  transactions: Transactions = {}
+  accountAddress: string
 
   // The list of lock addresses from the paywall configuration
-  lockAddresses: string[] = []
+  lockAddresses: string[]
   // TODO: provide types from unlock-js
   web3Service: any
 
@@ -27,17 +36,18 @@ export class BlockchainHandler {
    * address changed) which invalidates data, this object should be
    * destroyed and replaced with a new one.
    */
-  constructor(web3Service: any) {
+  constructor(
+    web3Service: any,
+    lockAddresses: string[],
+    accountAddress: string
+  ) {
     this.web3Service = web3Service
+    this.lockAddresses = lockAddresses
+    this.accountAddress = accountAddress
 
     // Add web3service event listeners
     this.web3Service.on('lock.updated', this.updateLock)
     this.web3Service.on('key.updated', this.updateKey)
-  }
-
-  init = (lockAddresses: string[], accountAddress: string) => {
-    this.lockAddresses = lockAddresses
-    this.accountAddress = accountAddress
 
     this.lockAddresses.forEach(lockAddress => {
       this.web3Service.getLock(lockAddress)
@@ -69,5 +79,33 @@ export class BlockchainHandler {
       owner: normalizedOwnerAddress,
       lock: normalizedAddress,
     }
+  }
+
+  getTransactionsFromLocksmith = async () => {
+    const transactions = await getTransactionsFor(
+      this.accountAddress,
+      this.lockAddresses
+    )
+    transactions.forEach(transaction => {
+      this.transactions[transaction.hash] = {
+        hash: transaction.hash,
+        status: TransactionStatus.SUBMITTED,
+        confirmations: 0,
+        blockNumber: Number.MAX_SAFE_INTEGER,
+        type: TransactionType.KEY_PURCHASE,
+      }
+
+      this.web3Service
+        .getTransaction(
+          transaction.hash,
+          transaction.input ? transaction : undefined
+        )
+        .catch(() => {
+          // For now, ignore failure: this means locksmith knows of a transaction
+          // which does not exist. Probably stale?
+          // eslint-disable-next-line no-console
+          console.log('unable to retrieve saved transaction from blockchain')
+        })
+    })
   }
 }

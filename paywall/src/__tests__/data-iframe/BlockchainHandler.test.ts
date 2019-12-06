@@ -3,9 +3,19 @@ import { KeyResult } from '../../unlockTypes'
 import { Web3ServiceType } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { getWeb3Service } from '../test-helpers/setupBlockchainHelpers'
 
-const mock = () => {
+const lockAddresses = ['0xALOCK', '0xANOTHERLOCK']
+const accountAddress = '0xACCOUNTADDRESS'
+
+const mock = (
+  overrideLockAddresses: string[] = lockAddresses,
+  overrideAccountAddress: string = accountAddress
+) => {
   const web3Service = getWeb3Service({})
-  const blockchainHandler = new BlockchainHandler(web3Service)
+  const blockchainHandler = new BlockchainHandler(
+    web3Service,
+    overrideLockAddresses,
+    overrideAccountAddress
+  )
 
   return {
     blockchainHandler,
@@ -14,11 +24,10 @@ const mock = () => {
 }
 
 describe('Improved blockchain handler', () => {
-  describe('init', () => {
-    const lockAddresses = ['0xALOCK', '0xANOTHERLOCK']
-    const accountAddress = '0xACCOUNTADDRESS'
+  describe('constructor', () => {
     let web3Service: Web3ServiceType
     let blockchainHandler: BlockchainHandler
+
     beforeEach(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
@@ -28,8 +37,6 @@ describe('Improved blockchain handler', () => {
     it('should set lockAddresses and accountAddress', () => {
       expect.assertions(2)
 
-      blockchainHandler.init(lockAddresses, accountAddress)
-
       expect(blockchainHandler.lockAddresses).toEqual(lockAddresses)
       expect(blockchainHandler.accountAddress).toEqual(accountAddress)
     })
@@ -37,16 +44,12 @@ describe('Improved blockchain handler', () => {
     it('should get locks from web3Service', () => {
       expect.assertions(2)
 
-      blockchainHandler.init(lockAddresses, accountAddress)
-
       expect(web3Service.getLock).toHaveBeenNthCalledWith(1, lockAddresses[0])
       expect(web3Service.getLock).toHaveBeenNthCalledWith(2, lockAddresses[1])
     })
 
     it('should get keys from web3Service', () => {
       expect.assertions(2)
-
-      blockchainHandler.init(lockAddresses, accountAddress)
 
       expect(web3Service.getKeyByLockForOwner).toHaveBeenNthCalledWith(
         1,
