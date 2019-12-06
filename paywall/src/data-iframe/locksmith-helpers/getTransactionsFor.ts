@@ -1,4 +1,3 @@
-import { TransactionStatus, TransactionType } from '../../unlockTypes'
 import {
   LocksmithTransactionsResult,
   TransactionDefaults,
@@ -26,12 +25,6 @@ export const transformLocksmithTransaction = (
     from: t.sender,
     hash: t.transactionHash,
     input: t.data,
-    // All of these properties with literal values will be updated by
-    // Web3Service when the transaction polling starts.
-    status: TransactionStatus.SUBMITTED,
-    confirmations: 0,
-    type: TransactionType.KEY_PURCHASE,
-    blockNumber: Number.MAX_SAFE_INTEGER,
   }
 }
 

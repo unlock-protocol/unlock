@@ -7,7 +7,6 @@ import {
   LocksmithTransactionsResult,
   TransactionDefaults,
 } from '../../../data-iframe/blockchainHandler/blockChainTypes'
-import { TransactionStatus, TransactionType } from '../../../unlockTypes'
 
 const makeMockFetch = (mockJSON: any = {}) => {
   const g = global as any
@@ -48,10 +47,6 @@ const expectedTransaction: TransactionDefaults = {
   from: '0xdef33d',
   for: '0xdef33d',
   input: null,
-  blockNumber: Number.MAX_SAFE_INTEGER,
-  confirmations: 0,
-  status: TransactionStatus.SUBMITTED,
-  type: TransactionType.KEY_PURCHASE,
 }
 
 describe('getTransactionsFor - makeLockFilter', () => {
