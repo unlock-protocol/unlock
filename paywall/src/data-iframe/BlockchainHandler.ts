@@ -48,6 +48,7 @@ export class BlockchainHandler {
     // Add web3service event listeners
     this.web3Service.on('lock.updated', this.updateLock)
     this.web3Service.on('key.updated', this.updateKey)
+    this.web3Service.on('transaction.updated', this.updateTransaction)
 
     this.lockAddresses.forEach(lockAddress => {
       this.web3Service.getLock(lockAddress)
@@ -78,6 +79,24 @@ export class BlockchainHandler {
       expiration: key.expiration,
       owner: normalizedOwnerAddress,
       lock: normalizedAddress,
+    }
+  }
+
+  updateTransaction = (hash: string, update: any) => {
+    if (update.lock) {
+      // ensure all references to locks are normalized
+      update.lock = normalizeLockAddress(update.lock)
+    }
+    if (update.to) {
+      // ensure all references to locks are normalized
+      update.to = normalizeLockAddress(update.to)
+    }
+
+    const currentTransaction = this.transactions[hash] || {}
+
+    this.transactions[hash] = {
+      ...currentTransaction,
+      ...update,
     }
   }
 

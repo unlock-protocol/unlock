@@ -185,6 +185,87 @@ describe('Improved blockchain handler', () => {
     })
   })
 
+  describe('updateTransaction', () => {
+    let web3Service: Web3ServiceType
+    let blockchainHandler: BlockchainHandler
+    beforeAll(() => {
+      const mocks = mock()
+      web3Service = mocks.web3Service
+      blockchainHandler = mocks.blockchainHandler
+    })
+
+    it('starts with an empty transactions object', () => {
+      expect.assertions(1)
+
+      expect(Object.keys(blockchainHandler.transactions)).toHaveLength(0)
+    })
+
+    it('updates the transactions state with a transaction update', () => {
+      expect.assertions(1)
+
+      const update = {
+        hash: '0xhash1',
+        status: 'mined',
+        blockNumber: 7,
+        lock: '0xLOCKADDRESS',
+        to: '0xTO',
+      }
+
+      web3Service.emit('transaction.updated', '0xhash1', update)
+
+      expect(blockchainHandler.transactions).toEqual({
+        '0xhash1': {
+          hash: '0xhash1',
+          status: 'mined',
+          blockNumber: 7,
+          lock: '0xlockaddress', // normalized!
+          to: '0xto',
+        },
+      })
+    })
+
+    it('updates existing transactions in the state', () => {
+      expect.assertions(1)
+
+      const update = {
+        blockNumber: 8,
+      }
+
+      web3Service.emit('transaction.updated', '0xhash1', update)
+
+      expect(blockchainHandler.transactions).toEqual({
+        '0xhash1': {
+          hash: '0xhash1',
+          status: 'mined',
+          blockNumber: 8,
+          lock: '0xlockaddress',
+          to: '0xto',
+        },
+      })
+    })
+
+    it('can track multiple transactions', () => {
+      expect.assertions(1)
+
+      const update = { blockNumber: 12 }
+
+      web3Service.emit('transaction.updated', '0xhash2', update)
+
+      expect(blockchainHandler.transactions).toEqual({
+        '0xhash1': {
+          hash: '0xhash1',
+          status: 'mined',
+          blockNumber: 8,
+          lock: '0xlockaddress',
+          to: '0xto',
+        },
+        '0xhash2': {
+          blockNumber: 12,
+        },
+      })
+    })
+  })
+
   describe('getTransactionsFromLocksmith', () => {
     let web3Service: Web3ServiceType
     let blockchainHandler: BlockchainHandler
