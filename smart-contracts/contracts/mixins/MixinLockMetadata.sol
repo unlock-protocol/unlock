@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.13;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
@@ -18,9 +18,12 @@ contract MixinLockMetadata is
   ERC165,
   Ownable,
   MixinLockCore,
-  UnlockUtils,
   MixinKeys
 {
+  using UnlockUtils for uint;
+  using UnlockUtils for address;
+  using UnlockUtils for string;
+
   /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
   string public name;
 
@@ -114,11 +117,10 @@ contract MixinLockMetadata is
       URI = baseTokenURI;
     }
 
-    return UnlockUtils.strConcat(
-      URI,
-      UnlockUtils.address2Str(address(this)),
+    return URI.strConcat(
+      address(this).address2Str(),
       '/',
-      UnlockUtils.uint2Str(_tokenId)
+      _tokenId.uint2Str()
     );
   }
 }

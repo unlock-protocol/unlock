@@ -10,6 +10,7 @@ import {
 import { OwnedKey } from './keychain/KeychainTypes'
 import keyHolderQuery from '../../queries/keyHolder'
 import 'cross-fetch/polyfill'
+import useGetMetadataFor from '../../hooks/useGetMetadataFor'
 
 interface VerificationData {
   accountAddress: string
@@ -72,6 +73,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
       <Identity valid={identityIsValid} />
 
       <OwnsKey
+        accountAddress={accountAddress}
         loading={queryResults.loading}
         error={queryResults.error}
         matchingKey={matchingKey}
@@ -88,12 +90,43 @@ export const Identity = ({ valid }: { valid: boolean }) => (
   <p>Identity is {valid ? 'valid' : 'INVALID'}.</p>
 )
 
+/**
+ * Shows public of protected attributes
+ * @param visibility
+ * @param attributes
+ */
+const metadataAttributes = (visibility: string, attributes: any) => {
+  if (!attributes) {
+    return
+  }
+  return (
+    <>
+      <h3>{visibility}</h3>
+      <ul>
+        {Object.keys(attributes).map(name => {
+          return (
+            <li key={name}>
+              {name}: {attributes[name]}
+            </li>
+          )
+        })}
+      </ul>
+    </>
+  )
+}
+
 interface OwnsKeyProps {
   loading: boolean
   error: ApolloError | undefined
   matchingKey?: OwnedKey
+  accountAddress: string
 }
-export const OwnsKey = ({ loading, error, matchingKey }: OwnsKeyProps) => {
+export const OwnsKey = ({
+  loading,
+  error,
+  matchingKey,
+  accountAddress,
+}: OwnsKeyProps) => {
   if (loading) {
     return <p>Checking if user has a valid key...</p>
   } else if (error) {
@@ -104,13 +137,23 @@ export const OwnsKey = ({ loading, error, matchingKey }: OwnsKeyProps) => {
     return <p>This user does not have a key to the lock.</p>
   }
 
+  const metadata = useGetMetadataFor(matchingKey.lock.address, accountAddress)
   const expiresIn = expirationAsDate(parseInt(matchingKey.expiration))
 
-  if (expiresIn === 'Expired') {
-    return <p>The key has EXPIRED</p>
+  let validUntil = 'expired'
+  if (expiresIn !== 'Expired') {
+    validUntil = `valid until ${expiresIn}`
   }
 
-  return <p>This user DOES own a key, which is valid until {expiresIn}</p>
+  return (
+    <div>
+      <p>
+        The user {accountAddress} owns a key, which is {validUntil}.
+      </p>
+      {metadataAttributes('Public', metadata.public)}
+      {metadataAttributes('Protected', metadata.protected)}
+    </div>
+  )
 }
 
 export default VerificationStatus

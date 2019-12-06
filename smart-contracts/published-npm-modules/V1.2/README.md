@@ -1,11 +1,19 @@
 # Unlock ABI v1.2
 
 This npm module includes the ABI for the smart contracts Unlock.sol and PublicLock.sol for v1.2
-The smart contracts have been compiled as of commit 0bea7a00.
+The smart contracts have been compiled as of commit fb826f9
+.
 
 Changelog:
 
 ```
+* 031f145d - Switch UnlockUtils to an internal library (#5407)
+* 65125a05 - Move publicLockVersion for reuse (#5405)
+* f41e01f3 - Making shareKey safe (#5385)
+* c28b55ce - Extracting the erc721 interface (#5383)
+* 4070c783 - Safe transfers (#5382)
+* 5c44b6be - Downgrade Truffle and unlock-abi-1-2 [fix master] (#5379)
+* 43dc4d25 - Refactor MixinSignatures (#5319)
 * 0bea7a00 - Implementing disabling transfers (#5303)
 * 69c8c708 - Implementing shareKey (partial transfers) (#5290)
 * 8d11ad52 - transferFee test fix (#5283)

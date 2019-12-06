@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import React from 'react'
+import Link from 'next/link'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import Signature from '../interface/Signature'
@@ -149,6 +150,13 @@ export const AboutContent = ({ posts }) => (
     </Section>
     <Section>
       <Title>Team</Title>
+      <Headline>
+        Our work matters. We are building a healthier web ecosystem. If this is
+        something that you would like to help us with, please,{' '}
+        <Link href="/jobs">
+          <a>join us!</a>
+        </Link>
+      </Headline>
       <Columns>
         {People.map(function(person) {
           return <Person {...person} key={person.name} />

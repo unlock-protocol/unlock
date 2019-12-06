@@ -74,12 +74,19 @@ export interface PaywallConfigLock {
   name: string
 }
 
+export interface MetadataInput {
+  name: string
+  type: 'text' | 'date' | 'color' | 'email' | 'url'
+  required: boolean
+}
+
 // This interface describes an individual paywall's config
 export interface PaywallConfig {
   icon?: string
   unlockUserAccounts?: true | 'true' | false
   callToAction: PaywallCallToAction
   locks: PaywallConfigLocks
+  metadataInputs?: MetadataInput[]
 }
 
 export enum KeyStatus {
