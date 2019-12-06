@@ -45,10 +45,14 @@ export class BlockchainHandler {
     this.web3Service.on('key.updated', this.updateKey)
     this.web3Service.on('transaction.updated', this.updateTransaction)
 
+    // Get full lock details and any owned keys from Web3Service
     this.lockAddresses.forEach(lockAddress => {
       this.web3Service.getLock(lockAddress)
       this.web3Service.getKeyByLockForOwner(lockAddress, this.accountAddress)
     })
+
+    // Query locksmith to see if there are any pending transactions
+    this.getTransactionsFromLocksmith()
   }
 
   updateLock = (lockAddress: string, update: any) => {
