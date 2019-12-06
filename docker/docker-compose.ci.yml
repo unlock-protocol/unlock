@@ -120,12 +120,6 @@ services:
     image: rover
     environment:
       CI: '${CI}'
-  wedlocks:
-    image: wedlocks
-    environment:
-      CI: '${CI}'
-      UNLOCK_ENV: '${UNLOCK_ENV}'
-      SMTP_HOST: '${SMTP_HOST}'
   integration-tests:
     image: integration-tests
     environment:
