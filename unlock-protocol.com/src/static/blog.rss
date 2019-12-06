@@ -4,8 +4,16 @@
         <description><![CDATA[News and updates from the Web's new business model.]]></description>
         <link>https://unlock-protocol.com/blog</link>
         <generator>Unlock Blog Engine</generator>
-        <lastBuildDate>Mon, 18 Nov 2019 02:09:04 GMT</lastBuildDate>
+        <lastBuildDate>Fri, 06 Dec 2019 19:49:03 GMT</lastBuildDate>
         <atom:link href="https://unlock-protocol.com/static/blog.rss" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[EthCC Tickets]]></title>
+            <description><![CDATA[The largest annual European Ethereum event focused on technology and community is using Unlock for its tickets!]]></description>
+            <link>https://unlock-protocol.com/blog/ethcc-tickets</link>
+            <guid isPermaLink="true">https://unlock-protocol.com/blog/ethcc-tickets</guid>
+            <dc:creator><![CDATA[Julien Genestoux]]></dc:creator>
+            <pubDate>Fri, 06 Dec 2019 05:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[Shipping Documentation]]></title>
             <description><![CDATA[Helping people get started with Unlock.]]></description>
