@@ -2,6 +2,7 @@ import { BlockchainHandler } from '../../data-iframe/BlockchainHandler'
 import { KeyResult } from '../../unlockTypes'
 import { Web3ServiceType } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { getWeb3Service } from '../test-helpers/setupBlockchainHelpers'
+import * as locksmithHelpers from '../../data-iframe/locksmith-helpers'
 
 const lockAddresses = ['0xALOCK', '0xANOTHERLOCK']
 const accountAddress = '0xACCOUNTADDRESS'
@@ -181,6 +182,100 @@ describe('Improved blockchain handler', () => {
           owner: '0xowneraddress',
         },
       })
+    })
+  })
+
+  describe('getTransactionsFromLocksmith', () => {
+    let web3Service: Web3ServiceType
+    let blockchainHandler: BlockchainHandler
+
+    beforeEach(() => {
+      const getTransactionsForMock = jest.fn().mockResolvedValue(transactions)
+      jest
+        .spyOn(locksmithHelpers, 'getTransactionsFor')
+        .mockImplementation(getTransactionsForMock)
+
+      const mocks = mock()
+      web3Service = mocks.web3Service
+      blockchainHandler = mocks.blockchainHandler
+    })
+
+    const baseTransaction = {
+      blockNumber: Number.MAX_SAFE_INTEGER,
+      confirmations: 0,
+      status: 'submitted',
+      type: 'KEY_PURCHASE',
+    }
+
+    const transactions = [
+      {
+        ...baseTransaction,
+        hash: '0xhash1',
+        to: '0xrecipient1',
+        from: '0xfrom1',
+        for: '0xfor1',
+        input: null,
+      },
+      {
+        ...baseTransaction,
+        hash: '0xhash2',
+        to: '0xrecipient2',
+        from: '0xfrom2',
+        for: '0xfor2',
+        input: 'some input',
+      },
+    ]
+
+    it('should update state with each retrieved transaction', async () => {
+      expect.assertions(1)
+
+      await blockchainHandler.getTransactionsFromLocksmith()
+
+      expect(blockchainHandler.transactions).toEqual({
+        '0xhash1': {
+          ...baseTransaction,
+          hash: '0xhash1',
+        },
+        '0xhash2': {
+          ...baseTransaction,
+          hash: '0xhash2',
+        },
+      })
+    })
+
+    it("should call Web3Service's getTransaction for each retrieved transaction", async () => {
+      expect.assertions(2)
+
+      await blockchainHandler.getTransactionsFromLocksmith()
+
+      expect(web3Service.getTransaction).toHaveBeenNthCalledWith(
+        1,
+        '0xhash1',
+        undefined
+      )
+      expect(web3Service.getTransaction).toHaveBeenNthCalledWith(
+        2,
+        '0xhash2',
+        transactions[1]
+      )
+    })
+
+    it('should log an error if getTransaction fails', async () => {
+      expect.assertions(2)
+
+      web3Service.getTransaction = jest.fn().mockRejectedValue('an error')
+      jest.spyOn(global.console, 'error')
+
+      await blockchainHandler.getTransactionsFromLocksmith()
+
+      expect(global.console.error).toHaveBeenNthCalledWith(
+        1,
+        'unable to retrieve saved transaction from blockchain: 0xhash1'
+      )
+      expect(global.console.error).toHaveBeenNthCalledWith(
+        2,
+        'unable to retrieve saved transaction from blockchain: 0xhash2'
+      )
     })
   })
 })

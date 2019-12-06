@@ -4,7 +4,7 @@
  * Mailbox.ts file and the blockchainHandler/ directory
  */
 
-import { getTransactionsFor } from './locksmith-helpers/getTransactionsFor'
+import { getTransactionsFor } from './locksmith-helpers'
 import {
   RawLocks,
   KeyResults,
@@ -104,7 +104,9 @@ export class BlockchainHandler {
           // For now, ignore failure: this means locksmith knows of a transaction
           // which does not exist. Probably stale?
           // eslint-disable-next-line no-console
-          console.log('unable to retrieve saved transaction from blockchain')
+          console.error(
+            `unable to retrieve saved transaction from blockchain: ${transaction.hash}`
+          )
         })
     })
   }
