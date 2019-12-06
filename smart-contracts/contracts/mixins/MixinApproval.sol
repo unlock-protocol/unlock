@@ -1,6 +1,5 @@
 pragma solidity 0.5.13;
 
-import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 
@@ -13,7 +12,6 @@ import './MixinKeys.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinApproval is
-  IERC721Enumerable,
   MixinDisableAndDestroy,
   MixinKeys
 {

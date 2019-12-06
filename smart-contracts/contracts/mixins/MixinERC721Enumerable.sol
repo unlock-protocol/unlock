@@ -1,6 +1,5 @@
 pragma solidity 0.5.13;
 
-import './MixinERC721Enumerable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
