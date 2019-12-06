@@ -169,7 +169,7 @@ export default function CheckoutContent() {
     return (
       <Greyout>
         <MessageBox>
-          <p>Please check your browser wallet.</p>
+          <p>Please check your browser&apos;s cryptocurrency wallet.</p>
           <Dismiss onClick={() => dismissWalletOverlay()}>Dismiss</Dismiss>
         </MessageBox>
       </Greyout>
