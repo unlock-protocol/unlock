@@ -82,7 +82,8 @@ const config = {
 describe('CheckoutContent', () => {
   it('shows the wallet check after the purchase button is clicked', () => {
     expect.assertions(2)
-    const walletCheckMessage = 'Please check your browser wallet.'
+    const walletCheckMessage =
+      "Please check your browser's cryptocurrency wallet."
 
     const { getByText } = rtl.render(
       <ConfigContext.Provider value={config}>
@@ -111,7 +112,8 @@ describe('CheckoutContent', () => {
   it('dismisses the wallet check when an error is received', () => {
     expect.assertions(1)
 
-    const walletCheckMessage = 'Please check your browser wallet.'
+    const walletCheckMessage =
+      "Please check your browser's cryptocurrency wallet."
 
     const { getByText } = rtl.render(
       <ConfigContext.Provider value={config}>
