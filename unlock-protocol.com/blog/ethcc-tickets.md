@@ -41,7 +41,7 @@ As you can see, there is a field called `userMetadata`. By default, unless the c
 
 ![Attendee List](/static/images/blog/ethcc/attendee-list.png)
 
-This is using this feature that the EthCC team can easily list all attendees, and their information, by just listing the key owners and their respective metadata. They can also export that list as CSV ;)
+Thanks to this feature, the EthCC team can easily list all attendees and their information, by just listing the key owners and their respective metadata. They can also export that list as CSV ;)
 
 Additionally, when I check in with a QR code on March 3rd, the EthCC team will be able to instantly see all of the metadata linked to my ticket!
 
