@@ -2,6 +2,11 @@
  * This file is a thinner, leaner iteration on the data-iframe portion
  * of the paywall application. When completed, it will deprecate the
  * Mailbox.ts file and the blockchainHandler/ directory
+ *
+ * Unlike the older handler, this one has no mechanism for
+ * resetting. In the case of an event that invalidates data (account
+ * changed, etc.), the strategy should be to destroy this object and
+ * make a new one.
  */
 
 import { getTransactionsFor } from './locksmith-helpers'
@@ -26,16 +31,6 @@ export class BlockchainHandler {
   // TODO: provide types from unlock-js
   web3Service: any
 
-  /**
-   * BlockchainHandler can be constructed immediately when there is an
-   * available web3Service, but it doesn't do anything until
-   * initialized with lock addresses from the configuration and the
-   * user's account address.
-   *
-   * The state cannot be reset. If any condition occurs (e.g. account
-   * address changed) which invalidates data, this object should be
-   * destroyed and replaced with a new one.
-   */
   constructor(
     web3Service: any,
     lockAddresses: string[],
