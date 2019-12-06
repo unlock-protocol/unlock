@@ -1,18 +1,17 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.13;
 
 // This contract provides some utility methods for use with the unlock protocol smart contracts.
 // Borrowed from:
 // https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol#L943
 
-contract UnlockUtils {
+library UnlockUtils {
 
   function strConcat(
     string memory _a,
     string memory _b,
     string memory _c,
     string memory _d
-  ) public
-    pure
+  ) internal pure
     returns (string memory _concatenatedString)
   {
     bytes memory _ba = bytes(_a);
@@ -40,8 +39,7 @@ contract UnlockUtils {
 
   function uint2Str(
     uint _i
-  ) public
-    pure
+  ) internal pure
     returns (string memory _uintAsString)
   {
     // make a copy of the param to avoid security/no-assign-params error
@@ -66,8 +64,7 @@ contract UnlockUtils {
 
   function address2Str(
     address _addr
-  ) public
-    pure
+  ) internal pure
     returns(string memory)
   {
     bytes32 value = bytes32(uint256(_addr));

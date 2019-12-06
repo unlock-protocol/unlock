@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.13;
 
 import './MixinDisableAndDestroy.sol';
 import './MixinApproval.sol';
@@ -45,7 +45,7 @@ contract MixinTransfer is
   uint public transferFeeBasisPoints;
 
   /**
-  * @notice Allows the key owner to share their key (parent key) by
+  * @notice Allows the key owner to safely share their key (parent key) by
   * transferring a portion of the remaining time to a new key (child key).
   * @param _to The recipient of the shared key
   * @param _tokenId the key to share
@@ -104,6 +104,8 @@ contract MixinTransfer is
       _to,
       iDTo
     );
+
+    require(_checkOnERC721Received(keyOwner, _to, _tokenId, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
   function transferFrom(

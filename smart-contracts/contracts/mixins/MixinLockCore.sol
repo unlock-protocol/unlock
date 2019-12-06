@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.13;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
@@ -82,6 +82,14 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+  }
+
+  // The version number of the current implementation on this network
+  function publicLockVersion(
+  ) public pure
+    returns (uint)
+  {
+    return 5;
   }
 
   /**

@@ -11,6 +11,7 @@ module.exports = {
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
     graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
+    metadataHost: process.env.METADATA_HOST,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -32,6 +33,7 @@ module.exports = {
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.GRAPHQL_BASE_URL,
     graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
+    metadataHost: process.env.METADATA_HOST,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],
@@ -52,6 +54,7 @@ module.exports = {
     purchaserAddress: process.env.PURCHASER_ADDRESS,
     purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
     graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
+    metadataHost: process.env.METADATA_HOST,
     jaeger: {
       serviceName: 'locksmith',
       tags: [],

@@ -2,6 +2,15 @@ import { gql } from 'apollo-server-express'
 
 // eslint-disable-next-line import/prefer-default-export
 export const typeDefs = gql`
+  input KeyHolderQuery {
+    address: String!
+  }
+
+  input LocksQuery {
+    owner: String
+    address_in: [String]
+  }
+
   type Lock {
     id: ID
     address: String
@@ -10,7 +19,9 @@ export const typeDefs = gql`
     price: String
     expirationDuration: Int
     totalSupply: Int
-    maxNumberOfKey: Int
+    maxNumberOfKeys: String
+    owner: String
+    keys: [Key]
   }
 
   type KeyPurchase {
@@ -24,9 +35,10 @@ export const typeDefs = gql`
 
   type Query {
     key(id: ID!): Key
-    keys: [Key]
-    locks: [Lock]
+    keys(first: Int): [Key]
+    locks(where: LocksQuery): [Lock]
     keyPurchases: [KeyPurchase!]
+    keyHolders(where: KeyHolderQuery!): [KeyHolder]
   }
 
   type Attribute {
@@ -45,6 +57,7 @@ export const typeDefs = gql`
   type KeyHolder {
     id: ID!
     address: String!
+    keys: [Key]
   }
 
   type Key {
@@ -54,5 +67,6 @@ export const typeDefs = gql`
     owner: KeyHolder!
     expiration: Int!
     metadata: Metadata
+    tokenURI: String
   }
 `

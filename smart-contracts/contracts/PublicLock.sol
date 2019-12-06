@@ -1,4 +1,4 @@
-pragma solidity 0.5.12;
+pragma solidity 0.5.13;
 
 import './interfaces/IERC721.sol';
 import './interfaces/IERC721Enumerable.sol';
@@ -68,13 +68,5 @@ contract PublicLock is
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);
-  }
-
-  // The version number of the current implementation on this network
-  function publicLockVersion(
-  ) external pure
-    returns (uint16)
-  {
-    return 5;
   }
 }
