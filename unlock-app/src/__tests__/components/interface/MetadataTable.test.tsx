@@ -1,9 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import {
-  MetadataTable,
-  camelCaseToTitle,
-} from '../../../components/interface/MetadataTable'
+import { MetadataTable } from '../../../components/interface/MetadataTable'
 
 const metadata = [
   {
@@ -33,15 +30,6 @@ const metadata = [
 ]
 
 describe('MetadataTable', () => {
-  describe('camelCaseToTitle helper', () => {
-    it('transforms itself', () => {
-      expect.assertions(1)
-      expect(camelCaseToTitle('camelCaseToTitle')).toEqual(
-        'Camel Case To Title'
-      )
-    })
-  })
-
   describe('MetadataTable component', () => {
     it('renders the headings correctly', () => {
       expect.assertions(4)

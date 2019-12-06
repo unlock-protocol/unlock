@@ -1,5 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
+import FileSaver from 'file-saver'
+import { ActionButton } from './buttons/ActionButton'
+import Media from '../../theme/media'
+import { camelCaseToTitle } from '../../utils/strings'
+import { buildCSV } from '../../utils/csv'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -18,49 +23,73 @@ interface Props {
 }
 
 /**
- * Applied to itself, yields "Camel Case To Title"
- * TODO: move to utils
+ * Downloads a file with the key metadata as CSV
+ * Includes the colum name in the first row
  */
-export function camelCaseToTitle(s: string): string {
-  return (
-    s
-      // insert a space between lower & upper
-      .replace(/([a-z])([A-Z])/g, '$1 $2')
-      // space before last upper in a sequence followed by lower
-      .replace(/\b([A-Z]+)([A-Z])([a-z])/, '$1 $2$3')
-      // uppercase the first character
-      .replace(/^./, str => str.toUpperCase())
-  )
+function downloadAsCSV(columns: any, metadata: any) {
+  const csv = buildCSV(columns, metadata)
+
+  const blob = new Blob([csv], {
+    type: 'data:text/csv;charset=utf-8',
+  })
+  FileSaver.saveAs(blob, 'members.csv')
 }
 
 export const MetadataTable = ({ columns, metadata }: Props) => {
   return (
-    <Table>
-      <thead>
-        <tr>
-          {columns.map(col => {
-            return <Th key={col}>{camelCaseToTitle(col)}</Th>
+    <Wrapper>
+      <Table>
+        <thead>
+          <tr>
+            {columns.map(col => {
+              return <Th key={col}>{camelCaseToTitle(col)}</Th>
+            })}
+          </tr>
+        </thead>
+        <Tbody>
+          {metadata.map(datum => {
+            return (
+              <tr
+                key={datum.lockName + datum.expiration + datum.keyholderAddress}
+              >
+                {columns.map(col => {
+                  return <Td key={col}>{datum[col]}</Td>
+                })}
+              </tr>
+            )
           })}
-        </tr>
-      </thead>
-      <Tbody>
-        {metadata.map(datum => {
-          return (
-            <tr
-              key={datum.lockName + datum.expiration + datum.keyholderAddress}
-            >
-              {columns.map(col => {
-                return <Td key={col}>{datum[col]}</Td>
-              })}
-            </tr>
-          )
-        })}
-      </Tbody>
-    </Table>
+        </Tbody>
+      </Table>
+      <DownloadButton
+        onClick={() => {
+          downloadAsCSV(columns, metadata)
+        }}
+      >
+        Export as CSV
+      </DownloadButton>
+    </Wrapper>
   )
 }
 
+const Wrapper = styled.section`
+  display: grid;
+  grid-gap: 16px;
+  grid-template-columns: repeat(12, 1fr);
+`
+
+const DownloadButton = styled(ActionButton)`
+  grid-row: 2;
+  grid-column: 10/13;
+  padding: 5px;
+  align-self: end;
+  height: 40px;
+  ${Media.phone`
+    display: none;
+  `};
+`
+
 const Table = styled.table`
+  grid-column: 1/13;
   width: 100%;
   border-collapse: collapse;
 `
