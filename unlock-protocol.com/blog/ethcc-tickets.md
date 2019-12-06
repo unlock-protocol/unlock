@@ -13,7 +13,7 @@ The Ethereum Community Conference is the largest annual European Ethereum event 
 
 [![Get Ticket](/static/images/blog/ethcc/ticket.png)](https://ethcc.io/buy-tickets.html)
 
-Like all other locks, the [ETHCC 2020 lock](https://etherscan.io/address/0x7fe9143379a59329afd7d25e52696a6f1db28d36) implements the ERC721 specification, which means that all tickets are Non Fungible Tokens! When we spoke with Marc and Bettina they told us that they needed to be able to collect attendees' informations (email...) and we embarked on a crazy idea: storing that information inside of the NFT itself, as metadata!
+Like all other locks, the [ETHCC 2020 lock](https://etherscan.io/address/0x7fe9143379a59329afd7d25e52696a6f1db28d36) implements the ERC721 specification, which means that all tickets are Non Fungible Tokens! When we spoke with Marc and Bettina they told us that they needed to be able to collect attendees' information (email...) and we embarked on a crazy idea: storing that information inside of the NFT itself, as metadata!
 
 If you decide to purchase your ticket using crypto (you should!), their website will prompt you for your full name, email and phone number. If you submit that information, your web3 browser of choice will prompt you to sign it: it is then saved in a way that only the lock owner (the EthCC team) will be able to read.
 
