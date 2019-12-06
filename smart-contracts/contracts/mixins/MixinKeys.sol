@@ -33,7 +33,7 @@ contract MixinKeys is
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with totalSupply into an array instead.
-  mapping (uint => address) internal _ownerOf;
+  mapping (uint => address) private _ownerOf;
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
