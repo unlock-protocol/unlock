@@ -92,14 +92,13 @@ describe('getTransactionsFor', () => {
 
     const { mockFetch, cleanup } = makeMockFetch()
 
-    await getTransactionsFor(
-      '0xACCOUNTADDRESS',
-      ['0xLOCKADDRESS1', '0xLOCKADDRESS2'],
-      'http://locksmith'
-    )
+    await getTransactionsFor('0xACCOUNTADDRESS', [
+      '0xLOCKADDRESS1',
+      '0xLOCKADDRESS2',
+    ])
 
     expect(mockFetch).toHaveBeenCalledWith(
-      'http://locksmith/transactions?for=0xACCOUNTADDRESS&recipient[]=0xLOCKADDRESS1&recipient[]=0xLOCKADDRESS2'
+      'http://0.0.0.0:8080/transactions?for=0xACCOUNTADDRESS&recipient[]=0xLOCKADDRESS1&recipient[]=0xLOCKADDRESS2'
     )
 
     cleanup()
@@ -110,11 +109,10 @@ describe('getTransactionsFor', () => {
 
     const { cleanup } = makeMockFetch()
 
-    const result = await getTransactionsFor(
-      '0xACCOUNTADDRESS',
-      ['0xLOCKADDRESS1', '0xLOCKADDRESS2'],
-      'http://locksmith'
-    )
+    const result = await getTransactionsFor('0xACCOUNTADDRESS', [
+      '0xLOCKADDRESS1',
+      '0xLOCKADDRESS2',
+    ])
     expect(result).toEqual([])
 
     cleanup()
@@ -129,11 +127,10 @@ describe('getTransactionsFor', () => {
 
     const { cleanup } = makeMockFetch(mockJson)
 
-    const result = await getTransactionsFor(
-      '0xACCOUNTADDRESS',
-      ['0xLOCKADDRESS1', '0xLOCKADDRESS2'],
-      'http://locksmith'
-    )
+    const result = await getTransactionsFor('0xACCOUNTADDRESS', [
+      '0xLOCKADDRESS1',
+      '0xLOCKADDRESS2',
+    ])
     expect(result).toEqual([expectedTransaction])
 
     cleanup()
