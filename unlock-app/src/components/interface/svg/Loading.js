@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgLoading = ({ title, ...props }) => (
   <svg {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <circle cx={16} cy={3} r={0}>
       <animate
         attributeName="r"

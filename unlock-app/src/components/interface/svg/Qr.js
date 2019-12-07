@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgQr = ({ title, ...props }) => (
   <svg viewBox="0 0 60 60" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path d="M16.364 10.91h-5.455v5.454h5.455v-5.455z" />
     <path
       fillRule="evenodd"

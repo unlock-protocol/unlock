@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgPreview = ({ title, ...props }) => (
   <svg {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path d="M13.91 12c0 1.036-.856 1.875-1.91 1.875-1.054 0-1.91-.84-1.91-1.875 0-1.036.856-1.875 1.91-1.875 1.054 0 1.91.84 1.91 1.875z" />
     <path
       fillRule="evenodd"

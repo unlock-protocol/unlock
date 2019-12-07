@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgWordpress = ({ title, ...props }) => (
   <svg {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <g
       clipPath="url(#wordpress_svg__clipPath18)"
       transform="matrix(1.33333 0 0 -1.33333 0 336)"

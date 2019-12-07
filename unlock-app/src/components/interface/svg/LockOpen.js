@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgLockOpen = ({ title, ...props }) => (
   <svg {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path
       fillRule="evenodd"
       clipRule="evenodd"

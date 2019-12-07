@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgMetamask = ({ title, ...props }) => (
   <svg viewBox="0 0 122 113" fill="none" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path
       d="M115.024 1L68.2 35.776 76.86 15.26 115.024 1z"
       fill="#E2761B"
