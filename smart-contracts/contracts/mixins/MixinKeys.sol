@@ -64,7 +64,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      ownerOf(_tokenId) != address(0), 'NO_SUCH_KEY'
+      _ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
     );
     _;
   }
@@ -180,7 +180,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    return ownerOf(_tokenId) == _owner;
+    return _ownerOf[_tokenId] == _owner;
   }
 
   /**
@@ -215,7 +215,7 @@ contract MixinKeys is
     isKey(_tokenId)
     returns(address)
   {
-    return ownerOf(_tokenId);
+    return _ownerOf[_tokenId];
   }
 
   /**
@@ -243,7 +243,7 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (ownerOf(_tokenId) != _owner) {
+    if (_ownerOf[_tokenId] != _owner) {
       // TODO: this may include duplicate entries
       owners.push(_owner);
       // We register the owner of the tokenID

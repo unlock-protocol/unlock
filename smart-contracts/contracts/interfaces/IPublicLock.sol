@@ -1,6 +1,8 @@
 pragma solidity ^0.5.0;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
+
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 /**
 * @title The PublicLock Interface
 * @author Nick Furfaro (unlock-protocol.com)
