@@ -6,6 +6,7 @@ import Code from './Code'
 import Download from './Download'
 import Upload from './Upload'
 import Etherscan from './Etherscan'
+import Members from './Members'
 import Preview from './Preview'
 import Copy from './Copy'
 
@@ -18,6 +19,7 @@ export default {
   Download,
   Upload,
   Etherscan,
+  Members,
   Preview,
   Copy,
 }

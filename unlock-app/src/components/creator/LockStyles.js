@@ -3,7 +3,7 @@ import Media from '../../theme/media'
 import Address from '../interface/Address'
 
 export const LockRowGrid =
-  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(174px, 1fr);'
+  'grid-template-columns: 32px minmax(100px, 1fr) repeat(4, minmax(56px, 100px)) minmax(198px, 1fr);'
 
 export const PhoneLockRowGrid =
   'grid-template-columns: 43px minmax(80px, 140px) repeat(2, minmax(56px, 80px)); grid-auto-flow: column;'
