@@ -6,7 +6,6 @@ import UnlockPropTypes from '../../propTypes'
 import LockIconBar from './lock/LockIconBar'
 import Icon from '../lock/Icon'
 import AppStore from './lock/AppStore'
-import KeyList from './lock/KeyList'
 import Duration from '../helpers/Duration'
 import Balance from '../helpers/Balance'
 import CreatorLockForm from './CreatorLockForm'
@@ -73,11 +72,9 @@ export class CreatorLock extends React.Component {
     super(props, context)
     this.state = {
       showEmbedCode: false,
-      showKeys: false,
       editing: false,
     }
     this.toggleEmbedCode = this.toggleEmbedCode.bind(this)
-    this.toggleKeys = this.toggleKeys.bind(this)
   }
 
   toggleEmbedCode() {
@@ -86,17 +83,11 @@ export class CreatorLock extends React.Component {
     }))
   }
 
-  toggleKeys() {
-    this.setState(previousState => ({
-      showKeys: !previousState.showKeys,
-    }))
-  }
-
   render() {
     // TODO add all-time balance to lock
 
     const { lock, updateLock } = this.props
-    const { showEmbedCode, showKeys, editing } = this.state
+    const { showEmbedCode, editing } = this.state
 
     if (editing) {
       return (
@@ -115,14 +106,12 @@ export class CreatorLock extends React.Component {
       this.setState({
         editing: true,
         showEmbedCode: false,
-        showKeys: false,
       })
 
     return (
       <LockRow
         className="lock" // Used by integration tests
         data-address={`${lock.address}`}
-        onClick={this.toggleKeys}
       >
         <DoubleHeightCell>
           <Icon lock={lock} />
@@ -153,12 +142,6 @@ export class CreatorLock extends React.Component {
           <LockPanel>
             <LockDivider />
             <AppStore lock={lock} />
-          </LockPanel>
-        )}
-        {!showEmbedCode && showKeys && (
-          <LockPanel onClick={e => e.stopPropagation()}>
-            <LockDivider />
-            <KeyList lock={lock} />
           </LockPanel>
         )}
       </LockRow>
