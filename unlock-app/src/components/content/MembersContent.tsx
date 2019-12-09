@@ -1,9 +1,11 @@
+import styled from 'styled-components'
 import React, { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import 'cross-fetch/polyfill'
 import { connect } from 'react-redux'
 import Head from 'next/head'
 import queryString from 'query-string'
+import Link from 'next/link'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
@@ -22,6 +24,7 @@ import {
   mergeKeyholderMetadata,
   generateColumns,
 } from '../../utils/metadataMunging'
+import Loading from '../interface/Loading'
 
 interface Props {
   account: AccountType
@@ -75,6 +78,13 @@ const MetadataTableWrapper = ({
   accountAddress,
   storedMetadata,
 }: MetadataTableWrapperProps) => {
+  if (!lockAddresses.length) {
+    return <Loading />
+  }
+  // TODO: Refactor using a single hook to
+  // 1. retrieve the keys from the graph
+  // 2. ask the user to sign
+  // 3. retrieve the metadata
   const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { addresses: lockAddresses },
   })
@@ -89,11 +99,18 @@ const MetadataTableWrapper = ({
   }, [data])
 
   if (loading) {
-    return <span>Loading...</span>
+    return <Loading />
   }
 
   if (error) {
-    return <span>An error occurred.</span>
+    return (
+      <Message>
+        An error occurred. Return to your{' '}
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
+      </Message>
+    )
   }
 
   const metadata = mergeKeyholderMetadata(data, storedMetadata)
@@ -136,6 +153,10 @@ export const mapStateToProps = ({
     metadata,
   }
 }
+
+const Message = styled.p`
+  color: var(--grey);
+`
 
 export default connect(mapStateToProps, { signBulkMetadataRequest })(
   MembersContent

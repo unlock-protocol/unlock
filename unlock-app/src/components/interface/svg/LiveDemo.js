@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgLiveDemo = ({ title, ...props }) => (
   <svg viewBox="0 0 64 64" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <mask id="live-demo_svg__a" fill="#fff">
       <path
         fillRule="evenodd"

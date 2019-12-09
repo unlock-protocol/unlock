@@ -41,6 +41,8 @@ export function LockIconBar({
 
   const etherscanAddress = `https://etherscan.io/address/${lock.address}`
 
+  const membersPage = `/members?locks=${lock.address}`
+
   // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
@@ -53,6 +55,7 @@ export function LockIconBar({
           />
           <Buttons.Edit as="button" action={() => edit(lock.address)} />
           {/* Reinstate when we're ready <Buttons.ExportLock /> */}
+          <Buttons.Members href={membersPage} />
           <Buttons.AppStore as="button" action={toggleCode} />
           <Buttons.Etherscan target="_blank" href={etherscanAddress} />
         </IconBar>
@@ -148,7 +151,7 @@ const IconBarContainer = styled.div`
 const IconBar = styled.div`
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4, 24px);
+  grid-template-columns: repeat(5, 24px);
 `
 
 const StatusBlock = styled.div``
