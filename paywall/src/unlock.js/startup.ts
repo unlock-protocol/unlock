@@ -1,3 +1,4 @@
+import Postmate from 'postmate'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
@@ -64,6 +65,16 @@ export function startup(
     userIframeUrl
   )
   iframes.init(config)
+
+  const handshake = new Postmate({
+    url: constants.paywallUrl + '/static/data-iframe.2.0.html',
+    classListArray: ['unlock', 'start'],
+  })
+
+  handshake.then(child => {
+    console.log('Data iframe handshake completed!')
+    ;(window as any).dataIframe = child
+  })
 
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
