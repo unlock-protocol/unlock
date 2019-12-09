@@ -8,10 +8,11 @@ import Dispatcher from '../fulfillment/dispatcher'
 
 const Sequelize = require('sequelize')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
 export class PaymentProcessor {
   stripe: Stripe
+
   keyPricer: KeyPricer
 
   constructor(
@@ -23,8 +24,9 @@ export class PaymentProcessor {
     this.keyPricer = new KeyPricer(providerURL, unlockContractAddress)
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async findUserByPublicKey(publicKey: ethereumAddress) {
-    let normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
+    const normalizedEthereumAddress = Normalizer.ethereumAddress(publicKey)
 
     return UserReference.findOne({
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
@@ -43,7 +45,7 @@ export class PaymentProcessor {
     publicKey: ethereumAddress
   ): Promise<boolean> {
     try {
-      let user = await this.findUserByPublicKey(publicKey)
+      const user = await this.findUserByPublicKey(publicKey)
 
       if (user && user.stripe_customer_id) {
         await this.stripe.customers.createSource(user.stripe_customer_id, {
@@ -51,14 +53,17 @@ export class PaymentProcessor {
         })
 
         return true
-      } else if (user && !user.stripe_customer_id) {
-        let customer = await this.createStripeCustomer(user.emailAddress, token)
+      }
+      if (user && !user.stripe_customer_id) {
+        const customer = await this.createStripeCustomer(
+          user.emailAddress,
+          token
+        )
         user.stripe_customer_id = customer.id
         await user.save()
         return true
-      } else {
-        return false
       }
+      return false
     } catch (e) {
       return false
     }
@@ -78,28 +83,33 @@ export class PaymentProcessor {
    * @param purchaseDetails
    */
   async chargeUser(publicKey: ethereumAddress, lock: ethereumAddress) {
+    // eslint-disable-next-line no-useless-catch
     try {
-      let user = await this.findUserByPublicKey(publicKey)
+      const user = await this.findUserByPublicKey(publicKey)
 
       if (user && user.stripe_customer_id) {
-        let charge = await this.stripe.charges.create({
+        const charge = await this.stripe.charges.create({
           amount: await this.price(lock),
           currency: 'USD',
           customer: user.stripe_customer_id,
-          metadata: { lock: lock, publicKey: publicKey },
+          metadata: { lock, publicKey },
         })
         return charge
-      } else {
-        throw new Error('Customer lacks purchasing details')
       }
+      throw new Error('Customer lacks purchasing details')
     } catch (error) {
       throw error
     }
   }
 
   async price(lock: ethereumAddress): Promise<number> {
-    let itemizedPrice = await this.keyPricer.generate(lock)
+    const itemizedPrice = await this.keyPricer.generate(lock)
     return Object.values(itemizedPrice).reduce((a, b) => a + b)
+  }
+
+  async isKeyFree(lock: ethereumAddress): Promise<boolean> {
+    const keyPrice = await this.keyPricer.keyPrice(lock)
+    return keyPrice === 0
   }
 
   async initiatePurchase(
@@ -109,9 +119,9 @@ export class PaymentProcessor {
     providerHost: string,
     buyer: ethereumAddress
   ) {
-    let successfulCharge = await this.chargeUser(recipient, lock)
+    const successfulCharge = await this.chargeUser(recipient, lock)
     if (successfulCharge) {
-      let fulfillmentDispatcher = new Dispatcher(
+      const fulfillmentDispatcher = new Dispatcher(
         'unlockAddress',
         credentials,
         providerHost,
@@ -120,6 +130,7 @@ export class PaymentProcessor {
 
       return fulfillmentDispatcher.purchase(lock, recipient)
     }
+    return null
   }
 }
 

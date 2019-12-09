@@ -10,11 +10,11 @@ const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const unlockContractAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
 const stripeToken = 'sk_test_token'
 const web3HostURL = 'http://0.0.0.0:8545'
-let mockVisaToken = 'tok_visa'
+const mockVisaToken = 'tok_visa'
 
 const { User } = models
 
-let mockCreateSource = jest.fn()
+const mockCreateSource = jest.fn()
 
 jest.mock('stripe', () => {
   return jest.fn().mockImplementation(() => {
@@ -38,7 +38,7 @@ jest.mock('stripe', () => {
   })
 })
 
-let mockDispatcher = { purchase: jest.fn() }
+const mockDispatcher = { purchase: jest.fn() }
 
 jest.mock('../../src/fulfillment/dispatcher', () => {
   return jest.fn().mockImplementation(() => {
@@ -53,7 +53,7 @@ describe('PaymentProcessor', () => {
     nockBack.fixtures = `${__dirname}/fixtures/paymentProcessor`
     nockBack.setMode('lockdown')
 
-    let { nockDone } = await nockBack('setup.json')
+    const { nockDone } = await nockBack('setup.json')
     paymentProcessor = new PaymentProcessor(
       stripeToken,
       web3HostURL,
@@ -106,7 +106,7 @@ describe('PaymentProcessor', () => {
     describe('when the user can be created', () => {
       it('returns the customer id', async () => {
         expect.assertions(1)
-        let user = await paymentProcessor.updateUserPaymentDetails(
+        const user = await paymentProcessor.updateUserPaymentDetails(
           mockVisaToken,
           '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
@@ -118,7 +118,7 @@ describe('PaymentProcessor', () => {
     describe('when the user already has an existing stripe customer id', () => {
       it("adds the card to the user's acceptable card", async () => {
         expect.assertions(2)
-        let user = await paymentProcessor.updateUserPaymentDetails(
+        const user = await paymentProcessor.updateUserPaymentDetails(
           mockVisaToken,
           '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
@@ -133,7 +133,7 @@ describe('PaymentProcessor', () => {
     describe('when the user can not be created', () => {
       it('returns false', async () => {
         expect.assertions(1)
-        let user = await paymentProcessor.updateUserPaymentDetails(
+        const user = await paymentProcessor.updateUserPaymentDetails(
           'tok_unknown',
           '0xb76ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
         )
@@ -159,8 +159,8 @@ describe('PaymentProcessor', () => {
         describe('when the user can be charged', () => {
           it('returns a charge', async () => {
             expect.assertions(1)
-            let { nockDone } = await nockBack('charged_user.json')
-            let charge = await paymentProcessor.chargeUser(
+            const { nockDone } = await nockBack('charged_user.json')
+            const charge = await paymentProcessor.chargeUser(
               '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
               lockAddress
             )
@@ -172,7 +172,7 @@ describe('PaymentProcessor', () => {
         describe('when the user cant be charged', () => {
           it('returns an error', async () => {
             expect.assertions(1)
-            let { nockDone } = await nockBack('non_charged_user.json')
+            const { nockDone } = await nockBack('non_charged_user.json')
             await expect(
               paymentProcessor.chargeUser(
                 '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
@@ -189,7 +189,7 @@ describe('PaymentProcessor', () => {
   describe('price', () => {
     it('returns the total price of the key purchase for the provided lock', async () => {
       expect.assertions(1)
-      let { nockDone } = await nockBack('price.json')
+      const { nockDone } = await nockBack('price.json')
 
       /**
        * key price:          1
@@ -250,6 +250,35 @@ describe('PaymentProcessor', () => {
         )
 
         expect(mockDispatcher.purchase).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('isKeyFree', () => {
+    beforeAll(() => {
+      paymentProcessor.keyPricer.keyPrice = jest
+        .fn()
+        .mockResolvedValueOnce(0)
+        .mockResolvedValueOnce(2)
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    describe('when a key is free', () => {
+      it('returns true', async () => {
+        expect.assertions(1)
+        expect(await paymentProcessor.isKeyFree('freeLockAddress')).toBe(true)
+      })
+    })
+
+    describe('when a key is not free', () => {
+      it('returns false', async () => {
+        expect.assertions(1)
+        expect(await paymentProcessor.isKeyFree('nonFreeLockAddress')).toBe(
+          false
+        )
       })
     })
   })
