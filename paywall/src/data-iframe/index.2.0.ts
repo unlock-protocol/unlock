@@ -1,6 +1,6 @@
 import Postmate from 'postmate'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { BlockchainHandler } from './BlockchainHandler'
+import { BlockchainReader } from './BlockchainReader'
 import { BlockchainDataStorable } from './BlockchainDataStorable'
 import configure from '../config'
 
@@ -19,14 +19,14 @@ const web3Service = new Web3Service({
 
 // Start with a null object, it will be replaced when the authenticate
 // method in the model is called.
-let blockchainHandler = new BlockchainDataStorable()
+let blockchainReader = new BlockchainDataStorable()
 
-const authenticate = (lockAddresses: string[], accountAddress: string) => {
+const initializeReader = (lockAddresses: string[], accountAddress: string) => {
   // since we may destroy a previous BlockchainHandler with this
   // operation, we should also make sure not to retain any event
   // listeners that involve the old object
   web3Service.removeAllListeners()
-  blockchainHandler = new BlockchainHandler(
+  blockchainReader = new BlockchainReader(
     web3Service,
     lockAddresses,
     accountAddress
@@ -34,10 +34,10 @@ const authenticate = (lockAddresses: string[], accountAddress: string) => {
 }
 
 const handshake = new Postmate.Model({
-  locks: () => blockchainHandler.locks,
-  keys: () => blockchainHandler.keys,
-  transactions: () => blockchainHandler.transactions,
-  authenticate,
+  locks: () => blockchainReader.locks,
+  keys: () => blockchainReader.keys,
+  transactions: () => blockchainReader.transactions,
+  initializeReader,
 })
 
 handshake.then(parent => {

@@ -1,7 +1,6 @@
 /**
- * This file is a thinner, leaner iteration on the data-iframe portion
- * of the paywall application. When completed, it will deprecate the
- * Mailbox.ts file and the blockchainHandler/ directory
+ * This file is a thinner, leaner iteration on the read-only portion
+ * of the data-iframe component of the paywall application.
  *
  * Unlike the older handler, this one has no mechanism for
  * resetting. In the case of an event that invalidates data (account
@@ -13,7 +12,7 @@ import { getTransactionsFor } from './locksmith-helpers'
 import { BlockchainDataStorable } from './BlockchainDataStorable'
 import { TransactionStatus, TransactionType } from '../unlockTypes'
 
-export class BlockchainHandler extends BlockchainDataStorable {
+export class BlockchainReader extends BlockchainDataStorable {
   accountAddress: string
 
   // The list of lock addresses from the paywall configuration
