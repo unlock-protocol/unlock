@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgAttention = ({ title, ...props }) => (
   <svg viewBox="0 0 96 96" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path
       fillRule="evenodd"
       clipRule="evenodd"

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgBox = ({ title, ...props }) => (
   <svg viewBox="0 0 14 16" fill="none" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <path
       d="M13 4.216v7.566L6.999 15 1 11.778l.004-7.562L7.002 1 13 4.216z"
       fill="#fff"

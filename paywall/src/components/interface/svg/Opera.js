@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgOpera = ({ title, ...props }) => (
   <svg viewBox="0 0 120 120" fill="none" {...props}>
-    <title>{title}</title>
+    {title ? <title>{title}</title> : null}
     <mask
       id="opera_svg__a"
       maskUnits="userSpaceOnUse"

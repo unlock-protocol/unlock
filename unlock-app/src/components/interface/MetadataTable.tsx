@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import FileSaver from 'file-saver'
+import Link from 'next/link'
 import { ActionButton } from './buttons/ActionButton'
 import Media from '../../theme/media'
 import { camelCaseToTitle } from '../../utils/strings'
@@ -36,6 +37,18 @@ function downloadAsCSV(columns: any, metadata: any) {
 }
 
 export const MetadataTable = ({ columns, metadata }: Props) => {
+  if (metadata.length === 0) {
+    return (
+      <Message>
+        No keys have been purchased yet. Return to your{' '}
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
+        .
+      </Message>
+    )
+  }
+
   return (
     <Wrapper>
       <Table>
@@ -115,6 +128,10 @@ const Th = styled.th`
   font-weight: 200;
   padding: 0.5rem;
   text-align: left;
+`
+
+const Message = styled.p`
+  color: var(--grey);
 `
 
 export default MetadataTable
