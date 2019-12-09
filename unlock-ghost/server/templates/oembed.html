@@ -2,11 +2,11 @@
 <script>
  var unlockProtocolConfig = { 
      locks: {
-     <%for (var lock in locks){%>
-       "<%= locks[lock].address %>": {
-         name: "<%= locks[lock].name %>",
-       },
-     <%}%>
+         <%for (var lock in locks){%>
+             "<%= locks[lock].address %>": {
+                 name: "<%= locks[lock].name %>",
+             },
+                                   <%}%>
      },
      icon: 'https://staging-app.unlock-protocol.com/static/images/svg/default.svg',
      callToAction: {
@@ -15,4 +15,4 @@
  }
 </script>
 
-<script src='http://3974908b.ngrok.io/static/unlock-ghost.js'></script>
+<script src='<%= server %>/static/unlock-ghost.js'></script>

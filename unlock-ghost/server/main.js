@@ -4,6 +4,11 @@ const Path = require('path');
 const Hapi = require('@hapi/hapi');
 const Hoek = require('@hapi/hoek');
 const Inert = require('@hapi/inert');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const URL_SERVER = process.env.URL_SERVER || 'localhost:8080';
 
 const buildLocks = (rawLocks) => {
     console.log(rawLocks);
@@ -56,7 +61,7 @@ const init = async () => {
             const query = request.query;
             try {
                 const locks = buildLocks( typeof query.locks === 'string' ? [query.locks] : (query.locks || []));
-                return await request.render('locks.html', {query: query.locks, locks});
+                return await request.render('locks.html', {query: query.locks, locks, server: URL_SERVER});
             } catch(e) {
                 console.log(e);
             }
@@ -74,12 +79,12 @@ const init = async () => {
             const oembed_res = {
                 type: "rich",
                 provider_name: "Unlock",
-	              provider_url: "http://3974908b.ngrok.io",
+	              provider_url: URL_SERVER,
                 version: "1.0",
                 cache_age: "10000",
                 width: 500,
                 height: 70,
-                html: await request.render('oembed', {locks})
+                html: await request.render('oembed', {locks, server: URL_SERVER})
             };
                 return oembed_res;
             } catch(e) {

@@ -141,7 +141,9 @@ const setup = () => {
             });
 
             var config = { attributes: true, childList: true, characterData: true };
-            observer.observe(unlockButton.parentNode, config);
+
+            let rootContent = document.getElementsByClassName('post-content')[0]
+            observer.observe(rootContent, config);
         };
 
         unlockButton.addEventListener('click', (e) => {
@@ -154,7 +156,9 @@ const setup = () => {
 
         document.addEventListener('DOMContentLoaded', () => {
             var unlockButton = document.getElementById('unlock');
-            hideContent(unlockButton, 'section');
+            if (unlockButton.parentElement.tagName === 'FIGURE') {
+                hideContent(unlockButton.parent, 'section');
+            } else hideContent(unlockButton, 'section');
         }, false);
         body.appendChild(hideElement);
 
