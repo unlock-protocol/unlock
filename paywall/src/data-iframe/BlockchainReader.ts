@@ -1,7 +1,6 @@
 /**
- * This file is a thinner, leaner iteration on the data-iframe portion
- * of the paywall application. When completed, it will deprecate the
- * Mailbox.ts file and the blockchainHandler/ directory
+ * This file is a thinner, leaner iteration on the read-only portion
+ * of the data-iframe component of the paywall application.
  *
  * Unlike the older handler, this one has no mechanism for
  * resetting. In the case of an event that invalidates data (account
@@ -10,24 +9,15 @@
  */
 
 import { getTransactionsFor } from './locksmith-helpers'
-import {
-  RawLocks,
-  KeyResults,
-  KeyResult,
-  Transactions,
-  TransactionStatus,
-  TransactionType,
-} from '../unlockTypes'
-import { normalizeLockAddress } from '../utils/normalizeAddresses'
+import { BlockchainDataStorable } from './BlockchainDataStorable'
+import { TransactionStatus, TransactionType } from '../unlockTypes'
 
-export class BlockchainHandler {
-  locks: RawLocks = {}
-  keys: KeyResults = {}
-  transactions: Transactions = {}
+export class BlockchainReader extends BlockchainDataStorable {
   accountAddress: string
 
   // The list of lock addresses from the paywall configuration
   lockAddresses: string[]
+
   // TODO: provide types from unlock-js
   web3Service: any
 
@@ -36,6 +26,7 @@ export class BlockchainHandler {
     lockAddresses: string[],
     accountAddress: string
   ) {
+    super()
     this.web3Service = web3Service
     this.lockAddresses = lockAddresses
     this.accountAddress = accountAddress
@@ -55,63 +46,20 @@ export class BlockchainHandler {
     this.getTransactionsFromLocksmith()
   }
 
-  updateLock = (lockAddress: string, update: any) => {
-    const normalizedAddress = normalizeLockAddress(lockAddress)
-
-    const currentLock = this.locks[normalizedAddress] || {}
-
-    this.locks[normalizedAddress] = {
-      ...currentLock,
-      ...update,
-      // `update` may contain the lock address -- this way we always
-      // use the normalized address instead of accidentally
-      // overwriting.
-      address: normalizedAddress,
-    }
-  }
-
-  updateKey = (_: any, key: KeyResult) => {
-    const normalizedAddress = normalizeLockAddress(key.lock)
-    const normalizedOwnerAddress = normalizeLockAddress(key.owner)
-
-    this.keys[normalizedAddress] = {
-      expiration: key.expiration,
-      owner: normalizedOwnerAddress,
-      lock: normalizedAddress,
-    }
-  }
-
-  updateTransaction = (hash: string, update: any) => {
-    if (update.lock) {
-      // ensure all references to locks are normalized
-      update.lock = normalizeLockAddress(update.lock)
-    }
-    if (update.to) {
-      // ensure all references to locks are normalized
-      update.to = normalizeLockAddress(update.to)
-    }
-
-    const currentTransaction = this.transactions[hash] || {}
-
-    this.transactions[hash] = {
-      ...currentTransaction,
-      ...update,
-    }
-  }
-
   getTransactionsFromLocksmith = async () => {
     const transactions = await getTransactionsFor(
       this.accountAddress,
       this.lockAddresses
     )
     transactions.forEach(transaction => {
-      this.transactions[transaction.hash] = {
+      const update = {
         hash: transaction.hash,
         status: TransactionStatus.SUBMITTED,
         confirmations: 0,
         blockNumber: Number.MAX_SAFE_INTEGER,
         type: TransactionType.KEY_PURCHASE,
       }
+      this.updateTransaction(transaction.hash, update)
 
       this.web3Service
         .getTransaction(

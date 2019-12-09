@@ -1,4 +1,4 @@
-import { BlockchainHandler } from '../../data-iframe/BlockchainHandler'
+import { BlockchainReader } from '../../data-iframe/BlockchainReader'
 import { KeyResult } from '../../unlockTypes'
 import { Web3ServiceType } from '../../data-iframe/blockchainHandler/blockChainTypes'
 import { getWeb3Service } from '../test-helpers/setupBlockchainHelpers'
@@ -12,7 +12,7 @@ const mock = (
   overrideAccountAddress: string = accountAddress
 ) => {
   const web3Service = getWeb3Service({})
-  const blockchainHandler = new BlockchainHandler(
+  const blockchainHandler = new BlockchainReader(
     web3Service,
     overrideLockAddresses,
     overrideAccountAddress
@@ -24,10 +24,10 @@ const mock = (
   }
 }
 
-describe('Improved blockchain handler', () => {
+describe('BlockchainReader', () => {
   describe('constructor', () => {
     let web3Service: Web3ServiceType
-    let blockchainHandler: BlockchainHandler
+    let blockchainHandler: BlockchainReader
 
     beforeEach(() => {
       const mocks = mock()
@@ -67,7 +67,7 @@ describe('Improved blockchain handler', () => {
 
   describe('updateLock', () => {
     let web3Service: Web3ServiceType
-    let blockchainHandler: BlockchainHandler
+    let blockchainHandler: BlockchainReader
     beforeAll(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
@@ -126,7 +126,7 @@ describe('Improved blockchain handler', () => {
 
   describe('updateKey', () => {
     let web3Service: Web3ServiceType
-    let blockchainHandler: BlockchainHandler
+    let blockchainHandler: BlockchainReader
     beforeAll(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
@@ -187,7 +187,7 @@ describe('Improved blockchain handler', () => {
 
   describe('updateTransaction', () => {
     let web3Service: Web3ServiceType
-    let blockchainHandler: BlockchainHandler
+    let blockchainHandler: BlockchainReader
     beforeAll(() => {
       const mocks = mock()
       web3Service = mocks.web3Service
@@ -268,7 +268,7 @@ describe('Improved blockchain handler', () => {
 
   describe('getTransactionsFromLocksmith', () => {
     let web3Service: Web3ServiceType
-    let blockchainHandler: BlockchainHandler
+    let blockchainHandler: BlockchainReader
 
     beforeEach(() => {
       const getTransactionsForMock = jest.fn().mockResolvedValue(transactions)
