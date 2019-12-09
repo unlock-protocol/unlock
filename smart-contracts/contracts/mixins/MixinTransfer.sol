@@ -61,7 +61,7 @@ contract MixinTransfer is
   {
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_to != address(0), 'INVALID_ADDRESS');
-    address keyOwner = ownerOf[_tokenId];
+    address keyOwner = _ownerOf[_tokenId];
     require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
     Key storage fromKey = keyByOwner[keyOwner];
     Key storage toKey = keyByOwner[_to];
@@ -179,7 +179,7 @@ contract MixinTransfer is
     address _to,
     uint _tokenId
   )
-    external
+    public
   {
     safeTransferFrom(_from, _to, _tokenId, '');
   }
@@ -204,7 +204,7 @@ contract MixinTransfer is
     public
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
-    hasValidKey(ownerOf[_tokenId])
+    hasValidKey(_ownerOf[_tokenId])
   {
     transferFrom(_from, _to, _tokenId);
     require(_checkOnERC721Received(_from, _to, _tokenId, _data), 'NON_COMPLIANT_ERC721_RECEIVER');
@@ -270,7 +270,7 @@ contract MixinTransfer is
     bool _addTime
   ) internal
   {
-    address tokenOwner = ownerOf[_tokenId];
+    address tokenOwner = _ownerOf[_tokenId];
     require(tokenOwner != address(0), 'NON_EXISTENT_KEY');
     Key storage key = keyByOwner[tokenOwner];
     uint formerTimestamp = key.expirationTimestamp;

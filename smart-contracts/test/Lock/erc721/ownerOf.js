@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 
 const deployLocks = require('../../helpers/deployLocks')
+const shouldFail = require('../../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -13,9 +14,8 @@ contract('Lock / erc721 / ownerOf', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should return 0 when there is no owner', async () => {
-    const owner = await locks['FIRST'].ownerOf.call(accounts[3])
-    assert.equal(owner, web3.utils.padLeft(0, 40))
+  it('should revert when key is nonexistent', async () => {
+    await shouldFail(locks['FIRST'].ownerOf.call(accounts[3]), 'NO_SUCH_KEY')
   })
 
   it('should return the owner of the key', async () => {

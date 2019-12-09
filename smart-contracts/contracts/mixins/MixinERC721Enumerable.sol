@@ -1,9 +1,8 @@
 pragma solidity 0.5.13;
 
-import './MixinERC721Enumerable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import '../interfaces/IERC721Enumerable.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
 
 
@@ -35,10 +34,10 @@ contract MixinERC721Enumerable is
   ///  (sort order not specified)
   function tokenByIndex(
     uint256 _index
-  ) external view
+  ) public view
     returns (uint256)
   {
-    require(_index < totalSupply, 'OUT_OF_RANGE');
+    require(_index < _totalSupply, 'OUT_OF_RANGE');
     return _index;
   }
 
@@ -52,7 +51,7 @@ contract MixinERC721Enumerable is
   function tokenOfOwnerByIndex(
     address _owner,
     uint256 _index
-  ) external view
+  ) public view
     returns (uint256)
   {
     require(_index == 0, 'ONLY_ONE_KEY_PER_OWNER');
