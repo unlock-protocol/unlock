@@ -32,6 +32,7 @@ import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
 import './PublicLock.sol';
 import './interfaces/IUnlock.sol';
 import './interfaces/IUniswap.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
@@ -42,6 +43,8 @@ contract Unlock is
   Ownable,
   Clone2Factory
 {
+  using Address for address;
+
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
@@ -224,6 +227,8 @@ contract Unlock is
   ) external
     onlyOwner
   {
+    // ensure that this is an address to which a contract has been deployed.
+    require(_publicLockAddress.isContract(), 'NOT_A_CONTRACT');
     publicLockAddress = _publicLockAddress;
     globalTokenSymbol = _symbol;
     globalBaseTokenURI = _URI;
