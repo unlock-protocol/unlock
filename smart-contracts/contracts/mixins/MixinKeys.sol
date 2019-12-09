@@ -33,7 +33,7 @@ contract MixinKeys is
   // Returns 0 if the token does not exist
   // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
   // merging this with totalSupply into an array instead.
-  mapping (uint => address) public ownerOf;
+  mapping (uint => address) internal _ownerOf;
 
   // Addresses of owners are also stored in an array.
   // Addresses are never removed by design to avoid abuses around referals
@@ -64,7 +64,7 @@ contract MixinKeys is
     uint _tokenId
   ) {
     require(
-      ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
+      _ownerOf[_tokenId] != address(0), 'NO_SUCH_KEY'
     );
     _;
   }
@@ -101,7 +101,7 @@ contract MixinKeys is
   function balanceOf(
     address _owner
   )
-    external
+    public
     view
     returns (uint)
   {
@@ -180,7 +180,7 @@ contract MixinKeys is
   ) public view
     returns (bool)
   {
-    return ownerOf[_tokenId] == _owner;
+    return _ownerOf[_tokenId] == _owner;
   }
 
   /**
@@ -208,6 +208,15 @@ contract MixinKeys is
   {
     return owners.length;
   }
+  // Returns the owner of a given tokenId
+  function ownerOf(
+    uint _tokenId
+  ) public view
+    isKey(_tokenId)
+    returns(address)
+  {
+    return _ownerOf[_tokenId];
+  }
 
   /**
    * Assigns the key a new tokenId (from totalSupply) if it does not already have
@@ -220,9 +229,9 @@ contract MixinKeys is
     if (_key.tokenId == 0) {
       // This is a brand new owner
       // We increment the tokenId counter
-      totalSupply++;
-      // we assign the incremented `totalSupply` as the tokenId for the new key
-      _key.tokenId = totalSupply;
+      _totalSupply++;
+      // we assign the incremented `_totalSupply` as the tokenId for the new key
+      _key.tokenId = _totalSupply;
     }
   }
 
@@ -234,11 +243,11 @@ contract MixinKeys is
     uint _tokenId
   ) internal
   {
-    if (ownerOf[_tokenId] != _owner) {
+    if (_ownerOf[_tokenId] != _owner) {
       // TODO: this may include duplicate entries
       owners.push(_owner);
       // We register the owner of the tokenID
-      ownerOf[_tokenId] = _owner;
+      _ownerOf[_tokenId] = _owner;
     }
   }
 }

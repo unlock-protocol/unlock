@@ -1,6 +1,5 @@
 pragma solidity 0.5.13;
 
-import '../interfaces/IERC721.sol';
 import './MixinDisableAndDestroy.sol';
 import './MixinKeys.sol';
 
@@ -13,7 +12,6 @@ import './MixinKeys.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinApproval is
-  IERC721,
   MixinDisableAndDestroy,
   MixinKeys
 {
@@ -40,7 +38,7 @@ contract MixinApproval is
     require(
       isKeyOwner(_tokenId, msg.sender) ||
         _isApproved(_tokenId, msg.sender) ||
-        isApprovedForAll(ownerOf[_tokenId], msg.sender),
+        isApprovedForAll(_ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_OWNER_OR_APPROVED');
     _;
   }
@@ -54,15 +52,14 @@ contract MixinApproval is
     address _approved,
     uint _tokenId
   )
-    external
-    payable
+    public
     onlyIfAlive
     onlyKeyOwnerOrApproved(_tokenId)
   {
     require(msg.sender != _approved, 'APPROVE_SELF');
 
     approved[_tokenId] = _approved;
-    emit Approval(ownerOf[_tokenId], _approved, _tokenId);
+    emit Approval(_ownerOf[_tokenId], _approved, _tokenId);
   }
 
   /**
@@ -74,7 +71,7 @@ contract MixinApproval is
   function setApprovalForAll(
     address _to,
     bool _approved
-  ) external
+  ) public
     onlyIfAlive
   {
     require(_to != msg.sender, 'APPROVE_SELF');
@@ -87,7 +84,7 @@ contract MixinApproval is
    */
   function getApproved(
     uint _tokenId
-  ) external view
+  ) public view
     returns (address)
   {
     address approvedRecipient = approved[_tokenId];

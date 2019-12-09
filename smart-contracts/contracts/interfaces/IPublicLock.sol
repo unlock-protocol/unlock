@@ -1,21 +1,18 @@
 pragma solidity ^0.5.0;
 
-import './IERC721.sol';
-import './IERC721Enumerable.sol';
-
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 /**
 * @title The PublicLock Interface
 * @author Nick Furfaro (unlock-protocol.com)
  */
 
 
-contract IPublicLock is IERC721Enumerable, IERC721 {
+contract IPublicLock is IERC721Enumerable {
 
 // See indentationissue description here:
 // https://github.com/duaraghav8/Ethlint/issues/268
 // solium-disable indentation
 
-  ///===================================================================
   /// Events
   event Destroy(
     uint balance,

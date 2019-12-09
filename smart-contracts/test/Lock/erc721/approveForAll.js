@@ -60,9 +60,9 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
       it('should trigger the ApprovalForAll event', () => {
         assert.equal(event.event, 'ApprovalForAll')
-        assert.equal(event.args._owner, owner)
-        assert.equal(event.args._operator, approvedUser)
-        assert.equal(event.args._approved, true)
+        assert.equal(event.args.owner, owner)
+        assert.equal(event.args.operator, approvedUser)
+        assert.equal(event.args.approved, true)
       })
 
       it('an authorized operator may set the approved address for an NFT', async () => {
@@ -140,9 +140,9 @@ contract('Lock / erc721 / approveForAll', accounts => {
 
       it('This emits when an operator is (enabled or) disabled for an owner.', async () => {
         assert.equal(event.event, 'ApprovalForAll')
-        assert.equal(event.args._owner, owner)
-        assert.equal(event.args._operator, approvedUser)
-        assert.equal(event.args._approved, false)
+        assert.equal(event.args.owner, owner)
+        assert.equal(event.args.operator, approvedUser)
+        assert.equal(event.args.approved, false)
       })
     })
   })

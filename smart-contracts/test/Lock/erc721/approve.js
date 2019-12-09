@@ -79,9 +79,9 @@ contract('Lock / erc721 / approve', accounts => {
 
       it('should trigger the Approval event', () => {
         assert.equal(event.event, 'Approval')
-        assert.equal(event.args._owner, accounts[1])
-        assert.equal(event.args._approved, accounts[2])
-        assert(event.args._tokenId.eq(ID))
+        assert.equal(event.args.owner, accounts[1])
+        assert.equal(event.args.approved, accounts[2])
+        assert(event.args.tokenId.eq(ID))
       })
 
       describe('when reaffirming the approved address', () => {
@@ -94,9 +94,9 @@ contract('Lock / erc721 / approve', accounts => {
 
         it('Approval emits when the approved address is reaffirmed', async () => {
           assert.equal(event.event, 'Approval')
-          assert.equal(event.args._owner, accounts[1])
-          assert.equal(event.args._approved, accounts[2])
-          assert(event.args._tokenId.eq(ID))
+          assert.equal(event.args.owner, accounts[1])
+          assert.equal(event.args.approved, accounts[2])
+          assert(event.args.tokenId.eq(ID))
         })
       })
 

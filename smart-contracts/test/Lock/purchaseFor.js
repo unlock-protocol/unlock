@@ -66,8 +66,8 @@ contract('Lock / purchaseFor', accounts => {
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args._from, 0)
-      assert.equal(tx.logs[0].args._to, accounts[2])
+      assert.equal(tx.logs[0].args.from, 0)
+      assert.equal(tx.logs[0].args.to, accounts[2])
     })
 
     describe('when the user already owns an expired key', () => {
@@ -217,8 +217,8 @@ contract('Lock / purchaseFor', accounts => {
         []
       )
       assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args._from, 0)
-      assert.equal(tx.logs[0].args._to, accounts[2])
+      assert.equal(tx.logs[0].args.from, 0)
+      assert.equal(tx.logs[0].args.to, accounts[2])
     })
 
     describe('can re-purchase an expired key', () => {

@@ -2,7 +2,7 @@ pragma solidity 0.5.13;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/introspection/ERC165.sol';
-import '../interfaces/IERC721.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '../UnlockUtils.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
@@ -14,7 +14,7 @@ import './MixinLockCore.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockMetadata is
-  IERC721,
+  IERC721Enumerable,
   ERC165,
   Ownable,
   MixinLockCore,
