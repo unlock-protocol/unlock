@@ -22,7 +22,7 @@ const web3Service = new Web3Service({
 let blockchainReader = new BlockchainDataStorable()
 
 const initializeReader = (lockAddresses: string[], accountAddress: string) => {
-  // since we may destroy a previous BlockchainHandler with this
+  // since we may destroy a previous BlockchainReader with this
   // operation, we should also make sure not to retain any event
   // listeners that involve the old object
   web3Service.removeAllListeners()
