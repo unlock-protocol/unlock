@@ -25,6 +25,10 @@ contract MixinRefunds is
 
   uint public freeTrialLength;
 
+  /// @notice The typehash per the EIP-712 standard
+  /// @dev This can be computed in JS instead of read from the contract
+  bytes32 public constant CANCEL_TYPEHASH = keccak256('cancelAndRefundFor(address _keyOwner)');
+
   event CancelKey(
     uint indexed tokenId,
     address indexed owner,
@@ -117,7 +121,11 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev returns the hash to sign in order to allow another user to cancel on your behalf.
+   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
+   * @dev this can be computed in JS instead of read from the contract.
+   * @param _keyOwner The key owner's address (also the message signer)
+   * @param _txSender The address cancelling cancel on behalf of the keyOwner
+   * @return approvalHash The hash to sign
    */
   function getCancelAndRefundApprovalHash(
     address _keyOwner,
@@ -129,6 +137,8 @@ contract MixinRefunds is
       abi.encodePacked(
         // Approval is specific to this Lock
         address(this),
+        // The specific function the signer is approving
+        CANCEL_TYPEHASH,
         // Approval enables only one cancel call
         keyOwnerToNonce[_keyOwner],
         // Approval allows only one account to broadcast the tx
