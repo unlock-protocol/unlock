@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 import * as rtl from '@testing-library/react'
 
 import Home from '../../pages/home'
-import Log from '../../pages/log'
 import DashboardContent from '../../components/content/DashboardContent'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -76,20 +75,6 @@ describe('Pages', () => {
         </ConfigProvider>
       )
       expect(pageTitle).toBeCalled()
-    })
-  })
-
-  describe('Log', () => {
-    it('should render title correctly', () => {
-      expect.assertions(1)
-      rtl.render(
-        <ConfigProvider value={config}>
-          <Provider store={store}>
-            <Log account={account} />
-          </Provider>
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Log')
     })
   })
 })

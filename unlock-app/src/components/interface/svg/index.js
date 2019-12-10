@@ -21,7 +21,6 @@ import Lemniscate from './Lemniscate'
 import LiveDemo from './LiveDemo'
 import Loading from './Loading'
 import LockClosed from './LockClosed'
-import Log from './Log'
 import Jobs from './Jobs'
 import Preview from './Preview'
 import Unlock from './Unlock'
@@ -67,7 +66,6 @@ export default {
   LiveDemo: wrapViewBox(LiveDemo, '0 0 64 64'),
   Loading: wrapViewBox(Loading, '0 0 32 32'),
   LockClosed: wrapViewBox(LockClosed, '0 0 24 24'),
-  Log: wrapViewBox(Log, '0 0 24 24'),
   Preview: wrapViewBox(Preview, '0 0 24 24'),
   Jobs: wrapViewBox(Jobs, '0 0 24 24'),
   Unlock: wrapViewBox(Unlock, '0 0 56 56'),
