@@ -64,10 +64,6 @@ const initializeReader = ({ lockAddresses, accountAddress }: ReaderArgs) => {
   // since we may destroy a previous BlockchainReader with this
   // operation, we should also make sure not to retain any event
   // listeners that involve the old object
-  console.log({
-    lockAddresses,
-    accountAddress,
-  })
   web3Service.removeAllListeners()
   blockchainReader = new BlockchainReader(
     web3Service,

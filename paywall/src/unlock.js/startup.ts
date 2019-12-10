@@ -66,14 +66,10 @@ export function startup(
   )
   iframes.init(config)
 
-  const handshake = new Postmate({
+  // TODO: be able to include this as one of the iframes passed to MainWindowHandler
+  new Postmate({
     url: constants.paywallUrl + '/static/data-iframe.2.0.html',
     classListArray: ['unlock', 'start'],
-  })
-
-  handshake.then(child => {
-    console.log('Data iframe handshake completed!')
-    ;(window as any).dataIframe = child
   })
 
   // user accounts is loaded on-demand inside of Wallet
