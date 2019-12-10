@@ -52,11 +52,6 @@ const appButtons = [
     allowedUsers: [accountTypes.crypto],
   },
   {
-    Button: PageNavButtons.Log,
-    page: '/log',
-    allowedUsers: [accountTypes.crypto, accountTypes.managed],
-  },
-  {
     Button: PageNavButtons.Settings,
     page: '/settings',
     allowedUsers: [accountTypes.managed],

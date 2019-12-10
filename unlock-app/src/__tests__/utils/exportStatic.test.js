@@ -44,7 +44,6 @@ describe('exportStatic', () => {
       '/account': { page: '/account' },
       '/dashboard': { page: '/dashboard' },
       '/keychain': { page: '/keychain' },
-      '/log': { page: '/log' },
       '/login': { page: '/login' },
       '/signup': { page: '/signup' },
       '/settings': { page: '/settings' },

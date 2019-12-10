@@ -15,9 +15,3 @@ storiesOf('Buttons/Nav Buttons', module)
   .add('Dashboard, active', () => {
     return <NavButtons.Dashboard activePath="/dashboard" />
   })
-  .add('Log', () => {
-    return <NavButtons.Log activePath="/" />
-  })
-  .add('Log, active', () => {
-    return <NavButtons.Log activePath="/log" />
-  })
