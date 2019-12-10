@@ -63,15 +63,6 @@ const store = createUnlockStore({
       type: TransactionType.WITHDRAWAL,
     },
   },
-  keysForLockByPage: {},
-  keys: {
-    keyid: {
-      transaction: 'deployedid',
-      lock: '0xBF6C4DC63B4a2cD73884552DF6FeB7cD2d48278B',
-      expiration: Math.floor(new Date().getTime() / 1000) + 86400 * 30, // 30 days from right now
-      data: 'ben@unlock-protocol.com',
-    },
-  },
   currency: {
     USD: 195.99,
   },

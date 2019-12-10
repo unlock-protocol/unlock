@@ -76,8 +76,6 @@ export const element = PropTypes.oneOfType([PropTypes.func, PropTypes.element])
 
 export const delay = PropTypes.number
 
-export const keyList = PropTypes.arrayOf(key)
-
 export const post = PropTypes.shape({
   title: PropTypes.string,
   description: PropTypes.string,
@@ -111,7 +109,6 @@ export default {
   element,
   error,
   key,
-  keyList,
   keys,
   layout,
   lock,
