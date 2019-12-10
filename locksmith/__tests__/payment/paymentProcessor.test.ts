@@ -253,7 +253,6 @@ describe('PaymentProcessor', () => {
 
     afterEach(() => {
       jest.clearAllMocks()
-      // paymentProcessor.isKeyFree.mockRestore()
     })
 
     describe('when the keys of the lock are free', () => {
