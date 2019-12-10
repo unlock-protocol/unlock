@@ -208,52 +208,6 @@ describe('PaymentProcessor', () => {
     })
   })
 
-  describe('initiatePurchase', () => {
-    beforeAll(() => {
-      paymentProcessor.chargeUser = jest
-        .fn()
-        .mockResolvedValueOnce({})
-        .mockResolvedValueOnce(null)
-    })
-
-    afterEach(() => {
-      jest.clearAllMocks()
-    })
-
-    describe('when the user was successfully charged', () => {
-      it('dispatches the purchase', async () => {
-        expect.assertions(1)
-        await paymentProcessor.initiatePurchase(
-          'recipient',
-          'lock',
-          'credentials',
-          'providerHost',
-          'buyer'
-        )
-
-        expect(mockDispatcher.purchase).toHaveBeenCalledWith(
-          'lock',
-          'recipient'
-        )
-      })
-    })
-
-    describe('when the user was unsuccessfully charged', () => {
-      it('does not dispatch the purchase', async () => {
-        expect.assertions(1)
-        await paymentProcessor.initiatePurchase(
-          'recipient',
-          'lock',
-          'credentials',
-          'providerHost',
-          'buyer'
-        )
-
-        expect(mockDispatcher.purchase).not.toHaveBeenCalled()
-      })
-    })
-  })
-
   describe('isKeyFree', () => {
     beforeAll(() => {
       paymentProcessor.keyPricer.keyPrice = jest
@@ -279,6 +233,76 @@ describe('PaymentProcessor', () => {
         expect(await paymentProcessor.isKeyFree('nonFreeLockAddress')).toBe(
           false
         )
+      })
+    })
+  })
+
+  describe('initiatePurchase', () => {
+    beforeAll(() => {
+      paymentProcessor.chargeUser = jest
+        .fn()
+        .mockResolvedValueOnce({})
+        .mockResolvedValueOnce(null)
+
+      paymentProcessor.isKeyFree = jest
+        .fn()
+        .mockResolvedValueOnce(true)
+        .mockResolvedValueOnce(false)
+        .mockResolvedValueOnce(false)
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+      // paymentProcessor.isKeyFree.mockRestore()
+    })
+
+    describe('when the keys of the lock are free', () => {
+      it('does not charge the user', async () => {
+        expect.assertions(1)
+        await paymentProcessor.initiatePurchase(
+          'recipient',
+          'lock',
+          'credentials',
+          'providerHost',
+          'buyer'
+        )
+
+        expect(paymentProcessor.chargeUser).not.toBeCalled()
+      })
+    })
+
+    describe("when the keys of the lock aren't free", () => {
+      describe('when the user was successfully charged', () => {
+        it('dispatches the purchase', async () => {
+          expect.assertions(1)
+          await paymentProcessor.initiatePurchase(
+            'recipient',
+            'lock',
+            'credentials',
+            'providerHost',
+            'buyer'
+          )
+
+          expect(mockDispatcher.purchase).toHaveBeenCalledWith(
+            'lock',
+            'recipient'
+          )
+        })
+      })
+
+      describe('when the user was unsuccessfully charged', () => {
+        it('does not dispatch the purchase', async () => {
+          expect.assertions(1)
+          await paymentProcessor.initiatePurchase(
+            'recipient',
+            'lock',
+            'credentials',
+            'providerHost',
+            'buyer'
+          )
+
+          expect(mockDispatcher.purchase).not.toHaveBeenCalled()
+        })
       })
     })
   })

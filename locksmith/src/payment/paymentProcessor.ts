@@ -119,15 +119,18 @@ export class PaymentProcessor {
     providerHost: string,
     buyer: ethereumAddress
   ) {
+    const fulfillmentDispatcher = new Dispatcher(
+      'unlockAddress',
+      credentials,
+      providerHost,
+      buyer
+    )
+
+    if (await this.isKeyFree(lock)) {
+      return fulfillmentDispatcher.purchase(lock, recipient)
+    }
     const successfulCharge = await this.chargeUser(recipient, lock)
     if (successfulCharge) {
-      const fulfillmentDispatcher = new Dispatcher(
-        'unlockAddress',
-        credentials,
-        providerHost,
-        buyer
-      )
-
       return fulfillmentDispatcher.purchase(lock, recipient)
     }
     return null
