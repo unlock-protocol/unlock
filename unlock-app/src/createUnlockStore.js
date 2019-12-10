@@ -10,9 +10,6 @@ import configure from './config'
 
 // Reducers
 
-import keysPagesReducer, {
-  initialState as defaultKeysPages,
-} from './reducers/keysPagesReducer'
 import loadingReducer, {
   initialState as defaultLoading,
 } from './reducers/loadingReducer'
@@ -72,7 +69,6 @@ export const createUnlockStore = (
   const reducers = {
     router: routerReducer,
     account: accountReducer,
-    keysForLockByPage: keysPagesReducer,
     loading: loadingReducer,
     locks: locksReducer,
     network: networkReducer,
@@ -102,7 +98,6 @@ export const createUnlockStore = (
     {
       router: initialRouterState(path),
       account: defaultAccount,
-      keysForLockByPage: defaultKeysPages,
       loading: defaultLoading,
       locks: defaultLocks,
       network: defaultNetwork,
