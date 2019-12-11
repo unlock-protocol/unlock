@@ -137,6 +137,21 @@ jobs:
           name: Tickets Tests
           command: scripts/tests.sh tickets
 
+  newsletter-tests:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
+      - run:
+          name: Build newsletter Image
+          command: scripts/build-image.sh newsletter
+      - run:
+          name: Newsletter Tests
+          command: scripts/tests.sh newsletter
+
   wedlocks-tests:
     machine: true
     environment:
@@ -252,6 +267,27 @@ jobs:
           name: Deploy to Netlify
           command: scripts/deploy.sh "$ENV_TARGET" tickets netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
 
+  deploy-newsletter-netlify:
+    machine: true
+    environment:
+      DOCKER_REPOSITORY: unlockprotocol
+    steps:
+      - checkout
+      - run:
+          command: scripts/monorepo.sh newsletter $CIRCLE_BRANCH
+      - run:
+          name: Set ENV_TARGET
+          command: scripts/circleci/set-env-target.sh >> $BASH_ENV
+      - run:
+          name: Set IS_FORKED_PR
+          command: scripts/circleci/set-is-forked-pull-request.sh >> $BASH_ENV
+      - run:
+          name: Build newsletter Image
+          command: scripts/build-image.sh newsletter
+      - run:
+          name: Deploy to Netlify
+          command: scripts/deploy.sh "$ENV_TARGET" newsletter netlify "$CIRCLE_SHA1" "$CIRCLE_BRANCH" "$IS_FORKED_PR"
+
   deploy-wedlocks-netlify:
     machine: true
     environment:
@@ -330,6 +366,7 @@ workflows:
       - locksmith-tests
       - paywall-tests
       - tickets-tests
+      - newsletter-tests
       - smart-contracts-tests
       - unlock-protocol-com-tests
       - wedlocks-tests
@@ -345,6 +382,7 @@ workflows:
             - paywall-tests
             - wedlocks-tests
             - tickets-tests
+            - newsletter-tests
       - deploy-unlock-app-netlify:
           requires:
             - integration-tests
@@ -352,6 +390,9 @@ workflows:
           requires:
             - integration-tests
       - deploy-tickets-netlify:
+          requires:
+            - integration-tests
+      - deploy-newsletter-netlify:
           requires:
             - integration-tests
       - deploy-unlock-protocol-com-netlify:
