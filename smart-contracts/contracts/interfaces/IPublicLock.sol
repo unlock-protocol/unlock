@@ -356,10 +356,11 @@ contract IPublicLock is IERC721Enumerable {
   function keyOwnerToNonce(address ) external view returns (uint256 );
 
   /**
-   * @dev returns the hash to sign in order to allow another user to cancel on your behalf.
-   * @param _keyOwner The key owner's address
-   * @param _txSender The address cancelling the key on behalf of the key-owner
-   * @return approvalHash The returned hash
+   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
+   * @dev this can be computed in JS instead of read from the contract.
+   * @param _keyOwner The key owner's address (also the message signer)
+   * @param _txSender The address cancelling cancel on behalf of the keyOwner
+   * @return approvalHash The hash to sign
    */
   function getCancelAndRefundApprovalHash(
     address _keyOwner,
@@ -398,6 +399,10 @@ contract IPublicLock is IERC721Enumerable {
   function unlockProtocol() external view returns (address );
 
   function BASIS_POINTS_DEN() external view returns (uint256 );
+
+  /// @notice The typehash per the EIP-712 standard
+  /// @dev This can be computed in JS instead of read from the contract
+  function CANCEL_TYPEHASH() external view returns(bytes32);
   ///===================================================================
 
   /**

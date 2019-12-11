@@ -62,6 +62,14 @@ contract('Lock / cancelAndRefundFor', accounts => {
     await lock.invalidateOffchainApproval('1', { from: keyOwners[0] })
   })
 
+  it('has the expected typehash', async () => {
+    const typehash = await lock.CANCEL_TYPEHASH()
+    const expected = web3.utils.keccak256(
+      'cancelAndRefundFor(address _keyOwner)'
+    )
+    assert.equal(typehash, expected)
+  })
+
   describe('should cancel and refund when enough time remains', () => {
     let initialLockBalance, initialTxSenderBalance, txObj, withdrawAmount
 
