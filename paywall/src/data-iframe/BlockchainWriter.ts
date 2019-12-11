@@ -1,5 +1,6 @@
 import { normalizeLockAddress } from '../utils/normalizeAddresses'
 import { TransactionDefaults } from './blockchainHandler/blockChainTypes'
+import { POLLING_INTERVAL } from '../constants'
 
 export const formatTransaction = (
   hash: string,
@@ -55,6 +56,17 @@ export class BlockchainWriter {
         alertError(new Error('purchase failed'))
       }
     })
+
+    // poll for account changes
+    const retrieveAccount = () => {
+      if (!this.walletService.provider) return
+      this.walletService.getAccount()
+    }
+    const pollForAccountChanges = () => {
+      retrieveAccount()
+      window.setTimeout(pollForAccountChanges, POLLING_INTERVAL)
+    }
+    pollForAccountChanges()
   }
 }
 
