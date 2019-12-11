@@ -24,7 +24,11 @@ function fixSignature(signature) {
 
 // signs message in node (ganache auto-applies "Ethereum Signed Message" prefix)
 async function signMessage(messageHex, signer) {
-  return fixSignature(await web3.eth.sign(messageHex, signer))
+  const signature = fixSignature(await web3.eth.sign(messageHex, signer))
+  const v = '0x' + signature.slice(130, 132)
+  const r = signature.slice(0, 66)
+  const s = '0x' + signature.slice(66, 130)
+  return { v, r, s }
 }
 
 contract('Lock / cancelAndRefundFor', accounts => {
@@ -74,9 +78,15 @@ contract('Lock / cancelAndRefundFor', accounts => {
         }),
         keyOwners[0]
       )
-      txObj = await lock.cancelAndRefundFor(keyOwners[0], signature, {
-        from: txSender,
-      })
+      txObj = await lock.cancelAndRefundFor(
+        keyOwners[0],
+        signature.v,
+        signature.r,
+        signature.s,
+        {
+          from: txSender,
+        }
+      )
       withdrawAmount = new BigNumber(initialLockBalance).minus(
         await web3.eth.getBalance(lock.address)
       )
@@ -135,9 +145,15 @@ contract('Lock / cancelAndRefundFor', accounts => {
       )
       await lock.invalidateOffchainApproval('1', { from: keyOwners[1] })
       await shouldFail(
-        lock.cancelAndRefundFor(keyOwners[1], signature, {
-          from: txSender,
-        }),
+        lock.cancelAndRefundFor(
+          keyOwners[1],
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: txSender,
+          }
+        ),
         'INVALID_SIGNATURE'
       )
     })
@@ -147,17 +163,29 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[2], txSender),
         keyOwners[2]
       )
-      await lock.cancelAndRefundFor(keyOwners[2], signature, {
-        from: txSender,
-      })
+      await lock.cancelAndRefundFor(
+        keyOwners[2],
+        signature.v,
+        signature.r,
+        signature.s,
+        {
+          from: txSender,
+        }
+      )
       await lock.purchase(0, keyOwners[2], web3.utils.padLeft(0, 40), [], {
         from: keyOwners[2],
         value: keyPrice.toFixed(),
       })
       await shouldFail(
-        lock.cancelAndRefundFor(keyOwners[2], signature, {
-          from: txSender,
-        }),
+        lock.cancelAndRefundFor(
+          keyOwners[2],
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: txSender,
+          }
+        ),
         'INVALID_SIGNATURE'
       )
     })
@@ -167,14 +195,20 @@ contract('Lock / cancelAndRefundFor', accounts => {
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
-      signature =
-        signature.substr(0, 4) +
-        (signature[4] === '0' ? '1' : '0') +
-        signature.substr(5)
+      signature.r =
+        signature.r.substr(0, 4) +
+        (signature.r[4] === '0' ? '1' : '0') +
+        signature.r.substr(5)
       await shouldFail(
-        lock.cancelAndRefundFor(keyOwners[3], signature, {
-          from: txSender,
-        }),
+        lock.cancelAndRefundFor(
+          keyOwners[3],
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: txSender,
+          }
+        ),
         'INVALID_SIGNATURE'
       )
     })
@@ -192,9 +226,15 @@ contract('Lock / cancelAndRefundFor', accounts => {
         keyOwners[3]
       )
       await shouldFail(
-        lock.cancelAndRefundFor(keyOwners[3], signature, {
-          from: txSender,
-        }),
+        lock.cancelAndRefundFor(
+          keyOwners[3],
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: txSender,
+          }
+        ),
         ''
       )
     })
@@ -213,9 +253,15 @@ contract('Lock / cancelAndRefundFor', accounts => {
         keyOwners[3]
       )
       await shouldFail(
-        lock.cancelAndRefundFor(keyOwners[3], signature, {
-          from: txSender,
-        }),
+        lock.cancelAndRefundFor(
+          keyOwners[3],
+          signature.v,
+          signature.r,
+          signature.s,
+          {
+            from: txSender,
+          }
+        ),
         'KEY_NOT_VALID'
       )
     })

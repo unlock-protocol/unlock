@@ -313,11 +313,13 @@ contract IPublicLock is IERC721Enumerable {
   /**
    * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
    * @param _keyOwner this user's key will be canceled
-   * @param _signature getCancelAndRefundApprovalHash signed by the _keyOwner
+   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
    */
   function cancelAndRefundFor(
     address _keyOwner,
-    bytes calldata _signature
+    uint8 _v,
+    bytes32 _r,
+    bytes32 _s
   ) external;
 
   /**

@@ -18,14 +18,18 @@ contract MixinSignatures
   /// @dev If valid the nonce is consumed, else revert.
   modifier consumeOffchainApproval(
     bytes32 _hash,
-    bytes memory _signature,
-    address _keyOwner
+    address _keyOwner,
+    uint8 _v,
+    bytes32 _r,
+    bytes32 _s
   )
   {
     require(
-      ECDSA.recover(
+      ecrecover(
         ECDSA.toEthSignedMessageHash(_hash),
-        _signature
+        _v,
+        _r,
+        _s
       ) == _keyOwner, 'INVALID_SIGNATURE'
     );
     keyOwnerToNonce[_keyOwner]++;
