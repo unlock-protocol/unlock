@@ -19,7 +19,7 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Fonts />
-          <link rel="shortcut icon" href="/static/favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.ico" />
           {this.props.styleTags}
         </Head>
         <body>
