@@ -28,6 +28,7 @@ module.exports = {
   globals: {
     __ENVIRONMENT_VARIABLES__: {
       ...configVariables,
+      locksmithUri: 'http://0.0.0.0:8080',
     },
   },
 }
