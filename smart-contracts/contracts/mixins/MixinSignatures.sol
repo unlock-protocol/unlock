@@ -1,4 +1,4 @@
-pragma solidity 0.5.13;
+pragma solidity 0.5.14;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/cryptography/ECDSA.sol';
 
