@@ -69,16 +69,23 @@ contract MixinRefunds is
   /**
    * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
    * @param _keyOwner this user's key will be canceled
-   * @param _signature getCancelAndRefundApprovalHash signed by the _keyOwner
+   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
    */
   function cancelAndRefundFor(
     address _keyOwner,
-    bytes calldata _signature
+    uint8 _v,
+    bytes32 _r,
+    bytes32 _s
   ) external
-    consumeOffchainApproval(getCancelAndRefundApprovalHash(_keyOwner, msg.sender), _signature, _keyOwner)
+    consumeOffchainApproval(
+      getCancelAndRefundApprovalHash(_keyOwner, msg.sender),
+      _keyOwner,
+      _v,
+      _r,
+      _s
+    )
   {
     uint refund = _getCancelAndRefundValue(_keyOwner);
-
     _cancelAndRefund(_keyOwner, refund);
   }
 
