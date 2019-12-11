@@ -12,6 +12,7 @@ import v12 from '../../v12'
 
 import { KEY_ID } from '../../constants'
 import erc20abi from '../../erc20abi'
+import { ZERO } from '../../../lib/constants'
 
 const account = '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1'
 const blockTime = 3
@@ -34,7 +35,7 @@ let web3Service
 const version = 'v12'
 const UnlockVersion = abis.v12
 const LockVersion = v12
-const actualVersion = 4
+const actualVersion = 5
 
 describe('Web3Service', () => {
   async function nockBeforeEach(endpoint = readOnlyProvider) {
@@ -72,6 +73,7 @@ describe('Web3Service', () => {
         '1000000000', // _keyPrice
         '1', //_maxNumberOfKeys
         'Lock name', // _lockName
+        utils.sha3(utils.utf8ToHex('salt')).substring(0, 26), // salt
       ])
 
       const type = web3Service._getTransactionType(UnlockVersion.Unlock, data)
@@ -82,17 +84,13 @@ describe('Web3Service', () => {
       expect.assertions(1)
       await nockBeforeEach()
       let data
-      if (version !== 'v0') {
-        data = getEncoder(
-          UnlockVersion.PublicLock.abi,
-          'purchaseFor'
-        )([account])
-      } else {
-        data = getEncoder(
-          UnlockVersion.PublicLock.abi,
-          'purchaseFor'
-        )([account, utils.utf8ToHex('')])
-      }
+      const amount = utils.toDecimal('1.0', 16)
+      const referrer = ZERO
+
+      data = getEncoder(
+        UnlockVersion.PublicLock.abi,
+        'purchase'
+      )([amount, account, referrer, utils.utf8ToHex('')])
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
       ).toBe(TransactionTypes.KEY_PURCHASE)
@@ -101,7 +99,10 @@ describe('Web3Service', () => {
     it('should return the right transaction type on withdrawals', async () => {
       expect.assertions(1)
       await nockBeforeEach()
-      const data = getEncoder(UnlockVersion.PublicLock.abi, 'withdraw')([1])
+      const data = getEncoder(
+        UnlockVersion.PublicLock.abi,
+        'withdraw'
+      )([account, 1])
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
       ).toBe(TransactionTypes.WITHDRAWAL)
@@ -357,9 +358,11 @@ describe('Web3Service', () => {
               address: lockAddress,
               data: encoder.encode(['address', 'uint256'], [unlockAddress, 2]),
               topics: [
-                // sender, beneficiary, amount
-                EventInfo.events['Withdrawal(address,address,uint256)'].topic,
+                // sender, tokenAddress, beneficiary, amount
+                EventInfo.events['Withdrawal(address,address,address,uint256)']
+                  .topic,
                 encoder.encode(['address'], [unlockAddress]),
+                encoder.encode(['address'], [fakeERC20ContractAddress]),
                 encoder.encode(['address'], [unlockAddress]),
                 encoder.encode(['uint256'], [2]),
               ],
