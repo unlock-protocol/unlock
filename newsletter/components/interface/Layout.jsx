@@ -81,7 +81,8 @@ const Footer = styled.footer`
 `
 
 const Header = styled.div`
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   font-weight: bold;
   font-size: 20px;
   color: var(--brand);

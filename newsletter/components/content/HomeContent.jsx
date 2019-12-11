@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Head from 'next/head'
 import Media from '../../theme/media'
 import Layout from '../interface/Layout'
+import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
 import { saveEmail } from '../../utils/token'
 import { usePaywall } from '../../hooks/usePaywall'
@@ -46,13 +47,20 @@ export default function HomeContent() {
 
   if (lockAddresses.length === 0) {
     return (
-      <Layout noHeader>
+      <Layout>
         <Head>
           <title>{pageTitle('Newsletter')}</title>
         </Head>
         <Title>{title}</Title>
-
-        <Error>This page is missing the required locks query parameter.</Error>
+        <Paragraph>
+          Instantly subscribe to your favorite crypto newsletter, using crypto!
+        </Paragraph>
+        <Paragraph>
+          <a href="https://unlock-protocol.com/">Unlock</a>
+{' '}
+is a protocol for
+          memberships, which lets creators monetize in a decentralized way.
+</Paragraph>
       </Layout>
     )
   }
@@ -60,7 +68,7 @@ export default function HomeContent() {
   // TODO: remove once paywall supports saving token metadata natively
   if (!web3) {
     return (
-      <Layout noHeader>
+      <Layout>
         <Head>
           <title>{pageTitle('Newsletter')}</title>
         </Head>
@@ -68,11 +76,14 @@ export default function HomeContent() {
 
         <Error>
           You need to a use a web browser with a crypto enabled wallet. We
-          recommend{' '}
+          recommend
+{' '}
           <a href="https://metamask.io/" target="_blank">
             MetaMask
-          </a>{' '}
-          for Firefox or Chrome, or{' '}
+          </a>
+{' '}
+          for Firefox or Chrome, or
+{' '}
           <a href="https://www.opera.com/crypto" target="_blank">
             Opera
           </a>
@@ -83,7 +94,7 @@ export default function HomeContent() {
   }
 
   return (
-    <Layout noHeader>
+    <Layout>
       <Head>
         <title>{pageTitle('Newsletter')}</title>
       </Head>
@@ -104,7 +115,9 @@ export default function HomeContent() {
       <Grid>
         <Description>{description}</Description>
 
-        {lockState === 'loading' && <span>Loading</span>}
+        {lockState === 'loading' && (
+          <Loading message="Please check your crypto wallet..." />
+        )}
         {lockState === 'unlocked' && (
           <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
         )}
@@ -124,13 +137,15 @@ export default function HomeContent() {
   )
 }
 
-const Error = styled.p`
+const Paragraph = styled.p`
   font-size: 20px;
+`
+
+const Error = styled(Paragraph)`
   color: var(--red);
 `
 
-const Confirmed = styled.p`
-  font-size: 20px;
+const Confirmed = styled(Paragraph)`
   color: var(--green);
 `
 
