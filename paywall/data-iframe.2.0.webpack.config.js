@@ -6,7 +6,7 @@ const configVariables = require('./environment')
 module.exports = () => {
   return {
     cache: false,
-    mode: 'production',
+    mode: 'development',
     devtool: 'source-map',
     entry: path.resolve(__dirname, 'src', 'data-iframe', 'index.2.0.ts'),
     output: {
