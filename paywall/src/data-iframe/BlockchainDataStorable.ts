@@ -5,7 +5,7 @@ import { normalizeLockAddress } from '../utils/normalizeAddresses'
  * This is a mixin class that handles most storage of blockchain data
  * as used in BlockchainHandler. Since it doesn't do anything on its
  * own, it can also serve as an implementation of the null object
- * pattern for BlockchainHandler.
+ * pattern for BlockchainReader.
  */
 export class BlockchainDataStorable {
   locks: RawLocks = {}
