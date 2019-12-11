@@ -31,4 +31,13 @@ describe('usePaywall', () => {
 
     expect(result.current).toBe('unlocked')
   })
+
+  it('should not set the paywall if no lock address is passed', async () => {
+    expect.assertions(2)
+
+    const { result } = renderHook(() => usePaywall([]))
+    expect(result.current).toBe('loading')
+
+    expect(window.unlockProtocolConfig).toEqual(undefined)
+  })
 })
