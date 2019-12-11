@@ -1,3 +1,5 @@
+const configVariables = require('./environment')
+
 module.exports = {
   setupFiles: ['<rootDir>/.jest/env.js', '<rootDir>/.jest/register-context.js'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
@@ -21,6 +23,11 @@ module.exports = {
       functions: 79.09,
       lines: 87.37,
       statements: 86.36,
+    },
+  },
+  globals: {
+    __ENVIRONMENT_VARIABLES__: {
+      ...configVariables,
     },
   },
 }
