@@ -52,8 +52,8 @@ const web3Service = new Web3Service({
   requiredConfirmations,
 })
 
-// Start with a null object, it will be replaced when the authenticate
-// method in the model is called.
+// Start with a null object, it will be replaced when the
+// initializeReader method in the model is called.
 let blockchainReader = new BlockchainDataStorable()
 
 interface ReaderArgs {
