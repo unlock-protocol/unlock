@@ -113,16 +113,11 @@ export default function useBlockchainData(
     )
   }
 
-  // populate locks with the lock names, either from the chain
-  // or from the paywall config
   const locks = filteredLockAddresses.reduce(
     (newLocks, lockAddress) => ({
       ...newLocks,
       [lockAddress]: {
         ...blockChainLocks[lockAddress],
-        // we always use the configuration name to provide flexibility
-        // even if the lock has a name set on the contract
-        name: paywallConfig.locks[lockAddress].name,
       },
     }),
     {}
