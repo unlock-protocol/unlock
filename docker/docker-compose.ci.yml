@@ -106,6 +106,20 @@ services:
     environment:
       CI: '${CI}'
       UNLOCK_ENV: '${UNLOCK_ENV}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      UNLOCK_APP_URL: '${UNLOCK_APP_URL}'
+      UNLOCK_STATIC_URL: '${UNLOCK_STATIC_URL}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+    command: ['npm', 'run', 'start']
+  newsletter:
+    image: newsletter
+    ports:
+      - 3003:3003
+    expose:
+      - 3003
+    environment:
+      CI: '${CI}'
+      UNLOCK_ENV: '${UNLOCK_ENV}'
       HTTP_PROVIDER: '${HTTP_PROVIDER}'
       READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
       LOCKSMITH_URI: '${LOCKSMITH_URI}'

@@ -4,6 +4,7 @@
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
+  "types": "index.d.ts",
   "sideEffects": false,
   "scripts": {
     "test": "jest",
@@ -47,6 +48,6 @@
     "unlock-abi-0-2": "1.0.0",
     "unlock-abi-1-0": "1.0.0",
     "unlock-abi-1-1": "1.1.0",
-    "unlock-abi-1-2": "1.0.1"
+    "unlock-abi-1-2": "1.0.2"
   }
 }

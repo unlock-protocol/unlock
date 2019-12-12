@@ -2,7 +2,8 @@ import {
   LocksmithTransactionsResult,
   TransactionDefaults,
 } from '../blockchainHandler/blockChainTypes'
-import configure from '../../config'
+
+declare var __ENVIRONMENT_VARIABLES__: any
 
 export const makeLockFilter = (lockAddresses: string[]) => {
   return lockAddresses
@@ -32,7 +33,7 @@ export const getTransactionsFor = async (
   accountAddress: string,
   lockAddresses: string[]
 ): Promise<TransactionDefaults[]> => {
-  const { locksmithUri } = configure()
+  const { locksmithUri } = __ENVIRONMENT_VARIABLES__
   const lockFilter = makeLockFilter(lockAddresses)
 
   const url = `${locksmithUri}/transactions?for=${accountAddress}&${lockFilter}`
