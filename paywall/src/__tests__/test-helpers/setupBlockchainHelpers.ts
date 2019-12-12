@@ -213,7 +213,7 @@ type KeyExpirationOverrides = {
 
 export function getDefaultFullLocks(
   store: PaywallState,
-  config: PaywallConfig,
+  _: PaywallConfig,
   keyExpirations: KeyExpirationOverrides = {}
 ): Locks {
   return {
@@ -227,7 +227,7 @@ export function getDefaultFullLocks(
         status: 'none',
         transactions: [],
       },
-      name: config.locks[lockAddresses[0]].name || 'one',
+      name: 'one',
       keyPrice: '0',
       expirationDuration: 1,
       currencyContractAddress: null,
@@ -242,7 +242,7 @@ export function getDefaultFullLocks(
         status: 'none',
         transactions: [],
       },
-      name: config.locks[lockAddresses[1]].name || 'two',
+      name: 'two',
       keyPrice: '0',
       expirationDuration: 1,
       currencyContractAddress: null,
@@ -257,7 +257,7 @@ export function getDefaultFullLocks(
         status: 'none',
         transactions: [],
       },
-      name: config.locks[lockAddresses[2]].name || 'three',
+      name: 'three',
       keyPrice: '0',
       expirationDuration: 1,
       currencyContractAddress: null,
