@@ -77,8 +77,8 @@ export const HomeContent = () => {
       </Hero>
 
       <Headline>
-        Unlock lets you let’s you easily lock and manage access to your content,
-        apps, community and even real life events and spaces.
+        Unlock lets you easily lock and manage access to your content, apps,
+        community and even real life events and spaces.
       </Headline>
 
       <Demo isMember={isMember} becomeMember={becomeMember} />

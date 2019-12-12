@@ -1,4 +1,4 @@
-pragma solidity 0.5.13;
+pragma solidity 0.5.14;
 
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol';
@@ -24,6 +24,10 @@ contract MixinRefunds is
   uint public refundPenaltyBasisPoints;
 
   uint public freeTrialLength;
+
+  /// @notice The typehash per the EIP-712 standard
+  /// @dev This can be computed in JS instead of read from the contract
+  bytes32 public constant CANCEL_TYPEHASH = keccak256('cancelAndRefundFor(address _keyOwner)');
 
   event CancelKey(
     uint indexed tokenId,
@@ -69,16 +73,23 @@ contract MixinRefunds is
   /**
    * @dev Cancels a key owned by a different user and sends the funds to the msg.sender.
    * @param _keyOwner this user's key will be canceled
-   * @param _signature getCancelAndRefundApprovalHash signed by the _keyOwner
+   * @param _v _r _s getCancelAndRefundApprovalHash signed by the _keyOwner
    */
   function cancelAndRefundFor(
     address _keyOwner,
-    bytes calldata _signature
+    uint8 _v,
+    bytes32 _r,
+    bytes32 _s
   ) external
-    consumeOffchainApproval(getCancelAndRefundApprovalHash(_keyOwner, msg.sender), _signature, _keyOwner)
+    consumeOffchainApproval(
+      getCancelAndRefundApprovalHash(_keyOwner, msg.sender),
+      _keyOwner,
+      _v,
+      _r,
+      _s
+    )
   {
     uint refund = _getCancelAndRefundValue(_keyOwner);
-
     _cancelAndRefund(_keyOwner, refund);
   }
 
@@ -117,7 +128,11 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev returns the hash to sign in order to allow another user to cancel on your behalf.
+   * @notice returns the hash to sign in order to allow another user to cancel on your behalf.
+   * @dev this can be computed in JS instead of read from the contract.
+   * @param _keyOwner The key owner's address (also the message signer)
+   * @param _txSender The address cancelling cancel on behalf of the keyOwner
+   * @return approvalHash The hash to sign
    */
   function getCancelAndRefundApprovalHash(
     address _keyOwner,
@@ -129,6 +144,8 @@ contract MixinRefunds is
       abi.encodePacked(
         // Approval is specific to this Lock
         address(this),
+        // The specific function the signer is approving
+        CANCEL_TYPEHASH,
         // Approval enables only one cancel call
         keyOwnerToNonce[_keyOwner],
         // Approval allows only one account to broadcast the tx

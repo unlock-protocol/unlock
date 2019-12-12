@@ -6112,426 +6112,6 @@ Object {
 }
 `;
 
-exports[`Storyshots Buttons/Nav Buttons Log 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c1 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c1:hover {
-  background-color: var(--link);
-}
-
-.c1:hover > svg {
-  fill: white;
-}
-
-.c1:focus {
-  outline: none;
-}
-
-.c2 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c0:hover .c2 {
-  display: inline-block;
-}
-
-.c3 .c0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 .c0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c3 .c0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c3 .c0 > svg {
-  fill: var(--grey);
-}
-
-.c3 .c0:hover > svg {
-  fill: var(--grey);
-}
-
-.c4 .c0 {
-  margin: 24px;
-}
-
-.c4 .c0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <a
-        class="c0 c1"
-        href="/log"
-        target="_self"
-        title="Log"
-      >
-        <svg
-          viewBox="0 0 24 24"
-        >
-          <title>
-            Log
-          </title>
-          <path
-            clip-rule="evenodd"
-            d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-            fill-rule="evenodd"
-          />
-        </svg>
-        <small
-          class="c2"
-        >
-          Log
-        </small>
-      </a>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <a
-      class="sc-850ddk-0 bqpIVT"
-      href="/log"
-      target="_self"
-      title="Log"
-    >
-      <svg
-        viewBox="0 0 24 24"
-      >
-        <title>
-          Log
-        </title>
-        <path
-          clip-rule="evenodd"
-          d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-          fill-rule="evenodd"
-        />
-      </svg>
-      <small
-        class="sc-850ddk-1 jgJDdG"
-      >
-        Log
-      </small>
-    </a>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Buttons/Nav Buttons Log, active 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c1 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c1:hover {
-  background-color: var(--link);
-}
-
-.c1:hover > svg {
-  fill: white;
-}
-
-.c1:focus {
-  outline: none;
-}
-
-.c2 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c0:hover .c2 {
-  display: inline-block;
-}
-
-.c3 .c0 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c3 .c0:nth-child(1) {
-  pointer-events: none;
-}
-
-.c3 .c0:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c3 .c0 > svg {
-  fill: var(--grey);
-}
-
-.c3 .c0:hover > svg {
-  fill: var(--grey);
-}
-
-.c4 .c0 {
-  margin: 24px;
-}
-
-.c4 .c0 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <a
-        class="c0 c1"
-        href="/log"
-        target="_self"
-        title="Log"
-      >
-        <svg
-          viewBox="0 0 24 24"
-        >
-          <title>
-            Log
-          </title>
-          <path
-            clip-rule="evenodd"
-            d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-            fill-rule="evenodd"
-          />
-        </svg>
-        <small
-          class="c2"
-        >
-          Log
-        </small>
-      </a>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <a
-      class="sc-850ddk-0 jqOqAf"
-      href="/log"
-      target="_self"
-      title="Log"
-    >
-      <svg
-        viewBox="0 0 24 24"
-      >
-        <title>
-          Log
-        </title>
-        <path
-          clip-rule="evenodd"
-          d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-          fill-rule="evenodd"
-        />
-      </svg>
-      <small
-        class="sc-850ddk-1 jgJDdG"
-      >
-        Log
-      </small>
-    </a>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
 exports[`Storyshots Content pages the Home page 1`] = `
 Object {
   "asFragment": [Function],
@@ -6649,7 +6229,7 @@ Object {
 .c5 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -7413,7 +6993,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -26502,7 +26082,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -26950,7 +26530,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -27375,7 +26955,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -28005,30 +27585,6 @@ Object {
                   class="c11"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c12"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -29364,7 +28920,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 jqOqAf"
@@ -29386,30 +28942,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -30969,7 +30501,7 @@ Object {
 .c11 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -31679,30 +31211,6 @@ Object {
                   class="c14"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c12 c15"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c14"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -33054,7 +32562,7 @@ Object {
             Creator Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 jqOqAf"
@@ -33076,30 +32584,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -36985,7 +36469,7 @@ Object {
 .c2 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -37296,7 +36780,7 @@ Object {
         </svg>
       </a>
       <div
-        class="sc-1glv5oz-3 jjYsMa"
+        class="sc-1glv5oz-3 efxvek"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -37615,7 +37099,7 @@ Object {
 .c4 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -37964,7 +37448,7 @@ Object {
         Roses are red
       </h1>
       <div
-        class="sc-1glv5oz-3 jjYsMa"
+        class="sc-1glv5oz-3 efxvek"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -38283,7 +37767,7 @@ Object {
 .c4 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -38632,7 +38116,7 @@ Object {
         Unlock
       </h1>
       <div
-        class="sc-1glv5oz-3 jjYsMa"
+        class="sc-1glv5oz-3 efxvek"
       />
       <div
         class="sc-1glv5oz-2 bwZQqD"
@@ -40623,7 +40107,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -40973,30 +40457,6 @@ Object {
                   class="c11"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c10"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -41479,7 +40939,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 bqpIVT"
@@ -41501,30 +40961,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -42141,7 +41577,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -42705,7 +42141,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -42843,21 +42279,21 @@ Object {
         </header>
         <div>
           <h1
-            class="sc-eTuwsz gHqaLx"
+            class="sc-eXEjpC cRJxsf"
           >
             Log In to Your Account
           </h1>
           <form
-            class="sc-bsbRJL kVRdDy"
+            class="sc-hrWEMg deqSrR"
           >
             <label
-              class="sc-cMhqgX glmZJN"
+              class="sc-gwVKww ivCEXu"
               for="emailInput"
             >
               Email Address
             </label>
             <input
-              class="sc-hXRMBi gPEbSW"
+              class="sc-RefOD cbePNg"
               id="emailInput"
               name="emailAddress"
               placeholder="Enter your email"
@@ -42865,13 +42301,13 @@ Object {
             />
             <br />
             <label
-              class="sc-cMhqgX glmZJN"
+              class="sc-gwVKww ivCEXu"
               for="passwordInput"
             >
               Password
             </label>
             <input
-              class="sc-hXRMBi gPEbSW"
+              class="sc-RefOD cbePNg"
               id="passwordInput"
               name="password"
               placeholder="Enter your password"
@@ -42879,22 +42315,22 @@ Object {
             />
             <br />
             <div
-              class="sc-hZSUBg dfTGqc"
+              class="sc-eTuwsz dtwfnm"
             >
               <input
-                class="sc-epnACN coDyVW"
+                class="sc-iQKALj jjYhGn"
                 type="submit"
                 value="Submit"
               />
             </div>
           </form>
           <p
-            class="sc-gwVKww fRHzKi"
+            class="sc-ibxdXY uQQTo"
           >
             Don't have an account?
              
             <a
-              class="sc-iuJeZd gDhnDJ"
+              class="sc-hXRMBi eKoAES"
             >
               Sign up here.
             </a>
@@ -43159,7 +42595,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -43509,30 +42945,6 @@ Object {
                   class="c11"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c10"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -44015,7 +43427,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 bqpIVT"
@@ -44037,30 +43449,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -44737,7 +44125,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -45087,30 +44475,6 @@ Object {
                   class="c11"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c10"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -45593,7 +44957,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 bqpIVT"
@@ -45615,30 +44979,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -46315,7 +45655,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -46665,30 +46005,6 @@ Object {
                   class="c11"
                 >
                   Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c10"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
                 </small>
               </a>
               <a
@@ -47171,7 +46487,7 @@ Object {
             Key Chain
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           >
             <a
               class="sc-850ddk-0 bqpIVT"
@@ -47193,30 +46509,6 @@ Object {
                 class="sc-850ddk-1 jgJDdG"
               >
                 Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
               </small>
             </a>
             <a
@@ -47811,7 +47103,7 @@ Object {
 .c5 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -48307,7 +47599,7 @@ Object {
             </svg>
           </a>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -48739,7 +48031,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -49187,7 +48479,7 @@ Object {
             Unlock Dashboard
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -53594,21 +52886,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-eTuwsz gHqaLx"
+        class="sc-eXEjpC cRJxsf"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-bsbRJL kVRdDy"
+        class="sc-hrWEMg deqSrR"
       >
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -53616,13 +52908,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -53630,22 +52922,22 @@ Object {
         />
         <br />
         <div
-          class="sc-hZSUBg dfTGqc"
+          class="sc-eTuwsz dtwfnm"
         >
           <input
-            class="sc-epnACN sc-iQNlJl vsRYX"
+            class="sc-iQKALj sc-bwCtUz foppAy"
             type="submit"
             value="Retry"
           />
         </div>
       </form>
       <p
-        class="sc-gwVKww fRHzKi"
+        class="sc-ibxdXY uQQTo"
       >
         Don't have an account?
          
         <a
-          class="sc-iuJeZd gDhnDJ"
+          class="sc-hXRMBi eKoAES"
         >
           Sign up here.
         </a>
@@ -53840,21 +53132,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-eTuwsz gHqaLx"
+        class="sc-eXEjpC cRJxsf"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-bsbRJL kVRdDy"
+        class="sc-hrWEMg deqSrR"
       >
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -53862,13 +53154,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -53876,22 +53168,22 @@ Object {
         />
         <br />
         <div
-          class="sc-hZSUBg dfTGqc"
+          class="sc-eTuwsz dtwfnm"
         >
           <input
-            class="sc-epnACN coDyVW"
+            class="sc-iQKALj jjYhGn"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-gwVKww fRHzKi"
+        class="sc-ibxdXY uQQTo"
       >
         Don't have an account?
          
         <a
-          class="sc-iuJeZd gDhnDJ"
+          class="sc-hXRMBi eKoAES"
         >
           Sign up here.
         </a>
@@ -54080,22 +53372,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-esOvli kAzQe"
+        class="sc-epnACN kFtmLF"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-cmthru ktyKAB"
+        class="sc-iQNlJl bSyiqn"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -54110,25 +53402,25 @@ Object {
         .
       </p>
       <form
-        class="sc-cLQEGU gbMtat"
+        class="sc-hZSUBg heIGRJ"
       >
         <input
-          class="sc-gqPbQI fGIWlY"
+          class="sc-cMhqgX bPqYvp"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hORach dUTayx"
+          class="sc-iuJeZd iQLsix"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hMFtBS cHQZbS"
+          class="sc-bsbRJL hdQjii"
         >
           Already have an account? 
           <a
-            class="sc-bAeIUo cnGcbp"
+            class="sc-cmthru fTwIns"
           >
             Log in here
           </a>
@@ -54736,21 +54028,21 @@ Object {
     />
     <div>
       <h1
-        class="sc-eTuwsz gHqaLx"
+        class="sc-eXEjpC cRJxsf"
       >
         Log In to Your Account
       </h1>
       <form
-        class="sc-bsbRJL kVRdDy"
+        class="sc-hrWEMg deqSrR"
       >
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="emailInput"
         >
           Email Address
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="emailInput"
           name="emailAddress"
           placeholder="Enter your email"
@@ -54758,13 +54050,13 @@ Object {
         />
         <br />
         <label
-          class="sc-cMhqgX glmZJN"
+          class="sc-gwVKww ivCEXu"
           for="passwordInput"
         >
           Password
         </label>
         <input
-          class="sc-hXRMBi gPEbSW"
+          class="sc-RefOD cbePNg"
           id="passwordInput"
           name="password"
           placeholder="Enter your password"
@@ -54772,22 +54064,22 @@ Object {
         />
         <br />
         <div
-          class="sc-hZSUBg dfTGqc"
+          class="sc-eTuwsz dtwfnm"
         >
           <input
-            class="sc-epnACN coDyVW"
+            class="sc-iQKALj jjYhGn"
             type="submit"
             value="Submit"
           />
         </div>
       </form>
       <p
-        class="sc-gwVKww fRHzKi"
+        class="sc-ibxdXY uQQTo"
       >
         Don't have an account?
          
         <a
-          class="sc-iuJeZd gDhnDJ"
+          class="sc-hXRMBi eKoAES"
         >
           Sign up here.
         </a>
@@ -54976,22 +54268,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-esOvli kAzQe"
+        class="sc-epnACN kFtmLF"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-cmthru ktyKAB"
+        class="sc-iQNlJl bSyiqn"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -55006,25 +54298,25 @@ Object {
         .
       </p>
       <form
-        class="sc-cLQEGU gbMtat"
+        class="sc-hZSUBg heIGRJ"
       >
         <input
-          class="sc-gqPbQI fGIWlY"
+          class="sc-cMhqgX bPqYvp"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hORach dUTayx"
+          class="sc-iuJeZd iQLsix"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hMFtBS cHQZbS"
+          class="sc-bsbRJL hdQjii"
         >
           Already have an account? 
           <a
-            class="sc-bAeIUo cnGcbp"
+            class="sc-cmthru fTwIns"
           >
             Log in here
           </a>
@@ -55737,122 +55029,122 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iujRgT kmcgWH"
+      class="sc-hMFtBS fTBGEC"
     >
       <table
-        class="sc-exAgwC ksrVFY"
+        class="sc-gqPbQI iBjiRe"
       >
         <thead>
           <tr>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Lock Name
             </th>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Keyholder Address
             </th>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Expiration
             </th>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Email Address
             </th>
           </tr>
         </thead>
         <tbody
-          class="sc-cQFLBn dKzSnz"
+          class="sc-hORach jaZeKm"
         >
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               support@tether.to
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               rex.smythe@higgi.ns
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               ssgt_jones@area51.gov
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               we don't validate email inputs
             </td>
@@ -55860,7 +55152,7 @@ Object {
         </tbody>
       </table>
       <button
-        class="sc-dqBHgY sc-GMQeP cDFJDL"
+        class="sc-dqBHgY sc-cLQEGU hUrqnN"
       >
         Export as CSV
       </button>
@@ -55953,7 +55245,7 @@ Object {
       rel="stylesheet"
     />
     <p
-      class="sc-bXGyLb aWHJS"
+      class="sc-iujRgT jywmBW"
     >
       No keys have been purchased yet. Return to your
        
@@ -56208,97 +55500,97 @@ Object {
       rel="stylesheet"
     />
     <section
-      class="sc-iujRgT kmcgWH"
+      class="sc-hMFtBS fTBGEC"
     >
       <table
-        class="sc-exAgwC ksrVFY"
+        class="sc-gqPbQI iBjiRe"
       >
         <thead>
           <tr>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Lock Name
             </th>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Keyholder Address
             </th>
             <th
-              class="sc-daURTG gNVNHh"
+              class="sc-bAeIUo cnMUuS"
             >
               Expiration
             </th>
           </tr>
         </thead>
         <tbody
-          class="sc-cQFLBn dKzSnz"
+          class="sc-hORach jaZeKm"
         >
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
           </tr>
           <tr>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               Giant Martian Insect Party
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               0xaFAEfc6dd3C9feF66f92BA838b132644451F0715
             </td>
             <td
-              class="sc-gojNiO knheOX"
+              class="sc-bMVAic xwjdY"
             >
               123456789
             </td>
@@ -56306,2048 +55598,11 @@ Object {
         </tbody>
       </table>
       <button
-        class="sc-dqBHgY sc-GMQeP cDFJDL"
+        class="sc-dqBHgY sc-cLQEGU hUrqnN"
       >
         Export as CSV
       </button>
     </section>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 5 Pages 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c2 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c1 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c2"
-        >
-          2
-        </div>
-        <div
-          class="c2"
-        >
-          3
-        </div>
-        <div
-          class="c2"
-        >
-          4
-        </div>
-        <div
-          class="c2"
-        >
-          5
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 10 Pages 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c2 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c1 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c2"
-        >
-          2
-        </div>
-        <div
-          class="c2"
-        >
-          3
-        </div>
-        <div
-          class="c2"
-        >
-          4
-        </div>
-        <div
-          class="c2"
-        >
-          5
-        </div>
-        <div
-          class="c2"
-        >
-          6
-        </div>
-        <div
-          class="c2"
-        >
-          7
-        </div>
-        <div
-          class="c2"
-        >
-          8
-        </div>
-        <div
-          class="c2"
-        >
-          9
-        </div>
-        <div
-          class="c2"
-        >
-          10
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        6
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        7
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        8
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        9
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        10
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c2 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c1 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c2"
-        >
-          2
-        </div>
-        <div
-          class="c2"
-        >
-          3
-        </div>
-        <div
-          class="c2"
-        >
-          4
-        </div>
-        <div
-          class="c2"
-        >
-          5
-        </div>
-        <div
-          class="c2"
-          style="cursor: default;"
-        >
-          ....
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c2"
-          >
-            16
-          </div>
-          <div
-            class="c2"
-          >
-            17
-          </div>
-          <div
-            class="c2"
-          >
-            18
-          </div>
-          <div
-            class="c2"
-          >
-            19
-          </div>
-          <div
-            class="c2"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ....
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 6th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c2"
-        >
-          6
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-           
-          ....
-           
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c1"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        6
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-         
-        ....
-         
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 8th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-          ..
-        </div>
-        <div
-          class="c2"
-        >
-          8
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-           
-          ....
-           
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c1"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ..
-      </div>
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        8
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-         
-        ....
-         
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 10th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-          ....
-        </div>
-        <div
-          class="c2"
-        >
-          10
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-           
-          ....
-           
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c1"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ....
-      </div>
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        10
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-         
-        ....
-         
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 12th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-          ....
-        </div>
-        <div
-          class="c2"
-        >
-          12
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-           
-          ..
-           
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c1"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ....
-      </div>
-      <div
-        class="sc-15u4nek-6 fkwhDS"
-      >
-        12
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-         
-        ..
-         
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 15th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-          ....
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c2"
-          >
-            15
-          </div>
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c1"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ....
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-6 fkwhDS"
-        >
-          15
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          20
-        </div>
-      </div>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots PaginationPageNumbers 20 Pages with current page 20th 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c0 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: spread cursor:pointer;
-  -webkit-box-align: spread cursor:pointer;
-  -ms-flex-align: spread cursor:pointer;
-  align-items: spread cursor:pointer;
-  color: #72ACCF;
-  font-weight: bold;
-}
-
-.c1 {
-  margin: 0 10px;
-  cursor: pointer;
-}
-
-.c2 {
-  margin: 0 10px;
-  color: red;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          1
-        </div>
-        <div
-          class="c1"
-        >
-          2
-        </div>
-        <div
-          class="c1"
-        >
-          3
-        </div>
-        <div
-          class="c1"
-        >
-          4
-        </div>
-        <div
-          class="c1"
-        >
-          5
-        </div>
-        <div
-          class="c1"
-          style="cursor: default;"
-        >
-          ....
-        </div>
-        <div
-          style="display: flex; flex-direction: row;"
-        >
-          <div
-            class="c1"
-          >
-            16
-          </div>
-          <div
-            class="c1"
-          >
-            17
-          </div>
-          <div
-            class="c1"
-          >
-            18
-          </div>
-          <div
-            class="c1"
-          >
-            19
-          </div>
-          <div
-            class="c2"
-          >
-            20
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-15u4nek-4 bDJERm"
-    >
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        1
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        2
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        3
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        4
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-      >
-        5
-      </div>
-      <div
-        class="sc-15u4nek-5 cYOnUz"
-        style="cursor: default;"
-      >
-        ....
-      </div>
-      <div
-        style="display: flex; flex-direction: row;"
-      >
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          16
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          17
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          18
-        </div>
-        <div
-          class="sc-15u4nek-5 cYOnUz"
-        >
-          19
-        </div>
-        <div
-          class="sc-15u4nek-6 fkwhDS"
-        >
-          20
-        </div>
-      </div>
-    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
@@ -58557,7 +55812,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -59017,7 +56272,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -59388,7 +56643,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -60027,7 +57282,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -60567,7 +57822,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -61041,7 +58296,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -61471,7 +58726,7 @@ Object {
 .c8 {
   display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
+  grid-template-columns: repeat(3,24px);
   grid-auto-flow: column;
   -webkit-align-items: center;
   -webkit-box-align: center;
@@ -61982,7 +59237,7 @@ Object {
             Recover
           </h1>
           <div
-            class="sc-1glv5oz-3 jjYsMa"
+            class="sc-1glv5oz-3 efxvek"
           />
           <div
             class="sc-1glv5oz-2 bwZQqD"
@@ -62624,7 +59879,7 @@ Object {
 }
 
 .c23:hover:before {
-  content: 'Log';
+  content: 'Preview';
   position: absolute;
 }
 
@@ -62640,7 +59895,7 @@ Object {
 }
 
 .c24:hover:before {
-  content: 'Preview';
+  content: 'Jobs';
   position: absolute;
 }
 
@@ -62656,7 +59911,7 @@ Object {
 }
 
 .c25:hover:before {
-  content: 'Jobs';
+  content: 'Unlock';
   position: absolute;
 }
 
@@ -62672,7 +59927,7 @@ Object {
 }
 
 .c26:hover:before {
-  content: 'Unlock';
+  content: 'UnlockWordMark';
   position: absolute;
 }
 
@@ -62688,7 +59943,7 @@ Object {
 }
 
 .c27:hover:before {
-  content: 'UnlockWordMark';
+  content: 'Upload';
   position: absolute;
 }
 
@@ -62704,7 +59959,7 @@ Object {
 }
 
 .c28:hover:before {
-  content: 'Upload';
+  content: 'Withdraw';
   position: absolute;
 }
 
@@ -62720,7 +59975,7 @@ Object {
 }
 
 .c29:hover:before {
-  content: 'Withdraw';
+  content: 'Newsletter';
   position: absolute;
 }
 
@@ -62736,7 +59991,7 @@ Object {
 }
 
 .c30:hover:before {
-  content: 'Newsletter';
+  content: 'Members';
   position: absolute;
 }
 
@@ -62752,7 +60007,7 @@ Object {
 }
 
 .c31:hover:before {
-  content: 'Members';
+  content: 'Telegram';
   position: absolute;
 }
 
@@ -62768,7 +60023,7 @@ Object {
 }
 
 .c32:hover:before {
-  content: 'Telegram';
+  content: 'Ticket';
   position: absolute;
 }
 
@@ -62784,7 +60039,7 @@ Object {
 }
 
 .c33:hover:before {
-  content: 'Ticket';
+  content: 'Twitter';
   position: absolute;
 }
 
@@ -62800,7 +60055,7 @@ Object {
 }
 
 .c34:hover:before {
-  content: 'Twitter';
+  content: 'Bars';
   position: absolute;
 }
 
@@ -62816,7 +60071,7 @@ Object {
 }
 
 .c35:hover:before {
-  content: 'Bars';
+  content: 'ChevronUp';
   position: absolute;
 }
 
@@ -62832,7 +60087,7 @@ Object {
 }
 
 .c36:hover:before {
-  content: 'ChevronUp';
+  content: 'Home';
   position: absolute;
 }
 
@@ -62848,7 +60103,7 @@ Object {
 }
 
 .c37:hover:before {
-  content: 'Home';
+  content: 'Qr';
   position: absolute;
 }
 
@@ -62864,22 +60119,6 @@ Object {
 }
 
 .c38:hover:before {
-  content: 'Qr';
-  position: absolute;
-}
-
-.c39 {
-  width: 200px;
-  height: 200px;
-  border: 1px solid var(--lightgrey);
-  border-radius: 5px;
-}
-
-.c39:hover {
-  background-color: var(--offwhite);
-}
-
-.c39:hover:before {
   content: 'Wordpress';
   position: absolute;
 }
@@ -63361,20 +60600,6 @@ Object {
           </div>
           <div
             class="c23"
-            name="Log"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <path
-                clip-rule="evenodd"
-                d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                fill-rule="evenodd"
-              />
-            </svg>
-          </div>
-          <div
-            class="c24"
             name="Preview"
           >
             <svg
@@ -63394,7 +60619,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c25"
+            class="c24"
             name="Jobs"
           >
             <svg
@@ -63408,7 +60633,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c26"
+            class="c25"
             name="Unlock"
           >
             <svg
@@ -63420,7 +60645,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c27"
+            class="c26"
             name="UnlockWordMark"
           >
             <svg
@@ -63432,7 +60657,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c28"
+            class="c27"
             name="Upload"
           >
             <svg
@@ -63446,7 +60671,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c29"
+            class="c28"
             name="Withdraw"
           >
             <svg
@@ -63460,7 +60685,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c30"
+            class="c29"
             name="Newsletter"
           >
             <svg
@@ -63474,7 +60699,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c31"
+            class="c30"
             name="Members"
           >
             <svg
@@ -63488,7 +60713,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c32"
+            class="c31"
             name="Telegram"
           >
             <svg
@@ -63502,7 +60727,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c33"
+            class="c32"
             name="Ticket"
           >
             <svg
@@ -63516,7 +60741,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c34"
+            class="c33"
             name="Twitter"
           >
             <svg
@@ -63530,7 +60755,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c35"
+            class="c34"
             name="Bars"
           >
             <svg
@@ -63542,7 +60767,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c36"
+            class="c35"
             name="ChevronUp"
           >
             <svg
@@ -63556,7 +60781,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c37"
+            class="c36"
             name="Home"
           >
             <svg
@@ -63568,7 +60793,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c38"
+            class="c37"
             name="Qr"
           >
             <svg
@@ -63604,7 +60829,7 @@ Object {
             </svg>
           </div>
           <div
-            class="c39"
+            class="c38"
             name="Wordpress"
           >
             <svg
@@ -64095,20 +61320,6 @@ Object {
             <path
               clip-rule="evenodd"
               d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-              fill-rule="evenodd"
-            />
-          </svg>
-        </div>
-        <div
-          class="lx77hn-1 MayjI"
-          name="Log"
-        >
-          <svg
-            viewBox="0 0 24 24"
-          >
-            <path
-              clip-rule="evenodd"
-              d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
               fill-rule="evenodd"
             />
           </svg>
@@ -64956,22 +62167,22 @@ Object {
     />
     <div>
       <h1
-        class="sc-esOvli kAzQe"
+        class="sc-epnACN kFtmLF"
       >
         Pay For Content Seamlessly
       </h1>
       <h2
-        class="sc-cmthru ktyKAB"
+        class="sc-iQNlJl bSyiqn"
       >
         Unlock enables anyone to seamlessly buy and manage access to content using blockchain technology.
       </h2>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         At Unlock, we believe that the more accessible paid content is, the better it will be. To do that we're making it easy for readers like you to seamlessly pay for and manage your content.
       </p>
       <p
-        class="sc-hMFtBS cHQZbS"
+        class="sc-bsbRJL hdQjii"
       >
         If you want to know more about Unlock's decentralized payment protocol, check out
          
@@ -64986,25 +62197,25 @@ Object {
         .
       </p>
       <form
-        class="sc-cLQEGU gbMtat"
+        class="sc-hZSUBg heIGRJ"
       >
         <input
-          class="sc-gqPbQI fGIWlY"
+          class="sc-cMhqgX bPqYvp"
           name="emailAddress"
           placeholder="Enter your email to get started"
           type="email"
         />
         <input
-          class="sc-hORach dUTayx"
+          class="sc-iuJeZd iQLsix"
           type="submit"
           value="Sign Up"
         />
         <p
-          class="sc-hMFtBS cHQZbS"
+          class="sc-bsbRJL hdQjii"
         >
           Already have an account? 
           <a
-            class="sc-bAeIUo cnGcbp"
+            class="sc-cmthru fTwIns"
           >
             Log in here
           </a>
@@ -65135,1516 +62346,6 @@ Object {
         </a>
         .
       </p>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots Transaction Log the log 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c10 {
-  background-color: var(--lightgrey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c10 > svg {
-  fill: var(--grey);
-  height: 24px;
-  width: 24px;
-}
-
-.c10:hover {
-  background-color: var(--link);
-}
-
-.c10:hover > svg {
-  fill: white;
-}
-
-.c10:focus {
-  outline: none;
-}
-
-.c14 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c14 > svg {
-  fill: white;
-  height: 24px;
-  width: 24px;
-}
-
-.c14:hover {
-  background-color: var(--link);
-}
-
-.c14:hover > svg {
-  fill: white;
-}
-
-.c14:focus {
-  outline: none;
-}
-
-.c16 {
-  background-color: var(--grey);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 48px;
-  width: 48px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c16 > svg {
-  fill: white;
-  height: 48px;
-  width: 48px;
-}
-
-.c16:hover {
-  background-color: var(--link);
-}
-
-.c16:hover > svg {
-  fill: white;
-}
-
-.c16:focus {
-  outline: none;
-}
-
-.c12 {
-  background-color: var(--link);
-  cursor: pointer;
-  border-radius: 50%;
-  height: 24px;
-  width: 24px;
-  display: inline-block;
-  padding: 0;
-  border: 0;
-  line-height: '15px';
-}
-
-.c12 > svg {
-  fill: var(--white);
-  height: 24px;
-  width: 24px;
-}
-
-.c12:hover {
-  background-color: var(--link);
-}
-
-.c12:hover > svg {
-  fill: white;
-}
-
-.c12:focus {
-  outline: none;
-}
-
-.c11 {
-  display: none;
-  position: relative;
-  z-index: var(--alwaysontop);
-  white-space: nowrap;
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
-  transform: translateX(-50%);
-  color: var(--link);
-}
-
-.c9:hover .c11 {
-  display: inline-block;
-}
-
-.c2 {
-  background-color: var(--brand);
-  height: 56px;
-  width: 56px;
-  border-radius: 50%;
-}
-
-.c2 > svg {
-  fill: white;
-}
-
-.c7 {
-  background-color: var(--brand);
-  height: 30px;
-  width: 30px;
-  border-radius: 50%;
-}
-
-.c7 > svg {
-  fill: white;
-}
-
-.c4 {
-  display: grid;
-  grid-gap: 0;
-  grid-template-columns: 256px 1fr auto;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 70px;
-}
-
-.c5 {
-  color: var(--grey);
-}
-
-.c13 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-}
-
-.c8 {
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(4,24px);
-  grid-auto-flow: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  height: 100%;
-}
-
-.c15 {
-  display: none;
-  height: auto;
-  grid-column: second;
-}
-
-.c15 .c9 {
-  background-color: var(--white);
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  opacity: 1;
-  pointer-events: visible;
-  -webkit-align-self: center;
-  -ms-flex-item-align: center;
-  align-self: center;
-}
-
-.c15 .c9:nth-child(1) {
-  pointer-events: none;
-}
-
-.c15 .c9:nth-child(2) {
-  pointer-events: none;
-  display: none;
-}
-
-.c15 .c9 > svg {
-  fill: var(--grey);
-}
-
-.c15 .c9:hover > svg {
-  fill: var(--grey);
-}
-
-.c17 {
-  background-color: var(--white);
-  width: 100%;
-  height: auto;
-  z-index: var(--foreground);
-  padding-bottom: 30px;
-  display: inline-block;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 0px;
-  grid-row: second;
-  grid-column-start: 1;
-  grid-column-end: 3;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
-  height: 0%;
-  pointer-events: none;
-  top: 50px;
-}
-
-.c17 .c9 {
-  margin: 24px;
-}
-
-.c17 .c9 small {
-  display: block;
-  color: var(--grey);
-  text-align: center;
-  top: 5px;
-  width: 100%;
-  text-align: center;
-}
-
-.c6 {
-  padding-top: 2px;
-}
-
-.c0 {
-  display: grid;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
-}
-
-.c1 {
-  display: grid;
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  height: 24px;
-}
-
-.c3 {
-  color: var(--darkgrey);
-  display: grid;
-  row-gap: 24px;
-  width: 100%;
-}
-
-.c23 {
-  border-bottom: none !important;
-  cursor: inherit !important;
-  -webkit-text-decoration: none !important;
-  text-decoration: none !important;
-}
-
-.c22 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--red);
-  margin-left: 1em;
-  text-transform: none;
-}
-
-.c19 {
-  font-family: 'IBM Plex Mono',monospace;
-  display: grid;
-  row-gap: 8px;
-  -webkit-column-gap: 16px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2,100px) repeat(3,24px) 1fr;
-}
-
-.c20 {
-  display: grid;
-  height: 40px;
-  grid-row: span 2;
-  -webkit-align-self: start;
-  -ms-flex-item-align: start;
-  align-self: start;
-  font-size: 24px;
-  -webkit-align-content: start;
-  -ms-flex-line-pack: start;
-  align-content: start;
-}
-
-.c21 {
-  font-weight: 100;
-  text-transform: uppercase;
-  -webkit-letter-spacing: 1px;
-  -moz-letter-spacing: 1px;
-  -ms-letter-spacing: 1px;
-  letter-spacing: 1px;
-  font-size: 8px;
-}
-
-.c24 {
-  font-family: 'IBM Plex Mono',monospace;
-  font-size: 10px;
-  width: 128px;
-  font-weight: 300;
-  word-wrap: break-word;
-  word-break: break-all;
-}
-
-.c25 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  padding: 10px;
-  -webkit-align-self: end;
-  -ms-flex-item-align: end;
-  align-self: end;
-  height: 48px;
-}
-
-.c25 :hover {
-  background-color: var(--activegreen);
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: 1fr 144px;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.c26 {
-  display: grid;
-  grid-template-columns: 125px 2fr 1fr;
-  grid-auto-rows: 32px;
-  grid-column-gap: 20px;
-}
-
-.c27 {
-  font-size: 10px;
-  font-weight: normal;
-  text-transform: uppercase;
-  color: var(--grey);
-  white-space: nowrap;
-}
-
-.c28 {
-  font-size: 14px;
-  line-height: 14px;
-  color: var(--darkgrey);
-  font-weight: 300;
-  font-family: 'IBM Plex Mono',Courier,monospace;
-}
-
-.c29 {
-  font-size: 14px;
-  font-weight: 300;
-  font-family: 'IBM Plex Mono',Courier,monospace;
-}
-
-.c30 {
-  font-size: 14px;
-  line-height: 14px;
-  color: var(--darkgrey);
-  font-weight: 300;
-  font-family: 'IBM Plex Mono',Courier,monospace;
-  color: var(--green);
-  white-space: nowrap;
-}
-
-.c31 {
-  font-size: 14px;
-  line-height: 14px;
-  color: var(--darkgrey);
-  font-weight: 300;
-  font-family: 'IBM Plex Mono',Courier,monospace;
-  color: var(--slate);
-  white-space: nowrap;
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c4 {
-    grid-template-columns: [first] 1fr [second] 48px;
-    grid-template-rows: [first] auto;
-    height: auto;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c5 {
-    display: grid;
-    grid-gap: 0;
-    grid-template-columns: 50px auto;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c8 {
-    margin-top: 20px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c15 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c15 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c17 {
-    display: grid;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c17 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c6 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c0 {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c1 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c32 {
-    display: none;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c19 {
-    -webkit-column-gap: 2px;
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2,0px);
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c20 {
-    height: 0px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c25 {
-    display: none;
-  }
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div
-          class="c1"
-        >
-          <a
-            href="/"
-          >
-            <div
-              class="c2"
-            >
-              <svg
-                viewBox="0 0 56 56"
-              >
-                <path
-                  d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                />
-              </svg>
-            </div>
-          </a>
-        </div>
-        <div
-          class="c3"
-        >
-          <header
-            class="c4"
-          >
-            <h1
-              class="c5"
-            >
-              <div
-                class="c6"
-              >
-                <a
-                  href="/"
-                >
-                  <div
-                    class="c7"
-                  >
-                    <svg
-                      viewBox="0 0 56 56"
-                    >
-                      <path
-                        d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                      />
-                    </svg>
-                  </div>
-                </a>
-              </div>
-              Creator Log
-            </h1>
-            <div
-              class="c8"
-            >
-              <a
-                class="c9 c10"
-                href="/dashboard"
-                target="_self"
-                title="Dashboard"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Dashboard
-                  </title>
-                  <path
-                    d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Dashboard
-                </small>
-              </a>
-              <a
-                class="c9 c12"
-                href="/log"
-                target="_self"
-                title="Log"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Log
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Log
-                </small>
-              </a>
-              <a
-                class="c9 c10"
-                href="/keychain"
-                target="_self"
-                title="Keychain"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    Keychain
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Keychain
-                </small>
-              </a>
-            </div>
-            <div
-              class="c13"
-            >
-              <a
-                class="c9 c14"
-                href="http://localhost:3002/about"
-                target="_self"
-                title="About"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                >
-                  <title>
-                    About
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  About
-                </small>
-              </a>
-              <a
-                class="c9 c14"
-                href="http://localhost:3002/jobs"
-                target="_self"
-                title="Join us"
-              >
-                <svg
-                  name="Jobs"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    clip-rule="evenodd"
-                    d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Join us
-                </small>
-              </a>
-              <a
-                class="c9 c14"
-                href="https://github.com/unlock-protocol/unlock"
-                target="_self"
-                title="Source Code"
-              >
-                <svg
-                  name="Github"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Source Code
-                </small>
-              </a>
-              <a
-                class="c9 c14"
-                href="https://t.me/unlockprotocol"
-                target="_self"
-                title="Telegram"
-              >
-                <svg
-                  name="Telegram"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    clip-rule="evenodd"
-                    d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                <small
-                  class="c11"
-                >
-                  Telegram
-                </small>
-              </a>
-            </div>
-            <div
-              class="c15"
-            >
-              <a
-                class="c9 c16"
-                target="_self"
-              >
-                <svg
-                  viewBox="0 0 56 42"
-                >
-                  <title>
-                    Bars
-                  </title>
-                  <path
-                    d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                  />
-                </svg>
-                
-              </a>
-              <a
-                class="c9 c16"
-                target="_self"
-              >
-                <svg
-                  viewBox="0 0 58 32"
-                >
-                  <title>
-                    Chevron Up
-                  </title>
-                  <path
-                    clip-rule="evenodd"
-                    d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                    fill-rule="evenodd"
-                  />
-                </svg>
-                
-              </a>
-            </div>
-            <div
-              class="c17"
-            />
-          </header>
-          <div
-            class="c18"
-          >
-            <section
-              class=""
-            >
-              <div
-                class="c19"
-              >
-                <div
-                  class="c20"
-                >
-                  <div
-                    class="paper"
-                    style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
-                  >
-                    <svg
-                      height="40"
-                      width="40"
-                      x="0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      y="0"
-                    >
-                      <rect
-                        fill="#F5B400"
-                        height="40"
-                        rx="0"
-                        ry="0"
-                        transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
-                        width="40"
-                        x="0"
-                        y="0"
-                      />
-                      <rect
-                        fill="#F92F01"
-                        height="40"
-                        rx="0"
-                        ry="0"
-                        transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                        width="40"
-                        x="0"
-                        y="0"
-                      />
-                      <rect
-                        fill="#FB186F"
-                        height="40"
-                        rx="0"
-                        ry="0"
-                        transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                        width="40"
-                        x="0"
-                        y="0"
-                      />
-                      <rect
-                        fill="#18A9F2"
-                        height="40"
-                        rx="0"
-                        ry="0"
-                        transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                        width="40"
-                        x="0"
-                        y="0"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                <div
-                  class="c21"
-                >
-                  Address
-                  <span
-                    class="c22"
-                    id="NetworkName"
-                  >
-                    Winston
-                  </span>
-                </div>
-                <div
-                  class="c20"
-                />
-                <div
-                  class="c20"
-                />
-                <div
-                  class="c20"
-                />
-                <div
-                  class="c20"
-                />
-                <div
-                  class="c20"
-                />
-                <div
-                  class="c20"
-                />
-                <abbr
-                  class="c23 c24"
-                  id="UserAddress"
-                  title="0x3ca206264762caf81a8f0a843bbb850987b41e16"
-                >
-                  0x3ca206264762caf81a8f0a843bbb850987b41e16
-                </abbr>
-              </div>
-            </section>
-            <button
-              class="c25"
-              id="CreateLockButton"
-            >
-              Create Lock
-            </button>
-          </div>
-          <div
-            class="c26"
-          >
-            <div
-              class="c27"
-            >
-              Block Number
-            </div>
-            <div
-              class="c27"
-            >
-              Lock Name/Address
-            </div>
-            <div
-              class="c27"
-            >
-              Type
-            </div>
-            <div
-              class="c28"
-            >
-              3
-            </div>
-            <a
-              class="c29"
-              href=""
-              target="_blank"
-            >
-              0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
-            </a>
-            <div
-              class="c30"
-              type="Lock Creation"
-            >
-              Lock Creation
-            </div>
-            <div
-              class="c28"
-            >
-              2
-            </div>
-            <a
-              class="c29"
-              href=""
-              target="_blank"
-            >
-              0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
-            </a>
-            <div
-              class="c31"
-              type="Update Key Price"
-            >
-              Update Key Price
-            </div>
-            <div
-              class="c28"
-            >
-              1
-            </div>
-            <a
-              class="c29"
-              href=""
-              target="_blank"
-            >
-              0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
-            </a>
-            <div
-              class="c30"
-              type="Lock Creation"
-            >
-              Lock Creation
-            </div>
-          </div>
-        </div>
-        <div
-          class="c32"
-        />
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="hm3mhg-0 iMlWOh"
-    >
-      <div
-        class="hm3mhg-1 iBEace"
-      >
-        <a
-          href="/"
-        >
-          <div
-            class="cenpj1-0 eJifmz"
-          >
-            <svg
-              viewBox="0 0 56 56"
-            >
-              <path
-                d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-              />
-            </svg>
-          </div>
-        </a>
-      </div>
-      <div
-        class="hm3mhg-3 yKIjT"
-      >
-        <header
-          class="sc-1glv5oz-0 dmdEhu"
-        >
-          <h1
-            class="sc-1glv5oz-1 kBUdQa"
-          >
-            <div
-              class="sc-1glv5oz-6 gMXOkk"
-            >
-              <a
-                href="/"
-              >
-                <div
-                  class="cenpj1-0 eCEwze"
-                >
-                  <svg
-                    viewBox="0 0 56 56"
-                  >
-                    <path
-                      d="M42.315 22.461h-1.862v-6.92h-6.919v6.92H22.48v-6.92h-6.918v6.92h-1.877v3.288h1.877v5.18c0 6.481 5.606 11.77 12.485 11.77 6.84 0 12.406-5.289 12.406-11.77v-5.18h1.862zm-8.78 8.468a5.515 5.515 0 01-5.488 5.567 5.583 5.583 0 01-5.567-5.567v-5.18h11.054z"
-                    />
-                  </svg>
-                </div>
-              </a>
-            </div>
-            Creator Log
-          </h1>
-          <div
-            class="sc-1glv5oz-3 jjYsMa"
-          >
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/dashboard"
-              target="_self"
-              title="Dashboard"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Dashboard
-                </title>
-                <path
-                  d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Dashboard
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 jqOqAf"
-              href="/log"
-              target="_self"
-              title="Log"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Log
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M10.5 8a.5.5 0 010-1h6a.5.5 0 010 1h-6zm6.5 2.5a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-7 3a.5.5 0 00.5.5h6a.5.5 0 000-1h-6a.5.5 0 00-.5.5zm7 3a.5.5 0 01-.5.5h-6a.5.5 0 010-1h6a.5.5 0 01.5.5zm-10-6a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zM7.5 8a.5.5 0 010-1h1a.5.5 0 010 1h-1zM7 13.5a.5.5 0 00.5.5h1a.5.5 0 000-1h-1a.5.5 0 00-.5.5zm2 3a.5.5 0 01-.5.5h-1a.5.5 0 010-1h1a.5.5 0 01.5.5z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Log
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 bqpIVT"
-              href="/keychain"
-              target="_self"
-              title="Keychain"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  Keychain
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M9.5 7.667C9.5 6.524 10.562 5.5 12 5.5s2.5 1.024 2.5 2.167V9h-5V7.667zM8.5 9H7a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1v-8a1 1 0 00-1-1h-1.5V7.667C15.5 5.864 13.876 4.5 12 4.5S8.5 5.864 8.5 7.667V9zM7 18h10v-8H7v8zm3-4c0 1.1.9 2 2 2s2-.9 2-2-.9-2-2-2-2 .9-2 2z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Keychain
-              </small>
-            </a>
-          </div>
-          <div
-            class="sc-1glv5oz-2 bwZQqD"
-          >
-            <a
-              class="sc-850ddk-0 iabPtF"
-              href="http://localhost:3002/about"
-              target="_self"
-              title="About"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <title>
-                  About
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M12 8.4A1.2 1.2 0 1012 6a1.2 1.2 0 000 2.4zm0 9.6a1 1 0 001-1v-6a1 1 0 10-2 0v6a1 1 0 001 1z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                About
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 iabPtF"
-              href="http://localhost:3002/jobs"
-              target="_self"
-              title="Join us"
-            >
-              <svg
-                name="Jobs"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M13 5h-2a2 2 0 00-2 2H7a2 2 0 00-2 2v1h14V9a2 2 0 00-2-2h-2a2 2 0 00-2-2zm1 2a1 1 0 00-1-1h-2a1 1 0 00-1 1h4zm-9 4h14v4a2 2 0 01-2 2H7a2 2 0 01-2-2v-4z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Join us
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 iabPtF"
-              href="https://github.com/unlock-protocol/unlock"
-              target="_self"
-              title="Source Code"
-            >
-              <svg
-                name="Github"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M9.021 21.829c.007 1.065.017 2.171.017 2.171h6.136c0-.419.016-1.795.016-3.502 0-1.191-.397-1.97-.84-2.364 2.756-.316 5.65-1.396 5.65-6.3 0-1.394-.479-2.533-1.272-3.426.127-.323.552-1.62-.123-3.378 0 0-1.038-.344-3.4 1.308a11.554 11.554 0 00-3.099-.43c-1.053.006-2.11.147-3.098.43C6.644 4.686 5.604 5.03 5.604 5.03c-.673 1.757-.248 3.055-.12 3.378-.793.893-1.275 2.032-1.275 3.426 0 4.892 2.89 5.987 5.638 6.31-.354.319-.674.881-.786 1.706-.706.327-2.498.89-3.602-1.06 0 0-.654-1.226-1.896-1.316 0 0-1.209-.016-.085.776 0 0 .812.393 1.374 1.867 0 0 .726 2.483 4.17 1.712z"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Source Code
-              </small>
-            </a>
-            <a
-              class="sc-850ddk-0 iabPtF"
-              href="https://t.me/unlockprotocol"
-              target="_self"
-              title="Telegram"
-            >
-              <svg
-                name="Telegram"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M16.801 5.065c.152.13.217.292.195.487L15.144 16.7a.482.482 0 01-.227.325.953.953 0 01-.228.033.613.613 0 01-.195-.033l-3.281-1.332-1.755 2.144a.433.433 0 01-.357.163.361.361 0 01-.163-.032.409.409 0 01-.227-.163c-.065-.087-.087-.173-.065-.26V15.01l6.27-7.702-7.764 6.727-2.86-1.17c-.173-.065-.27-.206-.292-.422 0-.174.076-.315.227-.423l12.087-6.955A.4.4 0 0116.54 5c.087 0 .173.022.26.065z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="sc-850ddk-1 jgJDdG"
-              >
-                Telegram
-              </small>
-            </a>
-          </div>
-          <div
-            class="sc-1glv5oz-4 fkpKLc"
-          >
-            <a
-              class="sc-850ddk-0 cVcBAp"
-              target="_self"
-            >
-              <svg
-                viewBox="0 0 56 42"
-              >
-                <title>
-                  Bars
-                </title>
-                <path
-                  d="M0 6h56V0H0v6zm0 18h56v-6H0v6zm0 18h56v-6H0v6z"
-                />
-              </svg>
-              
-            </a>
-            <a
-              class="sc-850ddk-0 cVcBAp"
-              target="_self"
-            >
-              <svg
-                viewBox="0 0 58 32"
-              >
-                <title>
-                  Chevron Up
-                </title>
-                <path
-                  clip-rule="evenodd"
-                  d="M26.965.796a3 3 0 014.07 0l26 24a3 3 0 11-4.07 4.408L29 7.083 5.035 29.204a3 3 0 01-4.07-4.408l26-24z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              
-            </a>
-          </div>
-          <div
-            class="sc-1glv5oz-5 bjHPyP"
-          />
-        </header>
-        <div
-          class="sc-dfVpRl irVjqe"
-        >
-          <section
-            class="sc-btzYZH dcBPpq"
-          >
-            <div
-              class="sc-bYSBpT lnXQWS"
-            >
-              <div
-                class="sc-elJkPf gJAjLa"
-              >
-                <div
-                  class="paper"
-                  style="border-radius: 50px; display: inline-block; margin: 0px; overflow: hidden; padding: 0px; background-color: rgb(1, 142, 137); height: 40px; width: 40px;"
-                >
-                  <svg
-                    height="40"
-                    width="40"
-                    x="0"
-                    xmlns="http://www.w3.org/2000/svg"
-                    y="0"
-                  >
-                    <rect
-                      fill="#F5B400"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-8.516726993034728 -5.001359274183636) rotate(291.1 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#F92F01"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(19.487272054702824 3.994787375441723) rotate(45.6 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#FB186F"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-28.427236485524897 1.2584814742811758) rotate(199.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                    <rect
-                      fill="#18A9F2"
-                      height="40"
-                      rx="0"
-                      ry="0"
-                      transform="translate(-40.94617387266237 -25.242528297898357) rotate(278.7 20 20)"
-                      width="40"
-                      x="0"
-                      y="0"
-                    />
-                  </svg>
-                </div>
-              </div>
-              <div
-                class="sc-jtRfpW hummep"
-              >
-                Address
-                <span
-                  class="sc-lhVmIH hcnJTI"
-                  id="NetworkName"
-                >
-                  Winston
-                </span>
-              </div>
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <div
-                class="sc-elJkPf gJAjLa"
-              />
-              <abbr
-                class="sc-feJyhm fMocuW sc-kTUwUJ hRLpcQ"
-                id="UserAddress"
-                title="0x3ca206264762caf81a8f0a843bbb850987b41e16"
-              >
-                0x3ca206264762caf81a8f0a843bbb850987b41e16
-              </abbr>
-            </div>
-          </section>
-          <button
-            class="sc-dqBHgY sc-gxMtzJ hxjFbE"
-            id="CreateLockButton"
-          >
-            Create Lock
-          </button>
-        </div>
-        <div
-          class="sc-eXEjpC fmXPXL"
-        >
-          <div
-            class="sc-ibxdXY jCLxAs"
-          >
-            Block Number
-          </div>
-          <div
-            class="sc-ibxdXY jCLxAs"
-          >
-            Lock Name/Address
-          </div>
-          <div
-            class="sc-ibxdXY jCLxAs"
-          >
-            Type
-          </div>
-          <div
-            class="sc-RefOD sc-iQKALj hkAbiH"
-          >
-            3
-          </div>
-          <a
-            class="sc-bwCtUz khEyfe"
-            href=""
-            target="_blank"
-          >
-            0xc43efE2C7116CB94d563b5A9D68F260CCc44256F
-          </a>
-          <div
-            class="sc-RefOD sc-hrWEMg gaDRSA"
-            type="Lock Creation"
-          >
-            Lock Creation
-          </div>
-          <div
-            class="sc-RefOD sc-iQKALj hkAbiH"
-          >
-            2
-          </div>
-          <a
-            class="sc-bwCtUz khEyfe"
-            href=""
-            target="_blank"
-          >
-            0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
-          </a>
-          <div
-            class="sc-RefOD sc-hrWEMg jbEDwt"
-            type="Update Key Price"
-          >
-            Update Key Price
-          </div>
-          <div
-            class="sc-RefOD sc-iQKALj hkAbiH"
-          >
-            1
-          </div>
-          <a
-            class="sc-bwCtUz khEyfe"
-            href=""
-            target="_blank"
-          >
-            0x8DE3f95E2efd3B9704ccb0d0925EC951bC78cb8B
-          </a>
-          <div
-            class="sc-RefOD sc-hrWEMg gaDRSA"
-            type="Lock Creation"
-          >
-            Lock Creation
-          </div>
-        </div>
-      </div>
-      <div
-        class="hm3mhg-2 dBxAQT"
-      />
     </div>
   </div>,
   "debug": [Function],
@@ -67410,7 +63111,7 @@ Object {
           class="sc-VigVT iDEznG"
         />
         <button
-          class="sc-jTzLTM sc-lkqHmb dhovIS"
+          class="sc-jTzLTM sc-GMQeP bAyZHB"
           type="button"
         >
           Update Password
@@ -69587,7 +65288,7 @@ Object {
             class="sc-VigVT iDEznG"
           />
           <button
-            class="sc-jTzLTM sc-lkqHmb dhovIS"
+            class="sc-jTzLTM sc-GMQeP bAyZHB"
             type="button"
           >
             Update Password
