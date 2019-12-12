@@ -5,3 +5,11 @@ This is intended to be deployed as an AWS lambda function.
 For that purpose we use webpack to build a single js file.
 
 For local dev, we have a local server running which "mimicks" requests sent to lambda.
+
+## Setup for Local Development
+
+At the time of writing, Wedlocks requires the generation of a key pair to be utilized as part of the message encryption process.
+The public key portion of the pair is expected to be utilized by the calling application. 
+
+The suggestion at this time is to utilize the code outlined [here](https://github.com/unlock-protocol/unlock/blob/master/wedlocks/src/__tests__/encrypter.test.js#L11). 
+This will be moved to a script.

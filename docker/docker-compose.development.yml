@@ -91,3 +91,14 @@ services:
     command: ['node', './deploy-subgraph.js']
     depends_on:
       - graph-node
+  wedlocks:
+    image: unlockprotocol/wedlocks
+    command: npm run dev
+    environment: 
+      SMTP_HOST: 'smtp_host'
+      SMTP_USERNAME: 'smtp_username'
+      SMTP_PASSWORD: 'smtp_password'
+      BASE64_WEDLOCKS_PRIVATE_KEY: 'pk'
+
+    ports:
+      - '1337:1337'
