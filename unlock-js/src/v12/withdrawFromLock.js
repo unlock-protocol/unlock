@@ -52,6 +52,7 @@ export default async function(
 
   // Let's now wait for the funds to have been withdrawn
   const receipt = await this.provider.waitForTransaction(hash)
+
   const parser = lockContract.interface
   const withdrawalEvent = receipt.logs
     .map(log => {
