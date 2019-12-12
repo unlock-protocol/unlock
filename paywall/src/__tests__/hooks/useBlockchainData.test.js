@@ -228,7 +228,6 @@ describe('useBlockchainData hook', () => {
       JSON.stringify({
         [address]: {
           ...locks[address],
-          name: 'hi there!',
         },
       })
     )
@@ -277,7 +276,6 @@ describe('useBlockchainData hook', () => {
       JSON.stringify({
         [address]: {
           ...locks[address],
-          name: 'hi there!',
         },
       })
     )

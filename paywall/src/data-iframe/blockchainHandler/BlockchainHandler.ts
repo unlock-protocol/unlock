@@ -384,10 +384,6 @@ export default class BlockchainHandler {
     if (update.address) {
       update.address = normalizeLockAddress(update.address)
     }
-    if (this.store.config.locks[address].name) {
-      // use the configuration lock name if present
-      update.name = this.store.config.locks[address].name
-    }
 
     // If the lock is in a non ethereum currency, we need to get the balance of currency for that user
     if (update.currencyContractAddress && this.store.account) {
