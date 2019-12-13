@@ -5,7 +5,7 @@ services:
     image: trufflesuite/ganache-cli:v6.8.1-beta.0
     expose:
       - 8545
-    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-b=1', '-k=istanbul']
+    command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-b=3', '-k=istanbul']
   ganache-integration:
     restart: always
     build:
