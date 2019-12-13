@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-// TODO: gas prices should be custom per version!
+// TODO: gas amounts should be custom per version!
 export const GAS_AMOUNTS = {
   createLock: 4500000,
   updateKeyPrice: 100000,
