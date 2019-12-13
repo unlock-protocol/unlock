@@ -2,10 +2,23 @@
     <head>
         <title>Home locked</title>
         <link rel="alternate" type="application/json+oembed"
-              href="<%= server %>/services/oembed?locks=<%= query %>"
+			      href="<%= server %>/services/oembed?<%for (var lock in locks){%>locks=<%= locks[lock].address %>,<%= locks[lock].encoded %>&<%}%>"
               title="Lock Home" />
     </head>
     <body>
-      Lock home
+	    <h1>Oembed for you Ghost</h1>
+	    <a href="<%= server %>/services/oembed?<%for (var lock in locks){%>locks=<%= locks[lock].address %>,<%= locks[lock].encoded %>&<%}%>">OEmbed URL</a>
+	    <p>This page host the following locks:</p>
+            <table>
+		    <tr>
+			    <th>Lock</th> <th>Name</th>
+                    </tr>
+		    <%for (var lock in locks){%>
+		    <tr>
+		      <td><%= locks[lock].address %></td>
+		      <td><%= locks[lock].name %></td>
+		    </tr>
+		    <%}%>
+	    </table>
     </body>
 </html>

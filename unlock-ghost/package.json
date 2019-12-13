@@ -4,7 +4,9 @@
   "description": "Unlock content for yout audience",
   "main": "index.js",
   "scripts": {
-      "build": "tsc --lib es6,dom unlock-ghost.ts --target es2015"
+      "build": "tsc --lib es6,dom unlock-ghost.ts --target es2015",
+      "deploy": "mkdir -p server/public && cp unlock-ghost.js server/public/",
+      "start": "cd server && node main.js"
   },
   "author": "Miguel Angel G.",
   "license": "MIT",

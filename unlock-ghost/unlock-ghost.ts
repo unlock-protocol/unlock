@@ -83,7 +83,7 @@ const checkConfig = (configuration?: Configuration): ConfigErrors => {
     }
 
     Object.keys(config.locks).forEach((key: Address) => {
-        if (web3 && web3.utils) {
+        if (typeof web3 !== 'undefined' && web3.utils) {
             if (web3.utils.isAddress(key)) {
                 let lockConfig = config.locks[key];
                 if (lockConfig.name == null || lockConfig.name === 'undefined') {
@@ -157,7 +157,7 @@ const setup = () => {
         document.addEventListener('DOMContentLoaded', () => {
             var unlockButton = document.getElementById('unlock');
             if (unlockButton.parentElement.tagName === 'FIGURE') {
-                hideContent(unlockButton.parent, 'section');
+                hideContent(unlockButton.parentElement, 'section');
             } else hideContent(unlockButton, 'section');
         }, false);
         body.appendChild(hideElement);
@@ -172,8 +172,13 @@ const setup = () => {
                 if (state === 'unlocked') {
                     if (window.MutationObserver) {
                         observer.disconnect();
-                    }
-                    showContent(unlockButton, 'section')
+	            }
+
+		    var unlockButton = document.getElementById('unlock');
+		    unlockButton.style.display = "none";
+                    if (unlockButton.parentElement.tagName === 'FIGURE') {
+                       showContent(unlockButton.parentElement, 'section');
+                    } else showContent(unlockButton, 'section');
                 };
             })
         }
@@ -185,7 +190,7 @@ const setup = () => {
     (function(d, s) {
         var js = d.createElement(s),
         sc = d.getElementsByTagName(s)[1];
-        js['src']="https://paywall.unlock-protocol.com/static/unlock.1.0.min.js";
+	js['src']="https://staging-paywall.unlock-protocol.com/static/unlock.1.0.min.js";
         sc.parentNode.insertBefore(js, sc); }(document, "script"));
 }
 
