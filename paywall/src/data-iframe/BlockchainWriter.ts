@@ -34,27 +34,25 @@ type NewTransactionArgs = [string, string, string, string, string, string]
 export class BlockchainWriter {
   // TODO: types from unlock-js
   walletService: any
+  accountAddress: string | null = null
+  networkId: number = 1
 
   constructor(
     walletService: any,
-    setAccount: (accountAddress: string) => void,
-    setNetwork: (networkId: string) => void,
     addTransaction: (tx: TransactionDefaults) => void,
-    alertError: (error: Error) => void
   ) {
     this.walletService = walletService
 
-    this.walletService.on('account.changed', setAccount)
-    this.walletService.on('network.changed', setNetwork)
+    this.walletService.on('account.changed', (accountAddress: string) => {
+      this.accountAddress = accountAddress
+    })
+    
+    this.walletService.on('network.changed', (networkId: number) => {
+      this.networkId = networkId
+    })
+    
     this.walletService.on('transaction.new', (...args: NewTransactionArgs) => {
       addTransaction(formatTransaction(...args))
-    })
-    this.walletService.on('error', (error: Error) => {
-      // TODO: why do we wrap this instead of just emitting the error
-      // from walletservice?
-      if (error.message === 'FAILED_TO_PURCHASE_KEY') {
-        alertError(new Error('purchase failed'))
-      }
     })
 
     // poll for account changes
