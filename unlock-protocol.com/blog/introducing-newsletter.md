@@ -16,7 +16,7 @@ Today, that's possible! you can [become a member to The Defiant](https://bit.ly/
 
 Of course, like any other key, The Defiant membership keys are Non Fungible Tokens and your favorite crypto wallet should show them. For example, here's my [OG membership on OpenSea](https://opensea.io/assets/0xFA7001A0310B5E69B7b95B72aeBaA66C72E084bf/1).
 
-# How does it work
+# How It Works
 
 First, the creator deploys their own lock on the Ethereum chain. Once you are on the newsletter landing page, you can enter your email address. As you submit, the address is saved inside the metadata of your token.
 
