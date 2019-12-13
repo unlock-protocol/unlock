@@ -22,6 +22,12 @@ const userMetaDataConfiguration = {
   signee: 'owner',
 }
 
+const readUserMetaDataConfiguration = {
+  name: 'UserMetaData',
+  required: ['owner', 'timestamp'],
+  signee: 'owner',
+}
+
 const lockOwnerMetaDataConfiguration = {
   name: 'LockMetaData',
   required: ['address', 'owner', 'timestamp'],
@@ -43,6 +49,14 @@ router.put(
   signatureValidationMiddleware.generateProcessor(userMetaDataConfiguration)
 )
 
+// Reads the user centric metadata
+router.get(
+  '/:address/user/:userAddress',
+  signatureValidationMiddleware.generateSignatureEvaluator(
+    readUserMetaDataConfiguration
+  )
+)
+
 router.get(
   '/:address/:keyId',
   signatureValidationMiddleware.generateSignatureEvaluator(
@@ -62,5 +76,6 @@ router.get('/:address/:keyId', MetadataController.data)
 router.put('/:address/:keyId', MetadataController.updateKeyMetadata)
 router.put('/:address', MetadataController.updateDefaults)
 router.put('/:address/user/:userAddress', MetadataController.updateUserMetadata)
+router.get('/:address/user/:userAddress', MetadataController.readUserMetadata)
 
 module.exports = router

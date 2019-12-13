@@ -4,7 +4,7 @@ import { Response } from 'express-serve-static-core' // eslint-disable-line no-u
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'
-import { addMetadata } from '../operations/userMetadataOperations'
+import { addMetadata, getMetadata } from '../operations/userMetadataOperations'
 import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
@@ -151,6 +151,29 @@ namespace MetadataController {
       })
 
       res.sendStatus(202)
+    } else {
+      res.sendStatus(401)
+    }
+  }
+
+  export const readUserMetadata = async (
+    req: any,
+    res: Response
+  ): Promise<any> => {
+    const userAddress = Normalizer.ethereumAddress(req.params.userAddress)
+    const tokenAddress = Normalizer.ethereumAddress(req.params.address)
+
+    const payload = JSON.parse(decodeURIComponent(req.query.data))
+    const signatureTime = payload.message.UserMetaData.timestamp
+
+    if (!expiredSignature(signatureTime) && req.signee === userAddress) {
+      const userMetaData = await getMetadata(
+        tokenAddress,
+        userAddress,
+        true /* includeProtected */
+      )
+
+      res.json(userMetaData)
     } else {
       res.sendStatus(401)
     }
