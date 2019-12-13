@@ -4,6 +4,7 @@ subTitle: Newsletters are memberships! Easily start collecting members with thei
 authorName: Julien Genestoux
 publishDate: December 12, 2019
 description: Unlock lets you easily collect email addresses from members to create your own paid-for mailing list, using Ethereum and Non Fungible Tokens
+image: /static/images/blog/introducing-newsletter/newsletter.jpg
 ---
 
 There are many kinds of memberships. Going back to the origins of the internet, newsletters have always been a popular style of membership. Today, we're excited to show you how you can easily use a lock to create your own newsletter membership with Unlock!
