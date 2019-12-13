@@ -18,7 +18,7 @@ Of course, like any other key, The Defiant membership keys are Non Fungible Toke
 
 # How does it work
 
-First, the creator has deployed their own lock on the Ethereum chain. Once you are on the newsletter landing page, you can enter your email address. As you submit, the address is saved inside the metadata of your token.
+First, the creator deploys their own lock on the Ethereum chain. Once you are on the newsletter landing page, you can enter your email address. As you submit, the address is saved inside the metadata of your token.
 
 After this, you can select which of the memberships (if there is more than one) you want to join. Your crypto wallet of choice will let you perform the transaction, including approving the ERC20 token transfer.
 
