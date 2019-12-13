@@ -26,7 +26,7 @@ const lock = {
 const callMethodData = prepContract({
   contract: UnlockV12.Unlock,
   functionName: 'createLock',
-  signature: 'uint256,address,uint256,uint256,string',
+  signature: 'uint256,address,uint256,uint256,string,bytes12',
   nock,
 })
 
@@ -56,6 +56,8 @@ describe('v12', () => {
         true // this is the Unlock contract, not PublicLock
       )
 
+      const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
       const {
         testTransaction,
         testTransactionResult,
@@ -65,7 +67,8 @@ describe('v12', () => {
         ethers.constants.AddressZero,
         utils.toWei(lock.keyPrice, 'ether'),
         maxNumberOfKeys,
-        lock.name
+        lock.name,
+        salt
       )
 
       walletService.provider.waitForTransaction = jest.fn(() =>
@@ -123,6 +126,8 @@ describe('v12', () => {
 
         await nockBeforeEach()
 
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -132,7 +137,8 @@ describe('v12', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, 18),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction
@@ -150,6 +156,8 @@ describe('v12', () => {
 
         await nockBeforeEach()
 
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -159,7 +167,8 @@ describe('v12', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, 18),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction
@@ -194,6 +203,9 @@ describe('v12', () => {
         erc20.getErc20Decimals = jest.fn(() => {
           return Promise.resolve(decimals)
         })
+
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -203,7 +215,8 @@ describe('v12', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, decimals),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction
