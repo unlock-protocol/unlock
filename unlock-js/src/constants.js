@@ -5,6 +5,7 @@ export const GAS_AMOUNTS = {
   createLock: 4500000,
   updateKeyPrice: 100000,
   purchaseFor: 6000000, // purchaseKey in walletService
+  purchase: 6000000, // purchaseKey in walletService
   withdraw: 100000, // withdrawFromLock in walletService
   deployContract: 6400000,
 }

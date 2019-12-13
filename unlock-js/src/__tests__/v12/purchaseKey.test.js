@@ -69,7 +69,7 @@ describe('v12', () => {
 
     async function nockBeforeEach(
       purchaseForOptions = {},
-      { erc20Address, decimals } = {}
+      { erc20Address, decimals, amount } = {}
     ) {
       nock.cleanAll()
       walletService = await prepWalletService(
@@ -104,8 +104,8 @@ describe('v12', () => {
 
       const callMethodData = prepContract({
         contract: UnlockV12.PublicLock,
-        functionName: 'purchaseFor',
-        signature: 'address',
+        functionName: 'purchase',
+        signature: 'uint256,address,address,bytes',
         nock,
         ...purchaseForOptions,
       })
@@ -114,7 +114,7 @@ describe('v12', () => {
         testTransaction,
         testTransactionResult,
         success,
-      } = callMethodData(owner)
+      } = callMethodData(utils.toDecimal(amount, decimals), owner, ZERO, [])
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -124,7 +124,7 @@ describe('v12', () => {
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(3)
 
-      await nockBeforeEach({ value: keyPrice })
+      await nockBeforeEach({ value: keyPrice }, { amount: keyPrice })
       setupSuccess()
 
       walletService._handleMethodCall = jest.fn(() =>
@@ -166,8 +166,8 @@ describe('v12', () => {
         it('should call approveTransfer', async () => {
           expect.assertions(2)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -203,8 +203,8 @@ describe('v12', () => {
         it('should retrieve the decimals from the ERC20 contract', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -240,8 +240,8 @@ describe('v12', () => {
         it('should not call approveTransfer', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -266,8 +266,8 @@ describe('v12', () => {
         it('should retrieve the decimals from the ERC20 contract', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -297,7 +297,7 @@ describe('v12', () => {
     it('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach({ value: keyPrice })
+      await nockBeforeEach({ value: keyPrice }, { amount: keyPrice })
       setupSuccess()
 
       // This is very confusing!
