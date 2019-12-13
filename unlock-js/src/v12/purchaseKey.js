@@ -33,7 +33,14 @@ export default async function(
     }
   }
 
-  const actualAmount = utils.toDecimal(keyPrice, decimals)
+  let actualAmount = utils.toDecimal(keyPrice, decimals)
+
+  if (!keyPrice) {
+    // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+    actualAmount = await lockContract.keyPrice()
+  } else {
+    actualAmount = utils.toDecimal(keyPrice, decimals)
+  }
 
   const purchaseForOptions = {
     gasLimit: GAS_AMOUNTS.purchaseFor,
@@ -57,8 +64,14 @@ export default async function(
     purchaseForOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract['purchaseFor(address)'](
+  // TODO: add support for _referrer and _data
+  const transactionPromise = lockContract[
+    'purchase(uint256,address,address,bytes)'
+  ](
+    actualAmount,
     owner,
+    ZERO /* _referrer */,
+    [] /* array of bytes for _data */,
     purchaseForOptions
   )
 

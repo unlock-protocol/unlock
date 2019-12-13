@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV11 from 'unlock-abi-1-1'
+import * as UnlockV12 from 'unlock-abi-1-2'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -24,9 +24,9 @@ const lock = {
 }
 
 const callMethodData = prepContract({
-  contract: UnlockV11.Unlock,
+  contract: UnlockV12.Unlock,
   functionName: 'createLock',
-  signature: 'uint256,address,uint256,uint256,string',
+  signature: 'uint256,address,uint256,uint256,string,bytes12',
   nock,
 })
 
@@ -38,23 +38,25 @@ jest.mock('../../erc20.js', () => {
 
 let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
-const EventInfo = new ethers.utils.Interface(UnlockV11.Unlock.abi)
+const EventInfo = new ethers.utils.Interface(UnlockV12.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
 let receipt = {
   logs: [],
 }
 
-describe('v11', () => {
+describe('v12', () => {
   describe('createLock', () => {
     async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV11.Unlock,
+        UnlockV12.Unlock,
         endpoint,
         nock,
         true // this is the Unlock contract, not PublicLock
       )
+
+      const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
 
       const {
         testTransaction,
@@ -65,7 +67,8 @@ describe('v11', () => {
         ethers.constants.AddressZero,
         utils.toWei(lock.keyPrice, 'ether'),
         maxNumberOfKeys,
-        lock.name
+        lock.name,
+        salt
       )
 
       walletService.provider.waitForTransaction = jest.fn(() =>
@@ -123,6 +126,8 @@ describe('v11', () => {
 
         await nockBeforeEach()
 
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -132,7 +137,8 @@ describe('v11', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, 18),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction
@@ -150,6 +156,8 @@ describe('v11', () => {
 
         await nockBeforeEach()
 
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -159,7 +167,8 @@ describe('v11', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, 18),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction
@@ -194,6 +203,9 @@ describe('v11', () => {
         erc20.getErc20Decimals = jest.fn(() => {
           return Promise.resolve(decimals)
         })
+
+        const salt = utils.sha3(utils.utf8ToHex(lock.name)).substring(0, 26)
+
         let {
           testTransaction,
           testTransactionResult,
@@ -203,7 +215,8 @@ describe('v11', () => {
           testERC20ContractAddress,
           utils.toDecimal(erc20Lock.keyPrice, decimals),
           erc20Lock.maxNumberOfKeys,
-          erc20Lock.name
+          erc20Lock.name,
+          salt
         )
 
         transaction = testTransaction

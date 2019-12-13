@@ -185,6 +185,8 @@ export default class Web3Service extends UnlockService {
 
     // if we reach here, the contract is PublicLock
     switch (method) {
+      case 'purchase':
+        return TransactionTypes.KEY_PURCHASE
       case 'purchaseFor':
         return TransactionTypes.KEY_PURCHASE
       case 'withdraw':

@@ -143,6 +143,7 @@ export default class WalletService extends UnlockService {
 
   /**
    * Creates a lock on behalf of the user.
+   * TODO: add param to let the user deploy the version they want.
    * @param {PropTypes.lock} lock
    * @param {function} callback : callback invoked with the transaction hash
    * @return Promise<PropTypes.address> lockAddress
