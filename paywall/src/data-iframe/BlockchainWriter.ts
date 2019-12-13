@@ -39,18 +39,18 @@ export class BlockchainWriter {
 
   constructor(
     walletService: any,
-    addTransaction: (tx: TransactionDefaults) => void,
+    addTransaction: (tx: TransactionDefaults) => void
   ) {
     this.walletService = walletService
 
     this.walletService.on('account.changed', (accountAddress: string) => {
       this.accountAddress = accountAddress
     })
-    
+
     this.walletService.on('network.changed', (networkId: number) => {
       this.networkId = networkId
     })
-    
+
     this.walletService.on('transaction.new', (...args: NewTransactionArgs) => {
       addTransaction(formatTransaction(...args))
     })
