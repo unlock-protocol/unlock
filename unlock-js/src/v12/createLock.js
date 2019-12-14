@@ -26,7 +26,7 @@ async function _getKeyPrice(lock, provider) {
 }
 
 /**
- * Creates a lock on behalf of the user, using version v11
+ * Creates a lock on behalf of the user, using version v12
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
@@ -42,14 +42,20 @@ export default async function(lock, callback) {
   let currencyContractAddress = lock.currencyContractAddress || ZERO
 
   const lockName = lock.name || 'New Lock'
+
+  // Building a salt from the lock name will prevent creators from creating 2 locks with the same name.
+  const salt = ethersUtils
+    .sha3(ethersUtils.utf8ToHex(lock.name))
+    .substring(0, 26) // 2+24
   const transactionPromise = unlockContract.functions[
-    'createLock(uint256,address,uint256,uint256,string)'
+    'createLock(uint256,address,uint256,uint256,string,bytes12)'
   ](
     lock.expirationDuration,
     currencyContractAddress,
     decimalKeyPrice,
     maxNumberOfKeys,
     lockName,
+    salt,
     {
       gasLimit: GAS_AMOUNTS.createLock,
     }

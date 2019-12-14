@@ -15,7 +15,7 @@ describe('token', () => {
   beforeEach(() => {
     jest.resetAllMocks()
     wallet.getAddress = jest.fn(() => Promise.resolve(userAddress))
-    wallet.signMessage = jest.fn(() => Promise.resolve(signature))
+    web3Provider.send = jest.fn(() => Promise.resolve(signature))
     web3Provider.getSigner = jest.fn(() => wallet)
   })
 
@@ -25,9 +25,11 @@ describe('token', () => {
     await saveEmail(web3Provider, locks, email)
     expect(web3Provider.getSigner).toHaveBeenCalled()
     expect(wallet.getAddress).toHaveBeenCalled()
-    expect(wallet.signMessage).toHaveBeenCalledWith(
-      `{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"},{"name":"salt","type":"bytes32"}]},"domain":{"name":"Unlock","version":"1"},"primaryType":"UserMetaData","message":{"UserMetaData":{"owner":"${userAddress}","data":{"protected":{"email":"${email}"}}}}}`
-    )
+
+    expect(web3Provider.send).toHaveBeenCalledWith('personal_sign', [
+      '0x7b227479706573223a7b22454950373132446f6d61696e223a5b7b226e616d65223a226e616d65222c2274797065223a22737472696e67227d2c7b226e616d65223a2276657273696f6e222c2274797065223a22737472696e67227d2c7b226e616d65223a22636861696e4964222c2274797065223a2275696e74323536227d2c7b226e616d65223a22766572696679696e67436f6e7472616374222c2274797065223a2261646472657373227d2c7b226e616d65223a2273616c74222c2274797065223a2262797465733332227d5d7d2c22646f6d61696e223a7b226e616d65223a22556e6c6f636b222c2276657273696f6e223a2231227d2c227072696d61727954797065223a22557365724d65746144617461222c226d657373616765223a7b22557365724d65746144617461223a7b226f776e6572223a22307875736572222c2264617461223a7b2270726f746563746564223a7b22656d61696c223a226a756c69656e40756e6c6f636b2d70726f746f636f6c2e636f6d227d7d7d7d7d',
+      userAddress,
+    ])
   })
 
   it('should store the token info', async () => {
