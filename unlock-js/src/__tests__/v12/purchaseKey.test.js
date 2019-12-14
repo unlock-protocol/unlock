@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-import * as UnlockV11 from 'unlock-abi-1-1'
+import * as UnlockV12 from 'unlock-abi-1-2'
 import abis from '../../abis'
 
 import TransactionTypes from '../../transactionTypes'
@@ -27,7 +27,7 @@ jest.mock('../../erc20.js', () => {
   }
 })
 
-describe('v11', () => {
+describe('v12', () => {
   describe('purchaseKey', () => {
     const keyPrice = '0.01'
     const owner = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -69,16 +69,16 @@ describe('v11', () => {
 
     async function nockBeforeEach(
       purchaseForOptions = {},
-      { erc20Address, decimals } = {}
+      { erc20Address, decimals, amount } = {}
     ) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV11.PublicLock,
+        UnlockV12.PublicLock,
         endpoint,
         nock
       )
 
-      const metadata = new ethers.utils.Interface(UnlockV11.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
@@ -103,9 +103,9 @@ describe('v11', () => {
       })
 
       const callMethodData = prepContract({
-        contract: UnlockV11.PublicLock,
-        functionName: 'purchaseFor',
-        signature: 'address',
+        contract: UnlockV12.PublicLock,
+        functionName: 'purchase',
+        signature: 'uint256,address,address,bytes',
         nock,
         ...purchaseForOptions,
       })
@@ -114,7 +114,7 @@ describe('v11', () => {
         testTransaction,
         testTransactionResult,
         success,
-      } = callMethodData(owner)
+      } = callMethodData(utils.toDecimal(amount, decimals), owner, ZERO, [])
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -124,7 +124,7 @@ describe('v11', () => {
     it('should invoke _handleMethodCall with the right params', async () => {
       expect.assertions(3)
 
-      await nockBeforeEach({ value: keyPrice })
+      await nockBeforeEach({ value: keyPrice }, { amount: keyPrice })
       setupSuccess()
 
       walletService._handleMethodCall = jest.fn(() =>
@@ -166,8 +166,8 @@ describe('v11', () => {
         it('should call approveTransfer', async () => {
           expect.assertions(2)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -203,8 +203,8 @@ describe('v11', () => {
         it('should retrieve the decimals from the ERC20 contract', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -240,8 +240,8 @@ describe('v11', () => {
         it('should not call approveTransfer', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -266,8 +266,8 @@ describe('v11', () => {
         it('should retrieve the decimals from the ERC20 contract', async () => {
           expect.assertions(1)
           await nockBeforeEach(
-            { value: keyPrice },
-            { erc20Address, decimals: 4 }
+            {},
+            { erc20Address, decimals: 4, amount: keyPrice }
           )
           setupSuccess()
 
@@ -297,7 +297,7 @@ describe('v11', () => {
     it('should not call approveTransfer when the lock is not an ERC20 lock', async () => {
       expect.assertions(1)
 
-      await nockBeforeEach({ value: keyPrice })
+      await nockBeforeEach({ value: keyPrice }, { amount: keyPrice })
       setupSuccess()
 
       // This is very confusing!

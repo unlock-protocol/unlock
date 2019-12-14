@@ -1,27 +1,46 @@
 import utils from '../utils'
-import { GAS_AMOUNTS } from '../constants'
+import { GAS_AMOUNTS, ZERO } from '../constants'
 import TransactionTypes from '../transactionTypes'
+import { getErc20Decimals } from '../erc20'
 
 /**
  * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
  * By default (amount=0), this withdraws all funds.
  * @param {PropTypes.address} lockAddress
  * @param {string} amount
+ * @param {number} erc20Address
  * @param {number} decimals
- * TODO: get the decimal from the ERC20 contract
  * @param {function} callback invoked with the transaction hash
  */
 export default async function(
-  { lockAddress, amount = '0', decimals = 18 },
+  { erc20Address, lockAddress, amount = '0', decimals },
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
+  if (!erc20Address || erc20Address !== ZERO) {
+    erc20Address = await lockContract.tokenAddress()
+  }
+
+  // decimals could be 0!
+  if (decimals == null) {
+    // get the decimals from the ERC20 contract or default to 18
+    if (erc20Address && erc20Address !== ZERO) {
+      decimals = await getErc20Decimals(erc20Address, this.provider)
+    } else {
+      decimals = 18
+    }
+  }
+
   const actualAmount = utils.toDecimal(amount, decimals)
 
-  const transactionPromise = lockContract['withdraw(uint256)'](actualAmount, {
-    gasLimit: GAS_AMOUNTS.withdraw,
-  })
+  const transactionPromise = lockContract['withdraw(address,uint256)'](
+    erc20Address,
+    actualAmount,
+    {
+      gasLimit: GAS_AMOUNTS.withdraw,
+    }
+  )
   const hash = await this._handleMethodCall(
     transactionPromise,
     TransactionTypes.WITHDRAWAL
@@ -33,6 +52,7 @@ export default async function(
 
   // Let's now wait for the funds to have been withdrawn
   const receipt = await this.provider.waitForTransaction(hash)
+
   const parser = lockContract.interface
   const withdrawalEvent = receipt.logs
     .map(log => {
