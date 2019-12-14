@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { ethers } from 'ethers'
+
 import configure from '../config'
 
 const config = configure()
@@ -54,7 +56,10 @@ export const saveEmail = async (web3Provider, locks, email) => {
     },
   })
 
-  const signature = await wallet.signMessage(tokenMetadata)
+  const signature = await web3Provider.send('personal_sign', [
+    ethers.utils.hexlify(ethers.utils.toUtf8Bytes(tokenMetadata)),
+    userAddress.toLowerCase(),
+  ])
 
   const promises = locks.map(async lock => {
     const tokenEndpoint = `${config.locksmithUri}/api/key/${lock}/user/${userAddress}`
