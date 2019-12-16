@@ -27,7 +27,7 @@
       "pg": "7.14.0",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
-      "typeorm": "0.2.20"
+      "typeorm": "0.2.21"
    },
    "lint-staged": {
       "linters": {
@@ -41,6 +41,6 @@
       "jest": "24.9.0",
       "ts-jest": "24.2.0",
       "ts-node": "8.5.4",
-      "typescript": "3.7.2"
+      "typescript": "3.7.3"
    }
 }

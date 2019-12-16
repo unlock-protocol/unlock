@@ -144,6 +144,26 @@ export default function configure(
     blockTime = 8000
   }
 
+  if (env === 'dev-kovan') {
+    // In dev-kovan, the network can only be Kovan
+    isRequiredNetwork = networkId => networkId === 42
+    chainExplorerUrlBuilders.etherScan = address =>
+      `https://kovan.etherscan.io/address/${address}`
+    requiredNetworkId = 42
+    paywallUrl = 'https://'
+    supportedProviders = ['Metamask', 'Opera']
+    services['storage'] = { host: runtimeConfig.locksmithHost }
+    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    paywallUrl = runtimeConfig.paywallUrl
+    paywallScriptUrl = runtimeConfig.paywallScriptUrl
+
+    // Address for the Unlock smart contract on Kovan
+    unlockAddress = '0x0B9fe963b789151E53b8bd601590Ea32F9f2453D'
+
+    // Kovan average block time
+    blockTime = 4000
+  }
+
   if (env === 'prod') {
     // In prod, the network can only be mainnet
     isRequiredNetwork = networkId => networkId === 1
