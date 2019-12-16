@@ -5,6 +5,7 @@ const config = configure()
 
 export const usePaywall = lockAddresses => {
   const [lockState, setLockState] = useState('loading')
+  const [lockWithKey, setLockWithKey] = useState()
 
   useEffect(() => {
     if (lockAddresses.length) {
@@ -39,6 +40,16 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
 
       // Set the lock state, based on the event
       const handler = event => {
+        // WARNING: THIS IS NOT DOCUMENTED!
+        // Let's look at the data that we have
+        if (window.unlockProtocol) {
+          const data = window.unlockProtocol.blockchainData()
+          if (data.keys) {
+            // They should be indexed by lock.
+            // Let's assume there is only one valid.
+            setLockWithKey(Object.keys(data.keys)[0])
+          }
+        }
         setLockState(event.detail)
       }
       window.addEventListener('unlockProtocol', handler)
@@ -50,9 +61,9 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
         delete window.unlockProtocolConfig
       }
     }
-  }, [lockAddresses])
+  }, [JSON.stringify(lockAddresses)])
 
-  return lockState
+  return [lockState, lockWithKey]
 }
 
 export default usePaywall

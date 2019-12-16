@@ -3,10 +3,11 @@ import usePaywall from '../../hooks/usePaywall'
 
 describe('usePaywall', () => {
   it('should set the configuration, load the script and set the event handler', async () => {
-    expect.assertions(3)
+    expect.assertions(5)
 
     const { result } = renderHook(() => usePaywall(['0xabc']))
-    expect(result.current).toBe('loading')
+    expect(result.current[0]).toBe('loading')
+    expect(result.current[1]).toBe(undefined)
 
     expect(window.unlockProtocolConfig).toEqual({
       callToAction: {
@@ -27,16 +28,28 @@ describe('usePaywall', () => {
       window.dispatchEvent(
         new CustomEvent('unlockProtocol', { detail: 'unlocked' })
       )
+
+      window.unlockProtocol = {
+        blockchainData: () => {
+          return {
+            keys: {
+              '0x123': {},
+            },
+          }
+        },
+      }
     })
 
-    expect(result.current).toBe('unlocked')
+    expect(result.current[0]).toBe('unlocked')
+    expect(result.current[1]).toBe(undefined)
   })
 
   it('should not set the paywall if no lock address is passed', async () => {
-    expect.assertions(2)
+    expect.assertions(3)
 
     const { result } = renderHook(() => usePaywall([]))
-    expect(result.current).toBe('loading')
+    expect(result.current[0]).toBe('loading')
+    expect(result.current[1]).toBe(undefined)
 
     expect(window.unlockProtocolConfig).toEqual(undefined)
   })
