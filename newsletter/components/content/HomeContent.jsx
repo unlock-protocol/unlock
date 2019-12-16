@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { ethers } from 'ethers'
 import styled from 'styled-components'
 import Head from 'next/head'
@@ -6,15 +7,45 @@ import Media from '../../theme/media'
 import Layout from '../interface/Layout'
 import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
-import { saveEmail } from '../../utils/token'
+import { saveEmail, getEmail } from '../../utils/token'
 import { usePaywall } from '../../hooks/usePaywall'
 import configure from '../../config'
 
 const config = configure()
 
-export default function HomeContent() {
-  let emailInput
+/**
+ * The form
+ */
+export const EmailForm = ({ email, onSubmit, onChange, label }) => {
+  if (email === undefined) {
+    return <Loading />
+  }
+  return (
+    <Form onSubmit={onSubmit}>
+      <Input
+        value={email}
+        required
+        type="email"
+        placeholder="Enter your email address"
+        onChange={onChange}
+      />
+      <Button type="submit" value={label} />
+    </Form>
+  )
+}
 
+EmailForm.propTypes = {
+  email: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  label: PropTypes.string,
+}
+
+EmailForm.defaultProps = {
+  label: 'Join',
+}
+
+export default function HomeContent() {
   if (config.isServer) {
     return null
   }
@@ -26,22 +57,40 @@ export default function HomeContent() {
   const lockAddresses = urlParams.getAll('locks')
 
   // Let's now add the snippet!
-  const lockState = usePaywall(lockAddresses)
+  const [lockState, lockWithKey] = usePaywall(lockAddresses)
   const [checkWallet, setCheckWallet] = useState(false)
+  const [email, setEmail] = useState(undefined)
 
-  const onSubmit = async event => {
+  const retrieveEmail = async () => {
+    if (lockWithKey) {
+      const web3Provider = new ethers.providers.Web3Provider(
+        web3.currentProvider
+      )
+      const savedEmail = await getEmail(web3Provider, lockWithKey)
+      setEmail(savedEmail)
+    }
+  }
+  useEffect(() => {
+    retrieveEmail()
+  }, [lockWithKey])
+
+  const onSubmit = async (event, isUpdate) => {
     event.preventDefault()
     setCheckWallet(true)
     // Ask user to sign token
     // TODO : remove once the paywall application can manage that natively
     const web3Provider = new ethers.providers.Web3Provider(web3.currentProvider)
-    const saved = await saveEmail(web3Provider, lockAddresses, emailInput.value)
+    const saved = await saveEmail(web3Provider, lockAddresses, email)
     setCheckWallet(false)
-    if (saved) {
-      // Let's now process with Unlock!
-      window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
+    if (!isUpdate) {
+      if (saved) {
+        // Let's now process with Unlock!
+        window.unlockProtocol && window.unlockProtocol.loadCheckoutModal()
+      } else {
+        alert('We could not save your email address!')
+      }
     } else {
-      alert('We could not save your email address!')
+      alert('Email address saved...')
     }
   }
 
@@ -56,11 +105,9 @@ export default function HomeContent() {
           Instantly subscribe to your favorite crypto newsletter, using crypto!
         </Paragraph>
         <Paragraph>
-          <a href="https://unlock-protocol.com/">Unlock</a>
-{' '}
-is a protocol for
+          <a href="https://unlock-protocol.com/">Unlock</a> is a protocol for
           memberships, which lets creators monetize in a decentralized way.
-</Paragraph>
+        </Paragraph>
       </Layout>
     )
   }
@@ -76,14 +123,11 @@ is a protocol for
 
         <Error>
           You need to a use a web browser with a crypto enabled wallet. We
-          recommend
-{' '}
+          recommend{' '}
           <a href="https://metamask.io/" target="_blank">
             MetaMask
-          </a>
-{' '}
-          for Firefox or Chrome, or
-{' '}
+          </a>{' '}
+          for Firefox or Chrome, or{' '}
           <a href="https://www.opera.com/crypto" target="_blank">
             Opera
           </a>
@@ -119,18 +163,24 @@ is a protocol for
           <Loading message="Please check your crypto wallet..." />
         )}
         {lockState === 'unlocked' && (
-          <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
-        )}
-        {lockState === 'locked' && (
-          <Form onSubmit={onSubmit}>
-            <Input
-              required
-              type="email"
-              placeholder="Enter your email address"
-              ref={el => (emailInput = el)}
+          <>
+            <Confirmed>You have successfuly subscribed! Thank you...</Confirmed>
+            <EmailForm
+              email={email}
+              onSubmit={event => onSubmit(event, true)}
+              onChange={evt => setEmail(evt.target.value)}
+              label="Update"
             />
-            <Button type="submit" value="Join" />
-          </Form>
+          </>
+        )}
+
+        {lockState === 'locked' && (
+          <EmailForm
+            email={email}
+            onSubmit={onSubmit}
+            onChange={evt => setEmail(evt.target.value)}
+            label="Join"
+          />
         )}
       </Grid>
     </Layout>
