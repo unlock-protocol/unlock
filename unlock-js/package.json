@@ -36,9 +36,9 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.7.4",
-    "@babel/core": "7.7.4",
-    "@babel/preset-env": "7.7.4",
+    "@babel/cli": "7.7.5",
+    "@babel/core": "7.7.5",
+    "@babel/preset-env": "7.7.6",
     "babel-jest": "24.9.0",
     "erc1820": "0.0.2",
     "jest": "24.9.0",

@@ -18,7 +18,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@babel/core": "7.7.4",
+    "@babel/core": "7.7.5",
     "@storybook/addon-actions": "5.2.8",
     "@storybook/addon-knobs": "5.2.8",
     "@storybook/addon-storyshots": "5.2.8",
@@ -26,13 +26,13 @@
     "@storybook/addons": "5.2.8",
     "@storybook/react": "5.2.8",
     "@testing-library/jest-dom": "4.2.4",
-    "@testing-library/react": "9.3.2",
+    "@testing-library/react": "9.4.0",
     "@types/jest": "24.0.23",
     "@types/next": "8.0.7",
-    "@types/react": "16.9.13",
+    "@types/react": "16.9.16",
     "@types/react-redux": "7.1.5",
     "@types/storybook__react": "4.0.2",
-    "@types/styled-components": "4.4.0",
+    "@types/styled-components": "4.4.1",
     "@unlock-protocol/unlock-js": "0.4.2",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
@@ -43,7 +43,7 @@
     "cross-env": "6.0.3",
     "dotenv": "8.2.0",
     "fork-ts-checker-webpack-plugin": "3.1.1",
-    "jest-mock-axios": "3.1.2",
+    "jest-mock-axios": "3.2.0",
     "jest-styled-components": "6.3.4",
     "next": "8.1.0",
     "path-match": "1.2.4",
@@ -57,11 +57,11 @@
     "redux": "4.0.4",
     "styled-components": "4.4.1",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.2"
+    "typescript": "3.7.3"
   },
   "devDependencies": {
     "@svgr/cli": "4.3.3",
-    "nodemon": "2.0.1"
+    "nodemon": "2.0.2"
   },
   "lint-staged": {
     "linters": {

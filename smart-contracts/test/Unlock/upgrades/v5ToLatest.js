@@ -34,6 +34,23 @@ contract('Unlock / upgrades / v5ToLatest', accounts => {
     })
 
     unlock = await UnlockV5.at(proxy.address)
+    const lock = await new web3.eth.Contract(PublicLockV5.abi)
+      .deploy({
+        data: PublicLockV5.bytecode,
+      })
+      .send({
+        from: unlockOwner,
+        gas: 6700000,
+      })
+    await unlock.methods
+      .configUnlock(
+        lock._address,
+        await unlock.methods.globalTokenSymbol().call(),
+        await unlock.methods.globalBaseTokenURI().call()
+      )
+      .send({
+        from: unlockOwner,
+      })
 
     // Create Lock
     const lockTx = await unlock.methods
@@ -42,7 +59,8 @@ contract('Unlock / upgrades / v5ToLatest', accounts => {
         Web3Utils.padLeft(0, 40), // token address
         keyPrice,
         5, // maxNumberOfKeys
-        'UpgradeTestingLock'
+        'UpgradeTestingLock',
+        '0x000000000000000000000001'
       )
       .send({ from: lockOwner, gas: 6000000 })
     // THIS API IS LIKELY TO BREAK BECAUSE IT ASSUMES SO MUCH
@@ -54,7 +72,7 @@ contract('Unlock / upgrades / v5ToLatest', accounts => {
 
     // Buy Key
     await lockV5.methods
-      .purchase(keyOwner, web3.utils.padLeft(0, 40), [])
+      .purchase(0, keyOwner, web3.utils.padLeft(0, 40), [])
       .send({
         value: keyPrice,
         from: keyOwner,
@@ -108,7 +126,7 @@ contract('Unlock / upgrades / v5ToLatest', accounts => {
 
       it('New keys may still be purchased', async () => {
         const tx = await lockV5.methods
-          .purchase(accounts[6], web3.utils.padLeft(0, 40), [])
+          .purchase(0, accounts[6], web3.utils.padLeft(0, 40), [])
           .send({
             value: keyPrice,
             from: accounts[6],
@@ -119,7 +137,7 @@ contract('Unlock / upgrades / v5ToLatest', accounts => {
 
       it('Keys may still be transfered', async () => {
         await lockV5.methods
-          .purchase(accounts[7], web3.utils.padLeft(0, 40), [])
+          .purchase(0, accounts[7], web3.utils.padLeft(0, 40), [])
           .send({
             value: keyPrice,
             from: accounts[7],

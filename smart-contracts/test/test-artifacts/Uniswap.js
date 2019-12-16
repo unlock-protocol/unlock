@@ -3,23 +3,23 @@ const helpers = require('hardlydifficult-ethereum-contracts')
 contract('test-artifacts / uniswap', accounts => {
   const protocolOwner = accounts[0]
   let uniswap
-  let dai
+  let sai
 
   before(async () => {
     uniswap = await helpers.protocols.uniswap.deploy(web3, protocolOwner)
-    dai = await helpers.tokens.dai.deploy(web3, protocolOwner)
+    sai = await helpers.tokens.sai.deploy(web3, protocolOwner)
   })
 
   it('Can create an exchange and add liquidity', async () => {
-    const tx = await uniswap.createExchange(dai.address, {
+    const tx = await uniswap.createExchange(sai.address, {
       from: protocolOwner,
     })
     const exchange = await helpers.protocols.uniswap.getExchange(
       web3,
       tx.logs[0].args.exchange
     )
-    await dai.mint(protocolOwner, '10000000000', { from: protocolOwner })
-    await dai.approve(exchange.address, -1, { from: protocolOwner })
+    await sai.mint(protocolOwner, '10000000000', { from: protocolOwner })
+    await sai.approve(exchange.address, -1, { from: protocolOwner })
     await exchange.addLiquidity(
       '1',
       '10000000000',
