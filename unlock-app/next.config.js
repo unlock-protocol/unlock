@@ -36,7 +36,7 @@ Object.keys(requiredConfigVariables).forEach(configVariableName => {
     if (
       // 'unlock-provider-integration' is a environment only used by integration tests to test the case
       // where no HTTP provider has been injected into the page.
-      ['dev', 'test', 'unlock-provider-integration'].indexOf(
+      ['dev', 'dev-kovan', 'test', 'unlock-provider-integration'].indexOf(
         requiredConfigVariables.unlockEnv
       ) > -1
     ) {
