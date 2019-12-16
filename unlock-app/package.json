@@ -72,7 +72,7 @@
     "npm-check": "5.9.0"
   },
   "engines": {
-    "node": "^10"
+    "node": "10.17.0"
   },
   "engineStrict": true,
   "scripts": {
