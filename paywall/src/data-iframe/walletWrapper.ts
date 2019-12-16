@@ -43,7 +43,10 @@ export const retrieveAccount = (walletService: WalletServiceType) => {
 
 export const pollForAccountChanges = (walletService: WalletServiceType) => {
   retrieveAccount(walletService)
-  window.setTimeout(pollForAccountChanges, POLLING_INTERVAL)
+  window.setTimeout(
+    () => pollForAccountChanges(walletService),
+    POLLING_INTERVAL
+  )
 }
 
 // Messages with one argument that are passed from the wrapper to the
