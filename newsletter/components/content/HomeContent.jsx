@@ -26,7 +26,7 @@ export default function HomeContent() {
   const lockAddresses = urlParams.getAll('locks')
 
   // Let's now add the snippet!
-  const lockState = usePaywall(lockAddresses)
+  const [lockState] = usePaywall(lockAddresses)
   const [checkWallet, setCheckWallet] = useState(false)
 
   const onSubmit = async event => {
