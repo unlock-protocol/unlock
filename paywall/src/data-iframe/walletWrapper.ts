@@ -56,7 +56,7 @@ const passThroughMessages = ['account.changed', 'network.changed']
 export const walletWrapper = (
   unlockAddress: string,
   emitter: (name: string, data?: any) => void
-) => {
+): WalletServiceType => {
   const walletService: WalletServiceType = new WalletService({ unlockAddress })
 
   passThroughMessages.forEach((msg: string) => {
@@ -68,4 +68,7 @@ export const walletWrapper = (
   })
 
   pollForAccountChanges(walletService)
+
+  // Return walletService so we can connect a wallet to it when we're ready
+  return walletService
 }
