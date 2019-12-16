@@ -4,6 +4,8 @@ import { walletWrapper } from './walletWrapper'
 import { BlockchainReader } from './BlockchainReader'
 import { BlockchainDataStorable } from './BlockchainDataStorable'
 import config from './constants'
+import { WalletServiceType } from './blockchainHandler/blockChainTypes'
+import { ProxyWallet } from './ProxyWallet'
 
 const {
   readOnlyProvider,
@@ -11,12 +13,17 @@ const {
   blockTime,
   requiredConfirmations,
 } = config
+
 const web3Service = new Web3Service({
   readOnlyProvider,
   unlockAddress,
   blockTime,
   requiredConfirmations,
 })
+
+let parent: Postmate.ChildAPI
+let walletService: WalletServiceType
+let proxyWallet: ProxyWallet
 
 // Start with a null object, it will be replaced when the authenticate
 // method in the model is called.
@@ -38,16 +45,21 @@ const initializeReader = ({ lockAddresses, accountAddress }: ReaderArgs) => {
   )
 }
 
+const connectProxyWallet = (walletInfo: any) => {
+  proxyWallet = new ProxyWallet(walletInfo, parent.emit)
+  walletService.connect(proxyWallet)
+}
+
 const handshake = new Postmate.Model({
   locks: () => blockchainReader.locks,
   keys: () => blockchainReader.keys,
   transactions: () => blockchainReader.transactions,
   initializeReader,
+  connectProxyWallet,
 })
 
 handshake.then(parent => {
-  walletWrapper(unlockAddress, (name, data) => {
+  walletService = walletWrapper(unlockAddress, (name, data) => {
     parent.emit(name, data)
   })
-  parent.emit('ready')
 })
