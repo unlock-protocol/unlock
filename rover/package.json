@@ -6,7 +6,7 @@
       "rover": "./build/server.js"
    },
    "engines": {
-      "node": "10.17.0"
+      "node": "^10"
    },
    "scripts": {
       "test": "jest",
