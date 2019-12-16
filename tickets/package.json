@@ -83,7 +83,7 @@
     "not op_mini all"
   ],
   "engines": {
-    "node": "10.17.0"
+    "node": "^10"
   },
   "engineStrict": true
 }
