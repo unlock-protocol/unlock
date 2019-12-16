@@ -47,7 +47,7 @@
     "nodemon": "2.0.1"
   },
   "engines": {
-    "node": "10.17.0"
+    "node": "^10"
   },
   "engineStrict": true,
   "scripts": {
