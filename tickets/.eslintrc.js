@@ -12,8 +12,6 @@ module.exports = {
     },
   },
   rules: {
-    'import/extensions': 'never',
-    'no-unused-vars': 'off',
     'react/prefer-stateless-function': [2],
     'react/forbid-prop-types': 2,
     '@typescript-eslint/no-unused-vars': [
