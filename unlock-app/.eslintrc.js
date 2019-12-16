@@ -6,6 +6,7 @@ module.exports = {
     },
   },
   rules: {
+    'import/extensions': 'never',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
