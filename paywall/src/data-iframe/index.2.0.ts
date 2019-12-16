@@ -1,5 +1,6 @@
 import Postmate from 'postmate'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { walletWrapper } from './walletWrapper'
 import { BlockchainReader } from './BlockchainReader'
 import { BlockchainDataStorable } from './BlockchainDataStorable'
 import config from './constants'
@@ -45,5 +46,8 @@ const handshake = new Postmate.Model({
 })
 
 handshake.then(parent => {
+  walletWrapper(unlockAddress, (name, data) => {
+    parent.emit(name, data)
+  })
   parent.emit('ready')
 })
