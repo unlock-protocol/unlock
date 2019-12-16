@@ -23,6 +23,7 @@ contract MixinFunds
   function initialize(
     address _tokenAddress
   ) public
+    initializer()
   {
     tokenAddress = _tokenAddress;
     require(

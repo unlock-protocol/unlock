@@ -40,6 +40,7 @@ contract MixinLockMetadata is
   function initialize(
     string memory _lockName
   ) internal
+    initializer()
   {
     ERC165.initialize();
     name = _lockName;

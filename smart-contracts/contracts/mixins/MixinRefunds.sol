@@ -41,7 +41,7 @@ contract MixinRefunds is
     uint refundPenaltyBasisPoints
   );
 
-  function initialize() public
+  function initialize() public initializer()
   {
     // default to 10%
     refundPenaltyBasisPoints = 1000;

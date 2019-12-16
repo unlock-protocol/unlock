@@ -76,7 +76,7 @@ contract MixinLockCore is
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
-  ) internal
+  ) internal initializer()
   {
     require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.

@@ -26,6 +26,7 @@ contract MixinDisableAndDestroy is
 
   function initialize(
   ) public
+    initializer()
   {
     isAlive = true;
   }

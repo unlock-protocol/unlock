@@ -15,7 +15,7 @@ contract MixinERC721Enumerable is
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
-  function initialize() public
+  function initialize() public initializer()
   {
     /**
      * register the supported interface to conform to ERC721Enumerable via ERC165
