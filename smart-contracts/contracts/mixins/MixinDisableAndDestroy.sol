@@ -24,9 +24,8 @@ contract MixinDisableAndDestroy is
 
   event Disable();
 
-  function initialize(
-  ) public
-    initializer()
+  function _initializeMixinDisableAndDestroy(
+  ) internal
   {
     isAlive = true;
   }
