@@ -30,6 +30,7 @@ In our current state, deploying to a new test network is straight forward but do
 If we find ourselves encountering this scenario often, we can probably automate this. 
 
 1. Create the subgraph via [the graph protocol hosted service](https://thegraph.com/explorer/subgraph/create?account=All%20Subgraphs)
-2. Update `subgraph.yaml` to reflect the newly deployed address of the Unlock Contract
-3. Update `subgraph.yaml` to reflect the network name to be deloyed to
-4. Update `package.json` to reflect the name of the newly created subgraph
+2. Fork the `kovan` branch of this project
+3. Update `subgraph.yaml` to reflect the newly deployed address of the Unlock Contract
+4. Update `subgraph.yaml` to reflect the network name to be deloyed to
+5. Update `package.json` to reflect the name of the newly created subgraph
