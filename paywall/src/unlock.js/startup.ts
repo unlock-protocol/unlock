@@ -42,6 +42,14 @@ export function startup(
   // normalize all of the lock addresses
   let config = normalizeConfig(window.unlockProtocolConfig)
 
+  // this next line ensures that the minimally valid configuration is passed to Wallet
+  // TODO: provide some kind of developer mode which lazy-loads more extensive validation
+  if (!config) {
+    throw new Error(
+      'Invalid configuration, please set window.unlockProtocolConfig'
+    )
+  }
+
   // There is no reason to do anything if window.web3 does not exist
   // and the config does not allow for user accounts. As a quick hack,
   // when that's the case we will purposely make the config invalid so
@@ -56,14 +64,6 @@ export function startup(
       // without ever querying for any locks.
       locks: {},
     }
-  }
-
-  // this next line ensures that the minimally valid configuration is passed to Wallet
-  // TODO: provide some kind of developer mode which lazy-loads more extensive validation
-  if (!config) {
-    throw new Error(
-      'Invalid configuration, please set window.unlockProtocolConfig'
-    )
   }
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
