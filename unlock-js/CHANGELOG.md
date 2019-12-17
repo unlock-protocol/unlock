@@ -1,5 +1,9 @@
 # Changes
 
+# 0.5.1
+
+- Changed auto-gen files to reflect latest abi
+
 # 0.5.0
 
 - Support for smart contract v12 (version 5)
