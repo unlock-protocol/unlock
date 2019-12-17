@@ -23,3 +23,13 @@ Next run:
 npm run codegen
 npm run deploy
 ```
+
+### Deploying to a New Test Network
+
+In our current state, deploying to a new test network is straight forward but does require a few manual steps.
+If we find ourselves encountering this scenario often, we can probably automate this. 
+
+1. Create the subgraph via [the graph protocol hosted service](https://thegraph.com/explorer/subgraph/create?account=All%20Subgraphs)
+2. Update `subgraph.yaml` to reflect the newly deployed address of the Unlock Contract
+3. Update `subgraph.yaml` to reflect the network name to be deloyed to
+4. Update `package.json` to reflect the name of the newly created subgraph
