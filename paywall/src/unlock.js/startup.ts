@@ -54,7 +54,7 @@ export function startup(
       // This violates the expected value for locks on the paywall,
       // which will force the checkout into the "no wallet" state
       // without ever querying for any locks.
-      locks: new XMLHttpRequest(),
+      locks: {},
     }
   }
 
