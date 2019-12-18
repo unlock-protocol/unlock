@@ -56,6 +56,7 @@ export default class MainWindowHandler {
       showAccountIframe: this.showAccountIframe,
       hideCheckoutIframe: this.hideCheckoutIframe,
       blockchainData: this.blockchainData,
+      setCachedAccountAddress: this.setCachedAccountAddress,
     })
   }
 
@@ -106,14 +107,24 @@ export default class MainWindowHandler {
 
   setCachedLockedState = (newState: boolean) => {
     try {
-      // this is a fast cache. The value will only be used
-      // to prevent a flash of ads on startup. If a cheeky
-      // user attempts to prevent display of ads by setting
-      // the localStorage cache, it will only work for a
-      // few milliseconds
+      // this is a fast cache. The value will only be used to prevent
+      // a flash of ads on startup. If a user attempts to prevent
+      // display of ads by setting the localStorage cache, it will
+      // only work for a few milliseconds
       this.window.localStorage.setItem(
         '__unlockProtocol.locked',
         JSON.stringify(newState)
+      )
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  setCachedAccountAddress = (accountAddress: string) => {
+    try {
+      this.window.localStorage.setItem(
+        '__unlockProtocol.accountAddress',
+        accountAddress
       )
     } catch (e) {
       // ignore
