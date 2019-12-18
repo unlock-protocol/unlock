@@ -15,19 +15,19 @@ Today, we're proud to announce that [Forbes](https://www.forbes.com/), a publica
 
 ## How to
 
-Forbes deployed 2 locks, the [first one](https://etherscan.io/token/0xf429bb8044bf4b21c65e3ec459eb3010197c6f82) offers a month long ad-free experience on the Forbes.com, while the [second offers](https://etherscan.io/token/0xb2b879764c649c7769f7c90845b0cb2a86add821) the same but only for a week. To purchase a key, you will need to use a crypto wallet such as Opera, MetaMask or Coinbase Wallet. Then, head to The [crypto section of forbes.com](https://www.forbes.com/crypto-blockchain), and click on the "Unlock and ads free experience" button.
+Forbes deployed 2 locks, the [first one](https://etherscan.io/token/0xf429bb8044bf4b21c65e3ec459eb3010197c6f82) offers a month long ad-free experience on the Forbes.com, while the [second offers](https://etherscan.io/token/0xb2b879764c649c7769f7c90845b0cb2a86add821) the same but only for a week. To purchase a key, you will need to use a crypto wallet such as Opera, MetaMask or Coinbase Wallet. Then, head to The [crypto section of forbes.com](https://www.forbes.com/crypto-blockchain), and click on the "Unlock an ads free experience" button.
 
 ![Forbes NFT](/static/images/blog/forbes-ads-free/unlock-forbes.png)
 
 An Unlock powered pop-up will open up, allowing you to send a transaction to purchase key! Immediately, even if the transaction has not been mined yet (thanks to optimistic unlocking), you should see the ads disappear, for the duration of the key you bought, on the whole forbes.com website!
 
-Once the transaction has been mined, users will receive a non fungible token which represents their membership! Like any NFT, they can transfer it on store like OpenSea, for example.
+Once the transaction has been mined, users will receive a non fungible token which represents their membership! Like any NFT, they can transfer it on marketplaces like OpenSea, for example.
 
 ![Forbes NFT](/static/images/blog/forbes-ads-free/forbes-nft.png)
 
 ## Dog fooding
 
-Forbes is at the forefront of publications writing about crypto and blockchain and they're doing what too few "advocates" in that space are making: experimenting with crypto based solutions.
+Forbes is at the forefront of publications writing about crypto and blockchain and they're doing what too few "advocates" in that space are: experimenting with crypto based solutions.
 
 Similarly, if you believe as a user that cryptocurrencies are the future of money, whether as stores of value, means of exchanging goods and services, or even as decentralizing technology, you should experiment with it!
 
