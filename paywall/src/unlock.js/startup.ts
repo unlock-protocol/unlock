@@ -1,4 +1,3 @@
-import { PostMessages } from 'src/messageTypes'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
@@ -33,6 +32,26 @@ export function normalizeConfig(unlockConfig: any) {
   return normalizedConfig
 }
 
+// Temporary helper to dispatch locked event when we fail early
+function dispatchEvent(detail: any, window: any) {
+  let event
+  try {
+    event = new window.CustomEvent('unlockProtocol', { detail })
+  } catch (e) {
+    // older browsers do events this clunky way.
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events#The_old-fashioned_way
+    // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/initCustomEvent#Parameters
+    event = window.document.createEvent('customevent')
+    event.initCustomEvent(
+      'unlockProtocol',
+      true /* canBubble */,
+      true /* cancelable */,
+      detail
+    )
+  }
+  window.dispatchEvent(event)
+}
+
 /**
  * Start the unlock app!
  */
@@ -51,24 +70,6 @@ export function startup(
     )
   }
 
-  const origin = '?origin=' + encodeURIComponent(window.origin)
-  // construct the 3 urls for the iframes
-  const dataIframeUrl =
-    constants.paywallUrl + '/static/data-iframe.1.0.html' + origin
-  const checkoutIframeUrl = constants.paywallUrl + '/checkout' + origin
-  const userIframeUrl = constants.accountsUrl + origin
-
-  // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())
-  const iframes = new IframeHandler(
-    window,
-    dataIframeUrl,
-    checkoutIframeUrl,
-    userIframeUrl
-  )
-
-  // set up the main window handler, for both events and hiding/showing iframes
-  const mainWindow = new MainWindowHandler(window, iframes)
-
   // There is no reason to do anything if window.web3 does not exist
   // and the config does not allow for user accounts. As a quick hack,
   // when that's the case we will purposely make the config invalid so
@@ -83,15 +84,31 @@ export function startup(
       // without ever querying for any locks.
       locks: {},
     }
-    mainWindow.toggleLockState(PostMessages.LOCKED)
+    dispatchEvent('locked', window)
   }
 
+  const origin = '?origin=' + encodeURIComponent(window.origin)
+  // construct the 3 urls for the iframes
+  const dataIframeUrl =
+    constants.paywallUrl + '/static/data-iframe.1.0.html' + origin
+  const checkoutIframeUrl = constants.paywallUrl + '/checkout' + origin
+  const userIframeUrl = constants.accountsUrl + origin
+
+  // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())
+  const iframes = new IframeHandler(
+    window,
+    dataIframeUrl,
+    checkoutIframeUrl,
+    userIframeUrl
+  )
   iframes.init(config)
 
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
   // the config must not be falsy here, so the checking "config.unlockUserAccounts" does not throw a TyoeError
   const wallet = new Wallet(window, iframes, config, constants)
+  // set up the main window handler, for both events and hiding/showing iframes
+  const mainWindow = new MainWindowHandler(window, iframes)
 
   // go!
   mainWindow.init()
