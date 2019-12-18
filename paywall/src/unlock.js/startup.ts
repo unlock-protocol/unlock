@@ -32,6 +32,26 @@ export function normalizeConfig(unlockConfig: any) {
   return normalizedConfig
 }
 
+// Temporary helper to dispatch locked event when we fail early
+function dispatchEvent(detail: any, window: any) {
+  let event
+  try {
+    event = new window.CustomEvent('unlockProtocol', { detail })
+  } catch (e) {
+    // older browsers do events this clunky way.
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events#The_old-fashioned_way
+    // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/initCustomEvent#Parameters
+    event = window.document.createEvent('customevent')
+    event.initCustomEvent(
+      'unlockProtocol',
+      true /* canBubble */,
+      true /* cancelable */,
+      detail
+    )
+  }
+  window.dispatchEvent(event)
+}
+
 /**
  * Start the unlock app!
  */
@@ -64,6 +84,7 @@ export function startup(
       // without ever querying for any locks.
       locks: {},
     }
+    dispatchEvent('locked', window)
   }
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
