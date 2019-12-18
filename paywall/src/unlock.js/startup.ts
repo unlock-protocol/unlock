@@ -1,4 +1,4 @@
-import { PostMessages } from 'src/messageTypes'
+import { PostMessages } from '../messageTypes'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
