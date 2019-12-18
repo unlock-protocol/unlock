@@ -71,7 +71,7 @@ contract MixinLockCore is
     _;
   }
 
-  function initialize(
+  function _initializeMixinLockCore(
     address _beneficiary,
     uint _expirationDuration,
     uint _keyPrice,

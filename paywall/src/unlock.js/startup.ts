@@ -1,4 +1,3 @@
-import Postmate from 'postmate'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
@@ -33,6 +32,26 @@ export function normalizeConfig(unlockConfig: any) {
   return normalizedConfig
 }
 
+// Temporary helper to dispatch locked event when we fail early
+function dispatchEvent(detail: any, window: any) {
+  let event
+  try {
+    event = new window.CustomEvent('unlockProtocol', { detail })
+  } catch (e) {
+    // older browsers do events this clunky way.
+    // https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events#The_old-fashioned_way
+    // https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/initCustomEvent#Parameters
+    event = window.document.createEvent('customevent')
+    event.initCustomEvent(
+      'unlockProtocol',
+      true /* canBubble */,
+      true /* cancelable */,
+      detail
+    )
+  }
+  window.dispatchEvent(event)
+}
+
 /**
  * Start the unlock app!
  */
@@ -41,13 +60,31 @@ export function startup(
   constants: StartupConstants
 ) {
   // normalize all of the lock addresses
-  const config = normalizeConfig(window.unlockProtocolConfig)
+  let config = normalizeConfig(window.unlockProtocolConfig)
+
   // this next line ensures that the minimally valid configuration is passed to Wallet
   // TODO: provide some kind of developer mode which lazy-loads more extensive validation
   if (!config) {
     throw new Error(
       'Invalid configuration, please set window.unlockProtocolConfig'
     )
+  }
+
+  // There is no reason to do anything if window.web3 does not exist
+  // and the config does not allow for user accounts. As a quick hack,
+  // when that's the case we will purposely make the config invalid so
+  // that we don't make any requests for lock data.
+  const userAccountsAllowed = !!config.unlockUserAccounts
+  const web3Present = !!window.web3
+  if (!web3Present && !userAccountsAllowed) {
+    config = {
+      ...config,
+      // This violates the expected value for locks on the paywall,
+      // which will force the checkout into the "no wallet" state
+      // without ever querying for any locks.
+      locks: {},
+    }
+    dispatchEvent('locked', window)
   }
 
   const origin = '?origin=' + encodeURIComponent(window.origin)
@@ -65,12 +102,6 @@ export function startup(
     userIframeUrl
   )
   iframes.init(config)
-
-  // TODO: be able to include this as one of the iframes passed to MainWindowHandler
-  new Postmate({
-    url: constants.paywallUrl + '/static/data-iframe.2.0.html',
-    classListArray: ['unlock', 'start'],
-  })
 
   // user accounts is loaded on-demand inside of Wallet
   // set up the proxy wallet handler
