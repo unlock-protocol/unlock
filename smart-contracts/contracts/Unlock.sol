@@ -40,10 +40,10 @@ import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 contract Unlock is
   IUnlock,
   Initializable,
-  Ownable,
-  Clone2Factory
+  Ownable
 {
   using Address for address;
+  using Clone2Factory for address;
 
   /**
    * The struct for a lock
@@ -115,7 +115,7 @@ contract Unlock is
     require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // create lock
-    address newLock = _createClone2(publicLockAddress, _salt);
+    address newLock = publicLockAddress._createClone2(_salt);
     PublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,

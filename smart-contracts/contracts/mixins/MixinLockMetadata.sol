@@ -37,7 +37,7 @@ contract MixinLockMetadata is
     string symbol
   );
 
-  function initialize(
+  function _initializeMixinLockMetadata(
     string memory _lockName
   ) internal
   {
