@@ -39,6 +39,27 @@ describe('MainWindowHandler - init', () => {
     fakeWindow = new FakeWindow()
   })
 
+  describe('handling account changes', () => {
+    it('should write the provided account address to localStorage', () => {
+      expect.assertions(1)
+
+      const handler = getMainWindowHandler()
+      handler.setCachedAccountAddress = jest.fn()
+      handler.init()
+
+      fakeWindow.receivePostMessageFromIframe(
+        PostMessages.UPDATE_ACCOUNT,
+        '0xaccountAddress',
+        iframes.data.iframe,
+        dataOrigin
+      )
+
+      expect(handler.setCachedAccountAddress).toHaveBeenCalledWith(
+        '0xaccountAddress'
+      )
+    })
+  })
+
   describe('toggling lock state', () => {
     it('should handle PostMessages.LOCKED by emitting a locked event', () => {
       expect.assertions(1)

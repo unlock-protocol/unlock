@@ -134,6 +134,7 @@ interface mainWindowHandlerInitArgs {
   hideCheckoutIframe: () => void
   showAccountIframe: () => void
   hideAccountIframe: () => void
+  setCachedAccountAddress: (accountAddress: string) => void
   blockchainData: BlockchainData
 }
 
@@ -144,6 +145,7 @@ export function mainWindowHandlerInit({
   showAccountIframe,
   hideCheckoutIframe,
   blockchainData,
+  setCachedAccountAddress,
 }: mainWindowHandlerInitArgs) {
   // respond to "unlocked" and "locked" events by
   // dispatching "unlockProtocol" on the main window
@@ -166,6 +168,9 @@ export function mainWindowHandlerInit({
   })
   iframes.data.on(PostMessages.UPDATE_ACCOUNT, address => {
     blockchainData.account = address
+    if (address) {
+      setCachedAccountAddress(address)
+    }
   })
   iframes.data.on(PostMessages.UPDATE_ACCOUNT_BALANCE, balance => {
     blockchainData.balance = balance
