@@ -20,9 +20,9 @@ contract MixinFunds
    */
   address public tokenAddress;
 
-  function initialize(
+  function _initializeMixinFunds(
     address _tokenAddress
-  ) public
+  ) internal
   {
     tokenAddress = _tokenAddress;
     require(

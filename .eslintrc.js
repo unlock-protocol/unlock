@@ -55,5 +55,6 @@ module.exports = {
     'react/jsx-props-no-spreading': 0, // TODO: consider changing to error to tighten things up
     'import/prefer-default-export': 'off',
     semi: ['error', 'never'],
+    'import/extensions': [2, 'never'],
   },
 }
