@@ -68,6 +68,22 @@ export const NoWallet = ({ config }: Props) => {
             <Caption>Opera</Caption>
           </WalletOption>
         </WalletDescription>
+
+        <WalletDescription
+          href="https://trustwallet.com"
+          target="_blank"
+          rel="noopener"
+        >
+          <Platform>
+            Mobile
+            <br />
+            iOS &amp; Android
+          </Platform>
+          <WalletOption>
+            <Svg.TrustWallet />
+            <Caption>Trust Wallet</Caption>
+          </WalletOption>
+        </WalletDescription>
       </WalletOptions>
       <CheckoutFooter />
     </>
