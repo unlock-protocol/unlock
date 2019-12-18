@@ -103,6 +103,7 @@ describe('unlock.js startup', () => {
       expect.assertions(1)
 
       fakeWindow.unlockProtocolConfig = config
+      fakeWindow.web3 = { currentProvider: {} }
       const iframes = startup(fakeWindow, constants)
 
       iframes.data.emit(PostMessages.READY)
@@ -160,6 +161,7 @@ describe('unlock.js startup', () => {
       expect.assertions(1)
 
       fakeWindow.unlockProtocolConfig = config
+      fakeWindow.web3 = { currentProvider: {} }
       const iframes = startup(fakeWindow, constants)
 
       checkoutHandlerInit({
