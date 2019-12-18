@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import { RoundedLogo } from '../interface/Logo'
+import { CheckoutFooter } from './CheckoutStyles'
 
 import {
   Locks,
@@ -106,10 +106,7 @@ export const Checkout = ({
         {lockAddresses.length === Object.keys(config.locks).length &&
           checkoutLocks}
       </CheckoutLocks>
-      <Footer>
-        <RoundedLogo />
-        Powered by Unlock
-      </Footer>
+      <CheckoutFooter />
     </>
   )
 }
@@ -134,20 +131,6 @@ const Title = styled.h1`
 const Logo = styled.img`
   max-height: 100px;
   max-width: 200px;
-`
-
-const Footer = styled.footer`
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-
-  div {
-    margin: 8px;
-    vertical-align: middle;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-  }
 `
 
 const CheckoutLocks = styled.ul`
