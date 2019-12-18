@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import { WordMarkLogo } from '../interface/Logo'
+import { CheckoutFooter } from './CheckoutStyles'
 
 import { PaywallConfig } from '../../unlockTypes'
 import Media from '../../theme/media'
@@ -69,21 +69,12 @@ export const NoWallet = ({ config }: Props) => {
           </WalletOption>
         </WalletDescription>
       </WalletOptions>
-      <Footer>
-        <span>Powered by</span>
-        <NoWalletWordMark alt="Unlock" />
-      </Footer>
+      <CheckoutFooter />
     </>
   )
 }
 
 export default NoWallet
-
-const NoWalletWordMark = styled(WordMarkLogo)`
-  width: 42px;
-  margin-bottom: -1px;
-  margin-left: 1px;
-`
 
 const Caption = styled.span`
   text-transform: none;
@@ -149,23 +140,6 @@ const Title = styled.h1`
 
 const Logo = styled.img`
   height: 30px;
-`
-
-const Footer = styled.footer`
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-
-  span {
-    padding-right: 1px;
-  }
-  div {
-    margin: 8px;
-    vertical-align: middle;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-  }
 `
 
 const WalletOptions = styled.ul`

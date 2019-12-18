@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import React from 'react'
-import { WordMarkLogo } from '../interface/Logo'
+import { CheckoutFooter } from './CheckoutStyles'
 
 import { PaywallConfig, Lock, Account } from '../../unlockTypes'
 import Media from '../../theme/media'
@@ -49,10 +49,7 @@ export const CheckoutConfirmingModal = ({
           <Continue onClick={hideCheckout}>Continue</Continue>
         </div>
       </Content>
-      <Footer>
-        <span>Powered by</span>
-        <WordMark alt="Unlock" />
-      </Footer>
+      <CheckoutFooter />
     </>
   )
 }
@@ -65,12 +62,6 @@ const Continue = styled(ActionButton)`
   ${Media.phone`
     width: 100%;
   `}
-`
-
-const WordMark = styled(WordMarkLogo)`
-  width: 42px;
-  margin-bottom: -1px;
-  margin-left: 1px;
 `
 
 const Status = styled.p`
@@ -106,23 +97,6 @@ const Title = styled.h1`
 
 const Logo = styled.img`
   height: 30px;
-`
-
-const Footer = styled.footer`
-  margin-top: 50px;
-  font-size: 12px;
-  text-align: center;
-
-  span {
-    padding-right: 1px;
-  }
-  div {
-    margin: 8px;
-    vertical-align: middle;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-  }
 `
 
 const Content = styled.ul`
