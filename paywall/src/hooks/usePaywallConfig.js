@@ -4,7 +4,6 @@ import { PostMessages } from '../messageTypes'
 
 import useListenForPostMessage from './browser/useListenForPostMessage'
 import usePostMessage from './browser/usePostMessage'
-import { isValidPaywallConfig } from '../utils/validators'
 
 /**
  * Merge in the call to action sentences from defaults for any that the
@@ -52,7 +51,9 @@ export default function usePaywallConfig() {
   const { postMessage } = usePostMessage('Checkout UI (usePaywallConfig)')
   const paywallConfig = useListenForPostMessage({
     type: PostMessages.CONFIG,
-    validator: isValidPaywallConfig,
+    // Always treat paywall config as valid in this context, if it's
+    // invalid it's been checked in many other contexts and handled.
+    validator: () => true,
     defaultValue,
     getValue,
     local: 'Checkout UI',
