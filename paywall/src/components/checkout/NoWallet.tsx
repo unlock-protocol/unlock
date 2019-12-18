@@ -166,7 +166,7 @@ const WalletOptions = styled.ul`
   justify-content: center;
   justify-items: center;
   justify-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(160px, max-content));
+  grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
   grid-gap: 10px;
 
   & a,
