@@ -5,6 +5,7 @@ import MainWindowHandler from './MainWindowHandler'
 import StartupConstants from './startupTypes'
 import { walletStatus } from '../utils/wallet'
 import { checkoutHandlerInit } from './postMessageHub'
+import { PostMessages } from '../messageTypes'
 
 /**
  * convert all of the lock addresses to lower-case so they are normalized across the app
@@ -57,7 +58,8 @@ function dispatchEvent(detail: any, window: any) {
  */
 export function startup(
   window: UnlockWindowNoProtocolYet,
-  constants: StartupConstants
+  constants: StartupConstants,
+  launchModal: boolean = false
 ) {
   // normalize all of the lock addresses
   let config = normalizeConfig(window.unlockProtocolConfig)
@@ -112,6 +114,13 @@ export function startup(
 
   // go!
   mainWindow.init()
+  if (launchModal) {
+    iframes.data.once(PostMessages.UPDATE_ACCOUNT, accountAddress => {
+      if (accountAddress) {
+        mainWindow.showCheckoutIframe()
+      }
+    })
+  }
 
   const walletInitParams = walletStatus(window, config)
   wallet.init(walletInitParams)
@@ -132,6 +141,43 @@ export default function startupWhenReady(
   window: Window,
   startupConstants: StartupConstants
 ) {
+  const web3Present = !!(window as any).web3
+
+  // Only try to do the deferred setup when we have a wallet. If we
+  // don't, we can do setup right away, since it will just result in
+  // the no wallet message.
+  if (web3Present) {
+    try {
+      // The presence of a cached account address indicates that the
+      // user has previously connected to MetaMask. In that case, it is
+      // acceptable for us to initialize the app right away. However, if
+      // there is no address in localStorage, we want to defer
+      // initializing the app until the user chooses to load the
+      // checkout modal.
+      const cachedAccountAddress = window.localStorage.getItem(
+        '__unlockProtocol.accountAddress'
+      )
+      if (!cachedAccountAddress) {
+        // We have to dispatch locked right away, otherwise it will
+        // never happen because we're stopping the rest of the app from
+        // loading.
+        ;(window as any).unlockProtocol = {
+          loadCheckoutModal: () => {
+            startup(
+              (window as unknown) as UnlockWindowNoProtocolYet,
+              startupConstants,
+              true
+            )
+          },
+        }
+        dispatchEvent('locked', window)
+        return
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   let started = false
   if (document.readyState !== 'loading') {
     // in most cases, we will start up after the document is interactive
