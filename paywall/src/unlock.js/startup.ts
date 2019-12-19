@@ -1,4 +1,3 @@
-import { PaywallConfig } from 'src/unlockTypes'
 import { UnlockWindowNoProtocolYet } from '../windowTypes'
 import IframeHandler from './IframeHandler'
 import Wallet from './Wallet'
@@ -139,17 +138,15 @@ export function startup(
 
 // Make sure the page is ready before we try to start the app!
 export default function startupWhenReady(
-  window: UnlockWindowNoProtocolYet,
+  window: Window,
   startupConstants: StartupConstants
 ) {
-  const config = window.unlockProtocolConfig || ({} as PaywallConfig)
-  const userAccountsAllowed = !!config.unlockUserAccounts
-  const web3Present = !!window.web3
+  const web3Present = !!(window as any).web3
 
   // Only try to do the deferred setup when we have a wallet. If we
   // don't, we can do setup rright away, since it will just result in
   // the no wallet message.
-  if (web3Present || userAccountsAllowed) {
+  if (web3Present) {
     try {
       // The presence of a cached account address indicates that the
       // user has previously connected to MetaMask. In that case, it is
