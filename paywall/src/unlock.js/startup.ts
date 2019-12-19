@@ -115,11 +115,13 @@ export function startup(
   // go!
   mainWindow.init()
   if (launchModal) {
-    iframes.data.once(PostMessages.UPDATE_ACCOUNT, accountAddress => {
+    const listener = (accountAddress: string | null) => {
       if (accountAddress) {
         mainWindow.showCheckoutIframe()
+        iframes.data.removeListener(PostMessages.UPDATE_ACCOUNT, listener)
       }
-    })
+    }
+    iframes.data.on(PostMessages.UPDATE_ACCOUNT, listener)
   }
 
   const walletInitParams = walletStatus(window, config)
