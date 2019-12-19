@@ -4,6 +4,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { LatestLockVersion } = require('../Unlock/upgrades/latestVersion.js')
 
 let unlock, locks
 
@@ -47,7 +48,7 @@ contract('Lock / Lock', accounts => {
         assert.equal(maxNumberOfKeys.toFixed(), 10)
         assert.equal(totalSupply.toFixed(), 0)
         assert.equal(numberOfOwners.toFixed(), 0)
-        assert.equal(publicLockVersion.toFixed(), 5) // needs updating each lock-version change
+        assert.equal(publicLockVersion.toFixed(), LatestLockVersion)
         assert.equal(isAlive, true)
       }
     )
