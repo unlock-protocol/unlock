@@ -3,13 +3,14 @@ pragma solidity 0.5.14;
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/SafeERC20.sol';
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 
 
 /**
  * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
  */
-contract MixinFunds
+contract MixinFunds is Ownable
 {
   using Address for address payable;
   using SafeERC20 for IERC20;
@@ -45,6 +46,19 @@ contract MixinFunds
     } else {
       return IERC20(_tokenAddress).balanceOf(_account);
     }
+  }
+
+  function updateTokenAddress(
+    address _newTokenAddress
+  ) external
+    onlyOwner
+    // onlyIfAlive
+  {
+    require(
+      _newTokenAddress == address(0) || IERC20(_newTokenAddress).totalSupply() > 0,
+      'INVALID_TOKEN'
+    );
+    tokenAddress = _newTokenAddress;
   }
 
   /**
