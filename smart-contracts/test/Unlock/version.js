@@ -1,5 +1,6 @@
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { LatestUnlockVersion } = require('../Unlock/upgrades/latestVersion.js')
 
 let unlock
 
@@ -9,6 +10,9 @@ contract('Unlock / version', () => {
   })
 
   it('getVersion', async () => {
-    assert.equal((await unlock.unlockVersion.call()).toString(), '5')
+    assert.equal(
+      (await unlock.unlockVersion.call()).toString(),
+      LatestUnlockVersion
+    )
   })
 })
