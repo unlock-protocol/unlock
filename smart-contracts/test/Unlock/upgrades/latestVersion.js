@@ -1,5 +1,5 @@
 // replace value with current latest version numbers
 module.exports = {
-  LatestUnlockVersion: 5,
-  LatestLockVersion: 5,
+  LatestUnlockVersion: 6,
+  LatestLockVersion: 6,
 }
