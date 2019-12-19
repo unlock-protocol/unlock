@@ -144,7 +144,7 @@ export default function startupWhenReady(
   const web3Present = !!(window as any).web3
 
   // Only try to do the deferred setup when we have a wallet. If we
-  // don't, we can do setup rright away, since it will just result in
+  // don't, we can do setup right away, since it will just result in
   // the no wallet message.
   if (web3Present) {
     try {
