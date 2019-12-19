@@ -115,7 +115,7 @@ export function startup(
   // go!
   mainWindow.init()
   if (launchModal) {
-    iframes.data.on(PostMessages.UPDATE_ACCOUNT, accountAddress => {
+    iframes.data.once(PostMessages.UPDATE_ACCOUNT, accountAddress => {
       if (accountAddress) {
         mainWindow.showCheckoutIframe()
       }
