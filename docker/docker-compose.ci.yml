@@ -34,13 +34,20 @@ services:
       - 3000
     command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
-    env_file: ./integration.env
     image: unlock-app
     ports:
       - 9000:9000
     expose:
       - 9000
     environment:
+      CI: '${CI}'
+      UNLOCK_ENV: 'unlock-provider-integration'
+      HTTP_PROVIDER: '${HTTP_PROVIDER}'
+      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
+      LOCKSMITH_URI: '${LOCKSMITH_URI}'
+      PAYWALL_URL: '${PAYWALL_URL}'
+      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
+      STRIPE_KEY: '${STRIPE_KEY}'      
       PORT: 9000
     command: ['npm', 'run', 'start']
   unlock-protocol-com:
@@ -112,7 +119,6 @@ services:
       - db
       - ganache
   graph-node:
-    env_file: ./integration.env
     image: graphprotocol/graph-node:v0.15.1
     ports:
       - '8000:8000'
@@ -123,6 +129,9 @@ services:
       - db
     environment:
       postgres_host: db:5432
+      postgres_user: '${DB_USERNAME}'
+      postgres_pass: '${DB_PASSWORD}'
+      postgres_db: '${DB_NAME}'
       ipfs: 'ipfs:5001'
       ethereum: 'mainnet:http://ganache-integration:8545'
       RUST_LOG: info
