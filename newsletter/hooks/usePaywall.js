@@ -42,7 +42,7 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
       const handler = event => {
         // WARNING: THIS IS NOT DOCUMENTED!
         // Let's look at the data that we have
-        if (window.unlockProtocol) {
+        if (window.unlockProtocol && window.unlockProtocol.blockchainData) {
           const data = window.unlockProtocol.blockchainData()
           if (data.keys) {
             // They should be indexed by lock.

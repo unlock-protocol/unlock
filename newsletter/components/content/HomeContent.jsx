@@ -16,23 +16,18 @@ const config = configure()
 /**
  * The form
  */
-export const EmailForm = ({ email, onSubmit, onChange, label }) => {
-  if (email === undefined) {
-    return <Loading />
-  }
-  return (
-    <Form onSubmit={onSubmit}>
-      <Input
-        value={email}
-        required
-        type="email"
-        placeholder="Enter your email address"
-        onChange={onChange}
-      />
-      <Button type="submit" value={label} />
-    </Form>
-  )
-}
+export const EmailForm = ({ email, onSubmit, onChange, label }) => (
+  <Form onSubmit={onSubmit}>
+    <Input
+      value={email}
+      required
+      type="email"
+      placeholder="Enter your email address"
+      onChange={onChange}
+    />
+    <Button type="submit" value={label} />
+  </Form>
+)
 
 EmailForm.propTypes = {
   email: PropTypes.string.isRequired,
@@ -71,7 +66,13 @@ export default function HomeContent() {
     }
   }
   useEffect(() => {
-    retrieveEmail()
+    // Connect (this is not cool becuase it pops up immediately for the user...)
+    // But this is currently the only way we can prompt the user to get their saved
+    // address. Also, this means the unlock status is loaded immediately
+    window.web3.currentProvider.enable()
+    if (lockState === 'unlocked') {
+      retrieveEmail()
+    }
   }, [lockWithKey])
 
   const onSubmit = async (event, isUpdate) => {
