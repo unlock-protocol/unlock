@@ -91,7 +91,7 @@ contract MixinLockCore is
   ) public pure
     returns (uint)
   {
-    return 5;
+    return 6;
   }
 
   /**
