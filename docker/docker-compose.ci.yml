@@ -113,16 +113,11 @@ services:
     command: ['npm', 'run', 'start']
   newsletter:
     image: newsletter
+    env_file: ./integration.env
     ports:
       - 3003:3003
     expose:
       - 3003
-    environment:
-      CI: '${CI}'
-      UNLOCK_ENV: '${UNLOCK_ENV}'
-      HTTP_PROVIDER: '${HTTP_PROVIDER}'
-      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
-      LOCKSMITH_URI: '${LOCKSMITH_URI}'
     command: ['npm', 'run', 'start']
   unlock-js:
     image: unlock-js
