@@ -136,10 +136,7 @@ services:
       CI: '${CI}'
   wedlocks:
     image: wedlocks
-    environment:
-      CI: '${CI}'
-      UNLOCK_ENV: '${UNLOCK_ENV}'
-      SMTP_HOST: '${SMTP_HOST}'
+    env_file: ./integration.env
   integration-tests:
     image: integration-tests
     env_file: ./integration.env
