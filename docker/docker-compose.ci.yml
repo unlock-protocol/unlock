@@ -17,13 +17,10 @@ services:
     expose:
       - 8545
   db:
+    env_file: ./integration.env
     image: postgres
     expose:
       - 5432
-    environment:
-      POSTGRES_USER: '${DB_USERNAME}'
-      POSTGRES_PASSWORD: '${DB_PASSWORD}'
-      POSTGRES_DB: '${DB_NAME}'
   smart-contracts:
     image: smart-contracts
     depends_on:
