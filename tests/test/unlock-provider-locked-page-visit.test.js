@@ -2,7 +2,7 @@ const wait = require('../helpers/wait')
 const url = require('../helpers/url')
 const iframes = require('../helpers/iframes')
 
-describe.skip('Unlock Account Creation', () => {
+describe('Unlock Account Creation', () => {
   describe('when visiting a locked page without a wallet', () => {
     it('displays a login modal', async () => {
       expect.assertions(4)
