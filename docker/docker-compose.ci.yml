@@ -7,18 +7,11 @@ services:
       - 8545
     command: ['-h=0.0.0.0', '-m=hello unlock save the web', '-i=1984', '-k=istanbul']
   ganache-integration:
+    env_file: ./integration.env
     restart: always
     build:
       context: ./development
       dockerfile: ganache.dockerfile
-    environment:
-      CI: '${CI}'
-      ERC20_CONTRACT_ADDRESS: '${ERC20_CONTRACT_ADDRESS}'
-      LOCKSMITH_PURCHASER_ADDRESS: '${LOCKSMITH_PURCHASER_ADDRESS}'
-      ETHEREUM_ADDRESS: '${ETHEREUM_ADDRESS}'
-      HTTP_PROVIDER_HOST: '${HTTP_PROVIDER_HOST}'
-      HTTP_PROVIDER_PORT: '${HTTP_PROVIDER_PORT}'
-      BLOCKTIME: '${BLOCKTIME}'
     ports:
       - 8545:8545
     expose:
