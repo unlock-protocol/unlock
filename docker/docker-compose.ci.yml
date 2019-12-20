@@ -126,14 +126,12 @@ services:
     command: ['npm', 'run', 'start']
   unlock-js:
     image: unlock-js
-    environment:
-      CI: '${CI}'
+    env_file: ./integration.env
     depends_on:
       - ganache-integration
   rover:
     image: rover
-    environment:
-      CI: '${CI}'
+    env_file: ./integration.env
   wedlocks:
     image: wedlocks
     env_file: ./integration.env
@@ -150,11 +148,8 @@ services:
       - graph-node
   locksmith:
     image: locksmith
+    env_file: ./integration.env
     environment:
-      DB_USERNAME: '${DB_USERNAME}'
-      DB_PASSWORD: '${DB_PASSWORD}'
-      DB_NAME: '${DB_NAME}'
-      DB_HOSTNAME: '${DB_HOSTNAME}'
       NODE_ENV: 'production' # TODO: verify if this is right?
       WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
