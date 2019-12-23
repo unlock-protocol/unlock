@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import React from 'react'
 import { connect } from 'react-redux'
 import Head from 'next/head'
@@ -13,6 +14,7 @@ import {
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { showForm, hideForm } from '../../actions/lockFormVisibility'
+import { Phone } from '../../theme/media'
 
 export const DashboardContent = ({
   account,
@@ -37,6 +39,13 @@ export const DashboardContent = ({
               Create Lock
             </CreateLockButton>
           </AccountWrapper>
+          <Phone>
+            <Warning>
+              The Dashboard is not complete on mobile. To create locks, please
+              use a desktop computer.
+            </Warning>
+          </Phone>
+
           <CreatorLocks />
         </BrowserOnly>
       )}
@@ -74,3 +83,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContent)
+
+const Warning = styled.p`
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--red);
+`
