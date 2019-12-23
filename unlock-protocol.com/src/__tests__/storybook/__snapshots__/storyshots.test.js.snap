@@ -217,7 +217,7 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+  grid-template-columns: 1fr 896px 1fr;
 }
 
 .c1 {
@@ -982,7 +982,7 @@ Look at us! We're posting on our very own blog! How exciting!
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 yzvAs"
+      class="hm3mhg-0 jEvCFk"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -1797,7 +1797,7 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+  grid-template-columns: 1fr 896px 1fr;
 }
 
 .c1 {
@@ -2449,7 +2449,7 @@ are intentionally not generated from this file date, in case we want to override
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 yzvAs"
+      class="hm3mhg-0 jEvCFk"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -12023,7 +12023,7 @@ Object {
   line-height: 0;
 }
 
-.c33 {
+.c37 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -12036,7 +12036,7 @@ Object {
   align-items: center;
 }
 
-.c34 {
+.c38 {
   justify-self: end;
   font-size: 12px;
   font-weight: 300;
@@ -12048,7 +12048,7 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+  grid-template-columns: 1fr 896px 1fr;
 }
 
 .c1 {
@@ -12067,11 +12067,12 @@ Object {
   width: 100%;
 }
 
-.c26 {
-  margin-top: 30px;
+.c35 {
+  margin-top: 50px;
+  margin-bottom: 30px;
 }
 
-.c26:before {
+.c35:before {
   display: block;
   content: '';
   width: 87px;
@@ -12080,62 +12081,20 @@ Object {
   margin-bottom: 16px;
 }
 
-.c32 {
+.c36 {
   font-size: 32px;
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
 }
 
-.c16 {
-  display: inline-block;
-  width: 120px;
-  height: 40px;
-  font-family: 'IBM Plex Sans',Helvetica,sans-serif;
-  font-weight: 300;
-  font-size: 13px;
-  white-space: nowrap;
-  text-align: left;
-  border: none;
-  border-radius: 4px;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  color: var(--brand);
-  background-color: var(--white);
-}
-
-.c16 span {
-  vertical-align: middle;
-}
-
-.c16 > svg {
-  margin: 5px;
-  vertical-align: middle;
-  height: 24px;
-  width: 24px;
-}
-
-.c16 > svg {
-  fill: var(--brand);
-}
-
-.c16:hover {
-  color: var(--white);
-  background-color: var(--brand);
-}
-
-.c16:hover > svg {
-  fill: var(--white);
-}
-
-.c29 {
+.c32 {
   display: grid;
   grid-gap: 16px;
   margin: auto;
   margin-top: 25px;
 }
 
-.c30 {
+.c33 {
   background: var(--lightgrey);
   font-family: 'IBM Plex Sans',sans-serif;
   font-size: 16px;
@@ -12143,7 +12102,7 @@ Object {
   padding: 20px;
 }
 
-.c31 {
+.c34 {
   background-color: var(--green);
   border: none;
   font-size: 16px;
@@ -12158,20 +12117,20 @@ Object {
   padding: 20px 50px;
 }
 
-.c31:hover {
+.c34:hover {
   color: var(--darkgrey);
   background-color: var(--activegreen);
 }
 
-.c20 {
+.c21 {
   width: 50%;
 }
 
-.c20 svg {
+.c21 svg {
   fill: var(--silver);
 }
 
-.c18 {
+.c19 {
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
@@ -12181,7 +12140,7 @@ Object {
   max-width: 600px;
 }
 
-.c19 {
+.c20 {
   text-align: center;
   font-size: 20px;
   line-height: 26px;
@@ -12195,108 +12154,160 @@ Object {
   justify-items: center;
 }
 
-.c21 {
+.c22 {
   padding: 20px;
   font-weight: 300;
   font-size: 20px;
   line-height: 28px;
 }
 
+.c12 {
+  display: grid;
+  grid-gap: 0px;
+}
+
+.c13 {
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 52px;
+}
+
+.c18 {
+  margin-top: 64px;
+}
+
+.c14 {
+  margin: auto;
+}
+
 .c27 {
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.c27:before {
+  display: block;
+  content: '';
+  width: 87px;
+  height: 3px;
+  background-color: var(--silver);
+  margin-bottom: 16px;
+}
+
+.c31 {
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+.c31:before {
+  display: block;
+  content: '';
+  width: 87px;
+  height: 3px;
+  background-color: var(--silver);
+  margin-bottom: 16px;
+}
+
+.c15 {
+  font-family: IBM Plex Serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
+  color: var(--darkgrey);
+}
+
+.c16 {
+  display: grid;
+}
+
+.c16 p {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.c17 {
+  display: block;
+  border: 1px solid var(--link);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 4px;
+}
+
+.c17 > svg {
+  margin: 16px;
+  vertical-align: middle;
+  height: 24px;
+  width: 24px;
+  fill: var(--white);
+  background-color: var(--link);
+  border-radius: 12px;
+}
+
+.c17:hover {
+  color: var(--white);
+  background-color: var(--link);
+}
+
+.c17:hover > svg {
+  fill: var(--link);
+  background-color: var(--white);
+}
+
+.c28 {
   margin-top: 50px;
   display: grid;
 }
 
-.c28 {
+.c29 {
   text-align: center;
   display: inline-block;
 }
 
-.c22 {
-  margin-top: 50px;
-  padding-left: 5%;
-  padding-right: 5%;
+.c30 {
+  margin: auto;
+  width: 136px;
+  height: 136px;
   display: grid;
-}
-
-.c22 img {
-  max-width: 300px;
-}
-
-.c23 {
-  font-weight: 300;
-  font-size: 20px;
-  line-height: 28px;
-}
-
-.c12 {
-  margin-top: 20px;
-}
-
-.c12 img {
-  width: 100%;
-  height: 100%;
-  min-height: 250px;
-}
-
-.c15 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-}
-
-.c15 > * {
-  margin: 5px;
-}
-
-.c14 {
-  display: grid;
+  justify-items: center;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.c14 h1 {
-  margin-top: 0px;
-  margin-bottom: 0px;
-  color: var(--white);
-  font-weight: 700;
-  font-size: 36px;
+.c23 {
+  margin-top: 50px;
+  padding-left: 5%;
+  padding-right: 5%;
+  display: grid;
+}
+
+.c23 img {
+  max-width: 300px;
 }
 
 .c24 {
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+.c25 {
   font-size: 36px;
   margin-bottom: 0px;
   color: var(--darkgrey);
   font-weight: 700;
 }
 
-.c25 {
+.c26 {
   font-family: 'IBM Plex Serif',serif;
   font-weight: 300;
   font-size: 20px;
-}
-
-.c17 {
-  font-size: 32px;
-  line-height: 42px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 100;
-  margin-top: 50px;
-  margin-bottom: 50px;
-  padding-left: 5%;
-  padding-right: 5%;
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c13 {
-    display: none;
-  }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -12355,89 +12366,121 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
+  .c39 {
     display: none;
   }
 }
 
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c16 {
-    color: var(--white);
-    background-color: var(--brand);
-  }
-
-  .c16 > svg {
-    fill: var(--white);
-  }
-
-  .c16:hover {
-    color: var(--brand);
-    background-color: var(--white);
-  }
-
-  .c16:hover > svg {
-    fill: var(--brand);
-  }
-}
-
 @media only screen and (min-width:736px) {
-  .c29 {
+  .c32 {
     grid-template-columns: minmax(180px,364px) 212px;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c18 {
+  .c19 {
     grid-template-columns: 200px 1fr;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c27 {
-    grid-auto-flow: column;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c27 {
-    grid-template-columns: repeat(2,1fr);
-  }
-}
-
-@media only screen and (min-width:736px) {
-  .c22 {
-    grid-template-columns: repeat(2,1fr);
-    grid-gap: 20px;
-  }
-}
-
-@media only screen and (min-width:0px) and (max-width:736px) {
-  .c22 {
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
-  }
-}
-
-@media only screen and (min-width:736px) {
   .c12 {
-    position: relative;
+    grid-template-columns: repeat(10,1fr);
+    padding-top: 50px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c12 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c13 {
+    grid-column: 2/8;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c18 {
+    grid-column: 3/9;
   }
 }
 
 @media only screen and (min-width:736px) {
   .c14 {
-    position: absolute;
-    width: 60%;
-    height: 75%;
-    left: 5%;
-    top: 12%;
+    grid-column: 8/10;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c14 h1 {
-    color: var(--brand);
-    white-space: normal;
+  .c14 {
+    grid-row: 1;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c27 {
+    grid-column: 1/12;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c31 {
+    grid-column: 1/12;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c15 {
+    grid-column: 1/12;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c16 {
+    grid-column: 2/10;
+    grid-template-columns: repeat(2,1fr);
+    grid-gap: 100px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c16 {
+    grid-gap: 30px;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c28 {
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c28 {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c23 {
+    grid-column: 1/12;
+  }
+}
+
+@media only screen and (min-width:736px) {
+  .c23 {
+    grid-template-columns: 1fr 300px;
+    grid-gap: 20px;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c23 {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
   }
 }
 
@@ -12647,25 +12690,31 @@ Object {
           <div
             class="c12"
           >
-            <div
+            <h1
               class="c13"
             >
-              <img
-                alt="Unlock"
-                src="/static/images/pages/svg/hero.svg"
-              />
-            </div>
-            <div
+              Monetize the web through memberships
+            </h1>
+            <img
+              alt=""
               class="c14"
+              src="/static/images/illustrations/banner-key.png"
+              width="192"
+            />
+            <h2
+              class="c15"
             >
-              <h1>
-                Monetize the Web with memberships
-              </h1>
+              Unlock lets you easily lock and manage access to your content, apps, community and even real life events and spaces.
+            </h2>
+            <section
+              class="c16"
+            >
               <div
-                class="c15"
+                class=""
               >
-                <button
-                  class="c16"
+                <a
+                  class="0 c17"
+                  href="undefined/dashboard"
                 >
                   <svg
                     viewBox="0 0 24 24"
@@ -12674,12 +12723,18 @@ Object {
                       d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
                     />
                   </svg>
-                  <span>
-                    Dashboard
-                  </span>
-                </button>
-                <button
-                  class="c16"
+                  Dashboard
+                </a>
+                <p>
+                  Create and manage locks to monetize access to your content, events and any other member perks.
+                </p>
+              </div>
+              <div
+                class=""
+              >
+                <a
+                  class="0 c17"
+                  href="undefined/keychain"
                 >
                   <svg
                     viewBox="-3 -3 24 24"
@@ -12693,347 +12748,397 @@ Object {
                       fill="evenodd"
                     />
                   </svg>
-                  <span>
-                    Keychain
-                  </span>
-                </button>
+                  Keychain
+                </a>
+                <p>
+                  Manage all your keys and memberships with or without a third party crypto wallet.
+                </p>
               </div>
-            </div>
-          </div>
-          <p
-            class="c17"
-          >
-            Unlock lets you easily lock and manage access to your content, apps, community and even real life events and spaces.
-          </p>
-          <section
-            class="c18"
-          >
-            <div
-              class="c19"
+            </section>
+            <section
+              class="c18"
+            >
+              <section
+                class="c19"
+              >
+                <div
+                  class="c20"
+                >
+                  <div
+                    class="c21"
+                  >
+                    <svg
+                      viewBox="0 0 32 32"
+                    >
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(45 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.125s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(90 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.25s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(135 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.375s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(180 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.5s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(225 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.625s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(270 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.75s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(315 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.875s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                      <circle
+                        cx="16"
+                        cy="3"
+                        r="0"
+                        transform="rotate(180 16 16)"
+                      >
+                        <animate
+                          attributeName="r"
+                          begin="0.5s"
+                          calcMode="spline"
+                          dur="1s"
+                          keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                          repeatCount="indefinite"
+                          values="0;3;0;0"
+                        />
+                      </circle>
+                    </svg>
+                  </div>
+                </div>
+                <div
+                  class="c22"
+                >
+                  Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+                </div>
+              </section>
+            </section>
+            <section
+              class="4 c23"
             >
               <div
-                class="c20"
+                class="5 c24"
               >
-                <svg
-                  viewBox="0 0 32 32"
+                <h2
+                  class="6 c25"
                 >
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
+                  You are in Control
+                </h2>
+                <p
+                  class="7 c26"
+                >
+                  Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
+                </p>
+                <p
+                  class="7 c26"
+                >
+                  <a
+                    href="https://github.com/unlock-protocol/unlock/"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    <animate
-                      attributeName="r"
-                      begin="0"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(45 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.125s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(90 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.25s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(135 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.375s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(180 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.5s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(225 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.625s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(270 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.75s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(315 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.875s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                  <circle
-                    cx="16"
-                    cy="3"
-                    r="0"
-                    transform="rotate(180 16 16)"
-                  >
-                    <animate
-                      attributeName="r"
-                      begin="0.5s"
-                      calcMode="spline"
-                      dur="1s"
-                      keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                      repeatCount="indefinite"
-                      values="0;3;0;0"
-                    />
-                  </circle>
-                </svg>
+                    Checkout our GitHub
+                  </a>
+                </p>
               </div>
-            </div>
-            <div
-              class="c21"
-            >
-              Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
-            </div>
-          </section>
-          <section
-            class="c22"
-          >
-            <div
-              class="c23"
-            >
-              <h2
-                class="c24"
+              <img
+                alt="control"
+                src="/static/images/pages/svg/control.svg"
+              />
+              <div
+                class="5 c24"
               >
-                You are in Control
-              </h2>
-              <p
-                class="c25"
-              >
-                Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
-              </p>
-              <p
-                class="c25"
-              >
-                <a
-                  href="https://github.com/unlock-protocol/unlock/"
-                  rel="noopener noreferrer"
-                  target="_blank"
+                <h2
+                  class="6 c25"
                 >
-                  Checkout our GitHub
-                </a>
-              </p>
-            </div>
-            <img
-              alt="control"
-              src="/static/images/pages/svg/control.svg"
-            />
-            <div
-              class="c23"
-            >
-              <h2
-                class="c24"
-              >
-                A Web3 Future
-              </h2>
-              <p
-                class="c25"
-              >
-                Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
-              </p>
-            </div>
-            <img
-              alt="code"
-              src="/static/images/pages/svg/code.svg"
-            />
-          </section>
-          <section
-            class="c26"
-          >
-            <h2
-              class="c24"
-            >
-              Use Cases
-            </h2>
-            <p
-              class="c25"
-            >
-              We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
-            </p>
+                  A Web3 Future
+                </h2>
+                <p
+                  class="7 c26"
+                >
+                  Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
+                </p>
+                <p
+                  class="7 c26"
+                >
+                  <a
+                    href="https://docs.unlock-protocol.com"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Checkout our Docs
+                  </a>
+                </p>
+              </div>
+              <img
+                alt="code"
+                src="/static/images/pages/svg/code.svg"
+              />
+            </section>
             <section
               class="c27"
             >
-              <a
-                class="c28"
-                href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
-                rel="noopener noreferrer"
-                target="_blank"
+              <h2
+                class="6 c25"
               >
-                <h3>
-                  Paywall
-                </h3>
-                <img
-                  alt="Paywall"
-                  src="/static/images/pages/svg/paywall.svg"
-                />
-              </a>
-              <a
-                class="c28"
-                href="https://wordpress.org/plugins/unlock-protocol/"
-                rel="noopener noreferrer"
-                target="_blank"
+                Use Cases
+              </h2>
+              <p
+                class="7 c26"
               >
-                <h3>
-                  WordPress
-                </h3>
-                <img
-                  alt="WordPress"
-                  src="/static/images/pages/svg/wordpress.svg"
-                />
-              </a>
-              <a
-                class="c28"
-                href="https://tickets.unlock-protocol.com/"
-                rel="noopener noreferrer"
-                target="_blank"
+                We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
+              </p>
+              <section
+                class="1 c28"
               >
-                <h3>
-                  Tickets
-                </h3>
-                <img
-                  alt="Tickets"
-                  src="/static/images/pages/svg/tickets.svg"
-                />
-              </a>
-              <a
-                class="c28"
-                href="https://donate.unlock-protocol.com/about.html"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                <h3>
-                  Donations
-                </h3>
-                <img
-                  alt="Donations"
-                  src="/static/images/pages/svg/donations.svg"
-                />
-              </a>
+                <a
+                  class="2 c29"
+                  href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <h3>
+                    Paywall
+                  </h3>
+                  <div
+                    class="3 c30"
+                  >
+                    <img
+                      alt="Paywall"
+                      src="/static/images/pages/svg/paywall.svg"
+                      width="136"
+                    />
+                  </div>
+                </a>
+                <a
+                  class="2 c29"
+                  href="https://wordpress.org/plugins/unlock-protocol/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <h3>
+                    WordPress
+                  </h3>
+                  <div
+                    class="3 c30"
+                  >
+                    <img
+                      alt="WordPress"
+                      src="/static/images/pages/svg/wordpress.svg"
+                      width="136"
+                    />
+                  </div>
+                </a>
+                <a
+                  class="2 c29"
+                  href="https://tickets.unlock-protocol.com/"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <h3>
+                    Tickets
+                  </h3>
+                  <div
+                    class="3 c30"
+                  >
+                    <img
+                      alt="Tickets"
+                      src="/static/images/pages/svg/tickets.svg"
+                      width="136"
+                    />
+                  </div>
+                </a>
+                <a
+                  class="2 c29"
+                  href="https://donate.unlock-protocol.com/about.html"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <h3>
+                    Donations
+                  </h3>
+                  <div
+                    class="3 c30"
+                  >
+                    <img
+                      alt="Donations"
+                      src="/static/images/pages/svg/donations.svg"
+                      width="136"
+                    />
+                  </div>
+                </a>
+                <a
+                  class="2 c29"
+                  href="https://newsletter.unlock-protocol.com"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  <h3>
+                    Newsletters
+                  </h3>
+                  <div
+                    class="3 c30"
+                  >
+                    <img
+                      alt="Newsletters"
+                      src="/static/images/blog/introducing-newsletter/newsletter.jpg"
+                      width="136"
+                    />
+                  </div>
+                </a>
+              </section>
             </section>
-          </section>
-          <section
-            class="c26"
-          >
-            <h2
-              class="c24"
+            <section
+              class="c31"
             >
-              Subscribe to Updates
-            </h2>
-            <p
-              class="c25"
-            >
-              We will never share your information. Privacy and your trust are our top priorities.
-            </p>
-            <form
-              action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-              class="c29 subscribe"
-              method="post"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <input
-                class="c30"
-                id="mce-EMAIL"
-                name="EMAIL"
-                placeholder="Your email here"
-                required=""
-                type="email"
-              />
-              <button
-                class="c31"
+              <h2
+                class="6 c25"
               >
-                Subscribe
-              </button>
-            </form>
-          </section>
+                Join the Community Newsletter
+              </h2>
+              <p
+                class="7 c26"
+              >
+                We will never share your information. Privacy and your trust are our top priorities.
+              </p>
+              <form
+                action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
+                class="c32 subscribe"
+                method="post"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <input
+                  class="c33"
+                  id="mce-EMAIL"
+                  name="EMAIL"
+                  placeholder="Your email here"
+                  required=""
+                  type="email"
+                />
+                <button
+                  class="c34"
+                >
+                  Subscribe
+                </button>
+              </form>
+            </section>
+          </div>
           <section
-            class="c26"
+            class="c35"
           >
             <div
-              class="c32"
+              class="c36"
             >
               Check out our open source code on
                
@@ -13060,7 +13165,7 @@ Object {
             </div>
           </section>
           <footer
-            class="c33"
+            class="c37"
           >
             <a
               class="c6 c7"
@@ -13191,14 +13296,14 @@ Object {
               </small>
             </a>
             <span
-              class="c34"
+              class="c38"
             >
               Made with passion in New York
             </span>
           </footer>
         </div>
         <div
-          class="c35"
+          class="c39"
         />
       </div>
     </div>
@@ -13209,7 +13314,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 yzvAs"
+      class="hm3mhg-0 jEvCFk"
     >
       <div
         class="hm3mhg-1 hHesyi"
@@ -13407,27 +13512,33 @@ Object {
           />
         </header>
         <div
-          class="sc-1lwhgj0-4 cHzGOs"
+          class="sc-1lwhgj0-0 caZhGH"
         >
-          <div
-            class="sc-1w50r7k-0 fSpCqa"
+          <h1
+            class="sc-1lwhgj0-1 cCUSUf"
           >
-            <img
-              alt="Unlock"
-              src="/static/images/pages/svg/hero.svg"
-            />
-          </div>
-          <div
-            class="sc-1lwhgj0-6 qiUrr"
+            Monetize the web through memberships
+          </h1>
+          <img
+            alt=""
+            class="sc-1lwhgj0-3 fScOKb"
+            src="/static/images/illustrations/banner-key.png"
+            width="192"
+          />
+          <h2
+            class="sc-1lwhgj0-6 bkmLvk"
           >
-            <h1>
-              Monetize the Web with memberships
-            </h1>
+            Unlock lets you easily lock and manage access to your content, apps, community and even real life events and spaces.
+          </h2>
+          <section
+            class="sc-1lwhgj0-7 evEfAa"
+          >
             <div
-              class="sc-1lwhgj0-5 XRYUp"
+              class="sc-1lwhgj0-8 kOiYnR"
             >
-              <button
-                class="sc-9upljg-0 bHzYxo"
+              <a
+                class="sc-1lwhgj0-10 bEiAbO"
+                href="undefined/dashboard"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -13436,12 +13547,18 @@ Object {
                     d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
                   />
                 </svg>
-                <span>
-                  Dashboard
-                </span>
-              </button>
-              <button
-                class="sc-9upljg-0 bHzYxo"
+                Dashboard
+              </a>
+              <p>
+                Create and manage locks to monetize access to your content, events and any other member perks.
+              </p>
+            </div>
+            <div
+              class="sc-1lwhgj0-9 jDhuER"
+            >
+              <a
+                class="sc-1lwhgj0-10 bEiAbO"
+                href="undefined/keychain"
               >
                 <svg
                   viewBox="-3 -3 24 24"
@@ -13455,344 +13572,394 @@ Object {
                     fill="evenodd"
                   />
                 </svg>
-                <span>
-                  Keychain
-                </span>
-              </button>
+                Keychain
+              </a>
+              <p>
+                Manage all your keys and memberships with or without a third party crypto wallet.
+              </p>
             </div>
-          </div>
-        </div>
-        <p
-          class="sc-1lwhgj0-9 iYPCes"
-        >
-          Unlock lets you easily lock and manage access to your content, apps, community and even real life events and spaces.
-        </p>
-        <section
-          class="hzj1u1-2 ezGDEr"
-        >
-          <div
-            class="hzj1u1-3 duzVPv"
+          </section>
+          <section
+            class="sc-1lwhgj0-2 iWmlGK"
+          >
+            <section
+              class="hzj1u1-2 ezGDEr"
+            >
+              <div
+                class="hzj1u1-3 duzVPv"
+              >
+                <div
+                  class="hzj1u1-0 jLYVat"
+                >
+                  <svg
+                    viewBox="0 0 32 32"
+                  >
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(45 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.125s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(90 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.25s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(135 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.375s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(180 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.5s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(225 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.625s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(270 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.75s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(315 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.875s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                    <circle
+                      cx="16"
+                      cy="3"
+                      r="0"
+                      transform="rotate(180 16 16)"
+                    >
+                      <animate
+                        attributeName="r"
+                        begin="0.5s"
+                        calcMode="spline"
+                        dur="1s"
+                        keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                        repeatCount="indefinite"
+                        values="0;3;0;0"
+                      />
+                    </circle>
+                  </svg>
+                </div>
+              </div>
+              <div
+                class="hzj1u1-8 fkfHfo"
+              >
+                Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
+              </div>
+            </section>
+          </section>
+          <section
+            class="sc-1lwhgj0-14 kjGXGY"
           >
             <div
-              class="hzj1u1-0 jLYVat"
+              class="sc-1lwhgj0-15 jeZtWO"
             >
-              <svg
-                viewBox="0 0 32 32"
+              <h2
+                class="sc-1lwhgj0-16 epVeX"
               >
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
+                You are in Control
+              </h2>
+              <p
+                class="sc-1lwhgj0-17 KVejY"
+              >
+                Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
+              </p>
+              <p
+                class="sc-1lwhgj0-17 KVejY"
+              >
+                <a
+                  href="https://github.com/unlock-protocol/unlock/"
+                  rel="noopener noreferrer"
+                  target="_blank"
                 >
-                  <animate
-                    attributeName="r"
-                    begin="0"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(45 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.125s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(90 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.25s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(135 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.375s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(180 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.5s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(225 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.625s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(270 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.75s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(315 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.875s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-                <circle
-                  cx="16"
-                  cy="3"
-                  r="0"
-                  transform="rotate(180 16 16)"
-                >
-                  <animate
-                    attributeName="r"
-                    begin="0.5s"
-                    calcMode="spline"
-                    dur="1s"
-                    keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
-                    repeatCount="indefinite"
-                    values="0;3;0;0"
-                  />
-                </circle>
-              </svg>
+                  Checkout our GitHub
+                </a>
+              </p>
             </div>
-          </div>
-          <div
-            class="hzj1u1-8 fkfHfo"
-          >
-            Become an Unlock member, experience the power of Unlock and enjoy some special member only features.
-          </div>
-        </section>
-        <section
-          class="sc-1lwhgj0-2 bAEMSN"
-        >
-          <div
-            class="sc-1lwhgj0-3 iDZIPj"
+            <img
+              alt="control"
+              src="/static/images/pages/svg/control.svg"
+            />
+            <div
+              class="sc-1lwhgj0-15 jeZtWO"
+            >
+              <h2
+                class="sc-1lwhgj0-16 epVeX"
+              >
+                A Web3 Future
+              </h2>
+              <p
+                class="sc-1lwhgj0-17 KVejY"
+              >
+                Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
+              </p>
+              <p
+                class="sc-1lwhgj0-17 KVejY"
+              >
+                <a
+                  href="https://docs.unlock-protocol.com"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Checkout our Docs
+                </a>
+              </p>
+            </div>
+            <img
+              alt="code"
+              src="/static/images/pages/svg/code.svg"
+            />
+          </section>
+          <section
+            class="sc-1mz6j63-0 sc-1lwhgj0-4 eFbNAf"
           >
             <h2
-              class="sc-1lwhgj0-7 eLuwFu"
+              class="sc-1lwhgj0-16 epVeX"
             >
-              You are in Control
+              Use Cases
             </h2>
             <p
-              class="sc-1lwhgj0-8 OBNne"
+              class="sc-1lwhgj0-17 KVejY"
             >
-              Unlock is an open source protocol. Integrate it in any and every way you’d like. It’s also permissionless – there are no middlemen.
+              We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
             </p>
-            <p
-              class="sc-1lwhgj0-8 OBNne"
+            <section
+              class="sc-1lwhgj0-11 hqdOWS"
             >
               <a
-                href="https://github.com/unlock-protocol/unlock/"
+                class="sc-1lwhgj0-12 gsJEjm"
+                href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                Checkout our GitHub
+                <h3>
+                  Paywall
+                </h3>
+                <div
+                  class="sc-1lwhgj0-13 jXcGlM"
+                >
+                  <img
+                    alt="Paywall"
+                    src="/static/images/pages/svg/paywall.svg"
+                    width="136"
+                  />
+                </div>
               </a>
-            </p>
-          </div>
-          <img
-            alt="control"
-            src="/static/images/pages/svg/control.svg"
-          />
-          <div
-            class="sc-1lwhgj0-3 iDZIPj"
+              <a
+                class="sc-1lwhgj0-12 gsJEjm"
+                href="https://wordpress.org/plugins/unlock-protocol/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  WordPress
+                </h3>
+                <div
+                  class="sc-1lwhgj0-13 jXcGlM"
+                >
+                  <img
+                    alt="WordPress"
+                    src="/static/images/pages/svg/wordpress.svg"
+                    width="136"
+                  />
+                </div>
+              </a>
+              <a
+                class="sc-1lwhgj0-12 gsJEjm"
+                href="https://tickets.unlock-protocol.com/"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Tickets
+                </h3>
+                <div
+                  class="sc-1lwhgj0-13 jXcGlM"
+                >
+                  <img
+                    alt="Tickets"
+                    src="/static/images/pages/svg/tickets.svg"
+                    width="136"
+                  />
+                </div>
+              </a>
+              <a
+                class="sc-1lwhgj0-12 gsJEjm"
+                href="https://donate.unlock-protocol.com/about.html"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Donations
+                </h3>
+                <div
+                  class="sc-1lwhgj0-13 jXcGlM"
+                >
+                  <img
+                    alt="Donations"
+                    src="/static/images/pages/svg/donations.svg"
+                    width="136"
+                  />
+                </div>
+              </a>
+              <a
+                class="sc-1lwhgj0-12 gsJEjm"
+                href="https://newsletter.unlock-protocol.com"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <h3>
+                  Newsletters
+                </h3>
+                <div
+                  class="sc-1lwhgj0-13 jXcGlM"
+                >
+                  <img
+                    alt="Newsletters"
+                    src="/static/images/blog/introducing-newsletter/newsletter.jpg"
+                    width="136"
+                  />
+                </div>
+              </a>
+            </section>
+          </section>
+          <section
+            class="sc-1mz6j63-0 sc-1lwhgj0-5 htyJen"
           >
             <h2
-              class="sc-1lwhgj0-7 eLuwFu"
+              class="sc-1lwhgj0-16 epVeX"
             >
-              A Web3 Future
+              Join the Community Newsletter
             </h2>
             <p
-              class="sc-1lwhgj0-8 OBNne"
+              class="sc-1lwhgj0-17 KVejY"
             >
-              Take advantage of the blockchain and smart contracts to create customizable ways to access content and much more.
+              We will never share your information. Privacy and your trust are our top priorities.
             </p>
-          </div>
-          <img
-            alt="code"
-            src="/static/images/pages/svg/code.svg"
-          />
-        </section>
-        <section
-          class="sc-1mz6j63-0 HVtYL"
-        >
-          <h2
-            class="sc-1lwhgj0-7 eLuwFu"
-          >
-            Use Cases
-          </h2>
-          <p
-            class="sc-1lwhgj0-8 OBNne"
-          >
-            We’ve built a few apps to showcase the power of Unlock. Create a lock on the dashboard and get started or check out some of the apps.
-          </p>
-          <section
-            class="sc-1lwhgj0-0 fcWHMw"
-          >
-            <a
-              class="sc-1lwhgj0-1 glEXpl"
-              href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+            <form
+              action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
+              class="sc-1jockd9-0 bqGIyg subscribe"
+              method="post"
               rel="noopener noreferrer"
               target="_blank"
             >
-              <h3>
-                Paywall
-              </h3>
-              <img
-                alt="Paywall"
-                src="/static/images/pages/svg/paywall.svg"
+              <input
+                class="sc-1jockd9-1 bVyKAF"
+                id="mce-EMAIL"
+                name="EMAIL"
+                placeholder="Your email here"
+                required=""
+                type="email"
               />
-            </a>
-            <a
-              class="sc-1lwhgj0-1 glEXpl"
-              href="https://wordpress.org/plugins/unlock-protocol/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <h3>
-                WordPress
-              </h3>
-              <img
-                alt="WordPress"
-                src="/static/images/pages/svg/wordpress.svg"
-              />
-            </a>
-            <a
-              class="sc-1lwhgj0-1 glEXpl"
-              href="https://tickets.unlock-protocol.com/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <h3>
-                Tickets
-              </h3>
-              <img
-                alt="Tickets"
-                src="/static/images/pages/svg/tickets.svg"
-              />
-            </a>
-            <a
-              class="sc-1lwhgj0-1 glEXpl"
-              href="https://donate.unlock-protocol.com/about.html"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <h3>
-                Donations
-              </h3>
-              <img
-                alt="Donations"
-                src="/static/images/pages/svg/donations.svg"
-              />
-            </a>
+              <button
+                class="q8p5ah-0 sc-1jockd9-2 eTjGeX"
+              >
+                Subscribe
+              </button>
+            </form>
           </section>
-        </section>
+        </div>
         <section
-          class="sc-1mz6j63-0 HVtYL"
-        >
-          <h2
-            class="sc-1lwhgj0-7 eLuwFu"
-          >
-            Subscribe to Updates
-          </h2>
-          <p
-            class="sc-1lwhgj0-8 OBNne"
-          >
-            We will never share your information. Privacy and your trust are our top priorities.
-          </p>
-          <form
-            action="https://unlock-protocol.us17.list-manage.com/subscribe/post?u=557de63fe04b1fc4212f4ffab&id=6764cd60ef"
-            class="sc-1jockd9-0 bqGIyg subscribe"
-            method="post"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <input
-              class="sc-1jockd9-1 bVyKAF"
-              id="mce-EMAIL"
-              name="EMAIL"
-              placeholder="Your email here"
-              required=""
-              type="email"
-            />
-            <button
-              class="q8p5ah-0 sc-1jockd9-2 eTjGeX"
-            >
-              Subscribe
-            </button>
-          </form>
-        </section>
-        <section
-          class="sc-1mz6j63-0 HVtYL"
+          class="sc-1mz6j63-0 iamiut"
         >
           <div
             class="sc-1mz6j63-3 kvKCRV"
@@ -14628,7 +14795,7 @@ Object {
   font-family: 'IBM Plex Sans',sans-serif;
   display: grid;
   padding-bottom: 60px;
-  grid-template-columns: 1fr minmax(280px,4fr) 1fr;
+  grid-template-columns: 1fr 896px 1fr;
 }
 
 .c1 {
@@ -15061,7 +15228,7 @@ Object {
       rel="stylesheet"
     />
     <div
-      class="hm3mhg-0 yzvAs"
+      class="hm3mhg-0 jEvCFk"
     >
       <div
         class="hm3mhg-1 hHesyi"
