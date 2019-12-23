@@ -33,7 +33,7 @@
     }
   },
   "engines": {
-    "node": "^10"
+    "node": "10.18.0"
   },
   "devDependencies": {
     "@babel/cli": "7.7.5",
