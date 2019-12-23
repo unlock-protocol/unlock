@@ -41,8 +41,8 @@ export const DashboardContent = ({
           </AccountWrapper>
           <Phone>
             <Warning>
-              The Dashboard is not complete on mobile. To create locks, please
-              use a desktop computer.
+              The Dashboard is currently not optimized for a mobile experience.
+              To create locks, please use a desktop computer.
             </Warning>
           </Phone>
 
