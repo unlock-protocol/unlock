@@ -45,7 +45,6 @@ describe('Web3Service', () => {
       unlockAddress,
       blockTime,
       requiredConfirmations,
-      useEthers: true,
     })
     return nock.resolveWhenAllNocksUsed()
   }
@@ -128,7 +127,6 @@ describe('Web3Service', () => {
       unlockAddress,
       blockTime,
       requiredConfirmations,
-      useEthers: true,
     })
     web3Service._getPublicLockVersionFromContract = jest.fn(() => actualVersion)
     web3Service._getVersionFromContract = jest.fn(() => actualVersion)

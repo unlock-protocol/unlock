@@ -1,8 +1,8 @@
 import { providers } from 'ethers'
 
 export default class FetchJsonProvider extends providers.JsonRpcProvider {
-  constructor(endpoint, rateLimit = 1000, maxRetries = 30) {
-    super(endpoint)
+  constructor({ endpoint, rateLimit = 1000, maxRetries = 30, network }) {
+    super(endpoint, network)
     this.rateLimit = rateLimit
     this.maxRetries = maxRetries
     /**

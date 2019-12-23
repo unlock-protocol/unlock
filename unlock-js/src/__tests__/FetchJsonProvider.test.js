@@ -14,7 +14,7 @@ describe('FetchJsonProvider', () => {
 
   it('should return the response from JsonRpcProvider if successful', async () => {
     expect.assertions(2)
-    const provider = new FetchJsonProvider(url)
+    const provider = new FetchJsonProvider({ endpoint: url })
 
     providers.JsonRpcProvider.prototype.send.call = jest.fn(() =>
       Promise.resolve('response')
@@ -31,7 +31,11 @@ describe('FetchJsonProvider', () => {
   describe('if JsonRpcProvider failed', () => {
     it('should retry if the error is 429 and there has not been too many retries', async () => {
       expect.assertions(2)
-      const provider = new FetchJsonProvider(url, 1, 3)
+      const provider = new FetchJsonProvider({
+        endpoint: url,
+        rateLimit: 1,
+        maxRetries: 3,
+      })
       let callCounter = 0
       providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
         callCounter += 1
@@ -53,7 +57,11 @@ describe('FetchJsonProvider', () => {
       const error = {
         statusCode: 404,
       }
-      const provider = new FetchJsonProvider(url, 1, 3)
+      const provider = new FetchJsonProvider({
+        endpoint: url,
+        rateLimit: 1,
+        maxRetries: 3,
+      })
       providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
         return Promise.reject(error)
       })
@@ -66,7 +74,11 @@ describe('FetchJsonProvider', () => {
 
     it('should retry if the error is 429 and there has been too many retries', async () => {
       expect.assertions(2)
-      const provider = new FetchJsonProvider(url, 1, 3)
+      const provider = new FetchJsonProvider({
+        endpoint: url,
+        rateLimit: 1,
+        maxRetries: 3,
+      })
       let callCounter = 0
       providers.JsonRpcProvider.prototype.send.call = jest.fn(() => {
         callCounter += 1
