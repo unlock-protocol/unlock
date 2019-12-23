@@ -1,6 +1,6 @@
 # Changes
 
-# Next patch
+# 0.5.2
 
 - Lets the user pass a network id when intantiating services
 
