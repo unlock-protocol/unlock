@@ -125,11 +125,11 @@ export default function HomeContent() {
         <Error>
           You need to a use a web browser with a crypto enabled wallet. We
           recommend{' '}
-          <a href="https://metamask.io/" target="_blank">
+          <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
             MetaMask
           </a>{' '}
           for Firefox or Chrome, or{' '}
-          <a href="https://www.opera.com/crypto" target="_blank">
+          <a href="https://www.opera.com/crypto" target="_blank" rel="noopener noreferrer">
             Opera
           </a>
           .
@@ -139,7 +139,7 @@ export default function HomeContent() {
   }
 
   return (
-    <Layout>
+    <Layout noHeader>
       <Head>
         <title>{pageTitle('Newsletter')}</title>
       </Head>
