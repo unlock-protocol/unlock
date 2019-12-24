@@ -9,6 +9,13 @@ describe('The Unlock Dashboard', () => {
     await wait.forLoadingDone()
   })
 
+  it('should show a modal for terms of service', async () => {
+    expect.assertions(1)
+    await expect(page).toClick('button', {
+      text: 'I agree',
+    })
+  })
+
   it('should load the creator dashboard', async () => {
     expect.assertions(1)
     await expect(page).toMatch('Creator Dashboard')
@@ -156,9 +163,11 @@ describe('The Unlock Dashboard', () => {
 
     describe('Data existing after refresh', () => {
       it('should retain the lock address, key price, duration and maximum number of keys', async () => {
-        expect.assertions(1)
+        expect.assertions(2)
         await page.reload({ waitUntil: 'networkidle2' })
+        // Accept Terms of service again!
         await wait.forLoadingDone()
+        await expect(page).toClick('button', { text: 'I agree' })
         await expect(page).toMatchElement(lockSelector)
       })
     })
