@@ -1,5 +1,9 @@
 # Changes
 
+# Next patch
+
+- Lets the user pass a network id when intantiating services
+
 # 0.5.1
 
 - Changed auto-gen files to reflect latest abi

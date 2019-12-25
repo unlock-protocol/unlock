@@ -6312,7 +6312,7 @@ Object {
   text-align: center;
 }
 
-.c27 {
+.c14 {
   margin-top: 24px;
   margin-bottom: 24px;
   display: grid;
@@ -6325,7 +6325,7 @@ Object {
   align-items: center;
 }
 
-.c28 {
+.c15 {
   justify-self: end;
   font-size: 12px;
   font-weight: 200;
@@ -6354,163 +6354,14 @@ Object {
   width: 100%;
 }
 
-.c16 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  max-width: 400px;
-  padding: 20px 50px;
-}
-
-.c16 :hover {
-  background-color: var(--activegreen);
-}
-
-.c15 {
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
-}
-
-.c17 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.c25 {
-  margin-top: 30px;
-}
-
-.c25:before {
-  display: block;
-  content: '';
-  width: 87px;
-  height: 3px;
-  background-color: var(--silver);
-  margin-bottom: 16px;
-}
-
-.c14 {
-  font-size: 32px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-  margin-top: 0px;
-}
-
-.c26 {
-  font-size: 32px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-}
-
-.c20 {
-  font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
-  font-weight: 500;
-  font-size: 24px;
-}
-
-.c18 {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
-  grid-gap: 24px;
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--darkgrey);
-  -webkit-align-items: start;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.c19 {
-  display: grid;
-  justify-items: center;
-}
-
-.c21 {
-  border-style: none;
-  background: url(/static/images/pages/png/simple.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
-}
-
-.c21:hover {
-  background: url(/static/images/pages/png/simple-hover.png) no-repeat center/contain;
-}
-
-.c21:after {
-  content: url(/static/images/pages/png/simple-hover.png);
-  display: none;
-}
-
-.c23 {
-  border-style: none;
-  background: url(/static/images/pages/png/code.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
-}
-
-.c23:hover {
-  background: url(/static/images/pages/png/code-hover.png) no-repeat center/contain;
-}
-
-.c23:after {
-  content: url(/static/images/pages/png/code-hover.png);
-  display: none;
-}
-
-.c24 {
-  border-style: none;
-  background: url(/static/images/pages/png/more.png) no-repeat center/contain;
-  width: 280px;
-  height: 200px;
-}
-
-.c24:hover {
-  background: url(/static/images/pages/png/more-hover.png) no-repeat center/contain;
-}
-
-.c24:after {
-  content: url(/static/images/pages/png/more-hover.png);
-  display: none;
-}
-
 .c13 {
-  font-size: 36px;
-  margin-top: 30px;
-  margin-bottom: 0px;
-  color: var(--darkgrey);
-  font-weight: 700;
+  display: grid;
+  justify-items: center;
 }
 
-.c22 {
-  font-family: 'IBM Plex Serif',serif;
-  font-weight: 300;
-  font-size: 20px;
+.c13 svg {
+  fill: var(--lightgrey);
+  width: 60px;
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
@@ -6575,7 +6426,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c29 {
+  .c16 {
     display: none;
   }
 }
@@ -6748,117 +6599,163 @@ Object {
               class="c12"
             />
           </header>
-          <h1
+          <section
             class="c13"
           >
-            The Web's new business model
-          </h1>
-          <p
-            class="c14"
-          >
-            Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
-          </p>
-          <div
-            class="c15"
-          >
-            <button
-              class="c16"
+            <svg
+              alt="loading"
+              viewBox="0 0 32 32"
             >
-              Go to Your Dashboard
-            </button>
-            <small
-              class="c17"
-            >
-              Requires a browser with an Ethereum wallet
-            </small>
-          </div>
-          <div
-            class="3 c18"
-          >
-            <div
-              class="4 c19"
-            >
-              <h2
-                class="c20"
+              <title>
+                loading
+              </title>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
               >
-                No More Middlemen
-              </h2>
-              <div
-                class="c21"
-              />
-              <p
-                class="c22"
+                <animate
+                  attributeName="r"
+                  begin="0"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(45 16 16)"
               >
-                There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
-              </p>
-            </div>
-            <div
-              class="4 c19"
-            >
-              <h2
-                class="c20"
+                <animate
+                  attributeName="r"
+                  begin="0.125s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(90 16 16)"
               >
-                Simple Integration
-              </h2>
-              <div
-                class="c23"
-              />
-              <p
-                class="c22"
+                <animate
+                  attributeName="r"
+                  begin="0.25s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(135 16 16)"
               >
-                Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
-              </p>
-            </div>
-            <div
-              class="4 c19"
-            >
-              <h2
-                class="c20"
+                <animate
+                  attributeName="r"
+                  begin="0.375s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
               >
-                And Much More
-              </h2>
-              <div
-                class="c24"
-              />
-              <p
-                class="c22"
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(225 16 16)"
               >
-                For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
-              </p>
-            </div>
-          </div>
-          <section
-            class="c25"
-          >
-            <div
-              class="c26"
-            >
-              Check out our open source code on
-               
-              <a
-                href="https://github.com/unlock-protocol/unlock"
+                <animate
+                  attributeName="r"
+                  begin="0.625s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(270 16 16)"
               >
-                GitHub
-              </a>
-              , come work
-               
-              <a
-                href="/jobs"
+                <animate
+                  attributeName="r"
+                  begin="0.75s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(315 16 16)"
               >
-                with us
-              </a>
-               or simply
-               
-              <a
-                href="mailto:hello@unlock-protocol.com"
+                <animate
+                  attributeName="r"
+                  begin="0.875s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+              <circle
+                cx="16"
+                cy="3"
+                r="0"
+                transform="rotate(180 16 16)"
               >
-                get in touch
-              </a>
-              .
-            </div>
+                <animate
+                  attributeName="r"
+                  begin="0.5s"
+                  calcMode="spline"
+                  dur="1s"
+                  keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                  repeatCount="indefinite"
+                  values="0;3;0;0"
+                />
+              </circle>
+            </svg>
           </section>
           <footer
-            class="c27"
+            class="c14"
           >
             <a
               class="c7 c8"
@@ -6949,14 +6846,14 @@ Object {
               </small>
             </a>
             <span
-              class="c28"
+              class="c15"
             >
               Made with passion in Brooklyn, NY
             </span>
           </footer>
         </div>
         <div
-          class="c29"
+          class="c16"
         />
       </div>
     </div>
@@ -7129,114 +7026,160 @@ Object {
             class="sc-1glv5oz-5 bjHPyP"
           />
         </header>
-        <h1
-          class="sc-1lwhgj0-1 fNAMFh"
-        >
-          The Web's new business model
-        </h1>
-        <p
-          class="sc-1mz6j63-2 hjoEUf"
-        >
-          Unlock is a protocol which enables creators to monetize their content with a few lines of code in a fully decentralized way.
-        </p>
-        <div
-          class="sc-9upljg-3 kjuFdI"
-        >
-          <button
-            class="sc-dqBHgY sc-9upljg-0 cTMzWy"
-          >
-            Go to Your Dashboard
-          </button>
-          <small
-            class="sc-9upljg-4 jmRvSo"
-          >
-            Requires a browser with an Ethereum wallet
-          </small>
-        </div>
-        <div
-          class="sc-1mz6j63-13 gTdcXj"
-        >
-          <div
-            class="sc-1mz6j63-14 laOiGL"
-          >
-            <h2
-              class="sc-1mz6j63-4 eeuIDV"
-            >
-              No More Middlemen
-            </h2>
-            <div
-              class="sc-1lwhgj0-0 cSSxBG"
-            />
-            <p
-              class="sc-1lwhgj0-2 LMEe"
-            >
-              There are no middlemen, no fees and no gatekeeper who could shut you down or control your distribution.
-            </p>
-          </div>
-          <div
-            class="sc-1mz6j63-14 laOiGL"
-          >
-            <h2
-              class="sc-1mz6j63-4 eeuIDV"
-            >
-              Simple Integration
-            </h2>
-            <div
-              class="sc-1lwhgj0-0 cMBTTv"
-            />
-            <p
-              class="sc-1lwhgj0-2 LMEe"
-            >
-              Unlock provides a simple snippet of code to integrate easily with your website, as well as with several other integration tools...
-            </p>
-          </div>
-          <div
-            class="sc-1mz6j63-14 laOiGL"
-          >
-            <h2
-              class="sc-1mz6j63-4 eeuIDV"
-            >
-              And Much More
-            </h2>
-            <div
-              class="sc-1lwhgj0-0 hfIxqd"
-            />
-            <p
-              class="sc-1lwhgj0-2 LMEe"
-            >
-              For example, Unlock comes with a points system to reward your most loyal fans when they share your content with their friends!
-            </p>
-          </div>
-        </div>
         <section
-          class="sc-1mz6j63-0 HVtYL"
+          class="sc-cIShpX jkFMTG"
         >
-          <div
-            class="sc-1mz6j63-3 kvKCRV"
+          <svg
+            alt="loading"
+            viewBox="0 0 32 32"
           >
-            Check out our open source code on
-             
-            <a
-              href="https://github.com/unlock-protocol/unlock"
+            <title>
+              loading
+            </title>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
             >
-              GitHub
-            </a>
-            , come work
-             
-            <a
-              href="/jobs"
+              <animate
+                attributeName="r"
+                begin="0"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(45 16 16)"
             >
-              with us
-            </a>
-             or simply
-             
-            <a
-              href="mailto:hello@unlock-protocol.com"
+              <animate
+                attributeName="r"
+                begin="0.125s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(90 16 16)"
             >
-              get in touch
-            </a>
-            .
-          </div>
+              <animate
+                attributeName="r"
+                begin="0.25s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(135 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.375s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(225 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.625s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(270 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.75s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(315 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.875s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+            <circle
+              cx="16"
+              cy="3"
+              r="0"
+              transform="rotate(180 16 16)"
+            >
+              <animate
+                attributeName="r"
+                begin="0.5s"
+                calcMode="spline"
+                dur="1s"
+                keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8"
+                repeatCount="indefinite"
+                values="0;3;0;0"
+              />
+            </circle>
+          </svg>
         </section>
         <footer
           class="sc-2ix2yp-0 clvjsX"
@@ -26820,7 +26763,7 @@ Object {
   outline: none;
 }
 
-.c45 {
+.c46 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -26832,21 +26775,21 @@ Object {
   line-height: '15px';
 }
 
-.c45 > svg {
+.c46 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c45:hover {
+.c46:hover {
   background-color: white;
 }
 
-.c45:hover > svg {
+.c46:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c45:focus {
+.c46:focus {
   outline: none;
 }
 
@@ -27063,19 +27006,19 @@ Object {
   width: 100%;
 }
 
-.c43 {
+.c44 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c44 {
+.c45 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c46 {
+.c47 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -27085,7 +27028,7 @@ Object {
   padding-right: 24px;
 }
 
-.c37 {
+.c38 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -27095,7 +27038,7 @@ Object {
   flex-direction: column;
 }
 
-.c38 {
+.c39 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -27106,33 +27049,33 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c39 {
+.c40 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c39:before {
+.c40:before {
   content: '三';
 }
 
-.c42 {
+.c43 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c42:before {
+.c43:before {
   content: '$';
 }
 
-.c40 {
+.c41 {
   white-space: nowrap;
 }
 
-.c41 {
+.c42 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
@@ -27145,7 +27088,7 @@ Object {
   text-decoration: none !important;
 }
 
-.c33 {
+.c34 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -27165,28 +27108,28 @@ Object {
   cursor: pointer;
 }
 
-.c33 > * {
+.c34 > * {
   padding-top: 16px;
 }
 
-.c33:hover {
+.c34:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c34 {
+.c35 {
   grid-row: span 2;
 }
 
-.c35 {
+.c36 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c36 {
+.c37 {
   display: block;
   color: var(--grey);
   font-weight: 200;
@@ -27196,12 +27139,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c26 {
+.c28 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c27 {
+.c29 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -27215,7 +27158,7 @@ Object {
   align-items: center;
 }
 
-.c28 {
+.c30 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -27229,7 +27172,7 @@ Object {
   color: var(--grey);
 }
 
-.c29 {
+.c31 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -27244,7 +27187,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c30 {
+.c32 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -27340,14 +27283,21 @@ Object {
   align-items: center;
 }
 
+.c27 {
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--red);
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c31 {
+  .c33 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c32 {
+  .c26 {
     display: none;
   }
 }
@@ -27428,19 +27378,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c47 {
+  .c48 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c43 {
+  .c44 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c33 {
+  .c34 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -27448,7 +27398,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
+  .c34 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -27456,13 +27406,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c35 {
+  .c36 {
     grid-column: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c27 {
+  .c29 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -27474,13 +27424,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c28 {
+  .c30 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
+  .c32 {
     grid-row: span 2;
   }
 }
@@ -27857,58 +27807,67 @@ Object {
               Create Lock
             </button>
           </div>
-          <section
+          <div
             class="c26"
           >
-            <div
+            <p
               class="c27"
             >
+              The Dashboard is currently not optimized for a mobile experience. To create locks, please use a desktop computer.
+            </p>
+          </div>
+          <section
+            class="c28"
+          >
+            <div
+              class="c29"
+            >
               <div
-                class="c28"
+                class="c30"
               >
                 Locks
               </div>
               <div
-                class="c29"
+                class="c31"
               >
                 Name / Address
               </div>
               <div
-                class="c29"
+                class="c31"
               >
                 Key Duration
               </div>
               <div
-                class="c30"
+                class="c32"
               >
                 Key Quantity
               </div>
               <div
-                class="c29"
+                class="c31"
               >
                 Price
               </div>
               <div
-                class="c29"
+                class="c31"
               >
                 <div
-                  class="c31"
+                  class="c33"
                 >
                   Balance
                 </div>
                 <div
-                  class="c32"
+                  class="c26"
                 >
                   Balance
                 </div>
               </div>
             </div>
             <div
-              class="c33 lock"
+              class="c34 lock"
               data-address="0x9abcdef0"
             >
               <div
-                class="c34"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -27984,11 +27943,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c35 name"
+                class="c36 name"
               >
                 Infinite Lock
                 <abbr
-                  class="c23 c36 address"
+                  class="c23 c37 address"
                   title="0x9abcdef0"
                 >
                   0x9abcdef0
@@ -28007,31 +27966,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c37"
+                class="c38"
               >
                 <span
-                  class="c38 currency"
+                  class="c39 currency"
                 >
                   <span
-                    class="c39"
+                    class="c40"
                   />
                   <span
-                    class="c40"
+                    class="c41"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c42"
                 >
                   <span
-                    class="c38 currency"
+                    class="c39 currency"
                   >
                     <span
-                      class="c42"
+                      class="c43"
                     />
                     <span
-                      class="c40"
+                      class="c41"
                     >
                       5.29
                     </span>
@@ -28042,34 +28001,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c31"
+                  class="c33"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c42"
                     >
                       <span
-                        class="c38 currency"
+                        class="c39 currency"
                       >
                         <span
-                          class="c42"
+                          class="c43"
                         />
                         <span
-                          class="c40"
+                          class="c41"
                         >
                            - 
                         </span>
@@ -28078,19 +28037,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c32"
+                  class="c26"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
@@ -28103,13 +28062,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <div
-                    class="c44"
+                    class="c45"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c46"
                       target="_self"
                     >
                       <svg
@@ -28216,16 +28175,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c47"
                 />
               </div>
             </div>
             <div
-              class="c33 lock"
+              class="c34 lock"
               data-address="0x56781234a"
             >
               <div
-                class="c34"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -28301,11 +28260,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c35 name"
+                class="c36 name"
               >
                 New Lock
                 <abbr
-                  class="c23 c36 address"
+                  class="c23 c37 address"
                   title="0x56781234a"
                 >
                   0x56781234a
@@ -28324,31 +28283,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c37"
+                class="c38"
               >
                 <span
-                  class="c38 currency"
+                  class="c39 currency"
                 >
                   <span
-                    class="c39"
+                    class="c40"
                   />
                   <span
-                    class="c40"
+                    class="c41"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c42"
                 >
                   <span
-                    class="c38 currency"
+                    class="c39 currency"
                   >
                     <span
-                      class="c42"
+                      class="c43"
                     />
                     <span
-                      class="c40"
+                      class="c41"
                     >
                       1.96
                     </span>
@@ -28359,34 +28318,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c31"
+                  class="c33"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c42"
                     >
                       <span
-                        class="c38 currency"
+                        class="c39 currency"
                       >
                         <span
-                          class="c42"
+                          class="c43"
                         />
                         <span
-                          class="c40"
+                          class="c41"
                         >
                            - 
                         </span>
@@ -28395,19 +28354,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c32"
+                  class="c26"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
@@ -28420,13 +28379,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <div
-                    class="c44"
+                    class="c45"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c46"
                       target="_self"
                     >
                       <svg
@@ -28533,16 +28492,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c47"
                 />
               </div>
             </div>
             <div
-              class="c33 lock"
+              class="c34 lock"
               data-address="0x12345678a"
             >
               <div
-                class="c34"
+                class="c35"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -28618,11 +28577,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c35 name"
+                class="c36 name"
               >
                 My Blog
                 <abbr
-                  class="c23 c36 address"
+                  class="c23 c37 address"
                   title="0x12345678a"
                 >
                   0x12345678a
@@ -28641,31 +28600,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c37"
+                class="c38"
               >
                 <span
-                  class="c38 currency"
+                  class="c39 currency"
                 >
                   <span
-                    class="c39"
+                    class="c40"
                   />
                   <span
-                    class="c40"
+                    class="c41"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c41"
+                  class="c42"
                 >
                   <span
-                    class="c38 currency"
+                    class="c39 currency"
                   >
                     <span
-                      class="c42"
+                      class="c43"
                     />
                     <span
-                      class="c40"
+                      class="c41"
                     >
                       5.29
                     </span>
@@ -28676,34 +28635,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c31"
+                  class="c33"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c41"
+                      class="c42"
                     >
                       <span
-                        class="c38 currency"
+                        class="c39 currency"
                       >
                         <span
-                          class="c42"
+                          class="c43"
                         />
                         <span
-                          class="c40"
+                          class="c41"
                         >
                            - 
                         </span>
@@ -28712,19 +28671,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c32"
+                  class="c26"
                 >
                   <div
-                    class="c37"
+                    class="c38"
                   >
                     <span
-                      class="c38 currency"
+                      class="c39 currency"
                     >
                       <span
-                        class="c39"
+                        class="c40"
                       />
                       <span
-                        class="c40"
+                        class="c41"
                       >
                          - 
                       </span>
@@ -28737,13 +28696,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c43"
+                  class="c44"
                 >
                   <div
-                    class="c44"
+                    class="c45"
                   >
                     <button
-                      class="c9 c45"
+                      class="c9 c46"
                       target="_self"
                     >
                       <svg
@@ -28850,14 +28809,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c46"
+                  class="c47"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c47"
+          class="c48"
         />
       </div>
     </div>
@@ -29213,6 +29172,15 @@ Object {
           >
             Create Lock
           </button>
+        </div>
+        <div
+          class="sc-bxivhb jXfCFv"
+        >
+          <p
+            class="sc-1pt34tv-0 fcQpEG"
+          >
+            The Dashboard is currently not optimized for a mobile experience. To create locks, please use a desktop computer.
+          </p>
         </div>
         <section
           class="sc-1olgoav-0 gKWPIY"
@@ -30366,7 +30334,7 @@ Object {
   outline: none;
 }
 
-.c48 {
+.c49 {
   background-color: white;
   cursor: pointer;
   border-radius: 50%;
@@ -30378,21 +30346,21 @@ Object {
   line-height: '15px';
 }
 
-.c48 > svg {
+.c49 > svg {
   fill: var(--lightgrey);
   height: 24px;
   width: 24px;
 }
 
-.c48:hover {
+.c49:hover {
   background-color: white;
 }
 
-.c48:hover > svg {
+.c49:hover > svg {
   fill: var(--lightgrey);
 }
 
-.c48:focus {
+.c49:focus {
   outline: none;
 }
 
@@ -30609,19 +30577,19 @@ Object {
   width: 100%;
 }
 
-.c46 {
+.c47 {
   display: grid;
   justify-items: end;
   padding-right: 24px;
 }
 
-.c47 {
+.c48 {
   display: grid;
   grid-gap: 16px;
   grid-template-columns: repeat(5,24px);
 }
 
-.c49 {
+.c50 {
   margin-top: 13px;
   font-size: 10px;
   font-family: 'IBM Plex Sans',sans-serif;
@@ -30631,7 +30599,7 @@ Object {
   padding-right: 24px;
 }
 
-.c40 {
+.c41 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30641,7 +30609,7 @@ Object {
   flex-direction: column;
 }
 
-.c41 {
+.c42 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -30652,33 +30620,33 @@ Object {
   padding-bottom: 0.5em;
 }
 
-.c42 {
+.c43 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c42:before {
+.c43:before {
   content: '三';
 }
 
-.c45 {
+.c46 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c45:before {
+.c46:before {
   content: '$';
 }
 
-.c43 {
+.c44 {
   white-space: nowrap;
 }
 
-.c44 {
+.c45 {
   font-size: 10px;
   color: var(--darkgrey);
   margin-top: 5px;
@@ -30691,7 +30659,7 @@ Object {
   text-decoration: none !important;
 }
 
-.c36 {
+.c37 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   min-height: 48px;
@@ -30711,28 +30679,28 @@ Object {
   cursor: pointer;
 }
 
-.c36 > * {
+.c37 > * {
   padding-top: 16px;
 }
 
-.c36:hover {
+.c37:hover {
   box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
   -webkit-transition: box-shadow 100ms ease;
   transition: box-shadow 100ms ease;
 }
 
-.c37 {
+.c38 {
   grid-row: span 2;
 }
 
-.c38 {
+.c39 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c39 {
+.c40 {
   display: block;
   color: var(--grey);
   font-weight: 200;
@@ -30742,12 +30710,12 @@ Object {
   text-overflow: ellipsis;
 }
 
-.c29 {
+.c31 {
   display: grid;
   grid-gap: 32px;
 }
 
-.c30 {
+.c32 {
   font-family: 'IBM Plex Mono','Courier New',Serif;
   font-weight: 200;
   padding-left: 8px;
@@ -30761,7 +30729,7 @@ Object {
   align-items: center;
 }
 
-.c31 {
+.c33 {
   font-family: 'IBM Plex Sans';
   font-size: 13px;
   font-weight: bold;
@@ -30775,7 +30743,7 @@ Object {
   color: var(--grey);
 }
 
-.c32 {
+.c34 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -30790,7 +30758,7 @@ Object {
   color: var(--darkgrey);
 }
 
-.c33 {
+.c35 {
   font-family: 'IBM Plex Mono';
   font-size: 8px;
   font-weight: thin;
@@ -30886,6 +30854,13 @@ Object {
   align-items: center;
 }
 
+.c30 {
+  border: 1px solid var(--red);
+  border-radius: 4px;
+  padding: 10px;
+  color: var(--red);
+}
+
 .c2 {
   height: 24px;
   font-size: 20px;
@@ -30951,13 +30926,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c34 {
+  .c36 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c35 {
+  .c29 {
     display: none;
   }
 }
@@ -31038,19 +31013,19 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c50 {
+  .c51 {
     display: none;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c46 {
+  .c47 {
     display: none;
   }
 }
 
 @media only screen and (min-width:736px) {
-  .c36 {
+  .c37 {
     grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
     grid-template-rows: 84px;
     grid-column-gap: 16px;
@@ -31058,7 +31033,7 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c36 {
+  .c37 {
     grid-column-gap: 4px;
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
@@ -31066,13 +31041,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c38 {
+  .c39 {
     grid-column: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c30 {
+  .c32 {
     grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
     grid-auto-flow: column;
     -webkit-align-items: start;
@@ -31084,13 +31059,13 @@ Object {
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c31 {
+  .c33 {
     grid-row: span 2;
   }
 }
 
 @media only screen and (min-width:0px) and (max-width:736px) {
-  .c33 {
+  .c35 {
     grid-row: span 2;
   }
 }
@@ -31483,58 +31458,67 @@ Object {
               Create Lock
             </button>
           </div>
-          <section
+          <div
             class="c29"
           >
-            <div
+            <p
               class="c30"
             >
+              The Dashboard is currently not optimized for a mobile experience. To create locks, please use a desktop computer.
+            </p>
+          </div>
+          <section
+            class="c31"
+          >
+            <div
+              class="c32"
+            >
               <div
-                class="c31"
+                class="c33"
               >
                 Locks
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 Name / Address
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 Key Duration
               </div>
               <div
-                class="c33"
+                class="c35"
               >
                 Key Quantity
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 Price
               </div>
               <div
-                class="c32"
+                class="c34"
               >
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   Balance
                 </div>
                 <div
-                  class="c35"
+                  class="c29"
                 >
                   Balance
                 </div>
               </div>
             </div>
             <div
-              class="c36 lock"
+              class="c37 lock"
               data-address="0x9abcdef0"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -31610,11 +31594,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38 name"
+                class="c39 name"
               >
                 Infinite Lock
                 <abbr
-                  class="c26 c39 address"
+                  class="c26 c40 address"
                   title="0x9abcdef0"
                 >
                   0x9abcdef0
@@ -31633,31 +31617,31 @@ Object {
                 10/0
               </div>
               <div
-                class="c40"
+                class="c41"
               >
                 <span
-                  class="c41 currency"
+                  class="c42 currency"
                 >
                   <span
-                    class="c42"
+                    class="c43"
                   />
                   <span
-                    class="c43"
+                    class="c44"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c45"
                 >
                   <span
-                    class="c41 currency"
+                    class="c42 currency"
                   >
                     <span
-                      class="c45"
+                      class="c46"
                     />
                     <span
-                      class="c43"
+                      class="c44"
                     >
                       5.29
                     </span>
@@ -31668,34 +31652,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c45"
                     >
                       <span
-                        class="c41 currency"
+                        class="c42 currency"
                       >
                         <span
-                          class="c45"
+                          class="c46"
                         />
                         <span
-                          class="c43"
+                          class="c44"
                         >
                            - 
                         </span>
@@ -31704,19 +31688,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c35"
+                  class="c29"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
@@ -31729,13 +31713,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c47"
                 >
                   <div
-                    class="c47"
+                    class="c48"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c49"
                       target="_self"
                     >
                       <svg
@@ -31842,16 +31826,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c50"
                 />
               </div>
             </div>
             <div
-              class="c36 lock"
+              class="c37 lock"
               data-address="0x56781234a"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -31927,11 +31911,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38 name"
+                class="c39 name"
               >
                 New Lock
                 <abbr
-                  class="c26 c39 address"
+                  class="c26 c40 address"
                   title="0x56781234a"
                 >
                   0x56781234a
@@ -31950,31 +31934,31 @@ Object {
                 32/800
               </div>
               <div
-                class="c40"
+                class="c41"
               >
                 <span
-                  class="c41 currency"
+                  class="c42 currency"
                 >
                   <span
-                    class="c42"
+                    class="c43"
                   />
                   <span
-                    class="c43"
+                    class="c44"
                   >
                     0.01
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c45"
                 >
                   <span
-                    class="c41 currency"
+                    class="c42 currency"
                   >
                     <span
-                      class="c45"
+                      class="c46"
                     />
                     <span
-                      class="c43"
+                      class="c44"
                     >
                       1.96
                     </span>
@@ -31985,34 +31969,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c45"
                     >
                       <span
-                        class="c41 currency"
+                        class="c42 currency"
                       >
                         <span
-                          class="c45"
+                          class="c46"
                         />
                         <span
-                          class="c43"
+                          class="c44"
                         >
                            - 
                         </span>
@@ -32021,19 +32005,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c35"
+                  class="c29"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
@@ -32046,13 +32030,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c47"
                 >
                   <div
-                    class="c47"
+                    class="c48"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c49"
                       target="_self"
                     >
                       <svg
@@ -32159,16 +32143,16 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c50"
                 />
               </div>
             </div>
             <div
-              class="c36 lock"
+              class="c37 lock"
               data-address="0x12345678a"
             >
               <div
-                class="c37"
+                class="c38"
               >
                 <svg
                   viewBox="0 0 216 216"
@@ -32244,11 +32228,11 @@ Object {
                 </svg>
               </div>
               <div
-                class="c38 name"
+                class="c39 name"
               >
                 My Blog
                 <abbr
-                  class="c26 c39 address"
+                  class="c26 c40 address"
                   title="0x12345678a"
                 >
                   0x12345678a
@@ -32267,31 +32251,31 @@ Object {
                 3/240
               </div>
               <div
-                class="c40"
+                class="c41"
               >
                 <span
-                  class="c41 currency"
+                  class="c42 currency"
                 >
                   <span
-                    class="c42"
+                    class="c43"
                   />
                   <span
-                    class="c43"
+                    class="c44"
                   >
                     0.027
                   </span>
                 </span>
                 <div
-                  class="c44"
+                  class="c45"
                 >
                   <span
-                    class="c41 currency"
+                    class="c42 currency"
                   >
                     <span
-                      class="c45"
+                      class="c46"
                     />
                     <span
-                      class="c43"
+                      class="c44"
                     >
                       5.29
                     </span>
@@ -32302,34 +32286,34 @@ Object {
                 class=""
               >
                 <div
-                  class="c34"
+                  class="c36"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
                     </span>
                     <div
-                      class="c44"
+                      class="c45"
                     >
                       <span
-                        class="c41 currency"
+                        class="c42 currency"
                       >
                         <span
-                          class="c45"
+                          class="c46"
                         />
                         <span
-                          class="c43"
+                          class="c44"
                         >
                            - 
                         </span>
@@ -32338,19 +32322,19 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c35"
+                  class="c29"
                 >
                   <div
-                    class="c40"
+                    class="c41"
                   >
                     <span
-                      class="c41 currency"
+                      class="c42 currency"
                     >
                       <span
-                        class="c42"
+                        class="c43"
                       />
                       <span
-                        class="c43"
+                        class="c44"
                       >
                          - 
                       </span>
@@ -32363,13 +32347,13 @@ Object {
                 class=""
               >
                 <div
-                  class="c46"
+                  class="c47"
                 >
                   <div
-                    class="c47"
+                    class="c48"
                   >
                     <button
-                      class="c12 c48"
+                      class="c12 c49"
                       target="_self"
                     >
                       <svg
@@ -32476,14 +32460,14 @@ Object {
                   </div>
                 </div>
                 <div
-                  class="c49"
+                  class="c50"
                 />
               </div>
             </div>
           </section>
         </div>
         <div
-          class="c50"
+          class="c51"
         />
       </div>
     </div>
@@ -32855,6 +32839,15 @@ Object {
           >
             Create Lock
           </button>
+        </div>
+        <div
+          class="sc-bxivhb jXfCFv"
+        >
+          <p
+            class="sc-1pt34tv-0 fcQpEG"
+          >
+            The Dashboard is currently not optimized for a mobile experience. To create locks, please use a desktop computer.
+          </p>
         </div>
         <section
           class="sc-1olgoav-0 gKWPIY"
@@ -38252,303 +38245,6 @@ Object {
         class="sc-1glv5oz-5 bjHPyP"
       />
     </header>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots HomepageButton Accepted terms 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  width: 100%;
-  height: 100%;
-}
-
-.c1 :hover {
-  background-color: var(--activegreen);
-}
-
-.c0 {
-  max-width: 540px;
-  min-height: 72px;
-  box-shadow: 0px 0px 40px rgba(0,0,0,0.08);
-  border-radius: 4px;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  grid-gap: 16px;
-  padding: 16px;
-  font-family: IBM Plex Mono;
-  font-size: 14px;
-  margin: auto;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <div>
-          To access the dashboard you need to agree to our 
-          <a
-            href="http://localhost:3002/terms"
-          >
-            Terms of Service
-          </a>
-            and 
-          <a
-            href="http://localhost:3002/privacy"
-          >
-            Privacy Policy
-          </a>
-        </div>
-        <a
-          href="/dashboard"
-        >
-          <button
-            class="c1"
-          >
-            I Agree
-          </button>
-        </a>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-9upljg-2 fOpZrU"
-    >
-      <div>
-        To access the dashboard you need to agree to our 
-        <a
-          href="http://localhost:3002/terms"
-        >
-          Terms of Service
-        </a>
-          and 
-        <a
-          href="http://localhost:3002/privacy"
-        >
-          Privacy Policy
-        </a>
-      </div>
-      <a
-        href="/dashboard"
-      >
-        <button
-          class="sc-dqBHgY sc-9upljg-1 cKpQTs"
-        >
-          I Agree
-        </button>
-      </a>
-    </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
-`;
-
-exports[`Storyshots HomepageButton Default state 1`] = `
-Object {
-  "asFragment": [Function],
-  "baseElement": <body>
-    .c1 {
-  background-color: var(--green);
-  border: none;
-  font-size: 16px;
-  color: var(--darkgrey);
-  font-family: 'IBM Plex Sans',sans-serif;
-  border-radius: 4px;
-  cursor: pointer;
-  outline: none;
-  -webkit-transition: background-color 200ms ease;
-  transition: background-color 200ms ease;
-  max-width: 400px;
-  padding: 20px 50px;
-}
-
-.c1 :hover {
-  background-color: var(--activegreen);
-}
-
-.c0 {
-  display: grid;
-  justify-items: center;
-  grid-gap: 16px;
-  margin-bottom: 50px;
-}
-
-.c2 {
-  font-size: 12px;
-  font-weight: 200;
-  font-family: 'IBM Plex Mono','Courier New',Serif;
-  color: var(--darkgrey);
-  display: grid;
-  grid-row: 2;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-}
-
-<div>
-      <link
-        href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-        rel="stylesheet"
-      />
-      <div
-        class="c0"
-      >
-        <button
-          class="c1"
-        >
-          Go to Your Dashboard
-        </button>
-        <small
-          class="c2"
-        >
-          Requires a browser with an Ethereum wallet
-        </small>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="sc-9upljg-3 kjuFdI"
-    >
-      <button
-        class="sc-dqBHgY sc-9upljg-0 cTMzWy"
-      >
-        Go to Your Dashboard
-      </button>
-      <small
-        class="sc-9upljg-4 jmRvSo"
-      >
-        Requires a browser with an Ethereum wallet
-      </small>
-    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],

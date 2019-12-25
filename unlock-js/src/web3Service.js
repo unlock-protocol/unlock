@@ -20,10 +20,11 @@ export default class Web3Service extends UnlockService {
     unlockAddress,
     blockTime,
     requiredConfirmations,
+    network,
   }) {
     super({ unlockAddress })
 
-    this.setup(readOnlyProvider)
+    this.setup(readOnlyProvider, network)
     this.blockTime = blockTime
     this.requiredConfirmations = requiredConfirmations
 
@@ -120,10 +121,14 @@ export default class Web3Service extends UnlockService {
    * Temporary function that allows us to use ethers functionality
    * without interfering with web3. This will be moved to the constructor when
    * we remove web3
+   * TODO: ^ assess this?
    */
-  setup(readOnlyProvider) {
+  setup(readOnlyProvider, network) {
     if (typeof readOnlyProvider === 'string') {
-      this.provider = new FetchJsonProvider(readOnlyProvider)
+      this.provider = new FetchJsonProvider({
+        endpoint: readOnlyProvider,
+        network,
+      })
     } else if (readOnlyProvider.send) {
       this.provider = new ethers.providers.Web3Provider(readOnlyProvider)
     }

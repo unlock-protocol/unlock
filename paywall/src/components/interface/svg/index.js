@@ -5,6 +5,8 @@ import Checkmark from './Checkmark'
 import Close from './Close'
 import Code from './Code'
 import CoinbaseWallet from './CoinbaseWallet'
+import TrustWallet from './TrustWallet'
+
 import Copy from './Copy'
 import Download from './Download'
 import Edit from './Edit'
@@ -45,6 +47,7 @@ export default {
   Close: wrapViewBox(Close, '0 0 24 24'),
   Code: wrapViewBox(Code, '0 0 24 24'),
   CoinbaseWallet: wrapViewBox(CoinbaseWallet, '0 0 120 120'),
+  TrustWallet: wrapViewBox(TrustWallet, '0 0 120 120'),
   Copy: wrapViewBox(Copy, '0 0 24 24'),
   Download: wrapViewBox(Download, '0 0 24 24'),
   Edit: wrapViewBox(Edit, '0 0 24 24'),
