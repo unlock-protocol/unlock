@@ -11,10 +11,9 @@ import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import Svg from '../interface/svg'
-import HomepageButton from '../interface/buttons/homepage/HomepageButton'
 import { OptInForm } from '../interface/OptInForm'
 import { Demo } from '../interface/Demo'
-import Media, { NoPhone } from '../../theme/media'
+import Media from '../../theme/media'
 
 const integrations = [
   {
@@ -38,6 +37,11 @@ const integrations = [
     link: 'https://donate.unlock-protocol.com/about.html',
     image: '/static/images/pages/svg/donations.svg',
   },
+  {
+    name: 'Newsletters',
+    link: 'https://newsletter.unlock-protocol.com',
+    image: '/static/images/blog/introducing-newsletter/newsletter.jpg',
+  },
 ]
 export const HomeContent = () => {
   let { isMember, becomeMember } = useContext(MembershipContext)
@@ -49,98 +53,120 @@ export const HomeContent = () => {
         <OpenGraphTags />
       </Head>
 
-      <Hero>
-        <NoPhone>
-          <img alt="Unlock" src="/static/images/pages/svg/hero.svg" />
-        </NoPhone>
-        <Actions>
-          <h1>Monetize the Web with memberships</h1>
-          <Buttons>
-            <HomepageButton
-              label="Dashboard"
-              destination={`${
-                getConfig().publicRuntimeConfig.unlockApp
-              }/dashboard`}
+      <Grid>
+        <Hero>Monetize the web through memberships</Hero>
+        <BannerKey
+          src="/static/images/illustrations/banner-key.png"
+          alt=""
+          width="192"
+        />
+        <SubTitle>
+          Unlock lets you easily lock and manage access to your content, apps,
+          community and even real life events and spaces.
+        </SubTitle>
+        <Buttons>
+          <Dashboard>
+            <Button
+              href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
             >
               <Svg.Home />
-            </HomepageButton>
-            <HomepageButton
-              label="Keychain"
-              destination={`${
-                getConfig().publicRuntimeConfig.unlockApp
-              }/keychain`}
+              Dashboard
+            </Button>
+            <p>
+              Create and manage locks to monetize access to your content, events
+              and any other member perks.
+            </p>
+          </Dashboard>
+          <Keychain>
+            <Button
+              href={`${getConfig().publicRuntimeConfig.unlockApp}/keychain`}
             >
               <Svg.Key />
-            </HomepageButton>
-          </Buttons>
-        </Actions>
-      </Hero>
+              Keychain
+            </Button>
+            <p>
+              Manage all your keys and memberships with or without a third party
+              crypto wallet.
+            </p>
+          </Keychain>
+        </Buttons>
+        <DemoWrapper>
+          <Demo isMember={isMember} becomeMember={becomeMember} />
+        </DemoWrapper>
+        <Features>
+          <Feature>
+            <SubHead>You are in Control</SubHead>
+            <Paragraph>
+              Unlock is an open source protocol. Integrate it in any and every
+              way you’d like. It’s also permissionless – there are no middlemen.
+            </Paragraph>
+            <Paragraph>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/unlock-protocol/unlock/"
+              >
+                Checkout our GitHub
+              </a>
+            </Paragraph>
+          </Feature>
+          <img alt="control" src="/static/images/pages/svg/control.svg" />
 
-      <Headline>
-        Unlock lets you easily lock and manage access to your content, apps,
-        community and even real life events and spaces.
-      </Headline>
-
-      <Demo isMember={isMember} becomeMember={becomeMember} />
-
-      <Features>
-        <Feature>
-          <SubHead>You are in Control</SubHead>
+          <Feature>
+            <SubHead>A Web3 Future</SubHead>
+            <Paragraph>
+              Take advantage of the blockchain and smart contracts to create
+              customizable ways to access content and much more.
+            </Paragraph>
+            <Paragraph>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://docs.unlock-protocol.com"
+              >
+                Checkout our Docs
+              </a>
+            </Paragraph>
+          </Feature>
+          <img alt="code" src="/static/images/pages/svg/code.svg" />
+        </Features>
+        <UseCases>
+          <SubHead>Use Cases</SubHead>
           <Paragraph>
-            Unlock is an open source protocol. Integrate it in any and every way
-            you’d like. It’s also permissionless – there are no middlemen.
+            We’ve built a few apps to showcase the power of Unlock. Create a
+            lock on the dashboard and get started or check out some of the apps.
           </Paragraph>
+          <Integrations>
+            {integrations.map(integration => (
+              <Integration
+                key={integration.name}
+                target="_blank"
+                rel="noopener noreferrer"
+                href={integration.link}
+              >
+                <h3>{integration.name}</h3>
+                <Illustration>
+                  <img
+                    alt={integration.name}
+                    src={integration.image}
+                    width="136"
+                  />
+                </Illustration>
+              </Integration>
+            ))}
+          </Integrations>
+        </UseCases>
+
+        <Newsletter>
+          <SubHead>Join the Community Newsletter</SubHead>
           <Paragraph>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://github.com/unlock-protocol/unlock/"
-            >
-              Checkout our GitHub
-            </a>
+            We will never share your information. Privacy and your trust are our
+            top priorities.
           </Paragraph>
-        </Feature>
-        <img alt="control" src="/static/images/pages/svg/control.svg" />
+          <OptInForm />
+        </Newsletter>
+      </Grid>
 
-        <Feature>
-          <SubHead>A Web3 Future</SubHead>
-          <Paragraph>
-            Take advantage of the blockchain and smart contracts to create
-            customizable ways to access content and much more.
-          </Paragraph>
-        </Feature>
-        <img alt="code" src="/static/images/pages/svg/code.svg" />
-      </Features>
-
-      <Section>
-        <SubHead>Use Cases</SubHead>
-        <Paragraph>
-          We’ve built a few apps to showcase the power of Unlock. Create a lock
-          on the dashboard and get started or check out some of the apps.
-        </Paragraph>
-        <Integrations>
-          {integrations.map(integration => (
-            <Integration
-              key={integration.name}
-              target="_blank"
-              rel="noopener noreferrer"
-              href={integration.link}
-            >
-              <h3>{integration.name}</h3>
-              <img alt={integration.name} src={integration.image} />
-            </Integration>
-          ))}
-        </Integrations>
-      </Section>
-
-      <Section>
-        <SubHead>Subscribe to Updates</SubHead>
-        <Paragraph>
-          We will never share your information. Privacy and your trust are our
-          top priorities.
-        </Paragraph>
-        <OptInForm />
-      </Section>
       <Signature />
     </Layout>
   )
@@ -149,6 +175,121 @@ export const HomeContent = () => {
 HomeContent.propTypes = {}
 
 export default HomeContent
+
+const Grid = styled.div`
+  display: grid;
+  ${Media.nophone`
+    grid-template-columns: repeat(10, 1fr);
+      padding-top: 50px;
+
+  `};
+  ${Media.phone`
+    grid-template-columns: 1fr;
+  `};
+
+  grid-gap: 0px;
+`
+
+const Hero = styled.h1`
+  ${Media.nophone`
+    grid-column: 2/8;
+  `};
+
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 52px;
+`
+
+const DemoWrapper = styled.section`
+  margin-top: 64px;
+  ${Media.nophone`
+    grid-column: 3/9;
+  `}
+`
+
+const BannerKey = styled.img`
+  ${Media.nophone`
+    grid-column: 8/10;
+  `};
+  ${Media.phone`
+    grid-row: 1;
+  `};
+  margin: auto;
+`
+
+const UseCases = styled(Section)`
+  ${Media.nophone`
+  grid-column: 1/12;
+  `}
+`
+
+const Newsletter = styled(Section)`
+  ${Media.nophone`
+  grid-column: 1/12;
+  `}
+`
+
+const SubTitle = styled.h2`
+  ${Media.nophone`
+  grid-column: 1/12;
+  `};
+  font-family: IBM Plex Serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 42px;
+  color: var(--darkgrey);
+`
+
+const Buttons = styled.section`
+  ${Media.nophone`
+    grid-column: 2/10;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 100px;
+  `}
+
+  ${Media.phone`
+    grid-gap: 30px;
+  `}
+  display: grid;
+
+  p {
+    font-size: 16px;
+    font-weight: normal;
+  }
+`
+
+const Dashboard = styled.div``
+const Keychain = styled.div``
+const Button = styled.a`
+  display: block;
+  border: 1px solid var(--link);
+  font-family: IBM Plex Sans;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 4px;
+
+  > svg {
+    margin: 16px;
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+    fill: var(--white);
+    background-color: var(--link);
+    border-radius: 12px;
+  }
+  &:hover {
+    color: var(--white);
+    background-color: var(--link);
+    > svg {
+      fill: var(--link);
+      background-color: var(--white);
+    }
+  }
+`
 
 const Integrations = styled.section`
   margin-top: 50px;
@@ -167,14 +308,26 @@ const Integration = styled.a`
   display: inline-block;
 `
 
+const Illustration = styled.div`
+  margin: auto;
+  width: 136px;
+  height: 136px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+`
+
 const Features = styled.section`
+  ${Media.nophone`
+  grid-column: 1/12;
+  `}
   margin-top: 50px;
   padding-left: 5%;
   padding-right: 5%;
   display: grid;
 
   ${Media.nophone`
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 300px;
     grid-gap: 20px;
   `};
 
@@ -194,50 +347,6 @@ const Feature = styled.div`
   line-height: 28px;
 `
 
-const Hero = styled.div`
-  margin-top: 20px;
-  ${Media.nophone`
-    position: relative;
-  `}
-  img {
-    width: 100%;
-    height: 100%;
-    min-height: 250px;
-  }
-`
-
-const Buttons = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  > * {
-    margin: 5px;
-  }
-`
-
-const Actions = styled.div`
-  ${Media.nophone`
-    position: absolute;
-    width: 60%;
-    height: 75%;
-    left: 5%;
-    top: 12%;
-  `}
-
-  display: grid;
-  align-items: center;
-
-  h1 {
-    margin-top: 0px;
-    margin-bottom: 0px;
-    color: var(--white);
-    font-weight: 700;
-    font-size: 36px;
-    ${Media.phone`
-      color: var(--brand);
-      white-space: normal;
-    `}
-  }
-`
 const SubHead = styled.h2`
   font-size: 36px;
   margin-bottom: 0px;

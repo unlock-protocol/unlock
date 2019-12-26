@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "eth-sig-util": "2.5.2",
     "ethereumjs-utils": "5.2.5",
-    "ethers": "4.0.40"
+    "ethers": "4.0.41"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -36,9 +36,9 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.7.5",
-    "@babel/core": "7.7.5",
-    "@babel/preset-env": "7.7.6",
+    "@babel/cli": "7.7.7",
+    "@babel/core": "7.7.7",
+    "@babel/preset-env": "7.7.7",
     "babel-jest": "24.9.0",
     "erc1820": "0.0.2",
     "jest": "24.9.0",
