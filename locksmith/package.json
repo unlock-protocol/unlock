@@ -46,13 +46,13 @@
     "@types/express": "4.17.2",
     "@types/express-serve-static-core": "4.17.1",
     "@types/jest": "24.0.25",
+    "@types/isomorphic-fetch": "0.0.35",
     "@types/nock": "10.0.3",
     "@types/node": "12.12.22",
     "@types/request-promise-native": "1.0.17",
     "@types/sequelize": "4.28.8",
     "@types/stripe": "7.13.19",
     "@types/supertest": "2.0.8",
-    "@types/isomorphic-fetch": "0.0.35",
     "@typescript-eslint/eslint-plugin": "2.14.0",
     "@unlock-protocol/unlock-js": "0.5.2",
     "apollo-cache-inmemory": "1.6.5",
@@ -100,7 +100,6 @@
     "yargs": "15.0.2"
   },
   "devDependencies": {
-    "@types/isomorphic-fetch": "0.0.35",
     "nodemon": "2.0.2",
     "sqlite3": "4.1.1",
     "supertest": "4.0.2",
