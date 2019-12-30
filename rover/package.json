@@ -19,12 +19,12 @@
    "author": "",
    "license": "ISC",
    "dependencies": {
-      "@types/jest": "24.0.24",
+      "@types/jest": "24.0.25",
       "@types/node": "8.10.59",
       "dotenv": "8.2.0",
       "ethers": "4.0.41",
       "express": "4.17.1",
-      "pg": "7.15.1",
+      "pg": "7.17.0",
       "reflect-metadata": "0.1.13",
       "tsc": "1.20150623.0",
       "typeorm": "0.2.22"
