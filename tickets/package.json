@@ -60,7 +60,7 @@
     "typescript": "3.7.4"
   },
   "devDependencies": {
-    "@svgr/cli": "4.3.3",
+    "@svgr/cli": "5.0.1",
     "nodemon": "2.0.2"
   },
   "lint-staged": {
