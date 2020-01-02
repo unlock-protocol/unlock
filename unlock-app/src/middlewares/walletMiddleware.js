@@ -15,7 +15,7 @@ import { setError } from '../actions/error'
 import { PROVIDER_READY } from '../actions/provider'
 import { newTransaction } from '../actions/transaction'
 import { waitForWallet, dismissWalletCheck } from '../actions/fullScreenModals'
-import { POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
+import { ACCOUNT_POLLING_INTERVAL, ETHEREUM_NETWORKS_NAMES } from '../constants'
 
 import { Application, Transaction, Wallet } from '../utils/Error'
 
@@ -26,7 +26,7 @@ import {
 } from '../errors'
 import { TransactionType } from '../unlockTypes'
 import { hideForm } from '../actions/lockFormVisibility'
-import { transactionTypeMapping } from '../utils/types' // TODO change POLLING_INTERVAL into ACCOUNT_POLLING_INTERVAL
+import { transactionTypeMapping } from '../utils/types'
 import { getStoredPaymentDetails } from '../actions/user'
 import { SIGN_DATA, signedData } from '../actions/signature'
 import {
@@ -80,7 +80,10 @@ const walletMiddleware = config => {
     walletService.on('account.changed', account => {
       if (config.isServer) return
       // Let's poll to detect account changes
-      setTimeout(walletService.getAccount.bind(walletService), POLLING_INTERVAL)
+      setTimeout(
+        walletService.getAccount.bind(walletService),
+        ACCOUNT_POLLING_INTERVAL
+      )
 
       // If the account is actually different
       if (!getState().account || getState().account.address !== account) {
