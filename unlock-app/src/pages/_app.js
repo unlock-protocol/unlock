@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-next-router'
@@ -116,19 +116,17 @@ The Unlock team
 
     return (
       <ApolloProvider client={client}>
-        <Container>
-          <GlobalStyle />
-          <Provider store={store}>
-            <FullScreenModal />
-            <ConnectedRouter>
-              <ConfigProvider value={config}>
-                <GlobalErrorConsumer>
-                  <Component {...pageProps} />
-                </GlobalErrorConsumer>
-              </ConfigProvider>
-            </ConnectedRouter>
-          </Provider>
-        </Container>
+        <GlobalStyle />
+        <Provider store={store}>
+          <FullScreenModal />
+          <ConnectedRouter>
+            <ConfigProvider value={config}>
+              <GlobalErrorConsumer>
+                <Component {...pageProps} />
+              </GlobalErrorConsumer>
+            </ConfigProvider>
+          </ConnectedRouter>
+        </Provider>
       </ApolloProvider>
     )
   }
