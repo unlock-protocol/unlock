@@ -33,7 +33,6 @@ describe('v01', () => {
         unlockAddress,
         blockTime,
         requiredConfirmations,
-        useEthers: true,
       })
       await nock.resolveWhenAllNocksUsed()
     }

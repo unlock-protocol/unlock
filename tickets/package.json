@@ -18,7 +18,7 @@
     "tsc": "tsc"
   },
   "dependencies": {
-    "@babel/core": "7.7.5",
+    "@babel/core": "7.7.7",
     "@storybook/addon-actions": "5.2.8",
     "@storybook/addon-knobs": "5.2.8",
     "@storybook/addon-storyshots": "5.2.8",
@@ -27,13 +27,13 @@
     "@storybook/react": "5.2.8",
     "@testing-library/jest-dom": "4.2.4",
     "@testing-library/react": "9.4.0",
-    "@types/jest": "24.0.23",
+    "@types/jest": "24.0.25",
     "@types/next": "8.0.7",
-    "@types/react": "16.9.16",
+    "@types/react": "16.9.17",
     "@types/react-redux": "7.1.5",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.4.1",
-    "@unlock-protocol/unlock-js": "0.4.2",
+    "@unlock-protocol/unlock-js": "0.5.2",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",
@@ -54,13 +54,13 @@
     "react-router": "5.1.2",
     "react-select": "3.0.8",
     "react-test-renderer": "16.12.0",
-    "redux": "4.0.4",
+    "redux": "4.0.5",
     "styled-components": "4.4.1",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.3"
+    "typescript": "3.7.4"
   },
   "devDependencies": {
-    "@svgr/cli": "4.3.3",
+    "@svgr/cli": "5.0.1",
     "nodemon": "2.0.2"
   },
   "lint-staged": {

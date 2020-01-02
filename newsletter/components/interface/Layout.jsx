@@ -4,6 +4,9 @@ import React from 'react'
 import styled from 'styled-components'
 import Media from '../../theme/media'
 import { RoundedLogo } from './Logo'
+import configure from '../../config'
+
+const config = configure()
 
 export default function Layout({ noHeader, children }) {
   return (
@@ -20,7 +23,16 @@ export default function Layout({ noHeader, children }) {
         {children}
         <Footer>
           <RoundedLogo />
-          <p>Powered by Unlock</p>
+          <p>
+            Powered by{' '}
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={config.unlockStaticUrl}
+            >
+              Unlock
+            </a>
+          </p>
         </Footer>
       </Content>
       <Right />
