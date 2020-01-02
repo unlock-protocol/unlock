@@ -56,8 +56,8 @@
     "redux": "4.0.5",
     "styled-components": "4.4.1",
     "ts-jest": "24.2.0",
-    "typescript": "3.7.4"
-    "ts-dedent": "1.1.0",
+    "typescript": "3.7.4",
+    "ts-dedent": "1.1.0"
   },
   "devDependencies": {
     "@svgr/cli": "5.0.1",
