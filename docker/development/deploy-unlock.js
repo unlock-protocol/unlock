@@ -47,7 +47,7 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v11', unlockContract => {
+    return deploy(host, port, 'v12', unlockContract => {
       console.log(`UNLOCK DEPLOYED AT ${unlockContract.address}`)
 
       const wallet = new WalletService({
