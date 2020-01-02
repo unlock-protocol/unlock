@@ -40,9 +40,6 @@ import lockFormVisibilityReducer, {
 import fullScreenModalsReducer, {
   initialState as defaultFullScreenModalsStatus,
 } from './reducers/fullScreenModalsReducer'
-import privateKeyReducer, {
-  initialState as defaultPrivateKeyState,
-} from './reducers/privateKeyReducer'
 import cartReducer, {
   initialState as defaultCartState,
 } from './reducers/cartReducer'
@@ -78,7 +75,6 @@ export const createUnlockStore = (
     errors: errorsReducer,
     lockFormStatus: lockFormVisibilityReducer,
     fullScreenModalStatus: fullScreenModalsReducer,
-    userDetails: privateKeyReducer,
     cart: cartReducer,
     recoveryPhrase: recoveryReducer,
     pageIsLocked: pageStatusReducer,
@@ -107,7 +103,6 @@ export const createUnlockStore = (
       errors: defaultError,
       lockFormStatus: defaultLockFormVisibility,
       fullScreenModalStatus: defaultFullScreenModalsStatus,
-      userDetails: defaultPrivateKeyState,
       recoveryPhrase: defaultRecoveryPhrase,
       cart: defaultCartState,
       pageIsLocked: defaultPageStatus,

@@ -10,7 +10,6 @@ import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
-  setEncryptedPrivateKey,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
@@ -18,7 +17,6 @@ import {
   KEY_PURCHASE_INITIATED,
   WELCOME_EMAIL,
   gotEncryptedPrivateKeyPayload,
-  SET_ENCRYPTED_PRIVATE_KEY,
   SIGNED_ACCOUNT_EJECTION,
 } from '../../actions/user'
 import { success, failure } from '../../services/storageService'
@@ -93,9 +91,6 @@ describe('Storage middleware', () => {
         [lock.address]: lock,
       },
       keys: {},
-      userDetails: {
-        email: 'johnny@quest.biz',
-      },
     }
     mockStorageService = new MockStorageService()
   })
@@ -394,8 +389,8 @@ describe('Storage middleware', () => {
     })
 
     describe('success', () => {
-      it('should dispatch setEncryptedPrivateKey, gotEncryptedPrivateKeyPayload, and welcomeEmail after an account is created', async () => {
-        expect.assertions(3)
+      it('should dispatch gotEncryptedPrivateKeyPayload and welcomeEmail after an account is created', async () => {
+        expect.assertions(2)
         const { store } = create()
 
         const passwordEncryptedPrivateKey = {
@@ -415,11 +410,6 @@ describe('Storage middleware', () => {
           password,
         })
 
-        expect(store.dispatch).toHaveBeenNthCalledWith(3, {
-          type: SET_ENCRYPTED_PRIVATE_KEY,
-          key: passwordEncryptedPrivateKey,
-          emailAddress,
-        })
         expect(store.dispatch).toHaveBeenNthCalledWith(2, {
           type: GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
           key: passwordEncryptedPrivateKey,
@@ -455,7 +445,7 @@ describe('Storage middleware', () => {
     let key
 
     it('should dispatch the payload when it can get an encrypted private key', () => {
-      expect.assertions(5)
+      expect.assertions(4)
       const { next, invoke, store } = create()
 
       const action = {
@@ -479,15 +469,7 @@ describe('Storage middleware', () => {
           password,
         })
       )
-      expect(store.dispatch).toHaveBeenNthCalledWith(
-        2,
-        expect.objectContaining({
-          type: SET_ENCRYPTED_PRIVATE_KEY,
-          key,
-          emailAddress,
-        })
-      )
-      expect(store.dispatch).toHaveBeenCalledTimes(2)
+      expect(store.dispatch).toHaveBeenCalledTimes(1)
       expect(next).toHaveBeenCalledTimes(1)
     })
 
@@ -509,22 +491,6 @@ describe('Storage middleware', () => {
   })
 
   describe('updateUser', () => {
-    it('always dispatches new user details on success', () => {
-      expect.assertions(1)
-      const { store } = create()
-
-      const user = {
-        passwordEncryptedPrivateKey: 'BEGIN ROT13 DATA ===',
-      }
-      const emailAddress = 'race@bannon.io'
-
-      mockStorageService.emit(success.updateUser, { user, emailAddress })
-
-      expect(store.dispatch).toHaveBeenCalledWith(
-        setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
-      )
-    })
-
     it('should dispatch a storageError on failure', () => {
       expect.assertions(1)
       const { store } = create()

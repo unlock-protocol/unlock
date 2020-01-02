@@ -16,7 +16,6 @@ import {
   LOGIN_CREDENTIALS,
   SIGNUP_CREDENTIALS,
   gotEncryptedPrivateKeyPayload,
-  setEncryptedPrivateKey,
   SIGNED_USER_DATA,
   SIGNED_PAYMENT_DATA,
   GET_STORED_PAYMENT_DETAILS,
@@ -86,9 +85,6 @@ const storageMiddleware = config => {
             password
           )
         )
-        dispatch(
-          setEncryptedPrivateKey(passwordEncryptedPrivateKey, emailAddress)
-        )
       }
     )
     storageService.on(failure.createUser, () => {
@@ -101,13 +97,6 @@ const storageMiddleware = config => {
     })
 
     // When updating a user
-    // TODO: May have to separately handle different kinds of user updates
-    storageService.on(success.updateUser, ({ user, emailAddress }) => {
-      // TODO: this is vestigial, replace with a new action (dismiss loading state?)
-      dispatch(
-        setEncryptedPrivateKey(user.passwordEncryptedPrivateKey, emailAddress)
-      )
-    })
     storageService.on(failure.updateUser, ({ error }) => {
       dispatch(setError(Storage.Diagnostic(error)))
       dispatch(
@@ -281,7 +270,6 @@ const storageMiddleware = config => {
           const { emailAddress, password } = action
           storageService.getUserPrivateKey(emailAddress).then(key => {
             dispatch(gotEncryptedPrivateKeyPayload(key, emailAddress, password))
-            dispatch(setEncryptedPrivateKey(key, emailAddress))
           })
         }
         if (action.type === GET_STORED_PAYMENT_DETAILS) {

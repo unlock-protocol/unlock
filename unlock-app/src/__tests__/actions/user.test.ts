@@ -17,8 +17,6 @@ import {
   changePassword,
   GOT_PASSWORD,
   gotPassword,
-  SET_ENCRYPTED_PRIVATE_KEY,
-  setEncryptedPrivateKey,
   GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD,
   gotEncryptedPrivateKeyPayload,
   SIGN_USER_DATA,
@@ -103,18 +101,6 @@ describe('user account actions', () => {
       }
 
       expect(loginFailed(reason)).toEqual(expectedAction)
-    })
-
-    it("should create an action to set the user's encrypted key in the state", () => {
-      expect.assertions(1)
-
-      const expectedAction = {
-        type: SET_ENCRYPTED_PRIVATE_KEY,
-        key,
-        emailAddress,
-      }
-
-      expect(setEncryptedPrivateKey(key, emailAddress)).toEqual(expectedAction)
     })
 
     it('should create an action to indicate that an account is ready to be decrypted', () => {
