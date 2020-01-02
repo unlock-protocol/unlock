@@ -45,6 +45,11 @@ contract IPublicLock is IERC721Enumerable {
     uint keyPrice
   );
 
+  event TokenAddressChanged(
+    address oldAddress,
+    address newAddress
+  );
+
   event ExpireKey(uint indexed tokenId);
 
   event NewLockSymbol(
@@ -116,9 +121,11 @@ contract IPublicLock is IERC721Enumerable {
    * A function which lets the owner of the lock to change the price for future purchases.
    * @dev Throws if called by other than owner
    * @dev Throws if lock has been disabled
+   * @dev Throws if _tokenAddress is not a valid token
    * @param _keyPrice The new price to set for keys
+   * @param _tokenAddress The address of the erc20 token to use for pricing the keys
    */
-  function updateKeyPrice( uint _keyPrice ) external;
+  function updateKeyPrice( uint _keyPrice, address _tokenAddress ) external;
 
   /** A function which lets the owner of the lock  change the token the lock is priced in  *  for future purchases.
   * @dev Throws if called by other than owner

@@ -19,9 +19,11 @@ contract MixinLockCore is
   MixinFunds,
   MixinDisableAndDestroy
 {
-  event PriceChanged(
+  event PricingChanged(
     uint oldKeyPrice,
-    uint keyPrice
+    uint keyPrice,
+    address oldTokenAddress,
+    address tokenAddress
   );
 
   event Withdrawal(
@@ -129,18 +131,26 @@ contract MixinLockCore is
   }
 
   /**
-   * A function which lets the owner of the lock to change the price for future purchases.
+   * A function which lets the owner of the lock change the pricing for future purchases.
+   * This consists of 2 parts: The token address and the price in the given token.
    */
-  function updateKeyPrice(
-    uint _keyPrice
+  function updateKeyPricing(
+    uint _keyPrice,
+    address _tokenAddress
   )
-    external
+    public
     onlyOwner
     onlyIfAlive
   {
     uint oldKeyPrice = keyPrice;
+    address oldTokenAddress = tokenAddress;
+    require(
+      _tokenAddress == address(0) || IERC20(_tokenAddress).totalSupply() > 0,
+      'INVALID_TOKEN'
+    );
     keyPrice = _keyPrice;
-    emit PriceChanged(oldKeyPrice, keyPrice);
+    tokenAddress = _tokenAddress;
+    emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
   }
 
   /**

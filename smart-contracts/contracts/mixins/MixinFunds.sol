@@ -48,19 +48,6 @@ contract MixinFunds is Ownable
     }
   }
 
-  function updateTokenAddress(
-    address _newTokenAddress
-  ) external
-    onlyOwner
-    // onlyIfAlive
-  {
-    require(
-      _newTokenAddress == address(0) || IERC20(_newTokenAddress).totalSupply() > 0,
-      'INVALID_TOKEN'
-    );
-    tokenAddress = _newTokenAddress;
-  }
-
   /**
    * Ensures that the msg.sender has paid at least the price stated.
    *
