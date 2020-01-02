@@ -1,4 +1,4 @@
-import reducer, { initialState } from '../../reducers/privateKeyReducer'
+import reducer, { initialState } from '../../reducers/userDetails'
 
 import { SET_ENCRYPTED_PRIVATE_KEY } from '../../actions/user'
 
@@ -56,7 +56,7 @@ const newKeyState = {
   email: 'angrybees@BZZZZZZZZZZZZZ.STING',
 }
 
-describe('privateKeyReducer', () => {
+describe('userDetailsReducer', () => {
   it.each([SET_ACCOUNT, SET_PROVIDER, SET_NETWORK])(
     'should retain state when receiving %s',
     actionType => {
