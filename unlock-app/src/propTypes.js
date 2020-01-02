@@ -42,7 +42,6 @@ export const children = PropTypes.shape({})
 
 export const component = PropTypes.func
 
-// TODO
 export const configuration = PropTypes.shape({})
 
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])

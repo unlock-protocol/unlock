@@ -74,7 +74,6 @@ const ConfigProvider = ConfigContext.Provider
 const generateKeys = n => {
   let keys = []
   for (let i = 0; i < n; i++) {
-    // TODO: generate diverse keys for more realistic story
     keys.push({
       __typename: 'Key',
       id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
