@@ -15,3 +15,4 @@ RUN npm run link-parent-bin
 WORKDIR /home/unlock/paywall
 COPY --chown=node paywall/ /home/unlock/paywall/.
 RUN npm run build
+EXPOSE 3001
