@@ -104,9 +104,14 @@ describe('Wallet Service Integration', () => {
       describe.each(
         locks[versionName].map((lock, index) => [index, lock.name, lock])
       )('lock %i: %s', (lockIndex, lockName, lockParams) => {
-        let lock, lockAddress, lockCreationHash
+        let lock, expectedLockAddress, lockAddress, lockCreationHash
 
         beforeAll(async () => {
+          expectedLockAddress = await web3Service.generateLockAddress(
+            accounts[0],
+            lockParams
+          )
+
           lockAddress = await walletService.createLock(
             lockParams,
             (error, hash) => {
@@ -119,6 +124,11 @@ describe('Wallet Service Integration', () => {
         it('should have yielded a transaction hash', () => {
           expect.assertions(1)
           expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+        })
+
+        it('should have deployed a lock at the expected address', async () => {
+          expect.assertions(1)
+          expect(lockAddress).toEqual(expectedLockAddress)
         })
 
         it('should have deployed the right lock version', async () => {
