@@ -9,7 +9,7 @@ RUN npm ci --production
 
 # Copy the parent binaries into the unlock-protocol.com
 WORKDIR /home/unlock/
-RUN npm run link-parent-bin 
+RUN npm run link-parent-bin
 
 # Build Unlock static site
 WORKDIR /home/unlock/unlock-protocol.com
