@@ -168,7 +168,8 @@ jobs:
           command: scripts/tests.sh wedlocks
 
   integration-tests:
-    machine: true
+    machine:
+      docker_layer_caching: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
