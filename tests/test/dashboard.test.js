@@ -3,7 +3,8 @@ const wait = require('../helpers/wait')
 const dashboard = require('../helpers/dashboard')
 const { testingAddress } = require('../helpers/vars')
 
-describe('The Unlock Dashboard', () => {
+// eslint-disable-next-line
+describe.skip('The Unlock Dashboard', () => {
   beforeAll(async () => {
     await page.goto(url('/dashboard'), { waitUntil: 'networkidle2' })
     await wait.forLoadingDone()
