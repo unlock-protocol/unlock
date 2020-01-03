@@ -1,5 +1,5 @@
 import ReactGA from 'react-ga'
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import Intercom from 'react-intercom'
 import getConfig from 'next/config'
@@ -105,14 +105,12 @@ The Unlock team
     const { Component, pageProps } = this.props
     const { isMember, becomeMember } = this.state
     return (
-      <Container>
-        <MembershipContext.Provider value={this.state}>
-          <Membership isMember={isMember} becomeMember={becomeMember} />
-          <GlobalStyle />
-          <Component {...pageProps} />
-          <Intercom appID={config.intercomAppId} />
-        </MembershipContext.Provider>
-      </Container>
+      <MembershipContext.Provider value={this.state}>
+        <Membership isMember={isMember} becomeMember={becomeMember} />
+        <GlobalStyle />
+        <Component {...pageProps} />
+        <Intercom appID={config.intercomAppId} />
+      </MembershipContext.Provider>
     )
   }
 }

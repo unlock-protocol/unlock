@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import { Provider } from 'react-redux'
 import configure from '../config'
@@ -76,15 +76,13 @@ The Unlock team
     const { Component, pageProps, router } = this.props
     const store = getOrCreateStore({})
     return (
-      <Container>
+      <Provider store={store}>
         <GlobalStyle />
-        <Provider store={store}>
-          <WalletCheckOverlay />
-          <ConfigProvider value={config}>
-            <Component {...pageProps} router={router} />
-          </ConfigProvider>
-        </Provider>
-      </Container>
+        <WalletCheckOverlay />
+        <ConfigProvider value={config}>
+          <Component {...pageProps} router={router} />
+        </ConfigProvider>
+      </Provider>
     )
   }
 }

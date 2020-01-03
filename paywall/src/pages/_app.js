@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import configure from '../config'
 
@@ -47,14 +47,12 @@ The Unlock team
     const { Component, pageProps } = this.props
 
     return (
-      <Container>
+      <WindowContext.Provider value={global.window}>
         <GlobalStyle />
-        <WindowContext.Provider value={global.window}>
-          <ConfigProvider value={config}>
-            <Component {...pageProps} />
-          </ConfigProvider>
-        </WindowContext.Provider>
-      </Container>
+        <ConfigProvider value={config}>
+          <Component {...pageProps} />
+        </ConfigProvider>
+      </WindowContext.Provider>
     )
   }
 }
