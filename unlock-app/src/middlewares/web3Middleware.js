@@ -105,10 +105,12 @@ const web3Middleware = config => {
         }
 
         if (action.type === CREATE_LOCK && !action.lock.address) {
-          web3Service.generateLockAddress().then(address => {
-            action.lock.address = address
-            dispatch(createLock(action.lock))
-          })
+          web3Service
+            .generateLockAddress(action.lock.owner, action.lock)
+            .then(address => {
+              action.lock.address = address
+              dispatch(createLock(action.lock))
+            })
         }
 
         if (action.type === GET_LOCK) {
