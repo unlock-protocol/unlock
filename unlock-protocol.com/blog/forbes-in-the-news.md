@@ -11,7 +11,7 @@ image: /static/images/blog/forbes-in-the-news/forbes-article.jpg
 
 A few weeks ago we launched a new feature together with Forbes – an Ad Free Experience. Readers can now remove all ads on Forbes by purchasing a key for 0.0052 ETH a day (theres also a monthly option).
 
-Not only were we happy but the internet rejoiced! Many felt that the Ad Free We collected a couple of tweets and
+Not only were we happy but the internet rejoiced! Many felt that the Ad Free feature was a great use case for the blockchain.  We collected a couple of tweets and press on what people had to say.
 
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">The last week in crypto:<br><br>-<a href="https://twitter.com/MakerDAO?ref_src=twsrc%5Etfw">@MakerDAO</a> raises $27.5mil from <a href="https://twitter.com/dragonfly_cap?ref_src=twsrc%5Etfw">@dragonfly_cap</a> and <a href="https://twitter.com/paradigm?ref_src=twsrc%5Etfw">@paradigm</a> 💰<br>-<a href="https://twitter.com/gitcoin?ref_src=twsrc%5Etfw">@gitcoin</a> grants round 4 announced 💸<br>-<a href="https://twitter.com/TXRXResearch?ref_src=twsrc%5Etfw">@TXRXResearch</a> team announced 🤓<br>-<a href="https://twitter.com/TornadoCash?ref_src=twsrc%5Etfw">@TornadoCash</a> v2 now live 🌪️<br>-<a href="https://twitter.com/Forbes?ref_src=twsrc%5Etfw">@Forbes</a> integrates <a href="https://twitter.com/UnlockProtocol?ref_src=twsrc%5Etfw">@UnlockProtocol</a> 🔐<br><br>Much more 👇<a href="https://t.co/a1tMR4ONhU">https://t.co/a1tMR4ONhU</a></p>&mdash; Anthony Sassano | sassal.eth (@sassal0x) <a href="https://twitter.com/sassal0x/status/1209089288937230336?ref_src=twsrc%5Etfw">December 23, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
