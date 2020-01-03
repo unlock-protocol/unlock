@@ -17,6 +17,9 @@ const port = process.env.HTTP_PROVIDER_PORT
 let programmaticPurchaser = process.env.LOCKSMITH_PURCHASER_ADDRESS // This is the locksmith user account
 let userAddress = process.env.ETHEREUM_ADDRESS // This is a user account
 
+const locksmithHost = process.env.LOCKSMITH_HOST
+const locksmithPort = process.env.LOCKSMITH_PORT
+
 let providerURL = `http://${host}:${port}`
 let provider = new ethers.providers.JsonRpcProvider(providerURL, {
   chainId: 1984,
@@ -47,7 +50,8 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v12', unlockContract => {
+    const versionName = 'v12'
+    return deploy(host, port, versionName, unlockContract => {
       console.log(`UNLOCK DEPLOYED AT ${unlockContract.address}`)
 
       const wallet = new WalletService({
@@ -62,6 +66,22 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       })
 
       wallet.on('account.changed', async account => {
+        // Deploy the template contract
+        const publicLockTemplateAddress = await wallet.deployTemplate(
+          versionName
+        )
+        console.log(
+          `TEMPLATE CONTRACT DEPLOYED AT ${publicLockTemplateAddress}`
+        )
+
+        // Configure Unlock
+        await wallet.configureUnlock(
+          publicLockTemplateAddress,
+          'KEY',
+          `http://${locksmithHost}:${locksmithPort}/api/key/`
+        )
+        console.log('UNLOCK CONFIGURED')
+
         // Once Unlock is deployed, we proceed to building the rest of the environment
         await TokenDeployer.prepareEnvironment(
           web3Service,
@@ -71,9 +91,6 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
           programmaticPurchaser,
           userAddress
         )
-        // Change the base URL for token metadata
-        const baseUri = 'http://0.0.0.0:8080/api/key/'
-        unlockContract.setGlobalBaseTokenURI(baseUri)
       })
 
       wallet.on('network.changed', () => {
