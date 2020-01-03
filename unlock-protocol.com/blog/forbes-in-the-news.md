@@ -7,7 +7,7 @@ description: A rundown of a few memorable tweets and press coverage from our For
 image: /static/images/blog/forbes-in-the-news/forbes-article.jpg
 ---
 
-![A few clicks to make it ad free.](/static/images/forbes-in-the-news/hero.jpg)
+![A few clicks to make it ad free.](/static/images/blog/forbes-in-the-news/hero.jpg)
 
 A few weeks ago we launched a new feature together with Forbes – an Ad Free Experience. Readers can now remove all ads on Forbes by purchasing a key for 0.0052 ETH a day (theres also a monthly option).
 
