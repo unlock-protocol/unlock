@@ -4,12 +4,14 @@ FROM unlock-core
 RUN mkdir /home/unlock/unlock-protocol.com
 COPY --chown=node unlock-protocol.com/package-lock.json /home/unlock/unlock-protocol.com/.
 COPY --chown=node unlock-protocol.com/package.json /home/unlock/unlock-protocol.com/.
-
-# Install deps for just this repo
 WORKDIR /home/unlock/unlock-protocol.com
-RUN yarn
+RUN npm ci --production
+
+# Copy the parent binaries into the unlock-protocol.com
+WORKDIR /home/unlock/
+RUN npm run link-parent-bin 
 
 # Build Unlock static site
 WORKDIR /home/unlock/unlock-protocol.com
 COPY --chown=node unlock-protocol.com/ /home/unlock/unlock-protocol.com/.
-RUN yarn build
+RUN npm run build
