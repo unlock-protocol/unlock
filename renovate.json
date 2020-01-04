@@ -3,14 +3,12 @@
     "config:base",
     ":prHourlyLimitNone",
     ":prConcurrentLimitNone",
-    ":pinVersions"
+    ":pinVersions",
+    ":doNotPinPackage(node)"
   ],
   "timezone": "America/Los_Angeles",
   "schedule": ["before 3am on monday"],
   "rebaseStalePrs": false,
-  "node": {
-    "enabled": false
-  },
   "minor": {
     "groupName": "minor and patch updates"
   },
