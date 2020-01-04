@@ -19,7 +19,7 @@
     "build-data-iframe.1.0.js": "webpack --config data-iframe.1.0.webpack.config.js",
     "build-data-iframe.2.0.js": "webpack --config data-iframe.2.0.webpack.config.js",
     "storybook": "start-storybook -p 9002 -c .storybook -s .",
-    "ci": "npm run lint && npm test"
+    "ci": "npm test && npm run lint"
   },
   "dependencies": {
     "@babel/core": "7.7.7",
