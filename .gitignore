@@ -19,4 +19,3 @@ builds/
 # dot env files
 .env.*.local
 /smart-contracts/zos.development.json
-wiki
