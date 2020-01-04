@@ -77,13 +77,15 @@ export default class Web3Service extends UnlockService {
     }
 
     this.inputsHandlers = {
-      createLock: async (transactionHash, contractAddress, params) => {
+      createLock: async (transactionHash, contractAddress, sender, params) => {
         // The annoying part here is that we do not have the lock address...
         // Since it is not an argument to the function.
         // We will 'guess' it again using generateLockAddress
         // knowing that this may create a race condition another lock creation pending transaction
         // exists.
-        const newLockAddress = await this.generateLockAddress()
+        const newLockAddress = await this.generateLockAddress(sender, {
+          name: params._lockName,
+        })
         this.emit('transaction.updated', transactionHash, {
           lock: newLockAddress,
         })
@@ -102,7 +104,7 @@ export default class Web3Service extends UnlockService {
           balance: '0', // Must be expressed in Eth!
         })
       },
-      purchaseFor: async (transactionHash, contractAddress, params) => {
+      purchaseFor: async (transactionHash, contractAddress, sender, params) => {
         const owner = params._recipient
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
@@ -369,6 +371,7 @@ export default class Web3Service extends UnlockService {
     contract,
     data,
     contractAddress,
+    sender,
     status = 'pending'
   ) {
     const transactionType = this._getTransactionType(contract, data)
@@ -395,7 +398,7 @@ export default class Web3Service extends UnlockService {
     }, {})
 
     if (handler) {
-      return handler(transactionHash, contractAddress, args)
+      return handler(transactionHash, contractAddress, sender, args)
     }
   }
 
@@ -436,6 +439,7 @@ export default class Web3Service extends UnlockService {
         contract,
         defaults.input,
         defaults.to,
+        defaults.from,
         'submitted'
       )
     }
@@ -470,6 +474,7 @@ export default class Web3Service extends UnlockService {
       contract,
       blockTransaction.data,
       blockTransaction.to,
+      blockTransaction.from,
       'pending'
     )
   }
