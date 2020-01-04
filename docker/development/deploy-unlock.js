@@ -7,6 +7,7 @@ const {
   Web3Service,
 } = require('@unlock-protocol/unlock-js')
 const TokenDeployer = require('./deploy-locks')
+const Erc1820 = require('./deploy-erc1820')
 
 /*
  * This script is meant to be used in dev environment to deploy a version of the Unlock smart
@@ -66,6 +67,10 @@ serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
       })
 
       wallet.on('account.changed', async account => {
+        // Deploy erc1820
+        await Erc1820.deploy(wallet.provider)
+        console.log('ERC1820 CONTRACT DEPLOYED')
+
         // Deploy the template contract
         const publicLockTemplateAddress = await wallet.deployTemplate(
           versionName
