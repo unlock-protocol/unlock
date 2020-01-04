@@ -10,7 +10,7 @@
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "test": "jest --env=jsdom",
     "lint": "eslint --ext .tsx,.ts,.js .",
-    "ci": "npm run lint && npm test"
+    "ci": "npm test && npm run lint"
   },
   "dependencies": {
     "@testing-library/jest-dom": "4.2.4",
