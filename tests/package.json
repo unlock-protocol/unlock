@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --runInBand --bail",
     "lint": "eslint **/*.js ",
-    "ci": "npm run lint && npm test"
+    "ci": "npm test && npm run lint"
   },
   "jest": {
     "globalSetup": "./helpers/setup.js",
