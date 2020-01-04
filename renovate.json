@@ -15,40 +15,58 @@
   "packageRules": [
     {
       "paths": ["locksmith/**"],
-      "groupName": "locksmith"
+      "minor": {
+        "groupName": "locksmith"
+      }
     },
     {
       "paths": ["paywall/**"],
-      "groupName": "paywall"
+      "minor": {
+        "groupName": "paywall"
+      }
     },
     {
       "paths": ["rover/**"],
-      "groupName": "rover"
+      "minor": {
+        "groupName": "rover"
+      }
     },
     {
       "paths": ["smart-contracts/**"],
-      "groupName": "smart-contracts",
+      "minor": {
+        "groupName": "smart-contracts"
+      },
       "reviewers": ["NickCuso"]
     },
     {
       "paths": ["tickets/**"],
-      "groupName": "tickets"
+      "minor": {
+        "groupName": "tickets"
+      }
     },
     {
       "paths": ["unlock-app/**"],
-      "groupName": "unlock-app"
+      "minor": {
+        "groupName": "unlock-app"
+      }
     },
     {
       "paths": ["unlock-js/**"],
-      "groupName": "unlock-js"
+      "minor": {
+        "groupName": "unlock-js"
+      }
     },
     {
       "paths": ["unlock-protocol.com/**"],
-      "groupName": "unlock-protocol.com"
+      "minor": {
+        "groupName": "unlock-protocol.com"
+      }
     },
     {
       "paths": ["wedlocks/**"],
-      "groupName": "wedlocks"
+      "minor": {
+        "groupName": "wedlocks"
+      }
     },
     {
       "packagePatterns": [
@@ -61,7 +79,9 @@
     {
       "packageNames": ["@unlock-protocol/unlock-js"],
       "schedule": ["at any time"],
-      "groupName": "unlock-js npm package"
+      "minor": {
+        "groupName": "unlock-js npm package"
+      }
     }
   ]
 }
