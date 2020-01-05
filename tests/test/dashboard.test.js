@@ -163,11 +163,9 @@ describe('The Unlock Dashboard', () => {
 
     describe('Data existing after refresh', () => {
       it('should retain the lock address, key price, duration and maximum number of keys', async () => {
-        expect.assertions(2)
+        expect.assertions(1)
         await page.reload({ waitUntil: 'networkidle2' })
-        // Accept Terms of service again!
         await wait.forLoadingDone()
-        await expect(page).toClick('button', { text: 'I agree' })
         await expect(page).toMatchElement(lockSelector)
       })
     })
