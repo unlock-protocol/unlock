@@ -21,7 +21,7 @@ COPY ./package.json .
 RUN npm install
 
 COPY ./TestErc20Token.json .
-COPY ./deploy-unlock.js .
+COPY ./prepare-ganache-for-unlock.js .
 COPY ./deploy-erc1820.js .
 COPY ./deploy-locks.js .
 
