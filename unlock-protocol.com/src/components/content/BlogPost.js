@@ -24,7 +24,6 @@ export class BlogPost extends React.Component {
       document.body.appendChild(element)
       return element
     })
-    window.julien = this.scripts
   }
 
   componentDidUpdate() {

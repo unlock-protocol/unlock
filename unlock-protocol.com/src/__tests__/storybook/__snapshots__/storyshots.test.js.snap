@@ -1914,6 +1914,12 @@ Object {
   padding: 5px;
 }
 
+.c18 .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .c16 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -2676,7 +2682,7 @@ are intentionally not generated from this file date, in case we want to override
             </span>
           </div>
           <div
-            class="b1qsww-6 jZJUsM"
+            class="b1qsww-6 gbUDbF"
           >
             <div>
               <p>
@@ -3936,6 +3942,12 @@ Object {
   padding: 5px;
 }
 
+.c6 .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4212,7 +4224,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </span>
       </div>
       <div
-        class="b1qsww-6 jZJUsM"
+        class="b1qsww-6 gbUDbF"
       >
         <div>
           <p>
@@ -4547,6 +4559,12 @@ Object {
   padding: 5px;
 }
 
+.c5 .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -4815,7 +4833,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </span>
       </div>
       <div
-        class="b1qsww-6 jZJUsM"
+        class="b1qsww-6 gbUDbF"
       >
         <div>
           <p>
@@ -5150,6 +5168,12 @@ Object {
   padding: 5px;
 }
 
+.c5 .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .c3 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -5418,7 +5442,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </span>
       </div>
       <div
-        class="b1qsww-6 jZJUsM"
+        class="b1qsww-6 gbUDbF"
       >
         <div>
           <p>
@@ -5762,6 +5786,12 @@ Object {
   padding: 5px;
 }
 
+.c6 .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+}
+
 .c4 {
   font-family: 'IBM Plex Serif';
   font-weight: 300;
@@ -6038,7 +6068,7 @@ genuinely collaborative ecosystem, where many companies and services can operate
         </span>
       </div>
       <div
-        class="b1qsww-6 jZJUsM"
+        class="b1qsww-6 gbUDbF"
       >
         <div>
           <p>
