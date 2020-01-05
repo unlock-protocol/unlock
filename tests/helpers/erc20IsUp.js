@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 // This file is used to probe the ganache server. It attempts to call
 // balanceOf(0xaaadeed4...) to get the ERC20 token balance.
 // when the standup script has finished, it will return 500 tokens,

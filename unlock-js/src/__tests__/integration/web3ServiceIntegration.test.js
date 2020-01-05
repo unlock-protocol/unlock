@@ -3,9 +3,9 @@ import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 // NOTE: these addresses may change based on the setup of ganache.
 // Ideally, rather than test with them, we should deploy the corresponding
 // contracts so that we do not depend on external state.
-const erc20Address = '0x3f8173047fba481a4d620032be6b39db0b4ab852'
-const lockAddress = '0x5a9C58baB536Fc8C3C836916ba3dBD19E51c1923'
-const unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+const erc20Address = '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9'
+const lockAddress = '0xEE9FE39966DF737eECa5920ABa975c283784Faf8'
+const unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
 
 jest.setTimeout(300000)
 
@@ -44,19 +44,21 @@ describe('Web3 Service Integration', () => {
             name: 'My Lock',
           }
         )
-      ).toEqual('0x192DF9D24D7adB4E703760cD59C9024C649E9B6c')
+      ).toEqual('0x98DDF8B9cdCa91e7E99F4eF74441588D1D2e7CE5')
     })
   })
 
   describe('refreshAccountBalance', () => {
     // this method needs to be cleaned of for consistency
     it('returns the balance of the account', async () => {
-      expect.assertions(1)
-      expect(
-        await web3Service.refreshAccountBalance({
-          address: '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
-        })
-      ).toEqual('100')
+      expect.assertions(2)
+      // This account is the 2nd in our current docker setup.
+      // It's used to deploy the ERC20 contract, so its balance is reduced
+      const balance = await web3Service.refreshAccountBalance({
+        address: '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
+      })
+      expect(parseFloat(balance)).toBeLessThan(100)
+      expect(parseFloat(balance)).toBeGreaterThan(90)
     })
   })
 

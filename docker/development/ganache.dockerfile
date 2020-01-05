@@ -16,14 +16,12 @@ RUN npm install -g npm@6.4.1
 RUN mkdir /standup
 WORKDIR /standup
 
-COPY ./package.json .
+COPY ./package.json ./
 
 RUN npm install
 
-COPY ./TestErc20Token.json .
-COPY ./prepare-ganache-for-unlock.js .
-COPY ./deploy-erc1820.js .
-COPY ./deploy-locks.js .
+COPY ./* ./
+COPY ./utils/* ./utils/
 
 WORKDIR /app
 

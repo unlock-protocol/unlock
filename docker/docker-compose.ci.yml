@@ -80,7 +80,7 @@ services:
       - graph-node
   locksmith:
     image: locksmith
-    env_file: 
+    env_file:
       - ./integration.env
       - ./integration-locksmith.env
     command: sh -c './scripts/wait-for.sh postgres:5432 -- npm run db:migrate && npm start'
