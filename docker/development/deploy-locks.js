@@ -157,7 +157,7 @@ async function prepareEnvironment(
       expirationDuration: 60,
       keyPrice: '1',
       maxNumberOfKeys: -1,
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      currencyContractAddress: testERC20Token.address,
       name: 'ERC20 Lock',
     },
     {
@@ -171,7 +171,7 @@ async function prepareEnvironment(
       expirationDuration: 300,
       keyPrice: '1',
       maxNumberOfKeys: -1,
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      currencyContractAddress: testERC20Token.address,
       name: 'ERC20 paywall lock',
     },
     {
@@ -199,21 +199,21 @@ async function prepareEnvironment(
       expirationDuration: 604800,
       keyPrice: '1',
       maxNumberOfKeys: -1,
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      currencyContractAddress: testERC20Token.address,
       name: 'ERC20 adblock lock 1',
     },
     {
       expirationDuration: 2592000,
       keyPrice: '5',
       maxNumberOfKeys: -1,
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      currencyContractAddress: testERC20Token.address,
       name: 'ERC20 adblock lock 2',
     },
     {
       expirationDuration: 31536000,
       keyPrice: '100',
       maxNumberOfKeys: -1,
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      currencyContractAddress: testERC20Token.address,
       name: 'ERC20 adblock lock 3',
     },
   ]

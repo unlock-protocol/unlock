@@ -3,7 +3,7 @@
 // NOTE: THIS SCRIPT IS CURRENTLY ONLY USED BY THE INTEGRATION TESTS
 // BECAUSE WE DO NOT USE OUR OWN ganache.dockerfile in that context
 
-const { deploy } = require('@unlock-protocol/unlock-js')
+const { deploy, WalletService } = require('@unlock-protocol/unlock-js')
 const net = require('net')
 
 /*
@@ -13,6 +13,9 @@ const net = require('net')
 
 const host = process.env.HTTP_PROVIDER || '127.0.0.1'
 const port = 8545
+
+const locksmithHost = process.env.LOCKSMITH_HOST
+const locksmithPort = process.env.LOCKSMITH_PORT
 
 const serverIsUp = (delay, maxAttempts) =>
   new Promise((resolve, reject) => {
@@ -39,8 +42,31 @@ const serverIsUp = (delay, maxAttempts) =>
 
 serverIsUp(1000 /* every second */, 120 /* up to 2 minutes */)
   .then(() => {
-    return deploy(host, port, 'v11', newContractInstance => {
-      console.log(newContractInstance.options.address)
+    const versionName = 'v12'
+    return deploy(host, port, versionName, newContractInstance => {
+      console.log(`UNLOCK DEPLOYED AT ${newContractInstance.address}`)
+      // We need to configure it!
+      const wallet = new WalletService({
+        unlockAddress: newContractInstance.address,
+      })
+
+      wallet.on('account.changed', async () => {
+        // Deploy the template contract
+        const publicLockTemplateAddress = await wallet.deployTemplate(
+          versionName
+        )
+        console.log(
+          `TEMPLATE CONTRACT DEPLOYED AT ${publicLockTemplateAddress}`
+        )
+
+        // Configure Unlock
+        await wallet.configureUnlock(
+          publicLockTemplateAddress,
+          'KEY',
+          `http://${locksmithHost}:${locksmithPort}/api/key/`
+        )
+        console.log('UNLOCK CONFIGURED')
+      })
     })
   })
   .catch(error => {
