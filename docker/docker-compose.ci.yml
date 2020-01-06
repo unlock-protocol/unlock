@@ -28,7 +28,6 @@ services:
     image: unlock-app
     ports:
       - 3000:3000
-    command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
     image: unlock-app
     ports:
@@ -45,31 +44,26 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'      
       PORT: 9000
-    command: ['npm', 'run', 'start']
   unlock-protocol-com:
     env_file: ./integration.env
     image: unlock-protocol-com
     ports:
       - 3002:3002
-    command: ['npm', 'run', 'start']
   paywall:
     env_file: ./integration.env
     image: paywall
     ports:
       - 3001:3001
-    command: ['npm', 'run', 'start']
   tickets:
     env_file: ./integration.env
     image: tickets
     ports:
       - 3003:3003
-    command: ['npm', 'run', 'start']
   newsletter:
     image: newsletter
     env_file: ./integration.env
     ports:
       - 3003:3003
-    command: ['npm', 'run', 'start']
   unlock-js:
     image: unlock-js
     env_file: ./integration.env

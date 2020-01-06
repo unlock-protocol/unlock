@@ -16,3 +16,4 @@ WORKDIR /home/unlock/newsletter
 COPY --chown=node newsletter/ /home/unlock/newsletter/.
 RUN npm run build
 EXPOSE 3003
+CMD ["npm", "run", "start"]

@@ -23,4 +23,4 @@ COPY --chown=node .git/ /home/unlock/.git/.
 
 WORKDIR /home/unlock/unlock-app
 EXPOSE 3000
-
+CMD ["npm", "run", "start"]

@@ -17,3 +17,4 @@ COPY --chown=node unlock-protocol.com/ /home/unlock/unlock-protocol.com/.
 RUN npm run build
 
 EXPOSE 3002
+CMD ["npm", "run", "start"]
