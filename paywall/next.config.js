@@ -18,6 +18,11 @@ module.exports = withCSS({
       fs: 'empty',
     }
 
+    // Despite being mostly Typescript-configured by default, Next
+    // will fail to resolve .ts{x} files if we don't set the
+    // resolvers.
+    config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
+
     return config
   },
   exportPathMap: async (defaultPathMap, { dev, dir, outDir }) => {
