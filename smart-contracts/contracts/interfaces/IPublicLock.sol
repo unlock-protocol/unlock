@@ -125,14 +125,7 @@ contract IPublicLock is IERC721Enumerable {
    * @param _keyPrice The new price to set for keys
    * @param _tokenAddress The address of the erc20 token to use for pricing the keys
    */
-  function updateKeyPrice( uint _keyPrice, address _tokenAddress ) external;
-
-  /** A function which lets the owner of the lock  change the token the lock is priced in  *  for future purchases.
-  * @dev Throws if called by other than owner
-  * @dev Throws if lock has been disabled
-  * @param _newTokenAddress The new tokenAddress to set for the lock
-  */
-  function updateTokenAddress(address _newTokenAddress) external;
+  function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
    * A function which lets the owner of the lock update the beneficiary account,
