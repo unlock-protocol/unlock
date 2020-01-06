@@ -17,6 +17,8 @@ RUN apk add --no-cache \
 
 # Update npm version to use cpm ci
 RUN npm install -g npm@6.4.1
+# get yarn for dependency management
+RUN npm install -g yarn
 
 RUN mkdir /home/unlock
 RUN mkdir /home/unlock/scripts
