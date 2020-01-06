@@ -21,6 +21,7 @@ const Post = ({ slug, post }) => {
   let body = post.__content || ''
   let membersOnly = post.membersOnly || ''
   let nonMembersOnly = post.nonMembersOnly || ''
+  let scripts = post.scripts || []
   let permalink = '/blog/' + slug
   let image = post.image
 
@@ -51,6 +52,7 @@ const Post = ({ slug, post }) => {
         publishDate={publishDate}
         title={title}
         subTitle={subTitle}
+        scripts={scripts}
         authorName={authorName}
         permalink={permalink}
         membersOnly={membersOnly}
