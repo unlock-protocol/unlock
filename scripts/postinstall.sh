@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( smart-contracts unlock-app tests tickets wedlocks unlock-js unlock-protocol.com docker/development )
+  SERVICES=( smart-contracts tests tickets wedlocks unlock-js unlock-protocol.com docker/development )
   ROOT_DIR=$(pwd)
   for i in "${SERVICES[@]}"
   do
@@ -31,8 +31,10 @@ if [ "$SKIP_SERVICES" != "true" ]; then
   # clear out newsletter deps for try at using Yarn
   rm -rf newsletter/node_modules
   rm -rf locksmith/node_modules
+  rm -rf paywall/node_modules
+  rm -rf unlock-app/node_modules
 
-  NEW_SERVICES=( newsletter locksmith paywall )
+  NEW_SERVICES=( newsletter locksmith paywall unlock-app )
   for i in "${NEW_SERVICES[@]}"
   do
       cd $i
