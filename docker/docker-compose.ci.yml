@@ -63,16 +63,12 @@ services:
     image: tickets
     ports:
       - 3003:3003
-    expose:
-      - 3003
     command: ['npm', 'run', 'start']
   newsletter:
     image: newsletter
     env_file: ./integration.env
     ports:
       - 3003:3003
-    expose:
-      - 3003
     command: ['npm', 'run', 'start']
   unlock-js:
     image: unlock-js
@@ -103,8 +99,6 @@ services:
       NODE_ENV: 'production' # TODO: verify if this is right?
       WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
-    expose:
-      - 8080
     ports:
       - 8080:8080
     depends_on:

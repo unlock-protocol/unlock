@@ -15,3 +15,4 @@ RUN npm run link-parent-bin
 WORKDIR /home/unlock/locksmith
 COPY --chown=node locksmith/ /home/unlock/locksmith/.
 RUN npm run build
+EXPOSE 8080
