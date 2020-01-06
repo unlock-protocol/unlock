@@ -18,9 +18,7 @@ services:
       - 8545
   db:
     env_file: ./integration.env
-    image: postgres
-    expose:
-      - 5432
+    image: postgres:12.1
   smart-contracts:
     image: smart-contracts
     depends_on:
@@ -30,9 +28,6 @@ services:
     image: unlock-app
     ports:
       - 3000:3000
-    expose:
-      - 3000
-    command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
     image: unlock-app
     ports:
@@ -49,39 +44,26 @@ services:
       PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
       STRIPE_KEY: '${STRIPE_KEY}'      
       PORT: 9000
-    command: ['npm', 'run', 'start']
   unlock-protocol-com:
     env_file: ./integration.env
     image: unlock-protocol-com
     ports:
       - 3002:3002
-    expose:
-      - 3002
-    command: ['npm', 'run', 'start']
   paywall:
     env_file: ./integration.env
     image: paywall
     ports:
       - 3001:3001
-    expose:
-      - 3001
-    command: ['npm', 'run', 'start']
   tickets:
     env_file: ./integration.env
     image: tickets
     ports:
       - 3003:3003
-    expose:
-      - 3003
-    command: ['npm', 'run', 'start']
   newsletter:
     image: newsletter
     env_file: ./integration.env
     ports:
       - 3003:3003
-    expose:
-      - 3003
-    command: ['npm', 'run', 'start']
   unlock-js:
     image: unlock-js
     env_file: ./integration.env
@@ -111,8 +93,6 @@ services:
       NODE_ENV: 'production' # TODO: verify if this is right?
       WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
-    expose:
-      - 8080
     ports:
       - 8080:8080
     depends_on:
@@ -138,7 +118,7 @@ services:
     depends_on:
       - ganache-integration
   ipfs:
-    image: ipfs/go-ipfs
+    image: ipfs/go-ipfs:v0.4.22
     ports:
       - '5001:5001'
   subgraph_deployment:

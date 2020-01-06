@@ -18,7 +18,7 @@ import { SET_NETWORK } from '../../actions/network'
 import { PROVIDER_READY } from '../../actions/provider'
 import { NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ERROR } from '../../actions/error'
-import { POLLING_INTERVAL } from '../../constants'
+import { ACCOUNT_POLLING_INTERVAL } from '../../constants'
 import { TransactionType } from '../../unlockTypes'
 import {
   FATAL_NO_USER_ACCOUNT,
@@ -186,7 +186,7 @@ describe('Wallet middleware', () => {
     expect(setTimeout).toHaveBeenCalledTimes(1)
     expect(setTimeout).toHaveBeenCalledWith(
       expect.any(Function),
-      POLLING_INTERVAL
+      ACCOUNT_POLLING_INTERVAL
     )
   })
 

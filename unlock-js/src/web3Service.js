@@ -77,13 +77,15 @@ export default class Web3Service extends UnlockService {
     }
 
     this.inputsHandlers = {
-      createLock: async (transactionHash, contractAddress, params) => {
+      createLock: async (transactionHash, contractAddress, sender, params) => {
         // The annoying part here is that we do not have the lock address...
         // Since it is not an argument to the function.
         // We will 'guess' it again using generateLockAddress
         // knowing that this may create a race condition another lock creation pending transaction
         // exists.
-        const newLockAddress = await this.generateLockAddress()
+        const newLockAddress = await this.generateLockAddress(sender, {
+          name: params._lockName,
+        })
         this.emit('transaction.updated', transactionHash, {
           lock: newLockAddress,
         })
@@ -102,7 +104,7 @@ export default class Web3Service extends UnlockService {
           balance: '0', // Must be expressed in Eth!
         })
       },
-      purchaseFor: async (transactionHash, contractAddress, params) => {
+      purchaseFor: async (transactionHash, contractAddress, sender, params) => {
         const owner = params._recipient
         this.emit('transaction.updated', transactionHash, {
           key: KEY_ID(contractAddress, owner),
@@ -135,17 +137,61 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * "Guesses" what the next Lock's address is going to be
+   * Method which returns the create2 address based on the factory contract (unlock), the lock template,
+   * the account and lock salt (both used to create a unique salt)
+   * 0x3d602d80600a3d3981f3363d3d373d3d3d363d73 and 5af43d82803e903d91602b57fd5bf3 are the
+   * bytecode for eip-1167 (which defines proxies for locks).
+   * @private
    */
-  async generateLockAddress() {
-    let transactionCount = await this.provider.getTransactionCount(
-      this.unlockContractAddress
-    )
+  _create2Address(unlockAddress, templateAddress, account, lockSalt) {
+    const saltHex = `${account}${lockSalt}`
+    const byteCode = `0x3d602d80600a3d3981f3363d3d373d3d3d363d73${templateAddress.replace(
+      /0x/,
+      ''
+    )}5af43d82803e903d91602b57fd5bf3`
+    const byteCodeHash = utils.sha3(byteCode)
 
-    return ethers.utils.getContractAddress({
-      from: this.unlockContractAddress,
-      nonce: transactionCount,
-    })
+    const seed = ['ff', unlockAddress, saltHex, byteCodeHash]
+      .map(x => x.replace(/0x/, ''))
+      .join('')
+
+    let address = utils.sha3(`0x${seed}`).slice(-40)
+
+    return utils.toChecksumAddress(`0x${address}`)
+  }
+
+  /**
+   * "Guesses" what the next Lock's address is going to be
+   * Before v12 (5) we do not need the lock object
+   * After that, we do because create2 uses a salt which is used to know the address
+   * TODO : ideally this code should be part of ethers... but it looks like it's not there yet.
+   * For now, losely inspired by
+   * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
+   */
+  async generateLockAddress(owner, lock) {
+    const version = await this.unlockContractAbiVersion()
+    if (version.version === 'v12') {
+      const unlockContact = await this.getUnlockContract()
+      const templateAddress = await unlockContact.publicLockAddress()
+      // Compute the hash identically to v12 (TODO: extract this?)
+      const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
+      return this._create2Address(
+        this.unlockContractAddress,
+        templateAddress,
+        owner,
+        lockSalt
+      )
+    } else {
+      // TODO: once the contracts have been moved to v12, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
+      let transactionCount = await this.provider.getTransactionCount(
+        this.unlockContractAddress
+      )
+
+      return ethers.utils.getContractAddress({
+        from: this.unlockContractAddress,
+        nonce: transactionCount,
+      })
+    }
   }
 
   /**
@@ -325,6 +371,7 @@ export default class Web3Service extends UnlockService {
     contract,
     data,
     contractAddress,
+    sender,
     status = 'pending'
   ) {
     const transactionType = this._getTransactionType(contract, data)
@@ -351,7 +398,7 @@ export default class Web3Service extends UnlockService {
     }, {})
 
     if (handler) {
-      return handler(transactionHash, contractAddress, args)
+      return handler(transactionHash, contractAddress, sender, args)
     }
   }
 
@@ -392,6 +439,7 @@ export default class Web3Service extends UnlockService {
         contract,
         defaults.input,
         defaults.to,
+        defaults.from,
         'submitted'
       )
     }
@@ -426,6 +474,7 @@ export default class Web3Service extends UnlockService {
       contract,
       blockTransaction.data,
       blockTransaction.to,
+      blockTransaction.from,
       'pending'
     )
   }

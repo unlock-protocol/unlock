@@ -4,8 +4,7 @@ import { Action, EncryptedPrivateKey } from '../unlockTypes' // eslint-disable-l
 type State = { key: EncryptedPrivateKey; email: string } | null
 export const initialState: State = null
 
-// TODO: this is not used: cleanup!
-const privateKeyReducer = (
+const userDetailsReducer = (
   state: State = initialState,
   action: Action
 ): State => {
@@ -23,4 +22,4 @@ const privateKeyReducer = (
   return state
 }
 
-export default privateKeyReducer
+export default userDetailsReducer

@@ -70,7 +70,7 @@ export default {
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
+      currencyContractAddress: '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852', // ERC20 deployed in docker container
     },
   ],
   v11: [
@@ -93,7 +93,7 @@ export default {
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
+      currencyContractAddress: '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852', // ERC20 deployed in docker container
     },
   ],
   v12: [
@@ -116,7 +116,7 @@ export default {
       keyPrice: '1',
       maxNumberOfKeys: 100,
       name: 'ERC20 lock',
-      currencyContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46', // ERC20 deployed in docker container
+      currencyContractAddress: '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852', // ERC20 deployed in docker container
     },
   ],
 }

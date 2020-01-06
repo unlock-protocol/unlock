@@ -27,7 +27,8 @@ describe('Wallet.init()', () => {
     debug: 0,
     paywallUrl: 'http://paywall',
     accountsUrl: 'http://app/accounts',
-    erc20ContractAddress: '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+    erc20ContractAddress:
+      '0x591AD9060x89aB03954911bdf3Cd93D22987f96C3527eE4b256603f5499d12fF4bC207e2f577448c46',
   }
 
   function makeWallet() {

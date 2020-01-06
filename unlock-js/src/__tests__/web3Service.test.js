@@ -218,22 +218,76 @@ describe('Web3Service', () => {
   })
 
   describe('generateLockAddress', () => {
-    it('generates the correct address from nonce and contract address', async () => {
-      expect.assertions(3)
-      await nockBeforeEach({})
+    describe('when deployed a v12 lock', () => {
+      it('generates the correct address from the template contract', async () => {
+        expect.assertions(1)
+        await nockBeforeEach({})
 
-      nock.getTransactionCount(unlockAddress.toLowerCase(), 0)
-      expect(await web3Service.generateLockAddress()).toBe(
-        '0x0e518e6FD65557Ad4B289bF37786C0c0CE2A5DBE'
-      )
-      nock.getTransactionCount(unlockAddress.toLowerCase(), 1)
-      expect(await web3Service.generateLockAddress()).toBe(
-        '0xe564352cbD6a8c09feeD8EE62e1672EC6794B83a'
-      )
-      nock.getTransactionCount(unlockAddress.toLowerCase(), 2)
-      expect(await web3Service.generateLockAddress()).toBe(
-        '0xd3F4Df04bBE21E12e706eCc2b2A3bDEf0327d2bD'
-      )
+        const owner = '0x123'
+        web3Service.unlockContractAbiVersion = jest.fn(() => {
+          return {
+            version: 'v12',
+          }
+        })
+        const unlockContact = {
+          publicLockAddress: jest.fn(() => {
+            return Promise.resolve('0xFA7001A0310B5E69B7b95B72aeBaA66C72E084bf')
+          }),
+        }
+        web3Service.getUnlockContract = jest.fn(() => {
+          return Promise.resolve(unlockContact)
+        })
+
+        expect(
+          await web3Service.generateLockAddress(owner, {
+            name: 'My create2 Lock',
+          })
+        ).toBe('0xC37f72615fb8DAD1ecB055c5DEb2c7d786D8f1f5')
+      })
+    })
+
+    describe('_create2Address', () => {
+      it('should compute the correct address', async () => {
+        expect.assertions(1)
+        await nockBeforeEach({})
+        const unlockAddress = '0xBe6ed9A686D288f23C721697e828480E13d138F2'
+        const templateAddress = '0x842207a6a95A0455415db073352d18eB54C728a8'
+        const account = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+        const lockSalt = '1d24dcf6d1c86a947c0e9563'
+        expect(
+          web3Service._create2Address(
+            unlockAddress,
+            templateAddress,
+            account,
+            lockSalt
+          )
+        ).toEqual('0x1c3c3E32878905490eDDFa7c98C47E6EBb003541')
+      })
+    })
+
+    describe('when deploying an older lock', () => {
+      // TODO: remove this once upgrade to v12 is done
+      it('generates the correct address from nonce and contract address', async () => {
+        expect.assertions(3)
+        await nockBeforeEach({})
+        web3Service.unlockContractAbiVersion = jest.fn(() => {
+          return {
+            version: 'v11',
+          }
+        })
+        nock.getTransactionCount(unlockAddress.toLowerCase(), 0)
+        expect(await web3Service.generateLockAddress()).toBe(
+          '0x0e518e6FD65557Ad4B289bF37786C0c0CE2A5DBE'
+        )
+        nock.getTransactionCount(unlockAddress.toLowerCase(), 1)
+        expect(await web3Service.generateLockAddress()).toBe(
+          '0xe564352cbD6a8c09feeD8EE62e1672EC6794B83a'
+        )
+        nock.getTransactionCount(unlockAddress.toLowerCase(), 2)
+        expect(await web3Service.generateLockAddress()).toBe(
+          '0xd3F4Df04bBE21E12e706eCc2b2A3bDEf0327d2bD'
+        )
+      })
     })
   })
 

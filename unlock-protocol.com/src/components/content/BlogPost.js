@@ -9,19 +9,36 @@ export class BlogPost extends React.Component {
     super(props)
     this.commentScript = null
     this.loadCommmentsIfMember = this.loadCommmentsIfMember.bind(this)
+    this.scripts = []
   }
 
   componentDidMount() {
     this.loadCommmentsIfMember()
+    // Load scripts if any!
+    const { scripts } = this.props
+    this.scripts = scripts.map(url => {
+      const element = document.createElement('script')
+      element.async = true
+      element.src = url
+      element.charset = 'utf-8'
+      document.body.appendChild(element)
+      return element
+    })
   }
 
   componentDidUpdate() {
     this.loadCommmentsIfMember()
   }
 
+  componentWillUnmount() {
+    this.scripts.forEach(element => {
+      element.parentElement.removeChild(element)
+    })
+    this.scripts = []
+  }
+
   loadCommmentsIfMember() {
     const { isMember } = this.context
-
     if (isMember === 'yes' && !this.commentScript) {
       this.commentScript = document.createElement('script')
       this.commentScript.src = 'https://cdn.commento.io/js/commento.js'
@@ -83,6 +100,7 @@ BlogPost.propTypes = {
   publishDate: PropTypes.string.isRequired,
   nonMembersOnly: PropTypes.string,
   membersOnly: PropTypes.string,
+  scripts: PropTypes.arrayOf(PropTypes.string),
 }
 
 BlogPost.defaultProps = {
@@ -90,6 +108,7 @@ BlogPost.defaultProps = {
   subTitle: '',
   nonMembersOnly: '',
   membersOnly: '',
+  scripts: [],
 }
 
 export default BlogPost
@@ -196,6 +215,12 @@ const Body = styled.div`
   th,
   td {
     padding: 5px;
+  }
+
+  .twitter-tweet {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
   }
 `
 

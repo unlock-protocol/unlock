@@ -1,5 +1,13 @@
 # Changes
 
+# 0.5.4
+
+- generateLockAddress on inputHandler as well
+
+# 0.5.3
+
+- Supports create2 in generateLockAddress
+
 # 0.5.2
 
 - Lets the user pass a network id when intantiating services

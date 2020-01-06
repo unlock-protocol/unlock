@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import Header from './Header'
@@ -10,9 +10,10 @@ import { styles } from './modal-templates'
 import { MessageBox } from './modal-templates/styles'
 import { ActionButton } from './buttons/ActionButton'
 import withConfig from '../../utils/withConfig'
+import useTermsOfService from '../../hooks/useTermsOfService'
 
 export default function Layout({ forContent, title, children }) {
-  const [tosAccepted, setTosAccepted] = useState(false)
+  const [tosAccepted, setTosAccepted] = useTermsOfService()
   return (
     <Container>
       <Left>

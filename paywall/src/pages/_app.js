@@ -1,4 +1,4 @@
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import React from 'react'
 import configure from '../config'
 
@@ -12,16 +12,6 @@ const config = configure()
 const ConfigProvider = ConfigContext.Provider
 
 class UnlockApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {}
-
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx)
-    }
-
-    return { pageProps }
-  }
-
   constructor(props, context) {
     super(props, context)
 
@@ -57,14 +47,14 @@ The Unlock team
     const { Component, pageProps } = this.props
 
     return (
-      <Container>
+      <>
         <GlobalStyle />
         <WindowContext.Provider value={global.window}>
           <ConfigProvider value={config}>
             <Component {...pageProps} />
           </ConfigProvider>
         </WindowContext.Provider>
-      </Container>
+      </>
     )
   }
 }

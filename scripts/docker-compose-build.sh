@@ -16,7 +16,6 @@ docker build -t unlock-core -f $REPO_ROOT/docker/unlock-core.dockerfile $ARGS $R
 . $REPO_ROOT/scripts/build-image.sh smart-contracts true &
 . $REPO_ROOT/scripts/build-image.sh paywall true &
 . $REPO_ROOT/scripts/build-image.sh locksmith true &
-. $REPO_ROOT/scripts/release-locksmith.sh &
 . $REPO_ROOT/scripts/build-image.sh unlock-protocol-com true &
 . $REPO_ROOT/scripts/build-image.sh integration-tests true &
 wait
