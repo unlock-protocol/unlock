@@ -14,11 +14,9 @@ const wedlocksMiddleware = (config: any) => {
         // existing, so it's safe to simply do nothing in that case.
         if (action.type === SIGNUP_EMAIL && window && window.location) {
           const { origin } = window.location
-          // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.confirmEmail(action.emailAddress, `${origin}/signup`)
         } else if (action.type === WELCOME_EMAIL && window && window.location) {
           const { origin } = window.location
-          // TODO: then and catch? I think we really only need to worry about errors.
           wedlockService.welcomeEmail(
             action.emailAddress,
             `${origin}/recover/?email=${encodeURIComponent(

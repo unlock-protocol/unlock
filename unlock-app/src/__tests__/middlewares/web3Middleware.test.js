@@ -353,6 +353,7 @@ describe('Lock middleware', () => {
       expect.assertions(2)
       const { next, invoke } = create()
       const lock = {
+        owner: '0xdeadbeef',
         name: 'my lock',
       }
       const address = '0x123'
@@ -362,7 +363,10 @@ describe('Lock middleware', () => {
       })
 
       invoke(action)
-      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith()
+      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(
+        lock.owner,
+        lock
+      )
       expect(next).toHaveBeenCalledWith(action)
     })
 

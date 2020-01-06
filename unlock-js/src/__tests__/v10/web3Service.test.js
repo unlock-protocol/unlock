@@ -138,6 +138,7 @@ describe('Web3Service', () => {
       it('should emit lock.updated with correctly typed values', async done => {
         expect.assertions(2)
         await versionedNockBeforeEach()
+        const sender = '0xsender'
         const params = {
           _expirationDuration: '7',
           _maxNumberOfKeys: '5',
@@ -150,7 +151,12 @@ describe('Web3Service', () => {
           done()
         })
 
-        await web3Service.inputsHandlers.createLock('0x123', '0x456', params)
+        await web3Service.inputsHandlers.createLock(
+          '0x123',
+          '0x456',
+          sender,
+          params
+        )
       })
     })
 
@@ -160,6 +166,7 @@ describe('Web3Service', () => {
       let resolveKeySaver
       let resolveTransactionUpdater
       const owner = '0x9876'
+      const sender = '0xsender'
       const fakeParams = {
         _recipient: owner,
       }
@@ -195,6 +202,7 @@ describe('Web3Service', () => {
       web3Service.inputsHandlers.purchaseFor(
         fakeHash,
         fakeContractAddress,
+        sender,
         fakeParams
       )
       await Promise.all([keySaver, transactionUpdater])
@@ -487,7 +495,7 @@ describe('Web3Service', () => {
     })
 
     it('should call the handler if the transaction input can be parsed', async done => {
-      expect.assertions(3)
+      expect.assertions(4)
       await versionedNockBeforeEach()
       web3Service._getTransactionType = jest.fn(() => 'TRANSACTION_TYPE')
       const input =
@@ -515,10 +523,12 @@ describe('Web3Service', () => {
       web3Service.inputsHandlers[method.name] = (
         transactionHash,
         contractAddress,
+        sender,
         args
       ) => {
         expect(transactionHash).toEqual(transaction.hash)
         expect(contractAddress).toEqual(web3Service.unlockContractAddress)
+        expect(sender).toEqual(transaction.from)
         expect(args).toEqual(params)
         done()
       }
@@ -528,7 +538,8 @@ describe('Web3Service', () => {
         transaction.hash,
         FakeContract,
         input,
-        web3Service.unlockContractAddress
+        web3Service.unlockContractAddress,
+        transaction.from
       )
     })
   })

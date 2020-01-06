@@ -1,12 +1,12 @@
-import { ethers } from 'ethers'
-import erc1820 from 'erc1820'
+/* eslint-disable no-console */
+const erc1820 = require('erc1820')
+const ethers = require('ethers')
 
 /**
  * Losely ported from https://github.com/0xjac/ERC1820/blob/master/js/deployment.js
  * @param {*} providerUrl
  */
-const deploy = async providerUrl => {
-  const provider = new ethers.providers.JsonRpcProvider(providerUrl)
+const deploy = async provider => {
   const wallet = provider.getSigner(0)
   const erc1820DeployTransaction = erc1820.generateDeployTx()
 
@@ -14,6 +14,8 @@ const deploy = async providerUrl => {
   const deployedCode = await provider.getCode(
     erc1820DeployTransaction.contractAddr
   )
+
+  console.log(deployedCode)
 
   // If the contract has not been deployed, let's do it!
   if (deployedCode.length <= 3) {
@@ -28,9 +30,12 @@ const deploy = async providerUrl => {
     const deployTransaction = await provider.sendTransaction(
       erc1820DeployTransaction.rawTx
     )
+
     return await deployTransaction.wait()
   }
   return Promise.resolve()
 }
 
-export default deploy
+module.exports = {
+  deploy,
+}

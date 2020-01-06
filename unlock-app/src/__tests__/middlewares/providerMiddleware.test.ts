@@ -327,7 +327,7 @@ describe('changePassword', () => {
 
   describe('success', () => {
     beforeEach(async () => {
-      unlockJs.reEncryptPrivateKey = jest.fn(() =>
+      ;(unlockJs as any).reEncryptPrivateKey = jest.fn(() =>
         Promise.resolve(newEncryptedKey)
       )
       await changePassword({
@@ -364,7 +364,7 @@ describe('changePassword', () => {
 
   it('should dispatch a warning when the private could not be re-encrypted', async () => {
     expect.assertions(1)
-    unlockJs.reEncryptPrivateKey = jest.fn(() =>
+    ;(unlockJs as any).reEncryptPrivateKey = jest.fn(() =>
       Promise.reject('failed to decrypt key')
     )
     await changePassword({
