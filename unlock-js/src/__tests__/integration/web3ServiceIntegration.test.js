@@ -44,7 +44,7 @@ describe('Web3 Service Integration', () => {
       expect.assertions(1)
 
       expect(
-        await web3Service.getLock('0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267')
+        await web3Service.getLock('0x5a9C58baB536Fc8C3C836916ba3dBD19E51c1923')
       ).toEqual({
         asOf: expect.any(Number),
         balance: '0',
@@ -55,7 +55,7 @@ describe('Web3 Service Integration', () => {
         name: 'ETH Lock',
         outstandingKeys: 0,
         owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        publicLockVersion: 4,
+        publicLockVersion: 5,
       })
     })
   })
@@ -76,7 +76,7 @@ describe('Web3 Service Integration', () => {
     it('returns a promise that resolves to the ERC20 symbol', async () => {
       expect.assertions(1)
       const symbol = await web3Service.getTokenSymbol(
-        '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+        '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852'
       )
 
       expect(symbol).toBe('TT')
@@ -84,7 +84,7 @@ describe('Web3 Service Integration', () => {
 
     it('emits an event mapping the contract address to the ERC20 symbol', async () => {
       expect.assertions(2)
-      const contractAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+      const contractAddress = '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852'
 
       web3Service.on('token.update', (receivedContractAddress, update) => {
         expect(receivedContractAddress).toBe(contractAddress)
@@ -101,7 +101,7 @@ describe('Web3 Service Integration', () => {
     it('returns a promise that resolves to the balance', async () => {
       expect.assertions(1)
       const balance = await web3Service.getTokenBalance(
-        '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+        '0x3F8173047Fba481A4d620032BE6b39DB0b4Ab852',
         '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
       )
 

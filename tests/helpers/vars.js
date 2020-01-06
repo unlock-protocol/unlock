@@ -13,27 +13,30 @@ const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const paywallHost = process.env.PAYWALL_HOST || '127.0.0.1'
 const theGraphHost = process.env.SUBGRAPH_HOST || '127.0.0.1'
 
-const erc20ContractAddress =
-  process.env.ERC20_CONTRACT_ADDRESS ||
-  '0x591AD9066603f5499d12fF4bC207e2f577448c46'
-
 const testingAddress =
   process.env.ETHEREUM_ADDRESS || '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
 const httpProviderHost = process.env.HTTP_PROVIDER_HOST || '127.0.0.1'
 const httpProviderPort = process.env.HTTP_PROVIDER_PORT || 8545
 
-const paywallETHLockAddress = '0x45DeBF700aB8120aC0665119467EA82BDB45E00b'
-const paywallERC20LockAddress = '0x80bc6d2870bB72CB3E37B648C160dA20733386F7'
+// All of the addresses below are hard coded but may change if the docker setup changes.
+// To check them use the docker logs
+
+const erc20ContractAddress =
+  process.env.ERC20_CONTRACT_ADDRESS ||
+  '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25'
+
+const paywallETHLockAddress = '0x7388C452674A37f8Be6Ec9BA88eeDc87Ecf9EE46'
+const paywallERC20LockAddress = '0xff57584f221Da11DefAfe494BdE01f09b3eA68b5'
 
 const adblockETHLockAddresses = [
-  '0xC11eF3E2cCE6963653C2c9F66b52e5bD2d274564',
-  '0xd9B3865D630941C54B6aA263a4DD4B8e66AB3c5c',
-  '0x1c7ec43575239A482a01Ac8A2A73d0c68887e151',
+  '0x7E6B78c64C369840DC0404e6baB3e5b00e41DB84',
+  '0x0dD40Ed60d7fAB6F612EeF4e00395B0C3298201e',
+  '0x7ef8faB186E8fb24B996c08dE9A2681d18E5F150',
 ]
 const adblockERC20LockAddresses = [
-  '0x1c0E27f7967899578eF138384F8cFC0bf579d063',
-  '0xce341cc78D9774808f0E5b654aF8B57B5126C6BA',
-  '0x0AAF2059Cb2cE8Eeb1a0C60f4e0f2789214350a5',
+  '0xa6e7cfD01eE51612f6C547a49d6228F916Be152c',
+  '0x085E176321a8622838c184E933AFaFDccfd02F38',
+  '0xc765b5631EF06d40dF4C55769741406171F43d37',
 ]
 
 module.exports = {

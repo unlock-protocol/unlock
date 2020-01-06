@@ -14,7 +14,7 @@
     "lint": "eslint --ext .tsx,.ts,.js src/",
     "svg-2-components": "./node_modules/@svgr/cli/bin/svgr --title-prop --no-dimensions --template src/components/interface/svg/template.js --no-dimensions -d src/components/interface/svg/ src/static/images/svg/",
     "storybook": "start-storybook -p 9003 -c .storybook -s src",
-    "ci": "npm run lint && npm test",
+    "ci": "npm test && npm run lint",
     "tsc": "tsc"
   },
   "dependencies": {
@@ -33,7 +33,7 @@
     "@types/react-redux": "7.1.5",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "4.4.1",
-    "@unlock-protocol/unlock-js": "0.5.2",
+    "@unlock-protocol/unlock-js": "0.5.4",
     "@zeit/next-css": "1.0.1",
     "@zeit/next-source-maps": "0.0.3",
     "@zeit/next-typescript": "1.1.1",

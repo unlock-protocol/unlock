@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.5.2",
+  "version": "0.5.4",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -13,7 +13,7 @@
     "build-cjs": "BABEL_ENV=cjs ./node_modules/.bin/babel src --ignore src/__tests__ --out-dir lib",
     "build": "npm run clean && node ./scripts/compressAbi.js && npm run build-cjs && npm run build-esm",
     "clean": "rm -rf lib/ && rm -rf esm/",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run test && npm run lint",
     "prepublishOnly": "npm run build"
   },
   "author": "",
@@ -21,7 +21,7 @@
   "dependencies": {
     "eth-sig-util": "2.5.2",
     "ethereumjs-utils": "5.2.5",
-    "ethers": "4.0.41"
+    "ethers": "4.0.42"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -42,7 +42,7 @@
     "babel-jest": "24.9.0",
     "erc1820": "0.0.2",
     "jest": "24.9.0",
-    "nock": "11.7.0",
+    "nock": "11.7.1",
     "unlock-abi-0": "1.0.4",
     "unlock-abi-0-1": "1.0.0",
     "unlock-abi-0-2": "1.0.0",

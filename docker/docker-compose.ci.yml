@@ -18,9 +18,7 @@ services:
       - 8545
   db:
     env_file: ./integration.env
-    image: postgres
-    expose:
-      - 5432
+    image: postgres:12.1
   smart-contracts:
     image: smart-contracts
     depends_on:
@@ -30,8 +28,6 @@ services:
     image: unlock-app
     ports:
       - 3000:3000
-    expose:
-      - 3000
     command: ['npm', 'run', 'start']
   unlock-provider-unlock-app:
     image: unlock-app
@@ -55,16 +51,12 @@ services:
     image: unlock-protocol-com
     ports:
       - 3002:3002
-    expose:
-      - 3002
     command: ['npm', 'run', 'start']
   paywall:
     env_file: ./integration.env
     image: paywall
     ports:
       - 3001:3001
-    expose:
-      - 3001
     command: ['npm', 'run', 'start']
   tickets:
     env_file: ./integration.env
@@ -138,7 +130,7 @@ services:
     depends_on:
       - ganache-integration
   ipfs:
-    image: ipfs/go-ipfs
+    image: ipfs/go-ipfs:v0.4.22
     ports:
       - '5001:5001'
   subgraph_deployment:

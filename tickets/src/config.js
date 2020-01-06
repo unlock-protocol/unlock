@@ -60,7 +60,7 @@ export default function configure(
     name: runtimeConfig.erc20ContractSymbol || 'DEV',
     address:
       runtimeConfig.erc20ContractAddress ||
-      '0x591AD9066603f5499d12fF4bC207e2f577448c46',
+      '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
   }
 
   if (env === 'test') {
