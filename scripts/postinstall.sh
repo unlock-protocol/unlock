@@ -6,13 +6,13 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets newsletter wedlocks unlock-js unlock-protocol.com docker/development )
-
+  SERVICES=( paywall smart-contracts unlock-app tests tickets wedlocks unlock-js unlock-protocol.com docker/development )
+  ROOT_DIR=$(pwd)
   for i in "${SERVICES[@]}"
   do
-    cd $i
-    npm ci # We run npm ci by default. &
-    cd .. # back to root
+      cd $i
+      npm ci # We run npm ci by default. &
+      cd $ROOT_DIR
   done
 
   wait
@@ -28,4 +28,15 @@ if [ "$SKIP_SERVICES" != "true" ]; then
   rm -rf scripts/node_modules
   rm -rf versions/node_modules
   rm -rf wiki/node_modules
+  # clear out newsletter deps for try at using Yarn
+  rm -rf newsletter/node_modules
+  rm -rf locksmith/node_modules
+
+  NEW_SERVICES=( newsletter locksmith )
+  for i in "${NEW_SERVICES[@]}"
+  do
+      cd $i
+      yarn
+      cd $ROOT_DIR
+  done
 fi
