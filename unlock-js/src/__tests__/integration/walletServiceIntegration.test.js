@@ -1,6 +1,7 @@
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
+import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 
 let host,
   port = 8545
@@ -22,7 +23,7 @@ let provider = `http://${host}:${port}`
 // - withdrawFromLock
 
 // Increasing timeouts
-jest.setTimeout(15000)
+jest.setTimeout(300000)
 
 let accounts
 
@@ -100,6 +101,14 @@ describe('Wallet Service Integration', () => {
         let lock, expectedLockAddress, lockAddress, lockCreationHash
 
         beforeAll(async () => {
+          if (lockParams.currencyContractAddress) {
+            // Let's wait for erc20Address to be deployed
+            await waitForContractDeployed(
+              web3Service.provider,
+              lockParams.currencyContractAddress
+            )
+          }
+
           expectedLockAddress = await web3Service.generateLockAddress(
             accounts[0],
             lockParams
