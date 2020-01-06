@@ -1,11 +1,11 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0x49b41D8b11939D7ca9678792F8d93E96dd2D6ED9",
-      "constructorCode": "608060405234801561001057600080fd5b506158d0806100206000396000f3fe",
-      "bodyBytecodeHash": "a1e7ddfa6d9183443aca067a96bd252f3ffa72a55ce36564ab77e79ce6527ac3",
-      "localBytecodeHash": "df67fdda66cc0f91e8b70a2b50b68829b7f5244c440cc0e1ac36487ddb8b5c2c",
-      "deployedBytecodeHash": "df67fdda66cc0f91e8b70a2b50b68829b7f5244c440cc0e1ac36487ddb8b5c2c",
+      "address": "0xE36793f0b4DB71fF0A5216412F80ba89B2927445",
+      "constructorCode": "60806040526112b0806100136000396000f3fe",
+      "bodyBytecodeHash": "149640e0e50420febfea973f6f01bfe963affda3e923c485e3c4ec6a1a6dafe4",
+      "localBytecodeHash": "b54826fdf251ba63cf7bddd8e60f84e353acdb9d8524478e4138050e2afd3fbe",
+      "deployedBytecodeHash": "b54826fdf251ba63cf7bddd8e60f84e353acdb9d8524478e4138050e2afd3fbe",
       "types": {
         "t_bool": {
           "id": "t_bool",
@@ -36,21 +36,21 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 167,
+              "astId": 198,
               "type": "t_bool",
-              "src": "2085:13:2"
+              "src": "2201:13:2"
             },
             {
               "label": "totalSales",
-              "astId": 169,
+              "astId": 200,
               "type": "t_uint256",
-              "src": "2104:15:2"
+              "src": "2220:15:2"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 171,
+              "astId": 202,
               "type": "t_uint256",
-              "src": "2143:26:2"
+              "src": "2259:26:2"
             }
           ]
         },
@@ -64,88 +64,110 @@
           "id": "t_string",
           "kind": "elementary",
           "label": "string"
+        },
+        "t_mapping<t_address>": {
+          "id": "t_mapping<t_address>",
+          "valueType": "t_address",
+          "label": "mapping(key => address)",
+          "kind": "mapping"
         }
       },
       "storage": [
         {
           "contract": "Initializable",
-          "path": "zos-lib/contracts/Initializable.sol",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 4745,
+          "astId": 6520,
           "type": "t_bool",
-          "src": "757:24:38"
+          "src": "757:24:50"
         },
         {
           "contract": "Initializable",
-          "path": "zos-lib/contracts/Initializable.sol",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 4747,
+          "astId": 6522,
           "type": "t_bool",
-          "src": "876:25:38"
+          "src": "876:25:50"
         },
         {
           "contract": "Initializable",
-          "path": "zos-lib/contracts/Initializable.sol",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 4803,
+          "astId": 6578,
           "type": "t_array:50<t_uint256>",
-          "src": "1951:29:38"
+          "src": "1951:29:50"
         },
         {
           "contract": "Ownable",
-          "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
           "label": "_owner",
-          "astId": 3324,
+          "astId": 5290,
           "type": "t_address",
-          "src": "302:22:22"
+          "src": "526:22:40"
         },
         {
           "contract": "Ownable",
-          "path": "openzeppelin-eth/contracts/ownership/Ownable.sol",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
           "label": "______gap",
-          "astId": 3435,
+          "astId": 5403,
           "type": "t_array:50<t_uint256>",
-          "src": "2186:29:22"
+          "src": "2471:29:40"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 187,
+          "astId": 218,
           "type": "t_uint256",
-          "src": "2281:31:2"
+          "src": "2397:31:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 189,
+          "astId": 220,
           "type": "t_uint256",
-          "src": "2317:32:2"
+          "src": "2433:32:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 193,
+          "astId": 224,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-          "src": "2438:46:2"
+          "src": "2554:46:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalBaseTokenURI",
-          "astId": 195,
+          "astId": 226,
           "type": "t_string",
-          "src": "2582:33:2"
+          "src": "2698:32:2"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalTokenSymbol",
-          "astId": 197,
+          "astId": 228,
           "type": "t_string",
-          "src": "2714:32:2"
+          "src": "2828:31:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "publicLockAddress",
+          "astId": 230,
+          "type": "t_address",
+          "src": "2943:32:2"
+        },
+        {
+          "contract": "Unlock",
+          "path": "contracts/Unlock.sol",
+          "label": "uniswapExchanges",
+          "astId": 234,
+          "type": "t_mapping<t_address>",
+          "src": "3089:53:2"
         }
       ],
       "warnings": {
@@ -159,12 +181,219 @@
             "contract": "Unlock",
             "path": "contracts/Unlock.sol",
             "label": "locks",
-            "astId": 193,
+            "astId": 224,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-            "src": "2438:46:2"
+            "src": "2554:46:2"
           }
         ],
-        "storageDiff": []
+        "storageDiff": [
+          {
+            "action": "append",
+            "updated": {
+              "index": 10,
+              "contract": "Unlock",
+              "path": "contracts/Unlock.sol",
+              "label": "publicLockAddress",
+              "astId": 230,
+              "type": "t_address",
+              "src": "2943:32:2"
+            }
+          },
+          {
+            "action": "append",
+            "updated": {
+              "index": 11,
+              "contract": "Unlock",
+              "path": "contracts/Unlock.sol",
+              "label": "uniswapExchanges",
+              "astId": 234,
+              "type": "t_mapping<t_address>",
+              "src": "3089:53:2"
+            }
+          }
+        ]
+      }
+    },
+    "UnlockDiscountToken": {
+      "address": "0x513Acd2c94fCd195B0eB750535A542a8E719A1e2",
+      "constructorCode": "608060405261145c806100136000396000f3fe",
+      "bodyBytecodeHash": "d06f12aaba562f8ed3f887429355fa8f7c52046a123cd5dc7461bb2baef9f2e4",
+      "localBytecodeHash": "0cce5898c7d8d8f0a14414c6b9056e63bb1918815c3a85072d84da334c4e493e",
+      "deployedBytecodeHash": "0cce5898c7d8d8f0a14414c6b9056e63bb1918815c3a85072d84da334c4e493e",
+      "types": {
+        "t_bool": {
+          "id": "t_bool",
+          "kind": "elementary",
+          "label": "bool"
+        },
+        "t_uint256": {
+          "id": "t_uint256",
+          "kind": "elementary",
+          "label": "uint256"
+        },
+        "t_array:50<t_uint256>": {
+          "id": "t_array:50<t_uint256>",
+          "valueType": "t_uint256",
+          "length": "50",
+          "kind": "array",
+          "label": "uint256[50]"
+        },
+        "t_mapping<t_uint256>": {
+          "id": "t_mapping<t_uint256>",
+          "valueType": "t_uint256",
+          "label": "mapping(key => uint256)",
+          "kind": "mapping"
+        },
+        "t_struct<Roles.Role>": {
+          "id": "t_struct<Roles.Role>",
+          "kind": "struct",
+          "label": "Roles.Role",
+          "members": [
+            {
+              "label": "bearer",
+              "astId": 4515,
+              "type": "t_mapping<t_bool>",
+              "src": "150:32:32"
+            }
+          ]
+        },
+        "t_mapping<t_bool>": {
+          "id": "t_mapping<t_bool>",
+          "valueType": "t_bool",
+          "label": "mapping(key => bool)",
+          "kind": "mapping"
+        },
+        "t_string": {
+          "id": "t_string",
+          "kind": "elementary",
+          "label": "string"
+        },
+        "t_uint8": {
+          "id": "t_uint8",
+          "kind": "elementary",
+          "label": "uint8"
+        }
+      },
+      "storage": [
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "label": "initialized",
+          "astId": 6520,
+          "type": "t_bool",
+          "src": "757:24:50"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "label": "initializing",
+          "astId": 6522,
+          "type": "t_bool",
+          "src": "876:25:50"
+        },
+        {
+          "contract": "Initializable",
+          "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
+          "label": "______gap",
+          "astId": 6578,
+          "type": "t_array:50<t_uint256>",
+          "src": "1951:29:50"
+        },
+        {
+          "contract": "ERC20",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
+          "label": "_balances",
+          "astId": 5423,
+          "type": "t_mapping<t_uint256>",
+          "src": "1418:46:41"
+        },
+        {
+          "contract": "ERC20",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
+          "label": "_allowances",
+          "astId": 5429,
+          "type": "t_mapping<t_uint256>",
+          "src": "1471:69:41"
+        },
+        {
+          "contract": "ERC20",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
+          "label": "_totalSupply",
+          "astId": 5431,
+          "type": "t_uint256",
+          "src": "1547:28:41"
+        },
+        {
+          "contract": "ERC20",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
+          "label": "______gap",
+          "astId": 5815,
+          "type": "t_array:50<t_uint256>",
+          "src": "8173:29:41"
+        },
+        {
+          "contract": "MinterRole",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol",
+          "label": "_minters",
+          "astId": 4612,
+          "type": "t_struct<Roles.Role>",
+          "src": "327:27:33"
+        },
+        {
+          "contract": "MinterRole",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol",
+          "label": "______gap",
+          "astId": 4712,
+          "type": "t_array:50<t_uint256>",
+          "src": "1193:29:33"
+        },
+        {
+          "contract": "ERC20Mintable",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol",
+          "label": "______gap",
+          "astId": 5931,
+          "type": "t_array:50<t_uint256>",
+          "src": "831:29:43"
+        },
+        {
+          "contract": "ERC20Detailed",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
+          "label": "_name",
+          "astId": 5826,
+          "type": "t_string",
+          "src": "224:20:42"
+        },
+        {
+          "contract": "ERC20Detailed",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
+          "label": "_symbol",
+          "astId": 5828,
+          "type": "t_string",
+          "src": "250:22:42"
+        },
+        {
+          "contract": "ERC20Detailed",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
+          "label": "_decimals",
+          "astId": 5830,
+          "type": "t_uint8",
+          "src": "278:23:42"
+        },
+        {
+          "contract": "ERC20Detailed",
+          "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
+          "label": "______gap",
+          "astId": 5882,
+          "type": "t_array:50<t_uint256>",
+          "src": "1654:29:42"
+        }
+      ],
+      "warnings": {
+        "hasConstructor": false,
+        "hasSelfDestruct": false,
+        "hasDelegateCall": false,
+        "hasInitialValuesInDeclarations": false,
+        "uninitializedBaseContracts": []
       }
     }
   },
@@ -179,7 +408,7 @@
     ]
   },
   "zosversion": "2.2",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "proxyAdmin": {
     "address": "0x79918A4389A437906538E0bbf39918BfA4F7690e"
   }
