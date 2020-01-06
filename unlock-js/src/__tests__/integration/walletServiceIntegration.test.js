@@ -1,7 +1,6 @@
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
-import deployErc1820 from '../helpers/erc1820'
 
 let host,
   port = 8545
@@ -29,12 +28,6 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  beforeAll(async () => {
-    // TODO: consider moving this to the docker setup?
-    // Deploying erc1820 which is required for later versions of public Lock
-    await deployErc1820(provider)
-  })
-
   const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12']
   describe.each(versions)('%s', versionName => {
     let walletService, web3Service
