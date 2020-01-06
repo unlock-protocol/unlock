@@ -12,7 +12,7 @@ import erc20abi from '../erc20abi'
 const endpoint = 'http://0.0.0.0:8545'
 const nock = new NockHelper(endpoint, false /** debug */, false /** record */)
 
-const erc20ContractAddress = '0x591AD9066603f5499d12fF4bC207e2f577448c46'
+const erc20ContractAddress = '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25'
 const lockContractAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 const callerAddress = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
 
