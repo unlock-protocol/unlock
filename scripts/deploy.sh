@@ -11,6 +11,7 @@ BRANCH=$5
 IS_FORKED_PR=$6
 NPM_SCRIPT="npm run deploy-$TARGET"
 REPO_ROOT=`dirname "$0"`/..
+BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 
 if [ "$IS_FORKED_PR" = "true" ]; then
@@ -43,4 +44,4 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
-docker-compose -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run $ENV_VARS $SERVICE $NPM_SCRIPT -- $OPTS

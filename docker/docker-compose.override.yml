@@ -1,0 +1,59 @@
+version: '3'
+services:
+  ganache:
+    restart: always
+    build:
+      context: ./development
+      dockerfile: ganache.dockerfile
+    env_file: ../.env.dev.local
+    ports:
+      - 8545:8545
+  jaeger:
+    restart: always
+    image: jaegertracing/all-in-one:1.16
+    ports:
+      - '5775:5775/udp'
+      - '6831:6831/udp'
+      - '6832:6832/udp'
+      - '5778:5778'
+      - '16686:16686'
+      - '14268:14268'
+      - '9411:9411'
+  postgres:
+    command: ['postgres', '-cshared_preload_libraries=pg_stat_statements']
+    env_file: development.env
+  locksmith-migration:
+    env_file: development.env
+    build:
+      context: ../locksmith/
+      dockerfile: Dockerfile
+    command: npm run db:migrate
+    depends_on:
+      - postgres
+  locksmith:
+    env_file: development.env
+    build:
+      context: ../locksmith/
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+  subgraph_deployment:
+    build:
+      context: ./development
+      dockerfile: subgraph.dockerfile
+    command: ['node', './deploy-subgraph.js']
+    depends_on:
+      - graph-node
+  wedlocks:
+    image: unlockprotocol/wedlocks
+    command: npm run dev
+    env_file: development.env
+    ports:
+      - '1337:1337'
+  graph-node:
+    env_file: development.env
+    depends_on:
+      - ipfs
+      - postgres
