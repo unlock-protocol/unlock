@@ -1,15 +1,18 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import { WordMarkLogo } from './Logo'
 import Media from '../../theme/media'
 
 export function HeaderTitle({ title }) {
   return (
     <Title forContent>
-      <TitleLink>
-        <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
-      </TitleLink>
+      <Link href="/">
+        <TitleLink>
+          <WordMarkLogo viewBox="0 0 1200 256" height="28px" name="Unlock" />
+        </TitleLink>
+      </Link>
       <TitleText>{title}</TitleText>
     </Title>
   )
