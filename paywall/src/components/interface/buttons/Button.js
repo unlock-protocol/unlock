@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import Link from 'next/link'
 import styled from 'styled-components'
 
 const clickAction = (e, action) => {
@@ -17,7 +16,7 @@ const BaseButton = ({
   title,
   ...props
 }) => {
-  const button = (
+  return (
     <ButtonLink
       href={href}
       onClick={e => {
@@ -30,10 +29,6 @@ const BaseButton = ({
       {label && <Label>{label}</Label>}
     </ButtonLink>
   )
-  if (href) {
-    return <Link href={href}>{button}</Link>
-  }
-  return button
 }
 
 BaseButton.propTypes = {
@@ -45,6 +40,8 @@ BaseButton.propTypes = {
   backgroundHoverColor: PropTypes.string,
   fillColor: PropTypes.string,
   fillHoverColor: PropTypes.string,
+  title: PropTypes.string,
+  disabled: PropTypes.bool,
 }
 
 BaseButton.defaultProps = {
@@ -56,6 +53,8 @@ BaseButton.defaultProps = {
   backgroundHoverColor: 'var(--link)',
   fillColor: 'var(--grey)',
   fillHoverColor: 'white',
+  title: null,
+  disabled: false,
 }
 
 export const ButtonLink = styled.a`
