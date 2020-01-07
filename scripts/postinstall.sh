@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( smart-contracts docker/development )
+  SERVICES=( docker/development )
   ROOT_DIR=$(pwd)
   for i in "${SERVICES[@]}"
   do
@@ -33,6 +33,7 @@ if [ "$SKIP_SERVICES" != "true" ]; then
       locksmith
       newsletter
       paywall
+      smart-contracts
       tests
       tickets
       unlock-app
