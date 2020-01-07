@@ -73,6 +73,16 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     )
     log(`TEMPLATE CONTRACT DEPLOYED AT ${publicLockTemplateAddress}`)
 
+    // DEBUG
+    const signer = walletService.provider.getSigner()
+    const address = await signer.getAddress()
+    let count = await this.provider.getTransactionCount(address)
+    log({
+      address,
+      count,
+    })
+    // END OF DEBUG
+
     // Then, we deploy Unlock!
     await walletService.deployUnlock(versionName)
     const unlockContract = walletService.unlockContractAddress
