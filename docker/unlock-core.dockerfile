@@ -36,6 +36,6 @@ COPY --chown=node package-lock.json /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
 COPY --chown=node .prettierrc /home/unlock/.
-RUN SKIP_SERVICES=true npm ci --production
+RUN SKIP_SERVICES=true yarn --production
 
 WORKDIR /home/unlock/
