@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const BigNumber = require('bignumber.js')
 const Web3Utils = require('web3-utils')
+const truffleAssert = require('truffle-assertions')
 
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
@@ -102,14 +103,12 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.equal(await lock.tokenAddress.call(), 0)
     })
 
-    it('should provide a refund in the new pricing token', async () => {})
-
     it('should revert if trying to switch to an invalid token address', async () => {
-      await shouldFail(
+      await truffleAssert.fails(
         lock.updateKeyPricing(await lock.keyPrice.call(), invalidTokenAddress, {
           from: lockOwner,
         }),
-        'INVALID_TOKEN'
+        truffleAssert.ErrorType.REVERT
       )
     })
   })
