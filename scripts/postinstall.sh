@@ -28,16 +28,12 @@ if [ "$SKIP_SERVICES" != "true" ]; then
   rm -rf scripts/node_modules
   rm -rf versions/node_modules
   rm -rf wiki/node_modules
-  # clear out newsletter deps for try at using Yarn
-  rm -rf newsletter/node_modules
-  rm -rf locksmith/node_modules
-  rm -rf paywall/node_modules
-  rm -rf unlock-app/node_modules
 
   NEW_SERVICES=( newsletter locksmith paywall unlock-app tests )
   for i in "${NEW_SERVICES[@]}"
   do
       cd $i
+      rm -rf node_modules/
       yarn
       cd $ROOT_DIR
   done
