@@ -136,7 +136,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should fail to updateKeyPrice', async () => {
-      await shouldFail(lock.updateKeyPrice(1), 'LOCK_DEPRECATED')
+      await shouldFail(lock.updateKeyPricing(1), 'LOCK_DEPRECATED')
     })
 
     it('should fail to safeTransferFrom w/o data', async () => {
