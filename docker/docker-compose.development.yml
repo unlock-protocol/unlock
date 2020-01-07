@@ -58,7 +58,6 @@ services:
       dockerfile: Dockerfile
     command: npm run db:migrate
     environment:
-      NODE_ENV: production
       DB_USERNAME: graph-node
       DB_PASSWORD: let-me-in
       DB_NAME: graph-node
@@ -72,7 +71,6 @@ services:
     ports:
       - '8080:8080'
     environment:
-      NODE_ENV: production
       DB_USERNAME: graph-node
       DB_PASSWORD: let-me-in
       DB_NAME: graph-node
