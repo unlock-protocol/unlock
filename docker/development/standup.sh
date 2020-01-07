@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BLOCKTIME=${BLOCKTIME:-1}
+BLOCKTIME=${BLOCKTIME:-3}
 
 echo "using block time of ${BLOCKTIME} seconds"
 

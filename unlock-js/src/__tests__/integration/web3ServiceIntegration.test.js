@@ -4,7 +4,7 @@ import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 // Ideally, rather than test with them, we should deploy the corresponding
 // contracts so that we do not depend on external state.
 const erc20Address = '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9'
-const lockAddress = '0x1DD7909C77C153e41e5De9b676948452A704f6f9'
+const lockAddress = '0xA9bc9183a0073a7480D9CAfbC6B08f8d8704D1Df'
 const unlockAddress = '0x1B3B887f708210541D443924C7969922E6DD15a0'
 
 jest.setTimeout(300000)
@@ -29,23 +29,6 @@ describe('Web3 Service Integration', () => {
       return await waitForContractDeployed(web3Service.provider, address)
     })
     await Promise.all(promises)
-  })
-
-  describe('generateLockAddress', () => {
-    it('returns the next expected Lock Address', async () => {
-      expect.assertions(1)
-
-      // Is this always going to be the case?
-      // I guess it depends on the order in which tests are run.
-      expect(
-        await web3Service.generateLockAddress(
-          '0xcf801a88682963BEe4ec613EEc1F1Ea01f10744b',
-          {
-            name: 'My Lock',
-          }
-        )
-      ).toEqual('0xE461e4734CbAcC0c1471AfED83791355688C7297')
-    })
   })
 
   describe('refreshAccountBalance', () => {

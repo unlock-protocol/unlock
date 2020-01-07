@@ -38,7 +38,7 @@ export default function configure(
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
-  let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+  let unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
   let ERC20Contract = {
     name: runtimeConfig.erc20ContractSymbol || 'DEV',
     address:
