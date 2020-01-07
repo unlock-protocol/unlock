@@ -15,11 +15,6 @@ RUN chown -R pptruser /home/unlock
 USER pptruser
 
 WORKDIR /home/unlock/
-# We need some of the packages installed in the root folder
-COPY --chown=pptruser scripts/postinstall.sh /home/unlock/scripts/postinstall.sh
-COPY --chown=pptruser package-lock.json /home/unlock/.
-COPY --chown=pptruser package.json /home/unlock/.
-RUN SKIP_SERVICES=true yarn --production
 
 # the eslint config inside test needs the root one
 COPY .eslintrc.js /home/unlock/.eslintrc.js
