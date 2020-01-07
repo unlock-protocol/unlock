@@ -6207,10 +6207,10 @@ g-status@^2.0.2:
     matcher "^1.0.0"
     simple-git "^1.85.0"
 
-ganache-cli@6.8.0-istanbul.0:
-  version "6.8.0-istanbul.0"
-  resolved "https://registry.yarnpkg.com/ganache-cli/-/ganache-cli-6.8.0-istanbul.0.tgz#ec19bc08ff30d250ae13c6f57c16069ecf583fa6"
-  integrity sha512-ELGCztyrqhSTQyPFAx5++iAFPODKCv8i3qoaPj7oq1DtyJQwZp6XjQb9Yu39kdW/VYR4rA0HuHW1oxRtTkmr9Q==
+ganache-cli@6.8.1:
+  version "6.8.1"
+  resolved "https://registry.yarnpkg.com/ganache-cli/-/ganache-cli-6.8.1.tgz#62dbe3a7fc8ba0e1d121637c7d84e24fc542ad6f"
+  integrity sha512-nzmIwn2Mg0zb8yUM0vfGI1uMnjHf/j4ZzCE+90sXAAbOKbaq1zxRCRo5zyMXMHrB/c6JtD2mMbO4cEz74gospA==
   dependencies:
     ethereumjs-util "6.1.0"
     source-map-support "0.5.12"
@@ -10130,22 +10130,6 @@ node-notifier@^5.4.2:
     shellwords "^0.1.1"
     which "^1.3.0"
 
-node-pre-gyp@*:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4.4.2"
-
 node-pre-gyp@^0.13.0:
   version "0.13.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.13.0.tgz#df9ab7b68dd6498137717838e4f92a33fc9daa42"
@@ -13329,7 +13313,7 @@ tar@^2.1.1:
     fstream "^1.0.12"
     inherits "2"
 
-tar@^4, tar@^4.0.2, tar@^4.4.10, tar@^4.4.2:
+tar@^4, tar@^4.0.2, tar@^4.4.10:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==
@@ -13727,10 +13711,10 @@ truffle-security@1.6.2:
     tiny-async-pool "^1.0.4"
     uuid "^3.3.3"
 
-truffle@5.1.6:
-  version "5.1.6"
-  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.6.tgz#cafb5fb9266434b46501fb0b761b4de8f88f817b"
-  integrity sha512-blTpn76f/XC0MFcSGrlJJLEZgV+q5LCSeXzS5R2fzSHWuSuv+I4Zg5dAdIHd4XDqxfLLEMKA7bBcEIAklxKw7w==
+truffle@5.1.7:
+  version "5.1.7"
+  resolved "https://registry.yarnpkg.com/truffle/-/truffle-5.1.7.tgz#d1e4645e2da889920e4bc63fd1139192ec6ccc2d"
+  integrity sha512-caVeXdNLO/3ve5Iua0cGIb0YKcXMdKdWOuqHBkFVMMWz66jABNBgtspQRtIvmXxTcU9APTUrbPOz7VM+Tht3yw==
   dependencies:
     app-module-path "^2.2.0"
     mocha "5.2.0"
