@@ -5,9 +5,6 @@ REPO_ROOT=`dirname "$0"`/..
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 EXTRA_ARGS=$*
 
-# set the environment variables needed for integration testing
-eval "$($REPO_ROOT/scripts/set-integration-tests-env-variables.sh)"
-
 mkdir -p /tmp/screenshots
 chmod 0777 /tmp/screenshots
 
