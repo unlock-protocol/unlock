@@ -48,40 +48,40 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     await walletService.connect(providerURL)
 
     // Let's transfer some Eth to users
-    users.forEach(async user => {
-      await Ether.transfer(walletService.provider, 1, user, '10')
-      log(`TRANSFERED 10 ETH to ${user}`)
-    })
+    await Promise.all(
+      users.map(async user => {
+        await Ether.transfer(walletService.provider, 1, user, '10')
+        log(`TRANSFERED 10 ETH to ${user}`)
+        return
+      })
+    )
 
     // Deploy ERC1820
     await Erc1820.deploy(walletService.provider, 2)
     log('ERC1820 CONTRACT DEPLOYED')
-
     // Deploy an ERC20
     const erc20Address = await Erc20.deploy(walletService.provider, 3)
     log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
-
     // We then transfer some ERC20 tokens to some users
-    users.forEach(async user => {
-      await Erc20.transfer(walletService.provider, 3, erc20Address, user, '500')
-      log(`TRANSFERED 500 ERC20 (${erc20Address}) to ${user}`)
-    })
+    await Promise.all(
+      users.map(async user => {
+        await Erc20.transfer(
+          walletService.provider,
+          3,
+          erc20Address,
+          user,
+          '500'
+        )
+        log(`TRANSFERED 500 ERC20 (${erc20Address}) to ${user}`)
+        return Promise.resolve()
+      })
+    )
 
     // Deploy the template contract
     const publicLockTemplateAddress = await walletService.deployTemplate(
       versionName
     )
     log(`TEMPLATE CONTRACT DEPLOYED AT ${publicLockTemplateAddress}`)
-
-    // DEBUG
-    const signer = walletService.provider.getSigner()
-    const address = await signer.getAddress()
-    let count = await this.provider.getTransactionCount(address)
-    log({
-      address,
-      count,
-    })
-    // END OF DEBUG
 
     // Then, we deploy Unlock!
     await walletService.deployUnlock(versionName)
@@ -113,6 +113,7 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
         log(
           `LOCK ${lockAddress} APPROVED TO WITHDRAW ${erc20Address} FROM PURCHASER ${process.env.LOCKSMITH_PURCHASER_ADDRESS}`
         )
+        return Promise.resolve()
       }
       return lockAddress
     })
