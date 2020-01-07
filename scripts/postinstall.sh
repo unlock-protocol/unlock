@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( smart-contracts unlock-js unlock-protocol.com docker/development )
+  SERVICES=( smart-contracts unlock-protocol.com docker/development )
   ROOT_DIR=$(pwd)
   for i in "${SERVICES[@]}"
   do
@@ -36,6 +36,7 @@ if [ "$SKIP_SERVICES" != "true" ]; then
       tests
       tickets
       unlock-app
+      unlock-js
       wedlocks
   )
   for i in "${NEW_SERVICES[@]}"
