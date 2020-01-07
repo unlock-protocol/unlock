@@ -16,9 +16,8 @@ services:
       - 8545:8545
     expose:
       - 8545
-  db:
+  postgres:
     env_file: ./integration.env
-    image: postgres:12.1
   smart-contracts:
     image: smart-contracts
     depends_on:
@@ -84,25 +83,19 @@ services:
     env_file: 
       - ./integration.env
       - ./integration-locksmith.env
-    command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- npm run db:migrate && npm start'
     ports:
       - 8080:8080
     depends_on:
-      - db
+      - postgres
       - ganache
   graph-node:
-    image: graphprotocol/graph-node:v0.17.0
     env_file:
       - ./integration.env
       - ./integration-graph-node.env
-    ports:
-      - '8000:8000'
-      - '8001:8001'
-      - '8020:8020'
     depends_on:
       - ipfs
-      - db
-    depends_on:
+      - postgres
       - ganache-integration
   ipfs:
     image: ipfs/go-ipfs:v0.4.22
@@ -115,5 +108,6 @@ services:
     command: ['node', './deploy-subgraph.js']
     depends_on:
       - ipfs
-      - db
+      - postgres
       - graph-node
+      - ganache-integration
