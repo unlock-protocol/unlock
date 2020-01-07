@@ -6,7 +6,7 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( smart-contracts tests tickets wedlocks unlock-js unlock-protocol.com docker/development )
+  SERVICES=( smart-contracts tickets wedlocks unlock-js unlock-protocol.com docker/development )
   ROOT_DIR=$(pwd)
   for i in "${SERVICES[@]}"
   do
@@ -34,7 +34,7 @@ if [ "$SKIP_SERVICES" != "true" ]; then
   rm -rf paywall/node_modules
   rm -rf unlock-app/node_modules
 
-  NEW_SERVICES=( newsletter locksmith paywall unlock-app )
+  NEW_SERVICES=( newsletter locksmith paywall unlock-app tests )
   for i in "${NEW_SERVICES[@]}"
   do
       cd $i
