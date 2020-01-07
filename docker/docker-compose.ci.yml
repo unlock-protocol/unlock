@@ -29,21 +29,14 @@ services:
     ports:
       - 3000:3000
   unlock-provider-unlock-app:
+    env_file:
+      - integration.env
+      - integration-unlock-provider.env
     image: unlock-app
     ports:
       - 9000:9000
     expose:
       - 9000
-    environment:
-      CI: '${CI}'
-      UNLOCK_ENV: 'unlock-provider-integration'
-      HTTP_PROVIDER: '${HTTP_PROVIDER}'
-      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
-      LOCKSMITH_URI: '${LOCKSMITH_URI}'
-      PAYWALL_URL: '${PAYWALL_URL}'
-      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
-      STRIPE_KEY: '${STRIPE_KEY}'      
-      PORT: 9000
   unlock-protocol-com:
     env_file: ./integration.env
     image: unlock-protocol-com
@@ -88,10 +81,9 @@ services:
       - graph-node
   locksmith:
     image: locksmith
-    env_file: ./integration.env
-    environment:
-      NODE_ENV: 'production' # TODO: verify if this is right?
-      WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
+    env_file: 
+      - ./integration.env
+      - ./integration-locksmith.env
     command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
     ports:
       - 8080:8080
@@ -100,6 +92,9 @@ services:
       - ganache
   graph-node:
     image: graphprotocol/graph-node:v0.17.0
+    env_file:
+      - ./integration.env
+      - ./integration-graph-node.env
     ports:
       - '8000:8000'
       - '8001:8001'
@@ -107,14 +102,6 @@ services:
     depends_on:
       - ipfs
       - db
-    environment:
-      postgres_host: db:5432
-      postgres_user: '${DB_USERNAME}'
-      postgres_pass: '${DB_PASSWORD}'
-      postgres_db: '${DB_NAME}'
-      ipfs: 'ipfs:5001'
-      ethereum: 'mainnet:http://ganache-integration:8545'
-      RUST_LOG: info
     depends_on:
       - ganache-integration
   ipfs:
