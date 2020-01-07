@@ -43,7 +43,7 @@ export default function configure(
     name: runtimeConfig.erc20ContractSymbol || 'DEV',
     address:
       runtimeConfig.erc20ContractAddress ||
-      '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
+      '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
   }
   let services = {}
   let supportedProviders = []

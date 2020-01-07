@@ -47,13 +47,14 @@ const transfer = async (
     wallet
   )
 
-  return await erc20Contract.mint(
+  const mintTx = await erc20Contract.mint(
     recipient,
     ethers.utils.parseUnits(amount, decimals),
     {
       gasLimit: 6000000,
     }
   )
+  return await mintTx.wait()
 }
 
 /**
@@ -79,10 +80,11 @@ const approve = async (
 
   let purchaserWallet = provider.getSigner(purchaserAddress)
   let contractWPurchaser = erc20Contract.connect(purchaserWallet)
-  return await contractWPurchaser.approve(
+  const approveTx = await contractWPurchaser.approve(
     lockAddress,
     ethers.utils.parseUnits(amount, decimals)
   )
+  return await approveTx.wait()
 }
 
 module.exports = {

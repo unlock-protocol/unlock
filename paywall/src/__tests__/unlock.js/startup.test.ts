@@ -80,7 +80,7 @@ describe('unlock.js startup', () => {
       debug: 0,
       paywallUrl: 'http://paywall',
       accountsUrl: 'http://app/account',
-      erc20ContractAddress: '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
+      erc20ContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
     }
     const dataOrigin = 'http://paywall'
     const checkoutOrigin = 'http://paywall'

@@ -102,7 +102,10 @@ serverIsUp(host, port, 1000 /* every second */, 120 /* up to 2 minutes */)
     }).map(async lock => {
       const lockAddress = await walletService.createLock(lock)
       log(`${lock.name.toUpperCase()} DEPLOYED AT ${lockAddress}`)
-      if (lock.currencyContractAddress) {
+      if (
+        lock.currencyContractAddress &&
+        process.env.LOCKSMITH_PURCHASER_ADDRESS
+      ) {
         await Erc20.approve(
           walletService.provider,
           erc20Address,
