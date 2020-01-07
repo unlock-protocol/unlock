@@ -8,12 +8,13 @@
 
 # First this script will deploy from an instance of unlock:latest
 REPO_ROOT=`dirname "$0"`/..
+BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
 EXTRA_ARGS=$*
 
 # if the integration test images are running, this ensures we remove any state
 # prior to attempting to run the tests. This line is critical!
-docker-compose -f $DOCKER_COMPOSE_FILE down
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE down
 
 # re-build the images. This will use local docker cache
 # and because we source the script, it will inherit our environment variables
@@ -35,4 +36,4 @@ wait
 $REPO_ROOT/scripts/integration-tests.sh $EXTRA_ARGS
 
 # shut down the docker file in case we want to do any local dev
-docker-compose -f $DOCKER_COMPOSE_FILE down
+docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE down
