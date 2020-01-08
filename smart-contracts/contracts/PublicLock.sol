@@ -43,8 +43,7 @@ contract PublicLock is
   MixinPurchase,
   MixinApproval,
   MixinTransfer,
-  MixinRefunds,
-  MixinLockManagerRole
+  MixinRefunds
 {
   function initialize(
     address _owner,
