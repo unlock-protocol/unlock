@@ -13,9 +13,10 @@ const {
 let id = 1
 
 function resolveWhenDeployed(address, delay, maxAttempts) {
-  let attempts = 1
+  let attempts = 0
   return new Promise((resolve, reject) => {
     function retrieveCode() {
+      attempts += 1
       post(
         {
           jsonrpc: '2.0',
@@ -40,6 +41,8 @@ function resolveWhenDeployed(address, delay, maxAttempts) {
             if (attempts < maxAttempts) {
               setTimeout(retrieveCode, delay)
               return
+            } else {
+              reject()
             }
           }
           // any other response shows that the contract has been successfully deployed
