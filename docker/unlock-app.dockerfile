@@ -2,19 +2,14 @@ FROM unlock-core
 
 # Dependencies for Unlock app
 RUN mkdir /home/unlock/unlock-app
-COPY --chown=node unlock-app/package-lock.json /home/unlock/unlock-app/.
+COPY --chown=node unlock-app/yarn.lock /home/unlock/unlock-app/.
 COPY --chown=node unlock-app/package.json /home/unlock/unlock-app/.
 WORKDIR /home/unlock/unlock-app
-RUN npm ci --production
-
-# Copy the parent binaries into the unlock-app
-WORKDIR /home/unlock/
-RUN npm run link-parent-bin
+RUN yarn --production
 
 # Build unlock-app
-WORKDIR /home/unlock/unlock-app
 COPY --chown=node unlock-app/ /home/unlock/unlock-app/.
-RUN npm run build
+RUN yarn build
 
 # Copy the .git stuff
 # We do this last because this can never be cached (every commit will change it...)
@@ -23,4 +18,4 @@ COPY --chown=node .git/ /home/unlock/.git/.
 
 WORKDIR /home/unlock/unlock-app
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]

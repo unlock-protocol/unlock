@@ -12,13 +12,14 @@ RUN apk add --no-cache \
   && pip install virtualenv
 
 RUN npm install -g npm@6.4.1
+RUN npm install -g yarn
 
 RUN mkdir /standup
 WORKDIR /standup
 
 COPY ./package.json ./
 
-RUN npm install
+RUN yarn
 
 COPY ./* ./
 COPY ./utils/* ./utils/

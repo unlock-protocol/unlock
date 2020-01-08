@@ -83,7 +83,7 @@ services:
     env_file:
       - ./integration.env
       - ./integration-locksmith.env
-    command: sh -c './scripts/wait-for.sh postgres:5432 -- npm run db:migrate && npm start'
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn start'
     ports:
       - 8080:8080
     depends_on:
