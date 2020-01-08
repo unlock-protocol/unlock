@@ -15,17 +15,18 @@ RUN apk add --no-cache \
 
 # Update npm version to use npm ci
 RUN npm install -g npm@6.4.1
+RUN npm install -g yarn
 
 # Dependencies for locksmith
 RUN mkdir /locksmith
 ADD VERSION .
-COPY --chown=node ./package-lock.json /locksmith/.
+COPY --chown=node ./yarn.lock /locksmith/.
 COPY --chown=node ./package.json /locksmith/.
 WORKDIR /locksmith
-RUN npm ci --production
+RUN yarn --production
 
 WORKDIR /locksmith
 COPY --chown=node . /locksmith/.
-RUN npm run build
+RUN yarn build
 EXPOSE 8080
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

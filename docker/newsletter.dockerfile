@@ -2,18 +2,13 @@ FROM unlock-core
 
 # Dependencies for newsletter
 RUN mkdir /home/unlock/newsletter
-COPY --chown=node newsletter/package-lock.json /home/unlock/newsletter/.
+COPY --chown=node newsletter/yarn.lock /home/unlock/newsletter/.
 COPY --chown=node newsletter/package.json /home/unlock/newsletter/.
 WORKDIR /home/unlock/newsletter
-RUN npm ci --production
-
-# Copy the parent binaries into the newsletter
-WORKDIR /home/unlock/
-RUN npm run link-parent-bin
+RUN yarn --production
 
 # Build newsletter
-WORKDIR /home/unlock/newsletter
 COPY --chown=node newsletter/ /home/unlock/newsletter/.
-RUN npm run build
+RUN yarn build
 EXPOSE 3003
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]
