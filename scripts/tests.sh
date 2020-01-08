@@ -6,7 +6,7 @@ SERVICE=$1
 REPO_ROOT=`dirname "$0"`/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
-COMMAND="npm run ci"
+COMMAND="yarn run ci"
 
 # We pass only the relevent env vars, which are prefixed with the service name, uppercased
 # UNLOCK_APP_X will be passed to the container for tests in unlock_app as X.

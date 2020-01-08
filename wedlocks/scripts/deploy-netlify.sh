@@ -32,7 +32,7 @@ fi
 
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   # Build
-  UNLOCK_ENV="$DEPLOY_ENV" npm run build;
+  UNLOCK_ENV="$DEPLOY_ENV" yarn build;
   echo $MESSAGE
   netlify deploy --prod -s $SITE_ID -a $AUTH_TOKEN --dir=$STATIC_PATH --functions=$BUILD_PATH $PROD --message="$MESSAGE"
 else
