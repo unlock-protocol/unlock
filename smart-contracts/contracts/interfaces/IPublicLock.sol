@@ -40,14 +40,11 @@ contract IPublicLock is IERC721Enumerable {
     uint refundPenaltyBasisPoints
   );
 
-  event PriceChanged(
+  event PricingChanged(
     uint oldKeyPrice,
-    uint keyPrice
-  );
-
-  event TokenAddressChanged(
-    address oldAddress,
-    address newAddress
+    uint keyPrice,
+    address oldTokenAddress,
+    address tokenAddress
   );
 
   event ExpireKey(uint indexed tokenId);
@@ -123,7 +120,8 @@ contract IPublicLock is IERC721Enumerable {
    * @dev Throws if lock has been disabled
    * @dev Throws if _tokenAddress is not a valid token
    * @param _keyPrice The new price to set for keys
-   * @param _tokenAddress The address of the erc20 token to use for pricing the keys
+   * @param _tokenAddress The address of the erc20 token to use for pricing the keys,
+   * or 0 to use ETH
    */
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 

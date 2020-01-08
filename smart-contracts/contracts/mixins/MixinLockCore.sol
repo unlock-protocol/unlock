@@ -19,12 +19,6 @@ contract MixinLockCore is
   MixinFunds,
   MixinDisableAndDestroy
 {
-  event PricingChanged(
-    uint oldKeyPrice,
-    uint keyPrice,
-    address oldTokenAddress,
-    address tokenAddress
-  );
 
   event Withdrawal(
     address indexed sender,
