@@ -48,7 +48,7 @@ You can configure your connection details in a few ways. Here are the suggested 
 2. If your configuration needs are more demanding than this, further configuration 
 can be established by modifying the storage configuration file `config\config.js`.
 
-Once configured, you will be able to start the application. `npm run dev` or `npm start`
+Once configured, you will be able to start the application. `yarn dev` or `yarn start`
 will suffice depending on your needs for running Locksmith.
 
 ### Persistence Information
@@ -59,10 +59,10 @@ permissions required.
 
 In development mode, migrations will run upon start up ensuring that your persistence 
 layer is up to date. In production, migrations will need to be performed manually. This 
-can be performed via `npm db:migrate`. Please review the migrations included so that you 
+can be performed via `yarn db:migrate`. Please review the migrations included so that you 
 are aware of the items included.
 
 ### Testing
 
-Tests can be run via `npm test`. Please note that the project includes end-to-end tests that
+Tests can be run via `yarn test`. Please note that the project includes end-to-end tests that
 will require database access.

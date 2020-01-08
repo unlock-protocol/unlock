@@ -39,10 +39,10 @@ cd unlock
 
 2. Install all dependencies
 
-This will install all dependencies required for all the Unlock components (smart contracts and react app).
+This will install all dependencies required for all the Unlock components (smart contracts and react app). You'll need [yarn](https://yarnpkg.com) installed globally.
 
 ```
-npm ci
+yarn
 ```
 
 3. Set up your environment variables
@@ -86,7 +86,7 @@ When starting this script does several things: deploys the unlock smart contract
 This applies to any of our applications, but we'll take `unlock-app` as an example as it is our "main" dashboard:
 
 ```
-cd unlock-app && npm run dev
+cd unlock-app && yarn dev
 ```
 
 ## Thank you
