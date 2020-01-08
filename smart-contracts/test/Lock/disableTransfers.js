@@ -86,7 +86,7 @@ contract('Lock / disableTransfers', accounts => {
       // check owner has a key
       assert.equal(await lock.getHasValidKey.call(keyOwner), true)
       // attempt a transfer
-      lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
+      await lock.transferFrom(keyOwner, accountWithNoKey, tokenId, {
         from: keyOwner,
       })
       // check that recipient received a key
