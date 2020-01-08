@@ -4,13 +4,13 @@ declare var __ENVIRONMENT_VARIABLES__: any
 // NOTE: NEVER PUT ENV VARS HERE
 const constants: { [key: string]: any } = {
   dev: {
-    unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
+    unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
     blockTime: 3000,
     requiredConfirmations: 6,
     defaultNetwork: 1984,
   },
   test: {
-    unlockAddress: '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93',
+    unlockAddress: '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5',
     blockTime: 3000,
     requiredConfirmations: 6,
     defaultNetwork: 1984,

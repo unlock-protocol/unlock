@@ -217,6 +217,7 @@ export default class WalletService extends UnlockService {
       callback(null, transaction.hash)
     }
     await this.provider.waitForTransaction(transaction.hash)
+    // TODO: return unlockContractAddress
   }
 
   /**

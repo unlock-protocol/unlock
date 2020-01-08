@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 // This file is used to probe the ganache server. It attempts to call
 // balanceOf(0xaaadeed4...) to get the ERC20 token balance.
 // when the standup script has finished, it will return 500 tokens,
@@ -51,6 +53,7 @@ const erc20IsUp = ({ delay, maxAttempts }) => {
                 '0x0000000000000000000000000000000000000000000000000000000000000000'
               ) {
                 console.log('...ERC20 contract deployed') // eslint-disable-line
+                return resolve() // TODO: I added this because nothing else happens after this (it keeps checking of the same thing until it times out)
               } else {
                 console.log(`...${lastResponse} coins minted`) // eslint-disable-line
               }
@@ -67,6 +70,9 @@ const erc20IsUp = ({ delay, maxAttempts }) => {
           setTimeout(retrieveBalance, delay)
           return
         }
+        console.error(
+          'Error. We could not verify that the ERC20 contract was deployed with the right balance'
+        )
         return reject(error)
       }
     }
