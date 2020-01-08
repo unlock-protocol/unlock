@@ -17,7 +17,7 @@ walletService provides a mechanism to send transactions and sign messages for a 
 ## HOW TO
 
 The code is written using es6 and exported after it's been transpiled to older versions of JS using babel.
-You can run test using `npm run test` and you need to run `npm run build` in order to generate the new transpiled code.
+You can run test using `yarn test` and you need to run `yarn build` in order to generate the new transpiled code.
 
 ## TODO
 
