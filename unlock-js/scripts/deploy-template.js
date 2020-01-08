@@ -1,6 +1,16 @@
 /* eslint no-console:0 */
 const { WalletService } = require('../lib/index')
 
+// Make sure you add this file!
+// Locally:
+// const winston = 'http://0.0.0.0:8545'
+// rinkeby:
+// const rinkeby = new HDWalletProvider(
+//   'seed phrase',
+//   'https://....',
+//   1
+// )
+// eslint-disable-next-line import/no-unresolved
 const provider = require('../provider.js')
 
 // Setup provider
