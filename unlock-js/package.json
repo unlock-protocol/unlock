@@ -42,7 +42,6 @@
     "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.42",
     "jest": "24.9.0",
-    "link-parent-bin": "1.0.2",
     "lint-staged": "8.2.1",
     "netlify-cli": "2.25.0",
     "prettier": "1.19.1",
