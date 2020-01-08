@@ -27,6 +27,13 @@ contract MixinLockCore is
     uint amount
   );
 
+  event PricingChanged(
+    uint oldKeyPrice,
+    uint keyPrice,
+    address oldTokenAddress,
+    address tokenAddress
+  );
+
   // Unlock Protocol address
   // TODO: should we make that private/internal?
   IUnlock public unlockProtocol;
