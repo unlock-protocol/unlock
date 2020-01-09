@@ -16,4 +16,4 @@ The services running under the configuration are well configured and ready to de
 ### Starting the services
 
 Running the following will start the services
-```docker-compose -f docker-compose.development.yml up --build```
+```docker-compose up --build```
