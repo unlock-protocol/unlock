@@ -19,13 +19,17 @@ class MockPostOfficeService extends EventEmitter {
   constructor() {
     super()
   }
+
   showAccountModal = jest.fn()
+
   hideAccountModal = jest.fn()
+
   transactionInitiated = jest.fn()
+
   setAccount = jest.fn()
 }
 
-let mockPostOfficeService = new MockPostOfficeService()
+const mockPostOfficeService = new MockPostOfficeService()
 
 jest.mock('../../services/postOfficeService', () => {
   const mockPostOffice = require.requireActual(
@@ -33,7 +37,7 @@ jest.mock('../../services/postOfficeService', () => {
   ) // original module
   return {
     ...mockPostOffice,
-    PostOfficeService: function() {
+    PostOfficeService() {
       return mockPostOfficeService
     },
   }

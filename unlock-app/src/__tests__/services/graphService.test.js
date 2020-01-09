@@ -8,7 +8,7 @@ jest.mock('apollo-boost')
 jest.mock('ethers')
 
 let graphService
-let graphEndpoint = 'https://graphEndpoint'
+const graphEndpoint = 'https://graphEndpoint'
 describe('GraphService', () => {
   beforeEach(() => {
     jest.clearAllMocks()

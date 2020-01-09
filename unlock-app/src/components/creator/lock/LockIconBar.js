@@ -28,15 +28,14 @@ export function LockIconBar({
   if (blockingTransaction) {
     if (!blockingTransaction.confirmations) {
       return <CreatorLockStatus lock={lock} status="Submitted" />
-    } else {
-      return (
-        <CreatorLockStatus
-          lock={lock}
-          status="Confirming"
-          confirmations={blockingTransaction.confirmations}
-        />
-      )
     }
+    return (
+      <CreatorLockStatus
+        lock={lock}
+        status="Confirming"
+        confirmations={blockingTransaction.confirmations}
+      />
+    )
   }
 
   const etherscanAddress = `https://etherscan.io/address/${lock.address}`
@@ -106,27 +105,28 @@ export const mapStateToProps = ({ transactions }, { lock }) => {
       // We sort in reverse block order so we can get the "latest" transaction first
       if (!t.blockNumber) {
         return 1
-      } else if (!u.blockNumber) {
-        return -1
-      } else if (t.blockNumber > u.blockNumber) {
-        return -1
-      } else {
-        return 1
       }
+      if (!u.blockNumber) {
+        return -1
+      }
+      if (t.blockNumber > u.blockNumber) {
+        return -1
+      }
+      return 1
     })
 
   // Get lock creation transaction
-  let lockCreationTransaction = lockTransactions.find(transaction => {
+  const lockCreationTransaction = lockTransactions.find(transaction => {
     return transaction.type === TransactionType.LOCK_CREATION
   })
 
   // Get latest lock withdrawal transacion
-  let withdrawalTransaction = lockTransactions.find(transaction => {
+  const withdrawalTransaction = lockTransactions.find(transaction => {
     return transaction.type === TransactionType.WITHDRAWAL
   })
 
   // Get latest lock price update transacion
-  let priceUpdateTransaction = lockTransactions.find(transaction => {
+  const priceUpdateTransaction = lockTransactions.find(transaction => {
     return transaction.type === TransactionType.UPDATE_KEY_PRICE
   })
 

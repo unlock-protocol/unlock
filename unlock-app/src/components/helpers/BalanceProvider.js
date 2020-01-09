@@ -18,7 +18,7 @@ export const BalanceProvider = ({
   if (typeof amount === 'undefined' || amount === null) {
     return render(' - ', ' - ') || null
   }
-  let currency = parseFloat(amount)
+  const currency = parseFloat(amount)
   const ethWithPresentation = formatCurrency(currency)
   let convertedUSDValue
   if (!convertCurrency) {

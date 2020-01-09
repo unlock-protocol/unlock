@@ -255,7 +255,7 @@ export class StorageService extends EventEmitter {
         opts
       )
       if (response.data && response.data.recoveryPhrase) {
-        const recoveryPhrase = response.data.recoveryPhrase
+        const { recoveryPhrase } = response.data
         this.emit(success.getUserRecoveryPhrase, {
           emailAddress,
           recoveryPhrase,
@@ -370,7 +370,7 @@ export class StorageService extends EventEmitter {
       // call.
       params: {
         data: stringData,
-        signature: signature,
+        signature,
       },
     }
     try {
@@ -408,7 +408,7 @@ export class StorageService extends EventEmitter {
       // call.
       params: {
         data: stringData,
-        signature: signature,
+        signature,
       },
     }
     try {

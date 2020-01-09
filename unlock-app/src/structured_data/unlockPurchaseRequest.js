@@ -1,6 +1,6 @@
 export default class UnlockPurchaseRequest {
   static build(input) {
-    let domain = [
+    const domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
@@ -8,18 +8,18 @@ export default class UnlockPurchaseRequest {
       { name: 'salt', type: 'bytes32' },
     ]
 
-    let purchaseRequest = [
+    const purchaseRequest = [
       { name: 'recipient', type: 'address' },
       { name: 'lock', type: 'address' },
       { name: 'expiry', type: 'uint64' },
     ]
 
-    let domainData = {
+    const domainData = {
       name: 'Unlock',
       version: '1',
     }
 
-    let message = {
+    const message = {
       purchaseRequest: {
         recipient: input.recipient,
         lock: input.lock,
@@ -34,7 +34,7 @@ export default class UnlockPurchaseRequest {
       },
       domain: domainData,
       primaryType: 'PurchaseRequest',
-      message: message,
+      message,
     }
   }
 }

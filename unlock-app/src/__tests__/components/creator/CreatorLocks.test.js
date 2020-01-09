@@ -206,7 +206,7 @@ describe('CreatorLocks', () => {
       }
 
       const props = mapStateToProps(state)
-      const lockFeed = props.lockFeed
+      const { lockFeed } = props
       expect(Object.keys(locks)).toHaveLength(4)
       expect(lockFeed).toHaveLength(3)
       expect(lockFeed[0].owner).toEqual(account.address)
@@ -225,7 +225,7 @@ describe('CreatorLocks', () => {
       }
 
       const props = mapStateToProps(state)
-      const lockFeed = props.lockFeed
+      const { lockFeed } = props
 
       expect(lockFeed).toHaveLength(3)
       // Lock "The Gamma Blog" has the highest blockNumber, so it should always appear first
@@ -247,7 +247,7 @@ describe('CreatorLocks', () => {
       }
 
       const props = mapStateToProps(state)
-      const lockFeed = props.lockFeed
+      const { lockFeed } = props
 
       expect(lockFeed).toHaveLength(3)
       // This time "The Beta Blog" has no associated transaction, which means it is a brand

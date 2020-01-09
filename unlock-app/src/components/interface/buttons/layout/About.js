@@ -7,7 +7,7 @@ import UnlockPropTypes from '../../../../propTypes'
 
 const About = ({ config, ...props }) => (
   <LayoutButton
-    href={config.unlockStaticUrl + '/about'}
+    href={`${config.unlockStaticUrl}/about`}
     label="About"
     {...props}
   >

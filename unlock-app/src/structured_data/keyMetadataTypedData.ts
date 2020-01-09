@@ -16,6 +16,6 @@ export default function generateKeyTypedData(message: any) {
       version: '1',
     },
     primaryType: 'KeyMetadata',
-    message: message,
+    message,
   }
 }

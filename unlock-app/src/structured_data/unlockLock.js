@@ -1,6 +1,6 @@
 export default class UnlockLock {
   static build(input) {
-    let domain = [
+    const domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
@@ -8,18 +8,18 @@ export default class UnlockLock {
       { name: 'salt', type: 'bytes32' },
     ]
 
-    let lock = [
+    const lock = [
       { name: 'name', type: 'string' },
       { name: 'owner', type: 'address' },
       { name: 'address', type: 'address' },
     ]
 
-    let domainData = {
+    const domainData = {
       name: 'Unlock Dashboard',
       version: '1',
     }
 
-    let message = {
+    const message = {
       lock: {
         name: input.name,
         owner: input.owner,
@@ -34,7 +34,7 @@ export default class UnlockLock {
       },
       domain: domainData,
       primaryType: 'Lock',
-      message: message,
+      message,
     }
   }
 }

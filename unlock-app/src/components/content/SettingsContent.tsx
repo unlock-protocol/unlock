@@ -36,6 +36,7 @@ export class SettingsContent extends React.Component<
   SettingsContentState
 > {
   interval: number | null
+
   constructor(props: SettingsContentProps) {
     super(props)
     this.state = {

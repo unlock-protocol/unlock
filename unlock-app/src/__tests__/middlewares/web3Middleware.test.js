@@ -70,7 +70,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
   return {
     ...mockUnlock,
-    Web3Service: function() {
+    Web3Service() {
       return mockWeb3Service
     },
   }
@@ -372,7 +372,7 @@ describe('Lock middleware', () => {
 
     it('should do nothing is the lock has an address', () => {
       expect.assertions(2)
-      let lock = {
+      const lock = {
         keyPrice: '100',
         owner: account,
         address: '0x123',

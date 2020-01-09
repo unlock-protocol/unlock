@@ -26,9 +26,8 @@ export default class CurrencyLookupService {
   async lookupPrice(base, currency) {
     if (RegExp('api.coinbase.com', 'ig').test(this.host)) {
       return this._handleCoinbaseFetch(base, currency)
-    } else {
-      throw 'Unknown Currency Conversion Provider'
     }
+    throw 'Unknown Currency Conversion Provider'
   }
 
   /**
@@ -52,7 +51,7 @@ export default class CurrencyLookupService {
    * @param {String} currency
    */
   async _handleCoinbaseFetch(base, currency) {
-    let result = await axios.get(
+    const result = await axios.get(
       this._constructCoinbaseLookupURI(base, currency)
     )
 

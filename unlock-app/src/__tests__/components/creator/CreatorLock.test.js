@@ -63,7 +63,7 @@ describe('CreatorLock', () => {
       },
     })
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
           <CreatorLock lock={lock} updateLock={() => {}} />
@@ -77,7 +77,7 @@ describe('CreatorLock', () => {
       })
     ).toBeNull()
 
-    let codeButton = wrapper.getByTitle('Integrations')
+    const codeButton = wrapper.getByTitle('Integrations')
     rtl.fireEvent.click(codeButton)
 
     expect(
@@ -98,7 +98,7 @@ describe('CreatorLock', () => {
       account: {},
     })
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
           <CreatorLock lock={lock} updateLock={() => {}} />
@@ -106,7 +106,7 @@ describe('CreatorLock', () => {
       </ConfigProvider>
     )
 
-    let editButton = wrapper.getByTitle('Edit')
+    const editButton = wrapper.getByTitle('Edit')
     rtl.fireEvent.click(editButton)
 
     wrapper.getByDisplayValue('0.1')
@@ -125,7 +125,7 @@ describe('CreatorLock', () => {
       },
     })
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
           <CreatorLock lock={keylock} updateLock={() => {}} />
@@ -149,7 +149,7 @@ describe('CreatorLock', () => {
       },
     })
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <ConfigProvider value={config}>
         <Provider store={store}>
           <CreatorLock lock={unlimitedlock} updateLock={() => {}} />
@@ -163,7 +163,7 @@ describe('CreatorLock', () => {
   describe('mapDispatchToProps', () => {
     it('should dispatch updateKeyPrice if the lock key price has been changed', () => {
       expect.assertions(1)
-      const newLock = Object.assign({}, unlimitedlock)
+      const newLock = { ...unlimitedlock }
       newLock.keyPrice = '6.66'
       const dispatch = jest.fn()
       const { updateLock } = mapDispatchToProps(dispatch, { lock })
@@ -178,7 +178,7 @@ describe('CreatorLock', () => {
 
     it('should dispatch updateLock', () => {
       expect.assertions(1)
-      const newLock = Object.assign({}, unlimitedlock)
+      const newLock = { ...unlimitedlock }
       newLock.name = 'A New name'
       const dispatch = jest.fn()
       const { updateLock } = mapDispatchToProps(dispatch, { lock })

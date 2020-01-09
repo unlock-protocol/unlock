@@ -48,6 +48,7 @@ export class AccountContent extends React.Component<
   AccountContentState
 > {
   interval: number | null
+
   constructor(props: FullAccountContentProps) {
     super(props)
     this.state = {
@@ -82,13 +83,14 @@ export class AccountContent extends React.Component<
     const { emailAddress, cards, pageIsLocked } = this.props
     if (!emailAddress) {
       return 'LogIn'
-    } else if (!pageIsLocked) {
-      return 'Unlocked'
-    } else if (!cards || !cards.length) {
-      return 'CollectPaymentDetails'
-    } else {
-      return 'ConfirmPurchase'
     }
+    if (!pageIsLocked) {
+      return 'Unlocked'
+    }
+    if (!cards || !cards.length) {
+      return 'CollectPaymentDetails'
+    }
+    return 'ConfirmPurchase'
   }
 
   setStripe = (s: stripe.StripeStatic) => {
@@ -139,7 +141,7 @@ interface ReduxState {
   pageIsLocked: boolean
 }
 export const mapStateToProps = ({ account, pageIsLocked }: ReduxState) => {
-  let props: AccountContentProps = {
+  const props: AccountContentProps = {
     pageIsLocked,
   }
 

@@ -19,11 +19,11 @@ const account = {}
 const recoveryPhrase = 'recoveryPhrase'
 
 describe('RecoverContent', () => {
-  let store = createUnlockStore({})
+  const store = createUnlockStore({})
 
   it('should show a message when the email is missing from the link', () => {
     expect.assertions(1)
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <ConfigProvider value={config}>
           <RecoverContent changePassword={changePassword} />
@@ -38,7 +38,7 @@ describe('RecoverContent', () => {
   it('should indicate that the private key is being decrypted', () => {
     expect.assertions(1)
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <ConfigProvider value={config}>
           <RecoverContent
@@ -58,7 +58,7 @@ describe('RecoverContent', () => {
   it('should show a message when the password as succesfully reset', () => {
     expect.assertions(1)
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <ConfigProvider value={config}>
           <RecoverContent
@@ -75,7 +75,7 @@ describe('RecoverContent', () => {
   it('should show the password reset form when applicable', () => {
     expect.assertions(1)
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <ConfigProvider value={config}>
           <RecoverContent

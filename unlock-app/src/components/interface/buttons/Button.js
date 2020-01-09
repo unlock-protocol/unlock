@@ -25,7 +25,7 @@ const Button = ({
       onClick={e => {
         if (!disabled) return clickAction(e, action)
       }}
-      title={label ? label : title}
+      title={label || title}
       {...props}
     >
       {children}
@@ -37,9 +37,8 @@ const Button = ({
   if (href) {
     if (target != '_blank') {
       return <Link href={href}>{button}</Link>
-    } else {
-      return button
     }
+    return button
   }
 
   return button

@@ -5,7 +5,7 @@ import Error, {
 } from '../../utils/Error'
 
 describe('Error constructors', () => {
-  for (let name in Error) {
+  for (const name in Error) {
     describe(name, () => {
       it('should carry the message param on all methods', () => {
         expect.assertions(3)

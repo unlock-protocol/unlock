@@ -13,27 +13,28 @@ export function durations(seconds, intervals) {
   if (seconds < 60) {
     return {
       ...intervals,
-      seconds: seconds,
+      seconds,
     }
-  } else if (seconds < 60 * 60) {
-    let minutes = Math.floor(seconds / 60)
+  }
+  if (seconds < 60 * 60) {
+    const minutes = Math.floor(seconds / 60)
     return durations(seconds - minutes * 60, {
       ...intervals,
       minutes,
     })
-  } else if (seconds < 60 * 60 * 24) {
-    let hours = Math.floor(seconds / (60 * 60))
+  }
+  if (seconds < 60 * 60 * 24) {
+    const hours = Math.floor(seconds / (60 * 60))
     return durations(seconds - hours * 60 * 60, {
       ...intervals,
       hours,
     })
-  } else {
-    let days = Math.floor(seconds / (60 * 60 * 24))
-    return durations(seconds - days * 60 * 60 * 24, {
-      ...intervals,
-      days,
-    })
   }
+  const days = Math.floor(seconds / (60 * 60 * 24))
+  return durations(seconds - days * 60 * 60 * 24, {
+    ...intervals,
+    days,
+  })
 }
 
 /**
@@ -55,11 +56,9 @@ export function durationsAsTextFromSeconds(seconds) {
   if (asArrayOfValues.length === 1) {
     return asArrayOfValues[0]
   }
-  return (
-    asArrayOfValues.slice(0, -1).join(', ') +
-    ' and ' +
-    asArrayOfValues.slice(-1)
-  )
+  return `${asArrayOfValues
+    .slice(0, -1)
+    .join(', ')} and ${asArrayOfValues.slice(-1)}`
 }
 
 /**
@@ -92,11 +91,11 @@ export function expirationAsDate(timestamp) {
     return durationsAsTextFromSeconds(secondsFromNow)
   }
 
-  let expirationDate = new Date(0)
+  const expirationDate = new Date(0)
   expirationDate.setUTCSeconds(timestamp)
-  let day = expirationDate.getDate()
-  let month = expirationDate.getMonth()
-  let year = expirationDate.getFullYear()
+  const day = expirationDate.getDate()
+  const month = expirationDate.getMonth()
+  const year = expirationDate.getFullYear()
 
-  return MONTH_NAMES[month] + ' ' + day + ', ' + year
+  return `${MONTH_NAMES[month]} ${day}, ${year}`
 }

@@ -94,31 +94,27 @@ export const createUnlockStore = (
 
   // We build the initial state by taking first each reducer's default values
   // Then some overides and finally whatever state we have stored locally.
-  const initialState = Object.assign(
-    {
-      router: initialRouterState(path),
-      account: defaultAccount,
-      loading: defaultLoading,
-      locks: defaultLocks,
-      network: defaultNetwork,
-      provider: defaultProvider,
-      transactions: defaultTransactions,
-      currency: defaultCurrency,
-      errors: defaultError,
-      lockFormStatus: defaultLockFormVisibility,
-      fullScreenModalStatus: defaultFullScreenModalsStatus,
-      userDetails: defaultUserDetails,
-      recoveryPhrase: defaultRecoveryPhrase,
-      cart: defaultCartState,
-      pageIsLocked: defaultPageStatus,
-      signature: defaultSignatureState,
-      metadata: defaultMetadataState,
-    },
-    {
-      provider: Object.keys(config.providers)[0],
-    },
-    defaultState
-  )
+  const initialState = {
+    router: initialRouterState(path),
+    account: defaultAccount,
+    loading: defaultLoading,
+    locks: defaultLocks,
+    network: defaultNetwork,
+    provider: defaultProvider,
+    transactions: defaultTransactions,
+    currency: defaultCurrency,
+    errors: defaultError,
+    lockFormStatus: defaultLockFormVisibility,
+    fullScreenModalStatus: defaultFullScreenModalsStatus,
+    userDetails: defaultUserDetails,
+    recoveryPhrase: defaultRecoveryPhrase,
+    cart: defaultCartState,
+    pageIsLocked: defaultPageStatus,
+    signature: defaultSignatureState,
+    metadata: defaultMetadataState,
+    provider: Object.keys(config.providers)[0],
+    ...defaultState,
+  }
 
   middlewares.push(createRouterMiddleware())
 

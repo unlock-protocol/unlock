@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components'
 import { MAX_DEVICE_WIDTHS } from '../constants'
 
-let sizes: { [key: string]: any } = {
+const sizes: { [key: string]: any } = {
   desktop: {
     min: MAX_DEVICE_WIDTHS.TABLET,
     max: MAX_DEVICE_WIDTHS.DESKTOP,

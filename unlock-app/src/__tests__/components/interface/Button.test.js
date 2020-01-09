@@ -18,9 +18,9 @@ describe('Button', () => {
       buttonClicked = true
     }
 
-    let wrapper = rtl.render(<Button action={action}>Click me</Button>)
+    const wrapper = rtl.render(<Button action={action}>Click me</Button>)
 
-    let button = wrapper.getByText('Click me')
+    const button = wrapper.getByText('Click me')
     rtl.fireEvent.click(button)
 
     expect(buttonClicked).toEqual(true)
@@ -39,7 +39,7 @@ describe('Button', () => {
     }
 
     // role and onKeyDown action here are to comply with accessibility rules
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <div
         onClick={wrapperAction}
         onKeyDown={wrapperAction}
@@ -49,7 +49,7 @@ describe('Button', () => {
       </div>
     )
 
-    let button = wrapper.getByText('Click me')
+    const button = wrapper.getByText('Click me')
     rtl.fireEvent.click(button)
 
     expect(buttonClicked).toEqual(true)
@@ -64,11 +64,11 @@ describe('Button', () => {
       buttonClicked = true
     }
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <DisabledButton action={buttonAction}>Click me</DisabledButton>
     )
 
-    let button = wrapper.getByText('Click me')
+    const button = wrapper.getByText('Click me')
     rtl.fireEvent.click(button)
 
     expect(buttonClicked).toEqual(false)

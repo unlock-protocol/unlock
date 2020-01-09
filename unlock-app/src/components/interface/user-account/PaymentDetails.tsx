@@ -138,7 +138,8 @@ export class PaymentForm extends React.Component<
           Clear Errors and Retry
         </SubmitButton>
       )
-    } else if (submitted) {
+    }
+    if (submitted) {
       return <LoadingButton>Submitting...</LoadingButton>
     }
 

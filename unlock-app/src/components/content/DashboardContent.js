@@ -71,8 +71,8 @@ export const mapStateToProps = ({
   lockFormStatus: { visible },
 }) => {
   return {
-    account: account,
-    network: network,
+    account,
+    network,
     formIsVisible: visible,
   }
 }

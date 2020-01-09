@@ -31,16 +31,16 @@ export const typeOfAccount = account => {
   const { address, emailAddress } = account
   if (address && emailAddress) {
     return accountTypes.managed
-  } else if (address) {
-    return accountTypes.crypto
-  } else {
-    // This final catch-all state is invalid. No app navigation will display for
-    // a user who doesn't match the above conditions. A user may be in an
-    // intermediate state (not all account updates have hit redux), which may
-    // cause a brief flicker of the icons. The return value here should indicate
-    // what pieces are missing for debugging purposes.
-    return `account/address={${address}}--emailAddress={${emailAddress}}`
   }
+  if (address) {
+    return accountTypes.crypto
+  }
+  // This final catch-all state is invalid. No app navigation will display for
+  // a user who doesn't match the above conditions. A user may be in an
+  // intermediate state (not all account updates have hit redux), which may
+  // cause a brief flicker of the icons. The return value here should indicate
+  // what pieces are missing for debugging purposes.
+  return `account/address={${address}}--emailAddress={${emailAddress}}`
 }
 
 // distinct from the above buttons are page nav buttons -- they are only visible

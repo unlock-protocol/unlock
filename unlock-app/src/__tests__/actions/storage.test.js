@@ -7,7 +7,7 @@ describe('Storage error', () => {
 
     const expectation = {
       type: STORAGE_ERROR,
-      error: error,
+      error,
     }
 
     expect(storageError(error)).toEqual(expectation)

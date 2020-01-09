@@ -71,6 +71,7 @@ class MockWalletService extends EventEmitter {
     super()
     this.ready = true
   }
+
   connect() {}
 }
 
@@ -80,7 +81,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
   return {
     ...mockUnlock,
-    WalletService: function() {
+    WalletService() {
       return mockWalletService
     },
   }
@@ -559,7 +560,7 @@ describe('Wallet middleware', () => {
     describe('when the lock does not have an address', () => {
       it('should not try to createLock', () => {
         expect.assertions(2)
-        let lock = {
+        const lock = {
           keyPrice: '100',
           owner: account,
         }

@@ -51,7 +51,8 @@ const Submit = ({ active, submit }: SubmitProps) => {
   const [submitted, setSubmitted] = useState(false)
   if (submitted) {
     return <DisabledButton>Sent!</DisabledButton>
-  } else if (active) {
+  }
+  if (active) {
     return (
       <SubmitButton
         onClick={() => {

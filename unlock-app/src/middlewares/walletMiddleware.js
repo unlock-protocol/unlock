@@ -58,17 +58,17 @@ const walletMiddleware = config => {
       if (!getState().account) return
 
       const currentAccount = getState().account
-      const updatedAccount = Object.assign({}, currentAccount, update)
+      const updatedAccount = { ...currentAccount, ...update }
       const difference = diff(currentAccount, updatedAccount)
 
       if (Object.keys(difference).length > 0) {
         dispatch(updateAccount(update))
 
-        if (difference['emailAddress']) {
+        if (difference.emailAddress) {
           // if the update contains an email address, that means a user has
           // successfully logged in. We should fetch any extra information
           // (payment details...) that locksmith has on them.
-          dispatch(getStoredPaymentDetails(difference['emailAddress']))
+          dispatch(getStoredPaymentDetails(difference.emailAddress))
         }
       }
     })

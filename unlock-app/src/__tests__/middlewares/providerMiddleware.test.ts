@@ -73,10 +73,10 @@ let dispatch: () => any
 
 describe('provider middleware', () => {
   beforeEach(() => {
-    config.providers['NUNLOCK'].enable = jest.fn(
+    config.providers.NUNLOCK.enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
-    config.providers['METAMASQUE'].enable = jest.fn(
+    config.providers.METAMASQUE.enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
     dispatch = jest.fn()
@@ -85,8 +85,8 @@ describe('provider middleware', () => {
   describe('initializeUnlockProvider', () => {
     const emailAddress = 'test@us.er'
     const password = 'guest'
-    let key: any = {}
-    let address: string = 'address'
+    const key: any = {}
+    const address: string = 'address'
 
     it('should dispatch an error if it cannot decrypt', async () => {
       expect.assertions(1)
@@ -118,8 +118,8 @@ describe('provider middleware', () => {
     it('should initialize the provider when provider is different from one in state', done => {
       expect.assertions(2)
       const next = () => {
-        expect(config.providers['METAMASQUE'].enable).toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.METAMASQUE.enable).toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         done()
       }
 
@@ -129,8 +129,8 @@ describe('provider middleware', () => {
     it('should set an error and return if there is no matching provider', done => {
       expect.assertions(3)
       const next = () => {
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
-        expect(config.providers['METAMASQUE'].enable).not.toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
+        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
         expect(dispatch).toHaveBeenCalledWith(
           setError(Application.Fatal(FATAL_MISSING_PROVIDER))
         )
@@ -142,7 +142,7 @@ describe('provider middleware', () => {
 
     it('should set an error and return if the call to enable fails', done => {
       expect.assertions(2)
-      config.providers['METAMASQUE'].enable = jest.fn(() => {
+      config.providers.METAMASQUE.enable = jest.fn(() => {
         // eslint-disable-next-line promise/param-names
         return new Promise((_, reject) => {
           reject('The front fell off.')
@@ -150,8 +150,8 @@ describe('provider middleware', () => {
       })
 
       const next = () => {
-        expect(config.providers['METAMASQUE'].enable).toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.METAMASQUE.enable).toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         done()
       }
 
@@ -161,8 +161,8 @@ describe('provider middleware', () => {
     it('should do nothing if provider is the same as in state', done => {
       expect.assertions(3)
       const next = () => {
-        expect(config.providers['METAMASQUE'].enable).not.toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         expect(dispatch).not.toHaveBeenCalled()
         done()
       }
@@ -173,8 +173,8 @@ describe('provider middleware', () => {
     it('should do nothing if using unlockProvider', done => {
       expect.assertions(3)
       const next = () => {
-        expect(config.providers['METAMASQUE'].enable).not.toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.METAMASQUE.enable).not.toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         expect(dispatch).not.toHaveBeenCalled()
         done()
       }
@@ -196,7 +196,7 @@ describe('provider middleware', () => {
     it('should call UnlockProvider', () => {
       expect.assertions(1)
       const next = () => {
-        expect(config.providers['UNLOCK'].signUserData).toHaveBeenCalled()
+        expect(config.providers.UNLOCK.signUserData).toHaveBeenCalled()
       }
 
       providerMiddleware(config)({
@@ -213,7 +213,7 @@ describe('provider middleware', () => {
     it('should call UnlockProvider', () => {
       expect.assertions(1)
       const next = () => {
-        expect(config.providers['UNLOCK'].signPaymentData).toHaveBeenCalledWith(
+        expect(config.providers.UNLOCK.signPaymentData).toHaveBeenCalledWith(
           'tok_1EPsocIsiZS2oQBMRXzw21xh'
         )
       }
@@ -237,7 +237,7 @@ describe('provider middleware', () => {
       }
       const next = () => {
         expect(
-          config.providers['UNLOCK'].signKeyPurchaseRequestData
+          config.providers.UNLOCK.signKeyPurchaseRequestData
         ).toHaveBeenCalledWith(data)
       }
 
@@ -257,7 +257,7 @@ describe('provider middleware', () => {
 
       const next = () => {
         expect(
-          config.providers['UNLOCK'].generateSignedEjectionRequest
+          config.providers.UNLOCK.generateSignedEjectionRequest
         ).toHaveBeenCalledWith()
       }
 
@@ -315,15 +315,15 @@ describe('provider middleware', () => {
 })
 
 describe('changePassword', () => {
-  let oldPassword = 'oldPassword'
-  let newPassword = 'newPassword'
-  let passwordEncryptedPrivateKey: EncryptedPrivateKey = {
+  const oldPassword = 'oldPassword'
+  const newPassword = 'newPassword'
+  const passwordEncryptedPrivateKey: EncryptedPrivateKey = {
     version: 1,
   }
-  let newEncryptedKey: EncryptedPrivateKey = {
+  const newEncryptedKey: EncryptedPrivateKey = {
     version: 1,
   }
-  let dispatch = jest.fn()
+  const dispatch = jest.fn()
 
   describe('success', () => {
     beforeEach(async () => {
