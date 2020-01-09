@@ -26,10 +26,6 @@ function resolveWhenDeployed(address, delay, maxAttempts) {
         return reject()
       }
 
-      console.log({
-        address,
-        attempts,
-      })
       post(
         {
           jsonrpc: '2.0',
