@@ -62,7 +62,7 @@ contract('Lock / updateKeyPricing', accounts => {
     assert.equal(keyPriceAfter.toFixed(), 0)
   })
 
-  describe('when the sender is not the lock owner', () => {
+  describe('when the sender does not have the LockManager role', () => {
     let keyPrice
 
     before(async () => {
@@ -86,7 +86,7 @@ contract('Lock / updateKeyPricing', accounts => {
   })
 
   describe('changing the token address', () => {
-    it('should allow the lock owner to switch from eth => erc20', async () => {
+    it('should allow a LockManager to switch from eth => erc20', async () => {
       assert.equal(tokenAddressBefore, 0)
       await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
         from: lockOwner,
@@ -95,7 +95,7 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.equal(tokenAddressAfter, token.address)
     })
 
-    it('should allow the lock owner to switch from erc20 => eth', async () => {
+    it('should allow a LockManager to switch from erc20 => eth', async () => {
       await lock.updateKeyPricing(
         await lock.keyPrice.call(),
         Web3Utils.padLeft(0, 40)
