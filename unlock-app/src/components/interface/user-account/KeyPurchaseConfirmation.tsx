@@ -54,13 +54,15 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
           Retry Key Purchase
         </SubmitButton>
       )
-    } else if (sentKeyPurchase) {
+    }
+    if (sentKeyPurchase) {
       return (
         <LoadingButton roundBottomOnly>
           <span>Submitting Transaction...</span>
         </LoadingButton>
       )
-    } else if (lock) {
+    }
+    if (lock) {
       const data: PurchaseData = {
         recipient: address,
         lock: lock.address,
@@ -121,7 +123,7 @@ export class KeyPurchaseConfirmation extends React.Component<Props, State> {
 }
 
 const presentPrice = (price: number) => {
-  var dollars = price / 100
+  const dollars = price / 100
   // TODO: localize (all values returned from Locksmith are in USD)
   return dollars.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 }

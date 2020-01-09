@@ -41,7 +41,7 @@ import {
  * @param {*} lockValues
  */
 export const lockToFormValues = lockValues => {
-  const formValues = Object.assign({}, lockValues)
+  const formValues = { ...lockValues }
 
   // In the form, duration is shown in days, vs seconds in the lock object
   formValues.expirationDuration =
@@ -141,7 +141,7 @@ export class CreatorLockForm extends React.Component {
     // and then make sure we set it as existing.
     const validityState = [
       'expirationDuration',
-      //'expirationDurationUnit',
+      // 'expirationDurationUnit',
       'keyPrice',
       'maxNumberOfKeys',
       'name',

@@ -41,7 +41,7 @@ export const mergeKeyholderMetadata = (
   keyholdersByLock: KeyholdersByLock,
   dataFromRedux: ReduxMetadata
 ): KeyMetadata[] => {
-  let metadata: KeyMetadata[] = []
+  const metadata: KeyMetadata[] = []
 
   keyholdersByLock.locks.forEach(lock => {
     lock.keys.forEach(key => {
@@ -58,7 +58,7 @@ export const generateColumns = (
   startingColumns: string[] = ['lockName', 'keyholderAddress', 'expiration']
 ): string[] => {
   // clone the passed array to avoid mutation
-  let columns = startingColumns.slice()
+  const columns = startingColumns.slice()
 
   const columnSet: { [key: string]: boolean } = {}
 

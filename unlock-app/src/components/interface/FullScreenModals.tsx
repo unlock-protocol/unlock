@@ -14,7 +14,7 @@ const templates = {
 }
 
 export const FullScreenModal = ({ active, kindOfModal, dispatch }: Props) => {
-  let Template = templates[kindOfModal]
+  const Template = templates[kindOfModal]
 
   if (active) {
     // render a modal

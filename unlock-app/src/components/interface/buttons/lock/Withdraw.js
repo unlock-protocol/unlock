@@ -29,13 +29,12 @@ export const Withdraw = ({
         <Svg.Withdraw name="Withdraw" />
       </Button>
     )
-  } else {
-    return (
-      <DisabledButton {...props}>
-        <Svg.Withdraw name="Withdraw" />
-      </DisabledButton>
-    )
   }
+  return (
+    <DisabledButton {...props}>
+      <Svg.Withdraw name="Withdraw" />
+    </DisabledButton>
+  )
 }
 
 Withdraw.propTypes = {

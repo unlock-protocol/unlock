@@ -35,7 +35,7 @@ describe('LockIconBar', () => {
     const config = {
       requiredConfirmations: 10,
     }
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Provider store={store}>
         <LockIconBar
           lock={lock}

@@ -51,7 +51,6 @@ export function initializeProvider(provider: Provider, dispatch: any) {
       })
   } else if (provider.isUnlock) {
     // This initialization is handled on receipt of GOT_ENCRYPTED_PRIVATE_KEY_PAYLOAD
-    return
   } else {
     // Default case, provider doesn't have an enable method, so it must already be ready
     dispatch(providerReady())
@@ -148,8 +147,7 @@ export const providerMiddleware = (config: any) => {
 
         if (action.type === CHANGE_PASSWORD) {
           const { oldPassword, newPassword } = action
-          const passwordEncryptedPrivateKey =
-            provider.passwordEncryptedPrivateKey
+          const { passwordEncryptedPrivateKey } = provider
           changePassword({
             passwordEncryptedPrivateKey,
             oldPassword,

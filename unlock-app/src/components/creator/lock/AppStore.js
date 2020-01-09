@@ -129,7 +129,8 @@ export class AppStore extends React.Component {
                   action={() => this.setDetails(integration.details)}
                 />
               )
-            } else if (integration.href) {
+            }
+            if (integration.href) {
               return (
                 <Integration
                   key={index}

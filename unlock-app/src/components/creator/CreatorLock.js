@@ -100,7 +100,7 @@ export class CreatorLock extends React.Component {
     }
 
     // Some sanitization of strings to display
-    let name = lock.name || 'New Lock'
+    const name = lock.name || 'New Lock'
 
     const edit = () =>
       this.setState({
