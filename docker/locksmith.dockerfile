@@ -11,3 +11,5 @@ RUN yarn --production
 COPY --chown=node locksmith/ /home/unlock/locksmith/.
 RUN yarn build
 EXPOSE 8080
+
+CMD ["yarn", "start"]
