@@ -21,13 +21,13 @@ describe('route', () => {
   })
 
   describe('when there is a matching template', () => {
-    let transporter = {
-      sendMail: jest.fn((options, callback) => {
-        return callback()
-      }),
-    }
-
     beforeEach(() => {
+      const transporter = {
+        sendMail: jest.fn((options, callback) => {
+          return callback()
+        }),
+      }
+
       nodemailer.createTransport = jest.fn(params => {
         expect(params).toEqual(config)
         return transporter
@@ -36,7 +36,7 @@ describe('route', () => {
 
     it('should use the template with all the params', done => {
       expect.assertions(4)
-      templates['template'] = {
+      templates.template = {
         subject: jest.fn(() => 'subject'),
         text: jest.fn(() => 'text'),
       }
@@ -59,11 +59,11 @@ describe('route', () => {
       })
 
       route(args, () => {
-        expect(templates['template'].subject).toHaveBeenCalledWith({
+        expect(templates.template.subject).toHaveBeenCalledWith({
           encryptedEmail: 'encrypted!',
           hello: 'world',
         })
-        expect(templates['template'].text).toHaveBeenCalledWith({
+        expect(templates.template.text).toHaveBeenCalledWith({
           encryptedEmail: 'encrypted!',
           hello: 'world',
         })
@@ -73,7 +73,7 @@ describe('route', () => {
 
     it('should send the email using the transporter', done => {
       expect.assertions(4)
-      templates['template'] = {
+      templates.template = {
         subject: jest.fn(() => 'subject'),
         text: jest.fn(() => 'text'),
       }
@@ -104,8 +104,8 @@ describe('route', () => {
       })
 
       route(args, () => {
-        expect(templates['template'].subject).toHaveBeenCalledWith(args.params)
-        expect(templates['template'].text).toHaveBeenCalledWith(args.params)
+        expect(templates.template.subject).toHaveBeenCalledWith(args.params)
+        expect(templates.template.text).toHaveBeenCalledWith(args.params)
         done()
       })
     })
@@ -113,7 +113,7 @@ describe('route', () => {
     describe('when the email was sent succesfuly', () => {
       it('should yield its enveloppe', done => {
         expect.assertions(3)
-        templates['template'] = {
+        templates.template = {
           subject: jest.fn(() => 'subject'),
           text: jest.fn(() => 'text'),
         }
@@ -147,7 +147,7 @@ describe('route', () => {
     describe('when the email was not sent succesfuly', () => {
       it('should yield the error message', done => {
         expect.assertions(3)
-        templates['template'] = {
+        templates.template = {
           subject: jest.fn(() => 'subject'),
           text: jest.fn(() => 'text'),
         }
