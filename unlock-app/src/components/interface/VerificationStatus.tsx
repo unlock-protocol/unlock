@@ -129,7 +129,8 @@ export const OwnsKey = ({
 }: OwnsKeyProps) => {
   if (loading) {
     return <p>Checking if user has a valid key...</p>
-  } else if (error) {
+  }
+  if (error) {
     return <p>Error: {error.message}</p>
   }
 

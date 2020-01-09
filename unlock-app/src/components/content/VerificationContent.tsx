@@ -58,9 +58,10 @@ export const mapStateToProps = ({
 
   if (typeof search.data === 'string' && typeof search.sig === 'string') {
     data = JSON.parse(decodeURIComponent(search.data))
-    hexData =
-      '0x' +
-      Buffer.from(decodeURIComponent(search.data), 'utf-8').toString('hex')
+    hexData = `0x${Buffer.from(
+      decodeURIComponent(search.data),
+      'utf-8'
+    ).toString('hex')}`
     sig = Buffer.from(search.sig, 'base64').toString()
   }
 

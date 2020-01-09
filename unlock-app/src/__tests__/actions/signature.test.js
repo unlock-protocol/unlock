@@ -13,7 +13,7 @@ describe('signature actions', () => {
     const error = new Error('An error')
     const expectation = {
       type: SIGNATURE_ERROR,
-      error: error,
+      error,
     }
 
     expect(signatureError(new Error('An error'))).toEqual(expectation)

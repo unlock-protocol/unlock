@@ -10,7 +10,7 @@ function _server(port, dev) {
 
     await app.prepare()
 
-    let server = createServer((req, res) => {
+    const server = createServer((req, res) => {
       console.info(`${req.method} ${req.url} > ${res.statusCode} `)
       try {
         const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)

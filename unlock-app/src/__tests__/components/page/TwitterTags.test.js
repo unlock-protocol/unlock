@@ -26,9 +26,9 @@ describe('TwitterTags', () => {
 
   it('should render twitter tags based on custom values', () => {
     expect.assertions(3)
-    let title = 'custom title'
-    let description = 'I am the very model of a model view controller'
-    let image = '/some/image.png'
+    const title = 'custom title'
+    const description = 'I am the very model of a model view controller'
+    const image = '/some/image.png'
     const tags = rtl.render(
       <TwitterTags title={title} description={description} image={image} />
     )

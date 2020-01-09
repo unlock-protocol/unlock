@@ -77,7 +77,8 @@ export class LogIn extends React.Component<Props, State> {
 
     if (submitted) {
       return <LoadingButton>Logging In...</LoadingButton>
-    } else if (errors.length) {
+    }
+    if (errors.length) {
       return (
         <ErrorButton type="submit" value="Retry" onClick={this.handleReset} />
       )
