@@ -6,10 +6,10 @@
 if [ -n "$CI" ]; then
   # We need to deploy the locks
   cd unlock-app
-  npm run deploy-unlock-contract
+  yarn deploy-unlock-contract
   cd ".."
 fi
 
 # Start the application
 cd unlock-app
-npm run start
+yarn start

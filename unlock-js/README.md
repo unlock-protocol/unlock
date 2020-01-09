@@ -30,7 +30,7 @@ When a new smart contract version is released, there are a few steps needed to e
 
 1. update the `scripts/compressAbi.js` script to import and auto-generate
    the new version in `src/abi.js`, `src/bytecode.js` and in `src/__tests__/helpers/bytecode.js`
-2. re-run `npm run build` to generate the new contract abi and bytecode
+2. re-run `yarn build` to generate the new contract abi and bytecode
 3. copy the newest directory of smart contract functions and rename it.
    For example, `src/v02` to `src/v03`
 4. update the `index.js` in the new `src/v03` (or whatever version it is) directory to use

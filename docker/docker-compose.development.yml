@@ -56,7 +56,7 @@ services:
     build:
       context: ../locksmith/
       dockerfile: Dockerfile
-    command: npm run db:migrate
+    command: yarn db:migrate
     environment:
       DB_USERNAME: graph-node
       DB_PASSWORD: let-me-in
@@ -91,7 +91,7 @@ services:
       - graph-node
   wedlocks:
     image: unlockprotocol/wedlocks
-    command: npm run dev
+    command: yarn dev
     environment:
       SMTP_HOST: 'smtp_host'
       SMTP_USERNAME: 'smtp_username'

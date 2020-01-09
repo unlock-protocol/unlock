@@ -23,7 +23,7 @@ counterpart when the technology is available and time permits.
 Locksmith utilizes SQLite to make it easy to get up and running. Upon startup
  the local database will be created and unprocessed migrations will be run.
 
-You can start Locksmith in development with the following command: `npm run dev`.
+You can start Locksmith in development with the following command: `yarn dev`.
 
 ### Running in Production
 
