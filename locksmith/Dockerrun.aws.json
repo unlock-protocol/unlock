@@ -1,0 +1,11 @@
+{  
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "unlockprotocol/locksmith:latest"
+    },
+    "Ports": [
+      {
+        "ContainerPort": 8080,
+      }
+    ]
+  }
