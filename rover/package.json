@@ -14,7 +14,7 @@
     "build": "tsc",
     "start": "node ./build/server.js",
     "lint": "eslint --ext .tsx,.ts,.js src/",
-    "ci": "npm run test"
+    "ci": "yarn test"
   },
   "author": "",
   "license": "ISC",
