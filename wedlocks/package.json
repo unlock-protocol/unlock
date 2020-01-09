@@ -31,7 +31,6 @@
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
     "jest": "24.9.0",
-    "link-parent-bin": "1.0.2",
     "lint-staged": "8.2.1",
     "netlify-cli": "2.27.0",
     "node-forge": "0.9.1",

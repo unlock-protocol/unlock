@@ -54,7 +54,6 @@
     "jest": "24.9.0",
     "jest-environment-puppeteer": "^4.0.0",
     "jest-puppeteer": "^4.0.0",
-    "link-parent-bin": "1.0.2",
     "lint-staged": "8.2.1",
     "netlify-cli": "2.25.0",
     "prettier": "1.19.1",
