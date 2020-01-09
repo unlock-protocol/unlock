@@ -29,7 +29,7 @@ pragma solidity 0.5.14;
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import 'hardlydifficult-ethereum-contracts/contracts/proxies/Clone2Factory.sol';
-import './PublicLock.sol';
+import './interfaces/IPublicLock.sol';
 import './interfaces/IUnlock.sol';
 import './interfaces/IUniswap.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/utils/Address.sol';
@@ -116,7 +116,7 @@ contract Unlock is
 
     // create lock
     address newLock = publicLockAddress._createClone2(_salt);
-    PublicLock(newLock).initialize(
+    IPublicLock(newLock).initialize(
       msg.sender,
       _expirationDuration,
       _tokenAddress,
@@ -172,7 +172,7 @@ contract Unlock is
   {
     if(_value > 0) {
       uint valueInETH;
-      address tokenAddress = PublicLock(msg.sender).tokenAddress();
+      address tokenAddress = IPublicLock(msg.sender).tokenAddress();
       if(tokenAddress != address(0)) {
         // If priced in an ERC-20 token, find the supported uniswap exchange
         IUniswap exchange = uniswapExchanges[tokenAddress];

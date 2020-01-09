@@ -66,6 +66,15 @@ contract IPublicLock is IERC721Enumerable {
 
   /// Functions
 
+  function initialize(
+    address _owner,
+    uint _expirationDuration,
+    address _tokenAddress,
+    uint _keyPrice,
+    uint _maxNumberOfKeys,
+    string calldata _lockName
+  ) external;
+
   /**
   * @notice The version number of the current implementation on this network.
   * @return The current version number.
