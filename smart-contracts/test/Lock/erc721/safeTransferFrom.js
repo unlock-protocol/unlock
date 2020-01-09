@@ -6,13 +6,14 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, lock
+let unlock
+let lock
 
 contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -34,7 +35,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     await lock.safeTransferFrom(from, to, ID, {
       from,
     })
-    let ownerOf = await lock.ownerOf.call(ID)
+    const ownerOf = await lock.ownerOf.call(ID)
     assert.equal(ownerOf, to)
   })
 
@@ -54,7 +55,7 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
         from: accounts[7],
       }
     )
-    let ownerOf = await lock.ownerOf.call(ID)
+    const ownerOf = await lock.ownerOf.call(ID)
     assert.equal(ownerOf, accounts[6])
     // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
   })
@@ -66,14 +67,14 @@ contract('Lock / erc721 / safeTransferFrom', accounts => {
     })
     ID = await lock.getTokenIdFor.call(accounts[5])
     // A contract which does NOT implement onERC721Received:
-    let nonCompliantContract = unlock.address
+    const nonCompliantContract = unlock.address
     await shouldFail(
       lock.safeTransferFrom(accounts[5], nonCompliantContract, ID, {
         from: accounts[5],
       })
     )
     // make sure the key was not transferred
-    let ownerOf = await lock.ownerOf.call(ID)
+    const ownerOf = await lock.ownerOf.call(ID)
     assert.equal(ownerOf, accounts[5])
   })
 })

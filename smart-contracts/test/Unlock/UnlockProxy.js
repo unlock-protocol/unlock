@@ -1,7 +1,7 @@
 const Zos = require('@openzeppelin/cli')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
 
-const TestHelper = Zos.TestHelper
+const { TestHelper } = Zos
 const shared = require('./behaviors/shared')
 
 ZWeb3.initialize(web3.currentProvider)

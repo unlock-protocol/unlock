@@ -8,7 +8,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 function fixSignature(signature) {
   // in geth its always 27/28, in ganache its 0/1. Change to 27/28 to prevent
@@ -25,9 +26,9 @@ function fixSignature(signature) {
 // signs message in node (ganache auto-applies "Ethereum Signed Message" prefix)
 async function signMessage(messageHex, signer) {
   const signature = fixSignature(await web3.eth.sign(messageHex, signer))
-  const v = '0x' + signature.slice(130, 132)
+  const v = `0x${signature.slice(130, 132)}`
   const r = signature.slice(0, 66)
-  const s = '0x' + signature.slice(66, 130)
+  const s = `0x${signature.slice(66, 130)}`
   return { v, r, s }
 }
 
@@ -42,7 +43,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
 
-    lock = locks['SECOND']
+    lock = locks.SECOND
     const purchases = keyOwners.map(account => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
@@ -71,7 +72,10 @@ contract('Lock / cancelAndRefundFor', accounts => {
   })
 
   describe('should cancel and refund when enough time remains', () => {
-    let initialLockBalance, initialTxSenderBalance, txObj, withdrawAmount
+    let initialLockBalance
+    let initialTxSenderBalance
+    let txObj
+    let withdrawAmount
 
     beforeEach(async () => {
       initialLockBalance = new BigNumber(
@@ -199,7 +203,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
     })
 
     it('the signature is invalid', async () => {
-      let signature = await signMessage(
+      const signature = await signMessage(
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )

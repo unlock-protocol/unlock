@@ -11,7 +11,8 @@ const getProxy = require('../helpers/proxy')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / destroyLock', accounts => {
   let lock
@@ -35,7 +36,7 @@ contract('Lock / destroyLock', accounts => {
         tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks['FIRST']
+        lock = locks.FIRST
 
         for (let i = 0; i < accounts.length; i++) {
           await testToken.approve(lock.address, -1, { from: accounts[i] })
@@ -60,10 +61,13 @@ contract('Lock / destroyLock', accounts => {
       })
 
       describe('when called by the owner', () => {
-        let initialLockBalance, initialOwnerBalance, txObj, event
+        let initialLockBalance
+        let initialOwnerBalance
+        let txObj
+        let event
 
         before(async () => {
-          let value =
+          const value =
             tokenAddress === Web3Utils.padLeft(0, 40)
               ? Units.convert('0.01', 'eth', 'wei')
               : 0
@@ -144,13 +148,13 @@ contract('Lock / destroyLock', accounts => {
         // After selfdestruct, a user can't buy a key, but if they try they loose their money.
         it('does not allow people to purchase new keys', async () => {
           if (!process.env.TEST_COVERAGE) {
-            let initialLockBalance = await getTokenBalance(
+            const initialLockBalance = await getTokenBalance(
               lock.address,
               tokenAddress
             )
             assert.equal(initialLockBalance.toFixed(), 0)
 
-            let value =
+            const value =
               tokenAddress === Web3Utils.padLeft(0, 40)
                 ? Units.convert('0.01', 'eth', 'wei')
                 : 0
@@ -167,7 +171,7 @@ contract('Lock / destroyLock', accounts => {
               }
             )
 
-            let finalLockBalance = await getTokenBalance(
+            const finalLockBalance = await getTokenBalance(
               lock.address,
               tokenAddress
             )

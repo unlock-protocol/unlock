@@ -7,7 +7,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / transferFee', accounts => {
   let lock
@@ -18,7 +19,7 @@ contract('Lock / transferFee', accounts => {
     unlock = await getProxy(unlockContract)
     // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
       value: keyPrice.toFixed(),
     })
@@ -31,7 +32,10 @@ contract('Lock / transferFee', accounts => {
   })
 
   describe('once a fee of 5% is set', () => {
-    let fee, fee1, fee2, fee3
+    let fee
+    let fee1
+    let fee2
+    let fee3
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
@@ -45,7 +49,7 @@ contract('Lock / transferFee', accounts => {
         value: keyPrice.toFixed(),
       })
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
-      let expiration = new BigNumber(
+      const expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
       // Fee is <= the expected fee before the call
@@ -79,7 +83,10 @@ contract('Lock / transferFee', accounts => {
 
     describe('when the key is transfered', () => {
       const newOwner = accounts[2]
-      let tokenId, expirationBefore, expirationAfter, fee
+      let tokenId
+      let expirationBefore
+      let expirationAfter
+      let fee
 
       before(async () => {
         tokenId = await lock.getTokenIdFor.call(keyOwner)

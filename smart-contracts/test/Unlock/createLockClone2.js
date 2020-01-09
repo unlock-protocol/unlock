@@ -7,7 +7,9 @@ const { utils } = require('hardlydifficult-ethereum-contracts')
 const truffleAssert = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
 
-let unlock, lock, templateAddress
+let unlock
+let lock
+let templateAddress
 
 contract('Unlock / createLockClone2', accounts => {
   before(async () => {
@@ -31,7 +33,7 @@ contract('Unlock / createLockClone2', accounts => {
 
       describe(`Salt: ${salt}`, () => {
         before(async () => {
-          let tx = await unlock.createLock(
+          const tx = await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             Web3Utils.padLeft(0, 40),
             Units.convert(1, 'eth', 'wei'), // keyPrice: in wei

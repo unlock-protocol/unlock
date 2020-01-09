@@ -9,7 +9,7 @@ module.exports = function deployLocks(
   from,
   tokenAddress = Web3Utils.padLeft(0, 40)
 ) {
-  let locks = {}
+  const locks = {}
   return Promise.all(
     Object.keys(Locks).map(name => {
       return unlock

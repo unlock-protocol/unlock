@@ -4,14 +4,16 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, unnamedlock, namedLock
+let unlock
+let unnamedlock
+let namedLock
 
 contract('Lock / erc721 / name', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
-    unnamedlock = locks['FIRST']
-    namedLock = locks['NAMED']
+    unnamedlock = locks.FIRST
+    namedLock = locks.NAMED
   })
 
   describe('when no name has been set on creation', () => {

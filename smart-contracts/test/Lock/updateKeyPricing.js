@@ -10,15 +10,15 @@ const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock,
-  locks,
-  lock,
-  keyPriceBefore,
-  tokenAddressBefore,
-  transaction,
-  token,
-  lockOwner,
-  invalidTokenAddress
+let unlock
+let locks
+let lock
+let keyPriceBefore
+let tokenAddressBefore
+let transaction
+let token
+let lockOwner
+let invalidTokenAddress
 
 contract('Lock / updateKeyPricing', accounts => {
   invalidTokenAddress = accounts[9]
@@ -30,7 +30,7 @@ contract('Lock / updateKeyPricing', accounts => {
     await token.mint(accounts[0], 1)
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     keyPriceBefore = new BigNumber(await lock.keyPrice.call())
     tokenAddressBefore = await lock.tokenAddress.call()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
@@ -91,7 +91,7 @@ contract('Lock / updateKeyPricing', accounts => {
       await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
         from: lockOwner,
       })
-      let tokenAddressAfter = await lock.tokenAddress.call()
+      const tokenAddressAfter = await lock.tokenAddress.call()
       assert.equal(tokenAddressAfter, token.address)
     })
 

@@ -7,13 +7,15 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let lock, locks, unlock
+let lock
+let locks
+let unlock
 
 contract('Lock / owners', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -69,7 +71,7 @@ contract('Lock / owners', accounts => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[1])
+      const ID = await lock.getTokenIdFor.call(accounts[1])
       await lock.transferFrom(accounts[1], accounts[5], ID, {
         from: accounts[1],
       })
@@ -100,7 +102,7 @@ contract('Lock / owners', accounts => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[2])
+      const ID = await lock.getTokenIdFor.call(accounts[2])
       await lock.transferFrom(accounts[2], accounts[3], ID, {
         from: accounts[2],
       })

@@ -10,7 +10,9 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 const scenarios = [false, true]
-let unlock, locks, testToken
+let unlock
+let locks
+let testToken
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 const tip = new BigNumber(keyPrice).plus(Units.convert('1', 'eth', 'wei'))
 
@@ -29,7 +31,7 @@ contract('Lock / purchaseTip', accounts => {
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks['FIRST']
+        lock = locks.FIRST
 
         // Approve spending
         await testToken.approve(lock.address, -1, {
