@@ -2,7 +2,6 @@ FROM unlock-core
 
 # Dependencies for tickets
 RUN mkdir /home/unlock/tickets
-COPY --chown=node tickets/package-lock.json /home/unlock/tickets/.
 COPY --chown=node tickets/package.json /home/unlock/tickets/.
 WORKDIR /home/unlock/tickets
 RUN yarn --production
