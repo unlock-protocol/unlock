@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand --bail",
-    "lint": "eslint **/*.js ",
+    "lint": "eslint test helpers",
     "ci": "yarn test && yarn lint"
   },
   "jest": {
