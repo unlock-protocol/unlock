@@ -2,7 +2,8 @@
   "manifestVersion": "2.2",
   "contracts": {
     "Unlock": "Unlock",
-    "UnlockDiscountToken": "UnlockDiscountToken"
+    "UnlockDiscountToken": "UnlockDiscountToken",
+    "PublicLock": "PublicLock"
   },
   "dependencies": {},
   "name": "unlock-protocol",
