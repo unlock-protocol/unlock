@@ -2,8 +2,11 @@ require('dotenv').config()
 
 module.exports = {
   development: {
-    dialect: 'sqlite',
-    storage: 'development.sqlite3',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOSTNAME,
+    dialect: 'postgres',
     operatorsAliases: false,
     stripeSecret: process.env.STRIPE_SECRET,
     web3ProviderHost: process.env.WEB3_PROVIDER_HOST,

@@ -8,6 +8,13 @@
   "name": "unlock-protocol",
   "version": "0.5.0",
   "compiler": {
-    "manager": "truffle"
-  }
+    "manager": "truffle",
+    "compilerSettings": {
+      "optimizer": {
+        "enabled": false,
+        "runs": "200"
+      }
+    }
+  },
+  "telemetryOptIn": false
 }
