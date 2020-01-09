@@ -24,6 +24,7 @@ COPY .prettierrc /home/unlock/.prettierrc
 # Let's now copy all the tests stuff from unlock/tests
 # And install things
 RUN mkdir /home/unlock/tests
+COPY tests/yarn.lock /home/unlock/tests/.
 COPY tests/package.json /home/unlock/tests/.
 WORKDIR /home/unlock/tests
 RUN yarn --production
