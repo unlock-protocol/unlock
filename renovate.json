@@ -26,12 +26,6 @@
       }
     },
     {
-      "paths": ["rover/**"],
-      "minor": {
-        "groupName": "rover"
-      }
-    },
-    {
       "paths": ["smart-contracts/**"],
       "minor": {
         "groupName": "smart-contracts"
