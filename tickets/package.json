@@ -44,7 +44,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "cross-env": "6.0.3",
     "dotenv": "8.2.0",
-    "eslint": "5.16.0",
+    "eslint": "6.8.0",
     "eslint-config-airbnb": "18.0.1",
     "eslint-config-prettier": "6.9.0",
     "eslint-config-standard": "14.1.0",
