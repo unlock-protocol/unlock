@@ -14,7 +14,7 @@ import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
 
 export const PendingKeyLock = ({ lock, config }) => {
-  let currency = currencySymbolForLock(lock, config)
+  const currency = currencySymbolForLock(lock, config)
 
   return (
     <LockWrapper lock={lock}>

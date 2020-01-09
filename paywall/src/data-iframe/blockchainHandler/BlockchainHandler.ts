@@ -70,12 +70,19 @@ export { Web3Service, WalletService }
 // 3. emitError will pass along the error to the main window
 export default class BlockchainHandler {
   private walletService: WalletServiceType
+
   private web3Service: Web3ServiceType
+
   private constants: any
+
   private emitChanges: (data: BlockchainData) => void
+
   private emitError: (error: Error) => void
+
   private window: FetchWindow & SetTimeoutWindow
+
   private store: PaywallState
+
   private lockAddresses: string[]
 
   constructor({
@@ -592,8 +599,8 @@ export default class BlockchainHandler {
    */
   async storeTransaction(transaction: TransactionDefaults) {
     if (!this.store.account) return
-    const account = this.store.account
-    const network = this.store.network
+    const { account } = this.store
+    const { network } = this.store
     // we use the transaction lock as the recipient
     const recipient = transaction.lock || transaction.to
 

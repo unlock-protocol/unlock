@@ -106,26 +106,37 @@ export const getUnlockedLockAddresses = (keys: KeyResults): string[] => {
 
 export default class Mailbox {
   private readonly useLocalStorageCache = false
+
   private readonly cachePrefix = '__unlockProtocol.cache'
+
   private handler?: BlockchainHandler
+
   private constants: ConstantsType
+
   private configuration?: PaywallConfig
+
   private window: FetchWindow &
     SetTimeoutWindow &
     IframePostOfficeWindow &
     ConsoleWindow &
     LocalStorageWindow
+
   private postMessage: (
     type: MessageTypes,
     payload: ExtractPayload<MessageTypes>
   ) => void = () => {}
+
   private addPostMessageListener: <T extends PostMessages = PostMessages>(
     type: T,
     listener: PostMessageListener
   ) => void = () => {}
+
   private blockchainData: BlockchainData
+
   private readonly defaultBlockchainData: BlockchainData
+
   private readonly localStorageAvailable: boolean
+
   constructor(
     constants: ConstantsType,
     window: FetchWindow &
@@ -292,7 +303,7 @@ export default class Mailbox {
         this.emitError(
           new Error(
             `Unknown update requested: ${
-              typeof type === 'string' ? '"' + type + '"' : '<invalid value>'
+              typeof type === 'string' ? `"${type}"` : '<invalid value>'
             }`
           )
         )

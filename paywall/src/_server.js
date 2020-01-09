@@ -10,7 +10,7 @@ function _server(port, dev) {
     const route = pathMatch()
 
     app.prepare().then(() => {
-      let server = createServer((req, res) => {
+      const server = createServer((req, res) => {
         console.info(`${req.method} ${req.url} > ${res.statusCode} `)
         try {
           const parsedUrl = new URL(req.url, `http://${req.headers.host}/`)
@@ -22,11 +22,11 @@ function _server(port, dev) {
             const params = route('/:lockAddress/:redirect?')(pathname)
             app.render(req, res, '/paywall', Object.assign(params, query))
           } else if (pathname.match('/newdemo')) {
-            app.render(req, res, '/newdemo', Object.assign({}, query))
+            app.render(req, res, '/newdemo', { ...query })
           } else if (pathname.match('/checkout')) {
-            app.render(req, res, '/checkout', Object.assign({}, query))
+            app.render(req, res, '/checkout', { ...query })
           } else {
-            app.render(req, res, '/home', Object.assign({}, query))
+            app.render(req, res, '/home', { ...query })
           }
         } catch (error) {
           reject(error)

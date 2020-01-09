@@ -8,7 +8,7 @@ describe('promises', () => {
       jest.useFakeTimers()
 
       let delayed = 0
-      let time = delayPromise(100)
+      const time = delayPromise(100)
 
       expect(delayed).toBe(0)
       jest.advanceTimersByTime(99)
@@ -28,7 +28,7 @@ describe('promises', () => {
 
       let condition = false
       let resolved = false
-      let conditionFunc = jest.fn(() => condition)
+      const conditionFunc = jest.fn(() => condition)
 
       waitFor(conditionFunc)
         .then(() => (resolved = true))
@@ -66,9 +66,9 @@ describe('promises', () => {
 
     jest.useFakeTimers()
 
-    let condition = true
+    const condition = true
     let resolved = false
-    let conditionFunc = jest.fn(() => condition)
+    const conditionFunc = jest.fn(() => condition)
 
     waitFor(conditionFunc)
       .then(() => (resolved = true))
