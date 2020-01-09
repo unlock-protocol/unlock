@@ -3,9 +3,10 @@ LABEL Unlock <ops@unlock-protocol.com>
 
 USER root
 
-# update npm which is out of date on that image and does not have npm ci
-RUN npm install -g npm@6.4.1
-RUN npm install -g yarn
+# Install more recent node (10) which comes with more recent npm and yarn
+RUN npm install n -g
+RUN n 10
+RUN n use 10
 
 RUN mkdir /home/unlock
 RUN chown -R pptruser /home/unlock
