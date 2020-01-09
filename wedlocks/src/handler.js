@@ -36,7 +36,7 @@ export const handler = (event, context, responseCallback) => {
     })
   }
 
-  if (event.httpMethod != 'POST') {
+  if (event.httpMethod !== 'POST') {
     return callback(null, {
       statusCode: 405,
       body: 'Unsupported Method',
