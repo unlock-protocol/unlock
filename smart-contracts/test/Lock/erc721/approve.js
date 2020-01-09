@@ -67,7 +67,7 @@ contract('Lock / erc721 / approve', accounts => {
     describe('when the approval succeeds', () => {
       let event
       before(async () => {
-        const result = await locks.FIRST.approve(accounts[2], ID, {
+        let result = await locks.FIRST.approve(accounts[2], ID, {
           from: accounts[1],
         })
         event = result.logs[0]
@@ -88,7 +88,7 @@ contract('Lock / erc721 / approve', accounts => {
 
       describe('when reaffirming the approved address', () => {
         before(async () => {
-          const result = await locks.FIRST.approve(accounts[2], ID, {
+          let result = await locks.FIRST.approve(accounts[2], ID, {
             from: accounts[1],
           })
           event = result.logs[0]
@@ -104,13 +104,9 @@ contract('Lock / erc721 / approve', accounts => {
 
       describe('when clearing the approved address', () => {
         before(async () => {
-          const result = await locks.FIRST.approve(
-            Web3Utils.padLeft(0, 40),
-            ID,
-            {
-              from: accounts[1],
-            }
-          )
+          let result = await locks.FIRST.approve(Web3Utils.padLeft(0, 40), ID, {
+            from: accounts[1],
+          })
           event = result.logs[0]
         })
 

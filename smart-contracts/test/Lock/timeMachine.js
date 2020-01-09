@@ -20,10 +20,10 @@ contract('Lock / timeMachine', accounts => {
   let tokenId
 
   before(async () => {
-    const salt = 42
+    let salt = 42
     unlock = await getProxy(unlockContract)
     await unlock.configUnlock((await TimeMachineMock.new()).address, '', '')
-    const tx = await unlock.createLock(
+    let tx = await unlock.createLock(
       new BigNumber(60 * 60 * 24 * 30), // 30 days
       web3.utils.padLeft(0, 40),
       new BigNumber(Units.convert(0.01, 'eth', 'wei')),
@@ -44,7 +44,7 @@ contract('Lock / timeMachine', accounts => {
 
   describe('modifying the time remaining for a key', () => {
     it('should reduce the time by the amount specified', async () => {
-      const hasKey = await lock.getHasValidKey.call(keyOwner)
+      let hasKey = await lock.getHasValidKey.call(keyOwner)
       assert.equal(hasKey, true)
       timestampBefore = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)

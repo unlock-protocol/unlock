@@ -13,7 +13,7 @@ let tokenAddress
 const price = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / withdraw', accounts => {
-  const owner = accounts[0]
+  let owner = accounts[0]
 
   before(async () => {
     unlock = await getProxy(unlockContract)
@@ -131,7 +131,7 @@ contract('Lock / withdraw', accounts => {
   })
 
   describe('when beneficiary != owner', () => {
-    const beneficiary = accounts[2]
+    let beneficiary = accounts[2]
 
     before(async () => {
       await purchaseKeys(accounts)

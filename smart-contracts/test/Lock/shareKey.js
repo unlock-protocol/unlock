@@ -88,8 +88,8 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
-      const nonCompliantContract = unlock.address
-      const ID = await lock.getTokenIdFor.call(keyOwner2)
+      let nonCompliantContract = unlock.address
+      let ID = await lock.getTokenIdFor.call(keyOwner2)
       assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
       await shouldFail(
         lock.shareKey(nonCompliantContract, ID, 1000, {
@@ -102,18 +102,18 @@ contract('Lock / shareKey', accounts => {
 
     describe('fallback behaviors', () => {
       it('transfers all remaining time if amount to share >= remaining time', async () => {
-        const tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
+        let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         tokenId1 = await lock.getTokenIdFor.call(keyOwner1)
         assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
         tx1 = await lock.shareKey(accountWithNoKey1, tokenId1, tooMuchTime, {
           from: keyOwner1,
         })
-        const actualTimeShared = tx1.logs[2].args._amount.toNumber(10)
+        let actualTimeShared = tx1.logs[2].args._amount.toNumber(10)
         assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true) // new owner now has a fresh key
-        const newExpirationTimestamp = new BigNumber(
+        let newExpirationTimestamp = new BigNumber(
           await lock.keyExpirationTimestampFor.call(accountWithNoKey1)
         )
-        const blockTimestampAfter = new BigNumber(
+        let blockTimestampAfter = new BigNumber(
           (await web3.eth.getBlock('latest')).timestamp
         )
         assert(
@@ -135,7 +135,7 @@ contract('Lock / shareKey', accounts => {
     })
   })
   describe('successful key sharing', () => {
-    const oneDay = new BigNumber(60 * 60 * 24)
+    let oneDay = new BigNumber(60 * 60 * 24)
     let hadKeyBefore
     let expirationBeforeSharing
     let expirationAfterSharing
@@ -197,7 +197,7 @@ contract('Lock / shareKey', accounts => {
       sharedKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(accountWithNoKey2)
       )
-      const currentTimestamp = new BigNumber(
+      let currentTimestamp = new BigNumber(
         (await web3.eth.getBlock('latest')).timestamp
       )
       assert.equal(hadKeyBefore, false)
@@ -214,10 +214,10 @@ contract('Lock / shareKey', accounts => {
       timestampAfterSharing = new BigNumber(
         (await web3.eth.getBlock('latest')).timestamp
       )
-      const timeRemainingBefore = expirationBeforeSharing.minus(
+      let timeRemainingBefore = expirationBeforeSharing.minus(
         timestampBeforeSharing
       )
-      const totalTimeRemainingAfter = expirationAfterSharing
+      let totalTimeRemainingAfter = expirationAfterSharing
         .minus(timestampAfterSharing)
         .plus(sharedKeyExpiration.minus(timestampAfterSharing))
 
@@ -225,20 +225,20 @@ contract('Lock / shareKey', accounts => {
     })
 
     it('should extend the key of an existing owner', async () => {
-      const oldExistingKeyExpiration = new BigNumber(
+      let oldExistingKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
       await lock.shareKey(keyOwner3, tokenId2, oneDay, {
         from: keyOwner2,
       })
-      const newExistingKeyExpiration = new BigNumber(
+      let newExistingKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner3)
       )
       assert(newExistingKeyExpiration.eq(oldExistingKeyExpiration.plus(oneDay)))
     })
 
     it('should allow an approved address to share a key', async () => {
-      const token = new BigNumber(await lock.getTokenIdFor(keyOwner2))
+      let token = new BigNumber(await lock.getTokenIdFor(keyOwner2))
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey.call(accountWithNoKey3), false)
       await lock.shareKey(accountWithNoKey3, token, oneDay, {

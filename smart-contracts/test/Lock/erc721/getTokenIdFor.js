@@ -28,7 +28,7 @@ contract('Lock / erc721 / getTokenIdFor', accounts => {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[1],
     })
-    const ID = new BigNumber(await locks.FIRST.getTokenIdFor.call(accounts[1]))
+    let ID = new BigNumber(await locks.FIRST.getTokenIdFor.call(accounts[1]))
     // Note that as we implement ERC721 support, the tokenId will no longer
     // be the same as the user's address
     assert(ID.eq(1))

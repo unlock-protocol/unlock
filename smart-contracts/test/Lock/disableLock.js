@@ -16,10 +16,10 @@ const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / disableLock', accounts => {
   let lock
-  const keyOwner = accounts[1]
-  const keyOwner2 = accounts[2]
-  const keyOwner3 = accounts[3]
-  const lockOwner = accounts[0]
+  let keyOwner = accounts[1]
+  let keyOwner2 = accounts[2]
+  let keyOwner3 = accounts[3]
+  let lockOwner = accounts[0]
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
@@ -97,7 +97,7 @@ contract('Lock / disableLock', accounts => {
     })
 
     it('should still allow access to non-payable contract functions', async () => {
-      const HasValidKey = await lock.getHasValidKey.call(keyOwner)
+      let HasValidKey = await lock.getHasValidKey.call(keyOwner)
       assert.equal(HasValidKey, true)
     })
 

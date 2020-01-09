@@ -91,7 +91,7 @@ contract('Lock / updateKeyPricing', accounts => {
       await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
         from: lockOwner,
       })
-      const tokenAddressAfter = await lock.tokenAddress.call()
+      let tokenAddressAfter = await lock.tokenAddress.call()
       assert.equal(tokenAddressAfter, token.address)
     })
 

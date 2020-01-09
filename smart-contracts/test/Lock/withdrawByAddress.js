@@ -12,7 +12,7 @@ let lock
 let token
 
 contract('Lock / withdrawByAddress', accounts => {
-  const owner = accounts[0]
+  let owner = accounts[0]
 
   before(async () => {
     unlock = await getProxy(unlockContract)

@@ -71,7 +71,7 @@ contract('Lock / owners', accounts => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      const ID = await lock.getTokenIdFor.call(accounts[1])
+      let ID = await lock.getTokenIdFor.call(accounts[1])
       await lock.transferFrom(accounts[1], accounts[5], ID, {
         from: accounts[1],
       })
@@ -102,7 +102,7 @@ contract('Lock / owners', accounts => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      const ID = await lock.getTokenIdFor.call(accounts[2])
+      let ID = await lock.getTokenIdFor.call(accounts[2])
       await lock.transferFrom(accounts[2], accounts[3], ID, {
         from: accounts[2],
       })
