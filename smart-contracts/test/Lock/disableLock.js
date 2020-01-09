@@ -1,6 +1,7 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
+
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
@@ -135,8 +136,11 @@ contract('Lock / disableLock', accounts => {
       )
     })
 
-    it('should fail to updateKeyPrice', async () => {
-      await shouldFail(lock.updateKeyPrice(1), 'LOCK_DEPRECATED')
+    it('should fail to updateKeyPricing', async () => {
+      await shouldFail(
+        lock.updateKeyPricing(1, Web3Utils.padLeft(0, 40)),
+        'LOCK_DEPRECATED'
+      )
     })
 
     it('should fail to safeTransferFrom w/o data', async () => {
