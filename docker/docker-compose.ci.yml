@@ -61,9 +61,6 @@ services:
     env_file: ./integration.env
     depends_on:
       - ganache-integration
-  rover:
-    image: rover
-    env_file: ./integration.env
   wedlocks:
     image: wedlocks
     env_file: ./integration.env
