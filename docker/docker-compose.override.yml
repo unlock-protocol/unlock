@@ -27,7 +27,7 @@ services:
     build:
       context: ../locksmith/
       dockerfile: Dockerfile
-    command: npm run db:migrate
+    command: yarn db:migrate
     depends_on:
       - postgres
   locksmith:
@@ -48,7 +48,7 @@ services:
       - graph-node
   wedlocks:
     image: unlockprotocol/wedlocks
-    command: npm run dev
+    command: yarn dev
     env_file: development.env
     ports:
       - '1337:1337'
