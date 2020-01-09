@@ -19,3 +19,6 @@ builds/
 # dot env files
 .env.*.local
 /smart-contracts/zos.development.json
+
+# npm files as we use yarn
+package-lock.json
