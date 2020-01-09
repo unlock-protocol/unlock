@@ -25,11 +25,13 @@ exports.shouldCreateLock = function(accounts) {
       })
 
       it('should have kept track of the Lock inside Unlock with the right balances', async function() {
-        let publicLock = await PublicLock.at(
+        const publicLock = await PublicLock.at(
           transaction.events.NewLock.returnValues.newLockAddress
         )
         // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
-        let results = await this.unlock.methods.locks(publicLock.address).call()
+        const results = await this.unlock.methods
+          .locks(publicLock.address)
+          .call()
         assert.equal(results.deployed, true)
         assert.equal(results.totalSales, 0)
         assert.equal(results.yieldedDiscountTokens, 0)
@@ -46,10 +48,10 @@ exports.shouldCreateLock = function(accounts) {
       })
 
       it('should have created the lock with the right address for unlock', async function() {
-        let publicLock = await PublicLock.at(
+        const publicLock = await PublicLock.at(
           transaction.events.NewLock.returnValues.newLockAddress
         )
-        let unlockProtocol = await publicLock.unlockProtocol.call()
+        const unlockProtocol = await publicLock.unlockProtocol.call()
         assert.equal(
           Web3Utils.toChecksumAddress(unlockProtocol),
           Web3Utils.toChecksumAddress(this.unlock.address)

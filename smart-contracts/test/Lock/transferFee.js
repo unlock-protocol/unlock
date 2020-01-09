@@ -49,7 +49,7 @@ contract('Lock / transferFee', accounts => {
         value: keyPrice.toFixed(),
       })
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
-      let expiration = new BigNumber(
+      const expiration = new BigNumber(
         await lock.keyExpirationTimestampFor.call(keyOwner)
       )
       // Fee is <= the expected fee before the call

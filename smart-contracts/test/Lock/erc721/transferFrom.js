@@ -215,7 +215,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
             from: accountApproved,
           }
         )
-        let balance = await locks.FIRST.balanceOf.call(accountApproved)
+        const balance = await locks.FIRST.balanceOf.call(accountApproved)
         assert.equal(balance, 1)
       })
 
@@ -259,8 +259,10 @@ contract('Lock / erc721 / transferFrom', accounts => {
       })
 
       it("should no longer associate the transferred tokenId with the previous owner's address", async () => {
-        let transferredKeyTokenId = ID
-        let ownerOfToken = await locks.FIRST.ownerOf.call(transferredKeyTokenId)
+        const transferredKeyTokenId = ID
+        const ownerOfToken = await locks.FIRST.ownerOf.call(
+          transferredKeyTokenId
+        )
         assert.notEqual(from, ownerOfToken)
       })
     })
@@ -296,11 +298,11 @@ contract('Lock / erc721 / transferFrom', accounts => {
 
       it('should still allow the transfer of keys', async () => {
         ID = await locks['SINGLE KEY'].getTokenIdFor.call(from)
-        let ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
+        const ownerOfBefore = await locks['SINGLE KEY'].ownerOf.call(ID)
         await locks['SINGLE KEY'].transferFrom(ownerOfBefore, accounts[9], ID, {
           from: ownerOfBefore,
         })
-        let ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
+        const ownerOfAfter = await locks['SINGLE KEY'].ownerOf.call(ID)
         assert.equal(ownerOfAfter, accounts[9])
       })
     })
@@ -310,11 +312,11 @@ contract('Lock / erc721 / transferFrom', accounts => {
     await locks.FREE.purchase(0, accounts[1], web3.utils.padLeft(0, 40), [], {
       from: accounts[1],
     })
-    let ID = await locks.FREE.getTokenIdFor.call(accounts[1])
+    const ID = await locks.FREE.getTokenIdFor.call(accounts[1])
     await locks.FREE.transferFrom(accounts[1], accounts[2], ID, {
       from: accounts[1],
     })
-    let toID = await locks.FREE.getTokenIdFor.call(accounts[2])
+    const toID = await locks.FREE.getTokenIdFor.call(accounts[2])
     assert.notEqual(ID, 0)
     assert.equal(ID.toString(), toID.toString())
   })

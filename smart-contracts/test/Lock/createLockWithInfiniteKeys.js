@@ -28,7 +28,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     })
 
     it('should have created the lock with an infinite number of keys', async function() {
-      let publicLock = await PublicLock.at(
+      const publicLock = await PublicLock.at(
         transaction.logs[1].args.newLockAddress
       )
       const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
@@ -56,7 +56,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     })
 
     it('should have created the lock with 0 keys', async function() {
-      let publicLock = await PublicLock.at(
+      const publicLock = await PublicLock.at(
         transaction.logs[1].args.newLockAddress
       )
       const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())

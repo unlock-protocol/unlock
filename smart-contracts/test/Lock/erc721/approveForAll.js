@@ -17,8 +17,8 @@ contract('Lock / erc721 / approveForAll', accounts => {
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
-  let owner = accounts[1]
-  let approvedUser = accounts[2]
+  const owner = accounts[1]
+  const approvedUser = accounts[2]
 
   describe('when the key exists', () => {
     before(async () => {
@@ -47,7 +47,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
     describe('when the approval succeeds', () => {
       let event
       before(async () => {
-        let result = await lock.setApprovalForAll(approvedUser, true, {
+        const result = await lock.setApprovalForAll(approvedUser, true, {
           from: owner,
         })
         event = result.logs[0]
@@ -68,7 +68,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
       })
 
       it('an authorized operator may set the approved address for an NFT', async () => {
-        let newApprovedUser = accounts[8]
+        const newApprovedUser = accounts[8]
 
         await lock.approve(newApprovedUser, ID, {
           from: approvedUser,
@@ -96,7 +96,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
       })
 
       describe('allows for multiple operators per owner', () => {
-        let newApprovedUser = accounts[8]
+        const newApprovedUser = accounts[8]
 
         before(async () => {
           await lock.setApprovalForAll(newApprovedUser, true, {
@@ -127,7 +127,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
         await lock.setApprovalForAll(approvedUser, true, {
           from: owner,
         })
-        let result = await lock.setApprovalForAll(approvedUser, false, {
+        const result = await lock.setApprovalForAll(approvedUser, false, {
           from: owner,
         })
         event = result.logs[0]
@@ -150,7 +150,7 @@ contract('Lock / erc721 / approveForAll', accounts => {
   })
 
   describe('when the owner does not have a key', () => {
-    let ownerWithoutAKey = accounts[7]
+    const ownerWithoutAKey = accounts[7]
 
     it('owner has no keys', async () => {
       assert.equal(await lock.balanceOf(ownerWithoutAKey), 0)

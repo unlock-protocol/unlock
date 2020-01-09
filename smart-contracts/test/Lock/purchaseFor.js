@@ -180,7 +180,7 @@ contract('Lock / purchaseFor', accounts => {
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(
+        const newBalance = new BigNumber(
           await web3.eth.getBalance(locks.FIRST.address)
         )
         assert.equal(

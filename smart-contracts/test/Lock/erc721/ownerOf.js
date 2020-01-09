@@ -24,8 +24,8 @@ contract('Lock / erc721 / ownerOf', accounts => {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: accounts[1],
     })
-    let ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
-    let address = await locks.FIRST.ownerOf.call(ID)
+    const ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
+    const address = await locks.FIRST.ownerOf.call(ID)
     assert.equal(address, accounts[1])
   })
 })

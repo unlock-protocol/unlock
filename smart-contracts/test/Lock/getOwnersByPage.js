@@ -35,7 +35,7 @@ contract('Lock / getOwnersByPage', accounts => {
           value: Units.convert('0.01', 'eth', 'wei'),
         }
       )
-      let result = await locks.FIRST.getOwnersByPage.call(0, 2, {
+      const result = await locks.FIRST.getOwnersByPage.call(0, 2, {
         from: accounts[0],
       })
       assert.equal(result.length, 1)
@@ -75,7 +75,7 @@ contract('Lock / getOwnersByPage', accounts => {
         }
       )
 
-      let result = await locks.FIRST.getOwnersByPage.call(0, 2, {
+      const result = await locks.FIRST.getOwnersByPage.call(0, 2, {
         from: accounts[0],
       })
       assert.equal(result.length, 2)
@@ -116,7 +116,7 @@ contract('Lock / getOwnersByPage', accounts => {
         }
       )
 
-      let result = await locks.FIRST.getOwnersByPage.call(1, 2, {
+      const result = await locks.FIRST.getOwnersByPage.call(1, 2, {
         from: accounts[0],
       })
       assert.equal(result.length, 1)

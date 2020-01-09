@@ -12,6 +12,7 @@ const rulesToIgnore = [
   'no-useless-concat',
   'prefer-const',
   'no-return-await',
+  'prefer-object-spread',
 ]
 
 module.exports = {

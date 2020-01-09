@@ -203,7 +203,7 @@ contract('Lock / cancelAndRefundFor', accounts => {
     })
 
     it('the signature is invalid', async () => {
-      let signature = await signMessage(
+      const signature = await signMessage(
         await lock.getCancelAndRefundApprovalHash(keyOwners[3], txSender),
         keyOwners[3]
       )
