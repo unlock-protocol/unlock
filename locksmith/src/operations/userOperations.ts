@@ -35,6 +35,8 @@ namespace UserOperations {
     if (userReference) {
       return recoveryPhrase
     }
+
+    return undefined
   }
 
   export const getUserPrivateKeyByEmailAddress = async (
