@@ -4,8 +4,7 @@ import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 const Asset = require('../utils/assets')
 
 let baseURIFragement = 'https://assets.unlock-protocol.com'

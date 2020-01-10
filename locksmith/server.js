@@ -3,8 +3,7 @@
 const net = require('net')
 const app = require('./src/app')
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('./config/config')[env]
+const config = require('./config/config')
 
 const port = process.env.PORT || 8080
 const databasePort = 5432
@@ -66,11 +65,11 @@ const environmentEvaluation = () => {
   }
 }
 
-if (env != 'development') {
+if (process.env.NODE_ENV != 'development') {
   environmentEvaluation()
 }
 
-if (!config.host || env === 'production') {
+if (!config.host || process.env.NODE_ENV === 'production') {
   return app.listen(port)
 }
 
