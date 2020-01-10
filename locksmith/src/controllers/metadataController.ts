@@ -9,8 +9,7 @@ import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 namespace MetadataController {
   const evaluateLockOwnership = async (

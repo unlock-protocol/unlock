@@ -3,8 +3,7 @@ import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import PaymentProcessor from '../payment/paymentProcessor'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 namespace PurchaseController {
   //eslint-disable-next-line import/prefer-default-export
