@@ -17,10 +17,12 @@ const mockWeb3Service: { getLock: any } = {
     .mockResolvedValueOnce(standardLock),
 }
 
+function getMockWeb3Service() {
+  return mockWeb3Service
+}
+
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service() {
-    return mockWeb3Service
-  },
+  Web3Service: getMockWeb3Service,
 }))
 
 const keyPricer = new KeyPricer('provider url', 'unlock contract address')

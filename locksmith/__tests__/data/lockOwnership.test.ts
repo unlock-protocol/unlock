@@ -16,10 +16,12 @@ const mockWeb3Service: { getLock: any } = {
   }),
 }
 
+function getMockWeb3Service() {
+  return mockWeb3Service
+}
+
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service() {
-    return mockWeb3Service
-  },
+  Web3Service: getMockWeb3Service,
 }))
 
 describe('Lock Ownership', () => {

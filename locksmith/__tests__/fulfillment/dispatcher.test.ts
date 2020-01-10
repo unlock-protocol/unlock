@@ -22,12 +22,14 @@ const standardLock = {
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
 }
 
-const mockWeb3Service: { getLock: any } = {
+const mockWeb3Service = {
   getLock: jest
     .fn()
     .mockResolvedValue(standardLock)
     .mockResolvedValueOnce(standardLock),
 }
+
+const getMockWeb3Service = () => mockWeb3Service
 
 class MockWalletService extends EventEmitter {
   connect = jest.fn()
@@ -43,14 +45,11 @@ class MockWalletService extends EventEmitter {
   })
 }
 const mockWalletService = new MockWalletService()
+const getMockWalletService = () => mockWalletService
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service() {
-    return mockWeb3Service
-  },
-  WalletService() {
-    return mockWalletService
-  },
+  Web3Service: getMockWeb3Service,
+  WalletService: getMockWalletService,
 }))
 
 describe('Dispatcher', () => {
