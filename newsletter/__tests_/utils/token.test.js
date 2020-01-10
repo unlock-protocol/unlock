@@ -102,5 +102,15 @@ describe('token', () => {
 
       expect(email).toEqual('hello@unlock-protocol.com')
     })
+
+    it('should send a request to get the token data and yield the email', async () => {
+      expect.assertions(1)
+      const response = {}
+      axios.get = jest.fn(() => response)
+
+      const email = await getEmail(web3Provider, locks[0])
+
+      expect(email).toBeNull()
+    })
   })
 })
