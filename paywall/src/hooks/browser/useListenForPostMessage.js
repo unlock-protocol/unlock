@@ -88,7 +88,7 @@ export default function useListenForPostMessage({
       } else if (debugMode) {
         // eslint-disable-next-line no-console
         console.log(
-          `[uLFPM] validation failed!`,
+          '[uLFPM] validation failed!',
           type,
           event.data.payload,
           origin

@@ -69,13 +69,13 @@ export const isValidCTA = callToAction => {
   if (ctaKeys.filter(key => !callsToAction.includes(key)).length) {
     // TODO: log which key is bad, or remove this check
     console.error(
-      `The paywall config's "callToAction" properties contain an unexpected entry.`
+      'The paywall config\'s "callToAction" properties contain an unexpected entry.'
     )
     return false
   }
   if (ctaKeys.filter(key => typeof callToAction[key] !== 'string').length) {
     console.error(
-      `The paywall config's "callToAction" properties contain an entry whose value is not a string.`
+      'The paywall config\'s "callToAction" properties contain an entry whose value is not a string.'
     )
     return false
   }
@@ -104,7 +104,7 @@ export const isValidConfigLock = (lock, configLocks) => {
 
 export const isValidConfigLocks = configLocks => {
   if (typeof configLocks !== 'object') {
-    console.error(`The paywall configs's "locks" field is not an object.`)
+    console.error('The paywall configs\'s "locks" field is not an object.')
     return false
   }
   const locks = Object.keys(configLocks)
@@ -181,7 +181,7 @@ export const isValidPaywallConfig = config => {
 
   // TODO: !locks should have been checked already in the isValidObject check above?
   if (!config.locks) {
-    console.error(`The paywall config's "locks" fields is not set.`)
+    console.error('The paywall config\'s "locks" fields is not set.')
     return false
   }
   if (!isValidConfigLocks(config.locks)) {
@@ -197,7 +197,7 @@ export const isValidPaywallConfig = config => {
     )
   ) {
     console.error(
-      `The paywall config's "unlockUserAccounts" field has an invalid value.`
+      'The paywall config\'s "unlockUserAccounts" field has an invalid value.'
     )
     return false
   }
@@ -209,7 +209,7 @@ export const isValidPaywallConfig = config => {
     ['true', 'false'].indexOf(config.persistentCheckout) === -1
   ) {
     console.error(
-      `The paywall config's "persistentCheckout" field has an invalid value.`
+      'The paywall config\'s "persistentCheckout" field has an invalid value.'
     )
     return false
   }
