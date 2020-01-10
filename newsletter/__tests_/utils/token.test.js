@@ -103,7 +103,7 @@ describe('token', () => {
       expect(email).toEqual('hello@unlock-protocol.com')
     })
 
-    it('should send a request to get the token data and yield the email', async () => {
+    it('should send a request to get the token data and yield null on error', async () => {
       expect.assertions(1)
       const response = {}
       axios.get = jest.fn(() => response)
