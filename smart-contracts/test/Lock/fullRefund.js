@@ -7,7 +7,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / fullRefund', accounts => {
   before(async () => {
@@ -22,7 +23,7 @@ contract('Lock / fullRefund', accounts => {
   let lockOwner
 
   before(async () => {
-    lock = locks['SECOND']
+    lock = locks.SECOND
     const purchases = keyOwners.map(account => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
@@ -34,7 +35,9 @@ contract('Lock / fullRefund', accounts => {
   })
 
   describe('should cancel and refund when enough time remains', () => {
-    let initialLockBalance, initialKeyOwnerBalance, txObj
+    let initialLockBalance
+    let initialKeyOwnerBalance
+    let txObj
 
     before(async () => {
       initialLockBalance = new BigNumber(

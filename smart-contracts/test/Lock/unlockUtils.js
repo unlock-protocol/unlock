@@ -8,7 +8,8 @@ contract('Lock / unlockUtils', accounts => {
   })
 
   describe('function uint2str', () => {
-    let str1, str2
+    let str1
+    let str2
     it('should convert a uint to a string', async () => {
       str1 = await mock.uint2Str.call(0)
       assert.equal(str1, '0')

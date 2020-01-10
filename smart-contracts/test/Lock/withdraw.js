@@ -7,7 +7,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, lock
+let unlock
+let lock
 let tokenAddress
 const price = Units.convert('0.01', 'eth', 'wei')
 
@@ -17,7 +18,7 @@ contract('Lock / withdraw', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, owner)
-    lock = locks['OWNED']
+    lock = locks.OWNED
     tokenAddress = await lock.tokenAddress.call()
 
     await purchaseKeys(accounts)

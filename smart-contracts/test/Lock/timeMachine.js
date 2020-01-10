@@ -14,7 +14,10 @@ contract('Lock / timeMachine', accounts => {
   const keyOwner = accounts[2]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
   const tooMuchTime = new BigNumber(60 * 60 * 24 * 42) // 42 days
-  let timestampBefore, timestampAfter, lockAddress, tokenId
+  let timestampBefore
+  let timestampAfter
+  let lockAddress
+  let tokenId
 
   before(async () => {
     let salt = 42

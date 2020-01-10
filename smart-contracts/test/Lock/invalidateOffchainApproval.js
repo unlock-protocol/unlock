@@ -6,7 +6,8 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / invalidateOffchainApproval', accounts => {
   let lock
@@ -16,7 +17,7 @@ contract('Lock / invalidateOffchainApproval', accounts => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
 
-    lock = locks['SECOND']
+    lock = locks.SECOND
   })
 
   it('can read the current nonce', async () => {
