@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../../src/app')
-const Lock = require('../../src/models').Lock
+const { Lock } = require('../../src/models')
 
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
@@ -66,7 +66,7 @@ describe('lockController', () => {
     describe('when the lock details are available', () => {
       test('it should return the name of the lock', async () => {
         expect.assertions(1)
-        let response = await request(app).get(
+        const response = await request(app).get(
           `/lock/${testLockDetails.address}`
         )
         expect(response.body).toMatchObject({ name: 'Test Lock' })
@@ -74,7 +74,7 @@ describe('lockController', () => {
 
       test('should return an OK status code', async () => {
         expect.assertions(1)
-        let response = await request(app).get(
+        const response = await request(app).get(
           `/lock/${testLockDetails.address}`
         )
         expect(response.statusCode).toBe(200)
@@ -84,7 +84,7 @@ describe('lockController', () => {
     describe('when the lock details are unavailable', () => {
       test('it should returns an appropriate error code', async () => {
         expect.assertions(1)
-        let response = await request(app).get('/lock/0xdeadbeef')
+        const response = await request(app).get('/lock/0xdeadbeef')
 
         expect(response.statusCode).toBe(404)
       })
@@ -102,7 +102,7 @@ describe('lockController', () => {
           .set('Accept', /json/)
           .send(lockPayload)
 
-        let record = await Lock.findOne({
+        const record = await Lock.findOne({
           where: { address: validLockAddress },
         })
 
@@ -112,7 +112,7 @@ describe('lockController', () => {
       test('it returns an OK status code', async () => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130837000)
-        let response = await request(app)
+        const response = await request(app)
           .post('/lock')
           .set('Accept', /json/)
           .send(lockPayload)
@@ -132,7 +132,7 @@ describe('lockController', () => {
 
       it('return the details of the owned locks', async () => {
         expect.assertions(3)
-        let response = await request(app)
+        const response = await request(app)
           .get(`/${owner}/locks`)
           .set('Accept', /json/)
 
@@ -163,7 +163,7 @@ describe('lockController', () => {
     describe('when the address does not own locks', () => {
       it('returns an empty collection', async () => {
         expect.assertions(1)
-        let response = await request(app)
+        const response = await request(app)
           .get('/0xd489fF3/locks')
           .set('Accept', /json/)
         expect(response.body).toEqual({ locks: [] })

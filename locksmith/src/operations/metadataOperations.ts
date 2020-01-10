@@ -7,7 +7,7 @@ import { getMetadata } from './userMetadataOperations'
 const config = require('../../config/config')
 const Asset = require('../utils/assets')
 
-let baseURIFragement = 'https://assets.unlock-protocol.com'
+const baseURIFragement = 'https://assets.unlock-protocol.com'
 
 export const updateKeyMetadata = async (data: any) => {
   try {
@@ -33,19 +33,19 @@ export const generateKeyMetadata = async (
   isLockOwner: boolean,
   host: string
 ) => {
-  let onChainKeyMetadata = await fetchChainData(address, keyId)
+  const onChainKeyMetadata = await fetchChainData(address, keyId)
   if (Object.keys(onChainKeyMetadata).length == 0) {
     return {}
   }
 
-  let kd = new KeyData(config.web3ProviderHost)
-  let data = await kd.get(address, keyId)
-  let userMetadata = data.owner
+  const kd = new KeyData(config.web3ProviderHost)
+  const data = await kd.get(address, keyId)
+  const userMetadata = data.owner
     ? await getMetadata(address, data.owner, isLockOwner)
     : {}
 
-  let keyCentricData = await getKeyCentricData(address, keyId)
-  let baseTokenData = await getBaseTokenData(address, host)
+  const keyCentricData = await getKeyCentricData(address, keyId)
+  const baseTokenData = await getBaseTokenData(address, host)
   return Object.assign(
     baseTokenData,
     keyCentricData,
@@ -55,17 +55,17 @@ export const generateKeyMetadata = async (
 }
 
 const getBaseTokenData = async (address: string, host: string) => {
-  let defaultResponse = defaultMappings(address, host)
-  let persistedBasedMetadata = await LockMetadata.findOne({
-    where: { address: address },
+  const defaultResponse = defaultMappings(address, host)
+  const persistedBasedMetadata = await LockMetadata.findOne({
+    where: { address },
   })
 
-  let assetLocation = Asset.tokenMetadataDefaultImage({
+  const assetLocation = Asset.tokenMetadataDefaultImage({
     base: baseURIFragement,
-    address: address,
+    address,
   })
 
-  let result = persistedBasedMetadata
+  const result = persistedBasedMetadata
     ? persistedBasedMetadata.data
     : defaultResponse
 
@@ -80,20 +80,20 @@ const getKeyCentricData = async (
   address: string,
   tokenId: string
 ): Promise<any> => {
-  let keyCentricData: any = await KeyMetadata.findOne({
+  const keyCentricData: any = await KeyMetadata.findOne({
     where: {
-      address: address,
+      address,
       id: tokenId,
     },
   })
 
-  let assetLocation = Asset.tokenCentricImage({
+  const assetLocation = Asset.tokenCentricImage({
     base: baseURIFragement,
-    address: address,
-    tokenId: tokenId,
+    address,
+    tokenId,
   })
 
-  let result = keyCentricData ? keyCentricData.data : {}
+  const result = keyCentricData ? keyCentricData.data : {}
 
   if (await Asset.exists(assetLocation)) {
     result.image = assetLocation
@@ -103,13 +103,13 @@ const getKeyCentricData = async (
 }
 
 const fetchChainData = async (address: string, keyId: string): Promise<any> => {
-  let kd = new KeyData(config.web3ProviderHost)
-  let data = await kd.get(address, keyId)
+  const kd = new KeyData(config.web3ProviderHost)
+  const data = await kd.get(address, keyId)
   return kd.openSeaPresentation(data)
 }
 
 const defaultMappings = (address: string, host: string) => {
-  let defaultResponse = {
+  const defaultResponse = {
     name: 'Unlock Key',
     description: 'A Key to an Unlock lock.',
     image: `${host}/lock/${address}/icon`,

@@ -10,36 +10,34 @@ namespace UserController {
     res: Response
   ): Promise<any> => {
     try {
-      let user = req.body.message.user
+      const { user } = req.body.message
 
       if (user) {
-        let emailAddress = user.emailAddress
-        let ejected = await UserOperations.ejectionStatus(emailAddress)
+        const { emailAddress } = user
+        const ejected = await UserOperations.ejectionStatus(emailAddress)
 
         if (ejected) {
           return res.sendStatus(409)
-        } else {
-          let creationStatus = await userCreationStatus(user)
-          let recoveryPhrase = creationStatus.recoveryPhrase
-
-          return res.status(creationStatus.status).json({ recoveryPhrase })
         }
-      } else {
-        return res.sendStatus(400)
+        const creationStatus = await userCreationStatus(user)
+        const { recoveryPhrase } = creationStatus
+
+        return res.status(creationStatus.status).json({ recoveryPhrase })
       }
+      return res.sendStatus(400)
     } catch (e) {
       return res.sendStatus(400)
     }
   }
 
   const userCreationStatus = async (user: any): Promise<any> => {
-    let recoveryPhrase: String | undefined = await UserOperations.createUser({
+    const recoveryPhrase: String | undefined = await UserOperations.createUser({
       emailAddress: user.emailAddress,
       publicKey: user.publicKey,
       passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,
     })
 
-    let status = recoveryPhrase ? 200 : 400
+    const status = recoveryPhrase ? 200 : 400
     return { status, recoveryPhrase }
   }
 
@@ -47,25 +45,24 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let emailAddress = req.params.emailAddress
-    let ejected = await UserOperations.ejectionStatus(emailAddress)
+    const { emailAddress } = req.params
+    const ejected = await UserOperations.ejectionStatus(emailAddress)
 
     if (ejected) {
       return res.sendStatus(404)
+    }
+    const result = await UserOperations.getUserPrivateKeyByEmailAddress(
+      emailAddress
+    )
+
+    if (result) {
+      return res.json({ passwordEncryptedPrivateKey: result })
     } else {
-      let result = await UserOperations.getUserPrivateKeyByEmailAddress(
-        emailAddress
-      )
+      const result = await new DecoyUser().encryptedPrivateKey()
 
-      if (result) {
-        return res.json({ passwordEncryptedPrivateKey: result })
-      } else {
-        let result = await new DecoyUser().encryptedPrivateKey()
-
-        return res.json({
-          passwordEncryptedPrivateKey: result,
-        })
-      }
+      return res.json({
+        passwordEncryptedPrivateKey: result,
+      })
     }
   }
 
@@ -73,49 +70,46 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let emailAddress = req.params.emailAddress
-    let ejected = await UserOperations.ejectionStatus(emailAddress)
+    const { emailAddress } = req.params
+    const ejected = await UserOperations.ejectionStatus(emailAddress)
 
     if (ejected) {
       return res.sendStatus(404)
-    } else {
-      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
-        emailAddress
-      )
-
-      if (result) {
-        return res.json({ recoveryPhrase: result })
-      } else {
-        let recoveryPhrase = new DecoyUser().recoveryPhrase()
-        return res.json({ recoveryPhrase: recoveryPhrase })
-      }
     }
+    const result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+      emailAddress
+    )
+
+    if (result) {
+      return res.json({ recoveryPhrase: result })
+    }
+    const recoveryPhrase = new DecoyUser().recoveryPhrase()
+    return res.json({ recoveryPhrase })
   }
 
   export const updateUser = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    let emailAddress = req.params.emailAddress
-    let user = req.body.message.user
-    let ejected = await UserOperations.ejectionStatus(emailAddress)
+    const { emailAddress } = req.params
+    const { user } = req.body.message
+    const ejected = await UserOperations.ejectionStatus(emailAddress)
 
     if (ejected) {
       return res.sendStatus(404)
-    } else {
-      try {
-        let result = await UserOperations.updateEmail(
-          emailAddress,
-          user.emailAddress
-        )
+    }
+    try {
+      const result = await UserOperations.updateEmail(
+        emailAddress,
+        user.emailAddress
+      )
 
-        if (result[0] == 0) {
-          return res.sendStatus(400)
-        }
-        return res.sendStatus(202)
-      } catch (error) {
+      if (result[0] == 0) {
         return res.sendStatus(400)
       }
+      return res.sendStatus(202)
+    } catch (error) {
+      return res.sendStatus(400)
     }
   }
 
@@ -123,60 +117,57 @@ namespace UserController {
     req: Request,
     res: Response
   ): Promise<any> => {
-    let publicKey = req.body.message.user.publicKey
-    let emailAddress = req.params.emailAddress
-    let token = req.body.message.user.stripeTokenId
+    const { publicKey } = req.body.message.user
+    const { emailAddress } = req.params
+    const token = req.body.message.user.stripeTokenId
 
-    let ejected = await UserOperations.ejectionStatus(emailAddress)
+    const ejected = await UserOperations.ejectionStatus(emailAddress)
 
     if (ejected) {
       return res.sendStatus(404)
-    } else {
-      let result = await UserOperations.updatePaymentDetails(token, publicKey)
-
-      if (result) {
-        return res.sendStatus(202)
-      } else {
-        return res.sendStatus(400)
-      }
     }
+    const result = await UserOperations.updatePaymentDetails(token, publicKey)
+
+    if (result) {
+      return res.sendStatus(202)
+    }
+    return res.sendStatus(400)
   }
 
   export const updatePasswordEncryptedPrivateKey = async (
     req: Request,
     res: Response
   ): Promise<any> => {
-    let user = req.body.message.user
-    let publicKey = user.publicKey
-    let passwordEncryptedPrivateKey = user.passwordEncryptedPrivateKey
+    const { user } = req.body.message
+    const { publicKey } = user
+    const { passwordEncryptedPrivateKey } = user
 
-    let ejected = await UserOperations.ejectionStatusByAddress(publicKey)
+    const ejected = await UserOperations.ejectionStatusByAddress(publicKey)
 
     if (ejected) {
       return res.sendStatus(404)
     }
 
-    let result = await UserOperations.updatePasswordEncryptedPrivateKey(
+    const result = await UserOperations.updatePasswordEncryptedPrivateKey(
       publicKey,
       passwordEncryptedPrivateKey
     )
 
     if (result[0] != 0) {
       return res.sendStatus(202)
-    } else {
-      return res.sendStatus(400)
     }
+    return res.sendStatus(400)
   }
 
   export const cards = async (req: Request, res: Response) => {
-    let emailAddress = req.params.emailAddress
-    let result = await UserOperations.getCards(emailAddress)
+    const { emailAddress } = req.params
+    const result = await UserOperations.getCards(emailAddress)
     return res.json(result)
   }
 
   export const eject = async (req: SignedRequest, res: Response) => {
-    let address = req.params.ethereumAddress
-    let ejected = await UserOperations.ejectionStatusByAddress(address)
+    const address = req.params.ethereumAddress
+    const ejected = await UserOperations.ejectionStatusByAddress(address)
 
     if (address.toLowerCase() != req.owner.toLowerCase()) {
       return res.sendStatus(401)
@@ -186,13 +177,12 @@ namespace UserController {
       return res.sendStatus(400)
     }
 
-    let result = await UserOperations.eject(address)
+    const result = await UserOperations.eject(address)
 
     if (result[0] > 0) {
       return res.sendStatus(202)
-    } else {
-      return res.sendStatus(400)
     }
+    return res.sendStatus(400)
   }
 }
 

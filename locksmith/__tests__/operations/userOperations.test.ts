@@ -3,12 +3,12 @@ import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 
 import Sequelize = require('sequelize')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 const models = require('../../src/models')
 
-let User: any = models.User
-let UserReference: any = models.UserReference
-let sampleCards = [
+const { User } = models
+const { UserReference } = models
+const sampleCards = [
   {
     address_city: null,
     address_country: null,
@@ -36,7 +36,7 @@ let sampleCards = [
   },
 ]
 
-let mockStripeCards = {
+const mockStripeCards = {
   customers: {
     listSources: jest.fn().mockImplementation(() => {
       return {
@@ -46,7 +46,7 @@ let mockStripeCards = {
   },
 }
 
-let mockStripeWithoutCards = {
+const mockStripeWithoutCards = {
   customers: {
     listSources: jest.fn().mockImplementation(() => {
       return {
@@ -65,8 +65,8 @@ jest.mock('stripe', () => {
 })
 
 describe('User creation', () => {
-  /* details are crafted to ensure normalization downstream*/
-  let userCreationDetails = {
+  /* details are crafted to ensure normalization downstream */
+  const userCreationDetails = {
     emailAddress: 'USER@EXAMPLE.COM',
     publicKey: '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
     passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
@@ -101,7 +101,7 @@ describe('User creation', () => {
         return {}
       })
 
-      let result = await UserOperations.createUser(userCreationDetails)
+      const result = await UserOperations.createUser(userCreationDetails)
       expect(result).toBe(RecoveryPhrase.generate())
     })
   })
@@ -113,7 +113,7 @@ describe('User creation', () => {
         return null
       })
 
-      let result = await UserOperations.createUser(userCreationDetails)
+      const result = await UserOperations.createUser(userCreationDetails)
       expect(result).toBe(undefined)
     })
   })
@@ -138,7 +138,7 @@ describe('Private Key Lookup', () => {
   describe('when the email address exists in persistence', () => {
     it('returns the appropriate encrypted private key', async () => {
       expect.assertions(1)
-      let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+      const result = await UserOperations.getUserPrivateKeyByEmailAddress(
         'existing@example.com'
       )
       expect(result).toEqual('the value')
@@ -148,7 +148,7 @@ describe('Private Key Lookup', () => {
   describe('when the email address does not exist in persistence', () => {
     it('returns null', async () => {
       expect.assertions(1)
-      let result = await UserOperations.getUserPrivateKeyByEmailAddress(
+      const result = await UserOperations.getUserPrivateKeyByEmailAddress(
         'non-existant@example.com'
       )
       expect(result).toEqual(null)
@@ -175,7 +175,7 @@ describe('Recovery Phrase Lookup', () => {
   describe('when the email address exists in persistence', () => {
     it('returns the appropriate encrypted private key', async () => {
       expect.assertions(1)
-      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+      const result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
         'existing@example.com'
       )
       expect(result).toEqual('a recovery phrase')
@@ -185,7 +185,7 @@ describe('Recovery Phrase Lookup', () => {
   describe('when the email does not exist in persistence', () => {
     it('returns null', async () => {
       expect.assertions(1)
-      let result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
+      const result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
         'non-existant@example.com'
       )
       expect(result).toEqual(null)
@@ -229,7 +229,7 @@ describe("Retrieving a user's cards", () => {
 
     it('returns an array of card endings', async () => {
       expect.assertions(1)
-      let cards = await UserOperations.getCards(
+      const cards = await UserOperations.getCards(
         'user_with_credit_cards@example.com'
       )
       expect(cards.length).toEqual(1)
@@ -238,7 +238,7 @@ describe("Retrieving a user's cards", () => {
   describe('when the user does not have credit cards', () => {
     it('returns an empty array', async () => {
       expect.assertions(1)
-      let cards = await UserOperations.getCards(
+      const cards = await UserOperations.getCards(
         'user_without_credit_cards@example.com'
       )
       expect(cards).toEqual([])
@@ -255,7 +255,7 @@ describe("Retrieving a user's cards", () => {
     it('returns an empty array', async () => {
       expect.assertions(1)
 
-      let cards = await UserOperations.getCards(
+      const cards = await UserOperations.getCards(
         'user_without_stripe_customer_id@example.com'
       )
       expect(cards).toEqual([])

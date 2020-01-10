@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../../src/app')
-const Transaction = require('../../src/models').Transaction
+const { Transaction } = require('../../src/models')
 
 describe('transactionController', () => {
   beforeEach(async () => {
@@ -22,10 +22,10 @@ describe('transactionController', () => {
       it('stores the provided transaction', async () => {
         expect.assertions(3)
 
-        let transactionData =
+        const transactionData =
           '0x00000000000000000000000006b5955a67d827cdf91823e3bb8f069e6c89c1d6000000000000000000000000000000000000000000000000016345785d8a0000'
 
-        let response = await request(app)
+        const response = await request(app)
           .post('/api/linkdrop/transaction')
           .set('Accept', /json/)
           .send({
@@ -37,7 +37,7 @@ describe('transactionController', () => {
             chain: 42,
           })
 
-        let record = await Transaction.findOne({
+        const record = await Transaction.findOne({
           where: { sender: '0xSDgErGR', recipient: '0xSdaG433r', chain: 42 },
         })
         expect(record.sender).toBe('0xSDgErGR')
@@ -49,7 +49,7 @@ describe('transactionController', () => {
     describe('when the transaction already exists in storage', () => {
       it('returns an accepted status code', async () => {
         expect.assertions(1)
-        let response = await request(app)
+        const response = await request(app)
           .post('/api/linkdrop/transaction')
           .set('Accept', /json/)
           .send({

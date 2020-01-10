@@ -32,7 +32,7 @@ const sig = sigUtil.signTypedData(privateKey, {
   data: typedData,
 })
 
-let keyHolderStructuredData = lockTypedData({
+const keyHolderStructuredData = lockTypedData({
   LockMetaData: {
     address: lockAddress,
     owner: keyOwner,
@@ -40,7 +40,7 @@ let keyHolderStructuredData = lockTypedData({
   },
 })
 
-let keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
+const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
   data: keyHolderStructuredData,
 })
 

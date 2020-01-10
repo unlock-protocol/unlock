@@ -6,7 +6,7 @@ const {
 } = transactionOperations
 
 const transactionCreate = async (req, res) => {
-  let transaction = req.body
+  const transaction = req.body
 
   if (
     transaction.transactionHash &&
@@ -23,7 +23,7 @@ const transactionCreate = async (req, res) => {
 }
 
 const transactionCreateLinkdrop = async (req, res) => {
-  let transaction = req.body
+  const transaction = req.body
 
   if (
     transaction.transactionHash &&
@@ -42,17 +42,17 @@ const transactionCreateLinkdrop = async (req, res) => {
 const transactionsGet = async (req, res) => {
   let transactions = []
 
-  let filter = buildFilter(req)
+  const filter = buildFilter(req)
 
   if (filter.sender || filter.recipients || filter.for) {
     transactions = await getTransactionsByFilter(filter)
   }
 
-  res.json({ transactions: transactions })
+  res.json({ transactions })
 }
 
 const buildFilter = req => {
-  let filter = {}
+  const filter = {}
 
   if (req.query.sender) {
     filter.sender = req.query.sender

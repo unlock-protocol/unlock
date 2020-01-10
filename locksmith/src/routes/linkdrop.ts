@@ -1,7 +1,7 @@
 import express from 'express'
 
-var router = express.Router()
-var transactionController = require('../controllers/transactionController')
+const router = express.Router()
+const transactionController = require('../controllers/transactionController')
 
 router.post('/transaction', transactionController.transactionCreateLinkdrop)
 

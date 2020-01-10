@@ -1,8 +1,6 @@
 import KeyPricer from '../../src/utils/keyPricer'
 
-let mockWeb3Service: { getLock: any }
-
-let standardLock = {
+const standardLock = {
   asOf: 227,
   balance: '0.01',
   expirationDuration: 2592000,
@@ -12,17 +10,19 @@ let standardLock = {
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
 }
 
-mockWeb3Service = {
+const mockWeb3Service: { getLock: any } = {
   getLock: jest
     .fn()
     .mockResolvedValue(standardLock)
     .mockResolvedValueOnce(standardLock),
 }
 
+function getMockWeb3Service() {
+  return mockWeb3Service
+}
+
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
-    return mockWeb3Service
-  },
+  Web3Service: getMockWeb3Service,
 }))
 
 const keyPricer = new KeyPricer('provider url', 'unlock contract address')

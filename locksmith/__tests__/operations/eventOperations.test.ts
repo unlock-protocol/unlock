@@ -3,10 +3,10 @@ import EventOperations from '../../src/operations/eventOperations'
 
 const models = require('../../src/models')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
-let Event: any = models.Event
-let eventData = {
+const { Event } = models
+const eventData = {
   lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
   name: 'A Test Event',
   description: 'A fun event for everyone',

@@ -1,15 +1,15 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
 
-let router = express.Router()
-let userController = require('../controllers/userController')
+const router = express.Router()
+const userController = require('../controllers/userController')
 
-let passwordEncryptedPrivateKeyPathRegex = new RegExp(
+const passwordEncryptedPrivateKeyPathRegex = new RegExp(
   '^/users/S+/passwordEncryptedPrivateKey/?$',
   'i'
 )
-let userUpdatePathRegex = new RegExp('^/users/?$', 'i')
-let ejectionPathRegex = '/:ethereumAddress/eject'
+const userUpdatePathRegex = new RegExp('^/users/?$', 'i')
+const ejectionPathRegex = '/:ethereumAddress/eject'
 
 router.post(
   ejectionPathRegex,

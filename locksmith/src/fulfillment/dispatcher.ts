@@ -7,7 +7,9 @@ const {
 
 export default class Dispatcher {
   unlockAddress: string
+
   provider: any
+
   buyer: string
 
   constructor(
@@ -23,7 +25,7 @@ export default class Dispatcher {
 
   async retrieveLock(lockAddress: string) {
     try {
-      let w3s = new Web3Service({
+      const w3s = new Web3Service({
         readOnlyProvider: this.provider,
         unlockAddress: this.unlockAddress,
       })
@@ -35,11 +37,11 @@ export default class Dispatcher {
   }
 
   async purchase(lockAddress: string, recipient: string) {
-    let walletService = new WalletService({
+    const walletService = new WalletService({
       unlockAddress: this.unlockAddress,
     })
 
-    let lock = await this.retrieveLock(lockAddress)
+    const lock = await this.retrieveLock(lockAddress)
 
     if (lock.outstandingKeys == lock.maxNumberOfKeys) {
       throw new Error('No Available Keys.')
@@ -56,12 +58,12 @@ export default class Dispatcher {
           data: string
         ) => {
           await findOrCreateTransaction({
-            transactionHash: transactionHash,
-            sender: sender,
-            recipient: recipient,
+            transactionHash,
+            sender,
+            recipient,
             chain: walletService.networkId,
             for: this.buyer,
-            data: data,
+            data,
           })
 
           resolve(transactionHash)

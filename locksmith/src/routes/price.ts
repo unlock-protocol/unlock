@@ -1,7 +1,7 @@
 import express from 'express'
 
-var router = express.Router()
-var priceController = require('../controllers/priceController')
+const router = express.Router()
+const priceController = require('../controllers/priceController')
 
 router.get('/:lockAddress', priceController.price)
 

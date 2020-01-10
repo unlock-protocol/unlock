@@ -7,8 +7,8 @@ const Sequelize = require('sequelize')
 
 const models = require('../../src/models')
 
-let Transaction = models.Transaction
-const Op = Sequelize.Op
+let { Transaction } = models
+const { Op } = Sequelize
 
 beforeEach(() => {
   Transaction = models.Transaction // resetting Lock for before each test
@@ -56,7 +56,7 @@ describe('lockOperations', () => {
           '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
         )
       })
-      await getTransactionsByFilter({ sender: sender })
+      await getTransactionsByFilter({ sender })
       expect(Transaction.findAll).toHaveBeenCalled()
     })
 
@@ -70,7 +70,7 @@ describe('lockOperations', () => {
           )
         })
         await getTransactionsByFilter({
-          sender: sender,
+          sender,
           recipient: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
         })
         expect(Transaction.findAll).toHaveBeenCalledWith({
@@ -91,7 +91,7 @@ describe('lockOperations', () => {
         const timestamp = 1573742842379
         Transaction.findAll = jest.fn(() => {})
         await getTransactionsByFilter({
-          sender: sender,
+          sender,
           recipient: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
           createdAfter: timestamp,
         })

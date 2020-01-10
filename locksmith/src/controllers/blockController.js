@@ -1,11 +1,11 @@
 const ethers = require('ethers')
 const logger = require('../locksmithLogger')
-const Block = require('../models').Block
+const { Block } = require('../models')
 
 const blockGet = async (req, res) => {
   let chain
-  let provider = ethers.getDefaultProvider(chain)
-  let blockNumber = req.params.blockNumber
+  const provider = ethers.getDefaultProvider(chain)
+  const { blockNumber } = req.params
 
   try {
     chain = prepareChainId(req.query.chain)
@@ -14,8 +14,8 @@ const blockGet = async (req, res) => {
     return
   }
 
-  let block = await Block.findOne({
-    where: { number: blockNumber, chain: chain },
+  const block = await Block.findOne({
+    where: { number: blockNumber, chain },
   })
 
   if (block) {
@@ -24,12 +24,12 @@ const blockGet = async (req, res) => {
     })
   } else {
     try {
-      let block = await provider.getBlock(parseInt(req.params.blockNumber))
+      const block = await provider.getBlock(parseInt(req.params.blockNumber))
 
       if (block) {
         await Block.create({
           number: blockNumber,
-          chain: chain,
+          chain,
           hash: block.hash,
           timestamp: block.timestamp,
         })
@@ -47,14 +47,14 @@ const blockGet = async (req, res) => {
 const prepareChainId = chainIdentifier => {
   if (chainIdentifier === null || chainIdentifier === undefined) {
     return 1
-  } else if (isNaN(chainIdentifier)) {
-    let network = ethers.utils.getNetwork(chainIdentifier)
+  }
+  if (isNaN(chainIdentifier)) {
+    const network = ethers.utils.getNetwork(chainIdentifier)
 
     if (network) {
       return network.chainId
-    } else {
-      throw 'Unknown Chain Provided'
     }
+    throw 'Unknown Chain Provided'
   } else {
     return parseInt(chainIdentifier)
   }

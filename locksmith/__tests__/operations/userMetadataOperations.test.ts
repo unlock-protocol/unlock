@@ -15,7 +15,7 @@ describe('userMetadataOperations', () => {
     describe('adding new metadata', () => {
       it('should persist the changes', async () => {
         expect.assertions(1)
-        let metadataUpdate = addMetadata({
+        const metadataUpdate = addMetadata({
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {
@@ -28,7 +28,7 @@ describe('userMetadataOperations', () => {
           },
         })
 
-        let result = await metadataUpdate
+        const result = await metadataUpdate
 
         expect(result[0]).toEqual(
           expect.objectContaining({
@@ -50,7 +50,7 @@ describe('userMetadataOperations', () => {
     describe('updating existing metadata', () => {
       it('should persist the changes', async () => {
         expect.assertions(1)
-        let metadataUpdate = addMetadata({
+        const metadataUpdate = addMetadata({
           tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
           data: {
@@ -58,7 +58,7 @@ describe('userMetadataOperations', () => {
           },
         })
 
-        let result = await metadataUpdate
+        const result = await metadataUpdate
 
         expect(result[0]).toEqual(
           expect.objectContaining({
@@ -82,11 +82,11 @@ describe('userMetadataOperations', () => {
       it('returns null', async () => {
         expect.assertions(1)
 
-        let metaData = await getMetadata(
+        const metaData = await getMetadata(
           '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           '0xabbc'
         )
-        let result = await metaData
+        const result = await metaData
         expect(result).toBe(null)
       })
     })
@@ -95,11 +95,11 @@ describe('userMetadataOperations', () => {
       it('returns the metadata', async () => {
         expect.assertions(1)
 
-        let metaData = getMetadata(
+        const metaData = getMetadata(
           '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
           '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212'
         )
-        let result = await metaData
+        const result = await metaData
 
         expect(result).toEqual(
           expect.objectContaining({

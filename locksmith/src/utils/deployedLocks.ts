@@ -9,12 +9,12 @@ export async function deployedLocks(
   unlockContractAddress: string,
   network: string
 ) {
-  let lastBlockFetched = await ParsedBlockForLockCreation.findByPk(1)
+  const lastBlockFetched = await ParsedBlockForLockCreation.findByPk(1)
   /* 
   3530009 is the block holding the deployment of unlock on Rinkeby,its heavy handed for production but
   it works as bootstrap.
    */
-  let startingBlock: number = lastBlockFetched
+  const startingBlock: number = lastBlockFetched
     ? lastBlockFetched.blockNumber
     : 3530009
 
@@ -27,9 +27,9 @@ export async function fetchLocksExternally(
   startingBlock: number,
   network: string
 ) {
-  let etherscanProvider = new ethers.providers.EtherscanProvider(network)
-  let lastBlock = await etherscanProvider.getBlockNumber()
-  let logs = await etherscanProvider.getLogs({
+  const etherscanProvider = new ethers.providers.EtherscanProvider(network)
+  const lastBlock = await etherscanProvider.getBlockNumber()
+  const logs = await etherscanProvider.getLogs({
     address: unlockContractAddress,
     fromBlock: startingBlock,
     toBlock: 'latest',
@@ -43,12 +43,12 @@ async function fetchPersistedLocks() {
 }
 
 async function persistLocks(logs: any[], lastBlock: number) {
-  let abi = Unlock.Unlock.abi
-  let etherInterface = new ethers.utils.Interface(abi)
-  let lockAddress: any = []
+  const { abi } = Unlock.Unlock
+  const etherInterface = new ethers.utils.Interface(abi)
+  const lockAddress: any = []
 
   logs.forEach(log => {
-    let parsedLog = etherInterface.parseLog(log)
+    const parsedLog = etherInterface.parseLog(log)
     if (
       parsedLog &&
       parsedLog.name &&

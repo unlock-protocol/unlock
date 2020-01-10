@@ -1,7 +1,7 @@
 import express from 'express'
 
-var router = express.Router()
-var lockController = require('../controllers/lockController')
+const router = express.Router()
+const lockController = require('../controllers/lockController')
 
 router.post('/lock', lockController.lockSave)
 router.get('/lock/:lockAddress', lockController.lockGet)

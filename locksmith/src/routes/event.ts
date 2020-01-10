@@ -1,16 +1,16 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
 
-let router = express.Router()
-let eventController = require('../controllers/eventController')
+const router = express.Router()
+const eventController = require('../controllers/eventController')
 
-let eventConfiguration = {
+const eventConfiguration = {
   name: 'event',
   required: ['lockAddress', 'name', 'location', 'date', 'owner'],
   signee: 'owner',
 }
 
-let eventModificationConfiguration = {
+const eventModificationConfiguration = {
   name: 'eventModification',
   required: ['lockAddress', 'owner'],
   signee: 'owner',

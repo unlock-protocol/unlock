@@ -5,12 +5,12 @@ const models = require('../models')
 const { AuthorizedLock } = models
 import Sequelize = require('sequelize')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
 namespace AuthorizedLockOperations {
   // eslint-disable-next-line import/prefer-default-export
   export const hasAuthorization = async (address: string): Promise<boolean> => {
-    let authorizedLockCount = await AuthorizedLock.count({
+    const authorizedLockCount = await AuthorizedLock.count({
       where: {
         address: {
           [Op.eq]: Normalizer.ethereumAddress(address),

@@ -9,8 +9,8 @@ const Sequelize = require('sequelize')
 
 const models = require('../../src/models')
 
-let Lock = models.Lock
-const Op = Sequelize.Op
+let { Lock } = models
+const { Op } = Sequelize
 
 beforeEach(() => {
   Lock = models.Lock // resetting Lock for before each test
@@ -63,7 +63,7 @@ describe('lockOperations', () => {
     describe('when there are no locks persisted', () => {
       it('returns an empty collection', async () => {
         expect.assertions(1)
-        let locks = await getLockAddresses()
+        const locks = await getLockAddresses()
         expect(locks).toEqual([])
       })
     })
@@ -80,7 +80,7 @@ describe('lockOperations', () => {
             },
           ]
         })
-        let locks = await getLockAddresses()
+        const locks = await getLockAddresses()
         expect(locks).toEqual(['0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'])
       })
     })

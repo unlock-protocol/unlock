@@ -12,18 +12,18 @@ afterAll(() => {
 })
 
 describe('TokenTransferApproval', () => {
-  let provider = 'http://0.0.0.0:8545'
-  let credentials =
+  const provider = 'http://0.0.0.0:8545'
+  const credentials =
     '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
-  let lockContractAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
-  let erc20ContractAddress = '0x591ad9066603f5499d12ff4bc207e2f577448c46'
+  const lockContractAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+  const erc20ContractAddress = '0x591ad9066603f5499d12ff4bc207e2f577448c46'
 
   describe('approve', () => {
     it('returns a transaction hash for the approval request', async () => {
       expect.assertions(1)
-      let { nockDone } = await nock.back('approve_token_transfer.json')
-      let transferApprover = new TokenTransferApproval(provider, credentials)
-      let transaction = await transferApprover.approve(
+      const { nockDone } = await nock.back('approve_token_transfer.json')
+      const transferApprover = new TokenTransferApproval(provider, credentials)
+      const transaction = await transferApprover.approve(
         '200',
         lockContractAddress,
         erc20ContractAddress

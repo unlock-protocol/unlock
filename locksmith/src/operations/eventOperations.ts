@@ -6,7 +6,7 @@ import { EventLink } from '../models'
 const models = require('../models')
 
 const { Event } = models
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
 namespace EventOperations {
   export const create = async (event: EventCreation): Promise<any> => {
@@ -52,7 +52,7 @@ namespace EventOperations {
     lockAddress: string,
     eventLinks: any
   ): Promise<any> => {
-    let event = await Event.findOne({
+    const event = await Event.findOne({
       include: [{ all: true }],
       where: {
         lockAddress: { [Op.eq]: Normalizer.ethereumAddress(lockAddress) },
@@ -63,7 +63,9 @@ namespace EventOperations {
       await element.destroy()
     })
 
-    let bulkLinks = await EventLink.bulkCreate(eventLinks, { returning: true })
+    const bulkLinks = await EventLink.bulkCreate(eventLinks, {
+      returning: true,
+    })
     await event.$set('eventLinks', bulkLinks)
 
     return true

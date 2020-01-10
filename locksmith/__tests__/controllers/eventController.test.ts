@@ -6,9 +6,9 @@ const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
 const models = require('../../src/models')
 
-let Event = models.Event
+const { Event } = models
 
-let newLinks = {
+const newLinks = {
   eventModification: {
     lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
     owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
@@ -25,7 +25,7 @@ let newLinks = {
   ],
 }
 
-let message = {
+const message = {
   event: {
     lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
     name: 'A Test Event',
@@ -39,7 +39,7 @@ let message = {
   },
 }
 
-let badOwnerMessage = {
+const badOwnerMessage = {
   event: {
     lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
     name: 'A Test Event',
@@ -51,7 +51,7 @@ let badOwnerMessage = {
   },
 }
 
-let overWritingLinks = {
+const overWritingLinks = {
   eventModification: {
     lockAddress: '0x49158d35259e3264ad2a6abb300cda19294d125e',
     owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
@@ -72,7 +72,7 @@ let overWritingLinks = {
   ],
 }
 
-let privateKey = ethJsUtil.toBuffer(
+const privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
@@ -101,7 +101,7 @@ function generateTypedData(message: any) {
       version: '1',
     },
     primaryType: 'Event',
-    message: message,
+    message,
   }
 }
 
@@ -125,7 +125,7 @@ function generateTypedData2(message: any) {
       version: '1',
     },
     primaryType: 'EventModification',
-    message: message,
+    message,
   }
 }
 
@@ -138,9 +138,9 @@ describe('Event Controller', () => {
     describe('when unaccompanied by a valid signature', () => {
       it('does not create an event and returns 401', async () => {
         expect.assertions(2)
-        let typedData = generateTypedData(message)
+        const typedData = generateTypedData(message)
 
-        let response = await request(app)
+        const response = await request(app)
           .post('/events')
           .set('Accept', /json/)
           .send(typedData)
@@ -153,12 +153,12 @@ describe('Event Controller', () => {
     describe('when the event could be created', () => {
       it('creates the event and returns 200', async () => {
         expect.assertions(1)
-        let typedData = generateTypedData(message)
+        const typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .post('/events')
           .set('Accept', /json/)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -171,12 +171,12 @@ describe('Event Controller', () => {
     describe('when the event could not be created', () => {
       it('returns a 409 status code', async () => {
         expect.assertions(1)
-        let typedData = generateTypedData(message)
+        const typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .post('/events')
           .set('Accept', /json/)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -190,9 +190,9 @@ describe('Event Controller', () => {
     describe('when unaccompanied by a valid signature', () => {
       it('does not save an event and returns 401', async () => {
         expect.assertions(1)
-        let typedData = generateTypedData(message)
+        const typedData = generateTypedData(message)
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
           .set('Accept', /json/)
           .send(typedData)
@@ -203,12 +203,12 @@ describe('Event Controller', () => {
     describe('when the event could be saved', () => {
       it('updates the event and returns 200', async () => {
         expect.assertions(1)
-        let typedData = generateTypedData(message)
+        const typedData = generateTypedData(message)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
           .set('Accept', /json/)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -220,12 +220,12 @@ describe('Event Controller', () => {
     describe('when there is an owner mismatch', () => {
       it('does not save the event and returns 401', async () => {
         expect.assertions(1)
-        let typedData = generateTypedData(badOwnerMessage)
+        const typedData = generateTypedData(badOwnerMessage)
         const sig = sigUtil.signTypedData(privateKey, {
           data: typedData,
         })
 
-        let response = await request(app)
+        const response = await request(app)
           .put('/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e')
           .set('Accept', /json/)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -239,7 +239,7 @@ describe('Event Controller', () => {
   describe('when the event does not exist', () => {
     it('returns a 404 status code', async () => {
       expect.assertions(1)
-      let response = await request(app).get(
+      const response = await request(app).get(
         '/events/0xAc442c26177a33B255E811Ea2736234bCB4bCf96'
       )
       expect(response.status).toBe(404)
@@ -250,12 +250,12 @@ describe('Event Controller', () => {
 describe('adding event links', () => {
   it('stores the link attached to the event', async () => {
     expect.assertions(1)
-    let typedData = generateTypedData2(newLinks)
+    const typedData = generateTypedData2(newLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
     })
 
-    let response = await request(app)
+    const response = await request(app)
       .post('/events/0x49158d35259e3264ad2a6abb300cda19294d125e/links')
       .set('Accept', /json/)
       .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -269,12 +269,12 @@ describe('overwritting event links', () => {
   it('stores the link attached to the event', async () => {
     expect.assertions(1)
 
-    let typedData = generateTypedData(overWritingLinks)
+    const typedData = generateTypedData(overWritingLinks)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
     })
 
-    let response = await request(app)
+    const response = await request(app)
       .post('/events/0x49158d35259e3264ad2a6abb300cda19294d125e/links')
       .set('Accept', /json/)
       .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -288,7 +288,7 @@ describe('event request', () => {
   describe('when the event exists', () => {
     it('returns the event', async () => {
       expect.assertions(3)
-      let response = await request(app).get(
+      const response = await request(app).get(
         '/events/0x49158d35259E3264Ad2a6aBb300cdA19294D125e'
       )
 

@@ -2,11 +2,11 @@ import AuthorizedLockOperations from '../../src/operations/authorizedLockOperati
 
 const models = require('../../src/models')
 
-let AuthorizedLock: any = models.AuthorizedLock
+const { AuthorizedLock } = models
 
 describe('hasAuthorization', () => {
-  let authorizedLock = '0xDc0731517234d0A13a4Da4572b9caC56d0cF5c29'
-  let unauthorizedLock = '0xAc442c26177a33B255E811Ea2736234bCB4bCf96'
+  const authorizedLock = '0xDc0731517234d0A13a4Da4572b9caC56d0cF5c29'
+  const unauthorizedLock = '0xAc442c26177a33B255E811Ea2736234bCB4bCf96'
   AuthorizedLock.count = jest
     .fn()
     .mockReturnValueOnce(0)
@@ -15,7 +15,7 @@ describe('hasAuthorization', () => {
   describe('when the provided address has not been authorized', () => {
     it('returns false', async () => {
       expect.assertions(1)
-      let result = await AuthorizedLockOperations.hasAuthorization(
+      const result = await AuthorizedLockOperations.hasAuthorization(
         authorizedLock
       )
       expect(result).toBe(false)
@@ -25,7 +25,7 @@ describe('hasAuthorization', () => {
   describe('when the provided address has been authorized', () => {
     it('returns true', async () => {
       expect.assertions(1)
-      let result = await AuthorizedLockOperations.hasAuthorization(
+      const result = await AuthorizedLockOperations.hasAuthorization(
         unauthorizedLock
       )
       expect(result).toBe(true)

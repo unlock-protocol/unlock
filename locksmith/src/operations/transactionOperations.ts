@@ -3,7 +3,7 @@ import { Transaction } from '../models/transaction'
 const ethJsUtil = require('ethereumjs-util')
 const Sequelize = require('sequelize')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
 /**
  * Finds a transaction by its hash or creates it
@@ -40,7 +40,7 @@ export const getTransactionsByFilter = async (filter: any) => {
 }
 
 const queryFilter = (filter: any) => {
-  var target: any = {}
+  const target: any = {}
 
   if (filter.recipient) {
     target.recipient = {
