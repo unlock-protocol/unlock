@@ -1,8 +1,7 @@
 import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
 import KeyPricer from '../utils/keyPricer'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 namespace PriceController {
   // eslint-disable-next-line import/prefer-default-export

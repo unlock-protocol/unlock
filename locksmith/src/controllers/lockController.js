@@ -4,8 +4,7 @@ const logger = require('../locksmithLogger')
 const lockOperations = require('../operations/lockOperations')
 const lockIconUtils = require('../../src/utils/lockIcon').default
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 

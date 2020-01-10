@@ -7,12 +7,11 @@ import { ApolloServer } from 'apollo-server-express'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../config/config')[env]
+const config = require('../config/config')
 
 const exporter = new JaegerTraceExporter(config.jaeger)
 
-if (env != 'test') {
+if (process.env.NODE_ENV != 'test') {
   tracing.start({ exporter: exporter })
 }
 

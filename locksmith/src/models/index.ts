@@ -12,8 +12,7 @@ import { KeyMetadata } from './keyMetadata'
 import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 import { UserTokenMetadata } from './usertokenmetadata'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 const sequelize = new Sequelize(config)
 

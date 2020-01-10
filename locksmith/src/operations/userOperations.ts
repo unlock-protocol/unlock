@@ -5,8 +5,7 @@ import { PaymentProcessor } from '../payment/paymentProcessor'
 // eslint-disable-line no-unused-vars
 import RecoveryPhrase = require('../utils/recoveryPhrase')
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 const models = require('../models')
 
 const { User, UserReference } = models
