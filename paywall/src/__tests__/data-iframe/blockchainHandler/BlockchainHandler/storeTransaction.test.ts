@@ -98,7 +98,7 @@ describe('BlockchainHandler - storeTransaction', () => {
       await callStoreTransaction()
 
       expect(fakeWindow.fetch).toHaveBeenCalledWith(
-        `http://fun.times/transaction`,
+        'http://fun.times/transaction',
         {
           method: 'POST',
           mode: 'cors',
