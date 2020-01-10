@@ -6,7 +6,8 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Unlock / lockTotalSales', accounts => {
   const price = new BigNumber(Units.convert('0.01', 'eth', 'wei'))
@@ -15,7 +16,7 @@ contract('Unlock / lockTotalSales', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
   })
 
   it('total sales defaults to 0', async () => {

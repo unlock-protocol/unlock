@@ -12,7 +12,9 @@ const UnlockLatest = Contracts.getFromLocal('Unlock')
 const PublicLockLatest = Contracts.getFromLocal('PublicLock')
 const { LatestUnlockVersion, LatestLockVersion } = require('./latestVersion.js')
 
-let project, proxy, unlock
+let project
+let proxy
+let unlock
 
 contract('Unlock / upgrades / v2ToLatest', accounts => {
   const unlockOwner = accounts[9]
