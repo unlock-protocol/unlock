@@ -4,7 +4,7 @@ import { TransactionType } from './unlockTypes'
 export const address = PropTypes.string
 
 export const account = PropTypes.shape({
-  address: address,
+  address,
   privateKey: PropTypes.string,
   balance: PropTypes.string, // Must be expressed in Eth!
 })
@@ -47,7 +47,7 @@ export const configuration = PropTypes.shape({})
 
 export const mechanism = PropTypes.oneOf(['0', '1', '2', undefined])
 
-export const layout = PropTypes.instanceOf(Function) //PropTypes.instanceOf(React.Component)
+export const layout = PropTypes.instanceOf(Function) // PropTypes.instanceOf(React.Component)
 
 export const locks = PropTypes.objectOf(PropTypes.object)
 

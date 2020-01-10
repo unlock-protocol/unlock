@@ -155,7 +155,7 @@ describe('CreateContent', () => {
     expect(submit).not.toBeNull()
     rtl.fireEvent.click(submit)
     expect(form.getByText('Saving...')).not.toBeNull()
-    let date = new Date('2020-11-23T17:30:00.000')
+    const date = new Date('2020-11-23T17:30:00.000')
     expect(addEvent).toHaveBeenCalledWith({
       lockAddress: 'abc123',
       name: 'Party!',
@@ -246,7 +246,7 @@ describe('CreateContent', () => {
   it('should load the corresponding event when a different lock is selected', () => {
     expect.assertions(2)
 
-    let date = new Date('2020-11-23T00:00:00.000')
+    const date = new Date('2020-11-23T00:00:00.000')
     const store = createUnlockStore({
       account: { address: 'ben' },
       locks: inputLocks,
@@ -293,7 +293,7 @@ describe('CreateContent', () => {
   it('should load an event from props', () => {
     expect.assertions(3)
 
-    let date = new Date('2020-11-23T00:00:00.000')
+    const date = new Date('2020-11-23T00:00:00.000')
     const store = createUnlockStore({
       account: { address: 'ben' },
       locks: inputLocks,

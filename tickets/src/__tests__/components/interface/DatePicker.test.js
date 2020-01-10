@@ -42,7 +42,7 @@ describe('DatePicker', () => {
   it('should show today s date by default', () => {
     expect.assertions(3)
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
-    let wrapper = rtl.render(<DatePicker now={now} onChange={jest.fn()} />)
+    const wrapper = rtl.render(<DatePicker now={now} onChange={jest.fn()} />)
     expect(wrapper.queryByText('2019')).not.toBeNull()
     expect(wrapper.queryByText('Mar')).not.toBeNull()
     expect(wrapper.queryByText('2')).not.toBeNull()
@@ -52,7 +52,7 @@ describe('DatePicker', () => {
     expect.assertions(3)
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
     const date = new Date('2020-03-02T00:00:00.000Z') // March 2nd, 2020
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <DatePicker now={now} date={date} onChange={jest.fn()} />
     )
     expect(wrapper.queryByText('2020')).not.toBeNull()
@@ -66,7 +66,7 @@ describe('DatePicker', () => {
       expect(date.getFullYear()).toEqual(2020)
     })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
-    let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
+    const wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a year'), {
       target: { value: '2020' }, // Changed to 2020
     })
@@ -79,7 +79,7 @@ describe('DatePicker', () => {
       expect(date.getMonth()).toEqual(0)
     })
     const now = new Date('2019-03-02T00:00:00.000Z') // March 2nd, 2019
-    let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
+    const wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a month'), {
       target: { value: '0' }, // Changed to January
     })
@@ -92,7 +92,7 @@ describe('DatePicker', () => {
       expect(date.getDate()).toEqual(3)
     })
     const now = new Date('2019-03-02T00:00:00.000') // March 2nd, 2019
-    let wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
+    const wrapper = rtl.render(<DatePicker now={now} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Pick a day'), {
       target: { value: '3' }, // Changed to the 3rd
     })

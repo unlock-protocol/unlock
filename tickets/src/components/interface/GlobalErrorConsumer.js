@@ -47,7 +47,7 @@ export const mapStateToProps = state => {
   }
   const error = state.errors.find(error => error.name.startsWith('FATAL_'))
   return {
-    error: error,
+    error,
   }
 }
 

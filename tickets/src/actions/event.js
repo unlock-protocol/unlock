@@ -7,7 +7,7 @@ export const SAVED_EVENT = 'event/SAVED_EVENT'
 export function eventError(error) {
   return {
     type: EVENT_ERROR,
-    error: error,
+    error,
   }
 }
 export const addEvent = (event, token) => ({

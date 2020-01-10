@@ -50,7 +50,7 @@ describe('event actions', () => {
 
     const expectedError = {
       type: EVENT_ERROR,
-      error: error,
+      error,
     }
 
     expect(eventError(error)).toEqual(expectedError)

@@ -18,7 +18,7 @@ interface UnlockWindow extends Window {
   unlockProtocolConfig?: any
 }
 
-declare var window: UnlockWindow | undefined
+declare let window: UnlockWindow | undefined
 
 enum PaywallStatus {
   Locked = 'locked',

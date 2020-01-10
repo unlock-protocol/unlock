@@ -12,7 +12,7 @@ import { MONTH_NAMES } from '../../constants'
  * @param {Number} month
  */
 export const getDaysMonthsAndYearsForSelect = (now, year, month) => {
-  let [days, months, years] = getDaysMonthsAndYears(now, year, month)
+  const [days, months, years] = getDaysMonthsAndYears(now, year, month)
 
   const asOptions = array => {
     return array.map(element => ({ value: element, label: element }))
@@ -31,7 +31,7 @@ export default class DatePicker extends Component {
 
     this.state = {
       ...getDaysMonthsAndYearsForSelect(now),
-      date: date,
+      date,
     }
     this.onChange = this.onChange.bind(this)
   }
@@ -43,7 +43,7 @@ export default class DatePicker extends Component {
     }
     return selected => {
       this.setState(state => {
-        let date = state.date
+        let { date } = state
         // Change the date based on the selected value
         date[method](selected.value)
 

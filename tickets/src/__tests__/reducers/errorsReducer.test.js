@@ -5,7 +5,7 @@ import { SET_NETWORK } from '../../actions/network'
 
 describe('errors reducer', () => {
   const action = setError('something was wrong')
-  const error = action.error
+  const { error } = action
   const action2 = setError('error 2')
   const error2 = action2.error
 

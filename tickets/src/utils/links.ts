@@ -1,10 +1,10 @@
 const formatDateForCalendar = (date: Date, allDay: boolean) => {
   const year = date.getFullYear()
-  const month = ('0' + (date.getMonth() + 1)).slice(-2)
-  const day = ('0' + date.getDate()).slice(-2)
+  const month = `0${date.getMonth() + 1}`.slice(-2)
+  const day = `0${date.getDate()}`.slice(-2)
   if (!allDay) {
-    const hours = ('0' + date.getHours()).slice(-2)
-    const minutes = ('0' + date.getMinutes()).slice(-2)
+    const hours = `0${date.getHours()}`.slice(-2)
+    const minutes = `0${date.getMinutes()}`.slice(-2)
     const time = `T${hours}${minutes}00`
     return [year, month, day, time].join('')
   }
@@ -32,12 +32,12 @@ export function googleCalendarLinkBuilder(
     end = formatDateForCalendar(endDate, false)
   }
 
-  let googleCalendarLink = `https://calendar.google.com/calendar/r/eventedit?`
+  let googleCalendarLink = 'https://calendar.google.com/calendar/r/eventedit?'
   googleCalendarLink += `&text=${encodeURIComponent(name)}`
   googleCalendarLink += `&dates=${start}/${end}`
   googleCalendarLink += `&details=${encodeURIComponent(details)}`
   googleCalendarLink += `&location=${encodeURIComponent(location)}`
-  googleCalendarLink += `&sf=true&output=xml`
+  googleCalendarLink += '&sf=true&output=xml'
   return googleCalendarLink
 }
 

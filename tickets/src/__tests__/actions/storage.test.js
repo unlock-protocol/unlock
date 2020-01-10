@@ -12,7 +12,7 @@ describe('Storage error', () => {
 
     const expectation = {
       type: STORAGE_ERROR,
-      error: error,
+      error,
     }
 
     expect(storageError(error)).toEqual(expectation)
@@ -28,9 +28,9 @@ describe('Store Lock Creation', () => {
 
     const expectation = {
       type: STORE_LOCK_NAME,
-      owner: owner,
-      lock: lock,
-      token: token,
+      owner,
+      lock,
+      token,
     }
 
     expect(storeLockName(owner, lock, token)).toEqual(expectation)

@@ -21,13 +21,13 @@ export const EventLinks = ({ event }) => {
   if (sanitizedLinks.length) {
     details += '\n\n<strong>Event Website</strong>'
     sanitizedLinks.forEach(link => {
-      details += '\n' + link.href
+      details += `\n${link.href}`
     })
   }
   details += `\n\n<strong>Ticket Details</strong>\n${window.location.href}`
 
   // No need to sanitize the GCal link because googleCalendarLinkBuilder does it for us
-  let googleCalendarLink = googleCalendarLinkBuilder(
+  const googleCalendarLink = googleCalendarLinkBuilder(
     name,
     details,
     date,

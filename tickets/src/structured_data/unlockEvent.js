@@ -1,6 +1,6 @@
 export default class UnlockEvent {
   static build(input) {
-    let domain = [
+    const domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
@@ -8,7 +8,7 @@ export default class UnlockEvent {
       { name: 'salt', type: 'bytes32' },
     ]
 
-    let event = [
+    const event = [
       { name: 'lockAddress', type: 'address' },
       { name: 'owner', type: 'address' },
       { name: 'name', type: 'string' },
@@ -21,12 +21,12 @@ export default class UnlockEvent {
       { name: 'links', type: 'string' },
     ]
 
-    let domainData = {
+    const domainData = {
       name: 'Unlock',
       version: '1',
     }
 
-    let message = {
+    const message = {
       event: {
         lockAddress: input.lockAddress,
         owner: input.owner,
@@ -48,7 +48,7 @@ export default class UnlockEvent {
       },
       domain: domainData,
       primaryType: 'Event',
-      message: message,
+      message,
     }
   }
 }

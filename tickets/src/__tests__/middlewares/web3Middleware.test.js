@@ -63,7 +63,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
   return {
     ...mockUnlock,
-    Web3Service: function() {
+    Web3Service() {
       return mockWeb3Service
     },
   }
@@ -76,13 +76,13 @@ class MockStorageService extends EventEmitter {
   }
 }
 
-let mockStorageService = new MockStorageService()
+const mockStorageService = new MockStorageService()
 jest.mock('../../services/storageService.js', () => {
   return {
     success: {
       getLockAddressesForUser: 'getLockAddressesForUser.success',
     },
-    StorageService: function() {
+    StorageService() {
       return mockStorageService
     },
   }

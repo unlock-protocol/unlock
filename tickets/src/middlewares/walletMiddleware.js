@@ -31,7 +31,7 @@ const walletMiddleware = config => {
           : 'Unknown Network'
         return dispatch(
           setError(FATAL_WRONG_NETWORK, {
-            currentNetwork: currentNetwork,
+            currentNetwork,
             requiredNetworkId: config.requiredNetworkId,
           })
         )
@@ -85,7 +85,7 @@ const walletMiddleware = config => {
         }
 
         if (action.type === SIGN_DATA) {
-          const account = getState().account
+          const { account } = getState()
           walletService.signData(
             account.address,
             action.data,
