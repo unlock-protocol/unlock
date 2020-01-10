@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'prettier',
     'prettier/standard',
+    'prettier/react',
     'plugin:prettier/recommended',
   ],
   env: {
@@ -38,6 +39,15 @@ module.exports = {
         max: 1,
         maxEOF: 0,
         maxBOF: 0,
+      },
+    ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        vars: 'all',
+        args: 'after-used',
+        ignoreRestSiblings: true,
+        argsIgnorePattern: '^_$',
       },
     ],
     'brace-style': 0,
