@@ -1,10 +1,8 @@
 import LockOwnership from '../../src/data/lockOwnership'
 
-const Lock = require('../../src/models').Lock
+const { Lock } = require('../../src/models')
 
-let mockWeb3Service: { getLock: any }
-
-mockWeb3Service = {
+const mockWeb3Service: { getLock: any } = {
   getLock: jest.fn().mockResolvedValueOnce({
     asOf: 227,
     balance: '0.01',
@@ -19,13 +17,13 @@ mockWeb3Service = {
 }
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
+  Web3Service() {
     return mockWeb3Service
   },
 }))
 
 describe('Lock Ownership', () => {
-  let host = 'http://localhost:8545'
+  const host = 'http://localhost:8545'
   const ownedLocks = [
     {
       name: 'a mighty fine lock',
@@ -54,7 +52,7 @@ describe('Lock Ownership', () => {
         '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
       ])
 
-      let lock = await Lock.findOne({
+      const lock = await Lock.findOne({
         where: {
           address: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
         },

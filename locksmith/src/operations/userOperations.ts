@@ -11,19 +11,19 @@ const models = require('../models')
 const { User, UserReference } = models
 import Sequelize = require('sequelize')
 
-const Op = Sequelize.Op
+const { Op } = Sequelize
 
 namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
   ): Promise<String | undefined> => {
-    let recoveryPhrase = RecoveryPhrase.generate()
-    let userReference = await UserReference.create(
+    const recoveryPhrase = RecoveryPhrase.generate()
+    const userReference = await UserReference.create(
       {
         emailAddress: Normalizer.emailAddress(input.emailAddress),
         User: {
           publicKey: Normalizer.ethereumAddress(input.publicKey),
-          recoveryPhrase: recoveryPhrase,
+          recoveryPhrase,
           passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
         },
       },
@@ -34,38 +34,35 @@ namespace UserOperations {
 
     if (userReference) {
       return recoveryPhrase
-    } else {
-      return
     }
   }
 
   export const getUserPrivateKeyByEmailAddress = async (
     emailAddress: string
   ): Promise<string | null> => {
-    let user = await UserReference.findOne({
+    const user = await UserReference.findOne({
       where: { emailAddress: Normalizer.emailAddress(emailAddress) },
       include: [{ model: User, attributes: ['passwordEncryptedPrivateKey'] }],
     })
 
     if (user) {
       return user.User.passwordEncryptedPrivateKey
-    } else {
-      return null
     }
+    return null
   }
 
   export const ejectionStatus = async (
     emailAddress: string
   ): Promise<boolean> => {
     try {
-      let user = await UserReference.findOne({
+      const user = await UserReference.findOne({
         where: {
           emailAddress: Normalizer.emailAddress(emailAddress),
         },
         include: [{ model: User, attributes: ['ejection'] }],
       })
 
-      return user.User.ejection ? true : false
+      return !!user.User.ejection
     } catch (e) {
       return false
     }
@@ -75,7 +72,7 @@ namespace UserOperations {
     publicKey: string
   ): Promise<boolean> => {
     try {
-      let ejectedUser = await User.findOne({
+      const ejectedUser = await User.findOne({
         where: {
           publicKey: Normalizer.ethereumAddress(publicKey),
           ejection: {
@@ -84,7 +81,7 @@ namespace UserOperations {
         },
       })
 
-      return ejectedUser ? true : false
+      return !!ejectedUser
     } catch (e) {
       return false
     }
@@ -94,7 +91,7 @@ namespace UserOperations {
     emailAddress: string
   ): Promise<string | null> => {
     try {
-      let user = await UserReference.findOne({
+      const user = await UserReference.findOne({
         where: {
           emailAddress: Normalizer.emailAddress(emailAddress),
         },
@@ -103,9 +100,8 @@ namespace UserOperations {
 
       if (user) {
         return user.User.recoveryPhrase
-      } else {
-        return null
       }
+      return null
     } catch (e) {
       return null
     }
@@ -116,7 +112,7 @@ namespace UserOperations {
     updatedEmailAddress: string
   ) => {
     try {
-      let result = await UserReference.update(
+      const result = await UserReference.update(
         { emailAddress: Normalizer.emailAddress(updatedEmailAddress) },
         {
           where: {
@@ -136,7 +132,7 @@ namespace UserOperations {
     token: string,
     publicKey: string
   ): Promise<boolean> => {
-    let paymentProcessor = new PaymentProcessor(
+    const paymentProcessor = new PaymentProcessor(
       config.stripeSecret,
       config.web3ProviderHost,
       config.unlockContractAddress
@@ -149,7 +145,7 @@ namespace UserOperations {
     passwordEncryptedPrivateKey: string
   ) => {
     return User.update(
-      { passwordEncryptedPrivateKey: passwordEncryptedPrivateKey },
+      { passwordEncryptedPrivateKey },
       {
         where: {
           publicKey: {
@@ -161,22 +157,21 @@ namespace UserOperations {
   }
 
   export const getCards = async (emailAddress: string): Promise<any[]> => {
-    let user = await UserReference.findOne({
+    const user = await UserReference.findOne({
       where: { emailAddress: Normalizer.emailAddress(emailAddress) },
     })
 
     if (user) {
       return getCardDetailsFromStripe(user.stripe_customer_id)
-    } else {
-      return []
     }
+    return []
   }
 
   const getCardDetailsFromStripe = async (customer_id: any): Promise<any[]> => {
-    let stripe = new Stripe(config.stripeSecret)
+    const stripe = new Stripe(config.stripeSecret)
 
     try {
-      let cardsResponse = await stripe.customers.listSources(customer_id, {
+      const cardsResponse = await stripe.customers.listSources(customer_id, {
         object: 'card',
       })
 

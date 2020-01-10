@@ -29,7 +29,7 @@ export async function getMetadata(
   userAddress: string,
   includeProtected = false
 ) {
-  let data = await UserTokenMetadata.findOne({
+  const data = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(tokenAddress),
       userAddress: Normalizer.ethereumAddress(userAddress),

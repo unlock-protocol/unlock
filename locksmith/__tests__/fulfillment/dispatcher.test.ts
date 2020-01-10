@@ -3,16 +3,16 @@ import Dispatcher from '../../src/fulfillment/dispatcher'
 
 jest.mock('../../src/operations/transactionOperations')
 
-let mockWeb3Service: { getLock: any }, dispatcher: Dispatcher
-let lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
-let recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
-let credential =
+let dispatcher: Dispatcher
+const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
+const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+const unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+const credential =
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
-let host = 'http://localhost:8545'
-let buyer = '0xpurchasingEthereumAddress'
+const host = 'http://localhost:8545'
+const buyer = '0xpurchasingEthereumAddress'
 
-let standardLock = {
+const standardLock = {
   asOf: 227,
   balance: '0.01',
   expirationDuration: 2592000,
@@ -22,7 +22,7 @@ let standardLock = {
   owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
 }
 
-mockWeb3Service = {
+const mockWeb3Service: { getLock: any } = {
   getLock: jest
     .fn()
     .mockResolvedValue(standardLock)
@@ -31,6 +31,7 @@ mockWeb3Service = {
 
 class MockWalletService extends EventEmitter {
   connect = jest.fn()
+
   purchaseKey = jest.fn(() => {
     this.emit(
       'transaction.new',
@@ -44,10 +45,10 @@ class MockWalletService extends EventEmitter {
 const mockWalletService = new MockWalletService()
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: function() {
+  Web3Service() {
     return mockWeb3Service
   },
-  WalletService: function() {
+  WalletService() {
     return mockWalletService
   },
 }))
@@ -62,7 +63,7 @@ describe('Dispatcher', () => {
       it('returns the Lock details', async () => {
         expect.assertions(1)
 
-        let lockInformation = await dispatcher.retrieveLock(lockAddress)
+        const lockInformation = await dispatcher.retrieveLock(lockAddress)
         expect(lockInformation).toEqual(expect.objectContaining(standardLock))
       })
     })

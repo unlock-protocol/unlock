@@ -7,7 +7,7 @@ const eventOperation = require('../operations/eventOperations')
 
 namespace EventController {
   export const create = async (req: Request, res: Response): Promise<any> => {
-    let event = req.body.message.event
+    const { event } = req.body.message
 
     try {
       await eventOperation.create(event)
@@ -19,8 +19,8 @@ namespace EventController {
   }
 
   export const save = async (req: Request, res: Response): Promise<any> => {
-    let event = req.body.message.event
-    let lockAddress = req.params.lockAddress
+    const { event } = req.body.message
+    const { lockAddress } = req.params
     try {
       const databaseEvent = await eventOperation.find(lockAddress)
       if (
@@ -38,22 +38,21 @@ namespace EventController {
   }
 
   export const find = async (req: Request, res: Response): Promise<any> => {
-    let lockAddress = req.params.lockAddress
+    const { lockAddress } = req.params
 
-    let event = await eventOperation.find(lockAddress)
+    const event = await eventOperation.find(lockAddress)
     if (event) {
       return res.json(event.toJSON())
-    } else {
-      return res.sendStatus(404)
     }
+    return res.sendStatus(404)
   }
 
   export const addLinks = async (
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    let lockAddress = req.params.lockAddress
-    let eventLinks = req.body.message.eventLinks
+    const { lockAddress } = req.params
+    const { eventLinks } = req.body.message
 
     const databaseEvent = await eventOperation.find(lockAddress)
 

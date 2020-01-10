@@ -9,7 +9,7 @@ const config = require('../../config/config')
 const { getLockByAddress, getLocksByOwner, createLock } = lockOperations
 
 const lockSave = async (req, res) => {
-  let lock = req.body.message.lock
+  const { lock } = req.body.message
 
   const databaseLock = await getLockByAddress(lock.address)
 
@@ -34,11 +34,11 @@ const lockGet = async (req, res) => {
 
 const lockOwnerGet = async (req, res) => {
   const locks = await getLocksByOwner(req.params.owner)
-  return res.json({ locks: locks })
+  return res.json({ locks })
 }
 
 const lockOwnershipCheck = async (req, res) => {
-  let lockAddress = req.params.lockAddress
+  const { lockAddress } = req.params
   LockOwnership.update(config.web3ProviderHost, [lockAddress])
   return res.sendStatus(200)
 }
@@ -49,8 +49,8 @@ const lockOwnershipCheck = async (req, res) => {
  * @param {*} res
  */
 const lockIcon = async (req, res) => {
-  let lockAddress = req.params.lockAddress
-  let svg = lockIconUtils.lockIcon(lockAddress)
+  const { lockAddress } = req.params
+  const svg = lockIconUtils.lockIcon(lockAddress)
   res.setHeader('Content-Type', 'image/svg+xml')
   return res.send(svg)
 }

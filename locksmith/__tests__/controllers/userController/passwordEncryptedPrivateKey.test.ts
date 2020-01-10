@@ -21,13 +21,13 @@ function generateTypedData(message: any) {
       version: '1',
     },
     primaryType: 'User',
-    message: message,
+    message,
   }
 }
 
 beforeAll(() => {
-  let UserReference = models.UserReference
-  let User = models.User
+  const { UserReference } = models
+  const { User } = models
 
   return Promise.all([
     UserReference.truncate({ cascade: true }),
@@ -36,8 +36,8 @@ beforeAll(() => {
 })
 
 describe("updating a user's password encrypted private key", () => {
-  let models = require('../../../src/models')
-  let User = models.User
+  const models = require('../../../src/models')
+  const { User } = models
   const request = require('supertest')
   const sigUtil = require('eth-sig-util')
   const ethJsUtil = require('ethereumjs-util')
@@ -46,12 +46,12 @@ describe("updating a user's password encrypted private key", () => {
   const UserOperations = require('../../../src/operations/userOperations')
   const Base64 = require('../../../src/utils/base64')
 
-  let privateKey = ethJsUtil.toBuffer(
+  const privateKey = ethJsUtil.toBuffer(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
 
   describe('when the account is active', () => {
-    let message = {
+    const message = {
       user: {
         emailAddress: 'user@example.com',
         publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -59,7 +59,7 @@ describe("updating a user's password encrypted private key", () => {
       },
     }
 
-    let typedData = generateTypedData(message)
+    const typedData = generateTypedData(message)
     const sig = sigUtil.signTypedData(privateKey, {
       data: typedData,
     })
@@ -67,17 +67,17 @@ describe("updating a user's password encrypted private key", () => {
     it('updates the password encrypted private key of the user', async () => {
       expect.assertions(2)
 
-      let emailAddress = 'user@example.com'
+      const emailAddress = 'user@example.com'
 
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const userCreationDetails = {
+        emailAddress,
         publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
       await UserOperations.createUser(userCreationDetails)
 
-      let response = await request(app)
+      const response = await request(app)
         .put(
           '/users/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/passwordEncryptedPrivateKey'
         )
@@ -85,7 +85,7 @@ describe("updating a user's password encrypted private key", () => {
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
         .send(typedData)
 
-      let user = await User.findOne({
+      const user = await User.findOne({
         where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
       })
 
@@ -99,9 +99,9 @@ describe("updating a user's password encrypted private key", () => {
   describe('when the account has been ejected', () => {
     it('returns a 404', async () => {
       expect.assertions(1)
-      let emailAddress = 'ejected_user@example.com'
-      let user = {
-        emailAddress: emailAddress,
+      const emailAddress = 'ejected_user@example.com'
+      const user = {
+        emailAddress,
         publicKey: 'ejected_user_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
@@ -109,16 +109,16 @@ describe("updating a user's password encrypted private key", () => {
       await UserOperations.createUser(user)
       await UserOperations.eject(user.publicKey)
 
-      let message = {
+      const message = {
         user,
       }
 
-      let typedData = generateTypedData(message)
+      const typedData = generateTypedData(message)
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
       })
 
-      let response = await request(app)
+      const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)
         .set('Accept', /json/)
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)

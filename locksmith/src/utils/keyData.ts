@@ -11,17 +11,16 @@ export default class KeyData {
     const contract = this.genContract(lockAddress)
 
     try {
-      let owner = await contract.ownerOf(parseInt(tokenId))
+      const owner = await contract.ownerOf(parseInt(tokenId))
 
       if (owner) {
-        let expiration = await contract.keyExpirationTimestampFor(owner)
+        const expiration = await contract.keyExpirationTimestampFor(owner)
         return {
-          owner: owner,
+          owner,
           expiration: expiration.toNumber(),
         }
-      } else {
-        return {}
       }
+      return {}
     } catch (e) {
       return {}
     }
@@ -49,8 +48,7 @@ export default class KeyData {
           },
         ],
       }
-    } else {
-      return data
     }
+    return data
   }
 }
