@@ -4,7 +4,7 @@ import { saveEmail, getEmail } from '../../utils/token'
 import configure from '../../config'
 
 const locks = ['0x123']
-const email = 'julien@unlock-protocol.com'
+const emailAddress = 'julien@unlock-protocol.com'
 const web3Provider = {}
 const userAddress = '0xuser'
 const signature = 'signature'
@@ -26,7 +26,7 @@ describe('token', () => {
     it('should ask the user to sign the payload', async () => {
       expect.assertions(3)
 
-      await saveEmail(web3Provider, locks, email)
+      await saveEmail(web3Provider, locks, emailAddress)
       expect(web3Provider.getSigner).toHaveBeenCalled()
       expect(wallet.getAddress).toHaveBeenCalled()
 
@@ -38,7 +38,7 @@ describe('token', () => {
 
     it('should store the token info', async () => {
       expect.assertions(1)
-      await saveEmail(web3Provider, locks, email)
+      await saveEmail(web3Provider, locks, emailAddress)
       expect(axios.put).toHaveBeenCalledWith(
         `${config.locksmithUri}/api/key/${locks[0]}/user/${userAddress}`,
         '{"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"},{"name":"salt","type":"bytes32"}]},"domain":{"name":"Unlock","version":"1"},"primaryType":"UserMetaData","message":{"UserMetaData":{"owner":"0xuser","data":{"protected":{"email":"julien@unlock-protocol.com"}}}}}',
@@ -53,7 +53,7 @@ describe('token', () => {
 
     it('should return true if all metadata could be saved', async () => {
       expect.assertions(1)
-      const saved = await saveEmail(web3Provider, locks, email)
+      const saved = await saveEmail(web3Provider, locks, emailAddress)
       expect(saved).toBe(true)
     })
   })
