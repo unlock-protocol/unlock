@@ -50,22 +50,18 @@ export const createUnlockStore = (defaultState = {}, middlewares = []) => {
 
   // We build the initial state by taking first each reducer's default values
   // Then some overides and finally whatever state we have stored locally.
-  const initialState = Object.assign(
-    {
-      account: defaultAccount,
-      locks: defaultLocks,
-      loading: defaultLoading,
-      network: defaultNetwork,
-      provider: defaultProvider,
-      errors: defaultError,
-      walletStatus: defaultWalletStatus,
-      event: defaultEvent,
-    },
-    {
-      provider: Object.keys(config.providers)[0],
-    },
-    defaultState
-  )
+  const initialState = {
+    account: defaultAccount,
+    locks: defaultLocks,
+    loading: defaultLoading,
+    network: defaultNetwork,
+    provider: defaultProvider,
+    errors: defaultError,
+    walletStatus: defaultWalletStatus,
+    event: defaultEvent,
+    provider: Object.keys(config.providers)[0],
+    ...defaultState,
+  }
 
   const composeEnhancers =
     (global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&

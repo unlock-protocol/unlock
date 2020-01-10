@@ -120,7 +120,7 @@ CreateContent.defaultProps = {
 }
 
 export const mapStateToProps = ({ locks, account, event, loading }) => {
-  let selectLocks = Object.values(locks).filter(
+  const selectLocks = Object.values(locks).filter(
     lock => lock.owner === account.address
   )
 

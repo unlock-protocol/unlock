@@ -9,13 +9,13 @@ import UnlockEvent from '../../structured_data/unlockEvent'
  * Taken from https://redux.js.org/recipes/writing-tests#middleware
  */
 
-let router = {
+const router = {
   location: {
     pathname: '',
   },
 }
 let state = {}
-let account = {
+const account = {
   address: '0xabc',
 }
 

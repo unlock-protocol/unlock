@@ -31,10 +31,10 @@ let dispatch: () => any
 
 describe('provider middleware', () => {
   beforeEach(() => {
-    config.providers['UNLOCK'].enable = jest.fn(
+    config.providers.UNLOCK.enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
-    config.providers['NUNLOCK'].enable = jest.fn(
+    config.providers.NUNLOCK.enable = jest.fn(
       () => new Promise(resolve => resolve(true))
     )
     dispatch = jest.fn()
@@ -43,8 +43,8 @@ describe('provider middleware', () => {
     it('should initialize the provider when provider is different from one in state', done => {
       expect.assertions(2)
       const next = () => {
-        expect(config.providers['UNLOCK'].enable).toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.UNLOCK.enable).toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         done()
       }
 
@@ -53,7 +53,7 @@ describe('provider middleware', () => {
 
     it('should set an error and return if the call to enable fails', done => {
       expect.assertions(2)
-      config.providers['UNLOCK'].enable = jest.fn(() => {
+      config.providers.UNLOCK.enable = jest.fn(() => {
         // eslint-disable-next-line promise/param-names
         return new Promise((_, reject) => {
           reject('The front fell off.')
@@ -61,8 +61,8 @@ describe('provider middleware', () => {
       })
 
       const next = () => {
-        expect(config.providers['UNLOCK'].enable).toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.UNLOCK.enable).toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         done()
       }
 
@@ -72,8 +72,8 @@ describe('provider middleware', () => {
     it('should do nothing if provider is the same as in state', done => {
       expect.assertions(3)
       const next = () => {
-        expect(config.providers['UNLOCK'].enable).not.toHaveBeenCalled()
-        expect(config.providers['NUNLOCK'].enable).not.toHaveBeenCalled()
+        expect(config.providers.UNLOCK.enable).not.toHaveBeenCalled()
+        expect(config.providers.NUNLOCK.enable).not.toHaveBeenCalled()
         expect(dispatch).not.toHaveBeenCalled()
         done()
       }

@@ -31,7 +31,7 @@ describe('TimePicker', () => {
     expect.assertions(2)
     const date = new Date('2019-03-02T00:11:35.000Z') // The important piece here is 11:34am
 
-    let wrapper = rtl.render(<TimePicker date={date} onChange={jest.fn()} />)
+    const wrapper = rtl.render(<TimePicker date={date} onChange={jest.fn()} />)
 
     expect(wrapper.queryByText('11')).not.toBeNull()
     expect(wrapper.queryByText('35')).not.toBeNull()
@@ -41,7 +41,7 @@ describe('TimePicker', () => {
     expect.assertions(1)
     const onChange = jest.fn()
     const date = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
-    let wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
+    const wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Hour'), {
       target: { value: '6' }, // Changed to 23
     })
@@ -52,7 +52,7 @@ describe('TimePicker', () => {
     expect.assertions(1)
     const onChange = jest.fn()
     const date = new Date('2020-03-02T00:00:00.000') // March 2nd, 2019
-    let wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
+    const wrapper = rtl.render(<TimePicker date={date} onChange={onChange} />)
     rtl.fireEvent.change(wrapper.getByTestId('Minute'), {
       target: { value: '15' }, // Changed to 15
     })
