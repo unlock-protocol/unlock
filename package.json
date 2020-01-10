@@ -2,15 +2,42 @@
   "name": "unlock",
   "version": "1.0.0",
   "description": "Unlock is a protocol for decentralized access control",
+  "main": "index.js",
   "directories": {
     "doc": "docs"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "2.14.0",
+    "@typescript-eslint/parser": "2.14.0",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "24.9.0",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-config-prettier": "6.9.0",
+    "eslint-config-standard": "14.1.0",
+    "eslint-import-resolver-typescript": "2.0.0",
+    "eslint-plugin-import": "2.19.1",
+    "eslint-plugin-jest": "23.3.0",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-mocha": "6.2.2",
+    "eslint-plugin-node": "11.0.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-react": "7.17.0",
+    "eslint-plugin-react-hooks": "2.3.0",
+    "eslint-plugin-standard": "4.0.1",
+    "jest": "24.9.0",
+    "lint-staged": "8.2.1",
+    "netlify-cli": "2.25.0",
+    "prettier": "1.19.1",
+    "ts-jest": "24.2.0",
+    "typescript": "3.7.4"
   },
   "engines": {
     "node": "^10"
   },
   "devDependencies": {
-    "husky": "3.1.0",
-    "lint-staged": "8.2.1"
+    "husky": "3.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -23,6 +50,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/unlock-protocol/unlock.git"
+  },
+  "greenkeeper": {
+    "prTitles": {
+      "basicPR": "Update ${dependency} to the latest version",
+      "groupPR": "Update ${dependency} in group ${group} to the latest version"
+    }
   },
   "author": "",
   "license": "MIT",
