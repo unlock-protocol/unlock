@@ -174,7 +174,8 @@ export const isValidPaywallConfig = config => {
       'The paywall config\'s "callToAction" property is not a valid object.'
     )
     return false
-  } else if (!isValidCTA(config.callToAction)) {
+  }
+  if (!isValidCTA(config.callToAction)) {
     return false
   }
 
@@ -182,7 +183,8 @@ export const isValidPaywallConfig = config => {
   if (!config.locks) {
     console.error(`The paywall config's "locks" fields is not set.`)
     return false
-  } else if (!isValidConfigLocks(config.locks)) {
+  }
+  if (!isValidConfigLocks(config.locks)) {
     return false
   }
 

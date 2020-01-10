@@ -47,7 +47,7 @@ describe('useLocalStorage hook', () => {
   })
   it('sets the value of the localStorage key when the setter is called', () => {
     expect.assertions(1)
-    fakeWindow.storage['hi'] = 'there'
+    fakeWindow.storage.hi = 'there'
 
     rtl.act(() => {
       rtl.render(<Wrapper />)
@@ -60,7 +60,7 @@ describe('useLocalStorage hook', () => {
   it('only sets the value when changed', () => {
     expect.assertions(5)
 
-    fakeWindow.storage['hi'] = 'there'
+    fakeWindow.storage.hi = 'there'
 
     rtl.act(() => {
       rtl.render(<Wrapper />)

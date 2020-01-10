@@ -37,10 +37,10 @@ jest.mock('@unlock-protocol/unlock-js', () => {
       })
       return mockWalletService
     }),
-    Web3Service: function() {
+    Web3Service: jest.fn(function() {
       mockWeb3Service = getWeb3Service({})
       return mockWeb3Service
-    },
+    }),
   }
 })
 

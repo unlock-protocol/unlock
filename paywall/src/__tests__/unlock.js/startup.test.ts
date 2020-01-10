@@ -126,9 +126,9 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.data.iframe.src).toBe(
-        dataOrigin +
-          '/static/data-iframe.1.0.html?origin=' +
-          encodeURIComponent(fakeWindow.origin)
+        `${dataOrigin}/static/data-iframe.1.0.html?origin=${encodeURIComponent(
+          fakeWindow.origin
+        )}`
       )
     })
 
@@ -139,7 +139,7 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.checkout.iframe.src).toBe(
-        dataOrigin + '/checkout?origin=' + encodeURIComponent(fakeWindow.origin)
+        `${dataOrigin}/checkout?origin=${encodeURIComponent(fakeWindow.origin)}`
       )
     })
 
@@ -150,9 +150,9 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.accounts.iframe.src).toBe(
-        accountsOrigin +
-          '/account?origin=' +
-          encodeURIComponent(fakeWindow.origin)
+        `${accountsOrigin}/account?origin=${encodeURIComponent(
+          fakeWindow.origin
+        )}`
       )
     })
 

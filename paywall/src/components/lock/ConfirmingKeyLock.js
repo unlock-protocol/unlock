@@ -14,7 +14,7 @@ import withConfig from '../../utils/withConfig'
 import { currencySymbolForLock } from '../../utils/locks'
 
 export const ConfirmingKeyLock = ({ lock, transaction, config }) => {
-  let currency = currencySymbolForLock(lock, config)
+  const currency = currencySymbolForLock(lock, config)
 
   return (
     <LockWrapper lock={lock}>
