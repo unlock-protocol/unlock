@@ -6,13 +6,14 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, lock
+let unlock
+let lock
 
 contract('Lock / erc721 / safeTransferFrom', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 

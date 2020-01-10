@@ -9,13 +9,14 @@ const getProxy = require('../helpers/proxy')
 
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
-let unlock, lock
+let unlock
+let lock
 
 contract('Unlock / resetTrackedValue', accounts => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.purchase(keyPrice, accounts[1], web3.utils.padLeft(0, 40), [], {
       from: accounts[1],
       value: keyPrice,

@@ -6,7 +6,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / disableTransfers', accounts => {
   before(async () => {
@@ -14,14 +15,15 @@ contract('Lock / disableTransfers', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  let lock, tokenId
+  let lock
+  let tokenId
   const keyOwner = accounts[1]
   const accountWithNoKey = accounts[2]
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
       value: keyPrice.toFixed(),
       from: keyOwner,

@@ -4,14 +4,17 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, lock, txObj, event
+let unlock
+let lock
+let txObj
+let event
 
 contract('Lock / erc721 / tokenSymbol', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
 
     const locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
   })
 
   describe('the global token symbol stored in Unlock', () => {

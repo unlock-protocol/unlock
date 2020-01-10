@@ -7,7 +7,8 @@ const unlockContract = artifacts.require('../Unlock.sol')
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, lock
+let unlock
+let lock
 let token
 
 contract('Lock / withdrawByAddress', accounts => {
@@ -16,13 +17,13 @@ contract('Lock / withdrawByAddress', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, owner)
-    lock = locks['OWNED']
+    lock = locks.OWNED
 
     // Put some ERC-20 tokens into the contract
     token = await TestErc20Token.new({ from: owner })
     // TODO: mint or transfer to a contract throws an error in Truffle
     // however the tx does mine.  Not sure what's causing this yet..
-    //await token.mint(lock.address, 42000)
+    // await token.mint(lock.address, 42000)
   })
 
   describe.skip('when the owner withdraws funds for a specific token', () => {

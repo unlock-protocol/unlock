@@ -8,7 +8,9 @@ const shouldFail = require('../helpers/shouldFail')
 const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', accounts => {
-  let unlock, token, lock
+  let unlock
+  let token
+  let lock
 
   before(async () => {
     token = await TestErc20Token.new()
@@ -16,11 +18,12 @@ contract('Lock / erc20', accounts => {
     await token.mint(accounts[0], 1)
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
-    lock = locks['FIRST']
+    lock = locks.FIRST
   })
 
   describe('creating ERC20 priced locks', () => {
-    let keyPrice, refundAmount
+    let keyPrice
+    let refundAmount
     const keyOwner = accounts[1]
     const keyOwner2 = accounts[2]
     const keyOwner3 = accounts[3]

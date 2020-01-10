@@ -5,7 +5,9 @@ const deployLocks = require('../../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, locks, lock
+let unlock
+let locks
+let lock
 
 contract('Lock / uniqueTokenIds', accounts => {
   let lockOwner = accounts[9]
@@ -17,7 +19,7 @@ contract('Lock / uniqueTokenIds', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
-    lock = locks['SECOND']
+    lock = locks.SECOND
   })
 
   describe('repurchasing expired keys', () => {

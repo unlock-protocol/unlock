@@ -5,13 +5,16 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, lock, txObj, event
+let unlock
+let lock
+let txObj
+let event
 
 // Helper function to deal with the lock returning the address part of the URI in lowercase.
 function stringShifter(str) {
   let lowercaseAddress = ''
   let c
-  for (var i = 0; i < str.length; i++) {
+  for (let i = 0; i < str.length; i++) {
     c = str.charAt(i)
     if (c.toLowerCase() != c.toUpperCase()) {
       lowercaseAddress += c.toLowerCase()
@@ -27,7 +30,7 @@ contract('Lock / erc721 / tokenURI', accounts => {
     unlock = await getProxy(unlockContract)
 
     const locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
   })
 
   describe('the global tokenURI stored in Unlock', () => {

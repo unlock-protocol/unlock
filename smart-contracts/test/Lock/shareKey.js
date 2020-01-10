@@ -7,7 +7,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / shareKey', accounts => {
   before(async () => {
@@ -15,7 +16,15 @@ contract('Lock / shareKey', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  let lock, tokenId1, tokenId2, event, event1, event2, event3, tx1, tx2
+  let lock
+  let tokenId1
+  let tokenId2
+  let event
+  let event1
+  let event2
+  let event3
+  let tx1
+  let tx2
 
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const keyOwner1 = accounts[1]
@@ -28,7 +37,7 @@ contract('Lock / shareKey', accounts => {
   const keyPrice = new BigNumber(Units.convert(0.01, 'eth', 'wei'))
 
   before(async () => {
-    lock = locks['FIRST']
+    lock = locks.FIRST
     const purchases = keyOwners.map(account => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),
@@ -127,13 +136,13 @@ contract('Lock / shareKey', accounts => {
   })
   describe('successful key sharing', () => {
     let oneDay = new BigNumber(60 * 60 * 24)
-    let hadKeyBefore,
-      expirationBeforeSharing,
-      expirationAfterSharing,
-      sharedKeyExpiration,
-      fee,
-      timestampBeforeSharing,
-      timestampAfterSharing
+    let hadKeyBefore
+    let expirationBeforeSharing
+    let expirationAfterSharing
+    let sharedKeyExpiration
+    let fee
+    let timestampBeforeSharing
+    let timestampAfterSharing
 
     before(async () => {
       // Change the fee to 5%

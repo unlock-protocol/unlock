@@ -6,7 +6,8 @@ const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const { LatestLockVersion } = require('../Unlock/upgrades/latestVersion.js')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / Lock', accounts => {
   before(async () => {
@@ -15,7 +16,7 @@ contract('Lock / Lock', accounts => {
   })
 
   it('should have created locks with the correct value', () => {
-    const lock = locks['FIRST']
+    const lock = locks.FIRST
     return Promise.all([
       lock.owner.call(),
       lock.expirationDuration.call(),

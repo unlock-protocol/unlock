@@ -4,13 +4,15 @@ const shouldFail = require('../../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
-let unlock, locks, lock
+let unlock
+let locks
+let lock
 
 contract('Lock / erc721 / approve', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
 
     // Buy test keys for each account
     const keyPrice = await lock.keyPrice()

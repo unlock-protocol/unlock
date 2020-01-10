@@ -6,7 +6,8 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / purchaseForFrom', accounts => {
   before(async () => {
@@ -17,7 +18,7 @@ contract('Lock / purchaseForFrom', accounts => {
   describe('if the referrer does not have a key', () => {
     it.skip('should fail', async () => {
       // TODO this now falls back to no referral, but allow the purchase
-      const lock = locks['FIRST']
+      const lock = locks.FIRST
       await shouldFail(
         lock.purchase(0, accounts[0], accounts[1], []),
         'KEY_NOT_VALID'
@@ -32,7 +33,7 @@ contract('Lock / purchaseForFrom', accounts => {
 
   describe('if the referrer has a key', () => {
     it('should succeed', () => {
-      const lock = locks['FIRST']
+      const lock = locks.FIRST
       return lock
         .purchase(0, accounts[0], web3.utils.padLeft(0, 40), [], {
           value: Units.convert('0.01', 'eth', 'wei'),
@@ -45,13 +46,8 @@ contract('Lock / purchaseForFrom', accounts => {
     })
 
     it('can purchaseForFrom a free key', async () => {
-      await locks['FREE'].purchase(
-        0,
-        accounts[0],
-        web3.utils.padLeft(0, 40),
-        []
-      )
-      const tx = await locks['FREE'].purchase(0, accounts[2], accounts[0], [])
+      await locks.FREE.purchase(0, accounts[0], web3.utils.padLeft(0, 40), [])
+      const tx = await locks.FREE.purchase(0, accounts[2], accounts[0], [])
       assert.equal(tx.logs[0].event, 'Transfer')
       assert.equal(tx.logs[0].args.from, 0)
       assert.equal(tx.logs[0].args.to, accounts[2])

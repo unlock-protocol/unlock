@@ -7,7 +7,9 @@ const { utils } = require('hardlydifficult-ethereum-contracts')
 const truffleAssert = require('truffle-assertions')
 const getProxy = require('../helpers/proxy')
 
-let unlock, lock, templateAddress
+let unlock
+let lock
+let templateAddress
 
 contract('Unlock / createLockClone2', accounts => {
   before(async () => {
