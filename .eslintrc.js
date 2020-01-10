@@ -47,7 +47,7 @@ module.exports = {
         vars: 'all',
         args: 'after-used',
         ignoreRestSiblings: true,
-        argsIgnorePattern: '^_$',
+        argsIgnorePattern: '^_\\S*$',
       },
     ],
     'brace-style': 0,
