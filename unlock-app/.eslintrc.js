@@ -29,22 +29,13 @@ const rulesToIgnore = [
 ]
 
 module.exports = {
-  extends: ['../.eslintrc.js', 'plugin:react/recommended', 'prettier/react'],
+  extends: ['../.eslintrc.js', 'plugin:react/recommended'],
   settings: {
     react: {
       version: 'detect',
     },
   },
   rules: {
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-        argsIgnorePattern: '^_$',
-      },
-    ],
     'react/prefer-stateless-function': [2],
     'react/forbid-prop-types': 2,
     'jsx-a11y/anchor-is-valid': [
