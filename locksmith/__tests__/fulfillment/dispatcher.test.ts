@@ -29,8 +29,6 @@ const mockWeb3Service = {
     .mockResolvedValueOnce(standardLock),
 }
 
-const getMockWeb3Service = () => mockWeb3Service
-
 class MockWalletService extends EventEmitter {
   connect = jest.fn()
 
@@ -45,11 +43,14 @@ class MockWalletService extends EventEmitter {
   })
 }
 const mockWalletService = new MockWalletService()
-const getMockWalletService = () => mockWalletService
 
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  Web3Service: getMockWeb3Service,
-  WalletService: getMockWalletService,
+  Web3Service: function() {
+    return mockWeb3Service
+  },
+  WalletService: function() {
+    return mockWalletService
+  },
 }))
 
 describe('Dispatcher', () => {

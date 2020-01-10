@@ -16,6 +16,7 @@ const rulesToIgnore = [
   'no-await-in-loop',
   'no-restricted-syntax',
   'no-else-return',
+  'object-shorthand',
 ]
 
 module.exports = {
