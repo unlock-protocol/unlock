@@ -23,11 +23,17 @@ export const IGNORE_CACHE = 'ignore'
  */
 export default class MainWindowHandler {
   private window: UnlockWindowNoProtocolYet
+
   private iframes: IframeHandler
+
   private showCheckoutWhenAccountsHides: boolean = false
+
   private showingCheckout: boolean = false
+
   private showingAccountsIframe: boolean = false
+
   private lockStatus: LockStatus = undefined
+
   private blockchainData: BlockchainData = {
     locks: {},
     account: null,

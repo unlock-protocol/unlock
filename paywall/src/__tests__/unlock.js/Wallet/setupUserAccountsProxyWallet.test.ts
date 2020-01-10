@@ -30,13 +30,13 @@ describe('setupUserAccountsProxyWallet()', () => {
     unlockUserAccounts: true,
   }
 
-  let setHasWeb3 = jest.fn()
-  let setUserAccountAddress = jest.fn()
-  let setUserAccountNetwork = jest.fn()
-  let getUserAccountAddress: jest.Mock<string | null, []> = jest.fn(
+  const setHasWeb3 = jest.fn()
+  const setUserAccountAddress = jest.fn()
+  const setUserAccountNetwork = jest.fn()
+  const getUserAccountAddress: jest.Mock<string | null, []> = jest.fn(
     () => fakeAddress
   )
-  let getUserAccountNetwork = jest.fn((): unlockNetworks => 1)
+  const getUserAccountNetwork = jest.fn((): unlockNetworks => 1)
 
   beforeAll(() => {
     fakeWindow = new FakeWindow()

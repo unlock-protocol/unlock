@@ -54,12 +54,15 @@ export default class AccountsIframeMessageEmitter extends FancyEmitter {
     type: keyof UserAccountsIframeEvents,
     listener: PostMessageListener
   ) => void
+
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
 
   buffer: Message[] = []
+
   private ready: boolean = false
 
   private _postMessage?: PostMessageResponder<PostMessages>
+
   public iframe: IframeType
 
   constructor(

@@ -81,7 +81,7 @@ export function setupPostOffice<T extends MessageTypes = MessageTypes>(
       'cannot safely postMessage without knowing the target origin'
     )
   }
-  let handlers: PostMessageHandlers = {}
+  const handlers: PostMessageHandlers = {}
   window.addEventListener(EventTypes.MESSAGE, event => {
     // **SECURITY CHECKS**
     // ignore messages that do not come from our target window

@@ -47,7 +47,7 @@ describe('postMessageHub', () => {
         (message, payload) => {
           expect.assertions(3)
 
-          let blockchainData: { [key: string]: any } = {}
+          const blockchainData: { [key: string]: any } = {}
           const { iframes } = init({ blockchainData })
 
           iframes.data.emit(message as any, payload)

@@ -3,7 +3,7 @@ import {
   TransactionDefaults,
 } from '../blockchainHandler/blockChainTypes'
 
-declare var __ENVIRONMENT_VARIABLES__: any
+declare let __ENVIRONMENT_VARIABLES__: any
 
 export const makeLockFilter = (lockAddresses: string[]) => {
   return lockAddresses

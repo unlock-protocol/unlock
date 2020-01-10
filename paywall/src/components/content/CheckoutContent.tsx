@@ -120,7 +120,7 @@ export default function CheckoutContent() {
 
   // One we have something in purchasingLocks, we can assume that the
   // user approved the transaction in their wallet and dismiss the wallet
-  //check overlay.
+  // check overlay.
   // TODO: handle rejected purchase?
   if (purchasingLocks.length && showWalletCheckOverlay) {
     setShowWalletCheckOverlay(false)

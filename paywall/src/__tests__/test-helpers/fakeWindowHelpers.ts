@@ -44,7 +44,9 @@ export default class FakeWindow
     EventWindow,
     ConfigWindow {
   public origin = 'http://example.com'
+
   public fetchResult: any = {}
+
   public fetch: (
     url: string,
     options?: {
@@ -56,26 +58,41 @@ export default class FakeWindow
       body: string
     }
   ) => Promise<FetchResult>
+
   public setInterval: (cb: Function, delay?: number) => number
+
   public setTimeout: (cb: Function, delay?: number) => number
+
   public parent: PostMessageTarget
+
   public location: {
     href: string
   }
+
   public addEventListener: AddEventListenerFunc
+
   public messageListeners: {
     [key: string]: Map<MessageHandler, MessageHandler>
   } = {}
+
   public storageListeners: {
     [key: string]: Map<StorageHandler, StorageHandler>
   } = {}
+
   public console: Pick<ConsoleWindow, 'console'>['console']
+
   public localStorage: Pick<LocalStorageWindow, 'localStorage'>['localStorage']
+
   public storage: { [key: string]: string } = {}
+
   public document: FullDocument
+
   public CustomEvent = CustomEvent
+
   public Promise = Promise
+
   public dispatchEvent: (event: Event) => void
+
   public web3?: {
     currentProvider: {
       sendAsync?: web3Send
@@ -84,6 +101,7 @@ export default class FakeWindow
       enable?: () => Promise<void>
     }
   }
+
   public unlockProtocolConfig?: PaywallConfig
 
   constructor() {

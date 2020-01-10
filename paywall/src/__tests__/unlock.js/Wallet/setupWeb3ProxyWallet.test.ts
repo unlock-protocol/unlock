@@ -21,9 +21,9 @@ describe('setupWeb3ProxyWallet()', () => {
     isMetamask,
     window,
   }: any) {
-    let fakeWindow = new FakeWindow()
+    const fakeWindow = new FakeWindow()
     fakeWindow.makeWeb3()
-    let iframes = {
+    const iframes = {
       checkout: new EmitterWithPostMessage(),
       data: new EmitterWithPostMessage(),
     }

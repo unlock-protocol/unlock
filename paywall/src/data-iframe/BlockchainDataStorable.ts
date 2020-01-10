@@ -9,7 +9,9 @@ import { normalizeLockAddress } from '../utils/normalizeAddresses'
  */
 export class BlockchainDataStorable {
   locks: RawLocks = {}
+
   keys: KeyResults = {}
+
   transactions: Transactions = {}
 
   updateLock = (lockAddress: string, update: any) => {

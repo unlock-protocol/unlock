@@ -16,7 +16,7 @@ interface sizesType {
   }
 }
 
-let sizes: sizesType = {
+const sizes: sizesType = {
   desktop: {
     min: MAX_DEVICE_WIDTHS.TABLET,
   },

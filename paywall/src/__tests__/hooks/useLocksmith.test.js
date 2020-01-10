@@ -58,7 +58,7 @@ describe('useLocksmith hook', () => {
       finishFetch(fakeResponse)
     })
 
-    expect(fakeWindow.fetch).toHaveBeenCalledWith(config.locksmithUri + '/hi')
+    expect(fakeWindow.fetch).toHaveBeenCalledWith(`${config.locksmithUri}/hi`)
   })
 
   it('returns the response', () => {

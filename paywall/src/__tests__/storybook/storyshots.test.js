@@ -8,8 +8,8 @@ initStoryshots({
   test: info => {
     /* eslint-disable no-console */
 
-    const error = console.error
-    const warn = console.warn
+    const { error } = console
+    const { warn } = console
 
     try {
       console.error = jest.fn(console.error)

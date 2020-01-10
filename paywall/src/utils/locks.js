@@ -81,13 +81,12 @@ export function isTooExpensiveForUserByCurrency(lock, account, currencyKey) {
 export function isTooExpensiveForUser(lock, account) {
   if (isEthLock(lock)) {
     return isTooExpensiveForUserByCurrency(lock, account, 'eth')
-  } else {
-    return isTooExpensiveForUserByCurrency(
-      lock,
-      account,
-      lock.currencyContractAddress
-    )
   }
+  return isTooExpensiveForUserByCurrency(
+    lock,
+    account,
+    lock.currencyContractAddress
+  )
 }
 
 export default {

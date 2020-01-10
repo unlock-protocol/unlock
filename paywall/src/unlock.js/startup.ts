@@ -89,11 +89,10 @@ export function startup(
     dispatchEvent('locked', window)
   }
 
-  const origin = '?origin=' + encodeURIComponent(window.origin)
+  const origin = `?origin=${encodeURIComponent(window.origin)}`
   // construct the 3 urls for the iframes
-  const dataIframeUrl =
-    constants.paywallUrl + '/static/data-iframe.1.0.html' + origin
-  const checkoutIframeUrl = constants.paywallUrl + '/checkout' + origin
+  const dataIframeUrl = `${constants.paywallUrl}/static/data-iframe.1.0.html${origin}`
+  const checkoutIframeUrl = `${constants.paywallUrl}/checkout${origin}`
   const userIframeUrl = constants.accountsUrl + origin
 
   // create the iframes (the user accounts iframe is a dummy unless enabled in Wallet.setupWallet())

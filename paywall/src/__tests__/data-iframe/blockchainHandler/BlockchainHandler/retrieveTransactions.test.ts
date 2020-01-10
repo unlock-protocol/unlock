@@ -99,7 +99,7 @@ describe('BlockchainHandler - retrieveTransactions', () => {
     })
 
     describe('individual transactions', () => {
-      let returnedTransactions: {
+      const returnedTransactions: {
         transactions?: LocksmithTransactionsResult[]
       } = {
         transactions: [

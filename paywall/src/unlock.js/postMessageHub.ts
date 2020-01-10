@@ -402,7 +402,7 @@ export function setupWeb3ProxyWallet({
       iframes.data.postMessage(PostMessages.WALLET_INFO, {
         noWallet: false,
         notEnabled: true, // user declined to enable the wallet
-        isMetamask: isMetamask, // this is used for some decisions in signing
+        isMetamask, // this is used for some decisions in signing
       })
       return
     }
@@ -410,7 +410,7 @@ export function setupWeb3ProxyWallet({
     iframes.data.postMessage(PostMessages.WALLET_INFO, {
       noWallet: false,
       notEnabled: false,
-      isMetamask: isMetamask, // this is used for some decisions in signing
+      isMetamask, // this is used for some decisions in signing
     })
   })
 

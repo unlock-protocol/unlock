@@ -36,7 +36,7 @@ export const wrapperMaker = config =>
 
 export function expectError(cb, err) {
   // Record all errors.
-  let topLevelErrors = []
+  const topLevelErrors = []
   function handleTopLevelError(event) {
     topLevelErrors.push(event.error)
     // Prevent logging
