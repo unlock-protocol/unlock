@@ -20,9 +20,10 @@ const requiredConfigVariables = {
 Object.keys(requiredConfigVariables).forEach(configVariableName => {
   if (!requiredConfigVariables[configVariableName]) {
     if (['dev', 'test'].indexOf(requiredConfigVariables.unlockEnv) > -1) {
-      return console.error(
+      console.error(
         `The configuration variable ${configVariableName} is falsy.`
       )
+      return
     }
     throw new Error(
       `The configuration variable ${configVariableName} is falsy.`
