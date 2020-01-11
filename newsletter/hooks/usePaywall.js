@@ -23,6 +23,7 @@ export const usePaywall = lockAddresses => {
         },
       }
       unlockConfig.locks = lockAddresses.reduce((locks, lockAddress) => {
+        // eslint-disable-next-line no-param-reassign
         locks[lockAddress] = {}
         return locks
       }, {})
@@ -61,6 +62,8 @@ sc.parentNode.insertBefore(js, sc); }(document, "script"));`)
         delete window.unlockProtocolConfig
       }
     }
+    // No-op when there are no lock addresses
+    return () => {}
   }, [JSON.stringify(lockAddresses)])
 
   return [lockState, lockWithKey]

@@ -9,12 +9,12 @@ export default function configure(runtimeConfig = nextConfig) {
   const env = runtimeConfig.unlockEnv
 
   const locksmithUri = runtimeConfig.locksmithUri || 'http://0.0.0.0:8080'
-  let unlockAppUrl = runtimeConfig.unlockAppUrl || 'http://0.0.0.0:3000'
-  let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://0.0.0.0:3002'
-  let paywallUrl = runtimeConfig.paywallUrl || 'http://0.0.0.0:3001'
+  const unlockAppUrl = runtimeConfig.unlockAppUrl || 'http://0.0.0.0:3000'
+  const unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://0.0.0.0:3002'
+  const paywallUrl = runtimeConfig.paywallUrl || 'http://0.0.0.0:3001'
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
-  let requiredNetworkId = 1984
+  const requiredNetworkId = 1984
 
   if (env === 'test') {
     isRequiredNetwork = networkId => networkId === 1984
@@ -35,7 +35,7 @@ export default function configure(runtimeConfig = nextConfig) {
   }
 
   if (env === 'prod' || env === 'staging') {
-    requiredNetwork = ETHEREUM_NETWORKS_NAMES[requiredNetworkId][0]
+    ;[requiredNetwork] = ETHEREUM_NETWORKS_NAMES[requiredNetworkId]
   }
 
   return {
