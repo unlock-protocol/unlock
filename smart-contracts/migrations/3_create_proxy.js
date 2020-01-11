@@ -22,11 +22,9 @@ async function deploy(options, accounts) {
 
   // Deploy lock template
   const lockTemplate = await PublicLock.new()
-  await unlockContract.methods.configUnlock(
-    lockTemplate.address,
-    '',
-    ''
-  ).send({ from: unlockOwner })
+  await unlockContract.methods
+    .configUnlock(lockTemplate.address, '', '')
+    .send({ from: unlockOwner })
 }
 
 module.exports = function(deployer, networkName, accounts) {
