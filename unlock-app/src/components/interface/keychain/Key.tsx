@@ -10,17 +10,20 @@ interface KeyBoxProps {
   tokenURI: string
   lock: any
   expiration: string
+  keyId: string
 }
 
-const KeyBox = ({ tokenURI, lock, expiration }: KeyBoxProps) => {
+const KeyBox = ({ tokenURI, lock, expiration, keyId }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
   return (
     <KeyContent>
       <LockIcon src={metadata.image} width="40" />
       <KeyInfo>
         <LockName>{lock.name}</LockName>
-        <ValidUntil>Valid Until</ValidUntil>
-        <KeyExpiration>{expirationAsDate(expiration)}</KeyExpiration>
+        <FieldLabel>Token ID</FieldLabel>
+        <FieldValue>{keyId}</FieldValue>
+        <FieldLabel>Valid Until</FieldLabel>
+        <FieldValue>{expirationAsDate(expiration)}</FieldValue>
       </KeyInfo>
     </KeyContent>
   )
@@ -119,7 +122,7 @@ export class Key extends React.Component<Props, State> {
 
   render = () => {
     const {
-      ownedKey: { lock, expiration, tokenURI },
+      ownedKey: { lock, expiration, tokenURI, keyId },
       signature,
     } = this.props
     const { showingQR } = this.state
@@ -133,7 +136,12 @@ export class Key extends React.Component<Props, State> {
             value={this.QRUrl()}
           />
         )}
-        <KeyBox lock={lock} expiration={expiration} tokenURI={tokenURI} />
+        <KeyBox
+          lock={lock}
+          expiration={expiration}
+          tokenURI={tokenURI}
+          keyId={keyId}
+        />
         {this.qrButton()}
       </Box>
     )
@@ -188,7 +196,7 @@ const KeyContent = styled.div`
 
 const KeyInfo = styled.div``
 
-const ValidUntil = styled.div`
+const FieldLabel = styled.div`
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
@@ -202,7 +210,7 @@ const ValidUntil = styled.div`
   margin-top: 8px;
 `
 
-const KeyExpiration = styled.div`
+const FieldValue = styled.div`
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
