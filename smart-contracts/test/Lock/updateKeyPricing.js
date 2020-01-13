@@ -103,6 +103,22 @@ contract('Lock / updateKeyPricing', accounts => {
       assert.equal(await lock.tokenAddress.call(), 0)
     })
 
+    it('should allow a lock manager who is not the owner to make changes', async () => {
+      await lock.addLockManager(accounts[8], { from: lockOwner })
+      assert.notEqual(accounts[8], lockOwner)
+      assert.equal(await lock.isLockManager(accounts[8]), true)
+      await lock.updateKeyPricing(
+        Units.convert('0.42', 'eth', 'wei'),
+        token.address,
+        { from: accounts[8] }
+      )
+      assert.equal(await lock.tokenAddress.call(), token.address)
+      assert.equal(
+        await lock.keyPrice.call(),
+        Units.convert('0.42', 'eth', 'wei')
+      )
+    })
+
     it('should revert if trying to switch to an invalid token address', async () => {
       await truffleAssert.fails(
         lock.updateKeyPricing(await lock.keyPrice.call(), invalidTokenAddress, {
