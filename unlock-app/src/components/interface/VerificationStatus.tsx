@@ -69,7 +69,12 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   return (
     <div>
-      {matchingKey && <h1>{matchingKey.lock.name}</h1>}
+      {matchingKey && (
+        <div>
+          <h1>{matchingKey.lock.name}</h1>
+          <p>Token ID: {matchingKey.keyId}</p>
+        </div>
+      )}
       <Identity valid={identityIsValid} />
 
       <OwnsKey
