@@ -2,10 +2,10 @@ import Stripe from 'stripe'
 import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
+
+import config from '../../config/config'
 // eslint-disable-line no-unused-vars
 import RecoveryPhrase = require('../utils/recoveryPhrase')
-
-const config = require('../../config/config')
 const models = require('../models')
 
 const { User, UserReference } = models
@@ -135,9 +135,9 @@ namespace UserOperations {
     publicKey: string
   ): Promise<boolean> => {
     const paymentProcessor = new PaymentProcessor(
-      config.stripeSecret,
-      config.web3ProviderHost,
-      config.unlockContractAddress
+      config.stripeSecret!,
+      config.web3ProviderHost!,
+      config.unlockContractAddress!
     )
     return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
   }
@@ -170,7 +170,7 @@ namespace UserOperations {
   }
 
   const getCardDetailsFromStripe = async (customer_id: any): Promise<any[]> => {
-    const stripe = new Stripe(config.stripeSecret)
+    const stripe = new Stripe(config.stripeSecret!, config.stripeConfig)
 
     try {
       const cardsResponse = await stripe.customers.listSources(customer_id, {

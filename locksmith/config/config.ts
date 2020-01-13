@@ -1,6 +1,13 @@
+import Stripe from 'stripe'
+
 require('dotenv').config()
 
-module.exports = {
+const stripeConfig: Stripe.StripeConfig = {
+  apiVersion: '2019-12-03',
+  typescript: true,
+}
+
+export default {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
@@ -14,6 +21,7 @@ module.exports = {
   purchaserCredentails: process.env.PURCHASER_CREDENTIALS,
   graphQLBaseURL: process.env.GRAPHQL_BASE_URL,
   metadataHost: process.env.METADATA_HOST,
+  stripeConfig,
   jaeger: {
     serviceName: 'locksmith',
     tags: [],

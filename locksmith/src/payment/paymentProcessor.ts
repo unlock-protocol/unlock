@@ -5,6 +5,7 @@ import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
 import { ethereumAddress } from '../types' // eslint-disable-line import/named, no-unused-vars
 import Dispatcher from '../fulfillment/dispatcher'
+import config from '../../config/config'
 
 const Sequelize = require('sequelize')
 
@@ -20,7 +21,7 @@ export class PaymentProcessor {
     providerURL: string,
     unlockContractAddress: string
   ) {
-    this.stripe = new Stripe(apiKey)
+    this.stripe = new Stripe(apiKey, config.stripeConfig)
     this.keyPricer = new KeyPricer(providerURL, unlockContractAddress)
   }
 
