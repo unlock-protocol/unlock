@@ -101,7 +101,7 @@ describe('Mailbox - getCacheKey', () => {
       ])
 
       expect(mailbox.getCacheKey()).toBe(
-        '__unlockProtocol.cache' + lockAddressPortion
+        `__unlockProtocol.cache${lockAddressPortion}`
       )
     })
 
@@ -128,7 +128,7 @@ describe('Mailbox - getCacheKey', () => {
       ])
 
       expect(mailbox.getCacheKey()).toBe(
-        '__unlockProtocol.cache' + lockAddressPortion
+        `__unlockProtocol.cache${lockAddressPortion}`
       )
     })
   })

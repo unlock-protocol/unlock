@@ -24,11 +24,15 @@ import { WalletStatus } from '../utils/wallet'
  */
 export default class Wallet {
   private readonly iframes: IframeHandler
+
   private readonly window: Web3Window
+
   private readonly config: PaywallConfig
+
   private hasWeb3: boolean = false
 
   private userAccountAddress: string | null = null
+
   private userAccountNetwork: unlockNetworks
 
   constructor(
@@ -101,7 +105,7 @@ export default class Wallet {
         hasWallet,
         setHasWeb3: this.setHasWeb3,
         getHasWeb3: this.getHasWeb3,
-        isMetamask: isMetamask,
+        isMetamask,
         window: this.window,
       })
     }

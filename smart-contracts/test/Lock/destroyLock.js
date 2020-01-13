@@ -11,7 +11,8 @@ const getProxy = require('../helpers/proxy')
 
 const TestErc20Token = artifacts.require('TestErc20Token.sol')
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / destroyLock', accounts => {
   let lock
@@ -35,7 +36,7 @@ contract('Lock / destroyLock', accounts => {
         tokenAddress = isErc20 ? testToken.address : Web3Utils.padLeft(0, 40)
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks['FIRST']
+        lock = locks.FIRST
 
         for (let i = 0; i < accounts.length; i++) {
           await testToken.approve(lock.address, -1, { from: accounts[i] })
@@ -60,7 +61,10 @@ contract('Lock / destroyLock', accounts => {
       })
 
       describe('when called by the owner', () => {
-        let initialLockBalance, initialOwnerBalance, txObj, event
+        let initialLockBalance
+        let initialOwnerBalance
+        let txObj
+        let event
 
         before(async () => {
           let value =

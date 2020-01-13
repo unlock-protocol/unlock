@@ -31,9 +31,9 @@ export function showIframe(window: IframeManagingWindow, iframe: IframeType) {
 
 export function hideIframe(
   window: IframeManagingWindow,
-  iframe: IframeType /*, unlocked = true*/
+  iframe: IframeType /* , unlocked = true */
 ) {
   iframe.className = 'unlock start'
-  //iframe.className = `unlock start show hide${unlocked ? '' : ' optimism'}`
+  // iframe.className = `unlock start show hide${unlocked ? '' : ' optimism'}`
   window.document.body.style.overflow = ''
 }

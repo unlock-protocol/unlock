@@ -1,13 +1,16 @@
 const Units = require('ethereumjs-units')
 const Web3Utils = require('web3-utils')
 const BigNumber = require('bignumber.js')
+
 const deployLocks = require('../helpers/deployLocks')
 const shouldFail = require('../helpers/shouldFail')
 
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks, ID
+let unlock
+let locks
+let ID
 
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
@@ -20,7 +23,7 @@ contract('Lock / disableLock', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.purchase(0, keyOwner, web3.utils.padLeft(0, 40), [], {
       value: keyPrice,
     })
@@ -42,7 +45,8 @@ contract('Lock / disableLock', accounts => {
   })
 
   describe('when the lock has been disabled', () => {
-    let txObj, event
+    let txObj
+    let event
     before(async () => {
       txObj = await lock.disableLock({ from: lockOwner })
       event = txObj.logs[0]
@@ -135,8 +139,11 @@ contract('Lock / disableLock', accounts => {
       )
     })
 
-    it('should fail to updateKeyPrice', async () => {
-      await shouldFail(lock.updateKeyPrice(1), 'LOCK_DEPRECATED')
+    it('should fail to updateKeyPricing', async () => {
+      await shouldFail(
+        lock.updateKeyPricing(1, Web3Utils.padLeft(0, 40)),
+        'LOCK_DEPRECATED'
+      )
     })
 
     it('should fail to safeTransferFrom w/o data', async () => {

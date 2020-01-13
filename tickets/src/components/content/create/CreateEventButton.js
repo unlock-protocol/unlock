@@ -6,13 +6,14 @@ import Media from '../../../theme/media'
 export const CreateEventButton = ({ disabled, submitted, saved }) => {
   if (disabled) {
     return <SaveButton disabled>Save Event</SaveButton>
-  } else if (!submitted && !saved) {
-    return <SaveButton type="submit">Save Event</SaveButton>
-  } else if (!saved) {
-    return <SaveButton disabled>Saving...</SaveButton>
-  } else {
-    return <SaveButton disabled>Event Saved</SaveButton>
   }
+  if (!submitted && !saved) {
+    return <SaveButton type="submit">Save Event</SaveButton>
+  }
+  if (!saved) {
+    return <SaveButton disabled>Saving...</SaveButton>
+  }
+  return <SaveButton disabled>Event Saved</SaveButton>
 }
 
 CreateEventButton.propTypes = {

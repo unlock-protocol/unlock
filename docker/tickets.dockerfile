@@ -2,18 +2,14 @@ FROM unlock-core
 
 # Dependencies for tickets
 RUN mkdir /home/unlock/tickets
-COPY --chown=node tickets/package-lock.json /home/unlock/tickets/.
+COPY --chown=node tickets/yarn.lock /home/unlock/tickets/.
 COPY --chown=node tickets/package.json /home/unlock/tickets/.
 WORKDIR /home/unlock/tickets
-RUN npm ci --production
-
-# Copy the parent binaries into the tickets
-WORKDIR /home/unlock/
-RUN npm run link-parent-bin
+RUN yarn --production
 
 # Build tickets
 WORKDIR /home/unlock/tickets
 COPY --chown=node tickets/ /home/unlock/tickets/.
-RUN npm run build
+RUN yarn build
 EXPOSE 3003
-CMD ["npm", "run", "start"]
+CMD ["yarn", "start"]

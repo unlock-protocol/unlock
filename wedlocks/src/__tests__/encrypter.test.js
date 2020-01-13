@@ -1,7 +1,8 @@
 import forge from 'node-forge'
 import { signParam } from '../encrypter'
 
-let privateKey, publicKey
+let privateKey
+let publicKey
 
 // These tests are slow because we generate private keys
 jest.setTimeout(15000)

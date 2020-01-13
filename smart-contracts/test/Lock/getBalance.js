@@ -8,7 +8,9 @@ const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 const scenarios = [false, true]
-let unlock, locks, testToken
+let unlock
+let locks
+let testToken
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
 contract('Lock / getBalance', accounts => {
@@ -31,7 +33,7 @@ contract('Lock / getBalance', accounts => {
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
 
         // Purchase 1 key
-        const lock = locks['FIRST']
+        const lock = locks.FIRST
         await testToken.approve(lock.address, '1000000000000000000', {
           from: accounts[2],
         })
@@ -48,18 +50,15 @@ contract('Lock / getBalance', accounts => {
       })
 
       it('get balance of contract', async () => {
-        const balance = await locks['FIRST'].getBalance(
+        const balance = await locks.FIRST.getBalance(
           tokenAddress,
-          locks['FIRST'].address
+          locks.FIRST.address
         )
         assert.equal(balance.toString(), keyPrice.toString())
       })
 
       it('get balance of account', async () => {
-        const balance = await locks['FIRST'].getBalance(
-          tokenAddress,
-          accounts[1]
-        )
+        const balance = await locks.FIRST.getBalance(tokenAddress, accounts[1])
         assert(balance.gt(0))
       })
     })

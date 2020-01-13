@@ -18,11 +18,11 @@ describe('Withdraw', () => {
     }
     const withdrawFromLock = jest.fn()
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Withdraw lock={keylock} withdraw={withdrawFromLock} />
     )
 
-    let withdrawButton = wrapper.getByTitle('Withdraw')
+    const withdrawButton = wrapper.getByTitle('Withdraw')
     rtl.fireEvent.click(withdrawButton)
 
     expect(withdrawFromLock).toHaveBeenCalled()
@@ -42,11 +42,11 @@ describe('Withdraw', () => {
     }
     const withdrawFromLock = jest.fn()
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Withdraw lock={keylock} withdraw={withdrawFromLock} />
     )
 
-    let withdrawButton = wrapper.queryByTitle('Withdraw')
+    const withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
 
@@ -67,7 +67,7 @@ describe('Withdraw', () => {
     }
     const withdrawFromLock = jest.fn()
 
-    let wrapper = rtl.render(
+    const wrapper = rtl.render(
       <Withdraw
         lock={keylock}
         withdraw={withdrawFromLock}
@@ -75,7 +75,7 @@ describe('Withdraw', () => {
       />
     )
 
-    let withdrawButton = wrapper.queryByTitle('Withdraw')
+    const withdrawButton = wrapper.queryByTitle('Withdraw')
     expect(withdrawButton).toBeNull()
   })
 })

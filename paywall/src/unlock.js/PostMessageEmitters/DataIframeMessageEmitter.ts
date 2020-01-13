@@ -30,6 +30,7 @@ class FancyEmitter extends (EventEmitter as {
  */
 export default class DataIframeMessageEmitter extends FancyEmitter {
   public readonly postMessage: PostMessageResponder<PostMessages>
+
   public readonly iframe: IframeType
 
   constructor(

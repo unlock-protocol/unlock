@@ -8,6 +8,7 @@ interface State {
   lock: any
   tip: any
   price?: number
+  fees?: any
 }
 
 export const initialState: State = {
@@ -21,7 +22,7 @@ const cartReducer = (state = initialState, action: Action) => {
     state = { lock, tip }
   } else if (action.type === UPDATE_PRICE) {
     const { fees } = action
-    state = Object.assign({}, state, { fees })
+    state = { ...state, fees }
   }
 
   return state

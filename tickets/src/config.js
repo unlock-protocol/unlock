@@ -26,17 +26,18 @@ export default function configure(
   const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   const unlockTicketsUrl =
     runtimeConfig.unlockTicketsUrl || 'http://0.0.0.0:3003'
-  let unlockAppUrl = runtimeConfig.unlockAppUrl || 'http://0.0.0.0:3000'
-  let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://0.0.0.0:3002'
-  let providers = {}
+  const unlockAppUrl = runtimeConfig.unlockAppUrl || 'http://0.0.0.0:3000'
+  const unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://0.0.0.0:3002'
+  const providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
   let requiredConfirmations = 12
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the migration script runs in the same order.
-  let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
-  let services = {
+  // TODO: is this used?
+  let unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
+  const services = {
     storage: {
       host: locksmithUri,
     },
@@ -56,16 +57,16 @@ export default function configure(
   }
 
   // ERC20 contract by default
-  let erc20Contract = {
+  const erc20Contract = {
     name: runtimeConfig.erc20ContractSymbol || 'DEV',
     address:
       runtimeConfig.erc20ContractAddress ||
-      '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
+      '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
   }
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
-    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
+    providers.HTTP = getWeb3Provider(`http://${httpProvider}:8545`)
     blockTime = 10 // in mseconds.
     isRequiredNetwork = networkId => networkId === 1984
   }
@@ -73,7 +74,7 @@ export default function configure(
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    providers['HTTP'] = getWeb3Provider(`http://${httpProvider}:8545`)
+    providers.HTTP = getWeb3Provider(`http://${httpProvider}:8545`)
 
     // In dev, we only require 6 confirmation because we only mine when there are pending transactions
     requiredConfirmations = 6

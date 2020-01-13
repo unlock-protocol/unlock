@@ -13,9 +13,19 @@ const {
 let id = 1
 
 function resolveWhenDeployed(address, delay, maxAttempts) {
-  let attempts = 1
+  let attempts = 0
   return new Promise((resolve, reject) => {
     function retrieveCode() {
+      attempts += 1
+
+      const retryOrReject = () => {
+        if (attempts < maxAttempts) {
+          setTimeout(retrieveCode, delay)
+          return
+        }
+        return reject()
+      }
+
       post(
         {
           jsonrpc: '2.0',
@@ -30,27 +40,16 @@ function resolveWhenDeployed(address, delay, maxAttempts) {
         .then(response => {
           if (
             response.data.error ||
+            !response.data.result ||
             response.data.result === '0x' // lock is not deployed
           ) {
-            if (response.data.result) {
-              if (response.data.result === '0x') {
-                console.log(`...Lock ${address} not deployed yet`) // eslint-disable-line
-              }
-            }
-            if (attempts < maxAttempts) {
-              setTimeout(retrieveCode, delay)
-              return
-            }
+            return retryOrReject()
           }
           // any other response shows that the contract has been successfully deployed
-          resolve()
+          return resolve()
         })
-        .catch(error => {
-          if (attempts < maxAttempts) {
-            setTimeout(retrieveCode, delay)
-            return
-          }
-          return reject(error)
+        .catch(() => {
+          return retryOrReject()
         })
     }
     retrieveCode()

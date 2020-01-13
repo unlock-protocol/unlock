@@ -72,7 +72,7 @@ const ConfigProvider = ConfigContext.Provider
 
 // generate `n' fake keys to use in mock
 const generateKeys = n => {
-  let keys = []
+  const keys = []
   for (let i = 0; i < n; i++) {
     keys.push({
       __typename: 'Key',

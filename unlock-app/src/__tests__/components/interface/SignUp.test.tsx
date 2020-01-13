@@ -9,7 +9,7 @@ import { SIGNUP_EMAIL } from '../../../actions/user'
 import doNothing from '../../../utils/doNothing'
 import wedlocksUtils from '../../../utils/wedlocks'
 
-let mockWedlocksUtil = { verifyEmailSignature: jest.fn() }
+const mockWedlocksUtil = { verifyEmailSignature: jest.fn() }
 
 jest.mock('../../../utils/wedlocks', () => {
   return jest.fn().mockImplementation(() => {

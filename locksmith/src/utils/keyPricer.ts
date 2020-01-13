@@ -18,7 +18,7 @@ export default class KeyPricer {
   }
 
   async keyPrice(lockAddress: string): Promise<number> {
-    let lock = await this.readOnlyEthereumService.getLock(lockAddress)
+    const lock = await this.readOnlyEthereumService.getLock(lockAddress)
     return Math.round(Number(lock.keyPrice) * 100)
   }
 

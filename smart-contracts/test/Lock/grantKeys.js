@@ -7,7 +7,10 @@ const shouldFail = require('../helpers/shouldFail')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, lock, locks, tx
+let unlock
+let lock
+let locks
+let tx
 
 contract('Lock / grantKeys', accounts => {
   const lockOwner = accounts[1]
@@ -17,7 +20,7 @@ contract('Lock / grantKeys', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockOwner)
-    lock = locks['FIRST']
+    lock = locks.FIRST
   })
 
   describe('can grant key(s)', () => {
@@ -96,13 +99,13 @@ contract('Lock / grantKeys', accounts => {
       })
 
       it('should acknowledge that user owns key', async () => {
-        for (var i = 0; i < keyOwnerList.length; i++) {
+        for (let i = 0; i < keyOwnerList.length; i++) {
           assert.notEqual(await lock.getTokenIdFor.call(keyOwnerList[i]), 0)
         }
       })
 
       it('getHasValidKey is true', async () => {
-        for (var i = 0; i < keyOwnerList.length; i++) {
+        for (let i = 0; i < keyOwnerList.length; i++) {
           assert.equal(await lock.getHasValidKey.call(keyOwnerList[i]), true)
         }
       })

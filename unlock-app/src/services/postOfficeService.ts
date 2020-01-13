@@ -17,7 +17,9 @@ export enum PostOfficeEvents {
 
 export class PostOfficeService extends EventEmitter {
   private postOffice: PostOffice
+
   private account: string | null = null
+
   private network: number
 
   constructor(window: IframePostOfficeWindow, network: number) {

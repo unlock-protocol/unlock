@@ -11,7 +11,11 @@ const getProxy = require('../helpers/proxy')
 
 const keyPrice = Units.convert('0.01', 'eth', 'wei')
 
-let unlock, locks, lock, token, exchange
+let unlock
+let locks
+let lock
+let token
+let exchange
 
 contract('Unlock / uniswapValue', accounts => {
   const price = '10000000000000000'
@@ -28,7 +32,7 @@ contract('Unlock / uniswapValue', accounts => {
       await token.mint(accounts[0], '1000000000000000000000000')
 
       locks = await deployLocks(unlock, accounts[0], token.address)
-      lock = locks['FIRST']
+      lock = locks.FIRST
 
       // Deploy the exchange
       const uniswapFactory = await protocols.uniswap.deploy(web3, accounts[0])
@@ -92,7 +96,7 @@ contract('Unlock / uniswapValue', accounts => {
       await token.mint(accounts[0], '1000000000000000000000000')
 
       locks = await deployLocks(unlock, accounts[0], token.address)
-      lock = locks['FIRST']
+      lock = locks.FIRST
     })
 
     describe('Purchase key', () => {
@@ -120,7 +124,7 @@ contract('Unlock / uniswapValue', accounts => {
   describe('ETH', () => {
     beforeEach(async () => {
       locks = await deployLocks(unlock, accounts[0])
-      lock = locks['FIRST']
+      lock = locks.FIRST
     })
 
     describe('Purchase key', () => {

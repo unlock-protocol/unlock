@@ -14,7 +14,9 @@ import { iframeHandlerInit } from './postMessageHub'
  */
 export default class IframeHandler {
   data: DataIframeMessageEmitter
+
   checkout: CheckoutIframeMessageEmitter
+
   accounts: AccountsIframeMessageEmitter
 
   constructor(

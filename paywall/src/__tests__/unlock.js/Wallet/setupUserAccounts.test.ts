@@ -25,8 +25,8 @@ describe('setupUserAccounts()', () => {
     unlockUserAccounts: true,
   }
 
-  let setUserAccountAddress = jest.fn()
-  let setUserAccountNetwork = jest.fn()
+  const setUserAccountAddress = jest.fn()
+  const setUserAccountNetwork = jest.fn()
   let createIframeSpy: any
 
   beforeAll(() => {

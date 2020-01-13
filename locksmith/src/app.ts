@@ -7,13 +7,12 @@ import { ApolloServer } from 'apollo-server-express'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../config/config')[env]
+const config = require('../config/config')
 
 const exporter = new JaegerTraceExporter(config.jaeger)
 
-if (env != 'test') {
-  tracing.start({ exporter: exporter })
+if (process.env.NODE_ENV != 'test') {
+  tracing.start({ exporter })
 }
 
 const app = express()
@@ -24,16 +23,16 @@ const server = new ApolloServer({
 })
 server.applyMiddleware({ app })
 
-let transactionRouter = require('./routes/transaction')
-let lockRouter = require('./routes/lock')
-let blockRouter = require('./routes/block')
-let userRouter = require('./routes/user')
-let eventRouter = require('./routes/event')
-let purchaseRouter = require('./routes/purchase')
-let priceRouter = require('./routes/price')
-let metadataRouter = require('./routes/metadata')
-let healthCheckRouter = require('./routes/health')
-let linkdropRouter = require('./routes/linkdrop')
+const transactionRouter = require('./routes/transaction')
+const lockRouter = require('./routes/lock')
+const blockRouter = require('./routes/block')
+const userRouter = require('./routes/user')
+const eventRouter = require('./routes/event')
+const purchaseRouter = require('./routes/purchase')
+const priceRouter = require('./routes/price')
+const metadataRouter = require('./routes/metadata')
+const healthCheckRouter = require('./routes/health')
+const linkdropRouter = require('./routes/linkdrop')
 
 app.use(cors())
 app.use(bodyParser.json())

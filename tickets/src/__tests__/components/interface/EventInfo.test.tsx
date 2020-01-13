@@ -31,8 +31,9 @@ describe('EventInfo component', () => {
     const { getByText } = rtl.render(<EventInfo event={event} />)
     const endDate = new Date(event.date.getTime() + event.duration * 1000)
 
-    const timeString =
-      getTimeString(event.date) + ' - ' + getTimeString(endDate)
+    const timeString = `${getTimeString(event.date)} - ${getTimeString(
+      endDate
+    )}`
 
     getByText('A fun event')
     getByText('Oct 2, 2019')

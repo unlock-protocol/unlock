@@ -55,7 +55,9 @@ class MockWalletService extends EventEmitter {
     super()
     this.ready = true
   }
+
   connect() {}
+
   signData() {}
 }
 
@@ -65,7 +67,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   const mockUnlock = require.requireActual('@unlock-protocol/unlock-js') // Original module
   return {
     ...mockUnlock,
-    WalletService: function() {
+    WalletService() {
       return mockWalletService
     },
   }

@@ -431,7 +431,7 @@ describe('Form field validators', () => {
             })
           ).toBe(false)
 
-          const endsWithZ = lock.substring(0, lock.length - 1) + 'Z'
+          const endsWithZ = `${lock.substring(0, lock.length - 1)}Z`
           expect(
             validators.isValidPaywallConfig({
               ...validConfig,
@@ -443,7 +443,7 @@ describe('Form field validators', () => {
             })
           ).toBe(false)
 
-          const tooLong = lock + 'a'
+          const tooLong = `${lock}a`
           expect(
             validators.isValidPaywallConfig({
               ...validConfig,

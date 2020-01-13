@@ -39,10 +39,10 @@ cd unlock
 
 2. Install all dependencies
 
-This will install all dependencies required for all the Unlock components (smart contracts and react app).
+This will install all dependencies required for all the Unlock components (smart contracts and react app). You'll need [yarn](https://yarnpkg.com) installed globally.
 
 ```
-npm ci
+yarn
 ```
 
 3. Set up your environment variables
@@ -60,7 +60,7 @@ PAYWALL_SCRIPT_URL=http://localhost:3001/static/paywall.min.js
 UNLOCK_STATIC_URL=http://localhost:3002
 UNLOCK_TICKETS_URL=http://0.0.0.0:3003
 ERC20_CONTRACT_SYMBOL=DAI
-ERC20_CONTRACT_ADDRESS=0x89aB03954911bdf3Cd93D22987f96C3527eE4b25
+ERC20_CONTRACT_ADDRESS=0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9
 BOOTSTRAP_AMOUNT=15.0
 HTTP_PROVIDER_HOST=127.0.0.1
 HTTP_PROVIDER_PORT=8545
@@ -75,7 +75,7 @@ This will let you interract with the application using your regular setup.
 Once [docker has been installed](https://docs.docker.com/install/) on your machine, start the cluster:
 
 ```
-$ cd docker && docker-compose -f docker-compose.development.yml up --build
+$ cd docker && docker-compose up --build
 ```
 
 This cluster includes all the required "infrastructure" to run our apps locally (mostly ganache, which is an ethereum dev node.)
@@ -86,7 +86,7 @@ When starting this script does several things: deploys the unlock smart contract
 This applies to any of our applications, but we'll take `unlock-app` as an example as it is our "main" dashboard:
 
 ```
-cd unlock-app && npm run dev
+cd unlock-app && yarn dev
 ```
 
 ## Thank you

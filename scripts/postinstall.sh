@@ -6,26 +6,28 @@
 
 if [ "$SKIP_SERVICES" != "true" ]; then
 
-  SERVICES=( paywall smart-contracts unlock-app locksmith tests tickets newsletter wedlocks unlock-js unlock-protocol.com docker/development )
-
+  ROOT_DIR=$(pwd)
+  
+  SERVICES=(
+      docker/development
+      locksmith
+      newsletter
+      paywall
+      smart-contracts
+      tests
+      tickets
+      unlock-app
+      unlock-js
+      unlock-protocol.com
+      wedlocks
+  )
+  
   for i in "${SERVICES[@]}"
   do
-    cd $i
-    npm ci # We run npm ci by default. &
-    cd .. # back to root
+      cd $i
+      rm -rf node_modules/
+      yarn
+      cd $ROOT_DIR
   done
-
-  wait
-
-  # Copy the parent binaries into the sub projects
-  npm run link-parent-bin
-  # remove node_modules from subfolders who do not need it
-  # TODO: fix link-parent-bin to only run in the folders where we need it!
-  rm -rf .circleci/node_modules
-  rm -rf .git/node_modules
-  rm -rf .github/node_modules
-  rm -rf docker/node_modules
-  rm -rf scripts/node_modules
-  rm -rf versions/node_modules
-  rm -rf wiki/node_modules
+  
 fi

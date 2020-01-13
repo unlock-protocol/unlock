@@ -32,7 +32,7 @@ export const validatePassword = (
   password: string,
   passwordConfirmation: string
 ) => {
-  let errors: string[] = []
+  const errors: string[] = []
 
   if (password.length < 1) {
     errors.push(passwordErrors.EMPTY)

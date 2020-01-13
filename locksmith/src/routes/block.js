@@ -1,7 +1,7 @@
-var express = require('express')
+const express = require('express')
 
-var router = express.Router()
-var blockController = require('../controllers/blockController')
+const router = express.Router()
+const blockController = require('../controllers/blockController')
 
 router.get('/:blockNumber', blockController.blockGet)
 
