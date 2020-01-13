@@ -44,6 +44,4 @@ contract MixinLockManagerRole {
     _LockManagers.remove(account);
     emit LockManagerRemoved(account);
   }
-
-  uint256[50] private ______gap;
 }
