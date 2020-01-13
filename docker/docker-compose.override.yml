@@ -22,6 +22,8 @@ services:
   postgres:
     command: ['postgres', '-cshared_preload_libraries=pg_stat_statements']
     env_file: development.env
+    ports:
+      - '5432:5432'
   locksmith-migration:
     env_file: development.env
     build:
