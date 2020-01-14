@@ -1,7 +1,7 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0x05bc8A09939AF8cad7b474a03efDd678f0104669",
+      "address": "0xc75Af9e8055C38bF095E6A0c47e35CCf63aC732D",
       "constructorCode": "6080604052611346806100136000396000f3fe",
       "bodyBytecodeHash": "e6f4120e0bc1097d1db96f54da3f6d1b3a9fdb8758405aed6af5e152da7a0046",
       "localBytecodeHash": "5874cf64299a9d6122b84bf605152d812733bed5edfc4d95ccc2cbf631b081b7",
@@ -378,8 +378,8 @@
       {
         "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
-        "implementation": "0x05bc8A09939AF8cad7b474a03efDd678f0104669",
-        "admin": "0x04e855D82c079222d6bDBc041F6202d5A0137267"
+        "implementation": "0xc75Af9e8055C38bF095E6A0c47e35CCf63aC732D",
+        "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42"
       }
     ],
     "unlock-protocol/UnlockDiscountToken": [
