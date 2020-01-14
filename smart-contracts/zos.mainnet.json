@@ -405,6 +405,15 @@
         "version": "0.1.0",
         "implementation": "0x49b41D8b11939D7ca9678792F8d93E96dd2D6ED9"
       }
+    ],
+    "unlock-protocol/UnlockDiscountToken": [
+      {
+        "address": "0x59F4ec8bad8F993eb051d369Ed528D0Cd5336ffD",
+        "version": "0.5.0",
+        "implementation": "0x513Acd2c94fCd195B0eB750535A542a8E719A1e2",
+        "admin": "0x79918A4389A437906538E0bbf39918BfA4F7690e",
+        "kind": "Upgradeable"
+      }
     ]
   },
   "zosversion": "2.2",
