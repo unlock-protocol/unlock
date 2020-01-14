@@ -1,6 +1,7 @@
-import { getCurrentProvider, UnlockProvider } from '@unlock-protocol/unlock-js'
+import { getCurrentProvider } from '@unlock-protocol/unlock-js'
 
 import getConfig from 'next/config'
+import UnlockProvider from './services/unlockProvider'
 import { ETHEREUM_NETWORKS_NAMES } from './constants'
 
 // cribbed from https://stackoverflow.com/questions/326069/how-to-identify-if-a-webpage-is-being-loaded-inside-an-iframe-or-directly-into-t
