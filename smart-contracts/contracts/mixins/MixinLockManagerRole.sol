@@ -1,5 +1,8 @@
 pragma solidity ^0.5.0;
 
+// This contract mostly follows the pattern established by openzeppelin in
+// openzeppelin/contracts-ethereum-package/contracts/access/roles
+
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
 
@@ -14,7 +17,7 @@ contract MixinLockManagerRole {
 
   function _initializeMixinLockManagerRole(address sender) internal {
     if (!isLockManager(sender)) {
-      _addLockManager(sender);
+      addLockManager(sender);
     }
   }
 
@@ -24,24 +27,16 @@ contract MixinLockManagerRole {
   }
 
   function isLockManager(address account) public view returns (bool) {
-    return _LockManagers.has(account);
+    return lockManagers.has(account);
   }
 
   function addLockManager(address account) public onlyLockManager {
-    _addLockManager(account);
-  }
-
-  function renounceLockManager() public {
-    _removeLockManager(msg.sender);
-  }
-
-  function _addLockManager(address account) internal {
-    _LockManagers.add(account);
+    lockManagers.add(account);
     emit LockManagerAdded(account);
   }
 
-  function _removeLockManager(address account) internal {
-    _LockManagers.remove(account);
-    emit LockManagerRemoved(account);
+  function renounceLockManager() public {
+    lockManagers.remove(msg.sender);
+    emit LockManagerRemoved(msg.sender);
   }
 }
