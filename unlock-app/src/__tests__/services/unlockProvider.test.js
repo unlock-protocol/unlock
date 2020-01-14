@@ -37,8 +37,9 @@ describe('Unlock Provider', () => {
     const readOnlyProvider = process.env.CI
       ? 'http://ganache-integration::8545'
       : 'http://127.0.0.1:8545'
+    const requiredNetworkId = 1492
 
-    provider = new UnlockProvider({ readOnlyProvider })
+    provider = new UnlockProvider({ readOnlyProvider, requiredNetworkId })
     await provider.connect({ key, password, emailAddress })
   })
 
@@ -151,7 +152,7 @@ describe('Unlock Provider', () => {
 
         const ws = new WalletService({ unlockAddress: 'does not matter here' })
         await ws.connect(provider)
-        ws.signDataPersonal('', 'this is my data', error => {
+        ws.signDataPersonal('account', 'this is my data', error => {
           expect(error).toBeNull()
           done()
         })

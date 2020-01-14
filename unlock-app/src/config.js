@@ -195,7 +195,7 @@ export default function configure(
     readOnlyProvider = readOnlyProviderUrl
   }
 
-  providers.Unlock = new UnlockProvider({ readOnlyProvider })
+  providers.Unlock = new UnlockProvider({ readOnlyProvider, requiredNetworkId })
 
   return {
     base64WedlocksPublicKey,
