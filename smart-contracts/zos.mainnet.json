@@ -403,7 +403,9 @@
       {
         "address": "0x3d5409cce1d45233de1d4ebdee74b8e004abdd13",
         "version": "0.1.0",
-        "implementation": "0x49b41D8b11939D7ca9678792F8d93E96dd2D6ED9"
+        "implementation": "0xE36793f0b4DB71fF0A5216412F80ba89B2927445",
+        "admin": "0x79918A4389A437906538E0bbf39918BfA4F7690e",
+        "kind": "Upgradeable"
       }
     ],
     "unlock-protocol/UnlockDiscountToken": [
