@@ -11,30 +11,6 @@ import v11 from '../v11'
 import utils from '../utils'
 import WalletService from '../walletService'
 import { GAS_AMOUNTS } from '../constants'
-import UnlockProvider from '../unlockProvider'
-
-const encryptedPrivateKey = {
-  version: 3,
-  id: 'edbe0942-593b-4027-8688-07b7d3ec56c5',
-  address: '0272742cbe9b4d4c81cffe8dfc0c33b5fb8893e5',
-  crypto: {
-    ciphertext:
-      '6f2a3ed499a2962cc48e6f7f0a90a0c817c83024cc4878f624ad251fccd0b706',
-    cipherparams: { iv: '69f031944591eed34c4d4f5841d283b0' },
-    cipher: 'aes-128-ctr',
-    kdf: 'scrypt',
-    kdfparams: {
-      dklen: 32,
-      salt: '5ac866336768f9613a505acd18dab463f4d10152ffefba5772125f5807539c36',
-      n: 8192,
-      r: 8,
-      p: 1,
-    },
-    mac: 'cc8efad3b534336ecffc0dbf6f51fd558301873d322edc6cbc1c9398ee0953ec',
-  },
-}
-
-const password = 'guest'
 
 const supportedVersions = [v0, v01, v02, v10, v11]
 
@@ -83,14 +59,6 @@ describe('WalletService (ethers)', () => {
       expect(walletService.provider).toBeInstanceOf(
         ethers.providers.JsonRpcProvider
       )
-    })
-
-    it('properly connects to the unlock provider', async () => {
-      expect.assertions(1)
-      await resetTestsAndConnect(
-        new UnlockProvider({ readOnlyProvider: endpoint })
-      )
-      expect(walletService.provider.isUnlock).toBeTruthy()
     })
 
     it('properly connects to the ethers Web3Provider', async () => {
@@ -172,39 +140,6 @@ describe('WalletService (ethers)', () => {
     })
 
     describe('getAccount', () => {
-      describe('when using UnlockProvider', () => {
-        let provider
-        beforeAll(async () => {
-          provider = new UnlockProvider({ readOnlyProvider: endpoint })
-          await resetTestsAndConnect(provider)
-          await provider.connect({
-            key: encryptedPrivateKey,
-            password,
-            emailAddress: 'geoff@bitconnect.gov',
-          })
-        })
-
-        it('should emit an account, email, and ready event', done => {
-          expect.assertions(3)
-          walletService.once('ready', () => {
-            expect(walletService.ready).toBe(true)
-            done()
-          })
-
-          walletService.on('account.changed', address => {
-            expect(address).toEqual(
-              '0x0272742CbE9b4D4C81cFFE8dFC0c33B5fb8893E5'
-            )
-          })
-
-          walletService.on('account.updated', update => {
-            expect(update.emailAddress).toEqual('geoff@bitconnect.gov')
-          })
-
-          walletService.getAccount()
-        })
-      })
-
       describe('when the node has an unlocked account', () => {
         it('should load a local account and emit the ready event', async done => {
           expect.assertions(2)

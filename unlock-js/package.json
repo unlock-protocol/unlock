@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "lib/index.js",
   "module": "esm/index.js",
@@ -38,8 +38,6 @@
     "eslint-plugin-react": "7.17.0",
     "eslint-plugin-react-hooks": "2.3.0",
     "eslint-plugin-standard": "4.0.1",
-    "eth-sig-util": "2.5.2",
-    "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.43",
     "jest": "24.9.0",
     "lint-staged": "8.2.1",
