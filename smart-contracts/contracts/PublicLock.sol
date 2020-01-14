@@ -34,6 +34,7 @@ contract PublicLock is
   MixinSignatures,
   MixinFunds,
   MixinDisableAndDestroy,
+  MixinLockManagerRole,
   MixinLockCore,
   MixinKeys,
   MixinLockMetadata,
