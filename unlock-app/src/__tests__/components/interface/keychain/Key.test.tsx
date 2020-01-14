@@ -16,6 +16,7 @@ const aKey: OwnedKey = {
     name: 'ERC20 paywall lock',
     tokenAddress: '0xbadc0ffee',
     price: '50',
+    owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
   },
 }
 
