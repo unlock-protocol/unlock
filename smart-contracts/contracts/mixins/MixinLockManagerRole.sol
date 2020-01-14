@@ -10,7 +10,7 @@ contract MixinLockManagerRole {
   event LockManagerAdded(address indexed account);
   event LockManagerRemoved(address indexed account);
 
-  Roles.Role private _LockManagers;
+  Roles.Role private lockManagers;
 
   function _initializeMixinLockManagerRole(address sender) internal {
     if (!isLockManager(sender)) {
