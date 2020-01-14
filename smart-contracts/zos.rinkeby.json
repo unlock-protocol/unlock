@@ -379,7 +379,8 @@
         "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
         "implementation": "0xc75Af9e8055C38bF095E6A0c47e35CCf63aC732D",
-        "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42"
+        "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42",
+        "kind": "Upgradeable"
       }
     ],
     "unlock-protocol/UnlockDiscountToken": [
