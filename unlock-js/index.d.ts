@@ -43,26 +43,7 @@ export interface KeyResult {
   expiration: number
 }
 
-interface UnlockProviderConnectParams {
-  key: string
-  password: string
-  emailAddress: string
-}
-
-export class UnlockProvider extends providers.JsonRpcProvider {
-  constructor({ readOnlyProvider }: { readOnlyProvider: string });
-  connect: (params: UnlockProviderConnectParams) => Promise<boolean>;
-  // TODO: better types for these
-  eth_accounts: () => string[];
-  send: (method: string, params: any[]) => any;
-  personal_sign: (params: any[]) => any;
-  signData: (data: any) => any;
-  signPaymentData: (stripeTokenId: string) => any;
-  signKeyPurchaseRequestData: (input: any) => any;
-  generateSignedEjectionRequest: () => any;
-}
-
-type Web3Provider = string | UnlockProvider | providers.Web3Provider
+type Web3Provider = string | providers.Web3Provider
 
 export class Web3Service extends EventEmitter {
   constructor(params: Web3ServiceParams);
@@ -87,12 +68,3 @@ export class WalletService extends EventEmitter {
   getAccount: () => Promise<string | false>
   purchaseKey: (params: PurchaseKeyParams) => Promise<string>
 }
-
-interface AddressAndKey {
-  address: string
-  passwordEncryptedPrivateKey: any
-}
-
-export function createAccountAndPasswordEncryptKey(password: string): Promise<AddressAndKey>
-export function getAccountFromPrivateKey(encryptedPrivateKey: any, password: string): Promise<Wallet>
-export function reEncryptPrivateKey(encryptedPrivateKey: any, password: string, newPassword: string): Promise<any>

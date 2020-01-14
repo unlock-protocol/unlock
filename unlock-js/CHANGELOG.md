@@ -1,5 +1,9 @@
 # Changes
 
+# 0.6.0
+
+- removed unlockProvider as it has moved back to unlock-app
+
 # 0.5.4
 
 - generateLockAddress on inputHandler as well
