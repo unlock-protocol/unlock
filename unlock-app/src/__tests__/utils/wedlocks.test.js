@@ -4,7 +4,8 @@ import { Base64 } from 'js-base64'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 
 const emailAddressToSign = 'julien@unlock-protocol.com'
-let signature, base64PublicKey
+let signature
+let base64PublicKey
 
 // These tests are slow because we generate private keys
 jest.setTimeout(15000)

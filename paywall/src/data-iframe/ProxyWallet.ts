@@ -1,9 +1,14 @@
 export class ProxyWallet {
   id: number = 0
+
   isMetamask: boolean
+
   noWallet: boolean
+
   notEnabled: boolean
+
   requests: { [id: number]: any } = {} // id->callback map
+
   emit: (name: string, data?: any) => void
 
   constructor(

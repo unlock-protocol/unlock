@@ -8,7 +8,7 @@ describe('promises', () => {
       jest.useFakeTimers()
 
       let delayed = 0
-      let time = delayPromise(100)
+      const time = delayPromise(100)
 
       expect(delayed).toBe(0)
       jest.advanceTimersByTime(99)

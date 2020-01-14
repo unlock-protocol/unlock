@@ -107,7 +107,7 @@ export class Key extends React.Component<Props, State> {
 
   QRUrl = () => {
     const { signature } = this.props
-    let url = new URL(window.location.origin + '/verification')
+    const url = new URL(`${window.location.origin}/verification`)
     if (signature) {
       const data = encodeURIComponent(signature.data)
       const sig = encodeURIComponent(signature.signature)

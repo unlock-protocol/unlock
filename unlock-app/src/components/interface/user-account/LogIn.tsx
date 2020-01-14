@@ -90,7 +90,8 @@ export class LogIn extends React.Component<Props, State> {
           Retry Login
         </SubmitButton>
       )
-    } else if (submitted) {
+    }
+    if (submitted) {
       return <LoadingButton roundBottomOnly>Logging In...</LoadingButton>
     }
 

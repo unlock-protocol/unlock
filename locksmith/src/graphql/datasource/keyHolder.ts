@@ -4,7 +4,7 @@ import { UnlockGraphQLDataSource } from './unlockGraphQLDataSource'
 // eslint-disable-next-line import/prefer-default-export
 export class KeyHolder extends UnlockGraphQLDataSource {
   async get(address: string) {
-    let keyHolderQuery = gql`
+    const keyHolderQuery = gql`
       query KeyHolder($address: String!) {
         keyHolders(where: { address: $address }) {
           id
@@ -27,8 +27,8 @@ export class KeyHolder extends UnlockGraphQLDataSource {
     `
 
     try {
-      let response = await this.query(keyHolderQuery, {
-        variables: { address: address },
+      const response = await this.query(keyHolderQuery, {
+        variables: { address },
       })
 
       return response.data.keyHolders

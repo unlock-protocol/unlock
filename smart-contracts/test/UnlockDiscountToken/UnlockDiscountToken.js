@@ -77,7 +77,8 @@ contract('UnlockDiscountToken', accounts => {
 
     describe('transfer', async () => {
       const transferAmount = new BigNumber(123)
-      let balanceBefore0, balanceBefore1
+      let balanceBefore0
+      let balanceBefore1
 
       before(async () => {
         balanceBefore0 = new BigNumber(

@@ -6,7 +6,8 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / freeTrial', accounts => {
   let lock
@@ -16,7 +17,7 @@ contract('Lock / freeTrial', accounts => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['SECOND']
+    lock = locks.SECOND
     const purchases = keyOwners.map(account => {
       return lock.purchase(0, account, web3.utils.padLeft(0, 40), [], {
         value: keyPrice.toFixed(),

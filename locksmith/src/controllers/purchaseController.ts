@@ -3,46 +3,45 @@ import { SignedRequest, ethereumAddress } from '../types' // eslint-disable-line
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import PaymentProcessor from '../payment/paymentProcessor'
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('../../config/config')[env]
+const config = require('../../config/config')
 
 namespace PurchaseController {
-  //eslint-disable-next-line import/prefer-default-export
+  // eslint-disable-next-line import/prefer-default-export
   export const purchase = async (
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const expiry = req.body.message.purchaseRequest.expiry
-    const lock = req.body.message.purchaseRequest.lock
+    const { expiry } = req.body.message.purchaseRequest
+    const { lock } = req.body.message.purchaseRequest
     const purchaser = req.body.message.purchaseRequest.recipient
 
     if (expired(expiry)) {
       return res.sendStatus(412)
-    } else if (!(await authorizedLock(lock))) {
-      return res.sendStatus(451)
-    } else {
-      let paymentProcessor = new PaymentProcessor(
-        config.stripeSecret,
-        config.web3ProviderHost,
-        config.unlockContractAddress
-      )
-
-      const hash = await paymentProcessor.initiatePurchase(
-        purchaser,
-        lock,
-        config.purchaserCredentails,
-        config.web3ProviderHost,
-        purchaser
-      )
-
-      return res.send({
-        transactionHash: hash,
-      })
     }
+    if (!(await authorizedLock(lock))) {
+      return res.sendStatus(451)
+    }
+    const paymentProcessor = new PaymentProcessor(
+      config.stripeSecret,
+      config.web3ProviderHost,
+      config.unlockContractAddress
+    )
+
+    const hash = await paymentProcessor.initiatePurchase(
+      purchaser,
+      lock,
+      config.purchaserCredentails,
+      config.web3ProviderHost,
+      purchaser
+    )
+
+    return res.send({
+      transactionHash: hash,
+    })
   }
 
   const expired = (expiry: number): Boolean => {
-    let currentTime = Math.floor(Date.now() / 1000)
+    const currentTime = Math.floor(Date.now() / 1000)
     return expiry < currentTime
   }
 

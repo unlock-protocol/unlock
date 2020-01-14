@@ -5,7 +5,7 @@ export const SIGN_DATA = 'signature/SIGN_DATA'
 export function signatureError(error) {
   return {
     type: SIGNATURE_ERROR,
-    error: error,
+    error,
   }
 }
 

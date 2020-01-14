@@ -3,10 +3,10 @@
 const net = require('net')
 const app = require('./src/app')
 
-const env = process.env.NODE_ENV || 'development'
-const config = require('./config/config')[env]
+const config = require('./config/config')
 
 const port = process.env.PORT || 8080
+const databasePort = 5432
 
 /**
  * This is a helper function to ensure that we start the test suite only when the server is up
@@ -65,16 +65,16 @@ const environmentEvaluation = () => {
   }
 }
 
-if (env != 'development') {
+if (process.env.NODE_ENV != 'development') {
   environmentEvaluation()
 }
 
-if (!config.host || env === 'production') {
+if (!config.host || process.env.NODE_ENV === 'production') {
   return app.listen(port)
 }
 
 // We wait for the db server to be up before starting the app
-serverIsUp(config.host, config.port, 100, 120, error => {
+serverIsUp(config.host, databasePort, 100, 120, error => {
   if (error) {
     console.error(error)
     return process.exit(1)

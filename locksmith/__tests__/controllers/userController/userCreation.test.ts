@@ -1,7 +1,7 @@
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
-let UserOperations = require('../../../src/operations/userOperations')
+const UserOperations = require('../../../src/operations/userOperations')
 
 function generateTypedData(message: any) {
   return {
@@ -24,13 +24,13 @@ function generateTypedData(message: any) {
       version: '1',
     },
     primaryType: 'User',
-    message: message,
+    message,
   }
 }
 
 beforeAll(() => {
-  let User = models.User
-  let UserReference = models.UserReference
+  const { User } = models
+  const { UserReference } = models
 
   return Promise.all([
     User.truncate({ cascade: true }),
@@ -43,28 +43,28 @@ describe('user creation', () => {
   const sigUtil = require('eth-sig-util')
   const ethJsUtil = require('ethereumjs-util')
 
-  let privateKey = ethJsUtil.toBuffer(
+  const privateKey = ethJsUtil.toBuffer(
     '0x68eec585ce3c13bf0cbe407cb05cd2679cb829fe350471846c9a8aa2ea85b6ac'
   )
 
-  let message = {
+  const message = {
     user: {
       emailAddress: 'user@example.com',
       publicKey: '0xc167cCe31C1e3CfF90726eEe096299De043c5f4d',
       passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
     },
   }
-  let typedData = generateTypedData(message)
+  const typedData = generateTypedData(message)
 
   describe('when a user matching the public key does not exist', () => {
-    let models = require('../../../src/models')
-    let User = models.User
-    let UserReference = models.UserReference
+    const models = require('../../../src/models')
+    const { User } = models
+    const { UserReference } = models
 
     it('creates the appropriate records', async () => {
       expect.assertions(3)
 
-      let response = await request(app)
+      const response = await request(app)
         .post('/users')
         .set('Accept', /json/)
         .send(typedData)
@@ -87,7 +87,7 @@ describe('user creation', () => {
     it('will return a 400', async () => {
       expect.assertions(1)
 
-      let response = await request(app)
+      const response = await request(app)
         .post('/users')
         .set('Accept', /json/)
         .send(typedData)
@@ -100,7 +100,7 @@ describe('user creation', () => {
     it('will return a 400 error', async () => {
       expect.assertions(1)
 
-      let message = {
+      const message = {
         user: {
           emailAddress: 'rejected-user@example.com',
           publicKey: '0xc167cCe31C1e3CfF90726eEe096299De043c5f4d',
@@ -108,12 +108,12 @@ describe('user creation', () => {
         },
       }
 
-      let typedData = generateTypedData(message)
+      const typedData = generateTypedData(message)
       const sig = sigUtil.signTypedData(privateKey, {
         data: typedData,
       })
 
-      let response = await request(app)
+      const response = await request(app)
         .post('/users')
         .set('Accept', /json/)
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -127,9 +127,9 @@ describe('user creation', () => {
     it('returns a 409', async () => {
       expect.assertions(1)
 
-      let emailAddress = 'ejected_user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'ejected_user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'ejected_user_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
@@ -137,7 +137,7 @@ describe('user creation', () => {
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      let message = {
+      const message = {
         user: {
           emailAddress,
           publicKey: userCreationDetails.publicKey,
@@ -146,7 +146,7 @@ describe('user creation', () => {
         },
       }
 
-      let response = await request(app)
+      const response = await request(app)
         .post('/users')
         .set('Accept', /json/)
         .send(generateTypedData(message))

@@ -113,12 +113,9 @@ export function Icon({ lock }) {
           <use xlinkHref="#a" />
         </mask>
         <g
-          transform={
-            'rotate(' +
-            degreesOfRotation(address) +
-            ', 108, 108)' +
-            translateAndScale(address)
-          }
+          transform={`rotate(${degreesOfRotation(
+            address
+          )}, 108, 108)${translateAndScale(address)}`}
         >
           <circle
             fill={colors[0]}

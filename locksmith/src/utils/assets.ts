@@ -20,7 +20,7 @@ interface tokenMetadataDefaultData {
 
 export const exists = async (image: string) => {
   try {
-    let lookup = await request(image, { resolveWithFullResponse: true })
+    const lookup = await request(image, { resolveWithFullResponse: true })
     return lookup.statusCode == 200
   } catch (e) {
     return false
@@ -28,16 +28,16 @@ export const exists = async (image: string) => {
 }
 
 export const tokenMetadataDefaultImage = (data: tokenMetadataDefaultData) => {
-  let fg = new Forage()
+  const fg = new Forage()
   return `${data.base}/${fg.tokenMetadataDefaultImage(data)}`
 }
 
 export const tokenCentricImage = (data: tokenCentricData) => {
-  let fg = new Forage()
+  const fg = new Forage()
   return `${data.base}/${fg.tokenCentricImage(data)}`
 }
 
 export const ticketsBannerImage = (data: ticketsBannerData) => {
-  let fg = new Forage()
+  const fg = new Forage()
   return `${data.base}/${fg.ticketsBannerImage(data)}`
 }

@@ -12,18 +12,17 @@ RUN apk add --no-cache \
   && pip install virtualenv
 
 RUN npm install -g npm@6.4.1
+RUN npm install -g yarn
 
 RUN mkdir /standup
 WORKDIR /standup
 
-COPY ./package.json .
+COPY ./package.json ./
 
-RUN npm install
+RUN yarn
 
-COPY ./TestErc20Token.json .
-COPY ./deploy-unlock.js .
-COPY ./deploy-erc1820.js .
-COPY ./deploy-locks.js .
+COPY ./* ./
+COPY ./utils/* ./utils/
 
 WORKDIR /app
 

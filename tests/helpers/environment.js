@@ -59,7 +59,7 @@ class UnlockEnvironment extends PuppeteerEnvironment {
       120 /* up to 2m */
     )
     console.log('Waiting for ERC20 setup')
-    await erc20IsUp({ delay: 1000, maxAttempts: 60 })
+    await erc20IsUp({ delay: 100, maxAttempts: 600 })
 
     console.log('Waiting for Locks to Deploy')
     await locksAreDeployed({ delay: 1000, maxAttempts: 60 })

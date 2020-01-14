@@ -59,13 +59,13 @@ describe('DashboardContent', () => {
       // access to the button.
       expect.assertions(2)
 
-      let createButton = wrapper.getByText('Create Lock')
+      const createButton = wrapper.getByText('Create Lock')
       rtl.fireEvent.click(createButton)
 
       wrapper.getByDisplayValue('New Lock')
       wrapper.getByText('Submit')
 
-      let cancelButton = wrapper.getByText('Cancel')
+      const cancelButton = wrapper.getByText('Cancel')
       rtl.fireEvent.click(cancelButton)
 
       expect(wrapper.queryByDisplayValue('New Lock')).toBeNull()

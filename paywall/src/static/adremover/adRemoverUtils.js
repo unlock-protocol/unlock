@@ -29,7 +29,7 @@ function hookupGanache(window) {
 }
 
 function setupPaywallConfig(window) {
-  var us = new window.URL(window.document.location)
+  const us = new window.URL(window.document.location)
   // this is for integration testing only, so we do not do any validation
   // format is an array like:
   // [
@@ -38,8 +38,8 @@ function setupPaywallConfig(window) {
   //   { name: '...', address: '0x...' },
   //   ...,
   // ]
-  var locks = JSON.parse(us.searchParams.get('locks'))
-  var unlockUserAccounts = !!us.searchParams.get('unlockUserAccounts')
+  const locks = JSON.parse(us.searchParams.get('locks'))
+  const unlockUserAccounts = !!us.searchParams.get('unlockUserAccounts')
 
   window.unlockProtocolConfig = {
     locks: locks.reduce(

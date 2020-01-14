@@ -1,7 +1,7 @@
 import KeyData from '../../src/utils/keyData'
 
 describe('KeyData', () => {
-  let keyData = new KeyData('http://someprovider')
+  const keyData = new KeyData('http://someprovider')
 
   describe('openSeaPresentation', () => {
     describe('when the data has an expiration', () => {

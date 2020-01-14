@@ -19,9 +19,9 @@ export const ETHEREUM_NETWORKS_NAMES = {
  * @returns {string}
  */
 export const pageTitle = title => {
-  let pageTitle = ''
-  if (title) pageTitle += `${title} | `
-  return (pageTitle += "Unlock: The Web's new business model")
+  let fullTitle = ''
+  if (title) fullTitle += `${title} | `
+  return `${fullTitle}Unlock: The Web's new business model`
 }
 
 export const MAX_DEVICE_WIDTHS = {

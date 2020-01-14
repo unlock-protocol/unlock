@@ -21,7 +21,7 @@ import { expirationAsText } from '../../utils/durations'
 import Media from '../../theme/media'
 
 const ConfirmedKeyLock = ({ lock, onClick, config }) => {
-  let currency = currencySymbolForLock(lock, config)
+  const currency = currencySymbolForLock(lock, config)
 
   return (
     <LockWrapper lock={lock} onClick={onClick}>
