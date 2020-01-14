@@ -11,12 +11,12 @@ let ID
 contract('Lock / erc721 / getApproved', accounts => {
   const keyPurchaser = accounts[3]
 
-  before(async function() {
+  before(async () => {
     this.unlock = await getProxy(unlockContract)
     locks = await deployLocks(this.unlock, accounts[0])
   })
 
-  before(async function() {
+  before(async () => {
     await locks.FIRST.purchase(0, keyPurchaser, web3.utils.padLeft(0, 40), [], {
       value: Units.convert('0.01', 'eth', 'wei'),
       from: keyPurchaser,

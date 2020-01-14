@@ -7,5 +7,6 @@ pragma solidity 0.5.14;
  *
  * This contract should not be used in production.
  */
+// solium-disable-next-line no-empty-blocks
 contract TestNoop
 {}
