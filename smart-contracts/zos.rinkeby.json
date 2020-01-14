@@ -1,7 +1,7 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0xe070763B14c38A57B0297b4aC2bA488d9C32057D",
+      "address": "0x05bc8A09939AF8cad7b474a03efDd678f0104669",
       "constructorCode": "6080604052611346806100136000396000f3fe",
       "bodyBytecodeHash": "e6f4120e0bc1097d1db96f54da3f6d1b3a9fdb8758405aed6af5e152da7a0046",
       "localBytecodeHash": "5874cf64299a9d6122b84bf605152d812733bed5edfc4d95ccc2cbf631b081b7",
