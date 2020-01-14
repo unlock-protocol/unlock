@@ -108,3 +108,16 @@ export const USER_ACCOUNT_ADDRESS_STORAGE_ID = 'managedUserAccountAddress'
 // to log in and without granting any unauthorized access.
 export const DEFAULT_USER_ACCOUNT_ADDRESS =
   '0x0000000000000000000000000000000000000000'
+
+// See
+// https://docs.ethers.io/ethers.js/html/api-wallet.html#encrypted-json-wallets
+// for available params; right now a custom value of scrypt/N covers our needs.
+export const WALLET_ENCRYPTION_OPTIONS = {
+  scrypt: {
+    // web3 used 1 << 13, ethers default is 1 << 18. We want speedy wallet
+    // decryption, and Unlock accounts should hold no currency so this tradeoff
+    // is acceptable.
+    // eslint-disable-next-line no-bitwise
+    N: 1 << 13,
+  },
+}
