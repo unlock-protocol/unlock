@@ -136,6 +136,7 @@ contract MixinLockCore is
   /**
    * A function which lets the owner of the lock change the pricing for future purchases.
    * This consists of 2 parts: The token address and the price in the given token.
+   * In order to set the token to ETH, use 0 for the token Address.
    */
   function updateKeyPricing(
     uint _keyPrice,
