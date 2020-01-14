@@ -1,4 +1,4 @@
-FROM trufflesuite/ganache-cli:v6.4.3
+FROM trufflesuite/ganache-cli:v6.8.1
 LABEL Unlock <ops@unlock-protocol.com>
 
 RUN apk add --no-cache git openssh bash
