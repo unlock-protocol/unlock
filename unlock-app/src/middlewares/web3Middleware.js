@@ -27,6 +27,7 @@ const web3Middleware = config => {
     blockTime,
     requiredConfirmations,
     subgraphURI,
+    requiredNetworkId,
   } = config
   return ({ getState, dispatch }) => {
     const web3Service = new Web3Service({
@@ -34,6 +35,7 @@ const web3Middleware = config => {
       unlockAddress,
       blockTime,
       requiredConfirmations,
+      network: requiredNetworkId,
     })
 
     const graphService = new GraphService(subgraphURI)

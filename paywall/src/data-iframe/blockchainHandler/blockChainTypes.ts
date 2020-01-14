@@ -63,6 +63,7 @@ export interface ConstantsType {
   blockTime: number
   requiredConfirmations: number
   defaultNetwork: unlockNetworks
+  readOnlyProvider: string
 }
 
 export interface BlockchainData {

@@ -12,6 +12,7 @@ const {
   unlockAddress,
   blockTime,
   requiredConfirmations,
+  defaultNetwork,
 } = config
 
 const web3Service = new Web3Service({
@@ -19,6 +20,7 @@ const web3Service = new Web3Service({
   unlockAddress,
   blockTime,
   requiredConfirmations,
+  network: defaultNetwork,
 })
 
 let parent: Postmate.ChildAPI

@@ -221,8 +221,14 @@ export default class Mailbox {
       import('../providers/Web3ProxyProvider'),
       import('./blockchainHandler/BlockchainHandler'),
     ])
-
-    const web3Service = new Web3Service(this.constants)
+    const web3Service = new Web3Service({
+      readOnlyProvider: this.constants.readOnlyProvider,
+      unlockAddress: this.constants.unlockAddress,
+      blockTime: this.constants.blockTime,
+      requiredConfirmations: this.constants.requiredConfirmations,
+      network: this.constants.defaultNetwork,
+    })
+    // TODO : do not mass assign below
     const walletService = new WalletService(this.constants)
     const provider = new Web3ProxyProvider(this.window)
 
