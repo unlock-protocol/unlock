@@ -34,8 +34,11 @@ export default class CheckoutIframeMessageEmitter extends FancyEmitter {
   private window: IframeManagingWindow & PostOfficeWindow & OriginWindow
 
   public readonly postMessage: PostMessageResponder<PostMessages>
+
   public readonly iframe: IframeType
+
   private buffer: Array<any>
+
   private isReady: boolean
 
   constructor(

@@ -44,7 +44,7 @@ export const NoKeyLock = ({
     footerMessage = 'Insufficient funds'
   }
 
-  let currency = currencySymbolForLock(lock, config)
+  const currency = currencySymbolForLock(lock, config)
 
   return (
     <Wrapper

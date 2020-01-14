@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 
 export default class TokenTransferApproval {
   provider: ethers.providers.JsonRpcProvider
+
   privateKey: string
 
   constructor(provider: string, privateKey: string) {
@@ -14,7 +15,7 @@ export default class TokenTransferApproval {
     lockContractAddress: string,
     erc20ContractAddress: string
   ) {
-    let wallet = new ethers.Wallet(this.privateKey, this.provider)
+    const wallet = new ethers.Wallet(this.privateKey, this.provider)
 
     const contract = new ethers.Contract(
       erc20ContractAddress,

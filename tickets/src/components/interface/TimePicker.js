@@ -22,7 +22,7 @@ export default class TimePicker extends Component {
 
     return selected => {
       this.setState(state => {
-        let date = state.date
+        const { date } = state
 
         // Change the date based on the selected value
         date[method](selected.value)
@@ -42,7 +42,7 @@ export default class TimePicker extends Component {
 
   render() {
     const { date } = this.state
-    let hour = {
+    const hour = {
       value: date.getHours(),
       label: date
         .getHours()
@@ -58,8 +58,8 @@ export default class TimePicker extends Component {
     }
     const { disabled } = this.props
 
-    let hours = []
-    let minutes = []
+    const hours = []
+    const minutes = []
     let i
 
     for (i = 0; i < 24; i++) {

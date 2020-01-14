@@ -1,4 +1,4 @@
-let UserOperations = require('../../../src/operations/userOperations')
+const UserOperations = require('../../../src/operations/userOperations')
 
 import models = require('../../../src/models')
 import app = require('../../../src/app')
@@ -6,8 +6,8 @@ import app = require('../../../src/app')
 beforeAll(() => {
   jest.unmock('../../../src/operations/userOperations')
 
-  let UserReference = models.UserReference
-  let User = models.User
+  const { UserReference } = models
+  const { User } = models
 
   UserOperations.updatePaymentDetails = jest
     .fn()
@@ -25,7 +25,7 @@ afterAll(() => {
 })
 
 describe('payment details', () => {
-  let request = require('supertest')
+  const request = require('supertest')
 
   describe("retrieving a user's card details ", () => {
     it("return the user's card details if available", async () => {
@@ -40,7 +40,7 @@ describe('payment details', () => {
   describe("when able to update the user's payment details", () => {
     it('returns 202', async () => {
       expect.assertions(1)
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
         .set('Accept', /json/)
         .send({
@@ -58,7 +58,7 @@ describe('payment details', () => {
   describe("when unable to update the user's payment details", () => {
     it('returns 400', async () => {
       expect.assertions(1)
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/user@example.com/paymentdetails')
         .set('Accept', /json/)
         .send({
@@ -77,9 +77,9 @@ describe('payment details', () => {
     it('returns 404', async () => {
       expect.assertions(1)
 
-      let emailAddress = 'ejected_user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'ejected_user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'ejected_user_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
@@ -87,7 +87,7 @@ describe('payment details', () => {
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/ejected_user@example.com/paymentdetails')
         .set('Accept', /json/)
         .send({

@@ -17,6 +17,8 @@ RUN apk add --no-cache \
 
 # Update npm version to use cpm ci
 RUN npm install -g npm@6.4.1
+# get yarn for dependency management
+RUN npm install -g yarn
 
 RUN mkdir /home/unlock
 RUN mkdir /home/unlock/scripts
@@ -30,10 +32,10 @@ USER node
 # dependencies again if they are not changed.
 
 COPY --chown=node scripts/postinstall.sh /home/unlock/scripts/postinstall.sh
-COPY --chown=node package-lock.json /home/unlock/.
+COPY --chown=node yarn.lock /home/unlock/.
 COPY --chown=node package.json /home/unlock/.
 COPY --chown=node .eslintrc.js /home/unlock/.
 COPY --chown=node .prettierrc /home/unlock/.
-RUN SKIP_SERVICES=true npm ci --production
+RUN SKIP_SERVICES=true yarn --production
 
 WORKDIR /home/unlock/

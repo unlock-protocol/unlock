@@ -16,9 +16,8 @@ services:
       - 8545:8545
     expose:
       - 8545
-  db:
+  postgres:
     env_file: ./integration.env
-    image: postgres:12.1
   smart-contracts:
     image: smart-contracts
     depends_on:
@@ -29,21 +28,14 @@ services:
     ports:
       - 3000:3000
   unlock-provider-unlock-app:
+    env_file:
+      - integration.env
+      - integration-unlock-provider.env
     image: unlock-app
     ports:
       - 9000:9000
     expose:
       - 9000
-    environment:
-      CI: '${CI}'
-      UNLOCK_ENV: 'unlock-provider-integration'
-      HTTP_PROVIDER: '${HTTP_PROVIDER}'
-      READ_ONLY_PROVIDER: '${READ_ONLY_PROVIDER}'
-      LOCKSMITH_URI: '${LOCKSMITH_URI}'
-      PAYWALL_URL: '${PAYWALL_URL}'
-      PAYWALL_SCRIPT_URL: '${PAYWALL_SCRIPT_URL}'
-      STRIPE_KEY: '${STRIPE_KEY}'      
-      PORT: 9000
   unlock-protocol-com:
     env_file: ./integration.env
     image: unlock-protocol-com
@@ -69,9 +61,6 @@ services:
     env_file: ./integration.env
     depends_on:
       - ganache-integration
-  rover:
-    image: rover
-    env_file: ./integration.env
   wedlocks:
     image: wedlocks
     env_file: ./integration.env
@@ -88,34 +77,22 @@ services:
       - graph-node
   locksmith:
     image: locksmith
-    env_file: ./integration.env
-    environment:
-      NODE_ENV: 'production' # TODO: verify if this is right?
-      WEB3_PROVIDER_HOST: 'http://0.0.0.0:8545'
-    command: sh -c './scripts/wait-for.sh db:5432 -- npm run db:migrate && npm start'
+    env_file:
+      - ./integration.env
+      - ./integration-locksmith.env
+    command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn start'
     ports:
       - 8080:8080
     depends_on:
-      - db
+      - postgres
       - ganache
   graph-node:
-    image: graphprotocol/graph-node:v0.17.0
-    ports:
-      - '8000:8000'
-      - '8001:8001'
-      - '8020:8020'
+    env_file:
+      - ./integration.env
+      - ./integration-graph-node.env
     depends_on:
       - ipfs
-      - db
-    environment:
-      postgres_host: db:5432
-      postgres_user: '${DB_USERNAME}'
-      postgres_pass: '${DB_PASSWORD}'
-      postgres_db: '${DB_NAME}'
-      ipfs: 'ipfs:5001'
-      ethereum: 'mainnet:http://ganache-integration:8545'
-      RUST_LOG: info
-    depends_on:
+      - postgres
       - ganache-integration
   ipfs:
     image: ipfs/go-ipfs:v0.4.22
@@ -128,5 +105,6 @@ services:
     command: ['node', './deploy-subgraph.js']
     depends_on:
       - ipfs
-      - db
+      - postgres
       - graph-node
+      - ganache-integration

@@ -4,12 +4,14 @@ import { WalletServiceType } from '../../data-iframe/blockchainHandler/blockChai
 
 let mockWalletService: WalletServiceType
 
+function getMockWalletService() {
+  mockWalletService = getWalletService({})
+  mockWalletService.provider = 'unlock'
+  return mockWalletService
+}
+
 jest.mock('@unlock-protocol/unlock-js', () => ({
-  WalletService: function() {
-    mockWalletService = getWalletService({})
-    mockWalletService.provider = 'unlock'
-    return mockWalletService
-  },
+  WalletService: getMockWalletService,
 }))
 
 describe('walletWrapper', () => {

@@ -4,7 +4,10 @@ const unlockContract = artifacts.require('Unlock.sol')
 const testKeySoldHookContract = artifacts.require('TestKeySoldHook.sol')
 const getProxy = require('../helpers/proxy')
 
-let lock, locks, unlock, testKeySoldHook
+let lock
+let locks
+let unlock
+let testKeySoldHook
 
 contract('Lock / onKeyCancelHook', accounts => {
   const from = accounts[1]
@@ -14,7 +17,7 @@ contract('Lock / onKeyCancelHook', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     testKeySoldHook = await testKeySoldHookContract.new()
     await lock.updateBeneficiary(testKeySoldHook.address)
     keyPrice = await lock.keyPrice()

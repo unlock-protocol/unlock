@@ -41,10 +41,11 @@ const lockWithLongName = {
   expirationDuration: 2592000,
 }
 
-const soldOutLock = Object.assign(
-  { maxNumberOfKeys: 1, outstandingKeys: 1 },
-  lock
-)
+const soldOutLock = {
+  maxNumberOfKeys: 1,
+  outstandingKeys: 1,
+  ...lock,
+}
 
 const ConfigProvider = ConfigContext.Provider
 const WindowProvider = WindowContext.Provider
@@ -441,10 +442,11 @@ storiesOf('Lock', module)
     )
   })
   .add('with an unlinited number of keys', () => {
-    const lockWithInfiniteNumberOfKeys = Object.assign(
-      { maxNumberOfKeys: UNLIMITED_KEYS_COUNT, outstandingKeys: 4 },
-      lock
-    )
+    const lockWithInfiniteNumberOfKeys = {
+      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      outstandingKeys: 4,
+      ...lock,
+    }
     return (
       <Lock
         account={accountWithBalance}

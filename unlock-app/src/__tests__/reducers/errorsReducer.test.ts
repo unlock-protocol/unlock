@@ -7,7 +7,7 @@ import { SET_ACCOUNT } from '../../actions/accounts'
 
 describe('errors reducer', () => {
   const action = setError(Error.Storage.Warning('Bees in the datacenter.'))
-  const error = action.error
+  const { error } = action
   const action2 = setError(Error.Storage.Fatal('BEES IN THE DATACENTER!!!'))
   const error2 = action2.error
 

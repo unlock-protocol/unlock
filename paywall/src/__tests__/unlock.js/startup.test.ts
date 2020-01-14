@@ -80,7 +80,7 @@ describe('unlock.js startup', () => {
       debug: 0,
       paywallUrl: 'http://paywall',
       accountsUrl: 'http://app/account',
-      erc20ContractAddress: '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
+      erc20ContractAddress: '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
     }
     const dataOrigin = 'http://paywall'
     const checkoutOrigin = 'http://paywall'
@@ -126,9 +126,9 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.data.iframe.src).toBe(
-        dataOrigin +
-          '/static/data-iframe.1.0.html?origin=' +
-          encodeURIComponent(fakeWindow.origin)
+        `${dataOrigin}/static/data-iframe.1.0.html?origin=${encodeURIComponent(
+          fakeWindow.origin
+        )}`
       )
     })
 
@@ -139,7 +139,7 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.checkout.iframe.src).toBe(
-        dataOrigin + '/checkout?origin=' + encodeURIComponent(fakeWindow.origin)
+        `${dataOrigin}/checkout?origin=${encodeURIComponent(fakeWindow.origin)}`
       )
     })
 
@@ -150,9 +150,9 @@ describe('unlock.js startup', () => {
       const iframes = startup(fakeWindow, constants)
 
       expect(iframes.accounts.iframe.src).toBe(
-        accountsOrigin +
-          '/account?origin=' +
-          encodeURIComponent(fakeWindow.origin)
+        `${accountsOrigin}/account?origin=${encodeURIComponent(
+          fakeWindow.origin
+        )}`
       )
     })
 

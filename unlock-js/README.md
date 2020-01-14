@@ -17,7 +17,7 @@ walletService provides a mechanism to send transactions and sign messages for a 
 ## HOW TO
 
 The code is written using es6 and exported after it's been transpiled to older versions of JS using babel.
-You can run test using `npm run test` and you need to run `npm run build` in order to generate the new transpiled code.
+You can run test using `yarn test` and you need to run `yarn build` in order to generate the new transpiled code.
 
 ## TODO
 
@@ -30,7 +30,7 @@ When a new smart contract version is released, there are a few steps needed to e
 
 1. update the `scripts/compressAbi.js` script to import and auto-generate
    the new version in `src/abi.js`, `src/bytecode.js` and in `src/__tests__/helpers/bytecode.js`
-2. re-run `npm run build` to generate the new contract abi and bytecode
+2. re-run `yarn build` to generate the new contract abi and bytecode
 3. copy the newest directory of smart contract functions and rename it.
    For example, `src/v02` to `src/v03`
 4. update the `index.js` in the new `src/v03` (or whatever version it is) directory to use

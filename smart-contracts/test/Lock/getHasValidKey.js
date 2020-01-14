@@ -5,7 +5,8 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('../Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
-let unlock, locks
+let unlock
+let locks
 
 contract('Lock / getHasValidKey', accounts => {
   const account = accounts[1]
@@ -14,7 +15,7 @@ contract('Lock / getHasValidKey', accounts => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
-    lock = locks['FIRST']
+    lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 

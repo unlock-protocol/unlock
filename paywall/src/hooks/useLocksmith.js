@@ -12,9 +12,9 @@ export default function useLocksmith(api, defaultValue, active = true) {
   const [result, setResult] = useState(defaultValue)
   const [reSend, reSendQuery] = useReducer(state => state + 1, 0)
 
-  const fetch = window.fetch
+  const { fetch } = window
   // remove double / if there are any
-  const url = locksmithUri + ('/' + api).replace(/\/+/g, '/')
+  const url = locksmithUri + `/${api}`.replace(/\/+/g, '/')
 
   useEffect(() => {
     if (!active) return

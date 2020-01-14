@@ -1,6 +1,16 @@
 /* eslint no-console:0 */
 const { WalletService } = require('../lib/index')
 
+// Make sure you add this file!
+// Locally:
+// const winston = 'http://0.0.0.0:8545'
+// rinkeby:
+// const rinkeby = new HDWalletProvider(
+//   'seed phrase',
+//   'https://....',
+//   1
+// )
+// eslint-disable-next-line import/no-unresolved
 const provider = require('../provider.js')
 
 // Setup provider
@@ -12,9 +22,9 @@ const provider = require('../provider.js')
  * Unlock Contract:
  * mainnet: 0x3d5409cce1d45233de1d4ebdee74b8e004abdd13
  * rinkeby: 0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b
- * winston: 0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93
+ * winston: 0x559247Ec8A8771E8C97cDd39b96b9255651E39C5
  */
-const unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
+const unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
 
 async function run() {
   const walletService = new WalletService({

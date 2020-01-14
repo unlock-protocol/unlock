@@ -3,8 +3,8 @@ import UserOperations = require('../../../src/operations/userOperations')
 import models = require('../../../src/models')
 
 beforeAll(() => {
-  let UserReference = models.UserReference
-  let User = models.User
+  const { UserReference } = models
+  const { User } = models
 
   return Promise.all([
     User.truncate({ cascade: true }),
@@ -18,16 +18,16 @@ describe("retrieving a user's recovery phrase", () => {
   describe('when the user exists', () => {
     it("returns the user's recovery phrase", async () => {
       expect.assertions(1)
-      let emailAddress = 'recovery_phrase_user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'recovery_phrase_user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'recovery_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
       await UserOperations.createUser(userCreationDetails)
 
-      let response = await request(app).get(
+      const response = await request(app).get(
         '/users/ecovery_phrase_user@example.com/recoveryphrase'
       )
       expect(response.body.recoveryPhrase.length).toBeGreaterThan(0)
@@ -37,7 +37,7 @@ describe("retrieving a user's recovery phrase", () => {
   describe('when the user does not exist', () => {
     it('returns details from the decoy user', async () => {
       expect.assertions(3)
-      let response = await request(app).get(
+      const response = await request(app).get(
         '/users/non-existing@example.com/recoveryphrase'
       )
 
@@ -53,9 +53,9 @@ describe("retrieving a user's recovery phrase", () => {
     it('returns a 404', async () => {
       expect.assertions(1)
 
-      let emailAddress = 'ejected_user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'ejected_user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'ejected_user_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
@@ -63,7 +63,7 @@ describe("retrieving a user's recovery phrase", () => {
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      let response = await request(app).get(
+      const response = await request(app).get(
         `/users/${emailAddress}/recoveryphrase`
       )
 

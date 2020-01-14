@@ -16,7 +16,7 @@ const MINIMUM_THRESHOLD = 0.001
  * @returns {string}
  */
 export function formatCurrency(amount) {
-  let currency = Number(amount)
+  const currency = Number(amount)
   if (currency === 0) return '0'
   if (currency < MINIMUM_THRESHOLD) return '< 0.001'
   if (currency < 1) return parseFloat(currency.toPrecision(2)).toString() // 0.12
@@ -25,10 +25,10 @@ export function formatCurrency(amount) {
   if (currency < 1000) return parseFloat(currency.toPrecision(3)).toString() // 123
   if (currency < 1e4) return Math.round(currency).toLocaleString()
   if (currency < 1e6)
-    return (+(currency / 1e3).toFixed(1)).toLocaleString() + 'k'
+    return `${(+(currency / 1e3).toFixed(1)).toLocaleString()}k`
   if (currency < 1e9)
-    return (+(currency / 1e6).toFixed(1)).toLocaleString() + 'm'
-  return (+(currency / 1e9).toFixed(1)).toLocaleString() + 'b'
+    return `${(+(currency / 1e6).toFixed(1)).toLocaleString()}m`
+  return `${(+(currency / 1e9).toFixed(1)).toLocaleString()}b`
 }
 
 export default {

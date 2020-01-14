@@ -129,7 +129,7 @@ describe('config', () => {
   })
 
   describe('staging', () => {
-    let config = configure(
+    const config = configure(
       {
         web3: {
           currentProvider: {
@@ -171,7 +171,7 @@ describe('config', () => {
   })
 
   describe('production', () => {
-    let config = configure(global, {
+    const config = configure(global, {
       unlockEnv: 'prod',
       httpProvider: '127.0.0.1',
     })

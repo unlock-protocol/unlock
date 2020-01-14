@@ -7,7 +7,7 @@ import UnlockPropTypes from '../../../../propTypes'
 
 const Jobs = ({ config, ...props }) => (
   <LayoutButton
-    href={config.unlockStaticUrl + '/jobs'}
+    href={`${config.unlockStaticUrl}/jobs`}
     label="Join us"
     {...props}
   >

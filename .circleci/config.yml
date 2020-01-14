@@ -10,8 +10,7 @@ jobs:
           command: scripts/automated-production-pr.sh
 
   unlock-protocol-com-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -26,8 +25,7 @@ jobs:
           command: scripts/tests.sh unlock-protocol-com
 
   unlock-app-tests:
-    machine:
-      docker_layer_caching: true      
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -42,8 +40,7 @@ jobs:
           command: scripts/tests.sh unlock-app
 
   unlock-js-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -61,25 +58,8 @@ jobs:
           command: ./scripts/docker-compose-log.sh
           when: on_fail
 
-  rover-tests:
-    machine:
-      docker_layer_caching: true      
-    environment:
-      DOCKER_REPOSITORY: unlockprotocol
-    steps:
-      - checkout
-      - run:
-          command: scripts/monorepo.sh rover $CIRCLE_BRANCH
-      - run:
-          name: Build rover Image
-          command: scripts/build-image.sh rover
-      - run:
-          name: rover tests
-          command: scripts/tests.sh rover
-
   smart-contracts-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -94,8 +74,7 @@ jobs:
           command: scripts/tests.sh smart-contracts
 
   locksmith-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
       DB_USERNAME: locksmith_test
@@ -114,8 +93,7 @@ jobs:
           command: scripts/tests.sh locksmith
 
   paywall-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -130,8 +108,7 @@ jobs:
           command: scripts/tests.sh paywall
 
   tickets-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -146,8 +123,7 @@ jobs:
           command: scripts/tests.sh tickets
 
   newsletter-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -162,8 +138,7 @@ jobs:
           command: scripts/tests.sh newsletter
 
   wedlocks-tests:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -347,8 +322,7 @@ jobs:
           command: locksmith/scripts/deploy-elasticbeanstalk-docker.sh "$APPLICATION" "$LOCKSMITH_STAGING_ENVIRONMENT" "$LOCKSMITH_STAGING_DB_USERNAME" "$LOCKSMITH_STAGING_DB_PASSWORD" "$LOCKSMITH_STAGING_DB_NAME" "$LOCKSMITH_STAGING_DB_HOSTNAME" "$NODE_ENV" "$IS_FORKED_PR" "$CIRCLE_SHA1" "$GIT_COMMIT_DESC" "$LOCKSMITH_STAGING_STRIPE_SECRET" "$LOCKSMITH_STAGING_PURCHASER_CREDENTIALS" "$LOCKSMITH_STAGING_WEB3_PROVIDER_HOST" "$LOCKSMITH_STAGING_UNLOCK_CONTRACT_ADDRESS" "$LOCKSMITH_STAGING_GRAPHQL_BASE_URL" "$LOCKSMITH_STAGING_METADATA_HOST"
 
   promote-unlock-images:
-    machine:
-      docker_layer_caching: true
+    machine: true
     environment:
       DOCKER_REPOSITORY: unlockprotocol
     steps:
@@ -384,7 +358,6 @@ workflows:
       - wedlocks-tests
       - unlock-app-tests
       - unlock-js-tests
-      - rover-tests
       - integration-tests:
           requires:
             - smart-contracts-tests

@@ -30,7 +30,7 @@ export default function configure(
 
   const env = runtimeConfig.unlockEnv
 
-  let providers = {}
+  const providers = {}
   let isRequiredNetwork = () => false
   let requiredNetwork = 'Dev'
   let requiredNetworkId = 1984
@@ -38,35 +38,36 @@ export default function configure(
   // Unlock address by default
   // Smart contract deployments yield the same address on a "clean" node as long as long as the
   // migration script runs in the same order.
-  let unlockAddress = '0x885EF47c3439ADE0CB9b33a4D3c534C99964Db93'
-  let ERC20Contract = {
+  let unlockAddress = '0x559247Ec8A8771E8C97cDd39b96b9255651E39C5'
+  const ERC20Contract = {
     name: runtimeConfig.erc20ContractSymbol || 'DEV',
     address:
       runtimeConfig.erc20ContractAddress ||
-      '0x89aB03954911bdf3Cd93D22987f96C3527eE4b25',
+      '0xFcD4FD1B4F3d5ceDdc19004579A5d7039295DBB9',
   }
-  let services = {}
+  const services = {}
   let supportedProviders = []
-  let base64WedlocksPublicKey = runtimeConfig.base64WedlocksPublicKey
+  const { base64WedlocksPublicKey } = runtimeConfig
   let paywallUrl = runtimeConfig.paywallUrl || 'http://localhost:3001'
   let paywallScriptUrl =
     runtimeConfig.paywallScriptUrl ||
     'http://localhost:3001/static/paywall.min.js'
-  let unlockStaticUrl = runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
-  let httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
+  const unlockStaticUrl =
+    runtimeConfig.unlockStaticUrl || 'http://localhost:3002'
+  const httpProvider = runtimeConfig.httpProvider || '127.0.0.1'
   let blockTime = 8000 // in mseconds.
-  let chainExplorerUrlBuilders = {
+  const chainExplorerUrlBuilders = {
     etherScan: () => '',
   }
   // Publishable key from Stripe dashboard, make sure to use the test key when
   // developing.
-  let stripeApiKey =
+  const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
-  let subgraphURI =
+  const subgraphURI =
     runtimeConfig.subgraphURI ||
     'http://localhost:8000/subgraphs/name/unlock-protocol/unlock'
 
-  services['currencyPriceLookup'] =
+  services.currencyPriceLookup =
     'https://api.coinbase.com/v2/prices/ETH-USD/buy'
   const readOnlyProviderUrl =
     runtimeConfig.readOnlyProvider || `http://${httpProvider}:8545`
@@ -79,13 +80,13 @@ export default function configure(
 
   if (env === 'test') {
     // In test, we fake the HTTP provider
-    providers['HTTP'] = `http://${httpProvider}:8545`
+    providers.HTTP = `http://${httpProvider}:8545`
     blockTime = 10 // in mseconds.
     supportedProviders = ['HTTP']
-    services['storage'] = {
+    services.storage = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
-    services['wedlocks'] = {
+    services.wedlocks = {
       host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
     }
     isRequiredNetwork = networkId => networkId === 1984
@@ -95,10 +96,10 @@ export default function configure(
   // when no provider has been injected so we can test unlock accounts.
   if (env === 'unlock-provider-integration') {
     blockTime = 10 // in mseconds.
-    services['storage'] = {
+    services.storage = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
-    services['wedlocks'] = {
+    services.wedlocks = {
       host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
     }
     isRequiredNetwork = networkId => networkId === 1984
@@ -107,10 +108,10 @@ export default function configure(
   if (env === 'dev') {
     // In dev, we assume there is a running local ethereum node with unlocked accounts
     // listening to the HTTP endpoint. We can add more providers (Websockets...) if needed.
-    services['storage'] = {
+    services.storage = {
       host: runtimeConfig.locksmithHost || 'http://127.0.0.1:8080',
     }
-    services['wedlocks'] = {
+    services.wedlocks = {
       host: runtimeConfig.wedlocksUri || 'http://127.0.0.1:1337',
     }
 
@@ -132,8 +133,8 @@ export default function configure(
     requiredNetworkId = 4
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
-    services['storage'] = { host: runtimeConfig.locksmithHost }
-    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    services.storage = { host: runtimeConfig.locksmithHost }
+    services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
@@ -152,8 +153,8 @@ export default function configure(
     requiredNetworkId = 42
     paywallUrl = 'https://'
     supportedProviders = ['Metamask', 'Opera']
-    services['storage'] = { host: runtimeConfig.locksmithHost }
-    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    services.storage = { host: runtimeConfig.locksmithHost }
+    services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
@@ -172,8 +173,8 @@ export default function configure(
     requiredNetworkId = 1
 
     supportedProviders = ['Metamask', 'Opera']
-    services['storage'] = { host: runtimeConfig.locksmithHost }
-    services['wedlocks'] = { host: runtimeConfig.wedlocksUri }
+    services.storage = { host: runtimeConfig.locksmithHost }
+    services.wedlocks = { host: runtimeConfig.wedlocksUri }
     paywallUrl = runtimeConfig.paywallUrl
     paywallScriptUrl = runtimeConfig.paywallScriptUrl
 
@@ -193,7 +194,7 @@ export default function configure(
     readOnlyProvider = readOnlyProviderUrl
   }
 
-  providers['Unlock'] = new UnlockProvider({ readOnlyProvider })
+  providers.Unlock = new UnlockProvider({ readOnlyProvider })
 
   return {
     base64WedlocksPublicKey,

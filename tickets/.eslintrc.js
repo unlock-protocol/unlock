@@ -1,9 +1,31 @@
+const rulesToIgnore = [
+  'prefer-const',
+  'consistent-return',
+  'no-param-reassign',
+  'no-use-before-define',
+  'radix',
+  'no-restricted-globals',
+  'eqeqeq',
+  'no-underscore-dangle',
+  'class-methods-use-this',
+  'no-throw-literal',
+  'no-nested-ternary',
+  'no-shadow',
+  'no-dupe-keys',
+  'no-return-assign',
+  'prefer-destructuring',
+  'no-plusplus',
+  'array-callback-return',
+  'react/prop-types',
+  'no-unused-expressions',
+  'no-useless-constructor',
+  'max-classes-per-file',
+  'prefer-promise-reject-errors',
+]
+
 module.exports = {
   extends: [
     '../.eslintrc.js',
-    'plugin:react/recommended',
-    'prettier/react',
-    'plugin:prettier/recommended',
   ],
   plugins: ['react-hooks'],
   settings: {
@@ -14,14 +36,6 @@ module.exports = {
   rules: {
     'react/prefer-stateless-function': [2],
     'react/forbid-prop-types': 2,
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-      },
-    ],
     'jsx-a11y/anchor-is-valid': [
       'error',
       {
@@ -31,5 +45,8 @@ module.exports = {
       },
     ],
     'react/jsx-filename-extension': [0, { extensions: ['.js', '.jsx'] }],
+    ...rulesToIgnore.reduce((obj, rule) => {
+      return { ...obj, [rule]: 'off' }
+    }, {}),
   },
 }

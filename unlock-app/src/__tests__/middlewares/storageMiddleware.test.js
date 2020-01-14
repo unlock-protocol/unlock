@@ -64,7 +64,7 @@ jest.mock('../../services/storageService', () => {
   const actual = require.requireActual('../../services/storageService')
   return {
     ...actual,
-    StorageService: function() {
+    StorageService() {
       return mockStorageService
     },
   }
@@ -641,9 +641,9 @@ describe('Storage middleware', () => {
   })
 
   describe('when starting on the recovery page', () => {
-    let email = 'julien@unlock-protocol.com'
-    let recoveryKey = {}
-    let recoveryPhrase = 'recoveryPhrase'
+    const email = 'julien@unlock-protocol.com'
+    const recoveryKey = {}
+    const recoveryPhrase = 'recoveryPhrase'
 
     beforeEach(() => {
       state.router = {

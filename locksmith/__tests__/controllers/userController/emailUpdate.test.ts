@@ -24,13 +24,13 @@ function generateTypedData(message: any) {
       version: '1',
     },
     primaryType: 'User',
-    message: message,
+    message,
   }
 }
 
 beforeAll(() => {
-  let User = models.User
-  let UserReference = models.UserReference
+  const { User } = models
+  const { UserReference } = models
 
   return Promise.all([
     UserReference.truncate({ cascade: true }),
@@ -39,15 +39,15 @@ beforeAll(() => {
 })
 
 describe("updating a user's email address", () => {
-  let UserReference = models.UserReference
+  const { UserReference } = models
   const request = require('supertest')
   const sigUtil = require('eth-sig-util')
   const ethJsUtil = require('ethereumjs-util')
-  let privateKey = ethJsUtil.toBuffer(
+  const privateKey = ethJsUtil.toBuffer(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
 
-  let message = {
+  const message = {
     user: {
       emailAddress: 'new-email-address@example.com',
       publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
@@ -55,7 +55,7 @@ describe("updating a user's email address", () => {
     },
   }
 
-  let typedData = generateTypedData(message)
+  const typedData = generateTypedData(message)
 
   const sig = sigUtil.signTypedData(privateKey, {
     data: typedData,
@@ -64,15 +64,15 @@ describe("updating a user's email address", () => {
   describe('when able to update the email address', () => {
     it('updates the email address of the user', async () => {
       expect.assertions(2)
-      let emailAddress = 'user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'an_email_update_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
       await UserOperations.createUser(userCreationDetails)
 
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/user@example.com')
         .set('Accept', /json/)
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -90,7 +90,7 @@ describe("updating a user's email address", () => {
   describe('when unable to update the email address', () => {
     it('returns 400', async () => {
       expect.assertions(1)
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/non-existing@example.com')
         .set('Accept', /json/)
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -103,9 +103,9 @@ describe("updating a user's email address", () => {
     it('returns 404', async () => {
       expect.assertions(1)
 
-      let emailAddress = 'ejected_user@example.com'
-      let userCreationDetails = {
-        emailAddress: emailAddress,
+      const emailAddress = 'ejected_user@example.com'
+      const userCreationDetails = {
+        emailAddress,
         publicKey: 'ejected_user_phrase_public_key',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
@@ -113,7 +113,7 @@ describe("updating a user's email address", () => {
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      let response = await request(app)
+      const response = await request(app)
         .put('/users/ejected_user@example.com')
         .set('Accept', /json/)
         .set('Authorization', `Bearer ${Base64.encode(sig)}`)
