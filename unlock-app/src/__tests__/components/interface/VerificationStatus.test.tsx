@@ -28,6 +28,7 @@ const ownedKey: OwnedKey = {
     expirationDuration: '123456',
     tokenAddress: 'a token address',
     price: '5',
+    owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
   },
   tokenURI: '',
   expiration: '12345678',
