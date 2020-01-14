@@ -17,7 +17,7 @@ contract MixinApproval is
 {
   // Keeping track of approved transfers
   // This is a mapping of addresses which have approved
-  // the transfer of a key to another address where their key can be transfered
+  // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
   // be a single approved beneficiary
   // Note 2: for transfer, both addresses will be different

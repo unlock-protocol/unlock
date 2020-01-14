@@ -1,18 +1,17 @@
 const Zos = require('@openzeppelin/cli')
 
-module.exports = function getNetworkFile(web3) {
-  return web3.eth.net.getId().then(_Id => {
-    let network
-    switch (_Id) {
-      case '1':
-        network = 'mainnet'
-        break
-      case '4':
-        network = 'rinkeby'
-        break
-      default:
-        network = `dev-${_Id}`
-    }
-    return new Zos.files.NetworkFile(new Zos.files.ProjectFile(), network)
-  })
+module.exports = async function getNetworkFile(web3) {
+  const _id = await web3.eth.net.getId()
+  let network
+  switch (_id) {
+    case '1':
+      network = 'mainnet'
+      break
+    case '4':
+      network = 'rinkeby'
+      break
+    default:
+      network = `dev-${_id}`
+  }
+  return new Zos.files.NetworkFile(new Zos.files.ProjectFile(), network)
 }

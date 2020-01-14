@@ -49,7 +49,7 @@ contract MixinPurchase is
     Key storage toKey = keyByOwner[_recipient];
 
     if (toKey.tokenId == 0) {
-      // Assign a new tokenId (if a new owner or previously transfered)
+      // Assign a new tokenId (if a new owner or previously transferred)
       _assignNewTokenId(toKey);
       _recordOwner(_recipient, toKey.tokenId);
     }

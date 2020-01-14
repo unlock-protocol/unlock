@@ -2,7 +2,7 @@ const { scripts, ConfigManager } = require('@openzeppelin/cli')
 
 const { add, create, push } = scripts
 
-module.exports = async function(deployer, networkName, accounts) {
+module.exports = async (deployer, networkName, accounts) => {
   const proxyAdmin = accounts[9]
 
   const { network, txParams } = await ConfigManager.initNetworkConfiguration({

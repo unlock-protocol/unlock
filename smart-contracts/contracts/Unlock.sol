@@ -12,7 +12,7 @@ pragma solidity 0.5.14;
  *  b. The total network product (sum of all key sales, net of discounts)
  *  c. Total of discounts granted
  *  d. Balances of discount tokens, including 'frozen' tokens (which have been used to claim
- * discounts and cannot be used/transfered for a given period)
+ * discounts and cannot be used/transferred for a given period)
  *  e. Growth rate of Network Product
  *  f. Growth rate of Discount tokens supply
  * The smart contract has an owner who only can perform the following
@@ -127,9 +127,7 @@ contract Unlock is
 
     // Assign the new Lock
     locks[newLock] = LockBalances({
-      deployed: true,
-      totalSales: 0,
-      yieldedDiscountTokens: 0
+      deployed: true, totalSales: 0, yieldedDiscountTokens: 0
     });
 
     // trigger event

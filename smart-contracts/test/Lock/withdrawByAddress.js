@@ -21,12 +21,10 @@ contract('Lock / withdrawByAddress', accounts => {
 
     // Put some ERC-20 tokens into the contract
     token = await TestErc20Token.new({ from: owner })
-    // TODO: mint or transfer to a contract throws an error in Truffle
-    // however the tx does mine.  Not sure what's causing this yet..
-    // await token.mint(lock.address, 42000)
+    await token.mint(lock.address, 42000)
   })
 
-  describe.skip('when the owner withdraws funds for a specific token', () => {
+  describe('when the owner withdraws funds for a specific token', () => {
     let ownerBalance
     let contractBalance
 

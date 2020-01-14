@@ -30,8 +30,8 @@ contract('Lock / erc721 / transferFrom', accounts => {
   let keyExpiration
   let ID
 
-  before(() => {
-    return Promise.all([
+  before(async () => {
+    await Promise.all([
       locks.FIRST.purchase(0, accountWithKey, web3.utils.padLeft(0, 40), [], {
         value: Units.convert('0.01', 'eth', 'wei'),
         from: accountWithKey,
@@ -60,11 +60,10 @@ contract('Lock / erc721 / transferFrom', accounts => {
           from: accountWithKeyApproved,
         }
       ),
-    ]).then(async () => {
-      keyExpiration = new BigNumber(
-        await locks.FIRST.keyExpirationTimestampFor.call(from)
-      )
-    })
+    ])
+    keyExpiration = new BigNumber(
+      await locks.FIRST.keyExpirationTimestampFor.call(from)
+    )
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized
@@ -132,7 +131,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
     })
 
     describe('when the recipient already has a non expired key', () => {
-      let transferedKeyTimestamp
+      let transferredKeyTimestamp
       let previousExpirationTimestamp
 
       before(async () => {
@@ -142,7 +141,7 @@ contract('Lock / erc721 / transferFrom', accounts => {
         })
         ID = await locks.FIRST.getTokenIdFor.call(from)
         // First let's get the current expiration
-        transferedKeyTimestamp = new BigNumber(
+        transferredKeyTimestamp = new BigNumber(
           await locks.FIRST.keyExpirationTimestampFor.call(from)
         )
         previousExpirationTimestamp = new BigNumber(
@@ -162,14 +161,14 @@ contract('Lock / erc721 / transferFrom', accounts => {
         assert(
           expirationTimestamp.gt(
             previousExpirationTimestamp
-              .plus(transferedKeyTimestamp)
+              .plus(transferredKeyTimestamp)
               .minus(now + 10)
           )
         )
         assert(
           expirationTimestamp.lt(
             previousExpirationTimestamp
-              .plus(transferedKeyTimestamp)
+              .plus(transferredKeyTimestamp)
               .minus(now - 10)
           )
         )

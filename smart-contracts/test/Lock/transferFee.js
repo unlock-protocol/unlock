@@ -81,7 +81,7 @@ contract('Lock / transferFee', accounts => {
       assert.equal(fee3, 129600)
     })
 
-    describe('when the key is transfered', () => {
+    describe('when the key is transferred', () => {
       const newOwner = accounts[2]
       let tokenId
       let expirationBefore

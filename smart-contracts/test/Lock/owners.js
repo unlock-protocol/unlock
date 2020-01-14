@@ -51,15 +51,15 @@ contract('Lock / owners', accounts => {
     assert.equal(numberOfOwners.toFixed(), 4)
   })
 
-  it('should allow for access to an individual key owner', () => {
-    return Promise.all([
+  it('should allow for access to an individual key owner', async () => {
+    const owners = await Promise.all([
       lock.owners.call(0),
       lock.owners.call(1),
       lock.owners.call(2),
       lock.owners.call(3),
-    ]).then(owners => {
-      assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
-    })
+    ])
+
+    assert.deepEqual(owners.sort(), accounts.slice(1, 5).sort())
   })
 
   it('should fail to access to an individual key owner when out of bounds', async () => {

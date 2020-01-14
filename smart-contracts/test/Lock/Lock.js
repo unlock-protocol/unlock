@@ -15,9 +15,18 @@ contract('Lock / Lock', accounts => {
     locks = await deployLocks(unlock, accounts[0])
   })
 
-  it('should have created locks with the correct value', () => {
+  it('should have created locks with the correct value', async () => {
     const lock = locks.FIRST
-    return Promise.all([
+    let [
+      owner,
+      expirationDuration,
+      keyPrice,
+      maxNumberOfKeys,
+      totalSupply,
+      numberOfOwners,
+      publicLockVersion,
+      isAlive,
+    ] = await Promise.all([
       lock.owner.call(),
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
@@ -26,32 +35,20 @@ contract('Lock / Lock', accounts => {
       lock.numberOfOwners.call(),
       lock.publicLockVersion.call(),
       lock.isAlive.call(),
-    ]).then(
-      ([
-        owner,
-        expirationDuration,
-        keyPrice,
-        maxNumberOfKeys,
-        totalSupply,
-        numberOfOwners,
-        publicLockVersion,
-        isAlive,
-      ]) => {
-        expirationDuration = new BigNumber(expirationDuration)
-        keyPrice = new BigNumber(keyPrice)
-        maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
-        totalSupply = new BigNumber(totalSupply)
-        numberOfOwners = new BigNumber(numberOfOwners)
-        publicLockVersion = new BigNumber(publicLockVersion)
-        assert.strictEqual(owner, accounts[0])
-        assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
-        assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
-        assert.equal(maxNumberOfKeys.toFixed(), 10)
-        assert.equal(totalSupply.toFixed(), 0)
-        assert.equal(numberOfOwners.toFixed(), 0)
-        assert.equal(publicLockVersion.toFixed(), LatestLockVersion)
-        assert.equal(isAlive, true)
-      }
-    )
+    ])
+    expirationDuration = new BigNumber(expirationDuration)
+    keyPrice = new BigNumber(keyPrice)
+    maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
+    totalSupply = new BigNumber(totalSupply)
+    numberOfOwners = new BigNumber(numberOfOwners)
+    publicLockVersion = new BigNumber(publicLockVersion)
+    assert.strictEqual(owner, accounts[0])
+    assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
+    assert.strictEqual(Units.convert(keyPrice, 'wei', 'eth'), '0.01')
+    assert.equal(maxNumberOfKeys.toFixed(), 10)
+    assert.equal(totalSupply.toFixed(), 0)
+    assert.equal(numberOfOwners.toFixed(), 0)
+    assert.equal(publicLockVersion.toFixed(), LatestLockVersion)
+    assert.equal(isAlive, true)
   })
 })
