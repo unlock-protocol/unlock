@@ -3,11 +3,12 @@ pragma solidity ^0.5.0;
 // This contract mostly follows the pattern established by openzeppelin in
 // openzeppelin/contracts-ethereum-package/contracts/access/roles
 
+import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import '@openzeppelin/upgrades/contracts/Initializable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/access/Roles.sol';
 
 
-contract MixinLockManagerRole {
+contract MixinLockManagerRole is Ownable {
   using Roles for Roles.Role;
 
   event LockManagerAdded(address indexed account);
@@ -17,7 +18,7 @@ contract MixinLockManagerRole {
 
   function _initializeMixinLockManagerRole(address sender) internal {
     if (!isLockManager(sender)) {
-      addLockManager(sender);
+      lockManagers.add(sender);
     }
   }
 
@@ -30,7 +31,7 @@ contract MixinLockManagerRole {
     return lockManagers.has(account);
   }
 
-  function addLockManager(address account) public onlyLockManager {
+  function addLockManager(address account) public onlyOwner {
     lockManagers.add(account);
     emit LockManagerAdded(account);
   }

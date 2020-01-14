@@ -36,7 +36,8 @@ contract('Lock / updateKeyPricing', accounts => {
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
     transaction = await lock.updateKeyPricing(
       Units.convert('0.3', 'eth', 'wei'),
-      token.address
+      token.address,
+      { from: lockOwner }
     )
   })
 
@@ -83,11 +84,32 @@ contract('Lock / updateKeyPricing', accounts => {
       const keyPriceAfter = new BigNumber(await lock.keyPrice.call())
       assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
     })
+
+    it('should fail to let anyone but the owner add a lockManager', async () => {
+      // first we try an account whioch is not a lockManager
+      assert.equal(await lock.isLockManager(accounts[8]), false)
+      await truffleAssert.fails(
+        lock.addLockManager(accounts[7], {
+          from: accounts[8],
+        }),
+        truffleAssert.ErrorType.REVERT
+      )
+      // next we also try with a lockManager
+      await lock.addLockManager(accounts[7], { from: lockOwner })
+      assert.equal(await lock.isLockManager(accounts[7]), true)
+      await truffleAssert.fails(
+        lock.addLockManager(accounts[6], {
+          from: accounts[7],
+        }),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
   })
 
   describe('changing the token address', () => {
     it('should allow a LockManager to switch from eth => erc20', async () => {
       assert.equal(tokenAddressBefore, 0)
+      assert.equal(await lock.isLockManager(lockOwner), true)
       await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
         from: lockOwner,
       })
@@ -117,6 +139,11 @@ contract('Lock / updateKeyPricing', accounts => {
         await lock.keyPrice.call(),
         Units.convert('0.42', 'eth', 'wei')
       )
+    })
+
+    it('should allow a lockManager to renounce their role', async () => {
+      await lock.renounceLockManager({ from: accounts[8] })
+      assert.equal(await lock.isLockManager(accounts[8]), false)
     })
 
     it('should revert if trying to switch to an invalid token address', async () => {
