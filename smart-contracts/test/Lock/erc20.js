@@ -69,7 +69,7 @@ contract('Lock / erc20', accounts => {
         )
       })
 
-      it('transfered the tokens to the contract', async () => {
+      it('transferred the tokens to the contract', async () => {
         const balance = new BigNumber(await token.balanceOf(lock.address))
         assert.equal(balance.toFixed(), keyPrice.toFixed())
       })

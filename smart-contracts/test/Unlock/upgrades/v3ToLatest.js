@@ -115,7 +115,7 @@ contract('Unlock / upgrades / v3ToLatest', accounts => {
         assert.equal(tx.events.Transfer.event, 'Transfer')
       })
 
-      it('Keys may still be transfered', async () => {
+      it('Keys may still be transferred', async () => {
         await lockV3.methods.purchaseFor(accounts[7]).send({
           value: keyPrice,
           from: accounts[7],
@@ -144,7 +144,7 @@ contract('Unlock / upgrades / v3ToLatest', accounts => {
         )
       })
 
-      it('lock data should persist state between upgrades', async function() {
+      it('lock data should persist state between upgrades', async () => {
         const resultsAfter = await unlock.methods.locks(lockV3._address).call()
         assert.equal(resultsAfter.deployed, v3LockData.deployed)
         assert.equal(

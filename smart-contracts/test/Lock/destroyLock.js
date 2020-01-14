@@ -61,12 +61,12 @@ contract('Lock / destroyLock', accounts => {
       })
 
       describe('when called by the owner', () => {
-        let initialLockBalance
+        let initialLockEthBalance
         let initialOwnerBalance
         let txObj
         let event
 
-        before(async () => {
+        beforeEach(async () => {
           let value =
             tokenAddress === Web3Utils.padLeft(0, 40)
               ? Units.convert('0.01', 'eth', 'wei')
@@ -84,7 +84,10 @@ contract('Lock / destroyLock', accounts => {
           )
           assert.equal(await lock.getHasValidKey.call(accounts[1]), true) // pre-req
 
-          initialLockBalance = await getTokenBalance(lock.address, tokenAddress)
+          initialLockEthBalance = await getTokenBalance(
+            lock.address,
+            Web3Utils.padLeft(0, 40)
+          )
           initialOwnerBalance = await getTokenBalance(accounts[0], tokenAddress)
           await lock.disableLock() // We can't destroy a lock without first disabling it
           txObj = await lock.destroyLock({ from: accounts[0] })
@@ -114,12 +117,11 @@ contract('Lock / destroyLock', accounts => {
           assert.equal(finalLockBalance.toFixed(), 0)
         })
 
-        // TODO the event is not decoded, making this test hard to implement
-        it.skip('should trigger the Destroy event', () => {
+        it('should trigger the Destroy event', () => {
           assert.equal(event.event, 'Destroy')
           assert.equal(
             new BigNumber(event.args.balance).toFixed(),
-            initialLockBalance.toFixed()
+            initialLockEthBalance.toFixed()
           )
           assert.equal(event.args.owner, accounts[0])
         })

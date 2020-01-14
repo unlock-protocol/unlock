@@ -1,9 +1,7 @@
+/* eslint-disable global-require */
 // See <http://truffleframework.com/docs/advanced/configuration>
 // to customize your Truffle configuration!
 
-// Allows us to use ES6 in our migrations and tests. TODO: does this belong here?
-require('babel-register')
-require('babel-polyfill')
 const HDWalletProvider = require('truffle-hdwallet-provider')
 
 /**
@@ -57,7 +55,7 @@ if (mainnetProviderUrl) {
 // When running CI, we connect to the 'ganache' container
 const testHost = process.env.CI ? 'ganache' : '127.0.0.1'
 
-const mainnetProvider = function() {
+function mainnetProvider() {
   return new HDWalletProvider(
     mainnetMnemonic.seed,
     mainnetProviderUrl,
@@ -65,7 +63,7 @@ const mainnetProvider = function() {
   )
 }
 
-const rinkebyProvider = function() {
+function rinkebyProvider() {
   return new HDWalletProvider(
     rinkebyMnemonic.seed,
     rinkebyProviderUrl,
@@ -73,7 +71,7 @@ const rinkebyProvider = function() {
   )
 }
 
-const ropstenProvider = function() {
+function ropstenProvider() {
   return new HDWalletProvider(
     ropstenMnemonic.seed,
     ropstenProviderUrl,
@@ -81,7 +79,7 @@ const ropstenProvider = function() {
   )
 }
 
-const kovanProvider = function() {
+function kovanProvider() {
   return new HDWalletProvider(
     kovanMnemonic.seed,
     kovanProviderUrl,

@@ -3,6 +3,7 @@ const Web3Utils = require('web3-utils')
 const { TestHelper } = require('@openzeppelin/cli')
 const BigNumber = require('bignumber.js')
 const { ZWeb3, Contracts } = require('@openzeppelin/upgrades')
+const truffleAssert = require('truffle-assertions')
 
 ZWeb3.initialize(web3.currentProvider)
 const UnlockV0 = Contracts.getFromNodeModules('unlock-abi-0', '../../Unlock')
@@ -108,33 +109,27 @@ contract('Unlock / upgrades / v0ToLatest', accounts => {
        * This is due to Unlock.sol calling PublicLock before the version was available.
        * Other functions, such as withdraw, should be fine.
        */
-      it.skip('New keys may still be purchased', async () => {
-        const tx = await lockV0.methods
-          .purchaseFor(accounts[6], Web3Utils.toHex('Julien'))
-          .send({
-            value: keyPrice,
-            from: accounts[6],
-            gas: 4000000,
-          })
-        assert.equal(tx.events.Transfer.event, 'Transfer')
+      it('New keys may still be purchased', async () => {
+        await truffleAssert.fails(
+          lockV0.methods
+            .purchaseFor(accounts[6], Web3Utils.toHex('Julien'))
+            .send({
+              value: keyPrice,
+              from: accounts[6],
+              gas: 4000000,
+            })
+        )
       })
 
-      it.skip('Keys may still be transfered', async () => {
-        await lockV0.methods
-          .purchaseFor(accounts[7], Web3Utils.toHex('Julien'))
-          .send({
-            value: keyPrice,
-            from: accounts[7],
-            gas: 4000000,
-          })
+      it('Keys may still be transferred', async () => {
         const tx = await lockV0.methods
           .transferFrom(
-            accounts[7],
+            keyOwner,
             accounts[8],
-            await lockV0.methods.getTokenIdFor(accounts[7]).call()
+            await lockV0.methods.getTokenIdFor(keyOwner).call()
           )
           .send({
-            from: accounts[7],
+            from: keyOwner,
             gas: 4000000,
           })
         assert.equal(tx.events.Transfer.event, 'Transfer')
@@ -150,7 +145,7 @@ contract('Unlock / upgrades / v0ToLatest', accounts => {
         )
       })
 
-      it('lock data should persist state between upgrades', async function() {
+      it('lock data should persist state between upgrades', async () => {
         const resultsAfter = await unlock.methods.locks(lockV0._address).call()
         assert.equal(resultsAfter.deployed, v0LockData.deployed)
         assert.equal(

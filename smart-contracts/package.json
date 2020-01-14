@@ -76,7 +76,8 @@
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test truffle test --network development",
-    "lint": "solium -d ./contracts/ && eslint --ext .ts,.js test/",
+    "lint": "solium -d ./contracts/ && eslint .",
+    "lintFix": "solium -d ./contracts/ --fix && eslint . --fix",
     "dev": "yarn lint && yarn build && yarn test",
     "ci": "yarn lint && yarn test",
     "build": "truffle compile --all",

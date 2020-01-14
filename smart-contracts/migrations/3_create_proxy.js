@@ -27,16 +27,14 @@ async function deploy(options, accounts) {
     .send({ from: unlockOwner })
 }
 
-module.exports = function(deployer, networkName, accounts) {
+module.exports = async (deployer, networkName, accounts) => {
   const proxyAdmin = accounts[9]
 
-  deployer.then(async () => {
-    const { network, txParams } = await ConfigManager.initNetworkConfiguration({
-      network: networkName,
-      from: proxyAdmin,
-    })
-    txParams.gas = 4000000
-    const options = { network, txParams }
-    await deploy(options, accounts)
+  const { network, txParams } = await ConfigManager.initNetworkConfiguration({
+    network: networkName,
+    from: proxyAdmin,
   })
+  txParams.gas = 4000000
+  const options = { network, txParams }
+  await deploy(options, accounts)
 }
