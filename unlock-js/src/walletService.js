@@ -3,6 +3,7 @@ import UnlockService from './unlockService'
 import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
+import { generateKeyMetadataPayload } from './typedData/keyMetadata'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -289,18 +290,21 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async signData(account, data, callback) {
-    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
-    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
-    // see https://github.com/MetaMask/metamask-extension/blob/c4caba131776ff7397d3a4071d7cc84907ac9a43/app/scripts/metamask-controller.js#L997
-    const sendData = isMetaMask ? JSON.stringify(data) : data
-
     try {
-      const result = await this.provider.send(method, [account, sendData])
-
-      callback(null, Buffer.from(result).toString('base64'))
+      const result = await this.unformattedSignTypedData(account, data)
+      return callback(null, Buffer.from(result).toString('base64'))
     } catch (err) {
       return callback(err, null)
     }
+  }
+
+  async unformattedSignTypedData(account, data) {
+    const isMetaMask = this.web3Provider && this.web3Provider.isMetaMask
+    const method = isMetaMask ? 'eth_signTypedData_v3' : 'eth_signTypedData'
+    const sendData = isMetaMask ? JSON.stringify(data) : data
+
+    const result = await this.provider.send(method, [account, sendData])
+    return result
   }
 
   async signMessage(data, method) {
@@ -323,6 +327,36 @@ export default class WalletService extends UnlockService {
       }
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
+    } catch (error) {
+      return callback(error, null)
+    }
+  }
+
+  /**
+   * Sign and send a request to update metadata specific to a given key.
+   *
+   * @param {string} lockAddress - The address of the lock
+   * @param {string} keyId - The id of the key to set metadata on
+   * @param {Object.<string, string>} metadata - The metadata fields and values to set
+   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {*} callback
+   */
+  async setKeyMetadata(lockAddress, keyId, metadata, locksmithHost, callback) {
+    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    try {
+      const currentAddress = await this.getAccount()
+      const payload = generateKeyMetadataPayload(currentAddress, metadata)
+      const signature = await this.unformattedSignTypedData(
+        currentAddress,
+        payload
+      )
+      await fetch(url, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+        },
+        json: metadata,
+      })
     } catch (error) {
       return callback(error, null)
     }
