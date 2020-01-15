@@ -5,6 +5,24 @@
  */
 
 /**
+ * Generates the message included in a signed metadata payload
+ * @param {string} owner - The address of the keyholder
+ * @param {metadata} metadata - The data to store for this user
+ */
+export function generateMessage(owner, metadata) {
+  const { publicData = {}, privateData = {} } = metadata
+  return {
+    UserMetaData: {
+      owner,
+      data: {
+        public: publicData,
+        private: privateData,
+      },
+    },
+  }
+}
+
+/**
  * Generates the data payload required to sign a request to store
  * metadata on a token for a keyholder
  * @param {string} owner - The address of the keyholder
@@ -29,24 +47,6 @@ export function generateKeyHolderMetadataPayload(owner, metadata) {
       version: '1',
     },
     primaryType: 'UserMetaData',
-    message: message,
-  }
-}
-
-/**
- * Generates the message included in a signed metadata payload
- * @param {string} owner - The address of the keyholder
- * @param {metadata} metadata - The data to store for this user
- */
-export function generateMessage(owner, metadata) {
-  const { publicData = {}, privateData = {} } = metadata
-  return {
-    UserMetaData: {
-      owner,
-      data: {
-        public: publicData,
-        private: privateData,
-      },
-    },
+    message,
   }
 }
