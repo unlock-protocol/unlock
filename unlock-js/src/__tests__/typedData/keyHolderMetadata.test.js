@@ -36,10 +36,12 @@ describe('Key holder metadata payload generation', () => {
     expect(generateKeyHolderMetadataPayload(owner, {})).toEqual({
       ...baseData,
       message: {
-        owner,
-        data: {
-          public: {},
-          private: {},
+        UserMetaData: {
+          owner,
+          data: {
+            public: {},
+            private: {},
+          },
         },
       },
     })
@@ -51,10 +53,12 @@ describe('Key holder metadata payload generation', () => {
     expect(generateKeyHolderMetadataPayload(owner, { privateData })).toEqual({
       ...baseData,
       message: {
-        owner,
-        data: {
-          public: {},
-          private: privateData,
+        UserMetaData: {
+          owner,
+          data: {
+            public: {},
+            private: privateData,
+          },
         },
       },
     })
@@ -66,10 +70,12 @@ describe('Key holder metadata payload generation', () => {
     expect(generateKeyHolderMetadataPayload(owner, { publicData })).toEqual({
       ...baseData,
       message: {
-        owner,
-        data: {
-          public: publicData,
-          private: {},
+        UserMetaData: {
+          owner,
+          data: {
+            public: publicData,
+            private: {},
+          },
         },
       },
     })
@@ -83,10 +89,12 @@ describe('Key holder metadata payload generation', () => {
     ).toEqual({
       ...baseData,
       message: {
-        owner,
-        data: {
-          public: publicData,
-          private: privateData,
+        UserMetaData: {
+          owner,
+          data: {
+            public: publicData,
+            private: privateData,
+          },
         },
       },
     })

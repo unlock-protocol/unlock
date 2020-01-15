@@ -38,13 +38,15 @@ export function generateKeyHolderMetadataPayload(owner, metadata) {
  * @param {string} owner - The address of the keyholder
  * @param {metadata} metadata - The data to store for this user
  */
-function generateMessage(owner, metadata) {
+export function generateMessage(owner, metadata) {
   const { publicData = {}, privateData = {} } = metadata
   return {
-    owner,
-    data: {
-      public: publicData,
-      private: privateData,
+    UserMetaData: {
+      owner,
+      data: {
+        public: publicData,
+        private: privateData,
+      },
     },
   }
 }
