@@ -1,5 +1,9 @@
 # Changes
 
+# Next version
+
+- Added typed data templates for key-related metadata upload requests
+
 # 0.6.0
 
 - removed unlockProvider as it has moved back to unlock-app
