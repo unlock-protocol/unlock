@@ -18,7 +18,7 @@ import * as accountUtils from '../../utils/accounts'
 import { resetRecoveryPhrase } from '../../actions/recovery'
 import { EncryptedPrivateKey } from '../../unlockTypes'
 
-jest.spyOn(accountUtils, 'reEncryptPrivateKey').mockImplementation(jest.fn())
+jest.mock('../../utils/accounts')
 
 const config = {
   providers: {
