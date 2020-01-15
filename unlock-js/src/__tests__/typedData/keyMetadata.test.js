@@ -1,4 +1,4 @@
-import { generateKeyMetadataPayload } from '../../typedData/lockOwnerMetadata'
+import { generateKeyMetadataPayload } from '../../typedData/keyMetadata'
 
 const owner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const baseData = {
