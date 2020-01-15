@@ -725,10 +725,10 @@ ethers@4.0.41:
     uuid "2.0.1"
     xmlhttprequest "1.8.0"
 
-ethers@4.0.42:
-  version "4.0.42"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.42.tgz#7def83a1f770b84d44cf1c2dfc58b7fd29d1d45d"
-  integrity sha512-2gmmt5x683Xz4QwGDBVJhrdXevVAEr5fnXPGDPou2AKB+zklrirGpl0w1SHBn7Wa9hbL2z6MvP3n7k8Yss2MFg==
+ethers@4.0.43:
+  version "4.0.43"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-4.0.43.tgz#d669b5d5a9a16dbcd3ae12935ad70297048f52b4"
+  integrity sha512-VjQRVgPrlU12jSMvypdE1yEqYQccdVbH8bbiz67dLF7raHlRV4+zW70GlxHcZYqgsnz0XYWrn6C06gqTQRb5tw==
   dependencies:
     aes-js "3.0.0"
     bn.js "^4.4.0"

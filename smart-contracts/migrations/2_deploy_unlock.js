@@ -12,21 +12,20 @@ async function zosDeploy(options) {
   await push(options)
 }
 
-module.exports = function deployUnlock(deployer, networkName, accounts) {
+module.exports = async function deployUnlock(deployer, networkName, accounts) {
   const proxyAdmin = accounts[9]
 
-  deployer.then(async () => {
-    const { network, txParams } = await ConfigManager.initNetworkConfiguration({
-      network: networkName,
-      from: proxyAdmin,
-    })
-    const options = { network, txParams }
+  const { network, txParams } = await ConfigManager.initNetworkConfiguration({
+    network: networkName,
+    from: proxyAdmin,
+  })
+  const options = { network, txParams }
 
-    await zosDeploy(options)
+  await zosDeploy(options)
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `Deployed bytes4(keccak256(bytecode))
+  // eslint-disable-next-line no-console
+  console.log(
+    `Deployed bytes4(keccak256(bytecode))
   Unlock.bytecode: ${this.web3.utils
     .keccak256(Unlock.bytecode)
     .substring(0, 10)}
@@ -39,6 +38,5 @@ module.exports = function deployUnlock(deployer, networkName, accounts) {
   PublicLock.deployedBytecode: ${this.web3.utils
     .keccak256(PublicLock.deployedBytecode)
     .substring(0, 10)}`
-    )
-  })
+  )
 }

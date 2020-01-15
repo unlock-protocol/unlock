@@ -1,6 +1,6 @@
-export default class UnlockUser {
+export default class UnlockPaymentDetails {
   static build(input) {
-    let domain = [
+    const domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
@@ -8,22 +8,22 @@ export default class UnlockUser {
       { name: 'salt', type: 'bytes32' },
     ]
 
-    let user = [
+    const user = [
       { name: 'emailAddress', type: 'string' },
       { name: 'publicKey', type: 'address' },
-      { name: 'passwordEncryptedPrivateKey', type: 'string' },
+      { name: 'stripeTokenId', type: 'string' },
     ]
 
-    let domainData = {
+    const domainData = {
       name: 'Unlock',
       version: '1',
     }
 
-    let message = {
+    const message = {
       user: {
         emailAddress: input.emailAddress,
         publicKey: input.publicKey,
-        passwordEncryptedPrivateKey: input.passwordEncryptedPrivateKey,
+        stripeTokenId: input.stripeTokenId,
       },
     }
 
@@ -34,7 +34,7 @@ export default class UnlockUser {
       },
       domain: domainData,
       primaryType: 'User',
-      message: message,
+      message,
     }
   }
 }

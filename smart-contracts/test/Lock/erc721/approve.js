@@ -28,8 +28,8 @@ contract('Lock / erc721 / approve', accounts => {
   })
 
   describe('when the key exists', () => {
-    before(() => {
-      return locks.FIRST.purchase(
+    before(async () => {
+      await locks.FIRST.purchase(
         0,
         accounts[1],
         web3.utils.padLeft(0, 40),
@@ -39,11 +39,11 @@ contract('Lock / erc721 / approve', accounts => {
           from: accounts[1],
         }
       )
+      ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
     })
 
     describe('when the sender is not the token owner', () => {
       it('should fail', async () => {
-        ID = await locks.FIRST.getTokenIdFor.call(accounts[1])
         await shouldFail(
           locks.FIRST.approve(accounts[2], ID, {
             from: accounts[2],
@@ -73,10 +73,9 @@ contract('Lock / erc721 / approve', accounts => {
         event = result.logs[0]
       })
 
-      it('should assign the approvedForTransfer value', () => {
-        return locks.FIRST.getApproved.call(ID).then(approved => {
-          assert.equal(approved, accounts[2])
-        })
+      it('should assign the approvedForTransfer value', async () => {
+        const approved = await locks.FIRST.getApproved.call(ID)
+        assert.equal(approved, accounts[2])
       })
 
       it('should trigger the Approval event', () => {

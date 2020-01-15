@@ -17,6 +17,7 @@ export default function keyHolderQuery() {
             tokenAddress
             price
             expirationDuration
+            owner
           }
         }
       }
