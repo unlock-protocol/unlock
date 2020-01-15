@@ -10,7 +10,7 @@
  * @param {string} owner - The address of the keyholder
  * @param {metadata} metadata - The data to store for this user
  */
-export default function generateKeyHolderMetadataPayload(owner, metadata) {
+export function generateKeyHolderMetadataPayload(owner, metadata) {
   const message = generateMessage(owner, metadata)
 
   return {
