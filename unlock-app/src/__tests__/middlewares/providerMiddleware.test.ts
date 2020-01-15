@@ -1,5 +1,3 @@
-import * as unlockJs from '@unlock-protocol/unlock-js'
-
 import providerMiddleware, {
   changePassword,
   initializeUnlockProvider,
@@ -20,7 +18,6 @@ import * as accountUtils from '../../utils/accounts'
 import { resetRecoveryPhrase } from '../../actions/recovery'
 import { EncryptedPrivateKey } from '../../unlockTypes'
 
-jest.mock('@unlock-protocol/unlock-js')
 jest.spyOn(accountUtils, 'reEncryptPrivateKey').mockImplementation(jest.fn())
 
 const config = {
@@ -329,7 +326,7 @@ describe('changePassword', () => {
 
   describe('success', () => {
     beforeEach(async () => {
-      ;(unlockJs as any).reEncryptPrivateKey = jest.fn(() =>
+      ;(accountUtils as any).reEncryptPrivateKey = jest.fn(() =>
         Promise.resolve(newEncryptedKey)
       )
       await changePassword({
