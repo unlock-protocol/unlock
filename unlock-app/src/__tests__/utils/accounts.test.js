@@ -2,9 +2,9 @@ import {
   createAccountAndPasswordEncryptKey,
   getAccountFromPrivateKey,
   reEncryptPrivateKey,
-} from '../accounts'
+} from '../../utils/accounts'
 
-import { walletEncryptionOptions } from '../constants'
+import { WALLET_ENCRYPTION_OPTIONS } from '../../constants'
 
 jest.setTimeout(15000)
 
@@ -23,7 +23,7 @@ describe('account helpers', () => {
         address.substring(2).toLowerCase()
       )
       expect(passwordEncryptedPrivateKey.Crypto.kdfparams.n).toBe(
-        walletEncryptionOptions.scrypt.N
+        WALLET_ENCRYPTION_OPTIONS.scrypt.N
       )
     })
   })
@@ -44,7 +44,7 @@ describe('account helpers', () => {
       expect(decryptedAddress).toEqual(
         expect.objectContaining({
           signingKey: expect.objectContaining({
-            address: address,
+            address,
             privateKey: expect.any(String),
             publicKey: expect.any(String),
             signDigest: expect.any(Function),

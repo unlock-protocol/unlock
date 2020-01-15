@@ -3,6 +3,7 @@ pragma solidity 0.5.14;
 import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
 import '@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol';
 import './MixinDisableAndDestroy.sol';
+import './MixinLockManagerRole.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
 
@@ -17,7 +18,8 @@ contract MixinLockCore is
   IERC721Enumerable,
   Ownable,
   MixinFunds,
-  MixinDisableAndDestroy
+  MixinDisableAndDestroy,
+  MixinLockManagerRole
 {
 
   event Withdrawal(
@@ -134,13 +136,14 @@ contract MixinLockCore is
   /**
    * A function which lets the owner of the lock change the pricing for future purchases.
    * This consists of 2 parts: The token address and the price in the given token.
+   * In order to set the token to ETH, use 0 for the token Address.
    */
   function updateKeyPricing(
     uint _keyPrice,
     address _tokenAddress
   )
-    public
-    onlyOwner
+    external
+    onlyLockManager
     onlyIfAlive
   {
     uint oldKeyPrice = keyPrice;

@@ -5,6 +5,7 @@ import welcome from './welcome'
 import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
+import keyMined from './keyMined'
 
 export default {
   confirmEmail,
@@ -14,4 +15,5 @@ export default {
   recoveryKeyConfirmEmail,
   confirmEvent,
   keyOwnership,
+  keyMined,
 }

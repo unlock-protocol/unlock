@@ -26,7 +26,7 @@ export default class EjectionRequest {
         version: '1',
       },
       primaryType: 'User',
-      message: message,
+      message,
     }
   }
 }

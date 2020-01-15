@@ -18,23 +18,11 @@ export const UNLIMITED_KEYS_COUNT = -1
 
 export const KEY_ID = (lock, owner) => [lock, owner].join('-')
 
+export const ZERO = ethers.constants.AddressZero
+
 export default {
   MAX_UINT,
   UNLIMITED_KEYS_COUNT,
   GAS_AMOUNTS,
   KEY_ID,
 }
-
-// See
-// https://docs.ethers.io/ethers.js/html/api-wallet.html#encrypted-json-wallets
-// for available params; right now a custom value of scrypt/N covers our needs.
-export const walletEncryptionOptions = {
-  scrypt: {
-    // web3 used 1 << 13, ethers default is 1 << 18. We want speedy wallet
-    // decryption, and Unlock accounts should hold no currency so this tradeoff
-    // is acceptable.
-    N: 1 << 13,
-  },
-}
-
-export const ZERO = ethers.constants.AddressZero

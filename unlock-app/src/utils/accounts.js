@@ -1,4 +1,4 @@
-import { walletEncryptionOptions } from './constants'
+import { WALLET_ENCRYPTION_OPTIONS } from '../constants'
 
 const Wallet = require('ethers').Wallet
 
@@ -6,7 +6,7 @@ export async function createAccountAndPasswordEncryptKey(password) {
   const newWallet = Wallet.createRandom()
   const address = await newWallet.getAddress()
   const passwordEncryptedPrivateKey = JSON.parse(
-    await newWallet.encrypt(password, walletEncryptionOptions)
+    await newWallet.encrypt(password, WALLET_ENCRYPTION_OPTIONS)
   )
 
   return {

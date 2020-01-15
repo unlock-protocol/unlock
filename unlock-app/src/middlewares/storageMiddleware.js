@@ -3,7 +3,7 @@ import queryString from 'query-string'
 import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
-} from '@unlock-protocol/unlock-js'
+} from '../utils/accounts'
 
 import { startLoading, doneLoading } from '../actions/loading'
 

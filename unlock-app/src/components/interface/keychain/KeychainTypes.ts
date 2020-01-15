@@ -9,5 +9,6 @@ export interface OwnedKey {
     expirationDuration: string
     tokenAddress: string
     price: string
+    owner: string
   }
 }
