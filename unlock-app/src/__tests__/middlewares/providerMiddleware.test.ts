@@ -16,10 +16,12 @@ import {
   SIGN_ACCOUNT_EJECTION,
   signUserData,
 } from '../../actions/user'
+import * as accountUtils from '../../utils/accounts'
 import { resetRecoveryPhrase } from '../../actions/recovery'
 import { EncryptedPrivateKey } from '../../unlockTypes'
 
 jest.mock('@unlock-protocol/unlock-js')
+jest.spyOn(accountUtils, 'reEncryptPrivateKey').mockImplementation(jest.fn())
 
 const config = {
   providers: {
@@ -340,7 +342,7 @@ describe('changePassword', () => {
 
     it('should reEncryptPrivateKey', () => {
       expect.assertions(1)
-      expect(unlockJs.reEncryptPrivateKey).toHaveBeenCalledWith(
+      expect(accountUtils.reEncryptPrivateKey).toHaveBeenCalledWith(
         passwordEncryptedPrivateKey,
         oldPassword,
         newPassword
@@ -364,7 +366,7 @@ describe('changePassword', () => {
 
   it('should dispatch a warning when the private could not be re-encrypted', async () => {
     expect.assertions(1)
-    ;(unlockJs as any).reEncryptPrivateKey = jest.fn(() =>
+    ;(accountUtils as any).reEncryptPrivateKey = jest.fn(() =>
       Promise.reject('failed to decrypt key')
     )
     await changePassword({
