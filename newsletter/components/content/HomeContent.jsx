@@ -66,12 +66,14 @@ export default function HomeContent() {
     }
   }
   useEffect(() => {
-    // Connect (this is not cool becuase it pops up immediately for the user...)
-    // But this is currently the only way we can prompt the user to get their saved
-    // address. Also, this means the unlock status is loaded immediately
-    window.web3.currentProvider.enable()
-    if (lockState === 'unlocked') {
-      retrieveEmail()
+    if (window.web3) {
+      // Connect (this is not cool becuase it pops up immediately for the user...)
+      // But this is currently the only way we can prompt the user to get their saved
+      // address. Also, this means the unlock status is loaded immediately
+      window.web3.currentProvider.enable()
+      if (lockState === 'unlocked') {
+        retrieveEmail()
+      }
     }
   }, [lockWithKey])
 
@@ -125,11 +127,19 @@ export default function HomeContent() {
         <Error>
           You need to a use a web browser with a crypto enabled wallet. We
           recommend{' '}
-          <a href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://metamask.io/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             MetaMask
           </a>{' '}
           for Firefox or Chrome, or{' '}
-          <a href="https://www.opera.com/crypto" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://www.opera.com/crypto"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Opera
           </a>
           .
