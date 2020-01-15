@@ -1,4 +1,4 @@
-import { reEncryptPrivateKey } from '@unlock-protocol/unlock-js'
+import { reEncryptPrivateKey } from '../utils/accounts'
 import { SET_PROVIDER, providerReady } from '../actions/provider'
 import { setError } from '../actions/error'
 import { resetRecoveryPhrase } from '../actions/recovery'

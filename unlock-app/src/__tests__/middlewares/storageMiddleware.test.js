@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import * as unlockJs from '@unlock-protocol/unlock-js'
+import * as accountUtils from '../../utils/accounts'
 import storageMiddleware from '../../middlewares/storageMiddleware'
 import { addTransaction, NEW_TRANSACTION } from '../../actions/transaction'
 import { SET_ACCOUNT, UPDATE_ACCOUNT } from '../../actions/accounts'
@@ -28,7 +28,7 @@ import { ADD_TO_CART, UPDATE_PRICE } from '../../actions/keyPurchase'
 import UnlockUser from '../../structured_data/unlockUser'
 import { GOT_BULK_METADATA } from '../../actions/keyMetadata'
 
-jest.mock('@unlock-protocol/unlock-js')
+jest.mock('../../utils/accounts')
 
 /**
  * This is a "fake" middleware caller
@@ -361,7 +361,7 @@ describe('Storage middleware', () => {
     const user = {}
 
     beforeEach(() => {
-      unlockJs.createAccountAndPasswordEncryptKey = jest.fn(() =>
+      accountUtils.createAccountAndPasswordEncryptKey = jest.fn(() =>
         Promise.resolve(accountInfo)
       )
       UnlockUser.build = jest.fn(() => user)
@@ -405,7 +405,7 @@ describe('Storage middleware', () => {
         const password = 'guest'
         const recoveryKey = {}
 
-        unlockJs.reEncryptPrivateKey = jest.fn(() =>
+        accountUtils.reEncryptPrivateKey = jest.fn(() =>
           Promise.resolve(recoveryKey)
         )
 
