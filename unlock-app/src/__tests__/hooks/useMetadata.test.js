@@ -9,13 +9,26 @@ const metadata = {
 }
 
 describe('useMetadata', () => {
-  beforeAll(() => {
+  beforeEach(() => {
+    jest.clearAllMocks()
     axios.get = jest.fn(() => {
       return Promise.resolve({
         data: () => {
           return metadata
         },
       })
+    })
+  })
+
+  it('should retrieve the default if there is no metadata uri', () => {
+    expect.assertions(2)
+    axios.get = jest.fn(() => {})
+    const tokenUri = ''
+    const { result } = renderHook(() => useMetadata(tokenUri))
+
+    expect(axios.get).not.toHaveBeenCalled()
+    expect(result.current).toStrictEqual({
+      image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
     })
   })
 

@@ -13,13 +13,15 @@ export const useMetadata = url => {
   const [metadata, setMetadata] = useState(defaultMetadata)
 
   const getMetadata = async () => {
-    let tokenMetadata = defaultMetadata
-    try {
-      tokenMetadata = await axios.get(url).then(response => response.data)
-    } catch (error) {
-      // Do not fail on error, we'll keep defaulting to the default values
+    if (url) {
+      let tokenMetadata = defaultMetadata
+      try {
+        tokenMetadata = await axios.get(url).then(response => response.data)
+      } catch (error) {
+        // Do not fail on error, we'll keep defaulting to the default values
+      }
+      setMetadata(tokenMetadata)
     }
-    setMetadata(tokenMetadata)
   }
 
   useEffect(() => {
