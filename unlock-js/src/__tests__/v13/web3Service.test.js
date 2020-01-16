@@ -8,7 +8,7 @@ import Web3Service from '../../web3Service'
 import TransactionTypes from '../../transactionTypes'
 import utils from '../../utils'
 
-import v12 from '../../v12'
+import v13 from '../../v13'
 
 import { KEY_ID } from '../../constants'
 import erc20abi from '../../erc20abi'
@@ -32,10 +32,10 @@ const transaction = {
 const nock = new NockHelper(readOnlyProvider, false /** debug */)
 let web3Service
 
-const version = 'v12'
-const UnlockVersion = abis.v12
-const LockVersion = v12
-const actualVersion = 5
+const version = 'v13'
+const UnlockVersion = abis.v13
+const LockVersion = v13
+const actualVersion = 6
 
 describe('Web3Service', () => {
   async function nockBeforeEach(endpoint = readOnlyProvider) {
@@ -112,8 +112,8 @@ describe('Web3Service', () => {
       await nockBeforeEach()
       const data = getEncoder(
         UnlockVersion.PublicLock.abi,
-        'updateKeyPrice'
-      )([123])
+        'updateKeyPricing'
+      )([123, ZERO])
       expect(
         web3Service._getTransactionType(UnlockVersion.PublicLock, data)
       ).toBe(TransactionTypes.UPDATE_KEY_PRICE)
@@ -265,7 +265,7 @@ describe('Web3Service', () => {
         expect(web3Service.getLock).toHaveBeenCalledWith(checksumLockAddress)
       })
 
-      it('handles the PriceChanged event from PublicLock contract', async () => {
+      it('handles the PricingChanged event from PublicLock contract', async () => {
         expect.assertions(4)
         await versionedNockBeforeEach()
         const EventInfo = new ethers.utils.Interface(
@@ -276,11 +276,18 @@ describe('Web3Service', () => {
           logs: [
             {
               address: lockAddress,
-              data: encoder.encode(['uint256', 'uint256'], [1, 2]),
+              data: encoder.encode(
+                ['uint256', 'uint256', 'address', 'address'],
+                [1, 2, ZERO, ZERO]
+              ),
               topics: [
-                EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                EventInfo.events[
+                  'PricingChanged(uint256,uint256,address,address)'
+                ].topic,
                 encoder.encode(['uint256'], [1]),
                 encoder.encode(['uint256'], [2]),
+                encoder.encode(['uint256'], [ZERO]),
+                encoder.encode(['uint256'], [ZERO]),
               ],
             },
           ],
@@ -297,6 +304,7 @@ describe('Web3Service', () => {
           expect(lock).toEqual({
             asOf: 123,
             keyPrice: '0.000000000000000002',
+            tokenAddress: ZERO,
           })
         })
 

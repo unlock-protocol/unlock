@@ -18,12 +18,13 @@ export default async function(
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
-  if (decimals == null) {
-    // Get the decimals address from the contract
-    if (!erc20Address) {
-      erc20Address = await lockContract.tokenAddress()
-    }
+  // If none is set, let's get the current ERC20 address because we need to set one
+  if (!erc20Address) {
+    erc20Address = await lockContract.tokenAddress()
+  }
 
+  // Get the decimals from the contract
+  if (decimals == null) {
     if (erc20Address && erc20Address !== ZERO) {
       decimals = await getErc20Decimals(erc20Address, this.provider)
     } else {
@@ -32,8 +33,9 @@ export default async function(
   }
   const actualAmount = utils.toDecimal(keyPrice, decimals)
 
-  const transactionPromise = lockContract['updateKeyPrice(uint256)'](
+  const transactionPromise = lockContract['updateKeyPricing(uint256,address)'](
     actualAmount,
+    erc20Address || ZERO,
     {
       gasLimit: GAS_AMOUNTS.updateKeyPrice,
     }
@@ -56,9 +58,10 @@ export default async function(
       return parser.parseLog(log)
     })
     .filter(event => {
-      return event.name === 'PriceChanged'
+      return event.name === 'PricingChanged'
     })[0]
   if (priceChangedEvent) {
+    // TODO: also return contract?
     return utils.fromDecimal(priceChangedEvent.values.keyPrice, decimals)
   } else {
     // There was no NewEvent log (transaction failed?)

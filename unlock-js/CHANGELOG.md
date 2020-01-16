@@ -1,7 +1,8 @@
 # Changes
 
-# Next version
+# 0.7.0
 
+- Adding support for ABI version 1.3
 - Added typed data templates for key-related metadata upload requests
 
 # 0.6.0

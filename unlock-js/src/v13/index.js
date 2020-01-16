@@ -6,9 +6,9 @@ import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 
 export default {
-  version: 'v12',
-  Unlock: abis.v12.Unlock,
-  PublicLock: abis.v12.PublicLock,
+  version: 'v13',
+  Unlock: abis.v13.Unlock,
+  PublicLock: abis.v13.PublicLock,
   createLock,
   getLock,
   updateKeyPrice,
