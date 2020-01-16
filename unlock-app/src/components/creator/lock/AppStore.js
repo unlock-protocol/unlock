@@ -40,48 +40,6 @@ export class AppStore extends React.Component {
     this.setDetails = this.setDetails.bind(this)
 
     this.integrations = {
-      custom: {
-        name: 'Custom',
-        icon: <Svg.Code />,
-        details: (
-          <Details>
-            <DetailTitle>Custom Integration</DetailTitle>
-            <DetailBlock>
-              <p>
-                Easily integrate Unlock into your application flow with a few
-                lines of code. We’ve structured it in a way to make it
-                incredibly flexible yet light weight.
-              </p>
-              <ExtraLink>
-                <Button
-                  backgroundColor="white"
-                  borderRadius="3px"
-                  size="64px"
-                  fillColor="var(--grey)"
-                  href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
-                  target="_blank"
-                >
-                  <Svg.Documentation />
-                </Button>
-                <Label>Documentation</Label>
-              </ExtraLink>
-              <ExtraLink>
-                <Button
-                  href={`${props.config.paywallUrl}/newdemo?lock=${props.lock.address}&name=${props.lock.name}&type=paywall`}
-                  target="_blank"
-                  backgroundColor="white"
-                  borderRadius="3px"
-                  size="64px"
-                  fillColor="var(--grey)"
-                >
-                  <Svg.LiveDemo />
-                </Button>
-                <Label>Live Demo</Label>
-              </ExtraLink>
-            </DetailBlock>
-          </Details>
-        ),
-      },
       tickets: {
         name: 'Tickets',
         icon: <Svg.Ticket />,
@@ -98,10 +56,6 @@ export class AppStore extends React.Component {
         href: 'https://wordpress.org/plugins/unlock-protocol/',
       },
     }
-
-    this.state = {
-      details: this.integrations.custom.details,
-    }
   }
 
   setDetails(newDetails) {
@@ -114,9 +68,10 @@ export class AppStore extends React.Component {
   }
 
   render() {
-    const { details } = this.state
+    const { config, lock } = this.props
     return (
       <Wrapper>
+        <DetailTitle>Apps</DetailTitle>
         <Apps>
           {Object.keys(this.integrations).map(index => {
             const integration = this.integrations[index]
@@ -142,7 +97,42 @@ export class AppStore extends React.Component {
             }
           })}
         </Apps>
-        {details}
+        <Details>
+          <DetailTitle>Custom Integration</DetailTitle>
+          <DetailBlock>
+            <p>
+              Easily integrate Unlock into your application flow with a few
+              lines of code. We’ve structured it in a way to make it incredibly
+              flexible yet light weight.
+            </p>
+            <ExtraLink>
+              <Button
+                backgroundColor="white"
+                borderRadius="3px"
+                size="64px"
+                fillColor="var(--grey)"
+                href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
+                target="_blank"
+              >
+                <Svg.Documentation />
+              </Button>
+              <Label>Documentation</Label>
+            </ExtraLink>
+            <ExtraLink>
+              <Button
+                href={`${config.paywallUrl}/newdemo?lock=${lock.address}&name=${lock.name}&type=paywall`}
+                target="_blank"
+                backgroundColor="white"
+                borderRadius="3px"
+                size="64px"
+                fillColor="var(--grey)"
+              >
+                <Svg.LiveDemo />
+              </Button>
+              <Label>Live Demo</Label>
+            </ExtraLink>
+          </DetailBlock>
+        </Details>
       </Wrapper>
     )
   }
@@ -164,9 +154,10 @@ const Wrapper = styled.section`
 const Apps = styled.ul`
   display: flex;
   width: 100%;
-  height: 75px;
   margin: 0px;
+  margin-top: 8px;
   padding: 0px;
+  height: 75px;
 `
 
 const App = styled.li`
@@ -185,6 +176,7 @@ const Details = styled.div`
 const DetailTitle = styled.h3`
   color: var(--blue);
   margin-bottom: 0px;
+  margin-top: 8px;
 `
 
 const DetailBlock = styled.div`
@@ -193,6 +185,7 @@ const DetailBlock = styled.div`
   p {
     max-width: 400px;
     margin-right: 10px;
+    margin-top: 8px;
   }
 `
 
