@@ -162,15 +162,14 @@ export default class Web3Service extends UnlockService {
 
   /**
    * "Guesses" what the next Lock's address is going to be
-   * Before v12 (5) we do not need the lock object
-   * After that, we do because create2 uses a salt which is used to know the address
+   * After that, we need the lock object because create2 uses a salt which is used to know the address
    * TODO : ideally this code should be part of ethers... but it looks like it's not there yet.
    * For now, losely inspired by
    * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (version.version === 'v12') {
+    if (['v12', 'v13'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v12 (TODO: extract this?)
