@@ -70,7 +70,7 @@ export const HomeContent = () => {
               href={`${getConfig().publicRuntimeConfig.unlockApp}/dashboard`}
             >
               <Svg.Home />
-              Dashboard
+              <span>Dashboard</span>
             </Button>
             <p>
               Create and manage locks to monetize access to your content, events
@@ -82,7 +82,7 @@ export const HomeContent = () => {
               href={`${getConfig().publicRuntimeConfig.unlockApp}/keychain`}
             >
               <Svg.Key />
-              Keychain
+              <span>Keychain</span>
             </Button>
             <p>
               Manage all your keys and memberships with or without a third party
@@ -271,6 +271,10 @@ const Button = styled.a`
   font-weight: bold;
   font-size: 16px;
   border-radius: 4px;
+
+  > span {
+    vertical-align: middle;
+  }
 
   > svg {
     margin: 16px;

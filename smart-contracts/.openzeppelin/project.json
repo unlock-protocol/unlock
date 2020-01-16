@@ -8,13 +8,15 @@
   "name": "unlock-protocol",
   "version": "0.5.0",
   "compiler": {
-    "manager": "truffle",
+    "manager": "openzeppelin",
     "compilerSettings": {
+      "evmVersion": "istanbul",
       "optimizer": {
-        "enabled": false,
+        "enabled": true,
         "runs": "200"
       }
-    }
+    },
+    "solcVersion": "0.5.14"
   },
   "telemetryOptIn": false
 }
