@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV12 from 'unlock-abi-1-2'
+import * as UnlockV13 from 'unlock-abi-1-3'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -7,7 +7,7 @@ import { prepWalletService, prepContract } from '../helpers/walletServiceHelper'
 import abis from '../../abis'
 import { ZERO } from '../../constants'
 
-const UnlockVersion = abis.v12
+const UnlockVersion = abis.v13
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
 let walletService
@@ -15,7 +15,7 @@ let transaction
 let transactionResult
 let setupSuccess
 
-describe('v12', () => {
+describe('v13', () => {
   describe('withdrawFromLock', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const beneficiary = '0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e'
@@ -24,12 +24,12 @@ describe('v12', () => {
     async function nockBeforeEach(amount, erc20Address = ZERO) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV12.PublicLock,
+        UnlockV13.PublicLock,
         endpoint,
         nock
       )
 
-      const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(UnlockV13.PublicLock.abi)
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
@@ -41,7 +41,7 @@ describe('v12', () => {
       )
 
       const callMethodData = prepContract({
-        contract: UnlockV12.PublicLock,
+        contract: UnlockV13.PublicLock,
         functionName: 'withdraw',
         signature: 'address,uint256',
         nock,

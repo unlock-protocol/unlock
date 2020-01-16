@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV12 from 'unlock-abi-1-2'
+import * as UnlockV13 from 'unlock-abi-1-3'
 import utils from '../../utils'
 import TransactionTypes from '../../transactionTypes'
 import NockHelper from '../helpers/nockHelper'
@@ -24,7 +24,7 @@ const lock = {
 }
 
 const callMethodData = prepContract({
-  contract: UnlockV12.Unlock,
+  contract: UnlockV13.Unlock,
   functionName: 'createLock',
   signature: 'uint256,address,uint256,uint256,string,bytes12',
   nock,
@@ -38,19 +38,19 @@ jest.mock('../../erc20.js', () => {
 
 let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
-const EventInfo = new ethers.utils.Interface(UnlockV12.Unlock.abi)
+const EventInfo = new ethers.utils.Interface(UnlockV13.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
 let receipt = {
   logs: [],
 }
 
-describe('v12', () => {
+describe('v13', () => {
   describe('createLock', () => {
     async function nockBeforeEach(maxNumberOfKeys = lock.maxNumberOfKeys) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV12.Unlock,
+        UnlockV13.Unlock,
         endpoint,
         nock,
         true // this is the Unlock contract, not PublicLock

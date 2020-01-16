@@ -43,9 +43,9 @@ export default class Web3Service extends UnlockService {
         return this.getLock(args.newLockAddress)
       },
       Transfer: (transactionHash, contractAddress, blockNumber, args) => {
-        const owner = args._to
+        const owner = args._to || args.to // v13 uses to instead of _to
         this.emit('transaction.updated', transactionHash, {
-          key: KEY_ID(contractAddress, owner),
+          key: KEY_ID(contractAddress, owner), // TODO: use the token id!
           for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
@@ -65,6 +65,21 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
+          keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
+        })
+      },
+      PricingChanged: (
+        transactionHash,
+        contractAddress,
+        blockNumber,
+        { keyPrice, tokenAddress }
+      ) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
+        return this.emit('lock.updated', contractAddress, {
+          asOf: blockNumber,
+          tokenAddress,
           keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
         })
       },
@@ -162,15 +177,14 @@ export default class Web3Service extends UnlockService {
 
   /**
    * "Guesses" what the next Lock's address is going to be
-   * Before v12 (5) we do not need the lock object
-   * After that, we do because create2 uses a salt which is used to know the address
+   * After that, we need the lock object because create2 uses a salt which is used to know the address
    * TODO : ideally this code should be part of ethers... but it looks like it's not there yet.
    * For now, losely inspired by
    * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
    */
   async generateLockAddress(owner, lock) {
     const version = await this.unlockContractAbiVersion()
-    if (version.version === 'v12') {
+    if (['v12', 'v13'].indexOf(version.version) > -1) {
       const unlockContact = await this.getUnlockContract()
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v12 (TODO: extract this?)
@@ -243,6 +257,7 @@ export default class Web3Service extends UnlockService {
       case 'withdraw':
         return TransactionTypes.WITHDRAWAL
       case 'updateKeyPrice':
+      case 'updateKeyPricing':
         return TransactionTypes.UPDATE_KEY_PRICE
       default:
         // Unknown transaction

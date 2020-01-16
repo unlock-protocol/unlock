@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import * as UnlockV12 from 'unlock-abi-1-2'
+import * as UnlockV13 from 'unlock-abi-1-3'
 import utils from '../../utils'
 import { ZERO } from '../../constants'
 import NockHelper from '../helpers/nockHelper'
@@ -9,7 +9,7 @@ import abis from '../../abis'
 
 const endpoint = 'http://127.0.0.1:8545'
 const nock = new NockHelper(endpoint, false /** debug */)
-const UnlockVersion = abis.v12
+const UnlockVersion = abis.v13
 
 let walletService
 let transaction
@@ -19,26 +19,27 @@ let setupSuccess
 jest.mock('../../erc20.js', () => {
   return { getErc20Decimals: jest.fn() }
 })
-describe('v12', () => {
+describe('v13', () => {
   describe('updateKeyPrice', () => {
     const lockAddress = '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b'
     const keyPrice = '2' // new keyPrice
     const decimals = 8 // Do not test with 18 which is the default...
     const erc20Address = '0x6F7a54D6629b7416E17fc472B4003aE8EF18EF4c'
 
+    // Args to this function are the mocked values
     async function nockBeforeEach(decimals = 18, erc20Address) {
       nock.cleanAll()
       walletService = await prepWalletService(
-        UnlockV12.PublicLock,
+        UnlockV13.PublicLock,
         endpoint,
         nock
       )
 
-      const metadata = new ethers.utils.Interface(UnlockV12.PublicLock.abi)
+      const metadata = new ethers.utils.Interface(UnlockV13.PublicLock.abi)
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
-      // Mock the call to get erc20Address (only if it has been set!)
+      // Mock the call to get erc20Address (only if none has been set, otherwise, we'll retrieve it)
       if (erc20Address) {
         nock.ethCallAndYield(
           contractMethods.tokenAddress.encode([]),
@@ -48,9 +49,9 @@ describe('v12', () => {
       }
 
       const callMethodData = prepContract({
-        contract: UnlockV12.PublicLock,
-        functionName: 'updateKeyPrice',
-        signature: 'uint256',
+        contract: UnlockV13.PublicLock,
+        functionName: 'updateKeyPricing',
+        signature: 'uint256,address',
         nock,
       })
 
@@ -58,7 +59,10 @@ describe('v12', () => {
         testTransaction,
         testTransactionResult,
         success,
-      } = callMethodData(utils.toDecimal(keyPrice, decimals))
+      } = callMethodData(
+        utils.toDecimal(keyPrice, decimals),
+        erc20Address || ZERO
+      )
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -69,7 +73,7 @@ describe('v12', () => {
       it('should invoke _handleMethodCall with the right params', async () => {
         expect.assertions(2)
 
-        await nockBeforeEach(decimals)
+        await nockBeforeEach(decimals, ZERO)
         setupSuccess()
 
         walletService._handleMethodCall = jest.fn(() =>
@@ -93,7 +97,9 @@ describe('v12', () => {
                   '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                 address: lockAddress,
                 topics: [
-                  EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                  EventInfo.events[
+                    'PricingChanged(uint256,uint256,address,address)'
+                  ].topic,
                   encoder.encode(
                     ['uint256'],
                     [
@@ -110,9 +116,11 @@ describe('v12', () => {
                       ),
                     ]
                   ),
+                  encoder.encode(['address'], [ZERO]),
+                  encoder.encode(['address'], [ZERO]),
                 ],
                 data: encoder.encode(
-                  ['uint256', 'uint256'],
+                  ['uint256', 'uint256', 'address', 'address'],
                   [
                     utils.toRpcResultNumber(
                       utils.toDecimal(oldPrice, decimals)
@@ -120,6 +128,8 @@ describe('v12', () => {
                     utils.toRpcResultNumber(
                       utils.toDecimal(keyPrice, decimals)
                     ),
+                    ZERO,
+                    ZERO,
                   ]
                 ),
                 logIndex: 0,
@@ -183,7 +193,9 @@ describe('v12', () => {
                     '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                   address: lockAddress,
                   topics: [
-                    EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                    EventInfo.events[
+                      'PricingChanged(uint256,uint256,address,address)'
+                    ].topic,
                     encoder.encode(
                       ['uint256'],
                       [
@@ -200,9 +212,11 @@ describe('v12', () => {
                         ),
                       ]
                     ),
+                    encoder.encode(['address'], [ZERO]),
+                    encoder.encode(['address'], [ZERO]),
                   ],
                   data: encoder.encode(
-                    ['uint256', 'uint256'],
+                    ['uint256', 'uint256', 'address', 'address'],
                     [
                       utils.toRpcResultNumber(
                         utils.toDecimal(oldPrice, decimals)
@@ -210,6 +224,8 @@ describe('v12', () => {
                       utils.toRpcResultNumber(
                         utils.toDecimal(keyPrice, decimals)
                       ),
+                      ZERO,
+                      ZERO,
                     ]
                   ),
                   logIndex: 0,
@@ -273,7 +289,9 @@ describe('v12', () => {
                       '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                     address: lockAddress,
                     topics: [
-                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      EventInfo.events[
+                        'PricingChanged(uint256,uint256,address,address)'
+                      ].topic,
                       encoder.encode(
                         ['uint256'],
                         [
@@ -290,9 +308,11 @@ describe('v12', () => {
                           ),
                         ]
                       ),
+                      encoder.encode(['address'], [ZERO]),
+                      encoder.encode(['address'], [ZERO]),
                     ],
                     data: encoder.encode(
-                      ['uint256', 'uint256'],
+                      ['uint256', 'uint256', 'address', 'address'],
                       [
                         utils.toRpcResultNumber(
                           utils.toDecimal(oldPrice, decimals)
@@ -300,6 +320,8 @@ describe('v12', () => {
                         utils.toRpcResultNumber(
                           utils.toDecimal(keyPrice, decimals)
                         ),
+                        ZERO,
+                        ZERO,
                       ]
                     ),
                     logIndex: 0,
@@ -363,7 +385,9 @@ describe('v12', () => {
                       '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                     address: lockAddress,
                     topics: [
-                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      EventInfo.events[
+                        'PricingChanged(uint256,uint256,address,address)'
+                      ].topic,
                       encoder.encode(
                         ['uint256'],
                         [utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18))]
@@ -372,12 +396,16 @@ describe('v12', () => {
                         ['uint256'],
                         [utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18))]
                       ),
+                      encoder.encode(['address'], [ZERO]),
+                      encoder.encode(['address'], [ZERO]),
                     ],
                     data: encoder.encode(
-                      ['uint256', 'uint256'],
+                      ['uint256', 'uint256', 'address', 'address'],
                       [
                         utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18)),
                         utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18)),
+                        ZERO,
+                        ZERO,
                       ]
                     ),
                     logIndex: 0,

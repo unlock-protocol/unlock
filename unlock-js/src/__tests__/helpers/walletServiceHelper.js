@@ -4,6 +4,7 @@ import * as UnlockV02 from 'unlock-abi-0-2'
 import * as UnlockV10 from 'unlock-abi-1-0'
 import * as UnlockV11 from 'unlock-abi-1-1'
 import * as UnlockV12 from 'unlock-abi-1-2'
+import * as UnlockV13 from 'unlock-abi-1-3'
 import { ethers } from 'ethers'
 
 import utils from '../../utils'
@@ -57,6 +58,11 @@ export const prepWalletService = async (
     case UnlockV12.PublicLock:
       unlockVersion =
         '0x0000000000000000000000000000000000000000000000000000000000000005'
+      break
+    case UnlockV13.Unlock:
+    case UnlockV13.PublicLock:
+      unlockVersion =
+        '0x0000000000000000000000000000000000000000000000000000000000000006'
       break
     default:
     case UnlockV0.Unlock:
