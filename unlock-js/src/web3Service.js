@@ -43,9 +43,9 @@ export default class Web3Service extends UnlockService {
         return this.getLock(args.newLockAddress)
       },
       Transfer: (transactionHash, contractAddress, blockNumber, args) => {
-        const owner = args._to
+        const owner = args._to || args.to // v13 uses to instead of _to
         this.emit('transaction.updated', transactionHash, {
-          key: KEY_ID(contractAddress, owner),
+          key: KEY_ID(contractAddress, owner), // TODO: use the token id!
           for: owner, // this is not necessarily the same as the "from" address
           lock: contractAddress,
         })
@@ -65,6 +65,21 @@ export default class Web3Service extends UnlockService {
         })
         return this.emit('lock.updated', contractAddress, {
           asOf: blockNumber,
+          keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
+        })
+      },
+      PricingChanged: (
+        transactionHash,
+        contractAddress,
+        blockNumber,
+        { keyPrice, tokenAddress }
+      ) => {
+        this.emit('transaction.updated', transactionHash, {
+          lock: contractAddress,
+        })
+        return this.emit('lock.updated', contractAddress, {
+          asOf: blockNumber,
+          tokenAddress,
           keyPrice: utils.fromWei(keyPrice, 'ether'), // TODO: THIS MAY NOT BE WEI FOR ERC20 LOCKS
         })
       },
@@ -242,6 +257,7 @@ export default class Web3Service extends UnlockService {
       case 'withdraw':
         return TransactionTypes.WITHDRAWAL
       case 'updateKeyPrice':
+      case 'updateKeyPricing':
         return TransactionTypes.UPDATE_KEY_PRICE
       default:
         // Unknown transaction
