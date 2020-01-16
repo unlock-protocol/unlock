@@ -12268,6 +12268,10 @@ Object {
   border-radius: 4px;
 }
 
+.c17 > span {
+  vertical-align: middle;
+}
+
 .c17 > svg {
   margin: 16px;
   vertical-align: middle;
@@ -12753,7 +12757,9 @@ Object {
                       d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
                     />
                   </svg>
-                  Dashboard
+                  <span>
+                    Dashboard
+                  </span>
                 </a>
                 <p>
                   Create and manage locks to monetize access to your content, events and any other member perks.
@@ -12778,7 +12784,9 @@ Object {
                       fill="evenodd"
                     />
                   </svg>
-                  Keychain
+                  <span>
+                    Keychain
+                  </span>
                 </a>
                 <p>
                   Manage all your keys and memberships with or without a third party crypto wallet.
@@ -13567,7 +13575,7 @@ Object {
               class="sc-190zb2g-8 eNKUQo"
             >
               <a
-                class="sc-190zb2g-10 bnpUro"
+                class="sc-190zb2g-10 djfKRd"
                 href="undefined/dashboard"
               >
                 <svg
@@ -13577,7 +13585,9 @@ Object {
                     d="M12.5 5.5c-.195-.192-.805-.192-1 0l-6.351 6.567a.5.5 0 00.351.856h1.214V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-2.885h3.428V17.5a.5.5 0 00.5.5h2.572a.5.5 0 00.5-.5v-4.577H18.5a.5.5 0 00.351-.856L12.5 5.5z"
                   />
                 </svg>
-                Dashboard
+                <span>
+                  Dashboard
+                </span>
               </a>
               <p>
                 Create and manage locks to monetize access to your content, events and any other member perks.
@@ -13587,7 +13597,7 @@ Object {
               class="sc-190zb2g-9 bGFAwK"
             >
               <a
-                class="sc-190zb2g-10 bnpUro"
+                class="sc-190zb2g-10 djfKRd"
                 href="undefined/keychain"
               >
                 <svg
@@ -13602,7 +13612,9 @@ Object {
                     fill="evenodd"
                   />
                 </svg>
-                Keychain
+                <span>
+                  Keychain
+                </span>
               </a>
               <p>
                 Manage all your keys and memberships with or without a third party crypto wallet.
