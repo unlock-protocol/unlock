@@ -1079,7 +1079,7 @@ exports[`Storyshots AppStore with sample lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c4 {
+    .c5 {
   background-color: var(--lightgrey);
   cursor: pointer;
   border-radius: 3px;
@@ -1091,21 +1091,21 @@ Object {
   line-height: '15px';
 }
 
-.c4 > svg {
+.c5 > svg {
   fill: var(--grey);
   height: 40px;
   width: 40px;
 }
 
-.c4:hover {
+.c5:hover {
   background-color: var(--link);
 }
 
-.c4:hover > svg {
+.c5:hover > svg {
   fill: white;
 }
 
-.c4:focus {
+.c5:focus {
   outline: none;
 }
 
@@ -1139,7 +1139,7 @@ Object {
   outline: none;
 }
 
-.c5 {
+.c6 {
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
@@ -1155,11 +1155,11 @@ Object {
   color: var(--link);
 }
 
-.c3:hover .c5 {
+.c4:hover .c6 {
   display: inline-block;
 }
 
-.c12 .c3 {
+.c12 .c4 {
   background-color: var(--white);
   -webkit-transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
   transition: all 500ms cubic-bezier(0.165,0.84,0.44,1);
@@ -1170,28 +1170,28 @@ Object {
   align-self: center;
 }
 
-.c12 .c3:nth-child(1) {
+.c12 .c4:nth-child(1) {
   pointer-events: none;
 }
 
-.c12 .c3:nth-child(2) {
+.c12 .c4:nth-child(2) {
   pointer-events: none;
   display: none;
 }
 
-.c12 .c3 > svg {
+.c12 .c4 > svg {
   fill: var(--grey);
 }
 
-.c12 .c3:hover > svg {
+.c12 .c4:hover > svg {
   fill: var(--grey);
 }
 
-.c13 .c3 {
+.c13 .c4 {
   margin: 24px;
 }
 
-.c13 .c3 small {
+.c13 .c4 small {
   display: block;
   color: var(--grey);
   text-align: center;
@@ -1206,33 +1206,35 @@ Object {
   padding-bottom: 50px;
 }
 
-.c1 {
+.c2 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
   width: 100%;
-  height: 75px;
   margin: 0px;
+  margin-top: 8px;
   padding: 0px;
+  height: 75px;
 }
 
-.c2 {
+.c3 {
   display: inline-block;
   margin-right: 15px;
   font-size: 15px;
   font-weight: normal;
 }
 
-.c6 {
+.c7 {
   display: block;
   font-family: IBM Plex Sans;
   border-top: 1px solid var(--lightgrey);
 }
 
-.c7 {
+.c1 {
   color: var(--blue);
   margin-bottom: 0px;
+  margin-top: 8px;
 }
 
 .c8 {
@@ -1245,6 +1247,7 @@ Object {
 .c8 p {
   max-width: 400px;
   margin-right: 10px;
+  margin-top: 8px;
 }
 
 .c9 {
@@ -1273,37 +1276,19 @@ Object {
       <section
         class="c0"
       >
-        <ul
+        <h3
           class="c1"
         >
+          Apps
+        </h3>
+        <ul
+          class="c2"
+        >
           <li
-            class="c2"
+            class="c3"
           >
             <a
-              class="c3 c4"
-              title="Custom"
-            >
-              <svg
-                viewBox="0 0 24 24"
-              >
-                <path
-                  clip-rule="evenodd"
-                  d="M9.697 17.808a.5.5 0 01-.27-.654l4.616-11.077a.5.5 0 11.923.385l-4.615 11.076a.5.5 0 01-.654.27zm6.478-1.928a.5.5 0 01-.055-.705L18.841 12l-2.72-3.175a.5.5 0 11.759-.65l3 3.5a.5.5 0 010 .65l-3 3.5a.5.5 0 01-.705.055zM7.88 8.825a.5.5 0 00-.76-.65l-3 3.5a.5.5 0 000 .65l3 3.5a.5.5 0 10.76-.65L5.159 12l2.72-3.175z"
-                  fill-rule="evenodd"
-                />
-              </svg>
-              <small
-                class="c5"
-              >
-                Custom
-              </small>
-            </a>
-          </li>
-          <li
-            class="c2"
-          >
-            <a
-              class="c3 c4"
+              class="c4 c5"
               href="https://tickets.unlock-protocol.com"
               target="_blank"
               title="Tickets"
@@ -1318,17 +1303,17 @@ Object {
                 />
               </svg>
               <small
-                class="c5"
+                class="c6"
               >
                 Tickets
               </small>
             </a>
           </li>
           <li
-            class="c2"
+            class="c3"
           >
             <a
-              class="c3 c4"
+              class="c4 c5"
               href="https://donate.unlock-protocol.com/generate.html"
               target="_blank"
               title="Donations"
@@ -1341,17 +1326,17 @@ Object {
                 />
               </svg>
               <small
-                class="c5"
+                class="c6"
               >
                 Donations
               </small>
             </a>
           </li>
           <li
-            class="c2"
+            class="c3"
           >
             <a
-              class="c3 c4"
+              class="c4 c5"
               href="https://wordpress.org/plugins/unlock-protocol/"
               target="_blank"
               title="Wordpress"
@@ -1369,7 +1354,7 @@ Object {
                 </g>
               </svg>
               <small
-                class="c5"
+                class="c6"
               >
                 Wordpress
               </small>
@@ -1377,10 +1362,10 @@ Object {
           </li>
         </ul>
         <div
-          class="c6"
+          class="c7"
         >
           <h3
-            class="c7"
+            class="c1"
           >
             Custom Integration
           </h3>
@@ -1394,7 +1379,7 @@ Object {
               class="c9"
             >
               <a
-                class="c3 c10"
+                class="c4 c10"
                 href="https://github.com/unlock-protocol/unlock/wiki/Integrating-Unlock-on-your-site"
                 target="_blank"
               >
@@ -1419,7 +1404,7 @@ Object {
               class="c9"
             >
               <a
-                class="c3 c10"
+                class="c4 c10"
                 href="undefined/newdemo?lock=0xa62142888aba8370742be823c1782d17a0389da1&name=undefined&type=paywall"
                 target="_blank"
               >
@@ -1467,32 +1452,14 @@ Object {
     <section
       class="sc-1av0wj8-0 bNaAJl"
     >
-      <ul
-        class="sc-1av0wj8-1 ijWDop"
+      <h3
+        class="sc-1av0wj8-4 cFmkGm"
       >
-        <li
-          class="sc-1av0wj8-2 kbzJvU"
-        >
-          <a
-            class="sc-850ddk-0 ftxaqr"
-            title="Custom"
-          >
-            <svg
-              viewBox="0 0 24 24"
-            >
-              <path
-                clip-rule="evenodd"
-                d="M9.697 17.808a.5.5 0 01-.27-.654l4.616-11.077a.5.5 0 11.923.385l-4.615 11.076a.5.5 0 01-.654.27zm6.478-1.928a.5.5 0 01-.055-.705L18.841 12l-2.72-3.175a.5.5 0 11.759-.65l3 3.5a.5.5 0 010 .65l-3 3.5a.5.5 0 01-.705.055zM7.88 8.825a.5.5 0 00-.76-.65l-3 3.5a.5.5 0 000 .65l3 3.5a.5.5 0 10.76-.65L5.159 12l2.72-3.175z"
-                fill-rule="evenodd"
-              />
-            </svg>
-            <small
-              class="sc-850ddk-1 jgJDdG"
-            >
-              Custom
-            </small>
-          </a>
-        </li>
+        Apps
+      </h3>
+      <ul
+        class="sc-1av0wj8-1 fDdaNe"
+      >
         <li
           class="sc-1av0wj8-2 kbzJvU"
         >
@@ -1574,12 +1541,12 @@ Object {
         class="sc-1av0wj8-3 eLYiEr"
       >
         <h3
-          class="sc-1av0wj8-4 ldtzKN"
+          class="sc-1av0wj8-4 cFmkGm"
         >
           Custom Integration
         </h3>
         <div
-          class="sc-1av0wj8-5 hSCgVB"
+          class="sc-1av0wj8-5 dAfhKF"
         >
           <p>
             Easily integrate Unlock into your application flow with a few lines of code. We’ve structured it in a way to make it incredibly flexible yet light weight.

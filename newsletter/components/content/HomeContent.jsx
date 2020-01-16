@@ -105,11 +105,11 @@ export default function HomeContent() {
         </Head>
         <Title>{title}</Title>
         <Paragraph>
-          Instantly subscribe to your favorite crypto newsletter, using crypto!
+          Instantly subscribe to your favorite newsletter using crypto!
         </Paragraph>
         <Paragraph>
           <a href="https://unlock-protocol.com/">Unlock</a> is a protocol for
-          memberships, which lets creators monetize in a decentralized way.
+          memberships which lets creators monetize in a decentralized way. If you want to use Unlock for your newsletter, drop us a line at <a href="mailto:hello@unlock-protocol.com">hello@unlock-protocol.com</a>!
         </Paragraph>
       </Layout>
     )

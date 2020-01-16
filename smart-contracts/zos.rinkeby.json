@@ -1,7 +1,7 @@
 {
   "contracts": {
     "Unlock": {
-      "address": "0xc75Af9e8055C38bF095E6A0c47e35CCf63aC732D",
+      "address": "0x2953522B7cb5686e38Bd1b888c05D08eB678F517",
       "constructorCode": "6080604052611346806100136000396000f3fe",
       "bodyBytecodeHash": "e6f4120e0bc1097d1db96f54da3f6d1b3a9fdb8758405aed6af5e152da7a0046",
       "localBytecodeHash": "5874cf64299a9d6122b84bf605152d812733bed5edfc4d95ccc2cbf631b081b7",
@@ -36,21 +36,21 @@
           "members": [
             {
               "label": "deployed",
-              "astId": 194,
+              "astId": 2439,
               "type": "t_bool",
-              "src": "2340:13:2"
+              "src": "2341:13:24"
             },
             {
               "label": "totalSales",
-              "astId": 196,
+              "astId": 2441,
               "type": "t_uint256",
-              "src": "2359:15:2"
+              "src": "2360:15:24"
             },
             {
               "label": "yieldedDiscountTokens",
-              "astId": 198,
+              "astId": 2443,
               "type": "t_uint256",
-              "src": "2398:26:2"
+              "src": "2399:26:24"
             }
           ]
         },
@@ -77,97 +77,97 @@
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 6626,
+          "astId": 2176,
           "type": "t_bool",
-          "src": "757:24:50"
+          "src": "757:24:21"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 6628,
+          "astId": 2178,
           "type": "t_bool",
-          "src": "876:25:50"
+          "src": "876:25:21"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 6684,
+          "astId": 2234,
           "type": "t_array:50<t_uint256>",
-          "src": "1951:29:50"
+          "src": "1951:29:21"
         },
         {
           "contract": "Ownable",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
           "label": "_owner",
-          "astId": 5260,
+          "astId": 810,
           "type": "t_address",
-          "src": "526:22:38"
+          "src": "526:22:9"
         },
         {
           "contract": "Ownable",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/ownership/Ownable.sol",
           "label": "______gap",
-          "astId": 5373,
+          "astId": 923,
           "type": "t_array:50<t_uint256>",
-          "src": "2471:29:38"
+          "src": "2471:29:9"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "grossNetworkProduct",
-          "astId": 214,
+          "astId": 2459,
           "type": "t_uint256",
-          "src": "2536:31:2"
+          "src": "2537:31:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "totalDiscountGranted",
-          "astId": 216,
+          "astId": 2461,
           "type": "t_uint256",
-          "src": "2572:32:2"
+          "src": "2573:32:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "locks",
-          "astId": 220,
+          "astId": 2465,
           "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-          "src": "2693:46:2"
+          "src": "2694:46:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalBaseTokenURI",
-          "astId": 222,
+          "astId": 2467,
           "type": "t_string",
-          "src": "2837:32:2"
+          "src": "2838:32:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "globalTokenSymbol",
-          "astId": 224,
+          "astId": 2469,
           "type": "t_string",
-          "src": "2967:31:2"
+          "src": "2968:31:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "publicLockAddress",
-          "astId": 226,
+          "astId": 2471,
           "type": "t_address",
-          "src": "3082:32:2"
+          "src": "3083:32:24"
         },
         {
           "contract": "Unlock",
           "path": "contracts/Unlock.sol",
           "label": "uniswapExchanges",
-          "astId": 230,
+          "astId": 2475,
           "type": "t_mapping<t_address>",
-          "src": "3228:53:2"
+          "src": "3229:53:24"
         }
       ],
       "warnings": {
@@ -181,16 +181,16 @@
             "contract": "Unlock",
             "path": "contracts/Unlock.sol",
             "label": "locks",
-            "astId": 220,
+            "astId": 2465,
             "type": "t_mapping<t_struct<Unlock.LockBalances>>",
-            "src": "2693:46:2"
+            "src": "2694:46:24"
           }
         ],
         "storageDiff": []
       }
     },
     "UnlockDiscountToken": {
-      "address": "0xf5A56E57AcEE4b1649c7Cf4286B2EE3E3934c54A",
+      "address": "0x199281a211c019933709a6e5cA90e146b5A80648",
       "constructorCode": "608060405261145c806100136000396000f3fe",
       "bodyBytecodeHash": "d06f12aaba562f8ed3f887429355fa8f7c52046a123cd5dc7461bb2baef9f2e4",
       "localBytecodeHash": "0cce5898c7d8d8f0a14414c6b9056e63bb1918815c3a85072d84da334c4e493e",
@@ -226,9 +226,9 @@
           "members": [
             {
               "label": "bearer",
-              "astId": 4515,
+              "astId": 35,
               "type": "t_mapping<t_bool>",
-              "src": "150:32:32"
+              "src": "150:32:1"
             }
           ]
         },
@@ -254,113 +254,113 @@
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initialized",
-          "astId": 6520,
+          "astId": 2176,
           "type": "t_bool",
-          "src": "757:24:50"
+          "src": "757:24:21"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "initializing",
-          "astId": 6522,
+          "astId": 2178,
           "type": "t_bool",
-          "src": "876:25:50"
+          "src": "876:25:21"
         },
         {
           "contract": "Initializable",
           "path": "@openzeppelin/upgrades/contracts/Initializable.sol",
           "label": "______gap",
-          "astId": 6578,
+          "astId": 2234,
           "type": "t_array:50<t_uint256>",
-          "src": "1951:29:50"
+          "src": "1951:29:21"
         },
         {
           "contract": "ERC20",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
           "label": "_balances",
-          "astId": 5423,
+          "astId": 943,
           "type": "t_mapping<t_uint256>",
-          "src": "1418:46:41"
+          "src": "1418:46:10"
         },
         {
           "contract": "ERC20",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
           "label": "_allowances",
-          "astId": 5429,
+          "astId": 949,
           "type": "t_mapping<t_uint256>",
-          "src": "1471:69:41"
+          "src": "1471:69:10"
         },
         {
           "contract": "ERC20",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
           "label": "_totalSupply",
-          "astId": 5431,
+          "astId": 951,
           "type": "t_uint256",
-          "src": "1547:28:41"
+          "src": "1547:28:10"
         },
         {
           "contract": "ERC20",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol",
           "label": "______gap",
-          "astId": 5815,
+          "astId": 1335,
           "type": "t_array:50<t_uint256>",
-          "src": "8173:29:41"
+          "src": "8173:29:10"
         },
         {
           "contract": "MinterRole",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol",
           "label": "_minters",
-          "astId": 4612,
+          "astId": 132,
           "type": "t_struct<Roles.Role>",
-          "src": "327:27:33"
+          "src": "327:27:2"
         },
         {
           "contract": "MinterRole",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol",
           "label": "______gap",
-          "astId": 4712,
+          "astId": 232,
           "type": "t_array:50<t_uint256>",
-          "src": "1193:29:33"
+          "src": "1193:29:2"
         },
         {
           "contract": "ERC20Mintable",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Mintable.sol",
           "label": "______gap",
-          "astId": 5931,
+          "astId": 1451,
           "type": "t_array:50<t_uint256>",
-          "src": "831:29:43"
+          "src": "831:29:12"
         },
         {
           "contract": "ERC20Detailed",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
           "label": "_name",
-          "astId": 5826,
+          "astId": 1346,
           "type": "t_string",
-          "src": "224:20:42"
+          "src": "224:20:11"
         },
         {
           "contract": "ERC20Detailed",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
           "label": "_symbol",
-          "astId": 5828,
+          "astId": 1348,
           "type": "t_string",
-          "src": "250:22:42"
+          "src": "250:22:11"
         },
         {
           "contract": "ERC20Detailed",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
           "label": "_decimals",
-          "astId": 5830,
+          "astId": 1350,
           "type": "t_uint8",
-          "src": "278:23:42"
+          "src": "278:23:11"
         },
         {
           "contract": "ERC20Detailed",
           "path": "@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20Detailed.sol",
           "label": "______gap",
-          "astId": 5882,
+          "astId": 1402,
           "type": "t_array:50<t_uint256>",
-          "src": "1654:29:42"
+          "src": "1654:29:11"
         }
       ],
       "warnings": {
@@ -368,7 +368,18 @@
         "hasSelfDestruct": false,
         "hasDelegateCall": false,
         "hasInitialValuesInDeclarations": false,
-        "uninitializedBaseContracts": []
+        "uninitializedBaseContracts": [],
+        "storageUncheckedVars": [
+          {
+            "contract": "MinterRole",
+            "path": "@openzeppelin/contracts-ethereum-package/contracts/access/roles/MinterRole.sol",
+            "label": "_minters",
+            "astId": 132,
+            "type": "t_struct<Roles.Role>",
+            "src": "327:27:2"
+          }
+        ],
+        "storageDiff": []
       }
     }
   },
@@ -378,7 +389,7 @@
       {
         "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
         "version": "0.1.0",
-        "implementation": "0xc75Af9e8055C38bF095E6A0c47e35CCf63aC732D",
+        "implementation": "0x2953522B7cb5686e38Bd1b888c05D08eB678F517",
         "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42",
         "kind": "Upgradeable"
       }
