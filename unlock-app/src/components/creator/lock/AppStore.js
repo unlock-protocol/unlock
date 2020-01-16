@@ -34,8 +34,6 @@ export class AppStore extends React.Component {
   constructor(props, context) {
     super(props, context)
 
-    this.setDetails = this.setDetails.bind(this)
-
     this.integrations = {
       tickets: {
         name: 'Tickets',
