@@ -6,10 +6,9 @@ import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
 import withConfig from '../../../utils/withConfig'
 
-const Integration = ({ name, icon, action, href }) => (
+const Integration = ({ name, icon, href }) => (
   <App>
     <Button
-      action={action}
       href={href}
       target={href ? '_blank' : null}
       size="40px"
@@ -24,12 +23,10 @@ const Integration = ({ name, icon, action, href }) => (
 Integration.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.element.isRequired,
-  action: PropTypes.func,
   href: PropTypes.string,
 }
 
 Integration.defaultProps = {
-  action: () => {},
   href: null,
 }
 
@@ -58,15 +55,6 @@ export class AppStore extends React.Component {
     }
   }
 
-  setDetails(newDetails) {
-    this.setState(state => {
-      return {
-        ...state,
-        details: newDetails,
-      }
-    })
-  }
-
   render() {
     const { config, lock } = this.props
     return (
@@ -75,26 +63,14 @@ export class AppStore extends React.Component {
         <Apps>
           {Object.keys(this.integrations).map(index => {
             const integration = this.integrations[index]
-            if (integration.details) {
-              return (
-                <Integration
-                  key={index}
-                  name={integration.name}
-                  icon={integration.icon}
-                  action={() => this.setDetails(integration.details)}
-                />
-              )
-            }
-            if (integration.href) {
-              return (
-                <Integration
-                  key={index}
-                  name={integration.name}
-                  icon={integration.icon}
-                  href={integration.href}
-                />
-              )
-            }
+            return (
+              <Integration
+                key={index}
+                name={integration.name}
+                icon={integration.icon}
+                href={integration.href}
+              />
+            )
           })}
         </Apps>
         <Details>
