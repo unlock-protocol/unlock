@@ -26,6 +26,7 @@ describe('v13', () => {
     const decimals = 8 // Do not test with 18 which is the default...
     const erc20Address = '0x6F7a54D6629b7416E17fc472B4003aE8EF18EF4c'
 
+    // Args to this function are the mocked values
     async function nockBeforeEach(decimals = 18, erc20Address) {
       nock.cleanAll()
       walletService = await prepWalletService(
@@ -38,7 +39,7 @@ describe('v13', () => {
       const contractMethods = metadata.functions
       const resultEncoder = ethers.utils.defaultAbiCoder
 
-      // Mock the call to get erc20Address (only if it has been set!)
+      // Mock the call to get erc20Address (only if none has been set, otherwise, we'll retrieve it)
       if (erc20Address) {
         nock.ethCallAndYield(
           contractMethods.tokenAddress.encode([]),
@@ -49,8 +50,8 @@ describe('v13', () => {
 
       const callMethodData = prepContract({
         contract: UnlockV13.PublicLock,
-        functionName: 'updateKeyPrice',
-        signature: 'uint256',
+        functionName: 'updateKeyPricing',
+        signature: 'uint256,address',
         nock,
       })
 
@@ -58,7 +59,10 @@ describe('v13', () => {
         testTransaction,
         testTransactionResult,
         success,
-      } = callMethodData(utils.toDecimal(keyPrice, decimals))
+      } = callMethodData(
+        utils.toDecimal(keyPrice, decimals),
+        erc20Address || ZERO
+      )
 
       transaction = testTransaction
       transactionResult = testTransactionResult
@@ -69,7 +73,7 @@ describe('v13', () => {
       it('should invoke _handleMethodCall with the right params', async () => {
         expect.assertions(2)
 
-        await nockBeforeEach(decimals)
+        await nockBeforeEach(decimals, ZERO)
         setupSuccess()
 
         walletService._handleMethodCall = jest.fn(() =>
@@ -93,7 +97,9 @@ describe('v13', () => {
                   '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                 address: lockAddress,
                 topics: [
-                  EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                  EventInfo.events[
+                    'PricingChanged(uint256,uint256,address,address)'
+                  ].topic,
                   encoder.encode(
                     ['uint256'],
                     [
@@ -110,9 +116,11 @@ describe('v13', () => {
                       ),
                     ]
                   ),
+                  encoder.encode(['address'], [ZERO]),
+                  encoder.encode(['address'], [ZERO]),
                 ],
                 data: encoder.encode(
-                  ['uint256', 'uint256'],
+                  ['uint256', 'uint256', 'address', 'address'],
                   [
                     utils.toRpcResultNumber(
                       utils.toDecimal(oldPrice, decimals)
@@ -120,6 +128,8 @@ describe('v13', () => {
                     utils.toRpcResultNumber(
                       utils.toDecimal(keyPrice, decimals)
                     ),
+                    ZERO,
+                    ZERO,
                   ]
                 ),
                 logIndex: 0,
@@ -183,7 +193,9 @@ describe('v13', () => {
                     '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                   address: lockAddress,
                   topics: [
-                    EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                    EventInfo.events[
+                      'PricingChanged(uint256,uint256,address,address)'
+                    ].topic,
                     encoder.encode(
                       ['uint256'],
                       [
@@ -200,9 +212,11 @@ describe('v13', () => {
                         ),
                       ]
                     ),
+                    encoder.encode(['address'], [ZERO]),
+                    encoder.encode(['address'], [ZERO]),
                   ],
                   data: encoder.encode(
-                    ['uint256', 'uint256'],
+                    ['uint256', 'uint256', 'address', 'address'],
                     [
                       utils.toRpcResultNumber(
                         utils.toDecimal(oldPrice, decimals)
@@ -210,6 +224,8 @@ describe('v13', () => {
                       utils.toRpcResultNumber(
                         utils.toDecimal(keyPrice, decimals)
                       ),
+                      ZERO,
+                      ZERO,
                     ]
                   ),
                   logIndex: 0,
@@ -273,7 +289,9 @@ describe('v13', () => {
                       '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                     address: lockAddress,
                     topics: [
-                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      EventInfo.events[
+                        'PricingChanged(uint256,uint256,address,address)'
+                      ].topic,
                       encoder.encode(
                         ['uint256'],
                         [
@@ -290,9 +308,11 @@ describe('v13', () => {
                           ),
                         ]
                       ),
+                      encoder.encode(['address'], [ZERO]),
+                      encoder.encode(['address'], [ZERO]),
                     ],
                     data: encoder.encode(
-                      ['uint256', 'uint256'],
+                      ['uint256', 'uint256', 'address', 'address'],
                       [
                         utils.toRpcResultNumber(
                           utils.toDecimal(oldPrice, decimals)
@@ -300,6 +320,8 @@ describe('v13', () => {
                         utils.toRpcResultNumber(
                           utils.toDecimal(keyPrice, decimals)
                         ),
+                        ZERO,
+                        ZERO,
                       ]
                     ),
                     logIndex: 0,
@@ -363,7 +385,9 @@ describe('v13', () => {
                       '0xace0af5853a98aff70ca427f21ad8a1a958cc219099789a3ea6fd5fac30f150c',
                     address: lockAddress,
                     topics: [
-                      EventInfo.events['PriceChanged(uint256,uint256)'].topic,
+                      EventInfo.events[
+                        'PricingChanged(uint256,uint256,address,address)'
+                      ].topic,
                       encoder.encode(
                         ['uint256'],
                         [utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18))]
@@ -372,12 +396,16 @@ describe('v13', () => {
                         ['uint256'],
                         [utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18))]
                       ),
+                      encoder.encode(['address'], [ZERO]),
+                      encoder.encode(['address'], [ZERO]),
                     ],
                     data: encoder.encode(
-                      ['uint256', 'uint256'],
+                      ['uint256', 'uint256', 'address', 'address'],
                       [
                         utils.toRpcResultNumber(utils.toDecimal(oldPrice, 18)),
                         utils.toRpcResultNumber(utils.toDecimal(keyPrice, 18)),
+                        ZERO,
+                        ZERO,
                       ]
                     ),
                     logIndex: 0,
