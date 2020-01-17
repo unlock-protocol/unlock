@@ -33,7 +33,7 @@ and will require access to a running Instance.
 You can configure your connection details in a few ways. Here are the suggested methods:
 
 1. Configure environment variables (Locksmith will recognize these placed in
- an .env file at the root of the application)
+ an `.env.dev.local` file at the root of the application)
    * **DB_USERNAME** - Database User
    * **DB_PASSWORD** - Password of User
    * **DB_NAME** - Database Name
