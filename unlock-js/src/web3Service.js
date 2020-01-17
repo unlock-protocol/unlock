@@ -170,7 +170,7 @@ export default class Web3Service extends UnlockService {
       .map(x => x.replace(/0x/, ''))
       .join('')
 
-    let address = utils.sha3(`0x${seed}`).slice(-40)
+    const address = utils.sha3(`0x${seed}`).slice(-40)
 
     return utils.toChecksumAddress(`0x${address}`)
   }
@@ -195,17 +195,16 @@ export default class Web3Service extends UnlockService {
         owner,
         lockSalt
       )
-    } else {
-      // TODO: once the contracts have been moved to v12, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
-      let transactionCount = await this.provider.getTransactionCount(
-        this.unlockContractAddress
-      )
-
-      return ethers.utils.getContractAddress({
-        from: this.unlockContractAddress,
-        nonce: transactionCount,
-      })
     }
+    // TODO: once the contracts have been moved to v12, get rid of the code below as no lock will ever be deployed again from the old unlock contract!
+    const transactionCount = await this.provider.getTransactionCount(
+      this.unlockContractAddress
+    )
+
+    return ethers.utils.getContractAddress({
+      from: this.unlockContractAddress,
+      nonce: transactionCount,
+    })
   }
 
   /**
@@ -227,7 +226,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} data
    */
   _getTransactionType(contract, data) {
-    const contractName = contract.contractName
+    const { contractName } = contract
     if (!['PublicLock', 'Unlock'].includes(contractName)) {
       // Unknown contract!
       return null
@@ -533,10 +532,9 @@ export default class Web3Service extends UnlockService {
             blockNumber,
             defaults
           )
-        } else {
-          this._watchTransaction(transactionHash)
-          return null
         }
+        this._watchTransaction(transactionHash)
+        return null
       }
 
       // Here we have a block transaction , which means the node knows about it
@@ -628,7 +626,7 @@ export default class Web3Service extends UnlockService {
   async getKeyByLockForOwner(lock, owner) {
     const lockContract = await this.getLockContract(lock)
     return this._getKeyByLockForOwner(lockContract, owner).then(expiration => {
-      let keyPayload = {
+      const keyPayload = {
         lock,
         owner,
         expiration,
@@ -696,7 +694,7 @@ export default class Web3Service extends UnlockService {
   _genKeyOwnersFromLockContractIterative(lock, lockContract, page, byPage) {
     const startIndex = page * byPage
     return new Promise(resolve => {
-      let keyPromises = Array.from(Array(byPage).keys()).map(n => {
+      const keyPromises = Array.from(Array(byPage).keys()).map(n => {
         return lockContract.functions
           .owners(n + startIndex)
           .then(ownerAddress => {
@@ -805,7 +803,8 @@ export default class Web3Service extends UnlockService {
    * @returns {Promise<string>}
    */
   async getTokenBalance(contractAddress, userWalletAddress) {
-    let balance, decimals
+    let balance
+    let decimals
     let result
     try {
       balance = await getErc20BalanceForAddress(

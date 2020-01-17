@@ -70,7 +70,7 @@ describe('Web3Service', () => {
         '1000', // _expirationDuration
         currencyAddress, // _tokenAddress
         '1000000000', // _keyPrice
-        '1', //_maxNumberOfKeys
+        '1', // _maxNumberOfKeys
         'Lock name', // _lockName
         utils.sha3(utils.utf8ToHex('salt')).substring(0, 26), // salt
       ])
@@ -931,7 +931,7 @@ describe('Web3Service', () => {
         web3Service.on('transaction.updated', (hash, update) => {
           expect(hash).toBe(transaction.hash)
           expect(update.status).toEqual('mined')
-          expect(update.confirmations).toEqual(3) //17-14
+          expect(update.confirmations).toEqual(3) // 17-14
           expect(update.blockNumber).toEqual(14)
           expect(update.type).toEqual('TRANSACTION_TYPE')
           done()
@@ -987,7 +987,7 @@ describe('Web3Service', () => {
 
         web3Service.once('transaction.updated', (transactionHash, update) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(update.confirmations).toEqual(15) //29-14
+          expect(update.confirmations).toEqual(15) // 29-14
           expect(update.type).toEqual('TYPE')
           expect(update.blockNumber).toEqual(14)
           web3Service.once('transaction.updated', (transactionHash, update) => {

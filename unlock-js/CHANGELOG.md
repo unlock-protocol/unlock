@@ -1,5 +1,9 @@
 # Changes
 
+# Next version
+- Code cleaned witth automated linting fixes
+- Adjusted lint config to ignore violations that could not be fixed auttomatically
+
 # 0.7.0
 
 - Adding support for ABI version 1.3

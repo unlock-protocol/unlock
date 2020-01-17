@@ -37,7 +37,7 @@ export default class FastJsonRpcSigner extends ethers.Signer {
 
     const ret = {
       ...transaction,
-      hash: hash,
+      hash,
       blockHash: null,
       blockNumber: null,
       creates: null,

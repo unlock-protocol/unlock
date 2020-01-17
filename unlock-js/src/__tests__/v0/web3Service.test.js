@@ -913,7 +913,7 @@ describe('Web3Service', () => {
         web3Service.on('transaction.updated', (hash, update) => {
           expect(hash).toBe(transaction.hash)
           expect(update.status).toEqual('mined')
-          expect(update.confirmations).toEqual(3) //17-14
+          expect(update.confirmations).toEqual(3) // 17-14
           expect(update.blockNumber).toEqual(14)
           expect(update.type).toEqual('TRANSACTION_TYPE')
           done()
@@ -969,7 +969,7 @@ describe('Web3Service', () => {
 
         web3Service.once('transaction.updated', (transactionHash, update) => {
           expect(transactionHash).toEqual(transaction.hash)
-          expect(update.confirmations).toEqual(15) //29-14
+          expect(update.confirmations).toEqual(15) // 29-14
           expect(update.type).toEqual('TYPE')
           expect(update.blockNumber).toEqual(14)
           web3Service.once('transaction.updated', (transactionHash, update) => {

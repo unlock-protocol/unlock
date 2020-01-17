@@ -91,7 +91,7 @@ describe('contract deployer', () => {
       {
         from: unlockAccountsOnNode[0],
         data: Contract.bytecode,
-        gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+        gas: `0x${GAS_AMOUNTS.deployContract.toString(16)}`,
       },
       false, // ethers.js does not use gasPrice
       transaction.hash
@@ -101,11 +101,11 @@ describe('contract deployer', () => {
     nock.ethGetTransactionReceipt(transaction.hash, transactionReceipt)
     nock.ethGetTransactionReceipt(transaction.hash, transactionReceipt)
     // get the contract bytecode (web3-only)
-    /*nock.ethGetCodeAndYield(
+    /* nock.ethGetCodeAndYield(
       '0xbbbdeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
       'latest',
       Contract.deployedByteCode
-    )*/
+    ) */
 
     // initialize call
     // nock.ethGasPriceAndYield(gasPrice) // web3-only
@@ -154,7 +154,7 @@ describe('contract deployer', () => {
           {
             from: unlockAccountsOnNode[0],
             data: UnlockContract.bytecode,
-            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+            gas: `0x${GAS_AMOUNTS.deployContract.toString(16)}`,
           },
           gasPrice,
           transaction.hash,
@@ -180,7 +180,7 @@ describe('contract deployer', () => {
           {
             from: unlockAccountsOnNode[0],
             data: UnlockContract.bytecode,
-            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+            gas: `0x${GAS_AMOUNTS.deployContract.toString(16)}`,
           },
           gasPrice,
           transaction.hash,
@@ -208,7 +208,7 @@ describe('contract deployer', () => {
           {
             from: unlockAccountsOnNode[0],
             data: UnlockContract.bytecode,
-            gas: '0x' + GAS_AMOUNTS.deployContract.toString(16),
+            gas: `0x${GAS_AMOUNTS.deployContract.toString(16)}`,
           },
           gasPrice,
           transaction.hash

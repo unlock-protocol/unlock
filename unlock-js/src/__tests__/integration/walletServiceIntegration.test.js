@@ -3,15 +3,15 @@ import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 
-let host,
-  port = 8545
+let host
+const port = 8545
 if (process.env.CI) {
   host = 'ganache-integration'
 } else {
   host = '127.0.0.1'
 }
 
-let provider = `http://${host}:${port}`
+const provider = `http://${host}:${port}`
 
 // This test suite will do the following:
 // For each version of the Unlock contract
@@ -31,7 +31,8 @@ let accounts
 describe('Wallet Service Integration', () => {
   const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13']
   describe.each(versions)('%s', versionName => {
-    let walletService, web3Service
+    let walletService
+    let web3Service
 
     beforeAll(async () => {
       walletService = new WalletService({})
@@ -98,7 +99,10 @@ describe('Wallet Service Integration', () => {
       describe.each(
         locks[versionName].map((lock, index) => [index, lock.name, lock])
       )('lock %i: %s', (lockIndex, lockName, lockParams) => {
-        let lock, expectedLockAddress, lockAddress, lockCreationHash
+        let lock
+        let expectedLockAddress
+        let lockAddress
+        let lockCreationHash
 
         beforeAll(async () => {
           if (lockParams.currencyContractAddress) {
@@ -174,12 +178,14 @@ describe('Wallet Service Integration', () => {
         })
 
         describe('updateKeyPrice', () => {
-          let oldKeyPrice, newPrice, transactionHash
+          let oldKeyPrice
+          let newPrice
+          let transactionHash
           beforeAll(async () => {
             oldKeyPrice = lock.keyPrice
             newPrice = await walletService.updateKeyPrice(
               {
-                lockAddress: lockAddress,
+                lockAddress,
                 keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
               },
               (error, hash) => {
@@ -204,7 +210,8 @@ describe('Wallet Service Integration', () => {
         describe('purchaseKey', () => {
           let tokenId
           let key
-          let keyOwner, keyPurchaser
+          let keyOwner
+          let keyPurchaser
           let lockBalanceBefore
           let userBalanceBefore
           let transactionHash

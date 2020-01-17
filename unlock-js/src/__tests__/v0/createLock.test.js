@@ -23,7 +23,7 @@ const lock = {
 const EventInfo = new ethers.utils.Interface(UnlockV0.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
-let receipt = {
+const receipt = {
   logs: [],
 }
 

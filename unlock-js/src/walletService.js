@@ -91,7 +91,7 @@ export default class WalletService extends UnlockService {
       return (this.ready = false)
     }
 
-    let address = accounts[0]
+    const address = accounts[0]
 
     this.emit('account.changed', address)
     if (this.provider.emailAddress) {

@@ -86,8 +86,7 @@ export default async function(
 
   if (transferEvent) {
     return transferEvent.values._tokenId.toString()
-  } else {
-    // There was no Transfer log (transaction failed?)
-    return null
   }
+  // There was no Transfer log (transaction failed?)
+  return null
 }
