@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest"
   },
   "license": "MIT",
   "dependencies": {
     "@types/cron": "^1.7.1",
     "@types/isomorphic-fetch": "^0.0.35",
+    "@types/jest": "^24.9.0",
+    "@types/mocha": "^5.2.7",
     "@types/sequelize": "^4.28.8",
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
@@ -28,6 +31,7 @@
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1",
     "sequelize-typescript": "^1.1.0",
+    "ts-jest": "^24.3.0",
     "typescript": "^3.7.4"
   },
   "devDependencies": {
