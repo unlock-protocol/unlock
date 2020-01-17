@@ -424,6 +424,66 @@ describe('WalletService (ethers)', () => {
     })
   })
 
+  describe('setKeyMetadata', () => {
+    let originalFetch
+    beforeAll(() => {
+      originalFetch = window.fetch
+    })
+    beforeEach(async () => {
+      await resetTestsAndConnect()
+      window.fetch = jest.fn()
+      walletService.getAccount = jest.fn().mockResolvedValue('0xuser')
+      walletService.unformattedSignTypedData = jest
+        .fn()
+        .mockResolvedValue('aSignature')
+    })
+    afterAll(() => {
+      window.fetch = originalFetch
+    })
+
+    it('sends the request to the correct URL', async () => {
+      expect.assertions(1)
+
+      await walletService.setKeyMetadata(
+        '0xlockAddress',
+        '1',
+        {
+          color: 'blue',
+          bestBandNamedAfterAPlace: 'Chicago',
+        },
+        'https://locksmith',
+        jest.fn()
+      )
+
+      expect(window.fetch).toHaveBeenCalledWith(
+        'https://locksmith/api/key/0xlockAddress/1',
+        expect.any(Object)
+      )
+    })
+
+    it('calls back with an error if something goes wrong', async done => {
+      expect.assertions(0)
+
+      window.fetch = jest.fn().mockRejectedValue('fail')
+      const callback = error => {
+        if (error) {
+          done()
+        }
+      }
+
+      await walletService.setKeyMetadata(
+        '0xwhatever',
+        '1',
+        {
+          color: 'blue',
+          bestBandNamedAfterAPlace: 'Chicago',
+        },
+        'https://locksmith',
+        callback
+      )
+    })
+  })
+
   describe('versions', () => {
     const versionSpecificUnlockMethods = ['createLock']
 
