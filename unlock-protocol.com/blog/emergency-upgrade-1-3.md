@@ -31,7 +31,7 @@ We recently changed the locks deployed to use the minimal proxy standard, [EIP-1
 
 During normal operation a user calls `createLock` on our main Unlock contract.  That function will deploy the lock and call `initialize` in the same transaction.  It’s responsible for recording data such as the lock owner and the key price.
 
-Proxies work by reading the implementation logic from a template.  The template is nothing more than a contract containing the logic / source code for the lock proxies to leverage.
+Proxies work by reading the implementation logic from a template.  The template is nothing more than a contract containing the logic / source code for each individual lock to leverage.
 
 Additionally we allow the lock owner to `selfdestruct` their lock after it's outlived its usefulness. This allows them to be good citizens by freeing up data that is no longer relevant - reducing blockchain bloat, preventing nodes from maintaining state that no one is interested in anymore.
 
