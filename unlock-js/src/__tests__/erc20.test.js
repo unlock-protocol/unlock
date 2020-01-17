@@ -99,11 +99,11 @@ describe('erc20', () => {
     it('should dispatch the appropriate transaction', async () => {
       expect.assertions(2)
 
-      let gas = '0x73b3'
-      let approvalAmount = 2
-      let transactionHash =
+      const gas = '0x73b3'
+      const approvalAmount = 2
+      const transactionHash =
         '0xbb1f660b4a40e1931b1206d15421f364487b494920b2e67152a9ff4c74dcb66d'
-      let transactionData =
+      const transactionData =
         '0x095ea7b3000000000000000000000000e29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a0000000000000000000000000000000000000000000000000000000000000002'
 
       nock.accountsAndYield([callerAddress])
@@ -117,7 +117,7 @@ describe('erc20', () => {
       )
       nock.ethSendTransactionAndYield(
         {
-          gas: gas,
+          gas,
           to: erc20ContractAddress,
           data: transactionData,
           from: callerAddress,
@@ -135,7 +135,7 @@ describe('erc20', () => {
         from: callerAddress,
         to: erc20ContractAddress,
         value: '0x0',
-        gas: gas,
+        gas,
         gasPrice: '0x4a817c800',
         input: transactionData,
         v: '0x1c',
@@ -143,7 +143,7 @@ describe('erc20', () => {
         s: '0x237f5b5bde381eedd1c016111ca9549beb7742abb7c9a7af25aad3c53f98f792',
       })
 
-      let result = await approveTransfer(
+      const result = await approveTransfer(
         erc20ContractAddress,
         lockContractAddress,
         approvalAmount,
