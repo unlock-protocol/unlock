@@ -41,7 +41,7 @@ If someone figured this out before we did they could have called `initialize` on
 
 Once the template has been destroyed, all proxies attempting to read the implementation logic will fail. This means no new purchases, no reading who owns a key, and no way to withdraw any funds raised from previous key sales.
 
-We initialized the template and renounced ownership so that no one can ever call `selfdestruct`. Going forward we have added this to our deployment checklist, ensuring the template is initialized before Unlock is upgraded so that there is no window where someone could do damage by claiming ownership first.
+We initialized the template and renounced ownership so that no one can ever call `selfdestruct`. We are working on [adding this to our deployment script](https://github.com/unlock-protocol/unlock/tree/julien-unlockjs) so this step is not overlooked in the future.
 
 ## Steal money from key sales
 
@@ -118,5 +118,7 @@ If you had sold any keys on an impacted lock:
  - Call `grantKeys` on the new lock to ensure your members did not lose anything in the process
 
 Over the coming weeks we will be discussing what we can do to help ensure we do make an error like this again in the future.
+
+The issues have been fixed.  You should not feel hesitant to use the system because of what was discussed above.  In the end, no lock owner has lost funds and end-users (those purchasing keys) were never in any risk at all.  
 
 Questions or concerns? Get in touch we’d be happy to explain further: hello@unlock-protocol.com
