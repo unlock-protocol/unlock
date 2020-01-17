@@ -2,9 +2,11 @@ import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
+import 'cross-fetch/polyfill'
 
 let host
 const port = 8545
+const locksmithPort = 8080
 if (process.env.CI) {
   host = 'ganache-integration'
 } else {
@@ -12,6 +14,7 @@ if (process.env.CI) {
 }
 
 const provider = `http://${host}:${port}`
+const locksmithBaseUrl = `http://${host}:${locksmithPort}`
 
 // This test suite will do the following:
 // For each version of the Unlock contract
@@ -29,7 +32,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13']
+  const versions = [/* 'v0', 'v01', 'v02', 'v10', 'v11', 'v12', */ 'v13']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
@@ -332,6 +335,39 @@ describe('Wallet Service Integration', () => {
               parseInt(key.expiration) -
                 parseInt(lock.expirationDuration + new Date().getTime() / 1000)
             ).toBeLessThan(60)
+          })
+
+          it('should be possible to set metadata on the key', done => {
+            expect.assertions(2)
+            const callback = (error, value) => {
+              expect(error).toBeNull()
+              expect(value).toBeTruthy()
+              done()
+            }
+
+            walletService.setKeyMetadata(
+              lockAddress,
+              tokenId,
+              { test: 'suceeded' },
+              locksmithBaseUrl,
+              callback
+            )
+          })
+
+          it('should be possible to retrieve the metadata on the key', done => {
+            expect.assertions(0)
+
+            const callback = (error, value) => {
+              console.log({ error, value })
+              done()
+            }
+
+            walletService.getKeyMetadata(
+              lockAddress,
+              tokenId,
+              locksmithBaseUrl,
+              callback
+            )
           })
         })
 

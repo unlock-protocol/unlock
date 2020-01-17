@@ -4,6 +4,7 @@ import FetchJsonProvider from './FetchJsonProvider'
 import { GAS_AMOUNTS } from './constants'
 import utils from './utils'
 import { generateKeyMetadataPayload } from './typedData/keyMetadata'
+import 'cross-fetch/polyfill'
 
 const bytecode = require('./bytecode').default
 const abis = require('./abis').default
@@ -352,13 +353,47 @@ export default class WalletService extends UnlockService {
         currentAddress,
         payload
       )
-      await fetch(url, {
+
+      const response = await fetch(url, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
+          'Content-Type': 'application/json',
         },
-        json: metadata,
+        body: JSON.stringify(metadata),
       })
+
+      if (response.status !== 200) {
+        callback(
+          new Error(
+            `Received ${response.status} from locksmith: ${response.statusText}`
+          )
+        )
+        return
+      }
+      callback(null, true)
+    } catch (error) {
+      callback(error, null)
+    }
+  }
+
+  /**
+   * Sign and send a request to read metadata specific to a given key.
+   *
+   * @param {string} lockAddress - The address of the lock
+   * @param {string} keyId - The id of the key to set metadata on
+   * @param {string} locksmithHost - A url with no trailing slash
+   * @param {*} callback
+   */
+  async getKeyMetadata(lockAddress, keyId, locksmithHost, callback) {
+    const url = `${locksmithHost}/api/key/${lockAddress}/${keyId}`
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        accept: 'json',
+      })
+      const json = await response.json()
+      callback(null, json)
     } catch (error) {
       callback(error, null)
     }
