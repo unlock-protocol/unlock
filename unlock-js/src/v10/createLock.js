@@ -11,7 +11,7 @@ import { getErc20Decimals } from '../erc20'
  * @param {*} provider
  */
 async function _getKeyPrice(lock, provider) {
-  let currencyContractAddress = lock.currencyContractAddress || ZERO
+  const currencyContractAddress = lock.currencyContractAddress || ZERO
 
   if (currencyContractAddress !== ZERO) {
     // We need to get the decimal value
@@ -20,9 +20,8 @@ async function _getKeyPrice(lock, provider) {
       provider
     )
     return ethersUtils.toDecimal(lock.keyPrice, erc20Decimals)
-  } else {
-    return ethersUtils.toWei(lock.keyPrice, 'ether')
   }
+  return ethersUtils.toWei(lock.keyPrice, 'ether')
 }
 
 /**
@@ -32,14 +31,14 @@ async function _getKeyPrice(lock, provider) {
  */
 export default async function(lock, callback) {
   const unlockContract = await this.getUnlockContract()
-  let maxNumberOfKeys = lock.maxNumberOfKeys
+  let { maxNumberOfKeys } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
 
   const decimalKeyPrice = _getKeyPrice(lock, this.provider)
 
-  let currencyContractAddress = lock.currencyContractAddress || ZERO
+  const currencyContractAddress = lock.currencyContractAddress || ZERO
 
   const lockName = lock.name || 'New Lock'
   const transactionPromise = unlockContract.functions[
@@ -87,8 +86,7 @@ export default async function(lock, callback) {
 
   if (newLockEvent) {
     return newLockEvent.values.newLockAddress
-  } else {
-    // There was no NewEvent log (transaction failed?)
-    return null
   }
+  // There was no NewEvent log (transaction failed?)
+  return null
 }

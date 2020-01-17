@@ -35,8 +35,7 @@ export default async function({ lockAddress }, callback) {
     })[0]
   if (withdrawalEvent) {
     return utils.fromWei(withdrawalEvent.values._amount.toString(), 'ether')
-  } else {
-    // There was no Withdrawal log (transaction failed?)
-    return null
   }
+  // There was no Withdrawal log (transaction failed?)
+  return null
 }

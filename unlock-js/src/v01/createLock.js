@@ -10,7 +10,7 @@ import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
  */
 export default async function(lock, callback) {
   const unlockContract = await this.getUnlockContract()
-  let maxNumberOfKeys = lock.maxNumberOfKeys
+  let { maxNumberOfKeys } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
@@ -57,8 +57,7 @@ export default async function(lock, callback) {
 
   if (newLockEvent) {
     return newLockEvent.values.newLockAddress
-  } else {
-    // There was no NewEvent log (transaction failed?)
-    return null
   }
+  // There was no NewEvent log (transaction failed?)
+  return null
 }

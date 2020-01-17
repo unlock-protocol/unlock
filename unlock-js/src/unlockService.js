@@ -58,27 +58,27 @@ export default class UnlockService extends EventEmitter {
       this.versionForAddress[contractAddress] = version
     }
 
-    if (1 === version) {
+    if (version === 1) {
       return v01
     }
 
-    if (2 === version) {
+    if (version === 2) {
       return v02
     }
 
-    if (3 === version) {
+    if (version === 3) {
       return v10
     }
 
-    if (4 === version) {
+    if (version === 4) {
       return v11
     }
 
-    if (5 === version) {
+    if (version === 5) {
       return v12
     }
 
-    if (6 === version) {
+    if (version === 6) {
       return v13
     }
 
@@ -174,28 +174,26 @@ export default class UnlockService extends EventEmitter {
   async getLockContract(lockAddress) {
     if (this.lockContracts[lockAddress]) {
       return this.lockContracts[lockAddress]
-    } else {
-      const version = await this.lockContractAbiVersion(lockAddress)
-      this.lockContracts[lockAddress] = this.getContract(
-        lockAddress,
-        version.PublicLock,
-        this.provider
-      )
-      return this.lockContracts[lockAddress]
     }
+    const version = await this.lockContractAbiVersion(lockAddress)
+    this.lockContracts[lockAddress] = this.getContract(
+      lockAddress,
+      version.PublicLock,
+      this.provider
+    )
+    return this.lockContracts[lockAddress]
   }
 
   async getUnlockContract() {
     if (this.unlockContract) {
       return this.unlockContract
-    } else {
-      const version = await this.unlockContractAbiVersion()
-      this.unlockContract = this.getContract(
-        this.unlockContractAddress,
-        version.Unlock,
-        this.provider
-      )
-      return this.unlockContract
     }
+    const version = await this.unlockContractAbiVersion()
+    this.unlockContract = this.getContract(
+      this.unlockContractAddress,
+      version.Unlock,
+      this.provider
+    )
+    return this.unlockContract
   }
 }

@@ -38,8 +38,7 @@ export default async function({ lockAddress, owner, keyPrice }, callback) {
     })[0]
   if (transferEvent) {
     return transferEvent.values._tokenId.toString()
-  } else {
-    // There was no Transfer log (transaction failed?)
-    return null
   }
+  // There was no Transfer log (transaction failed?)
+  return null
 }

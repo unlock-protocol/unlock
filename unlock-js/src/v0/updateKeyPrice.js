@@ -39,8 +39,7 @@ export default async function({ lockAddress, keyPrice }, callback) {
     })[0]
   if (priceChangedEvent) {
     return utils.fromWei(priceChangedEvent.values.keyPrice, 'ether')
-  } else {
-    // There was no NewEvent log (transaction failed?)
-    return null
   }
+  // There was no NewEvent log (transaction failed?)
+  return null
 }
