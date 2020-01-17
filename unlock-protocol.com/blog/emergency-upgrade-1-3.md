@@ -15,7 +15,11 @@ There were problems with this release which if targeted by an attacker had the p
 
 We fixed the second issue very quickly, so no worries there.  But funds are at risk if your lock is impacted.  For that we need the owners of these locks themselves to upgrade ASAP. (there are 14 locks which affected)
 
-This only impacts locks created in the past couple weeks. If you recently created a lock, please go to the Unlock dashboard to check if you are impacted.  The dashboard will flag any impacted lock, asking you to upgrade.
+This only impacts locks created between Jan 6th until Jan 17th (locks created in blocks #9227829 - #9295958). If you recently created a lock, please go to the Unlock dashboard to check if you are impacted. If the dashboard does not show a warning like the one below, your lock is safe.
+
+<p style="text-align:center">
+	<img src="/static/images/blog/emergency-upgrade-1-3/dashboard_warning.png" width="750px" alt="Dashboard warning">
+</p>
 
 So what happened?  Let’s start with the issue we were able to fix right away and then we’ll get to the juicy stuff.
 
@@ -29,13 +33,15 @@ During normal operation a user calls `createLock` on our main Unlock contract.  
 
 Proxies work by reading the implementation logic from a template.  The template is nothing more than a contract containing the logic / source code for the lock proxies to leverage.
 
+Additionally we allow the lock owner to `selfdestruct` their lock after it's outlived its usefulness. This allows them to be good citizens by freeing up data that is no longer relevant - reducing blockchain bloat, preventing nodes from maintaining state that no one is interested in anymore.
+
 We forgot to `initialize` the template!
 
-If someone figured this out before we did they could have called `initialize` on the template to make themselves the owner and then make an owner-only call to `selfdestruct` the contract.  
+If someone figured this out before we did they could have called `initialize` on the template to make themselves the owner and then make an owner-only call to `selfdestruct` the contract.  OpenZeppelin has a section in their docs talking [about this specific concern](https://docs.openzeppelin.com/upgrades/2.6/writing-upgradeable#potentially-unsafe-operations).
 
 Once the template has been destroyed, all proxies attempting to read the implementation logic will fail. This means no new purchases, no reading who owns a key, and no way to withdraw any funds raised from previous key sales.
 
-We initialized the template and renounced ownership so that no one can ever call selfdestruct. Going forward we have added this to our deployment checklist, ensuring the template is initialized before Unlock is upgraded so that there is no window where someone could do damage by claiming ownership first.
+We initialized the template and renounced ownership so that no one can ever call `selfdestruct`. Going forward we have added this to our deployment checklist, ensuring the template is initialized before Unlock is upgraded so that there is no window where someone could do damage by claiming ownership first.
 
 ## Steal money from key sales
 
