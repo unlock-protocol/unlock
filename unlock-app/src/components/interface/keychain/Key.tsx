@@ -194,7 +194,10 @@ const KeyContent = styled.div`
   margin-bottom: 20px;
 `
 
-const KeyInfo = styled.div``
+const KeyInfo = styled.div`
+  overflow: hidden;
+  min-width: 0;
+`
 
 const FieldLabel = styled.div`
   font-family: IBM Plex Sans;
@@ -211,6 +214,9 @@ const FieldLabel = styled.div`
 `
 
 const FieldValue = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-family: IBM Plex Sans;
   font-style: normal;
   font-weight: normal;
