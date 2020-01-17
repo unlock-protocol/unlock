@@ -9,6 +9,7 @@ import { currencySymbol } from '../../utils/lock'
 import Icon from '../lock/Icon'
 import { BalanceWithUnit, Eth, ERC20 } from '../helpers/Balance'
 import {
+  LockDetails,
   LockRow,
   LockName,
   LockLabel,
@@ -282,81 +283,83 @@ export class CreatorLockForm extends React.Component {
     this.ERC20Contract.name
 
     return (
-      <FormLockRow className="lockForm" data-address={lockAddress}>
-        <Icon />
-        <FormLockName>
-          <input
-            type="text"
-            name="name"
-            onChange={this.handleChange}
-            defaultValue={name}
-            data-valid={valid.name}
-            required={isNew}
-            disabled={!isNew}
-          />
-        </FormLockName>
-        <FormLockDuration>
-          <input
-            type="number"
-            step="1"
-            inputMode="numeric"
-            name="expirationDuration"
-            onChange={this.handleChange}
-            defaultValue={expirationDuration}
-            data-valid={valid.expirationDuration}
-            required={isNew}
-            disabled={!isNew}
-          />{' '}
-          days
-        </FormLockDuration>
-        <FormLockKeys>
-          <input
-            type="text"
-            name="maxNumberOfKeys"
-            onChange={this.handleChange}
-            value={maxNumberOfKeys}
-            data-valid={valid.maxNumberOfKeys}
-            required={isNew}
-            disabled={!isNew}
-          />
-          {isNew && !unlimitedKeys && (
-            <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
-              Unlimited
-            </LockLabelUnlimited>
-          )}
-        </FormLockKeys>
-        <FormBalanceWithUnit>
-          {!currency && <Eth />}
-          {!!currency && <ERC20 name={symbol} />}
-          <input
-            type="number"
-            step="0.00001"
-            inputMode="numeric"
-            name="keyPrice"
-            onChange={this.handleChange}
-            defaultValue={keyPrice}
-            data-valid={valid.keyPrice}
-            required
-          />
-          {isNew && !currency && (
-            <LockLabelCurrency onClick={this.toggleCurrency}>
-              {`Use ${this.ERC20Contract.name}`}
-            </LockLabelCurrency>
-          )}
-          {isNew && !!currency && (
-            <LockLabelCurrency onClick={this.toggleCurrency}>
-              Use Ether
-            </LockLabelCurrency>
-          )}
-        </FormBalanceWithUnit>
+      <FormLockRow>
+        <FormLockDetails className="lockForm" data-address={lockAddress}>
+          <Icon />
+          <FormLockName>
+            <input
+              type="text"
+              name="name"
+              onChange={this.handleChange}
+              defaultValue={name}
+              data-valid={valid.name}
+              required={isNew}
+              disabled={!isNew}
+            />
+          </FormLockName>
+          <FormLockDuration>
+            <input
+              type="number"
+              step="1"
+              inputMode="numeric"
+              name="expirationDuration"
+              onChange={this.handleChange}
+              defaultValue={expirationDuration}
+              data-valid={valid.expirationDuration}
+              required={isNew}
+              disabled={!isNew}
+            />{' '}
+            days
+          </FormLockDuration>
+          <FormLockKeys>
+            <input
+              type="text"
+              name="maxNumberOfKeys"
+              onChange={this.handleChange}
+              value={maxNumberOfKeys}
+              data-valid={valid.maxNumberOfKeys}
+              required={isNew}
+              disabled={!isNew}
+            />
+            {isNew && !unlimitedKeys && (
+              <LockLabelUnlimited onClick={this.handleUnlimitedClick}>
+                Unlimited
+              </LockLabelUnlimited>
+            )}
+          </FormLockKeys>
+          <FormBalanceWithUnit>
+            {!currency && <Eth />}
+            {!!currency && <ERC20 name={symbol} />}
+            <input
+              type="number"
+              step="0.00001"
+              inputMode="numeric"
+              name="keyPrice"
+              onChange={this.handleChange}
+              defaultValue={keyPrice}
+              data-valid={valid.keyPrice}
+              required
+            />
+            {isNew && !currency && (
+              <LockLabelCurrency onClick={this.toggleCurrency}>
+                {`Use ${this.ERC20Contract.name}`}
+              </LockLabelCurrency>
+            )}
+            {isNew && !!currency && (
+              <LockLabelCurrency onClick={this.toggleCurrency}>
+                Use Ether
+              </LockLabelCurrency>
+            )}
+          </FormBalanceWithUnit>
 
-        <div>-</div>
-        <Status>
-          <Button onClick={this.handleSubmit}>Submit</Button>
-          <Button cancel onClick={this.handleCancel}>
-            Cancel
-          </Button>
-        </Status>
+          <div>-</div>
+          <Status>
+            <Button onClick={this.handleSubmit}>Submit</Button>
+            <Button cancel onClick={this.handleCancel}>
+              Cancel
+            </Button>
+          </Status>
+        </FormLockDetails>
       </FormLockRow>
     )
   }
@@ -404,6 +407,21 @@ const LockLabelCurrency = styled(LockLabel).attrs(() => ({
 `
 
 const FormLockRow = styled(LockRow)`
+  @keyframes slideIn {
+    0% {
+      transform: translateY(-50%);
+      opacity: 0;
+      }
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+      }
+    }
+    animation: 400ms ease slideIn;
+  }`
+
+const FormLockDetails = styled(LockDetails)`
   input[type='number'] {
     -moz-appearance: textfield;
   }
@@ -437,20 +455,6 @@ const FormLockRow = styled(LockRow)`
 
   input:disabled {
     color: var(--silver);
-  }
-
-  @keyframes slideIn {
-    0% {
-      transform: translateY(-50%);
-      opacity: 0;
-      }
-    }
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-      }
-    }
-    animation: 400ms ease slideIn;
   }
 `
 

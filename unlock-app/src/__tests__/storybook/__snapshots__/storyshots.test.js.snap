@@ -15855,25 +15855,25 @@ exports[`Storyshots CreatorLockForm Default 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c7 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c6:before {
+.c7:before {
   content: '三';
 }
 
-.c4 {
+.c5 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c7 {
+.c8 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -15900,17 +15900,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -15921,29 +15945,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c8 {
+.c9 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -15961,46 +15978,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c4 input[type='text'],
+.c4 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c5 {
+.c6 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c6 input[type='text'],
+.c6 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c9 {
+.c10 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -16014,13 +16031,13 @@ Object {
   padding: 0;
 }
 
-.c9:hover {
+.c10:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c10 {
+.c11 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -16034,14 +16051,30 @@ Object {
   padding: 0;
 }
 
-.c10:hover {
+.c11:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -16052,7 +16085,177 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              name="name"
+              required=""
+              type="text"
+              value="New Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="30"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="10"
+            />
+            <div
+              class="c5"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c6"
+          >
+            <span
+              class="c7"
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+            <div
+              class="c8 currency"
+            >
+              Use DEV
+            </div>
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c9"
+          >
+            <button
+              class="c10"
+            >
+              Submit
+            </button>
+            <button
+              class="c11"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -16127,7 +16330,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -16138,7 +16341,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -16153,7 +16356,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -16163,16 +16366,16 @@ Object {
             value="10"
           />
           <div
-            class="c4"
+            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
           >
             Unlimited
           </div>
         </div>
         <span
-          class="c5"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c6"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="true"
@@ -16184,7 +16387,7 @@ Object {
             value="0.01"
           />
           <div
-            class="c7 currency"
+            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -16193,181 +16396,19 @@ Object {
           -
         </div>
         <div
-          class="c8"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c9"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c10"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          name="name"
-          required=""
-          type="text"
-          value="New Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="expirationDuration"
-          required=""
-          step="1"
-          type="number"
-          value="30"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          name="maxNumberOfKeys"
-          required=""
-          type="text"
-          value="10"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-        >
-          Use DEV
-        </div>
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -16429,14 +16470,14 @@ exports[`Storyshots CreatorLockForm With existing lock 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c5:before {
+.c6:before {
   content: '三';
 }
 
@@ -16459,17 +16500,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -16480,29 +16545,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -16520,46 +16578,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
-  width: 80%;
+  width: 50%;
   text-align: right;
-}
-
-.c4 {
-  white-space: nowrap;
-  white-space: nowrap;
 }
 
 .c4 input[type='text'],
 .c4 input[type='number'] {
   min-width: 30px;
+  width: 80%;
+  text-align: right;
+}
+
+.c5 {
+  white-space: nowrap;
+  white-space: nowrap;
+}
+
+.c5 input[type='text'],
+.c5 input[type='number'] {
+  min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -16573,13 +16631,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -16593,14 +16651,30 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -16611,7 +16685,168 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+          data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              name="name"
+              type="text"
+              value="Existing Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              inputmode="numeric"
+              name="expirationDuration"
+              step="1"
+              type="number"
+              value="2"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              name="maxNumberOfKeys"
+              type="text"
+              value="240"
+            />
+          </div>
+          <span
+            class="c5"
+          >
+            <span
+              class="c6"
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c7"
+          >
+            <button
+              class="c8"
+            >
+              Submit
+            </button>
+            <button
+              class="c9"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <svg
@@ -16687,7 +16922,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -16698,7 +16933,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -16713,7 +16948,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -16724,10 +16959,10 @@ Object {
           />
         </div>
         <span
-          class="c4"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c5"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="true"
@@ -16743,172 +16978,19 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c7"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          name="name"
-          type="text"
-          value="Existing Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          inputmode="numeric"
-          name="expirationDuration"
-          step="1"
-          type="number"
-          value="2"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          name="maxNumberOfKeys"
-          type="text"
-          value="240"
-        />
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -16970,14 +17052,14 @@ exports[`Storyshots CreatorLockForm when using DAI 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c5 {
+    .c6 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c5:before {
+.c6:before {
   content: '';
 }
 
@@ -17000,17 +17082,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -17021,29 +17127,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c6 {
+.c7 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -17061,46 +17160,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
-  width: 80%;
+  width: 50%;
   text-align: right;
-}
-
-.c4 {
-  white-space: nowrap;
-  white-space: nowrap;
 }
 
 .c4 input[type='text'],
 .c4 input[type='number'] {
   min-width: 30px;
+  width: 80%;
+  text-align: right;
+}
+
+.c5 {
+  white-space: nowrap;
+  white-space: nowrap;
+}
+
+.c5 input[type='text'],
+.c5 input[type='number'] {
+  min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c7 {
+.c8 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -17114,13 +17213,13 @@ Object {
   padding: 0;
 }
 
-.c7:hover {
+.c8:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c8 {
+.c9 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -17134,14 +17233,30 @@ Object {
   padding: 0;
 }
 
-.c8:hover {
+.c9:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -17152,7 +17267,169 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+          data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              name="name"
+              type="text"
+              value="Existing Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              inputmode="numeric"
+              name="expirationDuration"
+              step="1"
+              type="number"
+              value="2"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              disabled=""
+              name="maxNumberOfKeys"
+              type="text"
+              value="240"
+            />
+          </div>
+          <span
+            class="c5"
+          >
+            <span
+              class="c6"
+              name=""
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c7"
+          >
+            <button
+              class="c8"
+            >
+              Submit
+            </button>
+            <button
+              class="c9"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
         data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
       >
         <svg
@@ -17228,7 +17505,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -17239,7 +17516,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -17254,7 +17531,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -17265,10 +17542,10 @@ Object {
           />
         </div>
         <span
-          class="c4"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c5"
+            class="buwkmd-2 buwkmd-4 jkDgJn"
             name=""
           />
           <input
@@ -17285,173 +17562,19 @@ Object {
           -
         </div>
         <div
-          class="c6"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c7"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c8"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-      data-address="0xab7c74abc0c4d48d1bdad5dcb26153fc8780f83e"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          name="name"
-          type="text"
-          value="Existing Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          inputmode="numeric"
-          name="expirationDuration"
-          step="1"
-          type="number"
-          value="2"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          disabled=""
-          name="maxNumberOfKeys"
-          type="text"
-          value="240"
-        />
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-4 jkDgJn"
-          name=""
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -17513,25 +17636,25 @@ exports[`Storyshots CreatorLockForm/invalid invalid duration 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c7 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c6:before {
+.c7:before {
   content: '三';
 }
 
-.c4 {
+.c5 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c7 {
+.c8 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -17558,17 +17681,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -17579,29 +17726,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c8 {
+.c9 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -17619,46 +17759,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c4 input[type='text'],
+.c4 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c5 {
+.c6 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c6 input[type='text'],
+.c6 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c9 {
+.c10 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -17672,13 +17812,13 @@ Object {
   padding: 0;
 }
 
-.c9:hover {
+.c10:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c10 {
+.c11 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -17692,14 +17832,30 @@ Object {
   padding: 0;
 }
 
-.c10:hover {
+.c11:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -17710,7 +17866,177 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              name="name"
+              required=""
+              type="text"
+              value="New Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="false"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="-1"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="10"
+            />
+            <div
+              class="c5"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c6"
+          >
+            <span
+              class="c7"
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+            <div
+              class="c8 currency"
+            >
+              Use DEV
+            </div>
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c9"
+          >
+            <button
+              class="c10"
+            >
+              Submit
+            </button>
+            <button
+              class="c11"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -17785,7 +18111,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -17796,7 +18122,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="false"
@@ -17811,7 +18137,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -17821,16 +18147,16 @@ Object {
             value="10"
           />
           <div
-            class="c4"
+            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
           >
             Unlimited
           </div>
         </div>
         <span
-          class="c5"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c6"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="true"
@@ -17842,7 +18168,7 @@ Object {
             value="0.01"
           />
           <div
-            class="c7 currency"
+            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -17851,181 +18177,19 @@ Object {
           -
         </div>
         <div
-          class="c8"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c9"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c10"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          name="name"
-          required=""
-          type="text"
-          value="New Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="false"
-          inputmode="numeric"
-          name="expirationDuration"
-          required=""
-          step="1"
-          type="number"
-          value="-1"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          name="maxNumberOfKeys"
-          required=""
-          type="text"
-          value="10"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-        >
-          Use DEV
-        </div>
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -18087,25 +18251,25 @@ exports[`Storyshots CreatorLockForm/invalid invalid key price 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c7 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c6:before {
+.c7:before {
   content: '三';
 }
 
-.c4 {
+.c5 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c7 {
+.c8 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -18132,17 +18296,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -18153,29 +18341,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c8 {
+.c9 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -18193,46 +18374,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c4 input[type='text'],
+.c4 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c5 {
+.c6 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c6 input[type='text'],
+.c6 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c9 {
+.c10 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -18246,13 +18427,13 @@ Object {
   padding: 0;
 }
 
-.c9:hover {
+.c10:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c10 {
+.c11 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -18266,14 +18447,30 @@ Object {
   padding: 0;
 }
 
-.c10:hover {
+.c11:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -18284,7 +18481,177 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              name="name"
+              required=""
+              type="text"
+              value="New Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="30"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="10"
+            />
+            <div
+              class="c5"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c6"
+          >
+            <span
+              class="c7"
+            />
+            <input
+              data-valid="false"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="-1"
+            />
+            <div
+              class="c8 currency"
+            >
+              Use DEV
+            </div>
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c9"
+          >
+            <button
+              class="c10"
+            >
+              Submit
+            </button>
+            <button
+              class="c11"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -18359,7 +18726,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -18370,7 +18737,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -18385,7 +18752,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -18395,16 +18762,16 @@ Object {
             value="10"
           />
           <div
-            class="c4"
+            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
           >
             Unlimited
           </div>
         </div>
         <span
-          class="c5"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c6"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="false"
@@ -18416,7 +18783,7 @@ Object {
             value="-1"
           />
           <div
-            class="c7 currency"
+            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -18425,181 +18792,19 @@ Object {
           -
         </div>
         <div
-          class="c8"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c9"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c10"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          name="name"
-          required=""
-          type="text"
-          value="New Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="expirationDuration"
-          required=""
-          step="1"
-          type="number"
-          value="30"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          name="maxNumberOfKeys"
-          required=""
-          type="text"
-          value="10"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="false"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="-1"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-        >
-          Use DEV
-        </div>
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -18661,25 +18866,25 @@ exports[`Storyshots CreatorLockForm/invalid invalid num keys 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c7 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c6:before {
+.c7:before {
   content: '三';
 }
 
-.c4 {
+.c5 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c7 {
+.c8 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -18706,17 +18911,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -18727,29 +18956,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c8 {
+.c9 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -18767,46 +18989,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c4 input[type='text'],
+.c4 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c5 {
+.c6 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c6 input[type='text'],
+.c6 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c9 {
+.c10 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -18820,13 +19042,13 @@ Object {
   padding: 0;
 }
 
-.c9:hover {
+.c10:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c10 {
+.c11 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -18840,14 +19062,30 @@ Object {
   padding: 0;
 }
 
-.c10:hover {
+.c11:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -18858,7 +19096,177 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="true"
+              name="name"
+              required=""
+              type="text"
+              value="New Lock"
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="30"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="false"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="-2"
+            />
+            <div
+              class="c5"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c6"
+          >
+            <span
+              class="c7"
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+            <div
+              class="c8 currency"
+            >
+              Use DEV
+            </div>
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c9"
+          >
+            <button
+              class="c10"
+            >
+              Submit
+            </button>
+            <button
+              class="c11"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -18933,7 +19341,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="true"
@@ -18944,7 +19352,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -18959,7 +19367,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="false"
@@ -18969,16 +19377,16 @@ Object {
             value="-2"
           />
           <div
-            class="c4"
+            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
           >
             Unlimited
           </div>
         </div>
         <span
-          class="c5"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c6"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="true"
@@ -18990,7 +19398,7 @@ Object {
             value="0.01"
           />
           <div
-            class="c7 currency"
+            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -18999,181 +19407,19 @@ Object {
           -
         </div>
         <div
-          class="c8"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c9"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c10"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="true"
-          name="name"
-          required=""
-          type="text"
-          value="New Lock"
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="expirationDuration"
-          required=""
-          step="1"
-          type="number"
-          value="30"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="false"
-          name="maxNumberOfKeys"
-          required=""
-          type="text"
-          value="-2"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-        >
-          Use DEV
-        </div>
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -19235,25 +19481,25 @@ exports[`Storyshots CreatorLockForm/invalid missing name 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c6 {
+    .c7 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c6:before {
+.c7:before {
   content: '三';
 }
 
-.c4 {
+.c5 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c7 {
+.c8 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -19280,17 +19526,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c0 input[type='number'] {
+.c0 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c1 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c1 > * {
+  padding-top: 16px;
+}
+
+.c1 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c0 input::-webkit-outer-spin-button,
-.c0 input::-webkit-inner-spin-button {
+.c1 input::-webkit-outer-spin-button,
+.c1 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c0 input {
+.c1 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -19301,29 +19571,22 @@ Object {
   font-weight: 200;
 }
 
-.c0 input:focus {
+.c1 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c0 input[data-valid='false'] {
+.c1 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c0 input:disabled {
+.c1 input:disabled {
   color: var(--silver);
 }
 
-.c0 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c8 {
+.c9 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -19341,46 +19604,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c1 {
+.c2 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c1 input[type='text'],
-.c1 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c2 input[type='text'],
 .c2 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c3 input[type='text'],
 .c3 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c4 input[type='text'],
+.c4 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c5 {
+.c6 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c5 input[type='text'],
-.c5 input[type='number'] {
+.c6 input[type='text'],
+.c6 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c9 {
+.c10 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -19394,13 +19657,13 @@ Object {
   padding: 0;
 }
 
-.c9:hover {
+.c10:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c10 {
+.c11 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -19414,14 +19677,30 @@ Object {
   padding: 0;
 }
 
-.c10:hover {
+.c11:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
+@media only screen and (min-width:736px) {
+  .c1 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c1 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c2 {
     grid-column: span 2;
   }
 }
@@ -19432,7 +19711,177 @@ Object {
         rel="stylesheet"
       />
       <div
-        class="c0 lockForm"
+        class="c0"
+      >
+        <div
+          class="c1 lockForm"
+        >
+          <svg
+            viewBox="0 0 216 216"
+            width="100%"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+          >
+            <defs>
+              <circle
+                cx="108"
+                cy="108"
+                id="a"
+                r="108"
+              />
+              <circle
+                cx="108"
+                cy="108"
+                id="c"
+                r="60.75"
+              />
+            </defs>
+            <g>
+              <mask
+                fill="#fff"
+                id="b"
+              >
+                <use
+                  xlink:href="#a"
+                />
+              </mask>
+              <g
+                transform="rotate(0, 108, 108)"
+              >
+                <circle
+                  cx="195.75"
+                  cy="114.75"
+                  fill="#8c8c8c"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="33.75"
+                  cy="162"
+                  fill="#e8e8e8"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+                <circle
+                  cx="121.5"
+                  cy="0"
+                  fill="#c3c3c3"
+                  mask="url(#b)"
+                  r="114.75"
+                />
+              </g>
+              <mask
+                fill="#fff"
+                id="d"
+              >
+                <use
+                  xlink:href="#c"
+                />
+              </mask>
+              <use
+                fill="#FFF"
+                xlink:href="#c"
+              />
+              <path
+                d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                fill="#8c8c8c"
+                mask="url(#d)"
+              />
+            </g>
+          </svg>
+          <div
+            class="c2 name"
+          >
+            <input
+              data-valid="false"
+              name="name"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="c3 duration"
+          >
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="expirationDuration"
+              required=""
+              step="1"
+              type="number"
+              value="30"
+            />
+             
+            days
+          </div>
+          <div
+            class="c4 keys"
+          >
+            <input
+              data-valid="true"
+              name="maxNumberOfKeys"
+              required=""
+              type="text"
+              value="10"
+            />
+            <div
+              class="c5"
+            >
+              Unlimited
+            </div>
+          </div>
+          <span
+            class="c6"
+          >
+            <span
+              class="c7"
+            />
+            <input
+              data-valid="true"
+              inputmode="numeric"
+              name="keyPrice"
+              required=""
+              step="0.00001"
+              type="number"
+              value="0.01"
+            />
+            <div
+              class="c8 currency"
+            >
+              Use DEV
+            </div>
+          </span>
+          <div>
+            -
+          </div>
+          <div
+            class="c9"
+          >
+            <button
+              class="c10"
+            >
+              Submit
+            </button>
+            <button
+              class="c11"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <div
+      class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+    >
+      <div
+        class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
       >
         <svg
           viewBox="0 0 216 216"
@@ -19507,7 +19956,7 @@ Object {
           </g>
         </svg>
         <div
-          class="c1 name"
+          class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
         >
           <input
             data-valid="false"
@@ -19518,7 +19967,7 @@ Object {
           />
         </div>
         <div
-          class="c2 duration"
+          class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
         >
           <input
             data-valid="true"
@@ -19533,7 +19982,7 @@ Object {
           days
         </div>
         <div
-          class="c3 keys"
+          class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
         >
           <input
             data-valid="true"
@@ -19543,16 +19992,16 @@ Object {
             value="10"
           />
           <div
-            class="c4"
+            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
           >
             Unlimited
           </div>
         </div>
         <span
-          class="c5"
+          class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
         >
           <span
-            class="c6"
+            class="buwkmd-2 buwkmd-3 itlNMk"
           />
           <input
             data-valid="true"
@@ -19564,7 +20013,7 @@ Object {
             value="0.01"
           />
           <div
-            class="c7 currency"
+            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
           >
             Use DEV
           </div>
@@ -19573,181 +20022,19 @@ Object {
           -
         </div>
         <div
-          class="c8"
+          class="aicx7v-0 sc-1u8ov25-4 djHQnd"
         >
           <button
-            class="c9"
+            class="sc-1u8ov25-9 hJABKP"
           >
             Submit
           </button>
           <button
-            class="c10"
+            class="sc-1u8ov25-9 bECABS"
           >
             Cancel
           </button>
         </div>
-      </div>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <div
-      class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-    >
-      <svg
-        viewBox="0 0 216 216"
-        width="100%"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
-      >
-        <defs>
-          <circle
-            cx="108"
-            cy="108"
-            id="a"
-            r="108"
-          />
-          <circle
-            cx="108"
-            cy="108"
-            id="c"
-            r="60.75"
-          />
-        </defs>
-        <g>
-          <mask
-            fill="#fff"
-            id="b"
-          >
-            <use
-              xlink:href="#a"
-            />
-          </mask>
-          <g
-            transform="rotate(0, 108, 108)"
-          >
-            <circle
-              cx="195.75"
-              cy="114.75"
-              fill="#8c8c8c"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="33.75"
-              cy="162"
-              fill="#e8e8e8"
-              mask="url(#b)"
-              r="114.75"
-            />
-            <circle
-              cx="121.5"
-              cy="0"
-              fill="#c3c3c3"
-              mask="url(#b)"
-              r="114.75"
-            />
-          </g>
-          <mask
-            fill="#fff"
-            id="d"
-          >
-            <use
-              xlink:href="#c"
-            />
-          </mask>
-          <use
-            fill="#FFF"
-            xlink:href="#c"
-          />
-          <path
-            d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-            fill="#8c8c8c"
-            mask="url(#d)"
-          />
-        </g>
-      </svg>
-      <div
-        class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-      >
-        <input
-          data-valid="false"
-          name="name"
-          required=""
-          type="text"
-          value=""
-        />
-      </div>
-      <div
-        class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-      >
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="expirationDuration"
-          required=""
-          step="1"
-          type="number"
-          value="30"
-        />
-         
-        days
-      </div>
-      <div
-        class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-      >
-        <input
-          data-valid="true"
-          name="maxNumberOfKeys"
-          required=""
-          type="text"
-          value="10"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-        >
-          Unlimited
-        </div>
-      </div>
-      <span
-        class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-      >
-        <span
-          class="buwkmd-2 buwkmd-3 itlNMk"
-        />
-        <input
-          data-valid="true"
-          inputmode="numeric"
-          name="keyPrice"
-          required=""
-          step="0.00001"
-          type="number"
-          value="0.01"
-        />
-        <div
-          class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-        >
-          Use DEV
-        </div>
-      </span>
-      <div>
-        -
-      </div>
-      <div
-        class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-      >
-        <button
-          class="sc-1u8ov25-8 bRruge"
-        >
-          Submit
-        </button>
-        <button
-          class="sc-1u8ov25-8 fCMrEl"
-        >
-          Cancel
-        </button>
       </div>
     </div>
   </div>,
@@ -24725,25 +25012,25 @@ exports[`Storyshots CreatorLocks no lock, showForm 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
-    .c13 {
+    .c14 {
   min-width: 15px;
   text-align: right;
   padding-right: 0.3em;
   display: inline-block;
 }
 
-.c13:before {
+.c14:before {
   content: '三';
 }
 
-.c11 {
+.c12 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
   padding: 5px;
 }
 
-.c14 {
+.c15 {
   color: var(--link);
   font-size: 11px;
   width: 100%;
@@ -24770,17 +25057,41 @@ Object {
   transition: box-shadow 100ms ease;
 }
 
-.c7 input[type='number'] {
+.c7 100% {
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.c8 {
+  font-weight: 200;
+  min-height: 48px;
+  padding-left: 8px;
+  color: var(--slate);
+  display: grid;
+  grid-row-gap: 0;
+  -webkit-align-items: start;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+}
+
+.c8 > * {
+  padding-top: 16px;
+}
+
+.c8 input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.c7 input::-webkit-outer-spin-button,
-.c7 input::-webkit-inner-spin-button {
+.c8 input::-webkit-outer-spin-button,
+.c8 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.c7 input {
+.c8 input {
   background: var(--lightgrey);
   border: 1px solid var(--lightgrey);
   border-radius: 4px;
@@ -24791,29 +25102,22 @@ Object {
   font-weight: 200;
 }
 
-.c7 input:focus {
+.c8 input:focus {
   outline: none;
   border: 1px solid var(--grey);
   -webkit-transition: border 100ms ease;
   transition: border 100ms ease;
 }
 
-.c7 input[data-valid='false'] {
+.c8 input[data-valid='false'] {
   border: 1px solid var(--red);
 }
 
-.c7 input:disabled {
+.c8 input:disabled {
   color: var(--silver);
 }
 
-.c7 100% {
-  -webkit-transform: translateY(0);
-  -ms-transform: translateY(0);
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.c15 {
+.c16 {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
   align-self: stretch;
@@ -24831,46 +25135,46 @@ Object {
   padding-bottom: 15px;
 }
 
-.c8 {
+.c9 {
   color: var(--link);
   font-weight: 600;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.c8 input[type='text'],
-.c8 input[type='number'] {
-  min-width: 70px;
-  width: 80%;
-}
-
 .c9 input[type='text'],
 .c9 input[type='number'] {
-  min-width: 30px;
-  width: 50%;
-  text-align: right;
+  min-width: 70px;
+  width: 80%;
 }
 
 .c10 input[type='text'],
 .c10 input[type='number'] {
   min-width: 30px;
+  width: 50%;
+  text-align: right;
+}
+
+.c11 input[type='text'],
+.c11 input[type='number'] {
+  min-width: 30px;
   width: 80%;
   text-align: right;
 }
 
-.c12 {
+.c13 {
   white-space: nowrap;
   white-space: nowrap;
 }
 
-.c12 input[type='text'],
-.c12 input[type='number'] {
+.c13 input[type='text'],
+.c13 input[type='number'] {
   min-width: 30px;
   width: 77%;
   padding-right: 0;
 }
 
-.c16 {
+.c17 {
   cursor: pointer;
   font: inherit;
   font-size: 13px;
@@ -24884,13 +25188,13 @@ Object {
   padding: 0;
 }
 
-.c16:hover {
+.c17:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
 }
 
-.c17 {
+.c18 {
   cursor: pointer;
   font: inherit;
   font-size: 10px;
@@ -24904,7 +25208,7 @@ Object {
   padding: 0;
 }
 
-.c17:hover {
+.c18:hover {
   color: #333;
   -webkit-transition: color 100ms ease;
   transition: color 100ms ease;
@@ -24985,8 +25289,24 @@ Object {
   }
 }
 
+@media only screen and (min-width:736px) {
+  .c8 {
+    grid-template-columns: 32px minmax(100px,1fr) repeat(4,minmax(56px,100px)) minmax(198px,1fr);
+    grid-template-rows: 84px;
+    grid-column-gap: 16px;
+  }
+}
+
 @media only screen and (min-width:0px) and (max-width:736px) {
   .c8 {
+    grid-column-gap: 4px;
+    grid-template-columns: 43px minmax(80px,140px) repeat(2,minmax(56px,80px));
+    grid-auto-flow: column;
+  }
+}
+
+@media only screen and (min-width:0px) and (max-width:736px) {
+  .c9 {
     grid-column: span 2;
   }
 }
@@ -25067,7 +25387,224 @@ Object {
           </div>
         </div>
         <div
-          class="c7 lockForm"
+          class="c7"
+        >
+          <div
+            class="c8 lockForm"
+          >
+            <svg
+              viewBox="0 0 216 216"
+              width="100%"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <defs>
+                <circle
+                  cx="108"
+                  cy="108"
+                  id="a"
+                  r="108"
+                />
+                <circle
+                  cx="108"
+                  cy="108"
+                  id="c"
+                  r="60.75"
+                />
+              </defs>
+              <g>
+                <mask
+                  fill="#fff"
+                  id="b"
+                >
+                  <use
+                    xlink:href="#a"
+                  />
+                </mask>
+                <g
+                  transform="rotate(0, 108, 108)"
+                >
+                  <circle
+                    cx="195.75"
+                    cy="114.75"
+                    fill="#8c8c8c"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                  <circle
+                    cx="33.75"
+                    cy="162"
+                    fill="#e8e8e8"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                  <circle
+                    cx="121.5"
+                    cy="0"
+                    fill="#c3c3c3"
+                    mask="url(#b)"
+                    r="114.75"
+                  />
+                </g>
+                <mask
+                  fill="#fff"
+                  id="d"
+                >
+                  <use
+                    xlink:href="#c"
+                  />
+                </mask>
+                <use
+                  fill="#FFF"
+                  xlink:href="#c"
+                />
+                <path
+                  d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
+                  fill="#8c8c8c"
+                  mask="url(#d)"
+                />
+              </g>
+            </svg>
+            <div
+              class="c9 name"
+            >
+              <input
+                data-valid="true"
+                name="name"
+                required=""
+                type="text"
+                value="New Lock"
+              />
+            </div>
+            <div
+              class="c10 duration"
+            >
+              <input
+                data-valid="true"
+                inputmode="numeric"
+                name="expirationDuration"
+                required=""
+                step="1"
+                type="number"
+                value="30"
+              />
+               
+              days
+            </div>
+            <div
+              class="c11 keys"
+            >
+              <input
+                data-valid="true"
+                name="maxNumberOfKeys"
+                required=""
+                type="text"
+                value="10"
+              />
+              <div
+                class="c12"
+              >
+                Unlimited
+              </div>
+            </div>
+            <span
+              class="c13"
+            >
+              <span
+                class="c14"
+              />
+              <input
+                data-valid="true"
+                inputmode="numeric"
+                name="keyPrice"
+                required=""
+                step="0.00001"
+                type="number"
+                value="0.01"
+              />
+              <div
+                class="c15 currency"
+              >
+                Use DEV
+              </div>
+            </span>
+            <div>
+              -
+            </div>
+            <div
+              class="c16"
+            >
+              <button
+                class="c17"
+              >
+                Submit
+              </button>
+              <button
+                class="c18"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>,
+  "container": <div>
+    <link
+      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
+      rel="stylesheet"
+    />
+    <section
+      class="sc-1olgoav-0 gKWPIY"
+    >
+      <div
+        class="sc-1olgoav-1 jFVwIh"
+      >
+        <div
+          class="sc-1olgoav-2 huJTMt"
+        >
+          Locks
+        </div>
+        <div
+          class="sc-1olgoav-3 hxpbwC"
+        >
+          Name / Address
+        </div>
+        <div
+          class="sc-1olgoav-3 hxpbwC"
+        >
+          Key Duration
+        </div>
+        <div
+          class="sc-1olgoav-3 sc-1olgoav-4 exIGbn"
+        >
+          Key Quantity
+        </div>
+        <div
+          class="sc-1olgoav-3 hxpbwC"
+        >
+          Price
+        </div>
+        <div
+          class="sc-1olgoav-3 hxpbwC"
+        >
+          <div
+            class="sc-htpNat ZSMPP"
+          >
+            Balance
+          </div>
+          <div
+            class="sc-bxivhb jXfCFv"
+          >
+            Balance
+          </div>
+        </div>
+      </div>
+      <div
+        class="mlglvd-1 sc-1u8ov25-2 eWWSII"
+      >
+        <div
+          class="mlglvd-2 sc-1u8ov25-3 ewLwkm lockForm"
         >
           <svg
             viewBox="0 0 216 216"
@@ -25142,7 +25679,7 @@ Object {
             </g>
           </svg>
           <div
-            class="c8 name"
+            class="mlglvd-6 sc-1u8ov25-5 iqaHoV name"
           >
             <input
               data-valid="true"
@@ -25153,7 +25690,7 @@ Object {
             />
           </div>
           <div
-            class="c9 duration"
+            class="mlglvd-8 sc-1u8ov25-6 dLtNPJ duration"
           >
             <input
               data-valid="true"
@@ -25168,7 +25705,7 @@ Object {
             days
           </div>
           <div
-            class="c10 keys"
+            class="mlglvd-9 sc-1u8ov25-7 bLLfFT keys"
           >
             <input
               data-valid="true"
@@ -25178,16 +25715,16 @@ Object {
               value="10"
             />
             <div
-              class="c11"
+              class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
             >
               Unlimited
             </div>
           </div>
           <span
-            class="c12"
+            class="buwkmd-6 sc-1u8ov25-8 bkQOpE"
           >
             <span
-              class="c13"
+              class="buwkmd-2 buwkmd-3 itlNMk"
             />
             <input
               data-valid="true"
@@ -25199,7 +25736,7 @@ Object {
               value="0.01"
             />
             <div
-              class="c14 currency"
+              class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
             >
               Use DEV
             </div>
@@ -25208,228 +25745,19 @@ Object {
             -
           </div>
           <div
-            class="c15"
+            class="aicx7v-0 sc-1u8ov25-4 djHQnd"
           >
             <button
-              class="c16"
+              class="sc-1u8ov25-9 hJABKP"
             >
               Submit
             </button>
             <button
-              class="c17"
+              class="sc-1u8ov25-9 bECABS"
             >
               Cancel
             </button>
           </div>
-        </div>
-      </section>
-    </div>
-  </body>,
-  "container": <div>
-    <link
-      href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:300,400,500,700|IBM+Plex+Sans:300,400,500,700|IBM+Plex+Serif:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
-    <section
-      class="sc-1olgoav-0 gKWPIY"
-    >
-      <div
-        class="sc-1olgoav-1 jFVwIh"
-      >
-        <div
-          class="sc-1olgoav-2 huJTMt"
-        >
-          Locks
-        </div>
-        <div
-          class="sc-1olgoav-3 hxpbwC"
-        >
-          Name / Address
-        </div>
-        <div
-          class="sc-1olgoav-3 hxpbwC"
-        >
-          Key Duration
-        </div>
-        <div
-          class="sc-1olgoav-3 sc-1olgoav-4 exIGbn"
-        >
-          Key Quantity
-        </div>
-        <div
-          class="sc-1olgoav-3 hxpbwC"
-        >
-          Price
-        </div>
-        <div
-          class="sc-1olgoav-3 hxpbwC"
-        >
-          <div
-            class="sc-htpNat ZSMPP"
-          >
-            Balance
-          </div>
-          <div
-            class="sc-bxivhb jXfCFv"
-          >
-            Balance
-          </div>
-        </div>
-      </div>
-      <div
-        class="mlglvd-1 sc-1u8ov25-2 bIVXby lockForm"
-      >
-        <svg
-          viewBox="0 0 216 216"
-          width="100%"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-        >
-          <defs>
-            <circle
-              cx="108"
-              cy="108"
-              id="a"
-              r="108"
-            />
-            <circle
-              cx="108"
-              cy="108"
-              id="c"
-              r="60.75"
-            />
-          </defs>
-          <g>
-            <mask
-              fill="#fff"
-              id="b"
-            >
-              <use
-                xlink:href="#a"
-              />
-            </mask>
-            <g
-              transform="rotate(0, 108, 108)"
-            >
-              <circle
-                cx="195.75"
-                cy="114.75"
-                fill="#8c8c8c"
-                mask="url(#b)"
-                r="114.75"
-              />
-              <circle
-                cx="33.75"
-                cy="162"
-                fill="#e8e8e8"
-                mask="url(#b)"
-                r="114.75"
-              />
-              <circle
-                cx="121.5"
-                cy="0"
-                fill="#c3c3c3"
-                mask="url(#b)"
-                r="114.75"
-              />
-            </g>
-            <mask
-              fill="#fff"
-              id="d"
-            >
-              <use
-                xlink:href="#c"
-              />
-            </mask>
-            <use
-              fill="#FFF"
-              xlink:href="#c"
-            />
-            <path
-              d="M121.179 116.422c-.001.895-.05 1.797-.168 2.683-1.047 7.845-9.512 12.951-17.006 10.275-5.482-1.958-8.917-6.786-8.921-12.582-.003-3.972-.003-7.944-.003-11.916h26.103c-.001 3.847-.002 7.694-.005 11.54m16.198-34.477V81h-16.335v16.198H94.936l.001-15.26v-.918h-16.28c-.014.196-.035.34-.035.483.001 5.232-.012 10.463-.019 15.695H74.25v7.694h4.353c.004 4.167.015 8.334.05 12.5.07 8.231 3.508 15.052 9.88 20.2 9.188 7.422 19.562 9 30.636 4.94 10.486-3.846 18.35-13.87 18.231-26.081-.037-3.853-.05-7.706-.054-11.559h4.404v-7.694h-4.4c.01-5.085.027-10.17.027-15.253"
-              fill="#8c8c8c"
-              mask="url(#d)"
-            />
-          </g>
-        </svg>
-        <div
-          class="mlglvd-6 sc-1u8ov25-4 itDxYs name"
-        >
-          <input
-            data-valid="true"
-            name="name"
-            required=""
-            type="text"
-            value="New Lock"
-          />
-        </div>
-        <div
-          class="mlglvd-8 sc-1u8ov25-5 eSaaUO duration"
-        >
-          <input
-            data-valid="true"
-            inputmode="numeric"
-            name="expirationDuration"
-            required=""
-            step="1"
-            type="number"
-            value="30"
-          />
-           
-          days
-        </div>
-        <div
-          class="mlglvd-9 sc-1u8ov25-6 grStlN keys"
-        >
-          <input
-            data-valid="true"
-            name="maxNumberOfKeys"
-            required=""
-            type="text"
-            value="10"
-          />
-          <div
-            class="mlglvd-3 sc-1u8ov25-0 eiQcmf"
-          >
-            Unlimited
-          </div>
-        </div>
-        <span
-          class="buwkmd-6 sc-1u8ov25-7 hWoykt"
-        >
-          <span
-            class="buwkmd-2 buwkmd-3 itlNMk"
-          />
-          <input
-            data-valid="true"
-            inputmode="numeric"
-            name="keyPrice"
-            required=""
-            step="0.00001"
-            type="number"
-            value="0.01"
-          />
-          <div
-            class="mlglvd-3 sc-1u8ov25-1 wqxwA currency"
-          >
-            Use DEV
-          </div>
-        </span>
-        <div>
-          -
-        </div>
-        <div
-          class="aicx7v-0 sc-1u8ov25-3 nPBfy"
-        >
-          <button
-            class="sc-1u8ov25-8 bRruge"
-          >
-            Submit
-          </button>
-          <button
-            class="sc-1u8ov25-8 fCMrEl"
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </section>
