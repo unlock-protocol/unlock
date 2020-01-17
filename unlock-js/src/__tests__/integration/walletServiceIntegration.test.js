@@ -5,16 +5,19 @@ import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import 'cross-fetch/polyfill'
 
 let host
+let locksmithHost
 const port = 8545
 const locksmithPort = 8080
 if (process.env.CI) {
   host = 'ganache-integration'
+  locksmithHost = 'locksmith'
 } else {
   host = '127.0.0.1'
+  locksmithHost = '127.0.0.1'
 }
 
 const provider = `http://${host}:${port}`
-const locksmithBaseUrl = `http://${host}:${locksmithPort}`
+const locksmithBaseUrl = `http://${locksmithHost}:${locksmithPort}`
 
 // This test suite will do the following:
 // For each version of the Unlock contract
