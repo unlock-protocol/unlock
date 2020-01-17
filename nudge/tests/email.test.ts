@@ -12,26 +12,26 @@ describe('Email', () => {
     describe('when the email request was accepted', () => {
       it('returns true', async () => {
         expect.assertions(1)
-        let successfulDispath = await Email.dispatch({
+        let successfulDispatch = await Email.dispatch({
           keyId: '1',
           emailAddress: 'email@example.com',
           lockAddress: 'lock address',
         })
 
-        expect(successfulDispath).toBe(true)
+        expect(successfulDispatch).toBe(true)
       })
     })
 
     describe('when there is an issue with the email request', () => {
       it('returns false', async () => {
         expect.assertions(1)
-        let unsuccessfulDispath = await Email.dispatch({
+        let unsuccessfulDispatch = await Email.dispatch({
           keyId: '2',
           emailAddress: 'email@example.com',
           lockAddress: 'lock address 2',
         })
 
-        expect(unsuccessfulDispath).toBe(false)
+        expect(unsuccessfulDispatch).toBe(false)
       })
     })
   })
