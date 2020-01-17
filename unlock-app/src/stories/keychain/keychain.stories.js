@@ -88,6 +88,7 @@ const generateKeys = n => {
         name: 'ERC20 paywall lock',
         price: '1000000000000000000',
         tokenAddress: '0x591ad9066603f5499d12ff4bc207e2f577448c46',
+        owner: '0x3CA206264762Caf81a8F0A843bbB850987B41e16',
       },
     })
   }
