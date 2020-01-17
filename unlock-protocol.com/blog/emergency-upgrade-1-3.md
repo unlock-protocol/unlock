@@ -13,9 +13,9 @@ There were problems with this release which if targeted by an attacker had the p
  - Steal money made from previous key sales.
  - Break every lock (and key) using the new version - blocking new sales, preventing key owners from being recognized and preventing the lock owner from accessing any funds previously made.
 
-We fixed the second issue very quickly, so no worries there.  But funds are at risk if your lock is impacted.  For that we need the owners of these locks themselves to upgrade ASAP. (there are 14 locks which affected)
+We fixed the second issue very quickly, so no worries there.  But funds are at risk if your lock is impacted.  For that we need the owners of these locks themselves to upgrade ASAP. (there are 14 locks which are affected)
 
-This only impacts locks created between Jan 6th until Jan 17th (locks created in blocks #9227829 - #9295958). If you recently created a lock, please go to the Unlock dashboard to check if you are impacted. If the dashboard does not show a warning like the one below, your lock is safe.
+This only impacts locks created between Jan 6th until Jan 17th (locks created between the block #9227829 and the block #9295958). If you recently created a lock, please go to the Unlock dashboard to check if you are impacted. If the dashboard does not show a warning like the one below, **your lock is safe**.
 
 <p style="text-align:center">
 	<img src="/static/images/blog/emergency-upgrade-1-3/dashboard_warning.png" width="750px" alt="Dashboard warning">
