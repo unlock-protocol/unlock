@@ -77,6 +77,12 @@ storiesOf('CreatorLock', module)
   .addDecorator(getStory => (
     <ConfigProvider value={config}>{getStory()}</ConfigProvider>
   ))
+  .add('version 1.2 vulnerability', () => {
+    const lock = lockWith({
+      publicLockVersion: 5,
+    })
+    return <CreatorLock lock={lock} edit={action('edit')} />
+  })
   .add('Submitted', () => {
     const lock = lockWith({
       transaction: 'submittedid',

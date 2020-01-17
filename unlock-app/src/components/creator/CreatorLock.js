@@ -22,6 +22,8 @@ import {
   LockRow,
   DoubleHeightCell,
   BalanceContainer,
+  LockWarning,
+  LockDetails,
 } from './LockStyles'
 import { updateKeyPrice, updateLock } from '../../actions/lock'
 import { currencySymbol } from '../../utils/lock'
@@ -102,48 +104,65 @@ export class CreatorLock extends React.Component {
     // Some sanitization of strings to display
     const name = lock.name || 'New Lock'
 
+    const lockVersion = lock.publicLockVersion || '1'
+
     const edit = () =>
       this.setState({
         editing: true,
         showEmbedCode: false,
       })
-
+    // https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability
     return (
-      <LockRow
-        className="lock" // Used by integration tests
-        data-address={`${lock.address}`}
-      >
-        <DoubleHeightCell>
-          <Icon lock={lock} />
-        </DoubleHeightCell>
-        <LockName>
-          {name}
-          <LockAddress address={!lock.pending && lock.address} />
-        </LockName>
-        <LockDuration>
-          <Duration seconds={lock.expirationDuration} />
-        </LockDuration>
-        <LockKeysNumbers lock={lock} />
-        <BalanceOnLock lock={lock} attribute="keyPrice" />
-        <BalanceContainer>
-          <NoPhone>
-            <BalanceOnLock lock={lock} attribute="balance" />
-          </NoPhone>
-          <Phone>
-            <BalanceOnLock lock={lock} attribute="balance" skipConversion />
-          </Phone>
-        </BalanceContainer>
-        <LockIconBar
-          lock={lock}
-          toggleCode={this.toggleEmbedCode}
-          edit={edit}
-        />
-        {showEmbedCode && (
-          <LockPanel>
-            <LockDivider />
-            <AppStore lock={lock} />
-          </LockPanel>
+      <LockRow>
+        {lockVersion === 5 && (
+          <LockWarning>
+            Your lock is vulnerable, please{' '}
+            <a
+              href="https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              read this important message
+            </a>
+            .
+          </LockWarning>
         )}
+        <LockDetails
+          className="lock" // Used by integration tests
+          data-address={`${lock.address}`}
+        >
+          <DoubleHeightCell>
+            <Icon lock={lock} />
+          </DoubleHeightCell>
+          <LockName>
+            {name}
+            <LockAddress address={!lock.pending && lock.address} />
+          </LockName>
+          <LockDuration>
+            <Duration seconds={lock.expirationDuration} />
+          </LockDuration>
+          <LockKeysNumbers lock={lock} />
+          <BalanceOnLock lock={lock} attribute="keyPrice" />
+          <BalanceContainer>
+            <NoPhone>
+              <BalanceOnLock lock={lock} attribute="balance" />
+            </NoPhone>
+            <Phone>
+              <BalanceOnLock lock={lock} attribute="balance" skipConversion />
+            </Phone>
+          </BalanceContainer>
+          <LockIconBar
+            lock={lock}
+            toggleCode={this.toggleEmbedCode}
+            edit={edit}
+          />
+          {showEmbedCode && (
+            <LockPanel>
+              <LockDivider />
+              <AppStore lock={lock} />
+            </LockPanel>
+          )}
+        </LockDetails>
       </LockRow>
     )
   }
