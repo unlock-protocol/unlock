@@ -181,7 +181,19 @@ export default class WalletService extends UnlockService {
       callback(null, contract.deployTransaction.hash)
     }
     await contract.deployed()
+
     return contract.address
+  }
+
+  /**
+   *  Then we need to call initialize on it. This is critical because otherwise anyone can claim it and then self-destruct it, killing all locks which use the same contract after this.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async initializeTemplate(params = {}, callback) {
+    if (!params.templateAddress) throw new Error('Missing templateAddress')
+    const version = await this.lockContractAbiVersion(params.templateAddress)
+    return version.initializeTemplate.bind(this)(params, callback)
   }
 
   /**
