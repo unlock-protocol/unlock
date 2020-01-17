@@ -360,10 +360,10 @@ export default class WalletService extends UnlockService {
           Authorization: `Bearer ${Buffer.from(signature).toString('base64')}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(metadata),
+        body: JSON.stringify(payload),
       })
 
-      if (response.status !== 200) {
+      if (response.status !== 202) {
         callback(
           new Error(
             `Received ${response.status} from locksmith: ${response.statusText}`

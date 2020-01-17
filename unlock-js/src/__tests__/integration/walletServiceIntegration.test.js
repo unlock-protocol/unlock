@@ -32,7 +32,7 @@ let accounts
 
 // Tests
 describe('Wallet Service Integration', () => {
-  const versions = [/* 'v0', 'v01', 'v02', 'v10', 'v11', 'v12', */ 'v13']
+  const versions = ['v0', 'v01', 'v02', 'v10', 'v11', 'v12', 'v13']
   describe.each(versions)('%s', versionName => {
     let walletService
     let web3Service
@@ -341,24 +341,25 @@ describe('Wallet Service Integration', () => {
             expect.assertions(2)
             const callback = (error, value) => {
               expect(error).toBeNull()
-              expect(value).toBeTruthy()
+              expect(value).toBe(true)
               done()
             }
 
             walletService.setKeyMetadata(
               lockAddress,
               tokenId,
-              { test: 'suceeded' },
+              { test: 'succeeded' },
               locksmithBaseUrl,
               callback
             )
           })
 
           it('should be possible to retrieve the metadata on the key', done => {
-            expect.assertions(0)
+            expect.assertions(2)
 
             const callback = (error, value) => {
-              console.log({ error, value })
+              expect(error).toBeNull()
+              expect(value.test).toEqual('succeeded')
               done()
             }
 
