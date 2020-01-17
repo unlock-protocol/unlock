@@ -4,7 +4,7 @@ subTitle: Version 1-3 is now available
 authorName: Nick Mancuso
 publishDate: January 17, 2020
 description: Explaining what went wrong and why we released a new version so quickly after our last upgrade.
-image: /static/images/blog/unlocking-smart-contracts/code.jpeg
+image: /static/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg
 ---
 
 We recently noticed a vulnerability which if abused could have had bad consequences – but we caught it early and fixed it promptly. This post aims to explain the errors we made with our [most recent smart-contract update](https://unlock-protocol.com/blog/version-1-2/).
@@ -103,7 +103,7 @@ You spend fake money and then are refunded with real money.  And if the lock own
 We fixed this by making all our custom initialize functions `internal` and tested to confirm that the remaining publicly accessible calls cannot be called multiple times.
 
 <p style="text-align:center">
-	<img src="/static/images/blog/unlocking-smart-contracts/code.jpeg" width="400px" alt="Smart contracts">
+	<img src="/static/images/blog/emergency-upgrade-1-3/code_vulnerability.jpg" width="400px" alt="Smart contracts">
 </p>
 
 So go to the dashboard to confirm your locks are not impacted.  There are very few at risk and nearly no funds for people to steal, but we need to ensure impacted locks are upgraded before you start to make sales.
