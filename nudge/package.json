@@ -2,5 +2,39 @@
   "name": "nudge",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/cron": "^1.7.1",
+    "@types/isomorphic-fetch": "^0.0.35",
+    "@types/jest": "^24.9.0",
+    "@types/mocha": "^5.2.7",
+    "@types/sequelize": "^4.28.8",
+    "apollo-cache-inmemory": "^1.6.5",
+    "apollo-client": "^2.6.8",
+    "apollo-link-http": "^1.5.16",
+    "cron": "^1.7.2",
+    "dotenv": "^8.2.0",
+    "ethereumjs-util": "^6.2.0",
+    "ethers": "^4.0.43",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "isomorphic-fetch": "^2.2.1",
+    "jest": "^24.9.0",
+    "pg": "^7.17.1",
+    "reflect-metadata": "^0.1.13",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "sequelize": "^5.21.3",
+    "sequelize-cli": "^5.5.1",
+    "sequelize-typescript": "^1.1.0",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.7.4"
+  },
+  "devDependencies": {
+    "@types/request-promise-native": "^1.0.17"
+  }
 }

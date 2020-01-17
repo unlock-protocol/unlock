@@ -64,8 +64,7 @@ export default async function(
     })[0]
   if (withdrawalEvent) {
     return utils.fromWei(withdrawalEvent.values.amount.toString(), 'ether')
-  } else {
-    // There was no Withdrawal log (transaction failed?)
-    return null
   }
+  // There was no Withdrawal log (transaction failed?)
+  return null
 }

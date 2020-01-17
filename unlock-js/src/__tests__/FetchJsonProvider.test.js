@@ -41,11 +41,10 @@ describe('FetchJsonProvider', () => {
         callCounter += 1
         if (callCounter === 3) {
           return Promise.resolve('response')
-        } else {
-          return Promise.reject({
-            statusCode: 429,
-          })
         }
+        return Promise.reject({
+          statusCode: 429,
+        })
       })
       const response = await provider.send(method, params)
       expect(response).toEqual('response')
