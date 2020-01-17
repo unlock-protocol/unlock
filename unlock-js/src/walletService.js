@@ -89,7 +89,8 @@ export default class WalletService extends UnlockService {
 
     if (!accounts.length) {
       // We do not have an account, can't do anything until we have one.
-      return (this.ready = false)
+      this.ready = false
+      return null
     }
 
     const address = accounts[0]
@@ -99,7 +100,7 @@ export default class WalletService extends UnlockService {
       this.emit('account.updated', { emailAddress: this.provider.emailAddress })
     }
     this.emit('ready')
-    return Promise.resolve(address)
+    return address
   }
 
   /**
@@ -113,6 +114,7 @@ export default class WalletService extends UnlockService {
    * @param {string} the Unlock protocol transaction type
    * @param {Function} a standard node callback that accepts the transaction hash
    */
+  // eslint-disable-next-line no-underscore-dangle
   async _handleMethodCall(methodCall, transactionType) {
     this.emit('transaction.pending', transactionType)
     const transaction = await methodCall
@@ -246,7 +248,7 @@ export default class WalletService extends UnlockService {
       callback(null, transaction.hash)
     }
 
-    return await this.provider.waitForTransaction(transaction.hash)
+    return this.provider.waitForTransaction(transaction.hash)
   }
 
   /**
@@ -316,7 +318,7 @@ export default class WalletService extends UnlockService {
     if (method === 'eth_sign') {
       ;[firstParam, secondParam] = [secondParam, firstParam] // swap the parameter order
     }
-    return await this.provider.send(method, [firstParam, secondParam])
+    return this.provider.send(method, [firstParam, secondParam])
   }
 
   async signDataPersonal(account, data, callback) {
@@ -328,7 +330,7 @@ export default class WalletService extends UnlockService {
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
-      return callback(error, null)
+      callback(error, null)
     }
   }
 
@@ -358,7 +360,7 @@ export default class WalletService extends UnlockService {
         json: metadata,
       })
     } catch (error) {
-      return callback(error, null)
+      callback(error, null)
     }
   }
 }
