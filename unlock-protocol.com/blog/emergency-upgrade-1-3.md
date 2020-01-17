@@ -7,13 +7,13 @@ description: Explaining what went wrong and why we released a new version so qui
 image: /static/images/blog/unlocking-smart-contracts/code.jpeg
 ---
 
-We recently noticed a vulnerability which if abused could have had bad consequences – but we caught it early and fixed it promptly. This post aims to explain the errors we made with our most recent smart-contract update.
+We recently noticed a vulnerability which if abused could have had bad consequences – but we caught it early and fixed it promptly. This post aims to explain the errors we made with our [most recent smart-contract update](https://unlock-protocol.com/blog/version-1-2/).
 
 There were problems with this release which if targeted by an attacker had the potential to do one of the following:
  - Steal money made from previous key sales.
  - Break every lock (and key) using the new version - blocking new sales, preventing key owners from being recognized and preventing the lock owner from accessing any funds previously made.
 
-We fixed the second issue already, so no worries there.  But funds are at risk if your lock is impacted.  For that we need the lock owners themselves to upgrade ASAP.
+We fixed the second issue very quickly, so no worries there.  But funds are at risk if your lock is impacted.  For that we need the owners of these locks themselves to upgrade ASAP. (there are 14 locks which affected)
 
 This only impacts locks created in the past couple weeks. If you recently created a lock, please go to the Unlock dashboard to check if you are impacted.  The dashboard will flag any impacted lock, asking you to upgrade.
 
@@ -77,7 +77,7 @@ and
   }
 ```
 
-These two calls are public and have no modifier.  This means anyone can call them at any time.
+These two calls are public and have no modifier.  This means anyone can call them at any time on affected locks.
 
 We have a number of other `initialize` functions but they were all safe using one of the three techniques explained above.
 
