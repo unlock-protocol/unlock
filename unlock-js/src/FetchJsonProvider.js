@@ -34,9 +34,8 @@ export default class FetchJsonProvider extends providers.JsonRpcProvider {
             return setTimeout(() => {
               sendOnce(tries + 1)
             }, Math.floor(this.rateLimit + (Math.random() * this.rateLimit) / 4))
-          } else {
-            return reject(error) // If not a timeout we bubble up the error.
           }
+          return reject(error) // If not a timeout we bubble up the error.
         }
         return resolve(response)
       }

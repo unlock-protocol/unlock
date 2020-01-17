@@ -27,12 +27,12 @@ const callMethodData = prepContract({
   nock,
 })
 
-let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
+const testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 
 const EventInfo = new ethers.utils.Interface(UnlockV02.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
-let receipt = {
+const receipt = {
   logs: [],
 }
 
@@ -109,7 +109,7 @@ describe('v02', () => {
           currencyContractAddress: testERC20ContractAddress,
         }
 
-        let {
+        const {
           testTransaction,
           testTransactionResult,
           success,

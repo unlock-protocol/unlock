@@ -35,11 +35,11 @@ jest.mock('../../erc20.js', () => {
   }
 })
 
-let testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
+const testERC20ContractAddress = '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
 const EventInfo = new ethers.utils.Interface(UnlockV10.Unlock.abi)
 const encoder = ethers.utils.defaultAbiCoder
 
-let receipt = {
+const receipt = {
   logs: [],
 }
 describe('v10', () => {
@@ -120,7 +120,7 @@ describe('v10', () => {
 
         await nockBeforeEach()
 
-        let {
+        const {
           testTransaction,
           testTransactionResult,
           success,
@@ -147,7 +147,7 @@ describe('v10', () => {
 
         await nockBeforeEach()
 
-        let {
+        const {
           testTransaction,
           testTransactionResult,
           success,
@@ -191,7 +191,7 @@ describe('v10', () => {
         erc20.getErc20Decimals = jest.fn(() => {
           return Promise.resolve(decimals)
         })
-        let {
+        const {
           testTransaction,
           testTransactionResult,
           success,
