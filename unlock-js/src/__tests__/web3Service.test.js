@@ -88,7 +88,7 @@ describe('Web3Service', () => {
             },
           }
           const req = http.request(options, res => {
-            var responseString = ''
+            let responseString = ''
 
             res.on('data', data => {
               responseString += data
@@ -119,7 +119,7 @@ describe('Web3Service', () => {
 
       nock.getBalanceForAccountAndYieldBalance(address, '0xdeadbeef')
 
-      let addressBalance = await web3Service.getAddressBalance(address)
+      const addressBalance = await web3Service.getAddressBalance(address)
       expect(addressBalance).toEqual(expectedBalance)
     })
 
@@ -166,7 +166,7 @@ describe('Web3Service', () => {
         throw err // this is the only way we will see test failures!
       })
 
-      let addressBalance = await web3Service.refreshAccountBalance(account)
+      const addressBalance = await web3Service.refreshAccountBalance(account)
       expect(addressBalance).toEqual(expectedBalance)
     })
   })
@@ -466,7 +466,7 @@ describe('Web3Service', () => {
         })
       })
 
-      let lock = await web3Service.getKeyByLockForOwner(lockAddress, account)
+      const lock = await web3Service.getKeyByLockForOwner(lockAddress, account)
       expect(lock).toEqual({
         expiration: 100,
         lock: '0x5ed6a5bb0fda25eac3b5d03fa875cb60a4639d8e',
@@ -503,7 +503,7 @@ describe('Web3Service', () => {
         const args = []
         const result = {}
         const version = {
-          [method]: function(_args) {
+          [method](_args) {
             // Needs to be a function because it is bound to web3Service
             expect(this).toBe(web3Service)
             expect(_args).toBe(...args)

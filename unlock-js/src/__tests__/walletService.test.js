@@ -21,7 +21,7 @@ const nock = new NockHelper(endpoint, false /** debug */)
 
 let walletService
 
-let unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
+const unlockAddress = '0xD8C88BE5e8EB88E38E6ff5cE186d764676012B0b'
 describe('WalletService (ethers)', () => {
   function resetTests() {
     nock.cleanAll()
@@ -80,7 +80,7 @@ describe('WalletService (ethers)', () => {
             },
           }
           const req = http.request(options, res => {
-            var responseString = ''
+            let responseString = ''
 
             res.on('data', data => {
               responseString += data
@@ -434,7 +434,7 @@ describe('WalletService (ethers)', () => {
         const args = []
         const result = {}
         const version = {
-          [method]: function(_args) {
+          [method](_args) {
             // Needs to be a function because it is bound to walletService
             expect(this).toBe(walletService)
             expect(_args).toBe(...args)
@@ -463,7 +463,7 @@ describe('WalletService (ethers)', () => {
         ]
         const result = {}
         const version = {
-          [method]: function(_args) {
+          [method](_args) {
             // Needs to be a function because it is bound to walletService
             expect(this).toBe(walletService)
             expect(_args).toBe(...args)

@@ -46,7 +46,7 @@ describe('ethers utils', () => {
     const bigNumber = 132654781356418
 
     expect(ethersUtils.hexToNumberString('0x00')).toBe('0')
-    expect(ethersUtils.hexToNumberString('0x' + bigNumber.toString(16))).toBe(
+    expect(ethersUtils.hexToNumberString(`0x${bigNumber.toString(16)}`)).toBe(
       `${bigNumber}`
     )
   })
