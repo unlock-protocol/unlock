@@ -48,7 +48,7 @@
     "ethereumjs-utils": "5.2.5",
     "ethers": "4.0.43",
     "file-saver": "2.0.2",
-    "fork-ts-checker-webpack-plugin": "3.1.1",
+    "fork-ts-checker-webpack-plugin": "4.0.1",
     "graphql": "14.5.8",
     "jest": "24.9.0",
     "jest-canvas-mock": "2.2.0",
