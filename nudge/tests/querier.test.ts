@@ -1,6 +1,6 @@
 import { Querier } from '../src/querier'
 
-let implementation = jest
+let query = jest
   .fn()
   .mockResolvedValueOnce({
     data: {
@@ -21,7 +21,7 @@ let implementation = jest
 jest.mock('apollo-client', () => {
   return jest.fn().mockImplementation(() => {
     return {
-      query: implementation,
+      query,
     }
   })
 })
