@@ -1,5 +1,5 @@
 import ethersUtils from '../utils'
-import { GAS_AMOUNTS, ETHERS_MAX_UINT } from '../constants'
+import { ETHERS_MAX_UINT } from '../constants'
 import TransactionTypes from '../transactionTypes'
 import { UNLIMITED_KEYS_COUNT } from '../../lib/constants'
 
@@ -14,15 +14,10 @@ export default async function(lock, callback) {
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
-  const transactionPromise = unlockContract.functions[
-    'createLock(uint256,uint256,uint256)'
-  ](
+  const transactionPromise = unlockContract.createLock(
     lock.expirationDuration,
     ethersUtils.toWei(lock.keyPrice, 'ether'),
-    maxNumberOfKeys,
-    {
-      gasLimit: GAS_AMOUNTS.createLock,
-    }
+    maxNumberOfKeys
   )
   const hash = await this._handleMethodCall(
     transactionPromise,
