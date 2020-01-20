@@ -16,7 +16,7 @@
     "apollo-cache-inmemory": "^1.6.5",
     "apollo-client": "^2.6.8",
     "apollo-link-http": "^1.5.16",
-    "cron": "^1.7.2",
+    "cron": "1.8.1",
     "dotenv": "^8.2.0",
     "ethereumjs-util": "^6.2.0",
     "ethers": "^4.0.43",
@@ -32,7 +32,7 @@
     "sequelize-cli": "^5.5.1",
     "sequelize-typescript": "^1.1.0",
     "ts-jest": "^24.3.0",
-    "typescript": "^3.7.4"
+    "typescript": "3.7.5"
   },
   "devDependencies": {
     "@types/request-promise-native": "^1.0.17"
