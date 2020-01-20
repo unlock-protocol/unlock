@@ -67,12 +67,9 @@
     "truffle-security": "1.6.2"
   },
   "lint-staged": {
-    "linters": {
-      "*.{js,ts}": [
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
   },
   "scripts": {
     "test": "cross-env NODE_ENV=test truffle test --network development",

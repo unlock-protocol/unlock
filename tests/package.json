@@ -18,12 +18,9 @@
   },
   "author": "Unlock Inc",
   "lint-staged": {
-    "linters": {
-      "*.{js,ts}": [
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
   },
   "engines": {
     "node": "^10"

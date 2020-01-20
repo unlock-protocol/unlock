@@ -31,12 +31,9 @@
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
-    "linters": {
-      "*.{js,ts}": [
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
   },
   "engines": {
     "node": "^10"

@@ -89,15 +89,10 @@
     "tsc": "tsc"
   },
   "lint-staged": {
-    "linters": {
-      "*.{js,ts,tsx}": [
-        "eslint --fix",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.js.snap"
-    ]
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.js.snap": []
   },
   "nodemonConfig": {
     "watch": [

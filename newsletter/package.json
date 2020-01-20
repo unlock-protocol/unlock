@@ -37,11 +37,8 @@
     "typescript": "3.7.5"
   },
   "lint-staged": {
-    "linters": {
-      "*.{js,ts,tsx}": [
-        "eslint --fix",
-        "git add"
-      ]
-    }
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
   }
 }
