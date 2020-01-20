@@ -35,14 +35,23 @@ async function run() {
   await walletService.connect(provider)
 
   const templateAddress = await walletService.deployTemplate(
-    'v12',
+    'v13',
     (error, hash) => {
-      console.log('Transaction:')
+      console.log('Template Transaction:')
       console.log({ hash })
     }
   )
 
+  console.log('Template deployed at:')
   console.log(templateAddress)
+
+  await walletService.initializeTemplate({ templateAddress }, (error, hash) => {
+    console.log('Initialization Transaction:')
+    console.log({ hash })
+  })
+  console.log('Template initialized')
+  // TODO: send transaction to disableLock?
+  // TODO: send transaction to renounceOwnership?
 }
 
 run()
