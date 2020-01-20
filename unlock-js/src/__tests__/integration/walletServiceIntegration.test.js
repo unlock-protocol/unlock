@@ -5,19 +5,14 @@ import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
 import 'cross-fetch/polyfill'
 
 let host
-let locksmithHost
 const port = 8545
-const locksmithPort = 8080
 if (process.env.CI) {
   host = 'ganache-integration'
-  locksmithHost = 'locksmith'
 } else {
   host = '127.0.0.1'
-  locksmithHost = '127.0.0.1'
 }
 
 const provider = `http://${host}:${port}`
-const locksmithBaseUrl = `http://${locksmithHost}:${locksmithPort}`
 
 // This test suite will do the following:
 // For each version of the Unlock contract
@@ -338,40 +333,6 @@ describe('Wallet Service Integration', () => {
               parseInt(key.expiration) -
                 parseInt(lock.expirationDuration + new Date().getTime() / 1000)
             ).toBeLessThan(60)
-          })
-
-          it('should be possible to set metadata on the key', done => {
-            expect.assertions(2)
-            const callback = (error, value) => {
-              expect(error).toBeNull()
-              expect(value).toBe(true)
-              done()
-            }
-
-            walletService.setKeyMetadata(
-              lockAddress,
-              tokenId,
-              { test: 'succeeded' },
-              locksmithBaseUrl,
-              callback
-            )
-          })
-
-          it('should be possible to retrieve the metadata on the key', done => {
-            expect.assertions(2)
-
-            const callback = (error, value) => {
-              expect(error).toBeNull()
-              expect(value.test).toEqual('succeeded')
-              done()
-            }
-
-            walletService.getKeyMetadata(
-              lockAddress,
-              tokenId,
-              locksmithBaseUrl,
-              callback
-            )
           })
         })
 
