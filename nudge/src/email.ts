@@ -1,7 +1,5 @@
-import dotenv from 'dotenv'
 import request from 'request-promise-native'
 
-dotenv.config()
 const config = require('../config/config')
 
 export class Email {
