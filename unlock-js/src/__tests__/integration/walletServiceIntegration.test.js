@@ -2,6 +2,7 @@ import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
 import { waitForContractDeployed } from '../helpers/waitForContractDeployed'
+import 'cross-fetch/polyfill'
 
 let host
 const port = 8545

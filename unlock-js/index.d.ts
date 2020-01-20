@@ -67,4 +67,6 @@ export class WalletService extends EventEmitter {
   connect: (provider: Web3Provider) => Promise<void>
   getAccount: () => Promise<string | false>
   purchaseKey: (params: PurchaseKeyParams) => Promise<string>
+    setKeyMetadata: (lockAddress: string, keyId: string, metadata: { [key: string]: string }, locksmithHost: string, callback: any) => void
+  getKeyMetadata: (lockAddress: string, keyId: string, locksmithHost: string, callback: any) => void
 }
