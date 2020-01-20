@@ -69,7 +69,7 @@
     "react-stripe-elements": "6.0.1",
     "react-test-renderer": "16.12.0",
     "redux": "4.0.5",
-    "styled-components": "4.4.1",
+    "styled-components": "5.0.0",
     "ts-jest": "24.3.0",
     "typescript": "3.7.5",
     "validator": "12.1.0"
