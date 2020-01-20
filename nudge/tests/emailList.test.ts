@@ -1,6 +1,6 @@
 import { extractEmails } from '../src/emailList'
 
-jest.mock('../src/metadataOperations', () => {
+jest.mock('../src/generateKeyMetadata', () => {
   return {
     generateKeyMetadata: jest
       .fn()

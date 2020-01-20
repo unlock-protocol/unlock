@@ -1,4 +1,4 @@
-import { generateKeyMetadata } from './metadataOperations'
+import { generateKeyMetadata } from './generateKeyMetadata'
 
 export async function extractEmails(results: any[]): Promise<Key[]> {
   let keysData = results.map(async (result: any) => {
