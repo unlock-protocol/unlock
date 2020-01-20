@@ -24,10 +24,10 @@
     "ethers": "4.0.43",
     "jest": "24.9.0",
     "lint-staged": "8.2.1",
-    "netlify-cli": "2.29.0",
+    "netlify-cli": "2.30.0",
     "prettier": "1.19.1",
     "ts-jest": "24.3.0",
-    "typescript": "3.7.4"
+    "typescript": "3.7.5"
   },
   "browserslist": "> 0.25%, not dead",
   "lint-staged": {
@@ -42,9 +42,9 @@
     "node": "^10"
   },
   "devDependencies": {
-    "@babel/cli": "7.8.0",
-    "@babel/core": "7.8.0",
-    "@babel/preset-env": "7.8.2",
+    "@babel/cli": "7.8.3",
+    "@babel/core": "7.8.3",
+    "@babel/preset-env": "7.8.3",
     "babel-jest": "24.9.0",
     "jest": "24.9.0",
     "nock": "11.7.2",
