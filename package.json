@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "husky": "4.0.10",
-    "lint-staged": "8.2.1"
+    "lint-staged": "10.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
