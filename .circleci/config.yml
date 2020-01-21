@@ -159,8 +159,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build nudge Image
+          name: Build Nudge Image
           command: scripts/build-image.sh nudge
+      - run:
+          name: Nudge Tests
+          command: scripts/tests.sh nudge
 
   integration-tests:
     machine:
