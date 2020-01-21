@@ -1,5 +1,4 @@
 import utils from '../utils'
-import { GAS_AMOUNTS } from '../constants'
 import TransactionTypes from '../transactionTypes'
 
 /**
@@ -11,12 +10,11 @@ import TransactionTypes from '../transactionTypes'
  */
 export default async function({ lockAddress, keyPrice }, callback) {
   const lockContract = await this.getLockContract(lockAddress)
-  const transactionPromise = lockContract['updateKeyPrice(uint256)'](
-    utils.toWei(keyPrice, 'ether'),
-    {
-      gasLimit: GAS_AMOUNTS.updateKeyPrice,
-    }
+
+  const transactionPromise = lockContract.updateKeyPrice(
+    utils.toWei(keyPrice, 'ether')
   )
+
   const hash = await this._handleMethodCall(
     transactionPromise,
     TransactionTypes.UPDATE_KEY_PRICE
